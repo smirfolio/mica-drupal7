@@ -1,0 +1,4 @@
+name = "Mica Network"
+description = "Mica Network"
+package = Mica
+core = 7.x
