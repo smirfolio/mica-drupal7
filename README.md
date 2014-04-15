@@ -1,3 +1,3 @@
-# Mica Drupal Client
+# Mica Drupal 7 Client
 
-Drupal client for [Mica Server](https://github.com/obiba/mica-server).
+[Drupal 7](https://drupal.org) client for [Mica Server](https://github.com/obiba/mica-server).
