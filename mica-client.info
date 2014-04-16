@@ -1,4 +1,0 @@
-name = "Mica Client"
-description = "Mica Client"
-package = Mica
-core = 7.x
