@@ -1,0 +1,85 @@
+<?php
+/**
+ * @file
+ * Mica studies file
+ */
+require_once(dirname(__FILE__) . '/../includes/mica_client_query_dto.inc');
+
+function mica_study_menu()
+{
+    $items = array();
+    $items['mica/studies'] = array(
+        'title' => t('Mica studies'),
+        'description' => t('Mica studies.'),
+        'page callback' => 'mica_study_page',
+        'access callback' => TRUE,
+        'menu_name' => 'main-menu',
+        'type' => MENU_NORMAL_ITEM
+    );
+    $items['mica/study/%'] = array(
+        'page callback' => 'mica_study_detail_study',
+        'access callback' => TRUE,
+        'page arguments' => array(2),
+        'weight' => 5,
+    );
+    return $items;
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function mica_study_menu_local_tasks_alter(&$data, $router_item, $root_path)
+{
+
+    $links = array();
+    switch ($root_path) {
+        case 'mica/study/%':
+            $links['mica'] = array(
+                '#theme' => 'menu_local_action',
+                '#link' => array(
+                    // 'title' => t('Domain Coverage'),
+                    'page callback' => 'mica_study_detail_study',
+                    'href' => 'mica', // Arguments could be taxonomies and dataset
+                    //  'localized_options' => $query
+                ),
+            );
+    }
+
+}
+
+/*
+ * Page of studies list
+ * @return
+ * An  array of studies DTO
+ */
+function mica_study_page()
+{
+    $query = new queryDto();
+    $studiesDto = $query->get_list('studies', '\obiba\mica\StudySummaryDto');
+
+    dpm($studiesDto);
+    $output = '<ul>';
+    foreach ($studiesDto as $study) {
+        $output .= '<li><a href="mica/study/' . $study->id . '">' . t('study') . '</li>';
+    }
+    $output .= '</ul>';
+    return $output;
+}
+
+
+/*
+ * page of study details
+ * @param $id_std
+ *  Id of the study
+ * @return
+ *  An  study DTO
+ */
+function mica_study_detail_study($id_std)
+{
+    $query = new queryDto();
+    $param = 'study/' . $id_std;
+    $studyDto = $query->get_detail($param, '\obiba\mica\StudyDto');
+    dpm($studyDto);
+
+    return t('hello study :') . $studyDto->name[0]->value;
+}

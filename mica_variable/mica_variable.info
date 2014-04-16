@@ -2,3 +2,4 @@ name = "Mica Variable"
 description = "Mica Variable"
 package = Mica
 core = 7.x
+dependencies[] = mica_client
