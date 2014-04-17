@@ -13,5 +13,6 @@ Run `make all` to:
 * drop and import `drupal` database based on `drupal/drupal-7.27.sql`
 * create a symlink `/var/www/drupal` pointing to `target/drupal`
 
-Use **administrator** / **password** to login into your new Drupal
+Use **administrator** / **password** to login into your new Drupal:
+[http://localhost/drupal](http://localhost/drupal)
 
