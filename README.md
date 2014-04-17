@@ -6,3 +6,12 @@
 
 Use Makefile to build and run the project: `make help`
 
+Run `make all` to:
+
+* clear `target` dir
+* download Drupal instance to `target` dir and configure it with `drupal/dev/settings.php`
+* drop and import `drupal` database based on `drupal/drupal-7.27.sql`
+* create a symlink `/var/www/drupal` pointing to `target/drupal`
+
+Use **administrator** / **password** to login into your new Drupal
+
