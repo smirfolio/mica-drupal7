@@ -1,3 +1,13 @@
+drupal_version = 7.27
+
+#
+# Mysql db access
+#
+db_name = drupal
+db_user = root
+db_pass = 1234
+
+
 help:
 	@echo
 	@echo "Mica Drupal 7 Client"
@@ -14,8 +24,19 @@ clean:
 	rm -rf target
 
 setup-drupal:
-	drush make drupal/drupal-basic.make target/drupal && \
-	cp -r drupal/modules/* target/drupal/sites/all/modules
+	drush make --prepare-install drupal/drupal-basic.make target/drupal && \
+	chmod -R a+w target/drupal/sites/default && \
+	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client
 
 copy-mica:
 	cp -r drupal/modules/* target/drupal/sites/all/modules
+
+wwww:
+	ln -s $(CURDIR)/target/drupal /var/www/drupal
+
+dump-sql:
+	mysqldump -u $(db_user) --password=$(db_pass) --hex-blob $(db_name) --result-file="drupal/drupal-$(drupal_version).sql"
+
+import-sql:
+	mysql -u $(db_user) --password=$(db_pass) -e "drop database $(db_name); create database $(db_name);"
+	mysql -u $(db_user) --password=$(db_pass) $(db_name) < "drupal/drupal-$(drupal_version).sql"
