@@ -40,3 +40,4 @@ import-sql:
 
 settings:
 	cp drupal/dev/settings.php target/drupal/sites/default
+	cp drupal/dev/.htaccess target/drupal
