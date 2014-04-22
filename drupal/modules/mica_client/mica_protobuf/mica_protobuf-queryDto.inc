@@ -12,15 +12,15 @@ const HEADER_JSON = 'application/json';
 class QueryDto {
 
   function get_list($path, $dtoObj) {
-    $studiesDto = array();
+    $dtos = array();
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
     $output = restclient_get($path, array('headers' => array('Accept' => HEADER_JSON)));
     if ($output) {
       foreach (json_decode($output->data) as $study) {
-        $studiesDto [] = Protobuf::decode($dtoObj, json_encode($study));
+        $dtos [] = Protobuf::decode($dtoObj, json_encode($study));
       }
     }
-    return $studiesDto;
+    return $dtos;
   }
 
   function get_detail($path, $dtoObj) {
