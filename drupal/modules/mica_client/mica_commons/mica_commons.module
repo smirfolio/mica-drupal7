@@ -7,7 +7,7 @@
  * @param string The string to convert.
  * @return string The slug.
  */
-function mica_commons_string_to_slug($string) {
+function mica_commons_to_slug($string) {
   $string = str_replace(array('/', ' '), '-', $string);
   $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
   return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));

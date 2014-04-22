@@ -50,3 +50,7 @@ devel:
 	cd target/drupal && \
 	drush dl devel && \
 	drush en -y devel
+
+cc:
+	cd target/drupal && drush cc all
+	
