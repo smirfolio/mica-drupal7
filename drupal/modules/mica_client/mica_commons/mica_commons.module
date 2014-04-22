@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Converts a string to a slug, for use in URLs or CSS classes. This function properly replaces
+ *  letters with accents with their non-accented counterparts.
+ *
+ * @param string The string to convert.
+ * @return string The slug.
+ */
+function mica_commons_string_to_slug($string) {
+  $string = str_replace(array('/', ' '), '-', $string);
+  $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
+  return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
+}
