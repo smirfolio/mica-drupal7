@@ -3,104 +3,99 @@
  * @file
  * Mica studies file
  */
-require_once(dirname(__FILE__) . '/../includes/mica_client_query_dto.inc');
+require_once(drupal_get_path('module', 'mica_protobuf') . '/mica_protobuf_query_dto.inc');
 
-function mica_study_menu()
-{
-    $items = array();
-    $items['mica/studies'] = array(
-        'title' => t('Mica studies'),
-        'description' => t('Mica studies.'),
-        'page callback' => 'mica_study_page',
-        'access callback' => TRUE,
-        'menu_name' => 'main-menu',
-        'type' => MENU_NORMAL_ITEM
-    );
-    $items['mica/study/%'] = array(
-        'title' => t('Mica detail study'),
-        'page callback' => 'mica_study_detail_study',
-        'access callback' => TRUE,
-        'page arguments' => array(2, 3),
-        'weight' => 5,
-    );
-    return $items;
+
+function mica_study_menu() {
+  $items = array();
+  $items['mica/studies'] = array(
+    'title' => t('Mica studies'),
+    'description' => t('Mica studies.'),
+    'page callback' => 'mica_study_page',
+    'access callback' => TRUE,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM
+  );
+  $items['mica/study/%'] = array(
+    'title' => t('Mica detail study'),
+    'page callback' => 'mica_study_detail_study',
+    'access callback' => TRUE,
+    'page arguments' => array(2, 3),
+    'weight' => 5,
+  );
+  return $items;
 }
 
 /**
  * Implements hook_menu_local_tasks_alter().
  */
-function mica_study_menu_local_tasks_alter(&$data, $router_item, $root_path)
-{
-    $links = array();
-    switch ($root_path) {
-        case 'mica/study/%/%':
-            $links['mica'] = array(
-                '#theme' => 'menu_local_action',
-                '#link' => array(
-                    'page callback' => 'mica_study_detail_study',
-                    'href' => 'mica',
-                ),
-            );
-    }
+function mica_study_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  $links = array();
+  switch ($root_path) {
+    case 'mica/study/%/%':
+      $links['mica'] = array(
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'page callback' => 'mica_study_detail_study',
+          'href' => 'mica',
+        ),
+      );
+  }
 }
 
 /**
  * Implements hook_library().
  */
-function mica_study_library()
-{
-    //feature to include AngularJs
-    $libraries = array();
-    $libraries['angularjs'] = array(
-        'title' => 'AngularJs',
-        'website' => 'http://code.angularjs.org/',
-        'version' => '1.2.15',
-        'js' => array(
-            'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js' => array()
-        )
-    );
-    return $libraries;
+function mica_study_library() {
+  //feature to include AngularJs
+  $libraries = array();
+  $libraries['angularjs'] = array(
+    'title' => 'AngularJs',
+    'website' => 'http://code.angularjs.org/',
+    'version' => '1.2.15',
+    'js' => array(
+      'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js' => array()
+    )
+  );
+  return $libraries;
 }
 
 /**
  * Implements hook_theme().
  */
-function mica_study_theme($existing, $type, $theme, $path)
-{
-    //  $module_path =drupal_get_path('module', 'mica_client');
-    return array(
-        'mica_studies_function' => array(
-            'template' => '/templates/mica_studies_page',
-            'variables' => array(
-                'argument_1' => NULL
-            )
-        ),
-        'mica_study_function' => array(
-            'template' => '/templates/mica_study_page',
-            'variables' => array(
-                'argument_1' => NULL
-            )
-        ),
-    );
+function mica_study_theme($existing, $type, $theme, $path) {
+  //  $module_path =drupal_get_path('module', 'mica_client');
+  return array(
+    'mica_studies_function' => array(
+      'template' => '/templates/mica_studies_page',
+      'variables' => array(
+        'argument_1' => NULL
+      )
+    ),
+    'mica_study_function' => array(
+      'template' => '/templates/mica_study_page',
+      'variables' => array(
+        'argument_1' => NULL
+      )
+    ),
+  );
 }
 
-function mica_studies_process_tempalte($output, $template)
-{
-    // drupal_add_library('mica_study', 'angularjs');
-    $html = theme($template, array(
-        "context_detail" => $output,
-    ));
+function mica_studies_process_template($output, $template) {
+  // drupal_add_library('mica_study', 'angularjs');
+  $html = theme($template, array(
+    "context_detail" => $output,
+  ));
 
-    return $html;
+  return $html;
 }
 
-function mica_study_page()
-{
-    $output['title'] = t('List of studies');
-    $output['data'] = mica_study_list_studies();
-    $html = mica_studies_process_tempalte($output, 'mica_studies_function');
+function mica_study_page() {
+  $output['title'] = t('List of studies');
+  $output['data'] = mica_study_list_studies();
+  $html = mica_studies_process_template($output, 'mica_studies_function');
 
-    return $html;
+  return $html;
 }
 
 /*
@@ -108,43 +103,42 @@ function mica_study_page()
  * @return
  * An  array of studies DTO
  */
-function mica_study_list_studies()
-{
-    $rows = array();
-    $query = new queryDto();
-    $studiesDto = $query->get_list('studies', '\obiba\mica\StudySummaryDto');
-    $i = 0;
-    foreach ($studiesDto as $study) {
-        $rows[] = array(
-            $i,
-            l($study->name[0]->value, 'mica/study/' . mica_study_string_to_slug($study->name[0]->value) . '/' . $study->id, array(
-                    'attributes' => array(
-                        'id' => $study->name[0]->value,
-                    ),
-                )),
-            $study->timestamps->created
+function mica_study_list_studies() {
+  $rows = array();
+  $query = new QueryDto();
+  $studiesDto = $query->get_list('studies', '\obiba\mica\StudySummaryDto');
+  $i = 0;
+  foreach ($studiesDto as $study) {
+    $rows[] = array(
+      $i,
+      l($study->name[0]->value, 'mica/study/' . mica_study_string_to_slug($study->name[0]->value) . '/' . $study->id, array(
+        'attributes' => array(
+          'id' => $study->name[0]->value,
+        ),
+      )),
+      $study->timestamps->created
 
-        );
-        $i++;
-    }
+    );
+    $i++;
+  }
 
-    $header = array('', t('Title Studies'), t('Created'));
-    $per_page = 20;
-    $current_page = pager_default_initialize(count($rows), $per_page);
-    $chunks = array_chunk($rows, $per_page, TRUE);
+  $header = array('', t('Title Studies'), t('Created'));
+  $per_page = 20;
+  $current_page = pager_default_initialize(count($rows), $per_page);
+  $chunks = array_chunk($rows, $per_page, TRUE);
 
-    $output = theme(
-            'table',
-            array(
-                'header' => $header,
-                'rows' => $chunks[$current_page],
-                'empty' => t('No data found'),
-                'sticky' => FALSE,
-                'attributes' => array('id' => 'variables_overview')
-            )
-        ) . theme('pager', array('quantity', count($rows)));
+  $output = theme(
+      'table',
+      array(
+        'header' => $header,
+        'rows' => $chunks[$current_page],
+        'empty' => t('No data found'),
+        'sticky' => FALSE,
+        'attributes' => array('id' => 'variables_overview')
+      )
+    ) . theme('pager', array('quantity', count($rows)));
 
-    return $output;
+  return $output;
 }
 
 
@@ -155,15 +149,14 @@ function mica_study_list_studies()
  * @return
  *  An  study DTO
  */
-function mica_study_detail_study($title_std, $id_std)
-{
-    $query = new queryDto();
-    $param = 'study/' . $id_std;
-    $StudyDto = $query->get_detail($param, '\obiba\mica\StudyDto');
-    drupal_set_title(mica_study_get_local($StudyDto, 'name'));
-    $output['data'] = $StudyDto;
-    $html = mica_studies_process_tempalte($output, 'mica_study_function');
-    return $html;
+function mica_study_detail_study($title_std, $id_std) {
+  $query = new QueryDto();
+  $param = 'study/' . $id_std;
+  $StudyDto = $query->get_detail($param, '\obiba\mica\StudyDto');
+  drupal_set_title(mica_study_get_local($StudyDto, 'name'));
+  $output['data'] = $StudyDto;
+  $html = mica_studies_process_template($output, 'mica_study_function');
+  return $html;
 }
 
 /**
@@ -173,11 +166,10 @@ function mica_study_detail_study($title_std, $id_std)
  * @param string The string to convert.
  * @return string The slug.
  */
-function mica_study_string_to_slug($string)
-{
-    $string = str_replace(array('/', ' '), '-', $string);
-    $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
-    return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
+function mica_study_string_to_slug($string) {
+  $string = str_replace(array('/', ' '), '-', $string);
+  $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
+  return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
 }
 
 /*
@@ -189,18 +181,19 @@ function mica_study_string_to_slug($string)
  * @return
  *  Field value in a correct local lang
  * */
-function mica_study_get_local($std_study, $std_study_field)
-{
-    global $language;
-    $lang_name = $language->language;
-    foreach ($std_study->{$std_study_field} as $field) {
-        if (!empty($lang_name) && ($lang_name == $field->lang)) {
-            return $field->value;
-        } elseif ($field == 'en') {
-            $value = $field->value;
-        } else {
-            $value = $field->value;
-        }
+function mica_study_get_local($std_study, $std_study_field) {
+  global $language;
+  $lang_name = $language->language;
+  foreach ($std_study->{$std_study_field} as $field) {
+    if (!empty($lang_name) && ($lang_name == $field->lang)) {
+      return $field->value;
     }
-    return $value;
+    elseif ($field == 'en') {
+      $value = $field->value;
+    }
+    else {
+      $value = $field->value;
+    }
+  }
+  return $value;
 }

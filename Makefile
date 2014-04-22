@@ -17,7 +17,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings
+all: clean setup-drupal wwww import-sql settings enable-mica
 
 clean:
 	rm -rf target
@@ -41,3 +41,12 @@ import-sql:
 settings:
 	cp drupal/dev/settings.php target/drupal/sites/default
 	cp drupal/dev/.htaccess target/drupal
+
+enable-mica:
+	cd target/drupal && \
+	drush en -y mica_study
+
+devel:
+	cd target/drupal && \
+	drush dl devel && \
+	drush en -y devel
