@@ -1,10 +1,11 @@
 <?php
 
 include_once('protobuf/Protobuf.php');
-include_once('protobuf/protos/Mica.php');
 use \DrSlump\Protobuf;
 
 Protobuf::autoload();
+include_once('protobuf/protos/Mica.php');
+
 const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
 
@@ -14,8 +15,10 @@ class QueryDto {
     $studiesDto = array();
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
     $output = restclient_get($path, array('headers' => array('Accept' => HEADER_JSON)));
-    foreach (json_decode($output->data) as $study) {
-      $studiesDto [] = Protobuf::decode($dtoObj, json_encode($study));
+    if ($output) {
+      foreach (json_decode($output->data) as $study) {
+        $studiesDto [] = Protobuf::decode($dtoObj, json_encode($study));
+      }
     }
     return $studiesDto;
   }
@@ -23,7 +26,6 @@ class QueryDto {
   function get_detail($path, $dtoObj) {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Binary());
     $output = restclient_get($path, array('headers' => array('Accept' => HEADER_BINARY)));
-    $studyDto = Protobuf::decode($dtoObj, $output->data);
-    return $studyDto;
+    return $output ? Protobuf::decode($dtoObj, $output->data) : NULL;
   }
 }

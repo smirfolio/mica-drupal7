@@ -5,13 +5,11 @@
  */
 require_once(drupal_get_path('module', 'mica_protobuf') . '/mica_protobuf-queryDto.inc');
 
-
 function mica_study_page_list() {
   $output['title'] = t('List of studies');
   $output['data'] = mica_study_studies_table();
   return theme('mica_study_list', array("context_detail" => $output));
 }
-
 
 function mica_study_studies_table() {
   $rows = array();
@@ -33,19 +31,16 @@ function mica_study_studies_table() {
   $per_page = 20;
   $current_page = pager_default_initialize(count($rows), $per_page);
   $chunks = array_chunk($rows, $per_page, TRUE);
-
-  $output = theme(
-      'table',
-      array(
-        'header' => $header,
-        'rows' => $chunks[$current_page],
-        'empty' => t('No data found'),
-        'sticky' => FALSE,
-        'attributes' => array('id' => 'variables_overview')
-      )
-    ) . theme('pager', array('quantity', count($rows)));
-
-  return $output;
+  return theme(
+    'table',
+    array(
+      'header' => $header,
+      'rows' => empty($chunks) ? array() : $chunks[$current_page],
+      'empty' => t('No data found'),
+      'sticky' => FALSE,
+      'attributes' => array('id' => 'variables_overview')
+    )
+  ) . theme('pager', array('quantity', count($rows)));
 }
 
 
