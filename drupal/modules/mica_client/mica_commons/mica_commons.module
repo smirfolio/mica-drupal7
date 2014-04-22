@@ -12,3 +12,29 @@ function mica_commons_to_slug($string) {
   $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
   return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
 }
+
+/**
+ * @param $std The object with localized fields
+ * @param $field The localized field
+ * @param $lang
+ * @return the localized value for this field, with this priority order: $lang, $language->language, 'en' or the first other locale found
+ */
+function mica_commons_get_localized_field($std, $field, $lang = NULL) {
+  global $language;
+  if (empty($lang)) {
+    $lang = $language->language;
+  }
+  $value = NULL;
+  foreach ($std->{$field} as $field) {
+    if (!empty($lang) && $lang == $field->lang) {
+      return $field->value;
+    }
+    elseif ($field == 'en') {
+      $value = $field->value;
+    }
+    else {
+      $value = $field->value;
+    }
+  }
+  return $value;
+}

@@ -5,7 +5,6 @@
  */
 require_once(drupal_get_path('module', 'mica_protobuf') . '/mica_protobuf-queryDto.inc');
 
-
 function mica_study_menu() {
   $items = array();
   $items['mica/studies'] = array(
@@ -32,38 +31,7 @@ function mica_study_menu() {
  */
 function mica_study_theme($existing, $type, $theme, $path) {
   return array(
-    'mica_study_list' => array(
-      'template' => '/mica_study-list',
-    ),
-    'mica_study_detail' => array(
-      'template' => '/mica_study-detail',
-    ),
+    'mica_study_list' => array('template' => '/mica_study-list'),
+    'mica_study_detail' => array('template' => '/mica_study-detail'),
   );
-}
-
-/*
- * Parse the field to correct local lang
- * @param $std_study
- *  Study Dto object
- * @param $std_study_field
- *  Field to convert to correct lang
- * @return
- *  Field value in a correct local lang
- * */
-//TODO move this to mica_commons
-function mica_study_get_local($study, $field) {
-  global $language;
-  $value = NULL;
-  foreach ($study->{$field} as $field) {
-    if (!empty($language->language) && $language->language == $field->lang) {
-      return $field->value;
-    }
-    elseif ($field == 'en') {
-      $value = $field->value;
-    }
-    else {
-      $value = $field->value;
-    }
-  }
-  return $value;
 }
