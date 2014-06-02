@@ -3,5 +3,5 @@ description = "Mica Protobuf"
 package = Mica
 core = 7.x
 
-dependencies[] = restclient
-dependencies[] = chr
+dependencies[] = http_client
+dependencies[] = devel

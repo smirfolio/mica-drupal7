@@ -4,4 +4,4 @@ package = Mica
 core = 7.x
 
 dependencies[] = mica_protobuf
-dependencies[] = mica_commons
+dependencies[] = mica_communs

@@ -1,0 +1,4 @@
+name = "Mica Communs"
+description = "Mica Communs"
+package = Mica
+core = 7.x
