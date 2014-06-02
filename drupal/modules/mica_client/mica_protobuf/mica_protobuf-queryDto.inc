@@ -52,9 +52,9 @@ function ws_client_get($path,$method, $header, $data=NULL){
         elseif (!in_array($e->getCode(), array(200, 201, 202, 203, 204, 205, 206))) {
 
             throw $e;
-        }dpm($e->getResponse());
+        }
         $body = $e->getResponse()->body;
     }
-
+dpm($body);
     return $body;
 }

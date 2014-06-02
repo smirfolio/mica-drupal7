@@ -18,7 +18,7 @@
       <div class="field-item even" property="content:encoded">
         <p>
             <?php  print !empty($context_detail['data']->objectives) ?
-                mica_communs_get_localized_field($context_detail['data'], 'objectives') : ''; ?>
+                mica_commons_get_localized_field($context_detail['data'], 'objectives') : ''; ?>
         </p>
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="field-label"><?php print t('Acronym') ?> :</div>
       <div class="field-items">
         <div class="field-item even">
-          <?php print !empty($context_detail['data']->acronym) ? mica_communs_get_localized_field($context_detail['data'], 'acronym') : ''; ?>
+          <?php print !empty($context_detail['data']->acronym) ? mica_commons_get_localized_field($context_detail['data'], 'acronym') : ''; ?>
         </div>
       </div>
     </div>
@@ -55,7 +55,7 @@
               <?php print $investigator->title; ?>
               <?php print $investigator->firstName; ?>
               <?php print $investigator->lastName; ?>
-              ( <?php print mica_communs_get_localized_field($investigator->institution, 'name'); ?>)
+              ( <?php print mica_commons_get_localized_field($investigator->institution, 'name'); ?>)
             </a></div>
         </div>
       <?php endforeach; ?>
@@ -69,7 +69,7 @@
                 <?php print $contact->title; ?>
                 <?php print $contact->firstName; ?>
                 <?php print $contact->lastName; ?>
-                ( <?php print mica_communs_get_localized_field($contact->institution, 'name'); ?>)
+                ( <?php print mica_commons_get_localized_field($contact->institution, 'name'); ?>)
               </a></div>
           </div>
         <?php endforeach; ?>

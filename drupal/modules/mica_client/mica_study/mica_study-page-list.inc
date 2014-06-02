@@ -20,7 +20,7 @@ function mica_study_studies_table() {
     $name = $study->name[0]->value;
     $rows[] = array(
       $i++,
-      l($name, 'mica/study/' . mica_communs_to_slug($name) . '/' . $study->id, array(
+      l($name, 'mica/study/' . mica_commons_to_slug($name) . '/' . $study->id, array(
         'attributes' => array('id' => $name)
       )),
       $study->timestamps->created

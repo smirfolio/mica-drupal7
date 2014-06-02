@@ -7,7 +7,7 @@
  * @param string The string to convert.
  * @return string The slug.
  */
-function mica_communs_to_slug($string) {
+function mica_commons_to_slug($string) {
   $string = str_replace(array('/', ' '), '-', $string);
   $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
   return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
@@ -19,7 +19,7 @@ function mica_communs_to_slug($string) {
  * @param $lang
  * @return the localized value for this field, with this priority order: $lang, $language->language, 'en' or the first other locale found
  */
-function mica_communs_get_localized_field($std, $field, $lang = NULL) {
+function mica_commons_get_localized_field($std, $field, $lang = NULL) {
   global $language;
   if (empty($lang)) {
     $lang = $language->language;
