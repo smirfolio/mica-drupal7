@@ -50,7 +50,7 @@ function ws_client_get($path, $method, $header, $data = NULL)
     } catch (HttpClientException $e) {
         if ($e->getCode() == 0) {
             // curl error
-            dpm($e->getMessage());
+
             throw new Exception($e->getMessage());
         } elseif (!in_array($e->getCode(), array(200, 201, 202, 203, 204, 205, 206))) {
 
@@ -58,6 +58,5 @@ function ws_client_get($path, $method, $header, $data = NULL)
         }
         $body = $e->getResponse()->body;
     }
-    dpm($body);
     return $body;
 }

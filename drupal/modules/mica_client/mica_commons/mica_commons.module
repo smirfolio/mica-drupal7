@@ -26,16 +26,29 @@ function mica_commons_get_localized_field($std, $field, $lang = NULL)
     if (empty($lang)) {
         $lang = $language->language;
     }
-    //$lang='en';//dpm($std);
+   // $lang='fr';//dpm($std);
     $value = NULL;
-    foreach ($std->{$field} as $field) {
-        if (!empty($lang) && $lang == $field->lang) {
-            return $field->value;
-        } elseif ($field == 'en') {
-            $value = $field->value;
-        } else {
-            $value = $field->value;
+    if (!empty($std->{$field})) {
+        foreach ($std->{$field} as $field_value) {
+            if (!empty($lang) && $lang == $field_value->lang) {
+                return $field_value->value;
+            } elseif ($field_value->lang == 'en') {
+                $value = $field_value->value;
+            } else {
+                $value = $field_value->value;
+            }
         }
     }
     return $value;
+}
+
+/**
+ * @param $limit
+ *
+ * @return text 'no limit' fin $limit is Null
+ */
+function get_if_no_limite($limit){
+    if(!empty($limit)){
+        return t('No limit');
+    }
 }
