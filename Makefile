@@ -17,7 +17,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings enable-mica
+all: clean setup-drupal wwww import-sql settings enable-mica devel cc
 
 clean:
 	rm -rf target
@@ -28,8 +28,8 @@ setup-drupal:
 	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client
 
 wwww:
-	sudo ln -s $(CURDIR)/target/drupal /var/www/drupal && \
-	sudo chown -R www-data:www-data /var/www/drupal
+	sudo ln -s $(CURDIR)/target/drupal /var/www/html/drupal && \
+	sudo chown -R www-data:www-data /var/www/html/drupal
 
 dump-sql:
 	mysqldump -u $(db_user) --password=$(db_pass) --hex-blob $(db_name) --result-file="drupal/dev/drupal-$(drupal_version).sql"

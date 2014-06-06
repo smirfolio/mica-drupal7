@@ -7,10 +7,11 @@
  * @param string The string to convert.
  * @return string The slug.
  */
-function mica_commons_to_slug($string) {
-  $string = str_replace(array('/', ' '), '-', $string);
-  $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
-  return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
+function mica_commons_to_slug($string)
+{
+    $string = str_replace(array('/', ' '), '-', $string);
+    $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
+    return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
 }
 
 /**
@@ -19,22 +20,35 @@ function mica_commons_to_slug($string) {
  * @param $lang
  * @return the localized value for this field, with this priority order: $lang, $language->language, 'en' or the first other locale found
  */
-function mica_commons_get_localized_field($std, $field, $lang = NULL) {
-  global $language;
-  if (empty($lang)) {
-    $lang = $language->language;
-  }
-  $value = NULL;
-  foreach ($std->{$field} as $field) {
-    if (!empty($lang) && $lang == $field->lang) {
-      return $field->value;
+function mica_commons_get_localized_field($std, $field, $lang = NULL)
+{
+    global $language;
+    if (empty($lang)) {
+        $lang = $language->language;
     }
-    elseif ($field == 'en') {
-      $value = $field->value;
+   // $lang='fr';//dpm($std);
+    $value = NULL;
+    if (!empty($std->{$field})) {
+        foreach ($std->{$field} as $field_value) {
+            if (!empty($lang) && $lang == $field_value->lang) {
+                return $field_value->value;
+            } elseif ($field_value->lang == 'en') {
+                $value = $field_value->value;
+            } else {
+                $value = $field_value->value;
+            }
+        }
     }
-    else {
-      $value = $field->value;
+    return $value;
+}
+
+/**
+ * @param $limit
+ *
+ * @return text 'no limit' fin $limit is Null
+ */
+function get_if_no_limite($limit){
+    if(!empty($limit)){
+        return t('No limit');
     }
-  }
-  return $value;
 }
