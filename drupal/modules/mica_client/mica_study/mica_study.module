@@ -4,7 +4,6 @@
  * Mica studies file
  */
 require_once(drupal_get_path('module', 'mica_protobuf') . '/mica_protobuf-queryDto.inc');
-
 function mica_study_menu()
 {
     $items = array();
@@ -35,5 +34,6 @@ function mica_study_theme($existing, $type, $theme, $path)
     return array(
         'mica_study_list' => array('template' => '/mica_study-list'),
         'mica_study_detail' => array('template' => '/mica_study-detail'),
+        'mica_population_detail' => array('template' => '/mica_population-detail'),
     );
 }
