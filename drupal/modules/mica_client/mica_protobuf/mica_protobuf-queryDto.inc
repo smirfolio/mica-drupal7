@@ -35,7 +35,7 @@ class QueryDto
 
 function ws_client_get($path, $method, $header, $data = NULL)
 {
-    $url = 'http://localhost:8080/ws/' . $path;
+    $url = 'http://localhost:8082/ws/' . $path;
 
     $post = new HttpClientRequest($url, array(
         'method' => $method, //GET. POST

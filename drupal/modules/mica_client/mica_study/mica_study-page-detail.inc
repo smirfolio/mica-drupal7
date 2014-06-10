@@ -71,10 +71,56 @@ function mica_study_get_populations_detail($study_detail)
                 <a href="">' . mica_commons_get_localized_field($population, 'name') . '</a>
             </h2>
         </header>';
+        if (!empty($population->dataCollectionEvents)) {
+            $dce_rows = mica_study_get_dce_table($population->dataCollectionEvents);
+            uasort($dce_rows, 'mica_commons_sort_dce');
+            _mica_commons_normalize_rows($dce_rows);
+
+            $population['dce-tab'] = theme(
+                'table',
+                array(
+                    'header' => array(t('Name'), t('Description'), t('Start'), t('End')),
+                    'rows' => $dce_rows,
+                    'empty' => t('No data found'),
+                    'sticky' => FALSE,
+                    'attributes' => array('id' => 'variables_overview')
+                )
+            );
+        }
         $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
     }
-
     $page_render_populations .= '</article>  </div></section>';
     return $page_render_populations;
 }
 
+/*
+ * retrieve Data Collection event
+ * */
+function mica_study_get_dce_table($dataCollectionEvents)
+{
+    $dce_rows = array();
+    foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
+        $dce_description = NULL;
+        if (!empty($dce_wrapper->description)) {
+            $dce_description = truncate_utf8(mica_commons_get_localized_field($dce_wrapper, 'description'), 50, TRUE, TRUE);
+
+        }
+
+
+        $url = url('#');
+        // Hide DCE that are not published on study published page
+
+        $dce_rows[$key_dce] = array(
+            'data' => array(
+                //'label' => l($dce_wrapper->title->value(), 'node/' . $dce_nid,array(FALSE,FALSE,$langcode)),
+                'label' => '<a href="' . $url . '" >' . mica_commons_get_localized_field($dce_wrapper, 'name') . '</a>',
+                'desc' => $dce_description,
+                'start_year' => $dce_wrapper->startYear,
+                'start_month' => $dce_wrapper->startMonth,
+                'end_year' => $dce_wrapper->endYear,
+                'end_month' => $dce_wrapper->endMonth,
+            )
+        );
+    }
+    return $dce_rows;
+}
