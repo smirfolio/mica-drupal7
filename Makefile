@@ -41,6 +41,7 @@ import-sql:
 settings:
 	cp drupal/dev/settings.php target/drupal/sites/default
 	cp drupal/dev/.htaccess target/drupal
+	cp -R drupal/libraries target/drupal/sites/all/
 
 enable-mica:
 	cd target/drupal && \

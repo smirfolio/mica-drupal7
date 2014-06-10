@@ -3,7 +3,7 @@
  * @file
  * Mica studies file
  */
-require_once(drupal_get_path('module', 'mica_protobuf') . '/mica_protobuf-queryDto.inc');
+require_once(drupal_get_path('module', 'mica_client_protos') . '/mica_client_protos-queryDto.inc');
 function mica_study_menu()
 {
     $items = array();
@@ -24,6 +24,31 @@ function mica_study_menu()
         'page arguments' => array(3),
     );
     return $items;
+}
+
+/**
+ * Implements hook_requirements().
+ */
+
+function mica_study_requirements($phase) {
+    $requirements = array();
+    // Ensure translations do not break at install time
+    $t = get_t();
+    $requirements['micatimelines'] = array(
+        'title' => $t('Time lines  Library'),
+    );
+    $libraries = libraries_get_libraries();
+    if (isset($libraries['micatimelines'])) {
+        $requirements['micatimelines']['value'] = $t('Installed');
+        $requirements['micatimelines']['severity'] = REQUIREMENT_OK;
+    }
+    else {
+        $requirements['micatimelines']['value'] = $t('Not Installed');
+        $requirements['micatimelines']['severity'] = REQUIREMENT_ERROR;
+        $requirements['micatimelines']['description'] = $t('Please install the the time lines library %url.', array('%url' => 'http://obiba.org.com'));
+    }
+
+    return $requirements;
 }
 
 /**

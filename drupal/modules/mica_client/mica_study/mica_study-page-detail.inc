@@ -26,6 +26,31 @@ function mica_study_get_study_detail($study_detail)
     return theme('mica_study_detail', array("context_detail" => $study_detail));
 }
 
+/**
+ * Implements hook_library().
+ */
+function mica_study_library() {
+    $libraries = array();
+    $lib_path = libraries_get_path('micatimelines');
+    // Make sure we have a valid library path before returning library load info.
+    if (!empty($lib_path)) {
+        $libraries['micatimeline'] = array(
+            'title' => 'MicaTimeLine',
+            'website' => 'http://obiba.org/',
+            'version' => '0.1',
+            'js' => array(
+                $lib_path . '/js/d3.min.js' => array(),
+                $lib_path . '/js/mica-study-timeline.js' => array()
+            ),
+            'css' => array(
+                $lib_path . '/css/mica_studies.css' => array(),
+                $lib_path . '/css/timeline.css' => array(),
+            )
+        );
+    }
+    return $libraries;
+}
+
 /*
  * Format time-line schema
  * */
@@ -41,7 +66,7 @@ function mica_study_get_timeline_detail($study_detail)
     Each colour in the timeline graph below represents a separate Study Population, while each segment in the graph
     represents a separate Data Collection Event. Clicking on a segment gives more detailed
      information on a Data Collection Event.') . ' </div>';
-
+    drupal_add_library('mica_study', 'micatimeline');
     $page_render_timeline .= '<div id="vis" style="width=100%"></div>';
 
     drupal_add_js(drupal_get_path('module', 'mica_study') . '/js/example.js', 'file');

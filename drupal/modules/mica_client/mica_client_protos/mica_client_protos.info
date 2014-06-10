@@ -1,0 +1,8 @@
+name = "Mica client protos"
+description = "Mica client protos"
+package = Mica
+core = 7.x
+
+dependencies[] = http_client
+dependencies[] = devel
+dependencies[] = libraries

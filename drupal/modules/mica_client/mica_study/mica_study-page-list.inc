@@ -3,7 +3,7 @@
  * @file
  * Mica studies file
  */
-require_once(drupal_get_path('module', 'mica_protobuf') . '/mica_protobuf-queryDto.inc');
+require_once(drupal_get_path('module', 'mica_client_protos') . '/mica_client_protos-queryDto.inc');
 
 function mica_study_page_list()
 {

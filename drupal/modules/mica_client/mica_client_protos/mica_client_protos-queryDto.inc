@@ -1,10 +1,11 @@
 <?php
 
-include_once('protobuf/Protobuf.php');
-use \DrSlump\Protobuf;
 
+$library_path = libraries_get_path('protobuf');
+include_once($library_path.'/Protobuf.php');
+use \DrSlump\Protobuf;
 Protobuf::autoload();
-include_once('protobuf/protos/Mica.php');
+include_once('protos/Mica.php');
 
 const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
