@@ -26,6 +26,8 @@ setup-drupal:
 	drush make --prepare-install drupal/dev/drupal-basic.make target/drupal && \
 	chmod -R a+w target/drupal/sites/default && \
 	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client
+	ln -s $(CURDIR)/drupal/modules/drupal7_protobuf $(CURDIR)/target/drupal/sites/all/modules/drupal7_protobuf
+	ln -s $(CURDIR)/drupal/modules/obiba_auth $(CURDIR)/target/drupal/sites/all/modules/obiba_auth
 
 wwww:
 	sudo ln -s $(CURDIR)/target/drupal /var/www/html/drupal && \
