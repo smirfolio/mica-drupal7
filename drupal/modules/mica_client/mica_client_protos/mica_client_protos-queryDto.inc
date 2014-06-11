@@ -2,8 +2,9 @@
 
 
 $library_path = libraries_get_path('protobuf');
-include_once($library_path.'/Protobuf.php');
+include_once($library_path . '/Protobuf.php');
 use \DrSlump\Protobuf;
+
 Protobuf::autoload();
 include_once('protos/Mica.php');
 

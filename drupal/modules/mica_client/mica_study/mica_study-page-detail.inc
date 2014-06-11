@@ -29,7 +29,8 @@ function mica_study_get_study_detail($study_detail)
 /**
  * Implements hook_library().
  */
-function mica_study_library() {
+function mica_study_library()
+{
     $libraries = array();
     $lib_path = libraries_get_path('micatimelines');
     // Make sure we have a valid library path before returning library load info.

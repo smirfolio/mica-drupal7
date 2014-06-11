@@ -30,7 +30,8 @@ function mica_study_menu()
  * Implements hook_requirements().
  */
 
-function mica_study_requirements($phase) {
+function mica_study_requirements($phase)
+{
     $requirements = array();
     // Ensure translations do not break at install time
     $t = get_t();
@@ -41,8 +42,7 @@ function mica_study_requirements($phase) {
     if (isset($libraries['micatimelines'])) {
         $requirements['micatimelines']['value'] = $t('Installed');
         $requirements['micatimelines']['severity'] = REQUIREMENT_OK;
-    }
-    else {
+    } else {
         $requirements['micatimelines']['value'] = $t('Not Installed');
         $requirements['micatimelines']['severity'] = REQUIREMENT_ERROR;
         $requirements['micatimelines']['description'] = $t('Please install the the time lines library %url.', array('%url' => 'http://obiba.org.com'));
