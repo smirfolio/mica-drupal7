@@ -1,0 +1,118 @@
+<?php
+/**
+ * @file
+ * Mica studies file
+ */
+
+function mica_client_study_menu() {
+  $items = array();
+  $items['mica/studies'] = array(
+    'title' => t('Mica studies'),
+    'description' => t('Mica studies'),
+    'page callback' => 'mica_client_study_page_list',
+    'file' => 'mica_client_study-page-list.inc',
+    'access callback' => TRUE,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM
+  );
+  $items['mica/study/%'] = array(
+    'title' => t('Mica study detail'),
+    'page callback' => 'mica_client_study_page_detail',
+    'file' => 'mica_client_study-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(3),
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_requirements().
+ */
+
+function mica_client_study_requirements($phase) {
+  $requirements = array();
+  // Ensure translations do not break at install time
+  $t = get_t();
+  $requirements['micatimelines'] = array(
+    'title' => $t('Time lines  Library'),
+  );
+  $libraries = libraries_get_libraries();
+  if (isset($libraries['micatimelines'])) {
+    $requirements['micatimelines']['value'] = $t('Installed');
+    $requirements['micatimelines']['severity'] = REQUIREMENT_OK;
+  }
+  else {
+    $requirements['micatimelines']['value'] = $t('Not Installed');
+    $requirements['micatimelines']['severity'] = REQUIREMENT_ERROR;
+    $requirements['micatimelines']['description'] = $t('Please install the the time lines library %url.', array('%url' => 'http://obiba.org.com'));
+  }
+
+  return $requirements;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function mica_client_study_theme($existing, $type, $theme, $path) {
+  return array(
+    'mica_client_study_list' => array('template' => '/mica_client_study-list'),
+    'mica_client_study_detail' => array('template' => '/mica_client_study-detail'),
+    'mica_population_detail' => array('template' => '/mica_client_study-population-detail'),
+  );
+}
+
+/**
+ * @param $gender_val
+ *
+ * @return text value gender
+ */
+function mica_client_study_get_gender($gender_val) {
+  switch ($gender_val) {
+    case 0:
+      return t('Men');
+    case 1:
+      return t('Women');
+  }
+}
+
+function mica_client_study_get_dce_property($dce, $property, $default) {
+  if (isset($dce['data']) && isset($dce['data'][$property])) {
+    return $dce['data'][$property];
+  }
+  if (isset($dce[$property])) {
+    return $dce[$property];
+  }
+  return $default;
+}
+
+function mica_client_study_sort_dce($x, $y) {
+  $x_start = mica_client_commons_convert_to_month(
+    mica_client_study_get_dce_property($x, 'start_year', 0),
+    mica_client_study_get_dce_property($x, 'start_month', 0));
+
+  $y_start = mica_client_commons_convert_to_month(
+    mica_client_study_get_dce_property($y, 'start_year', 0),
+    mica_client_study_get_dce_property($y, 'start_month', 0));
+
+  if ($x_start === $y_start) {
+    $x_end = mica_client_commons_convert_to_month(
+      mica_client_study_get_dce_property($x, 'end_year', 0),
+      mica_client_study_get_dce_property($x, 'end_month', 0));
+
+    $y_end = mica_client_commons_convert_to_month(
+      mica_client_study_get_dce_property($y, 'end_year', 0),
+      mica_client_study_get_dce_property($y, 'end_month', 0));
+
+    if ($x_end === $y_end) {
+      $x_created = mica_client_study_get_dce_property($x, 'created', 0);
+      $y_created = mica_client_study_get_dce_property($y, 'created', 0);
+      if ($x_created === $y_created) {
+        return 0;
+      }
+      return $x_created < $y_created ? -1 : 1;
+    }
+    return $x_end < $y_end ? -1 : 1;
+  }
+  return $x_start < $y_start ? -1 : 1;
+}
+

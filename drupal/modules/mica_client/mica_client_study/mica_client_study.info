@@ -1,0 +1,7 @@
+name = "Mica Study"
+description = "Mica Study"
+package = Mica
+core = 7.x
+
+dependencies[] = mica_client_commons
+dependencies[] = mica_client_model

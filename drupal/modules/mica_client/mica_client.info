@@ -9,3 +9,4 @@ dependencies[] = libraries
 dependencies[] = countries
 dependencies[] = variable
 dependencies[] = i18n
+dependencies[] = mica_client_study

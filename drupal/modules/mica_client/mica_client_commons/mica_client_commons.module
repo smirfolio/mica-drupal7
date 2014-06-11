@@ -1,0 +1,198 @@
+<?php
+
+/**
+ * Converts a string to a slug, for use in URLs or CSS classes. This function properly replaces
+ *  letters with accents with their non-accented counterparts.
+ *
+ * @param string The string to convert.
+ * @return string The slug.
+ */
+$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
+$path_module_protos = drupal_get_path('module', 'mica_client_model');
+
+include_once($path_module_protobuf . '/protobuf/Protobuf.php');
+use \DrSlump\Protobuf;
+
+Protobuf::autoload();
+const HEADER_BINARY = 'application/x-protobuf';
+const HEADER_JSON = 'application/json';
+include_once($path_module_protos . '/protos/Mica.php');
+
+
+function mica_client_commons_to_slug($string) {
+  $string = str_replace(array('/', ' '), '-', $string);
+  $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
+  return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
+}
+
+/**
+ * @param $std The object with localized fields
+ * @param $field The localized field
+ * @param $lang
+ * @return the localized value for this field, with this priority order: $lang, $language->language, 'en' or the first other locale found
+ */
+function mica_client_commons_get_localized_field($std, $field, $lang = NULL) {
+  global $language;
+  if (empty($lang)) {
+    $lang = $language->language;
+  }
+  //  $lang='fr';//dpm($std);
+  $value = NULL;
+  if (!empty($std->{$field})) {
+    foreach ($std->{$field} as $field_value) {
+      if (!empty($lang) && $lang == $field_value->lang) {
+        return $field_value->value;
+      }
+      elseif ($field_value->lang == 'en') {
+        $value = $field_value->value;
+      }
+      else {
+        $value = $field_value->value;
+      }
+    }
+  }
+  return $value;
+}
+
+/**
+ * @param $std The object with localized fields
+ * @param $field The localized field
+ * @param $lang
+ * @return the localized value for this field, with this priority order: $lang, $language->language, 'en' or the first other locale found
+ */
+
+function mica_client_commons_get_localized_dtos_field($std, $field, $lang = NULL) {
+  $value = array();
+  foreach ($std->{$field} as $items) {
+    $value[] = mica_client_commons_get_localized_field($items, 'localizedStrings');
+  }
+  return $value;
+}
+
+/**
+ * @param $limit
+ *
+ * @return text 'no limit' fin $limit is Null
+ */
+function mica_client_commons_get_if_no_limit($limit) {
+  if (!empty($limit)) {
+    return t('No limit');
+  }
+}
+
+/*
+ * @param $iso_country
+ * @return CamalCase Country name
+ * */
+function mica_client_commons_iterate_field($fields, $callback = NULL, $parameters = NULL, $method = NULL) {
+  $i = 0;
+  $total_item = count($fields);
+  foreach ($fields as $field) {
+    if (!empty($callback)) {
+      if (empty($parameters)) {
+        print   call_user_func($callback, $field);
+      }
+      elseif (empty($method)) {
+        print   call_user_func_array($callback, array($field, $parameters));
+      }
+      else {
+        try {
+          print   call_user_func_array($callback, array($field, $parameters))->{$method};
+        } catch (Exception $e) {
+          dpm($e->getMessage());
+          dpm($callback);
+          dpm($field);
+          dpm($parameters);
+          dpm($method);
+        }
+      }
+
+    }
+    else {
+      print $field;
+    }
+    if ($i + 1 < $total_item) {
+      print ', ';
+    }
+    $i++;
+  }
+
+}
+
+function _mica_client_commons_normalize_rows(&$dce_rows) {
+  foreach ($dce_rows as &$dce_row) {
+    $dce_row['data']['start'] = mica_client_commons_format_year($dce_row['data']['start_year'], $dce_row['data']['start_month']);
+    $dce_row['data']['end'] = mica_client_commons_format_year($dce_row['data']['end_year'], $dce_row['data']['end_month']);
+    unset($dce_row['data']['start_year']);
+    unset($dce_row['data']['start_month']);
+    unset($dce_row['data']['end_year']);
+    unset($dce_row['data']['end_month']);
+    unset($dce_row['data']['created']);
+  }
+}
+
+
+function mica_client_commons_get_month_name($month) {
+  global $language;
+  return format_date(mktime(0, 0, 0, $month, 1, 2013), 'custom', 'F', NULL, $language->language);
+}
+
+function mica_client_commons_convert_to_month($year, $month) {
+  return $year * 12 + $month;
+}
+
+function mica_client_commons_format_year($year, $month) {
+  if (empty($year)) {
+    return '';
+  }
+  return empty($month) ? "$year" : "$year (" . mica_client_commons_get_month_name($month) . ")";
+}
+
+
+function mica_client_commons_get_list($path, $dtoObj) {
+  $dtos = array();
+  Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
+  $data = _mica_client_commons_ws_client_get($path, 'GET', array('Accept' => array(HEADER_JSON)));
+  if ($data) {
+    foreach (json_decode($data) as $study) {
+      $dtos [] = Protobuf::decode($dtoObj, json_encode($study));
+    }
+  }
+  return $dtos;
+}
+
+function mica_client_commons_get_detail($path, $dtoObj) {
+  Protobuf::setDefaultCodec(new Protobuf\Codec\Binary());
+  $data = _mica_client_commons_ws_client_get($path, 'GET', array('Accept' => array(HEADER_BINARY)));
+  return $data ? Protobuf::decode($dtoObj, $data) : NULL;
+}
+
+
+function _mica_client_commons_ws_client_get($path, $method, $header, $data = NULL) {
+  $url = 'http://localhost:8082/ws/' . $path;
+
+  $post = new HttpClientRequest($url, array(
+    'method' => $method, //GET. POST
+    'headers' => $header, //array('Content-Type' => array('application/json')),
+    'data' => $data,
+    'parameters' => array(),
+  ));
+
+  try {
+    $client = new HttpClient($formatter = FALSE);
+    $body = $client->execute($post);
+  } catch (HttpClientException $e) {
+    if ($e->getCode() == 0) {
+      // curl error
+
+      throw new Exception($e->getMessage());
+    }
+    elseif (!in_array($e->getCode(), array(200, 201, 202, 203, 204, 205, 206))) {
+
+      throw $e;
+    }
+    $body = $e->getResponse()->body;
+  }
+  return $body;
+}
+

@@ -1,4 +1,0 @@
-name = "Drupal7 protobuf"
-description = "Drupal7 protobuf"
-package = Mica
-core = 7.x
