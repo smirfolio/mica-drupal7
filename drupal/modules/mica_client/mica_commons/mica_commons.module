@@ -26,7 +26,6 @@ function mica_commons_get_localized_field($std, $field, $lang = NULL)
     if (empty($lang)) {
         $lang = $language->language;
     }
-    //  $lang='fr';//dpm($std);
     $value = NULL;
     if (!empty($std->{$field})) {
         foreach ($std->{$field} as $field_value) {
