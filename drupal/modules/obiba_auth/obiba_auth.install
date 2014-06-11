@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Installation hooks for the Obiba Auth module.
+ */
+
+
+/**
+ * Implements hook_uninstall().
+ */
+function obiba_auth_uninstall()
+{
+    // Delete variables.
+    variable_del('agate_url');
+    variable_del('agate_application_name');
+    variable_del('agate_application_key');
+    variable_del('obiba_user_register');
+    variable_del('obiba_auto_assigned_role');
+    variable_del('obiba_allow_rememberme');
+}
