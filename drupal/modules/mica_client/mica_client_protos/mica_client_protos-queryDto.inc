@@ -1,10 +1,12 @@
 <?php
 
-include_once('protobuf/Protobuf.php');
+
+$library_path = libraries_get_path('protobuf');
+include_once($library_path . '/Protobuf.php');
 use \DrSlump\Protobuf;
 
 Protobuf::autoload();
-include_once('protobuf/protos/Mica.php');
+include_once('protos/Mica.php');
 
 const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
@@ -35,7 +37,7 @@ class QueryDto
 
 function ws_client_get($path, $method, $header, $data = NULL)
 {
-    $url = 'http://localhost:8080/ws/' . $path;
+    $url = 'http://localhost:8082/ws/' . $path;
 
     $post = new HttpClientRequest($url, array(
         'method' => $method, //GET. POST

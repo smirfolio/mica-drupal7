@@ -1,0 +1,31 @@
+<?php
+/**
+ * @file
+ * mica_client_protos file
+ */
+
+/**
+ * Implements hook_requirements().
+ */
+
+function mica_client_protos_requirements($phase) {
+    $requirements = array();
+    // Ensure translations do not break at install time
+    $t = get_t();
+    $requirements['protobuf'] = array(
+        'title' => $t('Protobuf Library'),
+    );
+    $libraries = libraries_get_libraries();
+    if (isset($libraries['protobuf'])) {
+        $requirements['protobuf']['value'] = $t('Installed');
+        $requirements['protobuf']['severity'] = REQUIREMENT_OK;
+    }
+    else {
+        $requirements['protobuf']['value'] = $t('Not Installed');
+        $requirements['protobuf']['severity'] = REQUIREMENT_ERROR;
+        $requirements['protobuf']['description'] = $t('Please install the protobuf library %url.', array('%url' => 'http://protobuf.com'));
+    }
+
+    return $requirements;
+
+}
