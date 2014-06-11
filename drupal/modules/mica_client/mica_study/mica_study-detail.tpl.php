@@ -220,7 +220,7 @@
                             <?php print $context_detail->numberOfParticipants->participant->number; ?>
                         </div>
                         <div class="field-item odd">
-                            <?php print mica_commons_get_if_no_limite($context_detail->numberOfParticipants->participant->noLimit); ?>
+                            <?php print mica_commons_get_if_no_limit($context_detail->numberOfParticipants->participant->noLimit); ?>
                         </div>
                     </div>
                 </div>
@@ -237,7 +237,7 @@
                             <?php print $context_detail->numberOfParticipants->sample->number; ?>
                         </div>
                         <div class="field-item odd">
-                            <?php print mica_commons_get_if_no_limite($context_detail->numberOfParticipants->sample->noLimit); ?>
+                            <?php print mica_commons_get_if_no_limit($context_detail->numberOfParticipants->sample->noLimit); ?>
                         </div>
                     </div>
                 </div>

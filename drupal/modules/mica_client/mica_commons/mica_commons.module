@@ -63,25 +63,10 @@ function mica_commons_get_localized_dtos_field($std, $field, $lang = NULL)
  *
  * @return text 'no limit' fin $limit is Null
  */
-function mica_commons_get_if_no_limite($limit)
+function mica_commons_get_if_no_limit($limit)
 {
     if (!empty($limit)) {
         return t('No limit');
-    }
-}
-
-/**
- * @param $gender_val
- *
- * @return text value gender
- */
-function mica_commons_get_gender($gender_val)
-{
-    if ($gender_val === 0) {
-        return t('Men');
-    }
-    if ($gender_val === 1) {
-        return t('Women');
     }
 }
 
@@ -125,8 +110,8 @@ function mica_commons_iterate_field($fields, $callback = NULL, $parameters = NUL
 function _mica_commons_normalize_rows(&$dce_rows)
 {
     foreach ($dce_rows as &$dce_row) {
-        $dce_row['data']['start'] = mica_commons_format_dce_year($dce_row['data']['start_year'], $dce_row['data']['start_month']);
-        $dce_row['data']['end'] = mica_commons_format_dce_year($dce_row['data']['end_year'], $dce_row['data']['end_month']);
+        $dce_row['data']['start'] = mica_commons_format_year($dce_row['data']['start_year'], $dce_row['data']['start_month']);
+        $dce_row['data']['end'] = mica_commons_format_year($dce_row['data']['end_year'], $dce_row['data']['end_month']);
         unset($dce_row['data']['start_year']);
         unset($dce_row['data']['start_month']);
         unset($dce_row['data']['end_year']);
@@ -142,59 +127,17 @@ function mica_commons_get_month_name($month)
     return format_date(mktime(0, 0, 0, $month, 1, 2013), 'custom', 'F', NULL, $language->language);
 }
 
-function mica_commons_format_dce_year($year, $month)
-{
-    if (empty($year)) {
-        return '';
-    }
-    return empty($month) ? "$year" : "$year (" . mica_commons_get_month_name($month) . ")";
-}
-
-function mica_commonss_get_dce_property($dce, $property, $default)
-{
-    if (isset($dce['data']) && isset($dce['data'][$property])) {
-        return $dce['data'][$property];
-    } else if (isset($dce[$property])) {
-        return $dce[$property];
-    }
-    return $default;
-}
-
 function mica_commons_convert_to_month($year, $month)
 {
     return $year * 12 + $month;
 }
 
-function mica_commons_sort_dce($x, $y)
+function mica_commons_format_year($year, $month)
 {
-    $x_start = mica_commons_convert_to_month(
-        mica_commonss_get_dce_property($x, 'start_year', 0),
-        mica_commonss_get_dce_property($x, 'start_month', 0));
-
-    $y_start = mica_commons_convert_to_month(
-        mica_commonss_get_dce_property($y, 'start_year', 0),
-        mica_commonss_get_dce_property($y, 'start_month', 0));
-
-    if ($x_start === $y_start) {
-        $x_end = mica_commons_convert_to_month(
-            mica_commonss_get_dce_property($x, 'end_year', 0),
-            mica_commonss_get_dce_property($x, 'end_month', 0));
-
-        $y_end = mica_commons_convert_to_month(
-            mica_commonss_get_dce_property($y, 'end_year', 0),
-            mica_commonss_get_dce_property($y, 'end_month', 0));
-
-        if ($x_end === $y_end) {
-            $x_created = mica_commonss_get_dce_property($x, 'created', 0);
-            $y_created = mica_commonss_get_dce_property($y, 'created', 0);
-            if ($x_created === $y_created) {
-                return 0;
-            }
-            return $x_created < $y_created ? -1 : 1;
-        }
-        return $x_end < $y_end ? -1 : 1;
+    if (empty($year)) {
+        return '';
     }
-    return $x_start < $y_start ? -1 : 1;
+    return empty($month) ? "$year" : "$year (" . mica_commons_get_month_name($month) . ")";
 }
 
 

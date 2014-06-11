@@ -62,3 +62,61 @@ function mica_study_theme($existing, $type, $theme, $path)
         'mica_population_detail' => array('template' => '/mica_population-detail'),
     );
 }
+
+/**
+ * @param $gender_val
+ *
+ * @return text value gender
+ */
+function mica_study_get_gender($gender_val)
+{
+    if ($gender_val === 0) {
+        return t('Men');
+    }
+    if ($gender_val === 1) {
+        return t('Women');
+    }
+}
+
+function mica_study_get_dce_property($dce, $property, $default)
+{
+    if (isset($dce['data']) && isset($dce['data'][$property])) {
+        return $dce['data'][$property];
+    } else if (isset($dce[$property])) {
+        return $dce[$property];
+    }
+    return $default;
+}
+
+function mica_study_sort_dce($x, $y)
+{
+    $x_start = mica_commons_convert_to_month(
+        mica_study_get_dce_property($x, 'start_year', 0),
+        mica_study_get_dce_property($x, 'start_month', 0));
+
+    $y_start = mica_commons_convert_to_month(
+        mica_study_get_dce_property($y, 'start_year', 0),
+        mica_study_get_dce_property($y, 'start_month', 0));
+
+    if ($x_start === $y_start) {
+        $x_end = mica_commons_convert_to_month(
+            mica_study_get_dce_property($x, 'end_year', 0),
+            mica_study_get_dce_property($x, 'end_month', 0));
+
+        $y_end = mica_commons_convert_to_month(
+            mica_study_get_dce_property($y, 'end_year', 0),
+            mica_study_get_dce_property($y, 'end_month', 0));
+
+        if ($x_end === $y_end) {
+            $x_created = mica_study_get_dce_property($x, 'created', 0);
+            $y_created = mica_study_get_dce_property($y, 'created', 0);
+            if ($x_created === $y_created) {
+                return 0;
+            }
+            return $x_created < $y_created ? -1 : 1;
+        }
+        return $x_end < $y_end ? -1 : 1;
+    }
+    return $x_start < $y_start ? -1 : 1;
+}
+

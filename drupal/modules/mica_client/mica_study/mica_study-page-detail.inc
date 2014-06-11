@@ -98,7 +98,7 @@ function mica_study_get_populations_detail($study_detail)
         </header>';
         if (!empty($population->dataCollectionEvents)) {
             $dce_rows = mica_study_get_dce_table($population->dataCollectionEvents);
-            uasort($dce_rows, 'mica_commons_sort_dce');
+            uasort($dce_rows, 'mica_study_sort_dce');
             _mica_commons_normalize_rows($dce_rows);
 
             $population['dce-tab'] = theme(

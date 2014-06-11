@@ -23,7 +23,7 @@
                             <?php print t('Gender') ?> :
                         </div>
                         <div class="inner-value">
-                            <?php print  mica_commons_get_gender($context_population_detail->selectionCriteria->gender); ?>
+                            <?php print  mica_study_get_gender($context_population_detail->selectionCriteria->gender); ?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -189,7 +189,7 @@
                             <?php print $context_population_detail->numberOfParticipants->participant->number . ' ' . t('participants') ?>
                         </div>
                         <div class="field-item odd">
-                            <?php print mica_commons_get_if_no_limite($context_population_detail->numberOfParticipants->participant->noLimit) ?>
+                            <?php print mica_commons_get_if_no_limit($context_population_detail->numberOfParticipants->participant->noLimit) ?>
                         </div>
                     </div>
                 </div>
@@ -205,7 +205,7 @@
                             <?php print $context_population_detail->numberOfParticipants->sample->number . ' ' . t('participants') ?>
                         </div>
                         <div class="field-item odd">
-                            <?php print mica_commons_get_if_no_limite($context_population_detail->numberOfParticipants->sample->noLimit) ?>
+                            <?php print mica_commons_get_if_no_limit($context_population_detail->numberOfParticipants->sample->noLimit) ?>
                         </div>
                     </div>
                 </div>
