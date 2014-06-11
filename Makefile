@@ -25,8 +25,7 @@ clean:
 setup-drupal:
 	drush make --prepare-install drupal/dev/drupal-basic.make target/drupal && \
 	chmod -R a+w target/drupal/sites/default && \
-	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client && \
-	ln -s $(CURDIR)/drupal/modules/obiba_auth $(CURDIR)/target/drupal/sites/all/modules/obiba_auth
+	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client
 
 wwww:
 	sudo ln -s $(CURDIR)/target/drupal /var/www/html/drupal && \
@@ -42,11 +41,10 @@ import-sql:
 settings:
 	sed  's/@db_pass@/$(db_pass)/g' drupal/dev/settings.php > target/drupal/sites/default/settings.php
 	cp drupal/dev/.htaccess target/drupal
-	cp -R drupal/libraries target/drupal/sites/all/
 
 enable-mica:
 	cd target/drupal && \
-	drush en -y mica_study
+	drush en -y mica_client, drupal7_protobuf, mica_study, mica_commons
 
 enable-obiba-auth:
 	cd target/drupal && \
