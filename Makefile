@@ -26,6 +26,7 @@ setup-drupal:
 	drush make --prepare-install drupal/dev/drupal-basic.make target/drupal && \
 	chmod -R a+w target/drupal/sites/default && \
 	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client
+	ln -s $(CURDIR)/drupal/modules/drupal7_protobuf $(CURDIR)/target/drupal/sites/all/modules/drupal7_protobuf
 
 wwww:
 	sudo ln -s $(CURDIR)/target/drupal /var/www/html/drupal && \
@@ -41,11 +42,10 @@ import-sql:
 settings:
 	cp drupal/dev/settings.php target/drupal/sites/default
 	cp drupal/dev/.htaccess target/drupal
-	cp -R drupal/libraries target/drupal/sites/all/
 
 enable-mica:
 	cd target/drupal && \
-	drush en -y mica_study
+	drush en -y mica_client, drupal7_protobuf, mica_study, mica_commons
 
 devel:
 	cd target/drupal && \
