@@ -10,13 +10,13 @@ function mica_client_study_studies_table() {
   $rows = array();
   $studies = mica_client_commons_get_list('studies', '\obiba\mica\StudySummaryDto');
   foreach ($studies as $study) {
-    dpm($study);
     $name = mica_client_commons_get_localized_field($study, 'name');
     $rows[] = array(
       mica_client_commons_get_localized_field($study, 'acronym'),
       l($name, 'mica/study/' . mica_client_commons_to_slug($name) . '/' . $study->id),
       implode(', ', t($study->designs)),
-      $study->targetNumber->noLimit ? t('No Limit') : $study->targetNumber->number,
+      isset($study->targetNumber->noLimit) ? t('No Limit') :
+        isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,
       implode($study->countries),
     );
   }
