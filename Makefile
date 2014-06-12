@@ -24,10 +24,10 @@ clean:
 
 setup-drupal:
 	drush make --prepare-install drupal/dev/drupal-basic.make target/drupal && \
-	chmod -R a+w target/drupal/sites/default && \
-	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client
-	ln -s $(CURDIR)/drupal/modules/obiba_protobuf $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
-	ln -s $(CURDIR)/drupal/modules/obiba_auth $(CURDIR)/target/drupal/sites/all/modules/obiba_auth
+	chmod -R a+w target/drupal && \
+	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client && \
+	ln -s $(CURDIR)/drupal/modules/obiba_auth $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
+	git clone https://github.com/obiba/drupal7-protobuf.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
 
 wwww:
 	sudo ln -s $(CURDIR)/target/drupal /var/www/html/drupal && \
