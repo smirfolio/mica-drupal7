@@ -1,4 +1,0 @@
-name = "Obiba protobuf"
-description = "Obiba protobuf"
-package = Mica
-core = 7.x
