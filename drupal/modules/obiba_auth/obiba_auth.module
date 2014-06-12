@@ -39,6 +39,14 @@ function obiba_auth_permission()
 }
 
 /**
+ * Implements hook_user_logout().
+ */
+function obiba_auth_user_logout() {
+    $agate_client = obiba_auth_agate_client();
+    $agate_client->logout();
+}
+
+/**
  * Implementation of hook_form_alter().
  * Change the normal form login form behaviour.
  */
@@ -100,33 +108,30 @@ function obiba_auth_check_user($username, $password)
 {
     dpm($username);
     try {
+        $agate_client = obiba_auth_agate_client();
         // authenticate
-        $result = obiba_auth_realm_authenticate($username, $password);
+        $result = $agate_client->authenticate($username, $password);
         if ($result) {
-
             // authorize
+            $subject = $agate_client->getSubject();
+            if (isset($subject['groups'])) {
+
+            }
             return true;
         }
         return false;
     } catch (Exception $e) {
-        watchdog('prjauth', 'Error %error_message.', array('%error_message' => $e->faultstring), WATCHDOG_NOTICE);
+        watchdog('obiba_auth', 'Error %error_message.', array('%error_message' => $e->faultstring), WATCHDOG_NOTICE);
         return false;
     }
 }
 
-function obiba_auth_realm_authenticate($username, $password)
-{
+function obiba_auth_agate_client() {
     $agate_url = variable_get('agate_url','https://localhost:8444');
     $appli_name = variable_get('agate_application_name','drupal');
     $appli_key = variable_get('agate_application_key','changeit');
 
-    $agate_client = new AgateClient($agate_url, $appli_name, $appli_key);
-
-    $result = $agate_client->authenticate($username, $password);
-
-    watchdog('obiba_auth', 'headers: %h', array('%h' => implode('//', $agate_client->getLastResponseHeaders())), WATCHDOG_DEBUG);
-
-    return $result;
+    return new AgateClient($agate_url, $appli_name, $appli_key);
 }
 
 /**
@@ -134,9 +139,7 @@ function obiba_auth_realm_authenticate($username, $password)
  *
  * Traps a page load to see if authentication is required.
  */
-//function obiba_auth_init()
-//{
-//    global $user;
-//
-//    //dpm($user);
-//}
+function obiba_auth_init()
+{
+    global $user;
+}
