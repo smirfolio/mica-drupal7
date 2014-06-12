@@ -5,15 +5,16 @@
  * AgateClient class
  */
 
-define('SET_COOKIE_HEADER', 'Set-Cookie');
-define('OBIBA_COOKIE', 'obibaid');
-define('MICA_COOKIE', 'micasid');
-define('OPAL_COOKIE', 'opalsid');
 
 /**
  * Class AgateClient
  */
 class AgateClient {
+
+  const SET_COOKIE_HEADER = 'Set-Cookie';
+
+  const OBIBA_COOKIE = 'obibaid';
+
   private $agateUrl;
 
   private $applicationName;
@@ -21,6 +22,14 @@ class AgateClient {
   private $applicationKey;
 
   private $lastResponse;
+
+  /**
+   * Check if the user was authenticated by Agate.
+   * @return bool
+   */
+  function hasTicket() {
+    return isset($_SESSION[self::OBIBA_COOKIE]);
+  }
 
   public function __construct($agate_url, $application_name, $application_key) {
     $this->agateUrl = $agate_url . '/ws';
@@ -107,10 +116,10 @@ class AgateClient {
    * @throws Exception
    */
   public function getSubject() {
-    if (!isset($_SESSION[OBIBA_COOKIE])) {
+    if (!AgateClient::hasTicket()) {
       return array();
     }
-    $url = $this->agateUrl . '/ticket/' . $_SESSION[OBIBA_COOKIE] . '/subject';
+    $url = $this->agateUrl . '/ticket/' . $_SESSION[self::OBIBA_COOKIE] . '/subject';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => array('Accept' => array('application/json')),
@@ -132,11 +141,11 @@ class AgateClient {
    * Send a logout request to Agate and clean drupal client cookies.
    */
   public function logout() {
-    if (!isset($_SESSION[OBIBA_COOKIE])) {
+    if (!AgateClient::hasTicket()) {
       return;
     }
 
-    $url = $this->agateUrl . '/ticket/' . $_SESSION[OBIBA_COOKIE];
+    $url = $this->agateUrl . '/ticket/' . $_SESSION[self::OBIBA_COOKIE];
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_DELETE,
       'headers' => array('Accept' => array('application/json')),
@@ -149,7 +158,7 @@ class AgateClient {
       $body = $client->execute($request);
       $this->lastResponse = $client->lastResponse;
       $this->setLastResponseCookies();
-      unset($_SESSION[OBIBA_COOKIE]);
+      unset($_SESSION[self::OBIBA_COOKIE]);
     } catch (HttpClientException $e) {
       // ignore
     }
@@ -159,7 +168,7 @@ class AgateClient {
    * Forwards the 'Set-Cookie' directive to the drupal client.
    */
   private function setLastResponseCookies() {
-    foreach ($this->getLastResponseHeader(SET_COOKIE_HEADER) as $cookie_str) {
+    foreach ($this->getLastResponseHeader(self::SET_COOKIE_HEADER) as $cookie_str) {
       $cookie = $this->parseCookie($cookie_str);
       $keys = array_keys($cookie);
       $name = $keys[0];

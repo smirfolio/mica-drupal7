@@ -40,6 +40,9 @@ function obiba_auth_permission() {
  * Implements hook_user_logout().
  */
 function obiba_auth_user_logout() {
+  if (!AgateClient::hasTicket()) {
+    return;
+  }
   $agate_client = obiba_auth_agate_client();
   $agate_client->logout();
 }
@@ -72,31 +75,28 @@ function obiba_auth_form_user_login_block_alter(&$form, $form_state) {
  * password for externally authenticated users.
  */
 function obiba_auth_form_user_profile_form_alter(&$form, $form_state) {
-  if (strpos($form['#user']->name, '@') !== FALSE) {
-    $form['account']['name']['#disabled'] = TRUE;
-    $form['account']['name']['#description'] = t('The username for this account cannot be changed');
-    $form['account']['mail']['#disabled'] = TRUE;
-    $form['account']['mail']['#description'] = t('This e-mail address for this account cannot be changed.');
-    $form['account']['current_pass']['#disabled'] = TRUE;
-    $form['account']['current_pass']['#description'] = t('Neither the email address or password for this account can be changed.');
-    $form['account']['pass']['#disabled'] = TRUE;
-    $form['account']['pass']['#description'] = t('The password for this account cannot be changed.');
+  if (!AgateClient::hasTicket()) {
+    return;
   }
+  $form['account']['name']['#disabled'] = TRUE;
+  $form['account']['name']['#description'] = t('The username for this account cannot be changed');
+  $form['account']['mail']['#type'] = 'hidden';
+  $form['account']['current_pass']['#type'] = 'hidden';
+  $form['account']['pass']['#type'] = 'hidden';
 }
 
 /**
  * The obiba_auth_auth() function attempts to authenticate a user off the external system using their e-mail address.
  */
 function obiba_auth_login_validate($form, &$form_state) {
-  dpm($form_state);
   $username = $form_state['values']['name'];
   $password = $form_state['values']['pass'];
+  // try to authenticate on Agate
   if (!empty($username) && !empty($password)) {
-    $response = obiba_auth_check_user($username, $password);
-    dpm($response);
-    if ($response != FALSE) {
+    if (obiba_auth_check_user($username, $password)) {
       user_external_login_register($username, 'obiba_auth');
       $account = user_external_load($username);
+      obiba_auth_apply_roles($account);
       $form_state['uid'] = $account->uid;
     }
   }
@@ -104,23 +104,55 @@ function obiba_auth_login_validate($form, &$form_state) {
 }
 
 function obiba_auth_check_user($username, $password) {
-  dpm($username);
   try {
     $agate_client = obiba_auth_agate_client();
     // authenticate
-    $result = $agate_client->authenticate($username, $password);
-    if ($result) {
-      // authorize
-      $subject = $agate_client->getSubject();
-      if (isset($subject['groups'])) {
-
-      }
-      return TRUE;
-    }
-    return FALSE;
+    return $agate_client->authenticate($username, $password);
   } catch (Exception $e) {
     watchdog('obiba_auth', 'Error %error_message.', array('%error_message' => $e->faultstring), WATCHDOG_NOTICE);
     return FALSE;
+  }
+}
+
+/**
+ * Merge the roles from Agate to the roles found in drupal.
+ * @param $account
+ */
+function obiba_auth_apply_roles($account) {
+  $roles = $account->roles;
+  $to_update = FALSE;
+  $db_roles = user_roles();
+
+  // authorize
+  $agate_client = obiba_auth_agate_client();
+  $subject = $agate_client->getSubject();
+  if (isset($subject['groups'])) {
+    // find the role id corresponding to the group name (if any)
+    foreach ($subject['groups'] as $group) {
+      foreach ($db_roles as $rid => $role) {
+        if (strcmp($group, $role) == 0 && !isset($roles[$rid])) {
+          $roles[$rid] = $role;
+          $to_update = TRUE;
+        }
+      }
+    }
+  }
+
+  // apply additional role
+  $auto_roles = variable_get('obiba_auto_assigned_role', array());
+  foreach ($auto_roles as $auto_rid => $value) {
+    if ($value != 0) {
+      foreach ($db_roles as $rid => $role) {
+        if ($auto_rid == $rid && !isset($roles[$rid])) {
+          $roles[$rid] = $role;
+          $to_update = TRUE;
+        }
+      }
+    }
+  }
+
+  if ($to_update) {
+    user_save($account, array('roles' => $roles));
   }
 }
 
@@ -139,4 +171,6 @@ function obiba_auth_agate_client() {
  */
 function obiba_auth_init() {
   global $user;
+
+
 }
