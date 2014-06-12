@@ -3,4 +3,5 @@ target
 *.iml
 *.sublime-*
 .project
+drupal/modules/
 drupal/modules/obiba_protobuf
