@@ -16,7 +16,7 @@ function mica_client_study_studies_table() {
       l($name, 'mica/study/' . mica_client_commons_to_slug($name) . '/' . $study->id),
       implode(', ', t($study->designs)),
       isset($study->targetNumber->noLimit) ? t('No Limit') :
-      isset($study->targetNumber->number) ? $study->targetNumber->number:NULL,
+        isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,
       implode($study->countries),
     );
   }
