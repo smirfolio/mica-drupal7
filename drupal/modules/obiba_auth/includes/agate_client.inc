@@ -4,6 +4,15 @@
  * @file
  * AgateClient class
  */
+
+define('SET_COOKIE_HEADER', 'Set-Cookie');
+define('OBIBA_COOKIE', 'obibaid');
+define('MICA_COOKIE', 'micasid');
+define('OPAL_COOKIE', 'opalsid');
+
+/**
+ * Class AgateClient
+ */
 class AgateClient
 {
     private $agateUrl;
@@ -25,7 +34,8 @@ class AgateClient
      * Get the last response (if any).
      * @return mixed
      */
-    public function getLastResponse() {
+    public function getLastResponse()
+    {
         return $this->lastResponse;
     }
 
@@ -33,15 +43,41 @@ class AgateClient
      * Get the last response headers (if any).
      * @return array
      */
-    public function getLastResponseHeaders() {
+    public function getLastResponseHeaders()
+    {
         if ($this->lastResponse != null) {
-            return $this->lastResponse->headers;
+            $result = array();
+            foreach (explode("\r\n", $this->lastResponse->headers) as $header) {
+                $h = explode(":", $header, 2);
+                if (count($h) == 2) {
+                    if (!array_key_exists($h[0], $result)) {
+                        $result[$h[0]] = array();
+                    }
+                    array_push($result[$h[0]], trim($h[1]));
+                }
+            }
+            return $result;
+        }
+        return '';
+    }
+
+    /**
+     * Get the header value(s) from the last response.
+     * @param $header_name
+     * @return array
+     */
+    public function getLastResponseHeader($header_name)
+    {
+        $headers = $this->getLastResponseHeaders();
+
+        if (array_key_exists($header_name, $headers)) {
+            return $headers[$header_name];
         }
         return array();
     }
 
     /**
-     * Perform authentication by user name.
+     * Perform authentication by user name and forwards any cookie from Agate to the drupal client.
      * @param $username
      * @param $password
      * @return bool
@@ -53,7 +89,7 @@ class AgateClient
         $url = $this->agateUrl . '/tickets';
         $data = 'username=' . $username . '&password=' . $password;
 
-        $post = new HttpClientRequest($url, array(
+        $request = new HttpClientRequest($url, array(
             'method' => HttpClientRequest::METHOD_POST,
             'headers' => array('Content-Type' => array('application/x-www-form-urlencoded')),
             'data' => $data,
@@ -62,20 +98,103 @@ class AgateClient
 
         $client = $this->client();
         try {
-            $body = $client->execute($post);
+            $body = $client->execute($request);
+            $this->lastResponse = $client->lastResponse;
+            $this->setLastResponseCookies();
+            return true;
         } catch (HttpClientException $e) {
-            if ($e->getCode() == 0) {
-                // curl error
-                throw new Exception($e->getMessage());
-            }
             return false;
         }
+    }
 
-        $this->lastResponse = $client->lastResponse;
+    /**
+     * Get the subject from the current Agate ticket (user needs to have been authenticated first).
+     * @return array
+     * @throws Exception
+     */
+    public function getSubject()
+    {
+        if (!isset($_SESSION[OBIBA_COOKIE])) {
+            return array();
+        }
+        $url = $this->agateUrl . '/ticket/' . $_SESSION[OBIBA_COOKIE] . '/subject';
+        $request = new HttpClientRequest($url, array(
+            'method' => HttpClientRequest::METHOD_GET,
+            'headers' => array('Accept' => array('application/json')),
+            'data' => null,
+            'parameters' => array('application' => $this->applicationName, 'key' => $this->applicationKey),
+        ));
 
-        dpm($this->lastResponse);
+        $client = $this->client();
+        try {
+            $body = $client->execute($request);
+            $this->lastResponse = $client->lastResponse;
+            return json_decode($body, true);
+        } catch (HttpClientException $e) {
+            return array();
+        }
+    }
 
-        return true;
+    /**
+     * Send a logout request to Agate and clean drupal client cookies.
+     */
+    public function logout()
+    {
+        if (!isset($_SESSION[OBIBA_COOKIE])) {
+            return;
+        }
+
+        $url = $this->agateUrl . '/ticket/' . $_SESSION[OBIBA_COOKIE];
+        $request = new HttpClientRequest($url, array(
+            'method' => HttpClientRequest::METHOD_DELETE,
+            'headers' => array('Accept' => array('application/json')),
+            'data' => null,
+            'parameters' => array('application' => $this->applicationName, 'key' => $this->applicationKey),
+        ));
+
+        $client = $this->client();
+        try {
+            $body = $client->execute($request);
+            $this->lastResponse = $client->lastResponse;
+            $this->setLastResponseCookies();
+            unset($_SESSION[OBIBA_COOKIE]);
+        } catch (HttpClientException $e) {
+            // ignore
+        }
+    }
+
+    /**
+     * Forwards the 'Set-Cookie' directive to the drupal client.
+     */
+    private function setLastResponseCookies()
+    {
+        foreach ($this->getLastResponseHeader(SET_COOKIE_HEADER) as $cookie_str) {
+            $cookie = $this->parseCookie($cookie_str);
+            $keys = array_keys($cookie);
+            $name = $keys[0];
+            $value = $cookie[$name];
+            $expire = isset($cookie['Max-Age']) ? time() + intval($cookie['Max-Age']) : 0;
+            $path = isset($cookie['Path']) ? $cookie['Path'] : '/';
+            $domain = isset($cookie['Domain']) ? $cookie['Domain'] : null;
+
+            setcookie($name, $value, $expire, $path, $domain);
+            $_SESSION[$name] = $value;
+        }
+    }
+
+    /**
+     * Explode a cookie string in a array.
+     * @param $cookie_str
+     * @return array
+     */
+    private function parseCookie($cookie_str)
+    {
+        $cookie = array();
+        foreach (explode(';', $cookie_str) as $entry_str) {
+            $entry = explode('=', $entry_str);
+            $cookie[$entry[0]] = $entry[1];
+        }
+        return $cookie;
     }
 
     /**
