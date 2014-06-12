@@ -78,7 +78,7 @@ function obiba_auth_form_user_profile_form_alter(&$form, $form_state) {
   $account = $form['#user'];
   $authmaps = user_get_authmaps($account->name);
   if (isset($authmaps['obiba_auth'])) {
-    drupal_set_message(t('This account password and default roles can be changed on <a href="@agate" target="_blank">Agate</a>.', array('@agate' => variable_get('agate_url', 'https://localhost:8444'))));
+    drupal_set_message(t('This account settings (password, email etc.) should be changed on <a href="@agate" target="_blank">Agate</a>.', array('@agate' => variable_get('agate_url', 'https://localhost:8444'))));
     $form['account']['name']['#type'] = 'hidden';
     $form['account']['mail']['#type'] = 'hidden';
     $form['account']['current_pass']['#type'] = 'hidden';
@@ -97,7 +97,7 @@ function obiba_auth_login_validate($form, &$form_state) {
     if (obiba_auth_check_user($username, $password)) {
       user_external_login_register($username, 'obiba_auth');
       $account = user_external_load($username);
-      obiba_auth_apply_roles($account);
+      obiba_auth_apply_subject($account);
       $form_state['uid'] = $account->uid;
     }
   }
@@ -116,15 +116,15 @@ function obiba_auth_check_user($username, $password) {
 }
 
 /**
- * Merge the roles from Agate to the roles found in drupal.
+ * Merge the roles from Agate to the roles found in drupal and set some attributes.
  * @param $account
  */
-function obiba_auth_apply_roles($account) {
+function obiba_auth_apply_subject($account) {
   $roles = $account->roles;
-  $to_update = FALSE;
+  $edit = array();
   $db_roles = user_roles();
 
-  // authorize
+  // authorize = apply groups
   $agate_client = obiba_auth_agate_client();
   $subject = $agate_client->getSubject();
   if (isset($subject['groups'])) {
@@ -133,8 +133,17 @@ function obiba_auth_apply_roles($account) {
       foreach ($db_roles as $rid => $role) {
         if (strcmp($group, $role) == 0 && !isset($roles[$rid])) {
           $roles[$rid] = $role;
-          $to_update = TRUE;
+          $edit['roles'] = $roles;
         }
+      }
+    }
+  }
+
+  // set email
+  if (isset($subject['attributes'])) {
+    foreach($subject['attributes'] as $map) {
+      if (strcmp('email',$map['key']) == 0) {
+        $edit['mail'] = $map['value'];
       }
     }
   }
@@ -146,14 +155,14 @@ function obiba_auth_apply_roles($account) {
       foreach ($db_roles as $rid => $role) {
         if ($auto_rid == $rid && !isset($roles[$rid])) {
           $roles[$rid] = $role;
-          $to_update = TRUE;
+          $edit['roles'] = $roles;
         }
       }
     }
   }
 
-  if ($to_update) {
-    user_save($account, array('roles' => $roles));
+  if (count($edit) > 0) {
+    user_save($account, $edit);
   }
 }
 
