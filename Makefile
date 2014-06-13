@@ -37,7 +37,7 @@ dump-sql:
 	mysqldump -u $(db_user) --password=$(db_pass) --hex-blob $(db_name) --result-file="drupal/dev/drupal-$(drupal_version).sql"
 
 import-sql:
-	mysql -u $(db_user) --password=$(db_pass) -e "drop database $(db_name); create database $(db_name);"
+	mysql -u $(db_user) --password=$(db_pass) -e "drop database if exists $(db_name); create database $(db_name);"
 	mysql -u $(db_user) --password=$(db_pass) $(db_name) < "drupal/dev/drupal-$(drupal_version).sql"
 
 settings:
