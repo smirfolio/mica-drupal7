@@ -94,9 +94,12 @@ class AgateClient {
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_POST,
-      'headers' => array('Content-Type' => array('application/x-www-form-urlencoded')),
+      'headers' => array(
+        'Accept' => array('application/json'),
+        'Content-Type' => array('application/x-www-form-urlencoded'),
+        'X-App-Auth' => array($this->authorizationHeader())
+      ),
       'data' => $data,
-      'parameters' => array('application' => $this->applicationName, 'key' => $this->applicationKey),
     ));
 
     $client = $this->client();
@@ -120,9 +123,10 @@ class AgateClient {
     $url = $this->agateUrl . '/ticket/' . $token . '/username';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
-      'headers' => array('Accept' => array('application/json')),
-      'data' => null,
-      'parameters' => array('application' => $this->applicationName, 'key' => $this->applicationKey),
+      'headers' => array(
+        'Accept' => array('text/plain', 'application/json'),
+        'X-App-Auth' => array($this->authorizationHeader())
+      ),
     ));
 
     $client = $this->client();
@@ -149,9 +153,7 @@ class AgateClient {
     $url = $this->agateUrl . '/ticket/' . $_SESSION[self::OBIBA_COOKIE] . '/subject';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
-      'headers' => array('Accept' => array('application/json')),
-      'data' => null,
-      'parameters' => array('application' => $this->applicationName, 'key' => $this->applicationKey),
+      'headers' => array('Accept' => array('application/json'), 'X-App-Auth' => array($this->authorizationHeader())),
     ));
 
     $client = $this->client();
@@ -175,9 +177,7 @@ class AgateClient {
     $url = $this->agateUrl . '/ticket/' . $_SESSION[self::OBIBA_COOKIE];
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_DELETE,
-      'headers' => array('Accept' => array('application/json')),
-      'data' => null,
-      'parameters' => array('application' => $this->applicationName, 'key' => $this->applicationKey),
+      'headers' => array('Accept' => array('application/json'), 'X-App-Auth' => array($this->authorizationHeader())),
     ));
 
     $client = $this->client();
@@ -240,5 +240,9 @@ class AgateClient {
     );
 
     return $client;
+  }
+
+  private function authorizationHeader() {
+    return 'Basic ' . base64_encode($this->applicationName . ':' . $this->applicationKey);
   }
 }

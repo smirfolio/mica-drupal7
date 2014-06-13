@@ -92,7 +92,7 @@ function obiba_auth_login_validate($form, &$form_state) {
   $username = $form_state['values']['name'];
   $password = $form_state['values']['pass'];
   // try to authenticate on Agate if not already authenticated
-  if ($form_state['uid'] == FALSE && !empty($username) && !empty($password)) {
+  if ((!isset($form_state['uid']) || $form_state['uid'] == FALSE) && !empty($username) && !empty($password)) {
     if (obiba_auth_check_user($username, $password)) {
       user_external_login_register($username, 'obiba_auth');
       $account = user_external_load($username);
