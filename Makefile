@@ -17,7 +17,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings enable-mica enable-obiba-auth devel cc
+all: clean setup-drupal wwww import-sql settings enable-mica enable-obiba-auth devel cc bootstrap
 
 clean:
 	rm -rf target
@@ -51,6 +51,13 @@ enable-mica:
 enable-obiba-auth:
 	cd target/drupal && \
 	drush en -y obiba_auth
+
+bootstrap:
+	cd target/drupal && \
+	drush dl -y bootstrap && \
+	drush en -y bootstrap && \
+	drush vset -y theme_default bootstrap && \
+	drush vset -y admin_theme bootstrap
 
 devel:
 	cd target/drupal && \
