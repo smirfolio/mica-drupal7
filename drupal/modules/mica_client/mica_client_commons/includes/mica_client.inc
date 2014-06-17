@@ -5,36 +5,41 @@
  * AgateClient class
  */
 
+$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
+$path_module_protos = drupal_get_path('module', 'mica_client_model');
+
+include_once($path_module_protobuf . '/protobuf/Protobuf.php');
+use \DrSlump\Protobuf;
+
+Protobuf::autoload();
+
+include_once($path_module_protos . '/protos/Mica.php');
 
 /**
- * Class AgateClient
+ * Class MicaClient
  */
-class AgateClient {
+class MicaClient {
 
   const SET_COOKIE_HEADER = 'Set-Cookie';
 
   const OBIBA_COOKIE = 'obibaid';
 
-  private $agateUrl;
+  const MICA_COOKIE = 'micasid';
 
-  private $applicationName;
+  const HEADER_BINARY = 'application/x-protobuf';
 
-  private $applicationKey;
+  const HEADER_JSON = 'application/json';
+
+  protected $micaUrl;
 
   private $lastResponse;
 
   /**
-   * Check if the user was authenticated by Agate.
-   * @return bool
+   * Mica client from a given url or from the one retrieved from 'mica_url' variable.
+   * @param null $mica_url
    */
-  function hasTicket() {
-    return isset($_SESSION[self::OBIBA_COOKIE]);
-  }
-
-  public function __construct($agate_url, $application_name, $application_key) {
-    $this->agateUrl = $agate_url . '/ws';
-    $this->applicationName = $application_name;
-    $this->applicationKey = $application_key;
+  public function __construct($mica_url = NULL) {
+    $this->micaUrl = (isset($mica_url) ? $mica_url : variable_get('mica_url', 'https://localhost:8445')) . '/ws';
   }
 
   /**
@@ -46,11 +51,22 @@ class AgateClient {
   }
 
   /**
+   * Set the last response after a http call.
+   * @param $lastResponse
+   */
+  protected function setLastResponse($lastResponse) {
+    $this->lastResponse = $lastResponse;
+    if (isset($lastResponse)) {
+      $this->setLastResponseCookies();
+    }
+  }
+
+  /**
    * Get the last response headers (if any).
    * @return array
    */
-  public function getLastResponseHeaders() {
-    if ($this->lastResponse != null) {
+  protected function getLastResponseHeaders() {
+    if ($this->lastResponse != NULL) {
       $result = array();
       foreach (explode("\r\n", $this->lastResponse->headers) as $header) {
         $h = explode(":", $header, 2);
@@ -71,124 +87,13 @@ class AgateClient {
    * @param $header_name
    * @return array
    */
-  public function getLastResponseHeader($header_name) {
+  protected function getLastResponseHeader($header_name) {
     $headers = $this->getLastResponseHeaders();
 
     if (array_key_exists($header_name, $headers)) {
       return $headers[$header_name];
     }
     return array();
-  }
-
-  /**
-   * Perform authentication by user name and forwards any cookie from Agate to the drupal client.
-   * @param $username
-   * @param $password
-   * @return bool
-   * @throws Exception
-   */
-  public function authenticate($username, $password) {
-    $this->lastResponse = null;
-    $url = $this->agateUrl . '/tickets';
-    $data = 'username=' . $username . '&password=' . $password;
-
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_POST,
-      'headers' => array(
-        'Accept' => array('application/json'),
-        'Content-Type' => array('application/x-www-form-urlencoded'),
-        'X-App-Auth' => array($this->authorizationHeader())
-      ),
-      'data' => $data,
-    ));
-
-    $client = $this->client();
-    try {
-      $body = $client->execute($request);
-      $this->lastResponse = $client->lastResponse;
-      $this->setLastResponseCookies();
-      return TRUE;
-    } catch (HttpClientException $e) {
-      return FALSE;
-    }
-  }
-
-  /**
-   * Get the user name matching the Agate token.
-   * @param $token
-   * @return mixed|null
-   */
-  public function validate($token) {
-    $this->lastResponse = null;
-    $url = $this->agateUrl . '/ticket/' . $token . '/username';
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => array(
-        'Accept' => array('text/plain', 'application/json'),
-        'X-App-Auth' => array($this->authorizationHeader())
-      ),
-    ));
-
-    $client = $this->client();
-    try {
-      $body = $client->execute($request);
-      $this->lastResponse = $client->lastResponse;
-      $_SESSION[self::OBIBA_COOKIE] = $token;
-      return $body;
-    } catch (HttpClientException $e) {
-      return null;
-    }
-  }
-
-  /**
-   * Get the subject from the current Agate ticket (user needs to have been authenticated first).
-   * @return array
-   * @throws Exception
-   */
-  public function getSubject() {
-    if (!AgateClient::hasTicket()) {
-      return array();
-    }
-    $this->lastResponse = null;
-    $url = $this->agateUrl . '/ticket/' . $_SESSION[self::OBIBA_COOKIE] . '/subject';
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => array('Accept' => array('application/json'), 'X-App-Auth' => array($this->authorizationHeader())),
-    ));
-
-    $client = $this->client();
-    try {
-      $body = $client->execute($request);
-      $this->lastResponse = $client->lastResponse;
-      return json_decode($body, TRUE);
-    } catch (HttpClientException $e) {
-      return array();
-    }
-  }
-
-  /**
-   * Send a logout request to Agate and clean drupal client cookies.
-   */
-  public function logout() {
-    if (!AgateClient::hasTicket()) {
-      return;
-    }
-
-    $url = $this->agateUrl . '/ticket/' . $_SESSION[self::OBIBA_COOKIE];
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_DELETE,
-      'headers' => array('Accept' => array('application/json'), 'X-App-Auth' => array($this->authorizationHeader())),
-    ));
-
-    $client = $this->client();
-    try {
-      $body = $client->execute($request);
-      $this->lastResponse = $client->lastResponse;
-      $this->setLastResponseCookies();
-      unset($_SESSION[self::OBIBA_COOKIE]);
-    } catch (HttpClientException $e) {
-      // ignore
-    }
   }
 
   /**
@@ -202,11 +107,28 @@ class AgateClient {
       $value = $cookie[$name];
       $expire = isset($cookie['Max-Age']) ? time() + intval($cookie['Max-Age']) : 0;
       $path = isset($cookie['Path']) ? $cookie['Path'] : '/';
-      $domain = isset($cookie['Domain']) ? $cookie['Domain'] : null;
+      $domain = isset($cookie['Domain']) ? $cookie['Domain'] : NULL;
 
       setcookie($name, $value, $expire, $path, $domain);
       $_SESSION[$name] = $value;
     }
+  }
+
+  /**
+   * @return null|string
+   */
+  protected function authorizationHeader() {
+    $cookie = NULL;
+
+    if (isset($_COOKIE[self::OBIBA_COOKIE])) {
+      $cookie = self::OBIBA_COOKIE . '=' . $_COOKIE[self::OBIBA_COOKIE];
+
+      if (isset($_COOKIE[self::MICA_COOKIE])) {
+        $cookie = $cookie . '; ' . self::MICA_COOKIE . '=' . $_COOKIE[self::MICA_COOKIE];
+      }
+    }
+
+    return $cookie;
   }
 
   /**
@@ -226,7 +148,7 @@ class AgateClient {
   /**
    * @return HttpClient
    */
-  private function client() {
+  protected function client() {
     $client = new HttpClient($formatter = FALSE);
 
     if (!isset($client->options['curlopts'])) {
@@ -239,10 +161,8 @@ class AgateClient {
       CURLOPT_SSL_VERIFYPEER => FALSE
     );
 
-    return $client;
-  }
+    Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
 
-  private function authorizationHeader() {
-    return 'Basic ' . base64_encode($this->applicationName . ':' . $this->applicationKey);
+    return $client;
   }
 }
