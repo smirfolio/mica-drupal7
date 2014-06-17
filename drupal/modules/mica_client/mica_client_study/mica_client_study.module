@@ -22,6 +22,13 @@ function mica_client_study_menu() {
     'access callback' => TRUE,
     'page arguments' => array(3),
   );
+  $items['mica/dce/%'] = array(
+    'title' => t('Mica data collection event detail'),
+    'page callback' => 'mica_client_study_dce_page_detail',
+    'file' => 'mica_client_study_dce-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
   return $items;
 }
 
@@ -58,6 +65,7 @@ function mica_client_study_theme($existing, $type, $theme, $path) {
     'mica_client_study_list' => array('template' => '/mica_client_study-list'),
     'mica_client_study_detail' => array('template' => '/mica_client_study-detail'),
     'mica_population_detail' => array('template' => '/mica_client_study-population-detail'),
+    'mica_dce_detail' => array('template' => '/mica_client_study-dce-detail'),
   );
 }
 

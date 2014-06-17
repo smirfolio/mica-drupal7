@@ -4,7 +4,8 @@
  * Mica studies file
  */
 
-function mica_client_study_page_detail($study_id) {
+function mica_client_study_page_detail($study_id)
+{
   $page_render_study = NULL;
   $study_resource = new MicaStudyResource();
   $StudyDto = $study_resource->study($study_id);
@@ -18,14 +19,16 @@ function mica_client_study_page_detail($study_id) {
 /*
  * Format Study detail
  * */
-function mica_client_study_get_study_detail($study_detail) {
+function mica_client_study_get_study_detail($study_detail)
+{
   return theme('mica_client_study_detail', array("context_detail" => $study_detail));
 }
 
 /**
  * Implements hook_library().
  */
-function mica_client_study_library() {
+function mica_client_study_library()
+{
   $libraries = array();
   $lib_path = libraries_get_path('micatimelines');
   // Make sure we have a valid library path before returning library load info.
@@ -50,7 +53,8 @@ function mica_client_study_library() {
 /*
  * Format time-line schema
  * */
-function mica_client_study_get_timeline_detail($study_detail) {
+function mica_client_study_get_timeline_detail($study_detail)
+{
   $codec = new \DrSlump\Protobuf\Codec\Json();
   $study_json = $study_detail->serialize($codec);
   $page_render_timeline = NULL;
@@ -80,7 +84,8 @@ function mica_client_study_get_timeline_detail($study_detail) {
  * Format populations schema
  * */
 
-function mica_client_study_get_populations_detail($study_detail) {
+function mica_client_study_get_populations_detail($study_detail)
+{
   $page_render_populations = NULL;
   $page_render_populations .= '
 <section> <h2 class="block-title">' . t("Populations") . '</h2><div> <article>
@@ -109,6 +114,8 @@ function mica_client_study_get_populations_detail($study_detail) {
           'attributes' => array('id' => 'variables_overview')
         )
       );
+
+      $population['dce-modal'] = mica_client_study_get_dce_detail($study_detail->id, $population->dataCollectionEvents);
     }
     $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
   }
@@ -116,26 +123,41 @@ function mica_client_study_get_populations_detail($study_detail) {
   return $page_render_populations;
 }
 
+/**
+ * Create modal DOM for data collection events
+ * @param $study_id
+ * @param $dataCollectionEvents
+ * @return string
+ */
+function mica_client_study_get_dce_detail($study_id, $dataCollectionEvents)
+{
+  $page_render_dces = '';
+  foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
+    $page_render_dces .= theme('mica_dce_detail', array('study_id' => $study_id, 'context_detail' => $dce_wrapper));
+  }
+  return $page_render_dces;
+}
+
 /*
  * retrieve Data Collection event
  * */
-function mica_client_study_get_dce_table($dataCollectionEvents) {
+function mica_client_study_get_dce_table($dataCollectionEvents)
+{
   $dce_rows = array();
   foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
     $dce_description = NULL;
     if (!empty($dce_wrapper->description)) {
       $dce_description = truncate_utf8(mica_client_commons_get_localized_field($dce_wrapper, 'description'), 50, TRUE, TRUE);
-
     }
-
 
     $url = url('#');
     // Hide DCE that are not published on study published page
 
     $dce_rows[$key_dce] = array(
       'data' => array(
-        //'label' => l($dce_wrapper->title->value(), 'node/' . $dce_nid,array(FALSE,FALSE,$langcode)),
-        'label' => '<a href="' . $url . '" >' . mica_client_commons_get_localized_field($dce_wrapper, 'name') . '</a>',
+        'label' => sprintf("<a href=\"#\" data-toggle=\"modal\" data-target=\"#%s\">%s</a>",
+          $dce_wrapper->id,
+          mica_client_commons_get_localized_field($dce_wrapper, 'name')),
         'desc' => $dce_description,
         'start_year' => $dce_wrapper->startYear,
         'start_month' => $dce_wrapper->startMonth,
