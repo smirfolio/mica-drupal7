@@ -8,7 +8,8 @@ function mica_client_study_page_list() {
 
 function mica_client_study_studies_table() {
   $rows = array();
-  $studies = mica_client_commons_get_list('studies', '\obiba\mica\StudySummaryDto');
+  $study_resource = new MicaStudyResource();
+  $studies = $study_resource->studies();
   foreach ($studies as $study) {
     $name = mica_client_commons_get_localized_field($study, 'name');
     $rows[] = array(

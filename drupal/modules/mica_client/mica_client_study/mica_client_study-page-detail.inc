@@ -6,9 +6,8 @@
 
 function mica_client_study_page_detail($study_id) {
   $page_render_study = NULL;
-  $param = 'study/' . $study_id;
-  $StudyDto = mica_client_commons_get_detail($param, '\obiba\mica\StudyDto');
-  //dpm($StudyDto);
+  $study_resource = new MicaStudyResource();
+  $StudyDto = $study_resource->study($study_id);
   drupal_set_title(mica_client_commons_get_localized_field($StudyDto, 'name'));
 
   $output = $StudyDto;
