@@ -77,7 +77,7 @@ function obiba_auth_form_user_profile_form_alter(&$form, $form_state) {
   $account = $form['#user'];
   $authmaps = user_get_authmaps($account->name);
   if (isset($authmaps['obiba_auth'])) {
-    drupal_set_message(t('This account settings (password, email etc.) should be changed on <a href="@agate" target="_blank">Agate</a>.', array('@agate' => variable_get('agate_url', 'https://localhost:8444'))));
+    drupal_set_message(t('This account settings (password, email etc.) should be changed on <a href="@agate" target="_blank">Agate</a>.', array('@agate' => variable_get_value('agate_url'))));
     $form['account']['name']['#type'] = 'hidden';
     $form['account']['mail']['#type'] = 'hidden';
     $form['account']['current_pass']['#type'] = 'hidden';

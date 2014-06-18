@@ -38,9 +38,9 @@ class AgateClient {
    * @param $application_key
    */
   public function __construct($agate_url = null, $application_name = null, $application_key = null) {
-    $this->agateUrl = (isset($agate_url) ? $agate_url : variable_get('agate_url')) . '/ws';
-    $this->applicationName = (isset($application_name) ? $application_name : variable_get('agate_application_name'));
-    $this->applicationKey = (isset($application_key) ? $application_key : variable_get('agate_application_key'));
+    $this->agateUrl = (isset($agate_url) ? $agate_url : variable_get_value('agate_url')) . '/ws';
+    $this->applicationName = (isset($application_name) ? $application_name : variable_get_value('agate_application_name'));
+    $this->applicationKey = (isset($application_key) ? $application_key : variable_get_value('agate_application_key'));
   }
 
   /**
