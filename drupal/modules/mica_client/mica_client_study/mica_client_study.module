@@ -124,3 +124,9 @@ function mica_client_study_sort_dce($x, $y) {
   return $x_start < $y_start ? -1 : 1;
 }
 
+function mica_client_study_get_dce_attachment_url($study_id, $attachment) {
+  return sprintf("%s/ws/draft/study/%s/file/%s/_download",
+    variable_get('mica_url', 'https://localhost:8445'),
+    $study_id,
+    $attachment->id);
+}

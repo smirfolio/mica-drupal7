@@ -4,8 +4,7 @@
  * Mica studies file
  */
 
-function mica_client_study_page_detail($study_id)
-{
+function mica_client_study_page_detail($study_id) {
   $page_render_study = NULL;
   $study_resource = new MicaStudyResource();
   $StudyDto = $study_resource->study($study_id);
@@ -19,16 +18,14 @@ function mica_client_study_page_detail($study_id)
 /*
  * Format Study detail
  * */
-function mica_client_study_get_study_detail($study_detail)
-{
+function mica_client_study_get_study_detail($study_detail) {
   return theme('mica_client_study_detail', array("context_detail" => $study_detail));
 }
 
 /**
  * Implements hook_library().
  */
-function mica_client_study_library()
-{
+function mica_client_study_library() {
   $libraries = array();
   $lib_path = libraries_get_path('micatimelines');
   // Make sure we have a valid library path before returning library load info.
@@ -53,8 +50,7 @@ function mica_client_study_library()
 /*
  * Format time-line schema
  * */
-function mica_client_study_get_timeline_detail($study_detail)
-{
+function mica_client_study_get_timeline_detail($study_detail) {
   $codec = new \DrSlump\Protobuf\Codec\Json();
   $study_json = $study_detail->serialize($codec);
   $page_render_timeline = NULL;
@@ -84,8 +80,7 @@ function mica_client_study_get_timeline_detail($study_detail)
  * Format populations schema
  * */
 
-function mica_client_study_get_populations_detail($study_detail)
-{
+function mica_client_study_get_populations_detail($study_detail) {
   $page_render_populations = NULL;
   $page_render_populations .= '
 <section> <h2 class="block-title">' . t("Populations") . '</h2><div> <article>
@@ -129,8 +124,7 @@ function mica_client_study_get_populations_detail($study_detail)
  * @param $dataCollectionEvents
  * @return string
  */
-function mica_client_study_get_dce_detail($study_id, $dataCollectionEvents)
-{
+function mica_client_study_get_dce_detail($study_id, $dataCollectionEvents) {
   $page_render_dces = '';
   foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
     $page_render_dces .= theme('mica_dce_detail', array('study_id' => $study_id, 'context_detail' => $dce_wrapper));
@@ -141,8 +135,7 @@ function mica_client_study_get_dce_detail($study_id, $dataCollectionEvents)
 /*
  * retrieve Data Collection event
  * */
-function mica_client_study_get_dce_table($dataCollectionEvents)
-{
+function mica_client_study_get_dce_table($dataCollectionEvents) {
   $dce_rows = array();
   foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
     $dce_description = NULL;

@@ -1,116 +1,119 @@
-<div id="<?php print $context_detail->id ?>" class="modal fade" xmlns="http://www.w3.org/1999/html">
+<div id="<? print $context_detail->id ?>" class="modal fade" xmlns="http://www.w3.org/1999/html">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Data Collection Event Detail</h4>
+        <h4 class="modal-title"><? print t('Data Collection Event Detail') ?></h4>
       </div>
-      <div class="modal-body container">
-        <h3>
-          <?php print mica_client_commons_get_localized_field($context_detail, 'name'); ?>
-        </h3>
-        <?php if (!empty($context_detail->description)): ?>
-          <p style="width: 35em">
-            <?php print mica_client_commons_get_localized_field($context_detail, 'description'); ?>
+      <div class="modal-body">
+        <h4>
+          <? print mica_client_commons_get_localized_field($context_detail, 'name'); ?>
+        </h4>
+        <? if (!empty($context_detail->description)): ?>
+          <p>
+            <? print mica_client_commons_get_localized_field($context_detail, 'description'); ?>
           </p>
-        <?php endif; ?>
+        <? endif; ?>
+        <br/>
+
         <div>
+          <? if (!empty($context_detail->startYear)): ?>
+            <div>
+              <label><? print t('Start Year') ?>:</label>
+              <span>
+                <? print mica_client_commons_format_year($context_detail->startYear, $context_detail->startMonth); ?>
+              </span>
+            </div>
+          <? endif; ?>
+          <? if (!empty($context_detail->endYear)): ?>
+            <div>
+              <label><? print t('End Year') ?>:</label>
+              <span>
+                <? print mica_client_commons_format_year($context_detail->endYear, $context_detail->endMonth); ?>
+              </span>
+            </div>
+          <? endif; ?>
+          <? if (!empty($context_detail->dataSources)): ?>
+            <div>
+              <label><? print t('Data Sources') ?>:</label>
 
-          <?php if (!empty($context_detail->startYear)): ?>
-            <div>
-              <label>Start Year:</label>
-              <span>
-                <?php print mica_client_commons_format_year($context_detail->startYear, $context_detail->startMonth); ?>
-              </span>
-            </div>
-          <?php endif; ?>
-          <?php if (!empty($context_detail->endYear)): ?>
-            <div>
-              <label>End Year:</label>
-              <span>
-                <?php print mica_client_commons_format_year($context_detail->endYear, $context_detail->endMonth); ?>
-              </span>
-            </div>
-          <?php endif; ?>
-          <?php if (!empty($context_detail->dataSources)): ?>
-            <div>
-              <label>Data Sources:</label>
               <div class="container">
                 <ul class="list-unstyled">
-                  <?php foreach ($context_detail->dataSources as $dataSource): ?>
+                  <? foreach ($context_detail->dataSources as $dataSource): ?>
                     <li>
-                      <?php print $dataSource; ?>
+                      <? print $dataSource; ?>
                     </li>
-                  <?php endforeach; ?>
-                  <?php if (!empty($context_detail->otherDataSources)): ?>
+                  <? endforeach; ?>
+                  <? if (!empty($context_detail->otherDataSources)): ?>
                     <li>
-                      <?php print mica_client_commons_get_localized_field($context_detail, 'otherDataSources'); ?>
+                      <? print mica_client_commons_get_localized_field($context_detail, 'otherDataSources'); ?>
                     </li>
-                  <?php endif; ?>
+                  <? endif; ?>
                 </ul>
               </div>
             </div>
-          <?php endif; ?>
+          <? endif; ?>
 
-          <?php if (!empty($context_detail->administrativeDatabases)): ?>
+          <? if (!empty($context_detail->administrativeDatabases)): ?>
             <div>
-              <label>Administrative Databases:</label>
+              <label><? print t('Administrative Databases') ?>:</label>
+
               <div class="container">
                 <ul class="list-unstyled">
-                  <?php foreach ($context_detail->administrativeDatabases as $database): ?>
+                  <? foreach ($context_detail->administrativeDatabases as $database): ?>
                     <li>
-                      <?php print $database; ?>
+                      <? print $database; ?>
                     </li>
-                  <?php endforeach; ?>
+                  <? endforeach; ?>
                 </ul>
               </div>
             </div>
-          <?php endif; ?>
-          <?php if (!empty($context_detail->bioSamples)): ?>
+          <? endif; ?>
+          <? if (!empty($context_detail->bioSamples)): ?>
             <div>
-              <label>Bio Samples:</label>
+              <label><? print t('Bio Samples') ?>:</label>
+
               <div class="container">
                 <ul class="list-unstyled">
-                  <?php foreach ($context_detail->bioSamples as $samples): ?>
+                  <? foreach ($context_detail->bioSamples as $samples): ?>
                     <li>
-                      <?php print $samples; ?>
+                      <? print $samples; ?>
                     </li>
-                  <?php endforeach; ?>
-                  <?php if (!empty($context_detail->otherBioSamples)): ?>
-                    <?php print mica_client_commons_get_localized_field($context_detail, 'otherBioSamples'); ?>
-                  <?php endif; ?>
+                  <? endforeach; ?>
+                  <? if (!empty($context_detail->otherBioSamples)): ?>
+                    <? print mica_client_commons_get_localized_field($context_detail, 'otherBioSamples'); ?>
+                  <? endif; ?>
                 </ul>
               </div>
             </div>
-          <?php endif; ?>
-          <?php if (!empty($context_detail->tissueTypes)): ?>
+          <? endif; ?>
+          <? if (!empty($context_detail->tissueTypes)): ?>
             <div>
-              <label>Tissue Types:</label>
+              <label><? print t('Tissue Types') ?>:</label>
               <span>
-                <?php print mica_client_commons_get_localized_field($context_detail, 'tissueTypes'); ?>
+                <? print mica_client_commons_get_localized_field($context_detail, 'tissueTypes'); ?>
               </span>
             </div>
-          <?php endif; ?>
-          <?php if (!empty($context_detail->attachments)): ?>
+          <? endif; ?>
+          <? if (!empty($context_detail->attachments)): ?>
             <div>
-              <label>Attachments:</label>
+              <label><? print t('Attachments') ?>:</label>
+
               <div class="container">
                 <ul class="list-unstyled">
-                  <?php foreach ($context_detail->attachments as $attachment): ?>
+                  <? foreach ($context_detail->attachments as $attachment): ?>
                     <li>
-                      <a href="<?php print mica_client_commons_get_dce_attachment_url($study_id, $attachment) ?>">
-                        <? print $attachment->fileName ?>
-                      </a>
+                      <? print l($attachment->fileName, mica_client_study_get_dce_attachment_url($study_id, $attachment)); ?>
                     </li>
-                  <?php endforeach; ?>
+                  <? endforeach; ?>
                 </ul>
               </div>
             </div>
-          <?php endif; ?>
+          <? endif; ?>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><? print t('Close') ?></button>
       </div>
     </div>
   </div>
