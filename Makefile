@@ -2,10 +2,6 @@ mica_version=1.0-dev
 mica_branch=7.x-1.x
 drupal_org_mica=git.drupal.org:project/obiba_mica.git
 
-auth_version=1.0-dev
-auth_branch=7.x-1.x
-drupal_org_auth=git.drupal.org:project/obiba_auth.git
-
 drupal_version = 7.27
 
 #
@@ -34,10 +30,11 @@ setup-drupal:
 	drush make --prepare-install drupal/dev/drupal-basic.make target/drupal && \
 	chmod -R a+w target/drupal && \
 	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client && \
-	ln -s $(CURDIR)/drupal/modules/obiba_auth $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
+	git clone https://github.com/obiba/drupal7-auth.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
 	git clone https://github.com/obiba/drupal7-protobuf.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
 
 wwww:
+	sudo rm -f /var/www/html/drupal && \
 	sudo ln -s $(CURDIR)/target/drupal /var/www/html/drupal && \
 	sudo chown -R www-data:www-data /var/www/html/drupal
 
@@ -93,9 +90,6 @@ git-push-mica:
 	$(call git-prepare,$(drupal_org_mica),obiba_mica,$(mica_branch)) . && \
 	cp -r drupal/modules/mica_client/* target/drupal.org/obiba_mica && \
 	$(call git-finish,obiba_mica,$(mica_branch))
-
-#git-push-auth:
-#	$(call clear-version-info,drupal/modules,obiba_auth)
 
 clear-version-info = sed -i "/^version/d" $(1)/$2/$2.info && \
 	sed -i "/^project/d" $(1)/$2/$2.info && \
