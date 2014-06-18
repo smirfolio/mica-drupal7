@@ -51,10 +51,12 @@
         <div class="field field-name-field-website field-type-link-field field-label-inline clearfix">
           <div class="field-label"><?php print t('Website') ?> :</div>
           <div class="field-items">
-            <div class="field-item even"><a href=" <?php print $context_detail->website; ?>"
-                                            target="_blank">
-                <?php print $context_detail->website; ?>
-              </a>
+            <div class="field-item even">
+              <?
+              print l($context_detail->website,
+                $context_detail->website,
+                array('attributes' => array('target' => '_blank')));
+              ?>
             </div>
           </div>
         </div>

@@ -109,11 +109,27 @@ function mica_client_study_get_populations_detail($study_detail) {
           'attributes' => array('id' => 'variables_overview')
         )
       );
+
+      $population['dce-modal'] = mica_client_study_get_dce_detail($study_detail->id, $population->dataCollectionEvents);
     }
     $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
   }
   $page_render_populations .= '</article>  </div></section>';
   return $page_render_populations;
+}
+
+/**
+ * Create modal DOM for data collection events
+ * @param $study_id
+ * @param $dataCollectionEvents
+ * @return string
+ */
+function mica_client_study_get_dce_detail($study_id, $dataCollectionEvents) {
+  $page_render_dces = '';
+  foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
+    $page_render_dces .= theme('mica_dce_detail', array('study_id' => $study_id, 'dce' => $dce_wrapper));
+  }
+  return $page_render_dces;
 }
 
 /*
@@ -125,17 +141,20 @@ function mica_client_study_get_dce_table($dataCollectionEvents) {
     $dce_description = NULL;
     if (!empty($dce_wrapper->description)) {
       $dce_description = truncate_utf8(mica_client_commons_get_localized_field($dce_wrapper, 'description'), 50, TRUE, TRUE);
-
     }
-
 
     $url = url('#');
     // Hide DCE that are not published on study published page
 
     $dce_rows[$key_dce] = array(
       'data' => array(
-        //'label' => l($dce_wrapper->title->value(), 'node/' . $dce_nid,array(FALSE,FALSE,$langcode)),
-        'label' => '<a href="' . $url . '" >' . mica_client_commons_get_localized_field($dce_wrapper, 'name') . '</a>',
+        'label' => l(mica_client_commons_get_localized_field($dce_wrapper, 'name'), '#', array(
+          'external' => TRUE,
+          'attributes' => array(
+            'data-toggle' => 'modal',
+            'data-target' => '#' . $dce_wrapper->id
+          )
+        )),
         'desc' => $dce_description,
         'start_year' => $dce_wrapper->startYear,
         'start_month' => $dce_wrapper->startMonth,
