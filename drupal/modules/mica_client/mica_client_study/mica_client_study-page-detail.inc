@@ -127,7 +127,7 @@ function mica_client_study_get_populations_detail($study_detail) {
 function mica_client_study_get_dce_detail($study_id, $dataCollectionEvents) {
   $page_render_dces = '';
   foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
-    $page_render_dces .= theme('mica_dce_detail', array('study_id' => $study_id, 'context_detail' => $dce_wrapper));
+    $page_render_dces .= theme('mica_dce_detail', array('study_id' => $study_id, 'dce' => $dce_wrapper));
   }
   return $page_render_dces;
 }

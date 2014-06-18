@@ -22,14 +22,6 @@ function mica_client_study_menu() {
     'access callback' => TRUE,
     'page arguments' => array(3),
   );
-  $items['mica/dce/%'] = array(
-    'title' => t('Mica data collection event detail'),
-    'page callback' => 'mica_client_study_dce_page_detail',
-    'file' => 'mica_client_study_dce-page-detail.inc',
-    'access callback' => TRUE,
-    'page arguments' => array(2),
-  );
-  return $items;
 }
 
 /**

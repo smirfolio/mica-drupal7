@@ -1,4 +1,4 @@
-<div id="<? print $context_detail->id ?>" class="modal fade" xmlns="http://www.w3.org/1999/html">
+<div id="<? print $dce->id ?>" class="modal fade" xmlns="http://www.w3.org/1999/html">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -7,46 +7,46 @@
       </div>
       <div class="modal-body">
         <h4>
-          <? print mica_client_commons_get_localized_field($context_detail, 'name'); ?>
+          <? print mica_client_commons_get_localized_field($dce, 'name'); ?>
         </h4>
-        <? if (!empty($context_detail->description)): ?>
+        <? if (!empty($dce->description)): ?>
           <p>
-            <? print mica_client_commons_get_localized_field($context_detail, 'description'); ?>
+            <? print mica_client_commons_get_localized_field($dce, 'description'); ?>
           </p>
         <? endif; ?>
         <br/>
 
         <div>
-          <? if (!empty($context_detail->startYear)): ?>
+          <? if (!empty($dce->startYear)): ?>
             <div>
               <label><? print t('Start Year') ?>:</label>
               <span>
-                <? print mica_client_commons_format_year($context_detail->startYear, $context_detail->startMonth); ?>
+                <? print mica_client_commons_format_year($dce->startYear, $dce->startMonth); ?>
               </span>
             </div>
           <? endif; ?>
-          <? if (!empty($context_detail->endYear)): ?>
+          <? if (!empty($dce->endYear)): ?>
             <div>
               <label><? print t('End Year') ?>:</label>
               <span>
-                <? print mica_client_commons_format_year($context_detail->endYear, $context_detail->endMonth); ?>
+                <? print mica_client_commons_format_year($dce->endYear, $dce->endMonth); ?>
               </span>
             </div>
           <? endif; ?>
-          <? if (!empty($context_detail->dataSources)): ?>
+          <? if (!empty($dce->dataSources)): ?>
             <div>
               <label><? print t('Data Sources') ?>:</label>
 
               <div class="container">
                 <ul class="list-unstyled">
-                  <? foreach ($context_detail->dataSources as $dataSource): ?>
+                  <? foreach ($dce->dataSources as $dataSource): ?>
                     <li>
                       <? print $dataSource; ?>
                     </li>
                   <? endforeach; ?>
-                  <? if (!empty($context_detail->otherDataSources)): ?>
+                  <? if (!empty($dce->otherDataSources)): ?>
                     <li>
-                      <? print mica_client_commons_get_localized_field($context_detail, 'otherDataSources'); ?>
+                      <? print mica_client_commons_get_localized_field($dce, 'otherDataSources'); ?>
                     </li>
                   <? endif; ?>
                 </ul>
@@ -54,13 +54,13 @@
             </div>
           <? endif; ?>
 
-          <? if (!empty($context_detail->administrativeDatabases)): ?>
+          <? if (!empty($dce->administrativeDatabases)): ?>
             <div>
               <label><? print t('Administrative Databases') ?>:</label>
 
               <div class="container">
                 <ul class="list-unstyled">
-                  <? foreach ($context_detail->administrativeDatabases as $database): ?>
+                  <? foreach ($dce->administrativeDatabases as $database): ?>
                     <li>
                       <? print $database; ?>
                     </li>
@@ -69,39 +69,39 @@
               </div>
             </div>
           <? endif; ?>
-          <? if (!empty($context_detail->bioSamples)): ?>
+          <? if (!empty($dce->bioSamples)): ?>
             <div>
               <label><? print t('Bio Samples') ?>:</label>
 
               <div class="container">
                 <ul class="list-unstyled">
-                  <? foreach ($context_detail->bioSamples as $samples): ?>
+                  <? foreach ($dce->bioSamples as $samples): ?>
                     <li>
                       <? print $samples; ?>
                     </li>
                   <? endforeach; ?>
-                  <? if (!empty($context_detail->otherBioSamples)): ?>
-                    <? print mica_client_commons_get_localized_field($context_detail, 'otherBioSamples'); ?>
+                  <? if (!empty($dce->otherBioSamples)): ?>
+                    <? print mica_client_commons_get_localized_field($dce, 'otherBioSamples'); ?>
                   <? endif; ?>
                 </ul>
               </div>
             </div>
           <? endif; ?>
-          <? if (!empty($context_detail->tissueTypes)): ?>
+          <? if (!empty($dce->tissueTypes)): ?>
             <div>
               <label><? print t('Tissue Types') ?>:</label>
               <span>
-                <? print mica_client_commons_get_localized_field($context_detail, 'tissueTypes'); ?>
+                <? print mica_client_commons_get_localized_field($dce, 'tissueTypes'); ?>
               </span>
             </div>
           <? endif; ?>
-          <? if (!empty($context_detail->attachments)): ?>
+          <? if (!empty($dce->attachments)): ?>
             <div>
               <label><? print t('Attachments') ?>:</label>
 
               <div class="container">
                 <ul class="list-unstyled">
-                  <? foreach ($context_detail->attachments as $attachment): ?>
+                  <? foreach ($dce->attachments as $attachment): ?>
                     <li>
                       <? print l($attachment->fileName, mica_client_study_get_dce_attachment_url($study_id, $attachment)); ?>
                     </li>
