@@ -148,9 +148,13 @@ function mica_client_study_get_dce_table($dataCollectionEvents) {
 
     $dce_rows[$key_dce] = array(
       'data' => array(
-        'label' => sprintf("<a href=\"#\" data-toggle=\"modal\" data-target=\"#%s\">%s</a>",
-          $dce_wrapper->id,
-          mica_client_commons_get_localized_field($dce_wrapper, 'name')),
+        'label' => l(mica_client_commons_get_localized_field($dce_wrapper, 'name'), '#', array(
+          'external' => TRUE,
+          'attributes' => array(
+            'data-toggle' => 'modal',
+            'data-target' => '#' . $dce_wrapper->id
+          )
+        )),
         'desc' => $dce_description,
         'start_year' => $dce_wrapper->startYear,
         'start_month' => $dce_wrapper->startMonth,
