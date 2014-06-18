@@ -20,7 +20,7 @@ function obiba_auth_admin_settings() {
     '#type' => 'textfield',
     '#title' => t('Agate address'),
     '#required' => TRUE,
-    '#default_value' => variable_get('agate_url', 'https://localhost:8444'),
+    '#default_value' => variable_get('agate_url'),
     '#maxlength' => 255,
     '#description' => t('URL of the Agate server. Note that cross-domain is not supported. Example: https://agate.example.org:8444'),
   );
@@ -29,7 +29,7 @@ function obiba_auth_admin_settings() {
     '#type' => 'textfield',
     '#title' => t('Application name'),
     '#required' => TRUE,
-    '#default_value' => variable_get('agate_application_name', 'drupal'),
+    '#default_value' => variable_get('agate_application_name'),
     '#maxlength' => 255,
     '#description' => t('The name under which the Drupal server is known by Agate.'),
   );
@@ -38,7 +38,7 @@ function obiba_auth_admin_settings() {
     '#type' => 'textfield',
     '#title' => t('Application key'),
     '#required' => TRUE,
-    '#default_value' => variable_get('agate_application_key', 'changeit'),
+    '#default_value' => variable_get('agate_application_key'),
     '#maxlength' => 255,
     '#description' => t('The key used by the Drupal server when issuing requests to Agate.'),
   );

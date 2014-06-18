@@ -31,10 +31,16 @@ class AgateClient {
     return isset($_SESSION[self::OBIBA_COOKIE]);
   }
 
-  public function __construct($agate_url, $application_name, $application_key) {
-    $this->agateUrl = $agate_url . '/ws';
-    $this->applicationName = $application_name;
-    $this->applicationKey = $application_key;
+  /**
+   * AgateClient constructor: if no parameters are provided, default are extracted from Drupal variables.
+   * @param $agate_url
+   * @param $application_name
+   * @param $application_key
+   */
+  public function __construct($agate_url = null, $application_name = null, $application_key = null) {
+    $this->agateUrl = (isset($agate_url) ? $agate_url : variable_get('agate_url')) . '/ws';
+    $this->applicationName = (isset($application_name) ? $application_name : variable_get('agate_application_name'));
+    $this->applicationKey = (isset($application_key) ? $application_key : variable_get('agate_application_key'));
   }
 
   /**
