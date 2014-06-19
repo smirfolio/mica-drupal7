@@ -5,7 +5,6 @@
  */
 
 function mica_client_study_menu() {
-  dpm('hiihaa');
   $items = array();
   $items['mica/studies'] = array(
     'title' => t('Studies'),
