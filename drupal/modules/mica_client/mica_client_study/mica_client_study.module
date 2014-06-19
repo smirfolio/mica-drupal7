@@ -22,6 +22,7 @@ function mica_client_study_menu() {
     'access callback' => TRUE,
     'page arguments' => array(3),
   );
+  return $items;
 }
 
 /**
