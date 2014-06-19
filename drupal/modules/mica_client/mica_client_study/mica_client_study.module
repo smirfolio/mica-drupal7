@@ -29,26 +29,26 @@ function mica_client_study_menu() {
  * Implements hook_requirements().
  */
 
-function mica_client_study_requirements($phase) {
-  $requirements = array();
-  // Ensure translations do not break at install time
-  $t = get_t();
-  $requirements['micatimelines'] = array(
-    'title' => $t('Time lines  Library'),
-  );
-  $libraries = libraries_get_libraries();
-  if (isset($libraries['micatimelines'])) {
-    $requirements['micatimelines']['value'] = $t('Installed');
-    $requirements['micatimelines']['severity'] = REQUIREMENT_OK;
-  }
-  else {
-    $requirements['micatimelines']['value'] = $t('Not Installed');
-    $requirements['micatimelines']['severity'] = REQUIREMENT_ERROR;
-    $requirements['micatimelines']['description'] = $t('Please install the the time lines library %url.', array('%url' => 'http://obiba.org.com'));
-  }
-
-  return $requirements;
-}
+//function mica_client_study_requirements($phase) {
+//  $requirements = array();
+//  // Ensure translations do not break at install time
+//  $t = get_t();
+//  $requirements['micatimelines'] = array(
+//    'title' => $t('Time lines  Library'),
+//  );
+//  $libraries = libraries_get_libraries();
+//  if (isset($libraries['micatimelines'])) {
+//    $requirements['micatimelines']['value'] = $t('Installed');
+//    $requirements['micatimelines']['severity'] = REQUIREMENT_OK;
+//  }
+//  else {
+//    $requirements['micatimelines']['value'] = $t('Not Installed');
+//    $requirements['micatimelines']['severity'] = REQUIREMENT_ERROR;
+//    $requirements['micatimelines']['description'] = $t('Please install the the time lines library %url.', array('%url' => 'http://obiba.org.com'));
+//  }
+//
+//  return $requirements;
+//}
 
 /**
  * Implements hook_theme().

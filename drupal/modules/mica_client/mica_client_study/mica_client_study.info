@@ -1,5 +1,5 @@
-name = "Mica Study"
-description = "Mica Study"
+name = "Mica client Study"
+description = "Mica client Study"
 package = Mica
 core = 7.x
 
