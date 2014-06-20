@@ -21,7 +21,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings enable-mica enable-obiba-auth devel cc bootstrap
+all: clean setup-drupal wwww import-sql settings enable-mica enable-obiba-auth devel cc bootstrap jquery_update
 
 clean:
 	rm -rf target
@@ -63,6 +63,11 @@ bootstrap:
 	drush en -y bootstrap && \
 	drush vset -y theme_default bootstrap && \
 	drush vset -y admin_theme bootstrap
+
+jquery_update:
+	cd target/drupal && \
+	drush dl -y jquery_update && \
+	drush en -y jquery_update
 
 devel:
 	cd target/drupal && \
