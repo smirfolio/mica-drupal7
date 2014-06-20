@@ -20,20 +20,20 @@ include_once($path_module_protos . '/protos/Mica.php');
  */
 class MicaStudyResource extends MicaClient {
 
-  public function __construct($mica_url = null) {
+  public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
   }
 
   public function studies() {
-    $this->setLastResponse(null);
+    $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/studies';
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
-      'headers' => array(
-        'Accept' => array(parent::HEADER_JSON),
-        'Cookie' => array($this->authorizationHeader())
-      )
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
     ));
 
     $client = $this->client();
@@ -57,15 +57,15 @@ class MicaStudyResource extends MicaClient {
   }
 
   public function study($study_id) {
-    $this->setLastResponse(null);
+    $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/study/' . $study_id;
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
-      'headers' => array(
-        'Accept' => array(parent::HEADER_JSON),
-        'Cookie' => array($this->authorizationHeader())
-      )
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
     ));
 
     $client = $this->client();
@@ -73,7 +73,7 @@ class MicaStudyResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dtoObj = '\obiba\mica\StudyDto';
-      return $data ? Protobuf::decode($dtoObj, $data) : null;
+      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
     } catch (HttpClientException $e) {
       return array();
     }

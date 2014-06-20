@@ -20,6 +20,10 @@ include_once($path_module_protos . '/protos/Mica.php');
  */
 class MicaClient {
 
+  const AUTHORIZATION_HEADER = 'Authorization';
+
+  const COOKIE_HEADER = 'Cookie';
+
   const SET_COOKIE_HEADER = 'Set-Cookie';
 
   const OBIBA_COOKIE = 'obibaid';
@@ -39,7 +43,7 @@ class MicaClient {
    * @param null $mica_url
    */
   public function __construct($mica_url = NULL) {
-    $this->micaUrl = (isset($mica_url) ? $mica_url : variable_get('mica_url', 'https://localhost:8445')) . '/ws';
+    $this->micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
   }
 
   /**
@@ -115,20 +119,34 @@ class MicaClient {
   }
 
   /**
-   * @return null|string
+   * Add authorization headers
+   * @param array $headers
+   * @return array
    */
-  protected function authorizationHeader() {
-    $cookie = NULL;
-
+  protected function authorizationHeader(array $headers) {
+    // was logged in via Agate
     if (isset($_COOKIE[self::OBIBA_COOKIE])) {
+      // authenticate by cookie
       $cookie = self::OBIBA_COOKIE . '=' . $_COOKIE[self::OBIBA_COOKIE];
 
       if (isset($_COOKIE[self::MICA_COOKIE])) {
         $cookie = $cookie . '; ' . self::MICA_COOKIE . '=' . $_COOKIE[self::MICA_COOKIE];
       }
+
+      if (isset($headers[self::COOKIE_HEADER])) {
+        array_push($headers[self::COOKIE_HEADER], $cookie);
+      }
+      else {
+        $headers[self::COOKIE_HEADER] = array($cookie);
+      }
+    }
+    else {
+      // authenticate by credentials
+      $credentials = variable_get_value('mica_anonymous_name') . ':' . variable_get_value('mica_anonymous_password');
+      $headers[self::AUTHORIZATION_HEADER] = array('Basic ' . base64_encode($credentials));
     }
 
-    return $cookie;
+    return $headers;
   }
 
   /**
