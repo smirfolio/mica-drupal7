@@ -8,7 +8,7 @@ function mica_client_menu() {
   $items = array();
 
   $items['admin/config/system/obiba'] = array(
-    'title' => 'OBiBa Study settings',
+    'title' => 'OBiBa Mica settings',
     'description' => 'Configure Mica services',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('mica_client_admin_settings'),
