@@ -8,7 +8,7 @@
       <div class="field-items">
         <div class="field-item even">
           <img typeof="foaf:Image"
-               src="https://www.maelstrom-research.org/sites/default/files/styles/study_logo/public/CLSA_Logo_NoWordmark_2colour_RGB.jpg?itok=yXZJMeCk"
+               src="http://localhost:8082/ws/draft/study/<?php print $context_detail->id ?>/file/<?php print $context_detail->logo->id ?>/_download"
                width="120" height="96" alt="">
         </div>
       </div>

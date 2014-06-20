@@ -9,7 +9,7 @@ function mica_client_study_page_detail($study_id) {
   $study_resource = new MicaStudyResource();
   $StudyDto = $study_resource->study($study_id);
   drupal_set_title(mica_client_commons_get_localized_field($StudyDto, 'name'));
-
+  dpm($StudyDto);
   $output = $StudyDto;
 
   return mica_client_study_get_study_detail($output) . mica_client_study_get_timeline_detail($output) . mica_client_study_get_populations_detail($output);
