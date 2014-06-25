@@ -101,7 +101,7 @@ class MicaClient {
   }
 
   /**
-   * Forwards the 'Set-Cookie' directive to the drupal client.
+   * Forwards the 'Set-Cookie' directive(s) to the drupal client if the user was authenticated by Agate.
    */
   private function setLastResponseCookies() {
     foreach ($this->getLastResponseHeader(self::SET_COOKIE_HEADER) as $cookie_str) {
@@ -113,7 +113,10 @@ class MicaClient {
       $path = isset($cookie['Path']) ? $cookie['Path'] : '/';
       $domain = isset($cookie['Domain']) ? $cookie['Domain'] : NULL;
 
-      setcookie($name, $value, $expire, $path, $domain);
+      if (isset($_COOKIE[self::OBIBA_COOKIE])) {
+        // forwards cookies to client if not anonymous user
+        setcookie($name, $value, $expire, $path, $domain);
+      }
       $_SESSION[$name] = $value;
     }
   }
@@ -124,14 +127,11 @@ class MicaClient {
    * @return array
    */
   protected function authorizationHeader(array $headers) {
-    // was logged in via Agate
     if (isset($_COOKIE[self::OBIBA_COOKIE])) {
-      // authenticate by cookie
-      $cookie = self::OBIBA_COOKIE . '=' . $_COOKIE[self::OBIBA_COOKIE];
-
-      if (isset($_COOKIE[self::MICA_COOKIE])) {
-        $cookie = $cookie . '; ' . self::MICA_COOKIE . '=' . $_COOKIE[self::MICA_COOKIE];
-      }
+      // authenticate by cookies coming from request (case of regular user logged in via Agate)
+      $obibaid = $_COOKIE[self::OBIBA_COOKIE];
+      $micasid = isset($_COOKIE[self::MICA_COOKIE]) ? $_COOKIE[self::MICA_COOKIE] : NULL;
+      $cookie = $this->cookieHeaderValue($obibaid, $micasid);
 
       if (isset($headers[self::COOKIE_HEADER])) {
         array_push($headers[self::COOKIE_HEADER], $cookie);
@@ -139,14 +139,42 @@ class MicaClient {
       else {
         $headers[self::COOKIE_HEADER] = array($cookie);
       }
-    }
-    else {
-      // authenticate by credentials
+    } else if (isset($_SESSION[self::OBIBA_COOKIE])) {
+      // authenticate by cookies coming from session (case of anonymous user logged in via Agate)
+      $obibaid = $_SESSION[self::OBIBA_COOKIE];
+      $micasid = isset($_SESSION[self::MICA_COOKIE]) ? $_SESSION[self::MICA_COOKIE] : NULL;
+      $cookie = $this->cookieHeaderValue($obibaid, $micasid);
+
+      if (isset($headers[self::COOKIE_HEADER])) {
+        array_push($headers[self::COOKIE_HEADER], $cookie);
+      }
+      else {
+        $headers[self::COOKIE_HEADER] = array($cookie);
+      }
+    } else {
+      // authenticate by anonymous credentials
       $credentials = variable_get_value('mica_anonymous_name') . ':' . variable_get_value('mica_anonymous_password');
       $headers[self::AUTHORIZATION_HEADER] = array('Basic ' . base64_encode($credentials));
     }
 
     return $headers;
+  }
+
+  /**
+   * Add authorization by cookies header.
+   * @param array $headers
+   * @param $obibaid
+   * @param $micasid
+   * @return string
+   */
+  private function cookieHeaderValue($obibaid, $micasid) {
+    $cookie = self::OBIBA_COOKIE . '=' . $obibaid;
+
+    if (isset($micasid)) {
+      $cookie = $cookie . '; ' . self::MICA_COOKIE . '=' . $micasid;
+    }
+
+    return $cookie;
   }
 
   /**
