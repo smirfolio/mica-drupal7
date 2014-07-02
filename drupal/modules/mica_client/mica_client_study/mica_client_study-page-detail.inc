@@ -12,7 +12,20 @@ function mica_client_study_page_detail($study_id) {
   dpm($StudyDto);
   $output = $StudyDto;
 
-  return mica_client_study_get_study_detail($output) . mica_client_study_get_timeline_detail($output) . mica_client_study_get_populations_detail($output);
+  return mica_client_study_get_study_detail($output) .
+  mica_client_study_get_timeline_detail($output) .
+  mica_client_study_get_populations_detail($output);
+}
+
+/**
+ * @params $StudyDto_id, $StudyDto_attachment
+ * @return themed study attachment output
+ */
+function mica_client_study_get_study_attachement($StudyDto_id, $StudyDto_attachments) {
+  return theme('mica_client_study_attachments', array(
+    'study_id' => $StudyDto_id,
+    'documents' => $StudyDto_attachments
+  ));
 }
 
 /*
@@ -51,8 +64,7 @@ function mica_client_study_library() {
  * Format time-line schema
  * */
 function mica_client_study_get_timeline_detail($study_detail) {
-  $codec = new \DrSlump\Protobuf\Codec\Json();
-  $study_json = $study_detail->serialize($codec);
+  $study_json = json_encode($study_detail);
   $page_render_timeline = NULL;
   $page_render_timeline .= '
 <section> <h2 class="block-title">' . t("Study Timeline") . '</h2><div> <article>
@@ -164,4 +176,8 @@ function mica_client_study_get_dce_table($dataCollectionEvents) {
     );
   }
   return $dce_rows;
+}
+
+function mica_client_study_get_attachment_file($study_id, $attachments) {
+  return theme('mica_client_study_attachments', array('study_id' => $study_id, 'documents' => $attachments));
 }

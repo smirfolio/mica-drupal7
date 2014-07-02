@@ -7,6 +7,19 @@
  * @param string The string to convert.
  * @return string The slug.
  */
+$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
+$path_module_protos = drupal_get_path('module', 'mica_client_model');
+
+include_once($path_module_protobuf . '/protobuf/Protobuf.php');
+use \DrSlump\Protobuf;
+
+Protobuf::autoload();
+
+const HEADER_BINARY = 'application/x-protobuf';
+const HEADER_JSON = 'application/json';
+include_once($path_module_protos . '/protos/Mica.php');
+
+
 function mica_client_commons_to_slug($string) {
   $string = str_replace(array('/', ' '), '-', $string);
   $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
@@ -36,6 +49,19 @@ function mica_client_commons_get_localized_field($std, $field, $lang = NULL) {
       }
       else {
         $value = $field_value->value;
+      }
+    }
+  }
+  elseif (!empty($std[$field])) {
+    foreach ($std[$field] as $field_value) {
+      if (!empty($lang) && $lang == $field_value['lang']) {
+        return $field_value['value'];
+      }
+      elseif ($field_value['lang'] == 'en') {
+        $value = $field_value['value'];
+      }
+      else {
+        $value = $field_value['value'];
       }
     }
   }
@@ -135,3 +161,52 @@ function mica_client_commons_format_year($year, $month) {
   }
   return empty($month) ? "$year" : "$year (" . mica_client_commons_get_month_name($month) . ")";
 }
+
+
+function mica_client_commons_get_list($path, $dtoObj) {
+  $dtos = array();
+  Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
+  $data = _mica_client_commons_ws_client_get($path, 'GET', array('Accept' => array(HEADER_JSON)));
+  if ($data) {
+    foreach (json_decode($data) as $study) {
+      $dtos [] = Protobuf::decode($dtoObj, json_encode($study));
+    }
+  }
+  return $dtos;
+}
+
+function mica_client_commons_get_detail($path, $dtoObj) {
+  Protobuf::setDefaultCodec(new Protobuf\Codec\Binary());
+  $data = _mica_client_commons_ws_client_get($path, 'GET', array('Accept' => array(HEADER_BINARY)));
+  return $data ? Protobuf::decode($dtoObj, $data) : NULL;
+}
+
+
+function _mica_client_commons_ws_client_get($path, $method, $header, $data = NULL) {
+  $url = 'http://localhost:8082/ws/' . $path;
+
+  $post = new HttpClientRequest($url, array(
+    'method' => $method, //GET. POST
+    'headers' => $header, //array('Content-Type' => array('application/json')),
+    'data' => $data,
+    'parameters' => array(),
+  ));
+
+  try {
+    $client = new HttpClient($formatter = FALSE);
+    $body = $client->execute($post);
+  } catch (HttpClientException $e) {
+    if ($e->getCode() == 0) {
+      // curl error
+
+      throw new Exception($e->getMessage());
+    }
+    elseif (!in_array($e->getCode(), array(200, 201, 202, 203, 204, 205, 206))) {
+
+      throw $e;
+    }
+    $body = $e->getResponse()->body;
+  }
+  return $body;
+}
+

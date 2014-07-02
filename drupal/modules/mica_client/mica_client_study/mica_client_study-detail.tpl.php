@@ -4,15 +4,18 @@
     </header>
     <span class="print-link"></span>
 
-    <div class="field field-name-field-logo field-type-image field-label-hidden">
-      <div class="field-items">
-        <div class="field-item even">
-          <img typeof="foaf:Image"
-               src="http://localhost:8082/ws/draft/study/<?php print $context_detail->id ?>/file/<?php print $context_detail->logo->id ?>/_download"
-               width="120" height="96" alt="">
+    <?php if (!empty($context_detail->logo)): ?>
+      <div class="field field-name-field-logo field-type-image field-label-hidden">
+        <div class="field-items">
+          <div class="field-item even">
+            <img typeof="foaf:Image"
+                 src="http://localhost:8082/ws/draft/study/<?php print $context_detail->id ?>/file/<?php print $context_detail->logo->id ?>/_download"
+                 width="120" height="96" alt="">
+          </div>
         </div>
       </div>
-    </div>
+    <?php endif; ?>
+
     <div class="field field-name-body field-type-text-with-summary field-label-hidden">
       <div class="field-items">
         <div class="field-item even" property="content:encoded">
@@ -396,6 +399,10 @@
           </div>
         </div>
       </div>
+
+      <?php if (!empty($context_detail->attachments)): ?>
+        <?php print mica_client_study_get_attachment_file($context_detail->id, $context_detail->attachments); ?>
+      <?php endif; ?>
 
     </div>
   </section>
