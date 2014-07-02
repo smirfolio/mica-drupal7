@@ -248,5 +248,5 @@
 <?php endif; ?>
 
 <?php if (!empty($context_population_detail['dce-modal'])): ?>
-    <div><?php  print $context_population_detail['dce-modal'];  ?></div>
+  <div><?php print $context_population_detail['dce-modal']; ?></div>
 <?php endif; ?>

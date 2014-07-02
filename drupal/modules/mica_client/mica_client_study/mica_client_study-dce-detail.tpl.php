@@ -97,23 +97,10 @@
           <?php endif; ?>
           <?php if (!empty($dce->attachments)): ?>
             <div>
-              <label><?php print t('Attachments') ?>:</label>
-
-              <div class="container">
-                <ul class="list-unstyled">
-                  <?php foreach ($dce->attachments as $attachment): ?>
-                    <li>
-                      <?php print l($attachment->fileName, mica_client_study_get_dce_attachment_url($study_id, $attachment)); ?>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </div>
+              <?php print mica_client_study_get_attachment_file($study_id, $dce->attachments); ?>
             </div>
           <?php endif; ?>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><?php print t('Close') ?></button>
       </div>
     </div>
   </div>
