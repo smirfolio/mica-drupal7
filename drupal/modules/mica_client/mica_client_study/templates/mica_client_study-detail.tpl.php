@@ -55,7 +55,7 @@
           <div class="field-label"><?php print t('Website') ?> :</div>
           <div class="field-items">
             <div class="field-item even">
-              <?
+              <?php
               print l($context_detail->website,
                 $context_detail->website,
                 array('attributes' => array('target' => '_blank')));

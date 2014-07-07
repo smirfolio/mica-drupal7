@@ -26,7 +26,7 @@ class MicaStudyResource extends MicaClient {
 
   public function studies() {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/studies';
+    $url = $this->micaUrl . '/studies/_search';
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -40,12 +40,12 @@ class MicaStudyResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-
+      dpm(json_decode($data));
+      $_SESSION['aggregations'] = json_decode($data)->aggs;
       $dtoObj = '\obiba\mica\StudySummaryDto';
-
       $dtos = array();
       if ($data) {
-        foreach (json_decode($data) as $study) {
+        foreach (json_decode($data)->summaries as $study) {
           $dtos [] = Protobuf::decode($dtoObj, json_encode($study));
         }
       }

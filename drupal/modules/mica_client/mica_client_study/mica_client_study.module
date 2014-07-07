@@ -55,12 +55,14 @@ function mica_client_study_menu() {
  * Implements hook_theme().
  */
 function mica_client_study_theme($existing, $type, $theme, $path) {
+  $path_theme = drupal_get_path('module', 'mica_client_study') . '/templates';
   return array(
-    'mica_client_study_list' => array('template' => '/mica_client_study-list'),
-    'mica_client_study_detail' => array('template' => '/mica_client_study-detail'),
-    'mica_population_detail' => array('template' => '/mica_client_study-population-detail'),
-    'mica_dce_detail' => array('template' => '/mica_client_study-dce-detail'),
-    'mica_client_study_attachments' => array('template' => '/mica_client_study_attachments')
+    'mica_client_study_list' => array('template' => 'mica_client_study-list', 'path' => $path_theme),
+    'mica_client_study_detail' => array('template' => 'mica_client_study-detail', 'path' => $path_theme),
+    'mica_population_detail' => array('template' => 'mica_client_study-population-detail', 'path' => $path_theme),
+    'mica_dce_detail' => array('template' => 'mica_client_study-dce-detail', 'path' => $path_theme),
+    'mica_client_study_attachments' => array('template' => 'mica_client_study_attachments', 'path' => $path_theme),
+    'mica_client_study_block_search' => array('template' => 'mica_client_study_block_search', 'path' => $path_theme)
   );
 }
 
@@ -125,3 +127,105 @@ function mica_client_study_get_attachment_url($study_id, $attachment) {
     $study_id,
     $attachment->id);
 }
+
+/**
+ * Implements hook_block_info().
+ */
+function mica_client_study_block_info() {
+  $blocks['search-access'] = array(
+    'info' => 'Facet search Data access',
+    'title' => 'DATA ACCESS',
+    'status' => 1,
+    'region' => 'primary',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies*',
+    'weight' => 50,
+    'custom' => 1,
+  );
+
+  $blocks['search-methods-designs'] = array(
+    'info' => 'Facet search Study Design',
+    'title' => 'STUDY DESIGN',
+    'status' => 1,
+    'region' => 'primary',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies*',
+    'weight' => 49,
+    'custom' => 1,
+  );
+
+  $blocks['search-methods-recruitments'] = array(
+    'info' => 'Facet search Recruitmenet target',
+    'title' => 'RECRUITMENT TARGET',
+    'status' => 1,
+    'region' => 'primary',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies*',
+    'weight' => 49,
+    'custom' => 1,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function mica_client_study_block_view($delta = '') {
+  switch ($delta) {
+    case 'search-access':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('DATA ACCESS');
+        $block['content'] = mica_client_study_precess_block_theme($delta);
+      }
+      return $block;
+
+    case 'search-methods-designs':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('STUDY DESIGN');
+        $block['content'] = mica_client_study_precess_block_theme($delta);
+      }
+      return $block;
+
+    case 'search-methods-recruitments':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('RECRUITMENT TARGET');
+        $block['content'] = mica_client_study_precess_block_theme($delta);
+      }
+      return $block;
+
+  }
+}
+
+function mica_client_study_precess_block_theme($block_delta) {
+  $items = array();
+  if (!empty($block_delta)) {
+    foreach (current(mica_client_study_get_dto_facet_aggs($block_delta)) as $term) {
+      ;
+      $items[$term->key] = array(
+        '#markup' => '<input type="checkbox" name="' .
+          key(mica_client_study_get_dto_facet_aggs($block_delta)) . '" value="' . $term->key . '">' .
+          $term->key . '(' . $term->count . ')'
+      );
+    }
+  }
+  return theme('mica_client_study_block_search', array('items' => $items));
+}
+
+function mica_client_study_get_dto_facet_aggs($tab_block) {
+  foreach ($_SESSION['aggregations'] as $facet) {
+    if ($facet->aggregation == 'access') {
+      $facet_build['search-access']['access'] = $facet->termsAggregations;
+    }
+    if ($facet->aggregation == 'methods-designs') {
+      $facet_build['search-methods-designs']['methods-designs'] = $facet->termsAggregations;
+    }
+    if ($facet->aggregation == 'methods-recruitments') {
+      $facet_build['search-methods-recruitments']['methods-recruitments'] = $facet->termsAggregations;
+    }
+  }
+  return $facet_build[$tab_block];
+}
+
+
+
