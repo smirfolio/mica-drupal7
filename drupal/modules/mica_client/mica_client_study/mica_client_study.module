@@ -7,6 +7,7 @@
 
 function mica_client_study_menu() {
   $items = array();
+
   $items['mica/studies'] = array(
     'title' => t('Studies'),
     'description' => t('Published studies'),
@@ -16,6 +17,16 @@ function mica_client_study_menu() {
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM
   );
+
+  $items['mica/studies_search/%'] = array(
+    'title' => t('Studies Search'),
+    'description' => t('Search published studies'),
+    'page callback' => 'mica_client_study_page_search',
+    'file' => 'mica_client_study-page-search.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2)
+  );
+
   $items['mica/study/%'] = array(
     'title' => t('Mica study detail'),
     'page callback' => 'mica_client_study_page_detail',
@@ -24,6 +35,33 @@ function mica_client_study_menu() {
     'page arguments' => array(3),
   );
   return $items;
+}
+
+function mica_client_study_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  $links = array();
+  switch ($root_path) {
+    case 'mica/studies':
+      $links['mica/studies_search'] = array(
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Studies Search'),
+          'href' => 'mica/studies_search/_all',
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+  }
+
+  $data['actions']['output'] = array_merge($data['actions']['output'], $links);
 }
 
 /**
@@ -58,6 +96,7 @@ function mica_client_study_theme($existing, $type, $theme, $path) {
   $path_theme = drupal_get_path('module', 'mica_client_study') . '/templates';
   return array(
     'mica_client_study_list' => array('template' => 'mica_client_study-list', 'path' => $path_theme),
+    'mica_client_study_search' => array('template' => 'mica_client_study-search', 'path' => $path_theme),
     'mica_client_study_detail' => array('template' => 'mica_client_study-detail', 'path' => $path_theme),
     'mica_population_detail' => array('template' => 'mica_client_study-population-detail', 'path' => $path_theme),
     'mica_dce_detail' => array('template' => 'mica_client_study-dce-detail', 'path' => $path_theme),
@@ -138,7 +177,7 @@ function mica_client_study_block_info() {
     'status' => 1,
     'region' => 'primary',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies*',
+    'pages' => '*mica/studies/_search*',
     'weight' => 50,
     'custom' => 1,
   );
@@ -149,7 +188,7 @@ function mica_client_study_block_info() {
     'status' => 1,
     'region' => 'primary',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies*',
+    'pages' => '*mica/studies/_search*',
     'weight' => 49,
     'custom' => 1,
   );
@@ -160,7 +199,7 @@ function mica_client_study_block_info() {
     'status' => 1,
     'region' => 'primary',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies*',
+    'pages' => '*mica/studies/_search*',
     'weight' => 49,
     'custom' => 1,
   );
@@ -199,17 +238,21 @@ function mica_client_study_block_view($delta = '') {
 
 function mica_client_study_precess_block_theme($block_delta) {
   $items = array();
+  $agregation_facet = NULL;
   if (!empty($block_delta)) {
+    $agregation_facet = key(mica_client_study_get_dto_facet_aggs($block_delta));
     foreach (current(mica_client_study_get_dto_facet_aggs($block_delta)) as $term) {
       ;
       $items[$term->key] = array(
-        '#markup' => '<input type="checkbox" name="' .
-          key(mica_client_study_get_dto_facet_aggs($block_delta)) . '" value="' . $term->key . '">' .
-          $term->key . '(' . $term->count . ')'
+        '#markup' => '<div id="checkthebox" class="terms_checkbox"><input type="checkbox" name="' .
+          $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
+          $agregation_facet . '-' . $term->key . '" >' .
+          //  '<a href="#"  disabled="disabled" id="checkthebox" term="'. $agregation_facet . '-' . $term->key.'" >'.
+          $term->key . '(' . $term->count . ') </div>'
       );
     }
   }
-  return theme('mica_client_study_block_search', array('items' => $items));
+  return theme('mica_client_study_block_search', array('items' => $items, 'formId' => $agregation_facet));
 }
 
 function mica_client_study_get_dto_facet_aggs($tab_block) {

@@ -1,16 +1,19 @@
 <?php
 
-function mica_client_study_page_list() {
-  $output['title'] = t('Study Catalogue');
-  $output['data'] = mica_client_study_studies_table();
+function mica_client_study_page_search($request) {
+  $output['title'] = t('Study search page');
+  $output['data'] = mica_client_study_studies_search_table($request);
   drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/mica_studies.css', 'file');
-  return theme('mica_client_study_list', array("context_detail" => $output));
+  drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/mica-client-study-search.js', 'file');
+  drupal_add_js(array('mica_client_study' => array('queries' => 'test_param')), 'setting');
+  return theme('mica_client_study_search', array("context_detail" => $output));
 }
 
-function mica_client_study_studies_table() {
+function mica_client_study_studies_search_table($request) {
   $rows = array();
   $study_resource = new MicaStudyResource();
-  $studies = $study_resource->studies();
+  dpm($request);
+  $studies = $study_resource->studies_search();
   foreach ($studies as $study) {
     $name = mica_client_commons_get_localized_field($study, 'name');
     $rows[] = array(

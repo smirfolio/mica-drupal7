@@ -8,9 +8,10 @@
 <!--</ul>-->
 
 <?php //dpm($items['VAR_ONE']);?>
-
-<?php foreach ($items as $term => $term_count): ?>
-  <label class="checkbox">
-    <?php print render($term_count); ?>
-  </label>
-<?php endforeach; ?>
+<form id="search_<?php print $formId; ?>" method="GET">
+  <?php foreach ($items as $term => $term_count): ?>
+    <label class="checkbox">
+      <?php print render($term_count); ?>
+    </label>
+  <?php endforeach; ?>
+</form>
