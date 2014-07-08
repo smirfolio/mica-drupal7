@@ -26,6 +26,37 @@ class MicaStudyResource extends MicaClient {
 
   public function studies() {
     $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/studies';
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      dpm(json_decode($data));
+
+      $dtoObj = '\obiba\mica\StudySummaryDto';
+      $dtos = array();
+      if ($data) {
+        foreach (json_decode($data) as $study) {
+          $dtos [] = Protobuf::decode($dtoObj, json_encode($study));
+        }
+      }
+
+      return $dtos;
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
+  public function studies_search() {
+    $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/studies/_search';
 
     $request = new HttpClientRequest($url, array(
