@@ -172,8 +172,8 @@ function mica_client_study_get_attachment_url($study_id, $attachment) {
  */
 function mica_client_study_block_info() {
   $blocks['search-access'] = array(
-    'info' => 'Facet search Data access',
-    'title' => 'DATA ACCESS',
+    'info' => t('Facet search Data access'),
+    'title' => t('DATA ACCESS'),
     'status' => 1,
     'region' => 'primary',
     'visibility' => BLOCK_VISIBILITY_LISTED,
@@ -181,29 +181,38 @@ function mica_client_study_block_info() {
     'weight' => 50,
     'custom' => 1,
   );
-
-  $blocks['search-methods-designs'] = array(
-    'info' => 'Facet search Study Design',
-    'title' => 'STUDY DESIGN',
+  $blocks['search-start'] = array(
+    'info' => t('Facet search Date start'),
+    'title' => t('DATE START'),
     'status' => 1,
     'region' => 'primary',
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => '*mica/studies/_search*',
     'weight' => 49,
+    'custom' => 1,
+  );
+
+  $blocks['search-methods-designs'] = array(
+    'info' => t('Facet search Study Design'),
+    'title' => t('STUDY DESIGN'),
+    'status' => 1,
+    'region' => 'primary',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies/_search*',
+    'weight' => 48,
     'custom' => 1,
   );
 
   $blocks['search-methods-recruitments'] = array(
-    'info' => 'Facet search Recruitmenet target',
-    'title' => 'RECRUITMENT TARGET',
+    'info' => t('Facet search Recruitmenet target'),
+    'title' => t('RECRUITMENT TARGET'),
     'status' => 1,
     'region' => 'primary',
     'visibility' => BLOCK_VISIBILITY_LISTED,
     'pages' => '*mica/studies/_search*',
-    'weight' => 49,
+    'weight' => 47,
     'custom' => 1,
   );
-
   return $blocks;
 }
 
@@ -216,6 +225,13 @@ function mica_client_study_block_view($delta = '') {
       if (user_access('access content')) { //good idea to check user perms here
         $block['subject'] = t('DATA ACCESS');
         $block['content'] = mica_client_study_precess_block_theme($delta);
+      }
+      return $block;
+
+    case 'start':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('DATE START');
+        $block['content'] = mica_client_study_precess_block_theme('search-start');
       }
       return $block;
 
@@ -242,9 +258,9 @@ function mica_client_study_precess_block_theme($block_delta) {
   if (!empty($block_delta)) {
     $agregation_facet = key(mica_client_study_get_dto_facet_aggs($block_delta));
     foreach (current(mica_client_study_get_dto_facet_aggs($block_delta)) as $term) {
-      ;
+
       $items[$term->key] = array(
-        '#markup' => '<div id="checkthebox" class="terms_checkbox"><input type="checkbox" name="' .
+        '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
           $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
           $agregation_facet . '-' . $term->key . '" >' .
           //  '<a href="#"  disabled="disabled" id="checkthebox" term="'. $agregation_facet . '-' . $term->key.'" >'.
@@ -259,6 +275,9 @@ function mica_client_study_get_dto_facet_aggs($tab_block) {
   foreach ($_SESSION['aggregations'] as $facet) {
     if ($facet->aggregation == 'access') {
       $facet_build['search-access']['access'] = $facet->termsAggregations;
+    }
+    if ($facet->aggregation == 'start') {
+      $facet_build['search-start']['start'] = $facet->termsAggregations;
     }
     if ($facet->aggregation == 'methods-designs') {
       $facet_build['search-methods-designs']['methods-designs'] = $facet->termsAggregations;
