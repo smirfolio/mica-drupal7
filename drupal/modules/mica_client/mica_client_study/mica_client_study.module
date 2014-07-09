@@ -272,18 +272,20 @@ function mica_client_study_precess_block_theme($block_delta) {
 }
 
 function mica_client_study_get_dto_facet_aggs($tab_block) {
-  foreach ($_SESSION['aggregations'] as $facet) {
-    if ($facet->aggregation == 'access') {
-      $facet_build['search-access']['access'] = $facet->termsAggregations;
-    }
-    if ($facet->aggregation == 'start') {
-      $facet_build['search-start']['start'] = $facet->termsAggregations;
-    }
-    if ($facet->aggregation == 'methods-designs') {
-      $facet_build['search-methods-designs']['methods-designs'] = $facet->termsAggregations;
-    }
-    if ($facet->aggregation == 'methods-recruitments') {
-      $facet_build['search-methods-recruitments']['methods-recruitments'] = $facet->termsAggregations;
+  foreach ($_SESSION['aggregations'] as $key_tab => $facet) {
+    if (is_int($key_tab)) {
+      if ($facet->aggregation == 'access') {
+        $facet_build['search-access']['access'] = $facet->termsAggregations;
+      }
+      if ($facet->aggregation == 'start') {
+        $facet_build['search-start']['start'] = $facet->termsAggregations;
+      }
+      if ($facet->aggregation == 'methods-designs') {
+        $facet_build['search-methods-designs']['methods-designs'] = $facet->termsAggregations;
+      }
+      if ($facet->aggregation == 'methods-recruitments') {
+        $facet_build['search-methods-recruitments']['methods-recruitments'] = $facet->termsAggregations;
+      }
     }
   }
   return $facet_build[$tab_block];

@@ -41,7 +41,6 @@ class MicaStudyResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       dpm(json_decode($data));
-
       $dtoObj = '\obiba\mica\StudySummaryDto';
       $dtos = array();
       if ($data) {
@@ -64,7 +63,7 @@ class MicaStudyResource extends MicaClient {
       $term = explode('=', $term_association);
       if (!empty($term[1])) {
         $decoded_term = urldecode($term[0]);
-        $formated_term[str_replace('[]', '', $decoded_term)][] = $term[1];
+        $formated_term[preg_replace('/\[[^\]]*\]/', '', $decoded_term)][] = $term[1];
       }
     }
     return $formated_term;
@@ -73,37 +72,62 @@ class MicaStudyResource extends MicaClient {
   private function _dto_filter_construct($request_param) {
     $dto_guery = new \obiba\mica\QueryDto;
     $dto_guery_bool_filter = new \obiba\mica\BoolFilterQueryDto;
-
     foreach ($this->_normalize_parameters($request_param) as $field => $term_association) {
+//dpm($url_param_array);
+      if ($field != 'page') {
+        $dto_guery_filter = new \obiba\mica\FilteredQueryDto;
+        foreach ($term_association as $term) {
 
-      $dto_guery_filter = new \obiba\mica\FilteredQueryDto;
-      foreach ($term_association as $term) {
+          $dto_guery_term = new \obiba\mica\TermsQueryDto;
+          $dto_guery_term->setField($field);
+          $dto_guery_term->setValues(str_replace($field . '.', '', $term_association));
 
-        $dto_guery_term = new \obiba\mica\TermsQueryDto;
-        $dto_guery_term->setField($field);
-        $dto_guery_term->setValues(str_replace($field . '.', '', $term_association));
-
+        }
+        $dto_guery_bool_filter->addTerms($dto_guery_term);
+        $dto_guery_filter->setFilter($dto_guery_bool_filter);
       }
-
-      $dto_guery_bool_filter->addTerms($dto_guery_term);
-      $dto_guery_filter->setFilter($dto_guery_bool_filter);
+      if ($field == 'page') {
+        dpm($term_association[0]);
+        $dto_guery->setFrom($this->_pagination_parameters($term_association[0]));
+      }
+      $dto_guery->setSize(parent::SIZE_RESPONSE);
+    }
+    if (!empty($dto_guery_filter)) {
+      $dto_guery->setFilteredQuery($dto_guery_filter);
     }
 
-    $dto_guery->setFilteredQuery($dto_guery_filter);
-
+    $dto_guery->detailed = FALSE;
     dpm(json_encode($dto_guery));
     dpm($dto_guery);
     return json_encode($dto_guery);
+  }
+
+  private function _pagination_parameters($current_page = NULL) {
+    $nb_pages = ceil($_SESSION['aggregations']['totalHits'] / parent::SIZE_RESPONSE);
+    if (!empty($current_page)) {
+      $pageActuelle = intval($current_page);
+      if ($pageActuelle > $nb_pages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+      {
+        $pageActuelle = $nb_pages;
+      }
+    }
+    else {
+      $pageActuelle = 1; // La page actuelle est la n°1
+    }
+    $premiereEntree = ($pageActuelle - 1) * parent::SIZE_RESPONSE; // On calcul la première entrée à lire
+    return $premiereEntree;
   }
 
   private function _session_facets_builder($aggregations) {
     $current_session_aggregations = $_SESSION['aggregations'];
     if (!empty($aggregations->totalHits)) {
       $_SESSION['aggregations'] = $aggregations->aggs;
+      $_SESSION['aggregations']['totalHits'] = $aggregations->totalHits;
     }
   }
 
-  public function studies_search($request_param) {
+  public
+  function studies_search($request_param) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/studies/_search';
 
@@ -143,17 +167,18 @@ class MicaStudyResource extends MicaClient {
       $ummarier_data = !empty($dto_data_response->summaries) ? $dto_data_response->summaries : NULL;
       if ($ummarier_data) {
         foreach ($dto_data_response->summaries as $study) {
-          $dtos [] = Protobuf::decode($dtoObj, json_encode($study));
+          $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($study));
         }
       }
-
+      $dtos ['totalHits'] = $dto_data_response->totalHits;
       return $dtos;
     } catch (HttpClientException $e) {
       return array();
     }
   }
 
-  public function study($study_id) {
+  public
+  function study($study_id) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/study/' . $study_id;
 
