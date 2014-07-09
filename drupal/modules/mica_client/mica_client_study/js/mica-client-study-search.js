@@ -14,15 +14,18 @@
 
           return vars;
         },
-        sendCheckboxCheckedValues: function () {
+        sendCheckboxCheckedValues: function (idcheckbox) {
           var serializedData = "";
           $('form').each(function () {
             var SerilizedForm = ($(this).serialize());
-            console.log(SerilizedForm);
             if (SerilizedForm) {
               serializedData = serializedData.concat(SerilizedForm).concat('&');
             }
           });
+//          if (idcheckbox) {
+//            console.log(serializedData);
+//            console.log(idcheckbox);
+//          }
           return serializedData;
         }
       });
@@ -33,23 +36,33 @@
       $('input[type="checkbox"]').each(function () {
         var currInputValue = $(this).attr('value');
         if ($.inArray(currInputValue, allVars) !== -1) {
-          $(this).prop("checked", true);
+          $(this).attr('checked', true);
           $(this).parent().addClass("selected_item");
         }
       });
 
-      $("div#checkthebox").click(function () {
+      $("div#checkthebox").on("click", function () {
         var idcheckbox = $(this).attr("term");
 
-        if ($('#' + idcheckbox).is(':checked')) {
-          $('#' + idcheckbox).attr('checked', false);
-          window.location = '?' + $.sendCheckboxCheckedValues();
-        }
-        else {
-          $('#' + idcheckbox).attr('checked', true);
-          console.log($.sendCheckboxCheckedValues());
-          window.location = $.sendCheckboxCheckedValues();
-        }
+        $('#' + idcheckbox).change(function () {
+
+          console.log($('#' + idcheckbox).is(":checked"));
+          if ($('#' + idcheckbox).is(":checked")) {
+
+            $('#' + idcheckbox).attr('checked', true);
+            $.sendCheckboxCheckedValues();
+            window.location = '?' + $.sendCheckboxCheckedValues();
+
+          }
+
+          else {
+            $.sendCheckboxCheckedValues(idcheckbox);
+            window.location = '?' + $.sendCheckboxCheckedValues(idcheckbox);
+          }
+
+        });
+
+
       });
       ///her we goo
       if (Drupal.settings.mica_client_study.queries) {
