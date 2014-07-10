@@ -13,7 +13,7 @@ function mica_client_study_studies_search_table($request) {
   $rows = array();
   $study_resource = new MicaStudyResource();
   $studies = $study_resource->studies_search($request);
-  foreach ($studies as $study) {
+  foreach ($studies['data'] as $study) {
     $name = mica_client_commons_get_localized_field($study, 'name');
     $rows[] = array(
       mica_client_commons_get_localized_field($study, 'acronym'),
@@ -24,7 +24,7 @@ function mica_client_study_studies_search_table($request) {
       implode($study->countries),
     );
   }
-
+//dpm($studies['totalHits']);
   $headers = array(
     t('Short Name'),
     t('Name'),
@@ -32,17 +32,18 @@ function mica_client_study_studies_search_table($request) {
     t('Target number of participants'),
     t('Country of residence'),
   );
-  $per_page = 20;
-  $current_page = pager_default_initialize(count($rows), $per_page);
-  $chunks = array_chunk($rows, $per_page, TRUE);
+  $per_page = $study_resource::SIZE_RESPONSE;
+  $current_page = pager_default_initialize($studies['totalHits'], $per_page);
+
+
   return theme(
     'table',
     array(
       'header' => $headers,
-      'rows' => empty($chunks) ? array() : $chunks[$current_page],
+      'rows' => $rows, // empty($chunks) ? array() : $chunks[$current_page],
       'empty' => t('No data found')
     )
-  ) . theme('pager', array('quantity', count($rows)));
+  ) . theme('pager', array('quantity', $studies['totalHits']));
 }
 
 
