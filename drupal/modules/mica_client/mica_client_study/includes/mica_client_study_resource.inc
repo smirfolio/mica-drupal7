@@ -79,7 +79,7 @@ class MicaStudyResource extends MicaClient {
         foreach ($term_association as $term) {
 
           $dto_guery_term = new \obiba\mica\TermsQueryDto;
-          $dto_guery_term->setField($field);
+          $dto_guery_term->setField(str_replace('-', '.', $field));
           $dto_guery_term->setValues(str_replace($field . '.', '', $term_association));
 
         }
@@ -119,7 +119,6 @@ class MicaStudyResource extends MicaClient {
   }
 
   private function _session_facets_builder($aggregations) {
-    $current_session_aggregations = $_SESSION['aggregations'];
     if (!empty($aggregations->totalHits)) {
       $_SESSION['aggregations'] = $aggregations->aggs;
       $_SESSION['aggregations']['totalHits'] = $aggregations->totalHits;

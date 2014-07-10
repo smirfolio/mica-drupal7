@@ -171,48 +171,131 @@ function mica_client_study_get_attachment_url($study_id, $attachment) {
  * Implements hook_block_info().
  */
 function mica_client_study_block_info() {
-  $blocks['search-access'] = array(
-    'info' => t('Facet search Data access'),
-    'title' => t('DATA ACCESS'),
-    'status' => 1,
-    'region' => 'primary',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies/_search*',
-    'weight' => 50,
-    'custom' => 1,
-  );
-  $blocks['search-start'] = array(
-    'info' => t('Facet search Date start'),
-    'title' => t('DATE START'),
-    'status' => 1,
-    'region' => 'primary',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies/_search*',
-    'weight' => 49,
-    'custom' => 1,
-  );
-
   $blocks['search-methods-designs'] = array(
     'info' => t('Facet search Study Design'),
     'title' => t('STUDY DESIGN'),
     'status' => 1,
-    'region' => 'primary',
+    'region' => 'sidebar_first',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies/_search*',
-    'weight' => 48,
+    'pages' => '*mica/studies_search*',
+    'weight' => -10,
     'custom' => 1,
   );
+
+  $blocks['search-populations-countriesIso'] = array(
+    'info' => t('Facet search country of residence'),
+    'title' => t('COUNTRY OF RESIDENCE'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => -9,
+    'custom' => 1,
+  );
+
+  $blocks['search-populations-ageMin'] = array(
+    'info' => t('Facet search minimum age'),
+    'title' => t('MINIMUM AGE'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => -8,
+    'custom' => 1,
+  );
+
+  $blocks['search-populations-ageMax'] = array(
+    'info' => t('Facet search maximum age'),
+    'title' => t('MAXIMUM AGE'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => -7,
+    'custom' => 1,
+  );
+
+  $blocks['search-populations-gender'] = array(
+    'info' => t('Facet search by gender'),
+    'title' => t('GENDER'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => -6,
+    'custom' => 1,
+  );
+
+  $blocks['search-participant-number'] = array(
+    'info' => t('Facet search number of participants'),
+    'title' => t('TARGET NUMBER OF PARTICIPANTS'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => -5,
+    'custom' => 1,
+  );
+
+  $blocks['search-parti-samples-number'] = array(
+    'info' => t('Facet search number of participants with samples'),
+    'title' => t('TARGET NUMBER OF PARTICIPANTS WITH SAMPLES'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => -4,
+    'custom' => 1,
+  );
+
 
   $blocks['search-methods-recruitments'] = array(
     'info' => t('Facet search Recruitmenet target'),
     'title' => t('RECRUITMENT TARGET'),
     'status' => 1,
-    'region' => 'primary',
+    'region' => 'sidebar_first',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies/_search*',
-    'weight' => 47,
+    'pages' => '*mica/studies_search*',
+    'weight' => -3,
     'custom' => 1,
   );
+
+
+  $blocks['search-access'] = array(
+    'info' => t('Facet search access'),
+    'title' => t('ACCESS'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => -2,
+    'custom' => 1,
+  );
+
+
+  $blocks['search-start'] = array(
+    'info' => t('Facet search Date start'),
+    'title' => t('DATE START'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => -1,
+    'custom' => 1,
+  );
+
+  $blocks['search-end'] = array(
+    'info' => t('Facet search Date end'),
+    'title' => t('DATE END'),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search*',
+    'weight' => 0,
+    'custom' => 1,
+  );
+
+
   return $blocks;
 }
 
@@ -221,19 +304,6 @@ function mica_client_study_block_info() {
  */
 function mica_client_study_block_view($delta = '') {
   switch ($delta) {
-    case 'search-access':
-      if (user_access('access content')) { //good idea to check user perms here
-        $block['subject'] = t('DATA ACCESS');
-        $block['content'] = mica_client_study_precess_block_theme($delta);
-      }
-      return $block;
-
-    case 'start':
-      if (user_access('access content')) { //good idea to check user perms here
-        $block['subject'] = t('DATE START');
-        $block['content'] = mica_client_study_precess_block_theme('search-start');
-      }
-      return $block;
 
     case 'search-methods-designs':
       if (user_access('access content')) { //good idea to check user perms here
@@ -242,9 +312,73 @@ function mica_client_study_block_view($delta = '') {
       }
       return $block;
 
+    case 'search-populations-countriesIso':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('COUNTRY OF RESIDENCE');
+        $block['content'] = mica_client_study_precess_block_theme('search-populations-selectionCriteria-countriesIso');
+      }
+      return $block;
+
+    case 'search-populations-ageMin':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('MINIMUM AGE');
+        $block['content'] = mica_client_study_precess_block_theme('search-populations-selectionCriteria-ageMin');
+      }
+      return $block;
+
+    case 'search-populations-ageMax':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('MAXIMUM AGE');
+        $block['content'] = mica_client_study_precess_block_theme('search-populations-selectionCriteria-ageMax');
+      }
+      return $block;
+
+    case 'search-populations-gender':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('GENDER');
+        $block['content'] = mica_client_study_precess_block_theme('search-populations-selectionCriteria-gender');
+      }
+      return $block;
+
+    case 'search-participant-number':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('TARGET NUMBER OF PARTICIPANTS');
+        $block['content'] = mica_client_study_precess_block_theme('search-numberOfParticipants-participant-number');
+      }
+      return $block;
+
+    case 'search-parti-samples-number':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('TARGET NUMBER OF PARTICIPANTS WITH SAMPLES');
+        $block['content'] = mica_client_study_precess_block_theme('search-numberOfParticipants-sample-number');
+      }
+      return $block;
+
+
     case 'search-methods-recruitments':
       if (user_access('access content')) { //good idea to check user perms here
         $block['subject'] = t('RECRUITMENT TARGET');
+        $block['content'] = mica_client_study_precess_block_theme($delta);
+      }
+      return $block;
+
+    case 'search-access':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('ACCESS');
+        $block['content'] = mica_client_study_precess_block_theme($delta);
+      }
+      return $block;
+
+    case 'search-start':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('DATE START');
+        $block['content'] = mica_client_study_precess_block_theme($delta);
+      }
+      return $block;
+
+    case 'search-end':
+      if (user_access('access content')) { //good idea to check user perms here
+        $block['subject'] = t('DATE END');
         $block['content'] = mica_client_study_precess_block_theme($delta);
       }
       return $block;
@@ -257,15 +391,17 @@ function mica_client_study_precess_block_theme($block_delta) {
   $agregation_facet = NULL;
   if (!empty($block_delta)) {
     $agregation_facet = key(mica_client_study_get_dto_facet_aggs($block_delta));
-    foreach (current(mica_client_study_get_dto_facet_aggs($block_delta)) as $term) {
-
-      $items[$term->key] = array(
+    $terms_aggregations = current(mica_client_study_get_dto_facet_aggs($block_delta));
+    if (!empty($terms_aggregations)) {
+      foreach ($terms_aggregations as $term) {
+        $items[$term->key] = array(
         '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
           $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
           $agregation_facet . '-' . $term->key . '" >' .
           //  '<a href="#"  disabled="disabled" id="checkthebox" term="'. $agregation_facet . '-' . $term->key.'" >'.
           $term->key . '(' . $term->count . ') </div>'
       );
+    }
     }
   }
   return theme('mica_client_study_block_search', array('items' => $items, 'formId' => $agregation_facet));
@@ -274,18 +410,7 @@ function mica_client_study_precess_block_theme($block_delta) {
 function mica_client_study_get_dto_facet_aggs($tab_block) {
   foreach ($_SESSION['aggregations'] as $key_tab => $facet) {
     if (is_int($key_tab)) {
-      if ($facet->aggregation == 'access') {
-        $facet_build['search-access']['access'] = $facet->termsAggregations;
-      }
-      if ($facet->aggregation == 'start') {
-        $facet_build['search-start']['start'] = $facet->termsAggregations;
-      }
-      if ($facet->aggregation == 'methods-designs') {
-        $facet_build['search-methods-designs']['methods-designs'] = $facet->termsAggregations;
-      }
-      if ($facet->aggregation == 'methods-recruitments') {
-        $facet_build['search-methods-recruitments']['methods-recruitments'] = $facet->termsAggregations;
-      }
+      $facet_build['search-' . $facet->aggregation][$facet->aggregation] = !empty($facet->termsAggregations) ? $facet->termsAggregations : NULL;
     }
   }
   return $facet_build[$tab_block];
