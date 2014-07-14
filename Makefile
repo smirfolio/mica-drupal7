@@ -21,7 +21,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings enable-mica enable-obiba-auth devel cc bootstrap jquery_update
+all: clean setup-drupal wwww import-sql settings enable-mica enable-obiba-auth devel bootstrap jquery_update cc
 
 clean:
 	rm -rf target
@@ -30,6 +30,8 @@ setup-drupal:
 	drush make --prepare-install drupal/dev/drupal-basic.make target/drupal && \
 	chmod -R a+w target/drupal && \
 	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client && \
+	ln -s $(CURDIR)/drupal/modules/mica_bootstrap_config $(CURDIR)/target/drupal/sites/all/modules/mica_bootstrap_config && \
+	ln -s $(CURDIR)/drupal/themes/mica_bootstrap $(CURDIR)/target/drupal/sites/all/themes/mica_bootstrap && \
 	git clone https://github.com/obiba/drupal7-auth.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
 	git clone https://github.com/obiba/drupal7-protobuf.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
 
@@ -61,8 +63,9 @@ bootstrap:
 	cd target/drupal && \
 	drush dl -y bootstrap && \
 	drush en -y bootstrap && \
-	drush vset -y theme_default bootstrap && \
-	drush vset -y admin_theme bootstrap
+	drush en -y mica_bootstrap && \
+	drush vset -y theme_default mica_bootstrap && \
+	drush vset -y admin_theme seven
 
 jquery_update:
 	cd target/drupal && \

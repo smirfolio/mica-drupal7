@@ -87,7 +87,6 @@ class MicaStudyResource extends MicaClient {
         $dto_guery_filter->setFilter($dto_guery_bool_filter);
       }
       if ($field == 'page') {
-        dpm($term_association[0]);
         $dto_guery->setFrom($this->_pagination_parameters($term_association[0]));
       }
       $dto_guery->setSize(parent::SIZE_RESPONSE);
@@ -114,7 +113,7 @@ class MicaStudyResource extends MicaClient {
     else {
       $pageActuelle = 1; // La page actuelle est la n°1
     }
-    $premiereEntree = ($pageActuelle - 1) * parent::SIZE_RESPONSE; // On calcul la première entrée à lire
+    $premiereEntree = ($pageActuelle) * parent::SIZE_RESPONSE; // On calcul la première entrée à lire
     return $premiereEntree;
   }
 
