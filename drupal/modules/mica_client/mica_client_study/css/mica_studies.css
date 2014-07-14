@@ -94,3 +94,21 @@ div.selected_item {
     color: gray;
     text-decoration: none;
 }
+
+body.page-mica-studies-search
+.region-sidebar-first .block-mica-client-study h2.block-title,
+body.page-mica-variable-search .region-sidebar-first
+.block-mica-client-study h2.block-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    margin: 0px 0px 0px -20px;
+    padding: 2px 10px;
+    background-color: #f2f2f2;
+}
+
+body.page-mica-studies-search
+.region-sidebar-first .block-mica-client-study h2.block-title,
+body.page-mica-variable-search .region-sidebar-first
+.block-mica-client-study a {
+    padding-left: 15px;
+}

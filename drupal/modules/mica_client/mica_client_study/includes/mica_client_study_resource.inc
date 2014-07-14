@@ -79,7 +79,7 @@ class MicaStudyResource extends MicaClient {
         foreach ($term_association as $term) {
 
           $dto_guery_term = new \obiba\mica\TermsQueryDto;
-          $dto_guery_term->setField($field);
+          $dto_guery_term->setField(str_replace('-', '.', $field));
           $dto_guery_term->setValues(str_replace($field . '.', '', $term_association));
 
         }
@@ -87,7 +87,6 @@ class MicaStudyResource extends MicaClient {
         $dto_guery_filter->setFilter($dto_guery_bool_filter);
       }
       if ($field == 'page') {
-        dpm($term_association[0]);
         $dto_guery->setFrom($this->_pagination_parameters($term_association[0]));
       }
       $dto_guery->setSize(parent::SIZE_RESPONSE);
@@ -114,12 +113,11 @@ class MicaStudyResource extends MicaClient {
     else {
       $pageActuelle = 1; // La page actuelle est la n°1
     }
-    $premiereEntree = ($pageActuelle - 1) * parent::SIZE_RESPONSE; // On calcul la première entrée à lire
+    $premiereEntree = ($pageActuelle) * parent::SIZE_RESPONSE; // On calcul la première entrée à lire
     return $premiereEntree;
   }
 
   private function _session_facets_builder($aggregations) {
-    $current_session_aggregations = $_SESSION['aggregations'];
     if (!empty($aggregations->totalHits)) {
       $_SESSION['aggregations'] = $aggregations->aggs;
       $_SESSION['aggregations']['totalHits'] = $aggregations->totalHits;

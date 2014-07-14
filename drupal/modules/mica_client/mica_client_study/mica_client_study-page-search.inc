@@ -33,7 +33,7 @@ function mica_client_study_studies_search_table($request) {
     t('Country of residence'),
   );
   $per_page = $study_resource::SIZE_RESPONSE;
-  $current_page = pager_default_initialize($studies['totalHits'], $per_page);
+  pager_default_initialize($studies['totalHits'], $per_page);
 
 
   return theme(
@@ -43,7 +43,7 @@ function mica_client_study_studies_search_table($request) {
       'rows' => $rows, // empty($chunks) ? array() : $chunks[$current_page],
       'empty' => t('No data found')
     )
-  ) . theme('pager', array('quantity', $studies['totalHits']));
+  ) . theme('pager', array('quantity' => $studies['totalHits']));
 }
 
 

@@ -18,7 +18,8 @@
           var serializedData = "";
           $('form').each(function () {
             var SerilizedForm = ($(this).serialize());
-            if (SerilizedForm) {
+            if (SerilizedForm && $(this).attr('id').match(/facet-search/g)) {
+
               serializedData = serializedData.concat(SerilizedForm).concat('&');
             }
           });
