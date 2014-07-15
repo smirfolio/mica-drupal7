@@ -10,5 +10,3 @@ drupal_set_breadcrumb($breadcrumb);
     <?php print $topics; ?>
   </div>
 <?php endif; ?>
-
-
