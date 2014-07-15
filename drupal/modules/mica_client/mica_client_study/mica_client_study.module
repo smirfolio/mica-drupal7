@@ -91,9 +91,15 @@ function mica_client_study_menu_local_tasks_alter(&$data, $router_item, $root_pa
 
 /**
  * Implements hook_theme().
+ *
+ * copy '<modules>/mica_client_study/templates/'   files in  yor customized theme  '<YOUR_THEME>/templates/' path
+ * you can modify default display of listed page templates by rearrange block field for example
+ * don't forget to clear the theme registry.
+ *
  */
+
 function mica_client_study_theme($existing, $type, $theme, $path) {
-  $path_theme = drupal_get_path('module', 'mica_client_study') . '/templates';
+  $path_theme = $path . '/templates';
   return array(
     'mica_client_study_list' => array('template' => 'mica_client_study-list', 'path' => $path_theme),
     'mica_client_study_search' => array('template' => 'mica_client_study-search', 'path' => $path_theme),
