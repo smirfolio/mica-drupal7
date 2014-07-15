@@ -60,7 +60,7 @@ function mica_bootstrap_menu_tree__user_menu($variables) {
 function mica_bootstrap_theme($existing, $type, $theme, $path) {
   $theme_array = array();
 
-  $destination_path = file_destination($path . '/templates/mica_client_study-list.tpl.php', FILE_EXISTS_ERROR);
+  $destination_path = file_exists($path . '/templates/mica_client_study-list.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['mica_client_study_list'] = array(
       'template' => 'mica_client_study-list',
@@ -68,45 +68,45 @@ function mica_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_destination($path . '/templates/mica_client_study_search.tpl.php', FILE_EXISTS_ERROR);
+  $destination_path = file_exists($path . '/templates/mica_client_study_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_list'] = array(
+    $theme_array['mica_client_study_search'] = array(
       'template' => 'mica_client_study_search',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_destination($path . '/templates/mica_client_study_detail.tpl.php', FILE_EXISTS_ERROR);
+  $destination_path = file_exists($path . '/templates/mica_client_study_detail.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_list'] = array(
+    $theme_array['mica_client_study_detail'] = array(
       'template' => 'mica_client_study_detail',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_destination($path . '/templates/mica_population_detail.tpl.php', FILE_EXISTS_ERROR);
+  $destination_path = file_exists($path . '/templates/mica_population_detail.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_list'] = array(
+    $theme_array['mica_population_detail'] = array(
       'template' => 'mica_population_detail',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_destination($path . '/templates/mica_dce_detail.tpl.php', FILE_EXISTS_ERROR);
+  $destination_path = file_exists($path . '/templates/mica_dce_detail.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_list'] = array('template' => 'mica_dce_detail', 'path' => $path . '/templates');
+    $theme_array['mica_dce_detail'] = array('template' => 'mica_dce_detail', 'path' => $path . '/templates');
   }
 
-  $destination_path = file_destination($path . '/templates/mica_client_study_attachments.tpl.php', FILE_EXISTS_ERROR);
+  $destination_path = file_exists($path . '/templates/mica_client_study_attachments.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_list'] = array(
+    $theme_array['mica_client_study_attachments'] = array(
       'template' => 'mica_client_study_attachments',
       'path' => $path . '/templates'
     );
   }
-  $destination_path = file_destination($path . '/templates/mica_client_study_block_search.tpl.php', FILE_EXISTS_ERROR);
+  $destination_path = file_exists($path . '/templates/mica_client_study_block_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_list'] = array(
+    $theme_array['mica_client_study_block_search'] = array(
       'template' => 'mica_client_study_block_search',
       'path' => $path . '/templates'
     );
