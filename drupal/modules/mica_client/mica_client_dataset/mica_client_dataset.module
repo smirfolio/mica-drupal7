@@ -112,7 +112,7 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
   return array(
     'mica_client_datasets-list' => array('template' => 'mica_client_datasets-list', 'path' => $path_theme),
     'mica_client_datasets-detail' => array('template' => 'mica_client_datasets-detail', 'path' => $path_theme),
-    'mica_client_datasets-tabes' => array('template' => 'mica_client_datasets-tabes', 'path' => $path_theme)
+    'mica_client_datasets-tables' => array('template' => 'mica_client_datasets-tables', 'path' => $path_theme)
   );
 }
 

@@ -63,7 +63,7 @@ function mica_client_dataset_study_tables($datset_type_resource) {
   }
 
 
-  return theme('mica_client_datasets-tabes', array('tab_var' => $study_tab, 'title_section' => t('Studies')));
+  return theme('mica_client_datasets-tables', array('tab_var' => $study_tab, 'title_section' => t('Studies')));
 }
 
 function mica_client_dataset_get_variables($resources, $id_dataset) {
@@ -92,5 +92,5 @@ function mica_client_dataset_get_variables($resources, $id_dataset) {
         'attributes' => array('id' => 'variables_overview')
       )
     ) . theme('pager', array('quantity' => 5, 'tags' => array('<<', '<', '', '>', '>>')));
-  return theme('mica_client_datasets-tabes', array('tab_var' => $var_tab, 'title_section' => t('Variables')));
+  return theme('mica_client_datasets-tables', array('tab_var' => $var_tab, 'title_section' => t('Variables')));
 }
