@@ -73,13 +73,21 @@ function mica_client_dataset_menu_link_alter(&$items) {
 
 function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_path) {
   $links = array();
+  //dpm($root_path);
   switch ($root_path) {
     case 'mica/dataset/%/%':
+      if ($router_item['page_arguments'][0] == 'study') {
+        $title = t('Studies variables Search');
+      }
+      else {
+        $title = t('Datasets variables Search');
+      }
       $links['mica/variables'] = array(
+
         '#weight' => 30,
         '#theme' => 'menu_local_action',
         '#link' => array(
-          'title' => t('Variables Search'),
+          'title' => $title,
           'href' => 'mica/variables_search/' . $router_item['page_arguments'][0],
           'localized_options' => array(
 //                  'query' => array(
@@ -93,6 +101,49 @@ function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_
       );
 
       break;
+
+    case 'mica/datasets/harmonization-datasets':
+      $links['mica/variables'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Datasets variables Search'),
+          'href' => 'mica/variables_search/dataset',
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+    case 'mica/datasets/study-datasets':
+      $links['mica/variables'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Studies variables Search'),
+          'href' => 'mica/variables_search/study',
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
   }
 
   $data['actions']['output'] = array_merge($data['actions']['output'], $links);
@@ -192,7 +243,7 @@ function mica_client_dataset_get_all_datastes_studies($study_id) {
   $output = NULL;
   $dataset_resource = new MicaDatasetResource();
 
-  $study_datasets_dto = $dataset_resource->study_datasetes('study-datasets', $study_id);
+  $study_datasets_dto = $dataset_resource->get_datasetes('study-datasets', $study_id);
   if (!empty($study_datasets_dto)) {
     $study_datasets_tab = mica_client_dataset_get_datasets_list($study_datasets_dto, 'study', $study_id);
     $output .= '<section> <h2 class="block-title">' . t('Study Dataset') . '</h2><div> <article>';
@@ -200,7 +251,7 @@ function mica_client_dataset_get_all_datastes_studies($study_id) {
     $output .= '</article></div></section>';
   }
 
-  $harmonization_datasets_dto = $dataset_resource->study_datasetes('harmonization-datasets', $study_id);
+  $harmonization_datasets_dto = $dataset_resource->get_datasetes('harmonization-datasets', $study_id);
   if (!empty($harmonization_datasets_dto)) {
     $harmonization_datasets_tab = mica_client_dataset_get_datasets_list($harmonization_datasets_dto, 'dataset', $study_id);
     $output .= '<section> <h2 class="block-title">' . t('Harmonization Dataset') . '</h2><div> <article>';

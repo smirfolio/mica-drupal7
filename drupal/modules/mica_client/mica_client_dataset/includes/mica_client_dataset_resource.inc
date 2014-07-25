@@ -25,9 +25,11 @@ class MicaDatasetResource extends MicaClient {
     parent::__construct($mica_url);
   }
 
-  public function study_datasetes($resource, $study_id = NULL) {
+  public function get_datasetes($resource, $study_id = NULL) {
     $this->setLastResponse(NULL);
-    $url_study_datasets = $this->micaUrl . '/' . $resource . '/?study=' . $study_id . '&limit=-1';
+    $study_resouce = !empty($study_id) ? '&study=' . $study_id : '';
+    $url_study_datasets = $this->micaUrl . '/' . $resource . '/?limit=-1' . $study_resouce;
+    //dpm($url_study_datasets);
     $request = new HttpClientRequest($url_study_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -234,6 +236,5 @@ class MicaDatasetResource extends MicaClient {
       return array();
     }
   }
-
 
 }
