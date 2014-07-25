@@ -1,0 +1,53 @@
+name = "Mica Datasets "
+description = "Mica datasetes"
+package = Mica
+core = 7.x
+dependencies[] = mica_client_commons
+dependencies[] = mica_client_model
+dependencies[] = mica_client_study
+
+
+
+facets[entityType][title] = 'ENTITY TYPE'
+facets[entityType][key] = 'entityType'
+facets[entityType][aggr-pars] = 'entityType'
+
+facets[period][title] = 'PERIOD'
+facets[period][key] = 'period'
+facets[period][aggr-pars] = 'attributes-maelstrom__period-en'
+
+facets[status][title] = 'STATUS'
+facets[status][key] = 'status'
+facets[status][aggr-pars] = 'attributes-maelstrom__status-und'
+
+facets[variableType][title] = 'VARIABLE TYPE'
+facets[variableType][key] = 'variableType'
+facets[variableType][aggr-pars] = 'variableType'
+
+facets[measure][title] = 'MEASURE'
+facets[measure][key] = 'measure'
+facets[measure][aggr-pars] = 'attributes-maelstrom__measure-en'
+
+facets[target][title] = 'TARGET'
+facets[target][key] = 'target'
+facets[target][aggr-pars] = 'attributes-maelstrom__target-en'
+
+facets[essence][title] = 'ESSENCE'
+facets[essence][key] = 'essence'
+facets[essence][aggr-pars] = 'attributes-maelstrom__essence-en'
+
+facets[repeatable][title] = 'REPEATABLE'
+facets[repeatable][key] = 'repeatable'
+facets[repeatable][aggr-pars] = 'repeatable'
+
+facets[valueType][title] = 'VALUE TYPE'
+facets[valueType][key] = 'valueType'
+facets[valueType][aggr-pars] = 'valueType'
+
+facets[socio_demo_char][title] = 'SOCIODEMOGRAPHIC CHARACTERISTICS'
+facets[socio_demo_char][key] = 'socio_demo_char'
+facets[socio_demo_char][aggr-pars] = 'attributes-maelstrom__sociodemographic_characteristics-en'
+
+facets[occurrenceGroup][title] = 'OCCURRENCE GROUP'
+facets[occurrenceGroup][key] = 'occurrenceGroup'
+facets[occurrenceGroup][aggr-pars] = 'occurrenceGroup'

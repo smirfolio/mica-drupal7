@@ -1,0 +1,29 @@
+<?php
+
+function mica_client_dataset_install() {
+  mica_client_dataset_create_node();
+}
+
+function mica_client_dataset_create_node() {
+
+  $my_body_content = '<p>To harmonize data between studies participating in the consortium, study-specific datasets
+and Harmonized Datasets (i.e. variables targeted for harmonization) are used and made available to investigators.
+Variables collected by each study and those defined in the Harmonization Dataset are described using a standardized
+data dictionary which covers variable definitions and characteristics (e.g. type, unit, categories, and area of
+information covered). Once Study Datasets and a Harmonization Dataset are defined and loaded in the system,
+variable-specific mapping algorithms are developed in order to derive the study datasets into the common format defined
+ in the Harmonization Dataset. In order to increase transparency of the harmonization process, these resources are made
+  available to the research community.&nbsp;</p>
+<p><img alt="" src="../sites/default/files/harmonization_schema.jpg" /></p>
+<p>For studies using the OBiBa Opal software, the Mica application includes a distributed query engine that enables
+researchers to obtain real-time aggregated reports on the exact number of participants with specific characteristics or
+phenotypes. Mica also allows running regression analyses remotely on real study data using the DataSHIELD method
+(Wolfson M et al. Int J Epidemiol. 2010). More information on the OBiBa suite of software is available at
+www.obiba.org.</p>
+';
+
+  $dataset_page = mica_client_commons_add_page(st('Datasets'), st($my_body_content));
+  variable_set('dataset_page', $dataset_page->nid);
+
+  file_unmanaged_copy(drupal_get_path('module', 'mica_client_dataset') . '/img/harmonization_schema.jpg', 'public://', FILE_EXISTS_REPLACE);
+}

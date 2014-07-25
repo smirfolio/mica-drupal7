@@ -4,18 +4,27 @@
  * Implements hook_bootstrap_based_theme().
  */
 function mica_bootstrap_bootstrap_based_theme() {
-  return array('mica_bootstrap' => TRUE);
+  return array('bootstrap' => TRUE);
 }
 
-/**
- * Add drop down for user menu
- */
-function mica_bootstrap_menu_tree__user_menu($variables) {
-  return '<div id="user-menu" class="pull-right btn-group">'
-  . '<a class="btn dropdown-toggle" data-toggle="dropdown-menu" href="#"><i class="icon-user"></i> ' . t('User menu') . ' <span class="caret"></span></a>'
-  . '<ul class="dropdown-menu">' . $variables['tree'] . '</ul></div>';
+///**
+// * Add drop down for user menu
+// */
+//function mica_bootstrap_menu_tree__user_menu($variables) {
+//  return '<div id="user-menu" class="pull-right btn-group">'
+//  . '<a class="btn dropdown-toggle" data-toggle="dropdown-menu" href="#"><i class="icon-user"></i> ' . t('User menu') . ' <span class="caret"></span></a>'
+//  . '<ul class="dropdown-menu">' . $variables['tree'] . '</ul></div>';
+//
+//}
 
-}
+
+///**
+// * Add drop down for user menu
+// */
+//function mica_bootstrap_menu_tree__main_menu(&$variables) {dpm($variables);
+//dpm('hii haaa');
+//}
+
 
 /**
  * Implements template_preprocess_views_view()

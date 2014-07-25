@@ -6,6 +6,7 @@
         <h4 class="modal-title"><?php print t('Data Collection Event Detail') ?></h4>
       </div>
       <div class="modal-body">
+
         <h4>
           <?php print mica_client_commons_get_localized_field($dce, 'name'); ?>
         </h4>
@@ -17,6 +18,7 @@
         <br/>
 
         <div>
+
           <?php if (!empty($dce->startYear)): ?>
             <div>
               <label><?php print t('Start Year') ?>:</label>
@@ -95,12 +97,15 @@
               </span>
             </div>
           <?php endif; ?>
+
           <?php if (!empty($dce->attachments)): ?>
             <div>
               <?php print mica_client_study_get_attachment_file($study_id, $dce->attachments); ?>
             </div>
           <?php endif; ?>
+
         </div>
+
       </div>
     </div>
   </div>
