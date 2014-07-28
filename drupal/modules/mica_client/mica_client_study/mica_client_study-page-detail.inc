@@ -18,7 +18,7 @@ function mica_client_study_page_detail($study_id) {
   dpm($StudyDto);
 
   $dataset_output = (module_exists('mica_client_dataset')) ?
-    mica_client_dataset_get_all_datastes_studies($study_id) : NULL;
+    mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
 
   $opal_dataset = !empty($StudyDto->opal) ? mica_client_study_get_opal_url($StudyDto->opal) : NULL;
 

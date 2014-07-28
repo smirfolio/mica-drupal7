@@ -109,11 +109,30 @@ body.page-mica-variables-search-study .region-sidebar-first
 }
 
 body.page-mica-studies-search
-.region-sidebar-first .block-mica-client-study h2.block-title,
+.region-sidebar-first .block-mica-client-study a,
 body.page-mica-variables-search-dataset .region-sidebar-first
-.block-mica-client-dataset,
+.block-mica-client-dataset a,
 body.page-mica-variables-search-study .region-sidebar-first
 .block-mica-client-dataset a {
     padding-left: 15px;
 }
+
+body.page-mica-studies-search
+.region-sidebar-first .block-mica-client-study h2.collapsiblock a,
+body.page-mica-variables-search-study
+.region-sidebar-first .block-mica-client-dataset h2.collapsiblock a,
+body.page-mica-variables-search-dataset
+.region-sidebar-first .block-mica-client-dataset h2.collapsiblock a {
+    background: url('expanded.png') no-repeat scroll left center transparent;
+}
+
+body.page-mica-studies-search
+.region-sidebar-first .block-mica-client-study h2.collapsiblockCollapsed a,
+body.page-mica-variables-search-study
+.region-sidebar-first .block-mica-client-dataset h2.collapsiblockCollapsed a,
+body.page-mica-variables-search-dataset
+.region-sidebar-first .block-mica-client-dataset h2.collapsiblockCollapsed a {
+    background: url('collapsed.png') no-repeat scroll left center transparent;
+}
+
 

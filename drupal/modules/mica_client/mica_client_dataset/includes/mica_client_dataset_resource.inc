@@ -193,7 +193,7 @@ class MicaDatasetResource extends MicaClient {
 
   public function get_varaibles($resource, $dataset_id) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables';
+    $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables?size=' . parent::SIZE_RESPONSE;
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -231,6 +231,31 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dtoObj = '\obiba\mica\DatasetDto';
+      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
+  public function get_variable($resource_dataset, $dataset_id) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/' . $resource_dataset . '/' . $dataset_id . '/facet';
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      dpm($data);
+      $this->setLastResponse($client->lastResponse);
+      $dtoObj = '\obiba\mica\DatasetVariableDto';
+
       return $data ? Protobuf::decode($dtoObj, $data) : NULL;
     } catch (HttpClientException $e) {
       return array();
