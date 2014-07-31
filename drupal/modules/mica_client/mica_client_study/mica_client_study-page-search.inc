@@ -43,7 +43,7 @@ function mica_client_study_studies_search_table($request) {
       'rows' => $rows, // empty($chunks) ? array() : $chunks[$current_page],
       'empty' => t('No data found')
     )
-  ) . theme('pager', array('quantity' => $studies['totalHits']));
+  ) . theme('pager', array('quantity' => 10));
 }
 
 

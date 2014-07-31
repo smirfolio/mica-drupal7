@@ -34,7 +34,7 @@ class MicaClient {
 
   const HEADER_JSON = 'application/json';
 
-  const SIZE_RESPONSE = 10;
+  const SIZE_RESPONSE = 30;
 
   protected $micaUrl;
 

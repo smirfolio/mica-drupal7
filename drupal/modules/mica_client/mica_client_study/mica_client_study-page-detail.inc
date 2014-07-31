@@ -4,17 +4,38 @@
  * Mica studies file
  */
 
+if (module_exists('mica_client_dataset')) {
+  $path_module_dataset = drupal_get_path('module', 'mica_client_dataset');
+  include_once($path_module_dataset . '/includes/mica_client_dataset_resource.inc');
+}
+
 function mica_client_study_page_detail($study_id) {
   $page_render_study = NULL;
   $study_resource = new MicaStudyResource();
   $StudyDto = $study_resource->study($study_id);
+  $output = $StudyDto;
   drupal_set_title(mica_client_commons_get_localized_field($StudyDto, 'name'));
   dpm($StudyDto);
-  $output = $StudyDto;
+
+  $dataset_output = (module_exists('mica_client_dataset')) ?
+    mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
+
+  $opal_dataset = !empty($StudyDto->opal) ? mica_client_study_get_opal_url($StudyDto->opal) : NULL;
 
   return mica_client_study_get_study_detail($output) .
   mica_client_study_get_timeline_detail($output) .
-  mica_client_study_get_populations_detail($output);
+  mica_client_study_get_populations_detail($output) .
+  $opal_dataset .
+  $dataset_output;
+
+}
+
+/*
+ *
+ * */
+function mica_client_study_get_opal_url($opal_url) {
+  return theme('mica_client_study_opal', array('opal_url' => $opal_url));
+
 }
 
 /**
@@ -34,6 +55,7 @@ function mica_client_study_get_study_attachement($StudyDto_id, $StudyDto_attachm
 function mica_client_study_get_study_detail($study_detail) {
   return theme('mica_client_study_detail', array("context_detail" => $study_detail));
 }
+
 
 /**
  * Implements hook_library().
@@ -74,7 +96,6 @@ function mica_client_study_get_timeline_detail($study_detail) {
     represents a separate Data Collection Event. Clicking on a segment gives more detailed
      information on a Data Collection Event.') . ' </div>';
 
-
   drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/mica_studies.css', 'file');
   drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/timeline.css', 'file');
   drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/d3.min.js', 'file');
@@ -105,7 +126,7 @@ function mica_client_study_get_populations_detail($study_detail) {
              </svg>
                 <a href="">' . mica_client_commons_get_localized_field($population, 'name') . '</a>
             </h2>
-        </header>';
+                                </header>';
     if (!empty($population->dataCollectionEvents)) {
       $dce_rows = mica_client_study_get_dce_table($population->dataCollectionEvents);
       uasort($dce_rows, 'mica_client_study_sort_dce');
@@ -121,7 +142,6 @@ function mica_client_study_get_populations_detail($study_detail) {
           'attributes' => array('id' => 'variables_overview')
         )
       );
-
       $population['dce-modal'] = mica_client_study_get_dce_detail($study_detail->id, $population->dataCollectionEvents);
     }
     $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
@@ -177,6 +197,7 @@ function mica_client_study_get_dce_table($dataCollectionEvents) {
   }
   return $dce_rows;
 }
+
 
 function mica_client_study_get_attachment_file($study_id, $attachments) {
   return theme('mica_client_study_attachments', array('study_id' => $study_id, 'documents' => $attachments));

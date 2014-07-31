@@ -21,7 +21,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings enable-mica enable-obiba-auth devel bootstrap jquery_update cc
+all: clean setup-drupal wwww import-sql settings enable-mica enable-obiba-auth devel bootstrap less-css jquery_update cc
 
 clean:
 	rm -rf target
@@ -31,7 +31,7 @@ setup-drupal:
 	chmod -R a+w target/drupal && \
 	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client && \
 	ln -s $(CURDIR)/drupal/modules/mica_bootstrap_config $(CURDIR)/target/drupal/sites/all/modules/mica_bootstrap_config && \
-	ln -s $(CURDIR)/drupal/themes/mica_bootstrap $(CURDIR)/target/drupal/sites/all/themes/mica_bootstrap && \
+	ln -s $(CURDIR)/drupal/themes/micado_bootstrap $(CURDIR)/target/drupal/sites/all/themes/micado_bootstrap && \
 	git clone https://github.com/obiba/drupal7-auth.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
 	git clone https://github.com/obiba/drupal7-protobuf.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
 
@@ -63,9 +63,12 @@ bootstrap:
 	cd target/drupal && \
 	drush dl -y bootstrap && \
 	drush en -y bootstrap && \
-	drush en -y mica_bootstrap && \
-	drush vset -y theme_default mica_bootstrap && \
+	drush en -y micado_bootstrap && \
+	drush vset -y theme_default micado_bootstrap && \
 	drush vset -y admin_theme seven
+
+less-css:
+	lessc $(CURDIR)/drupal/themes/micado_bootstrap/less/style.less $(CURDIR)/drupal/themes/micado_bootstrap/css/style.css
 
 jquery_update:
 	cd target/drupal && \
@@ -84,7 +87,6 @@ cas:
 
 cc:
 	cd target/drupal && drush cc all
-
 
 #
 # Push to Drupal.org

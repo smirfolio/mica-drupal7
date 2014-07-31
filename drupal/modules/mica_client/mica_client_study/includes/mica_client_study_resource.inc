@@ -102,7 +102,7 @@ class MicaStudyResource extends MicaClient {
   }
 
   private function _pagination_parameters($current_page = NULL) {
-    $nb_pages = ceil($_SESSION['aggregations']['totalHits'] / parent::SIZE_RESPONSE);
+    $nb_pages = ceil($_SESSION['studies']['aggregations']['totalHits'] / parent::SIZE_RESPONSE);
     if (!empty($current_page)) {
       $pageActuelle = intval($current_page);
       if ($pageActuelle > $nb_pages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
@@ -119,16 +119,15 @@ class MicaStudyResource extends MicaClient {
 
   private function _session_facets_builder($aggregations) {
     if (!empty($aggregations->totalHits)) {
-      $_SESSION['aggregations'] = $aggregations->aggs;
-      $_SESSION['aggregations']['totalHits'] = $aggregations->totalHits;
+      $_SESSION['studies']['aggregations'] = $aggregations->aggs;
+      $_SESSION['studies']['aggregations']['totalHits'] = $aggregations->totalHits;
     }
   }
 
-  public
-  function studies_search($request_param) {
+  public function studies_search($request_param) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/studies/_search';
-
+    $url = $this->micaUrl . '/studies/_search/?' . 'size=' . parent::SIZE_RESPONSE;;
+    dpm($url);
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     if (empty($url_parm[1])) {
       $request = new HttpClientRequest($url, array(
@@ -141,15 +140,28 @@ class MicaStudyResource extends MicaClient {
     }
     else {
       $dto_param = $this->_dto_filter_construct($url_parm[1]);
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_POST,
-        'headers' => $this->authorizationHeader(array(
-              'Accept' => array(parent::HEADER_JSON),
-              'Content-Type' => array(parent::HEADER_JSON)
-            )
-          ),
-        'data' => $dto_param,
-      ));
+      if (empty(json_decode($dto_param)->filteredQuery)) {
+        $url = $this->micaUrl . '/studies/_search/?from=' . json_decode($dto_param)->from . '&size=' . parent::SIZE_RESPONSE;
+
+        $request = new HttpClientRequest($url, array(
+          'method' => HttpClientRequest::METHOD_GET,
+          'headers' => $this->authorizationHeader(array(
+                'Accept' => array(parent::HEADER_JSON),
+              )
+            ),
+        ));
+      }
+      else {
+        $request = new HttpClientRequest($url, array(
+          'method' => HttpClientRequest::METHOD_POST,
+          'headers' => $this->authorizationHeader(array(
+                'Accept' => array(parent::HEADER_JSON),
+                'Content-Type' => array(parent::HEADER_JSON)
+              )
+            ),
+          'data' => $dto_param,
+        ));
+      }
     }
 
     $client = $this->client();

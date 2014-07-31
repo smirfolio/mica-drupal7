@@ -7,3 +7,47 @@ dependencies[] = mica_client_commons
 dependencies[] = mica_client_model
 
 files[] = includes/mica_client_study_resource.inc
+
+facets[methods-designs][title] = 'STUDY DESIGN'
+facets[methods-designs][key] = 'methods-designs'
+facets[methods-designs][aggr-pars] = 'methods-designs'
+
+facets[populations-countriesIso][title] = 'COUNTRY OF RESIDENCE'
+facets[populations-countriesIso][key] = 'populations-countriesIso'
+facets[populations-countriesIso][aggr-pars] = 'populations-selectionCriteria-countriesIso'
+
+facets[populations-ageMin][title] = 'MINIMUM AGE'
+facets[populations-ageMin][key] = 'populations-ageMin'
+facets[populations-ageMin][aggr-pars] = 'populations-selectionCriteria-ageMin'
+
+facets[populations-ageMax][title] = 'MAXIMUM AGE'
+facets[populations-ageMax][key] = 'populations-ageMax'
+facets[populations-ageMax][aggr-pars] = 'populations-selectionCriteria-ageMax'
+
+facets[populations-gender][title] = 'GENDER'
+facets[populations-gender][key] = 'populations-gender'
+facets[populations-gender][aggr-pars] = 'populations-selectionCriteria-gender'
+
+facets[participant-number][title] = 'TARGET NUMBER OF PARTICIPANTS'
+facets[participant-number][key] = 'participant-number'
+facets[participant-number][aggr-pars] = 'numberOfParticipants-participant-number'
+
+facets[parti-samples-number][title] = 'TARGET NUMBER OF PARTICIPANTS WITH SAMPLES'
+facets[parti-samples-number][key] = 'parti-samples-number'
+facets[parti-samples-number][aggr-pars] = 'numberOfParticipants-sample-number'
+
+facets[methods-recruitments][title] = 'RECRUITMENT TARGET'
+facets[methods-recruitments][key] = 'methods-recruitments'
+facets[methods-recruitments][aggr-pars] = 'methods-recruitments'
+
+facets[access][title] = 'ACCESS'
+facets[access][key] = 'access'
+facets[access][aggr-pars] = 'access'
+
+facets[start][title] = 'DATE START'
+facets[start][key] = 'start'
+facets[start][aggr-pars] = 'start'
+
+facets[end][title] = 'DATE END'
+facets[end][key] = 'end'
+facets[end][aggr-pars] = 'end'

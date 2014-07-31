@@ -1,0 +1,346 @@
+<?php
+
+
+include_once('includes/mica_client_dataset_resource_facets_conf.inc');
+function mica_client_dataset_menu() {
+  $items = array();
+
+  $items['mica/datasets'] = array(
+    'title' => 'Datasets',
+    'description' => t('Published datasets'),
+    'page callback' => 'mica_client_dataset_get_datastes',
+    'file' => 'mica_client_datasets-page-list.inc',
+    'access callback' => TRUE,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 3
+  );
+
+  $items['mica/datasets/harmonization-datasets'] = array(
+    'title' => 'Harmonization datasets',
+    'description' => t('Published harmonization datasets'),
+    'page callback' => 'mica_client_dataset_get_harmonization_datasets',
+    'file' => 'mica_client_datasets-page-list.inc',
+    'access callback' => TRUE,
+//   'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 2
+  );
+
+  $items['mica/datasets/study-datasets'] = array(
+    'title' => 'Study Datasets',
+    'page callback' => 'mica_client_dataset_get_study_datasets',
+    'file' => 'mica_client_datasets-page-list.inc',
+    'access callback' => TRUE,
+    //  'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 3
+  );
+
+  $items['mica/variables_search/%'] = array(
+    'title' => 'Variables Search',
+    'description' => t('Search published variables'),
+    'page callback' => 'mica_client_dataset_variable_page_search',
+    'file' => 'mica_client_dataset-variable-page-search.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2)
+  );
+
+  $items['mica/dataset/%/%'] = array(
+    'title' => 'Mica dataset detail',
+    'page callback' => 'mica_client_dataset_page_detail',
+    'file' => 'mica_client_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(3, 4),
+  );
+
+  $items['mica/variable/%/%'] = array(
+    'title' => 'Mica dataset detail',
+    'page callback' => 'mica_client_variable_page_detail',
+    'file' => 'mica_client_variable-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(3, 4),
+  );
+
+  return $items;
+}
+
+function mica_client_dataset_menu_link_alter(&$items) {
+  if ($items['menu_name'] == 'main-menu') {
+//    dpm($items);
+  }
+}
+
+///**
+// * Restrict access to /node
+// */
+//function mica_client_dataset_menu_alter(&$items) {
+//  dpm($items);
+//  $items['node']['access callback'] = FALSE;
+//}
+
+
+function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  $links = array();
+  //dpm($root_path);
+  switch ($root_path) {
+    case 'mica/dataset/%/%':
+      if ($router_item['page_arguments'][0] == 'study') {
+        $title = t('Studies variables Search');
+      }
+      else {
+        $title = t('Datasets variables Search');
+      }
+      $links['mica/variables'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => $title,
+          'href' => 'mica/variables_search/' . $router_item['page_arguments'][0],
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+    case 'mica/datasets/harmonization-datasets':
+      $links['mica/variables'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Datasets variables Search'),
+          'href' => 'mica/variables_search/dataset',
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+    case 'mica/datasets/study-datasets':
+      $links['mica/variables'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Studies variables Search'),
+          'href' => 'mica/variables_search/study',
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+  }
+
+  $data['actions']['output'] = array_merge($data['actions']['output'], $links);
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * copy '<modules>/mica_client_dataset/templates/'   files in  your customized theme  '<YOUR_THEME>/templates/' path
+ * you can modify default display of listed page templates by rearrange block field for example
+ * don't forget to clear the theme registry.
+ *
+ */
+
+function mica_client_dataset_theme($existing, $type, $theme, $path) {
+  $path_theme = $path . '/templates';
+  return array(
+    'mica_client_datasets-list' => array('template' => 'mica_client_datasets-list', 'path' => $path_theme),
+    'mica_client_datasets-detail' => array('template' => 'mica_client_datasets-detail', 'path' => $path_theme),
+    'mica_client_datasets-tables' => array('template' => 'mica_client_datasets-tables', 'path' => $path_theme)
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function mica_client_dataset_block_info() {
+  $i = 0 - count(mica_client_dataset_resource_return_facets());
+  foreach (mica_client_dataset_resource_return_facets() as $key_facet => $facet) {
+    $blocks['search-' . $key_facet] = mica_client_dataset_block_info_construc($facet['title'], $i);
+    --$i;
+  }
+
+  return $blocks;
+}
+
+
+function mica_client_dataset_block_info_construc($facet_title, $facet_weight) {
+  return array(
+    'info' => t('Facet search @title', array('@title' => drupal_strtolower($facet_title))),
+    'title' => t('@title', array('@title' => $facet_title)),
+    'status' => 1,
+    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/variables_search/*',
+    'weight' => $facet_weight,
+    'custom' => 1,
+  );
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function mica_client_dataset_block_view($delta = '') {
+  foreach (mica_client_dataset_resource_return_facets() as $key_facet => $facet) {
+    if (user_access('access content') && $delta == 'search-' . $key_facet) { //good idea to check user perms here
+      $block['subject'] = $facet['title'];
+      $block['content'] = mica_client_dataset_precess_block_theme('search-' . $facet['aggr-pars']);
+      return $block;
+    }
+  }
+}
+
+function mica_client_dataset_precess_block_theme($block_delta) {
+  $items = array();
+  $agregation_facet = NULL;
+  if (!empty($block_delta)) {
+    $agregation_facet = key(mica_client_dataset_get_dto_facet_aggs($block_delta));
+    $terms_aggregations = current(mica_client_dataset_get_dto_facet_aggs($block_delta));
+    if (!empty($terms_aggregations)) {
+      foreach ($terms_aggregations as $term) {
+        $items[$term->key] = array(
+          '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
+            $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
+            $agregation_facet . '-' . $term->key . '" >' .
+            //  '<a href="#"  disabled="disabled" id="checkthebox" term="'. $agregation_facet . '-' . $term->key.'" >'.
+            $term->key . '(' . $term->count . ') </div>'
+        );
+      }
+    }
+  }
+  return theme('mica_client_study_block_search', array('items' => $items, 'formId' => $agregation_facet));
+}
+
+function mica_client_dataset_get_dto_facet_aggs($tab_block) {
+  foreach ($_SESSION['variables']['aggregations'] as $key_tab => $facet) {
+    if (is_int($key_tab)) {
+      $facet_build['search-' . $facet->aggregation][$facet->aggregation] = !empty($facet->termsAggregations) ? $facet->termsAggregations : NULL;
+    }
+  }
+  return $facet_build[$tab_block];
+}
+
+
+function mica_client_dataset_get_all_datasets_studies($study_id) {
+
+  $output = NULL;
+  $dataset_resource = new MicaDatasetResource();
+
+  $study_datasets_dto = $dataset_resource->get_datasetes('study-datasets', $study_id);
+  if (!empty($study_datasets_dto)) {
+    $study_datasets_tab = mica_client_dataset_get_datasets_list($study_datasets_dto, 'study', $study_id);
+    $output .= '<section> <h2 class="block-title">' . t('Study Dataset') . '</h2><div> <article>';
+    $output .= mica_client_dataset_get_datasets_tables($study_datasets_tab);
+    $output .= '</article></div></section>';
+  }
+
+  $harmonization_datasets_dto = $dataset_resource->get_datasetes('harmonization-datasets', $study_id);
+  if (!empty($harmonization_datasets_dto)) {
+    $harmonization_datasets_tab = mica_client_dataset_get_datasets_list($harmonization_datasets_dto, 'dataset', $study_id);
+    $output .= '<section> <h2 class="block-title">' . t('Harmonization Dataset') . '</h2><div> <article>';
+    $output .= mica_client_dataset_get_datasets_tables($harmonization_datasets_tab);
+    $output .= '</article></div></section>';
+
+  }
+
+  //dpm($harmonization_datasets_dto);
+  // dpm($study_datasets_dto);
+  return $output;
+}
+
+/*
+ * Format Datasets tables  detail
+ * */
+function mica_client_dataset_get_datasets_tables($datastes) {
+
+  return theme('mica_client_datasets-list', array("context_datasets_list" => $datastes));
+}
+
+
+/*
+ * retrieve Datasetes
+ * */
+function mica_client_dataset_get_datasets_table($datasets, $type, $study_id) {
+  $dataset_rows = array();
+  foreach ($datasets as $key_dataset => $dataset_dto) {
+    $dce_description = NULL;
+    $study_table = mica_client_dataset_get_current_study_project($dataset_dto, $type, $study_id);
+    if (!empty($dataset_dto->description)) {
+      $dataset_description = theme('box', truncate_utf8(mica_client_commons_get_localized_field($dataset_dto, 'description'), 50, TRUE, TRUE));
+    }
+    $dataset_name = mica_client_commons_get_localized_field($dataset_dto, 'name');
+    $dataset_rows[$key_dataset] = array(
+      'data' => array(
+        'label' => l($dataset_name, 'mica/dataset/' . mica_client_commons_to_slug($dataset_name) . '/' . $type . '/' . $dataset_dto->id),
+        'project' => !empty($study_table['project']) ? $study_table['project'] : '-',
+        'table' => !empty($study_table['table']) ? $study_table['table'] : '-',
+        'desc' => !empty($dataset_description) ? $dataset_description : '-'
+      )
+    );
+  }
+  return $dataset_rows;
+}
+
+
+function mica_client_dataset_get_current_study_project($dataset_dto, $type, $study_id) {
+  if (!empty($type) && $type == 'dataset') {
+    foreach ($dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type')->studyTables as $study_table) {
+      if ($study_table->studyId == $study_id) {
+        $study_tab['project'] = $study_table->project;
+        $study_tab['table'] = $study_table->table;
+        return $study_tab;
+      }
+    }
+  }
+  if (!empty($type) && $type == 'study') {
+    if ($dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type')->studyTable->studyId == $study_id) {
+      $study_tab['project'] = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type')->studyTable->project;
+      $study_tab['table'] = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type')->studyTable->table;
+      return $study_tab;
+    }
+  }
+  return FALSE;
+}
+
+function mica_client_dataset_get_datasets_list($datasets, $type, $study_id) {
+
+  $dataset_rows = mica_client_dataset_get_datasets_table($datasets, $type, $study_id);
+  $dataset['dataset-tab'] = theme(
+    'table',
+    array(
+      'header' => array(t('Name'), t('Project'), t('Table'), t('Description')),
+      'rows' => $dataset_rows,
+      'empty' => t('No data found'),
+      'sticky' => FALSE,
+      'attributes' => array('id' => 'variables_overview')
+    )
+  );
+  return $dataset;
+}
+

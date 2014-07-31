@@ -210,3 +210,30 @@ function _mica_client_commons_ws_client_get($path, $method, $header, $data = NUL
   return $body;
 }
 
+function mica_client_commons_add_page($title, $body_html, $alias = NULL, $format = 'full_html') {
+
+  $page_wrapper = entity_property_values_create_entity(
+    'node',
+    array(
+      'type' => 'page',
+      'title' => $title,
+      'title_field' => $title,
+      'body' => array(
+        'value' => $body_html,
+        'format' => $format,
+      ),
+      'language' => LANGUAGE_NONE,
+      'comment' => COMMENT_NODE_CLOSED,
+    )
+  )->save();
+
+  if (isset($alias)) {
+    $path = array('alias' => $alias);
+    $path['source'] = 'node/' . $page_wrapper->getIdentifier();
+    $path['language'] = LANGUAGE_NONE;
+    path_save($path);
+  }
+
+  return $page_wrapper->value();
+}
+
