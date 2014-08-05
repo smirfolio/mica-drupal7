@@ -51,3 +51,7 @@ facets[socio_demo_char][aggr-pars] = 'attributes-maelstrom__sociodemographic_cha
 facets[occurrenceGroup][title] = 'OCCURRENCE GROUP'
 facets[occurrenceGroup][key] = 'occurrenceGroup'
 facets[occurrenceGroup][aggr-pars] = 'occurrenceGroup'
+
+facets[datasetId][title] = 'DATASETS'
+facets[datasetId][key] = 'datasetId'
+facets[datasetId][aggr-pars] = 'datasetId'
