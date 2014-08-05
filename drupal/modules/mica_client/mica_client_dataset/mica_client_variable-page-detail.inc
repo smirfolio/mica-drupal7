@@ -86,17 +86,22 @@ function mica_client_dataset_variable_get_ajax_statistics($id_variable = NULL) {
   $variable = $variable_resource->get_variable('variable', $id_variable);
   $statistic_view_type = mica_client_variable_get_stat_view_type($variable);
   $variable_stat = $variable_resource->get_variable('variable', $id_variable, $statistic_view_type);
-  $callback_stats = 'mica_client_variable_table_stat_' . $statistic_view_type;
-  $stat_tab = $callback_stats($variable, $variable_stat);
-//  dpm($variable_stat);
-  // dpm($variable_facet);
+  if (count($variable->studyIds) <= 1) {
+    $variable_stat_parse[0] = $variable_stat;
+  }
+  else {
+    $variable_stat_parse = $variable_stat;
+  }
+  if (!empty($variable_stat_parse)) {
+    $callback_stats = 'mica_client_variable_table_stat_' . $statistic_view_type;
+    $stat_tab = $callback_stats($variable, $variable_stat_parse);
 
+  }
   print $stat_tab;
 
 }
 
 function mica_client_variable_table_stat_summary($variable, $variable_stat) {
-  dpm($variable_stat);
   $rows = array();
   $math_dto = 'Math.ContinuousSummaryDto.continuous';
   foreach ($variable->studyIds as $key_stud => $stat) {
@@ -112,11 +117,8 @@ function mica_client_variable_table_stat_summary($variable, $variable_stat) {
         round($variable_stat[$key_stud]->{$math_dto}->summary->stdDev, 3) : 'nan',
       $variable_stat[$key_stud]->{$math_dto}->summary->n
     );
-
   }
-
   $headers = array('Study', 'Min', 'Max', 'Mean', 'Std. Dev', 'Count');
-
   return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No studies available')));
 }
 

@@ -18,15 +18,18 @@
             message_div.empty();
 
             param.css({'padding-top': '0'});
-            console.log(data)
+
             $(data).appendTo(param);
+            console.log(data);
           },
           beforeSend: function () {
             blinkeffect('#txtblnk');
           },
           'error': function (data) {
             param.empty();
-            $(Drupal.t('Error!')).appendTo(param);
+            var $errorMessage = Drupal.t('Error!');
+            console.log($errorMessage);
+            $().appendTo(param);
           }
         });
 
