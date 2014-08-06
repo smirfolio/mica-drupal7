@@ -259,7 +259,6 @@ class MicaDatasetResource extends MicaClient {
   public function get_variable($resource_dataset, $dataset_id, $detail = NULL) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/' . $resource_dataset . '/' . $dataset_id . '/' . $detail;
-    dpm($url);
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -267,7 +266,7 @@ class MicaDatasetResource extends MicaClient {
           )
         ),
     ));
-
+    dpm($url);
     $client = $this->client();
     try {
       $data = $client->execute($request);

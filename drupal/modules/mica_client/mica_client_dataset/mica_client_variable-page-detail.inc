@@ -6,16 +6,43 @@ function mica_client_variable_page_detail($id_variable, $resource_variable) {
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable('variable', $id_variable);
 
-  //dpm($variable);
+  dpm($variable);
   $variable->label = _mica_client_variable_attributes_detail($variable, 'label');
   $variable->description = _mica_client_variable_attributes_detail($variable, 'description');
   $variable->comment = _mica_client_variable_attributes_detail($variable, 'comment');
+  $variable->categoriestab = mica_client_variable_get_categories($variable->categories);
+  //mica_client_variable_get_harmonizations($variable);
   drupal_set_title($variable->name);
-  dpm($variable);
-
-
   return theme('mica_client_variable-detail', array('variable_dto' => $variable));
+}
 
+
+//function mica_client_variable_get_harmonizations($variable){
+//
+//}
+function mica_client_variable_get_categories($categories = NULL) {
+  $rows = array();
+  if (!empty($categories)) {
+    foreach ($categories as $category) {
+      $rows[] = array(
+        $category->name,
+        _mica_client_variable_attributes_detail($category, 'label'),
+        $category->missing
+      );
+    }
+    return theme(
+      'table',
+      array(
+        'header' => array(t('Name'), t('Label'), t('Missing')),
+        'rows' => $rows,
+        'empty' => t('No data found'),
+        'sticky' => FALSE,
+        'attributes' => array('id' => 'variables_overview')
+      )
+    );
+  }
+
+  return FALSE;
 }
 
 function mica_client_variable_get_stat_view_type($variable) {
@@ -86,6 +113,7 @@ function mica_client_dataset_variable_get_ajax_statistics($id_variable = NULL) {
   $variable = $variable_resource->get_variable('variable', $id_variable);
   $statistic_view_type = mica_client_variable_get_stat_view_type($variable);
   $variable_stat = $variable_resource->get_variable('variable', $id_variable, $statistic_view_type);
+  dpm($variable_stat);
   if (count($variable->studyIds) <= 1) {
     $variable_stat_parse[0] = $variable_stat;
   }
