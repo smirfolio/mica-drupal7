@@ -71,7 +71,6 @@ function mica_client_dataset_get_variables($resources, $id_dataset) {
   $row_variablas = array();
   $dataset_resource = new MicaDatasetResource();
   $variables = $dataset_resource->get_varaibles($resources, $id_dataset);
-  dpm($variables);
   foreach ($variables->getVariablesList() as $key_varable => $list) {
     // dpm($list);
     $row_variablas[$key_varable] = array(
