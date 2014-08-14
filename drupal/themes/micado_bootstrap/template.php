@@ -90,3 +90,37 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
   return $theme_array;
 
 }
+
+/**
+ * Implements hook_bootstrap_based_theme().
+ */
+function micado_bootstrap_bootstrap_based_theme() {
+  return array('micado_bootstrap' => TRUE);
+}
+
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * @see page.tpl.php
+ */
+function micado_bootstrap_preprocess_page(&$variables) {
+  // Add information about the number of sidebars.
+  if (!empty($variables['page']['facets']) && !empty($variables['page']['sidebar_second'])) {
+    $variables['content_column_class'] = ' class="col-sm-6"';
+  }
+  elseif (!empty($variables['page']['facets']) || !empty($variables['page']['sidebar_second'])) {
+    $variables['content_column_class'] = ' class="col-sm-9"';
+  }
+  // Add information about the number of sidebars.
+  elseif (!empty($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_second'])) {
+    $variables['content_column_class'] = ' class="col-sm-6"';
+  }
+  elseif (!empty($variables['page']['sidebar_first']) || !empty($variables['page']['sidebar_second'])) {
+    $variables['content_column_class'] = ' class="col-sm-9"';
+  }
+
+  else {
+    $variables['content_column_class'] = ' class="col-sm-12"';
+  }
+}

@@ -2,27 +2,31 @@
 
 function mica_client_study_page_list() {
   $output['title'] = t('Study Catalogue');
-  $output['data'] = mica_client_study_studies_table();
+  $output['data'] = mica_client_study_studies_table(mica_client_study_get_studies());
   drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/mica_studies.css', 'file');
   return theme('mica_client_study_list', array("context_detail" => $output));
 }
 
-function mica_client_study_studies_table() {
-  $rows = array();
+function mica_client_study_get_studies() {
   $study_resource = new MicaStudyResource();
-  $studies = $study_resource->studies();
-  foreach ($studies as $study) {
-    $name = mica_client_commons_get_localized_field($study, 'name');
-    $rows[] = array(
-      mica_client_commons_get_localized_field($study, 'acronym'),
-      l($name, 'mica/study/' . mica_client_commons_to_slug($name) . '/' . $study->id),
-      implode(', ', t($study->designs)),
-      isset($study->targetNumber->noLimit) ? t('No Limit') :
-        isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,
-      implode($study->countries),
-    );
-  }
+  return $studies = $study_resource->studies_search();
+}
 
+function mica_client_study_studies_table($studies) {
+  $rows = array();
+  if (!empty($studies['data'])) {
+    foreach ($studies['data'] as $study) {
+      $name = mica_client_commons_get_localized_field($study, 'name');
+      $rows[] = array(
+        mica_client_commons_get_localized_field($study, 'acronym'),
+        l($name, 'mica/study/' . mica_client_commons_to_slug($name) . '/' . $study->id),
+        implode(', ', t($study->designs)),
+        isset($study->targetNumber->noLimit) ? t('No Limit') :
+          isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,
+        implode($study->countries),
+      );
+    }
+  }
   $headers = array(
     t('Short Name'),
     t('Name'),
@@ -31,7 +35,12 @@ function mica_client_study_studies_table() {
     t('Country of residence'),
   );
   $per_page = 20;
-  $current_page = pager_default_initialize(count($rows), $per_page);
+
+//  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variable);
+//  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variable);
+
+  $args = array('quantity' => $studies['totalHits'], 'element' => MicaStudyResource::PAGINATE_study);
+  $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaStudyResource::PAGINATE_study);
   $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
     'table',
@@ -40,7 +49,7 @@ function mica_client_study_studies_table() {
       'rows' => empty($chunks) ? array() : $chunks[$current_page],
       'empty' => t('No data found')
     )
-  ) . theme('pager', array('quantity', count($rows)));
+  ) . theme('pager', $args);
 }
 
 
