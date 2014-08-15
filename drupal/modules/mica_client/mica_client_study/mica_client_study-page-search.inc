@@ -12,7 +12,7 @@ function mica_client_study_page_search($request) {
 function mica_client_study_studies_search_table($request) {
   $rows = array();
   $study_resource = new MicaStudyResource();
-  $studies = $study_resource->studies_search($request);
+  $studies = $study_resource->studies_search();
   foreach ($studies['data'] as $study) {
     $name = mica_client_commons_get_localized_field($study, 'name');
     $rows[] = array(

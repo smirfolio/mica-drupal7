@@ -7,7 +7,7 @@ base theme = bootstrap
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Regions
 ;;;;;;;;;;;;;;;;;;;;;
-
+regions[facets]     = 'facets'
 regions[navigation]     = 'Navigation'
 regions[header]         = 'Top Bar'
 regions[highlighted]    = 'Highlighted'
@@ -82,3 +82,8 @@ METHOD 1: Bootstrap Source Files
 ; Method 2 uses BootstrapCDN, the only thing you might need to provide here
 ; is overrides to Bootstrap theme settings. Copy them here from the base theme
 ; to override.
+
+; Region Wells
+; --------------
+settings[bootstrap_region_well-facets] = 'well'
+

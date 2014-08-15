@@ -14,12 +14,14 @@ use \DrSlump\Protobuf;
 Protobuf::autoload();
 
 include_once($path_module_protos . '/protos/Mica.php');
+include_once($path_module_protos . '/protos/MicaSearch.php');
 
 /**
  * Class MicaClient
  */
 class MicaClient {
-
+  const child = \obiba\mica\ParentChildFilterDto\Relationship::CHILD;
+  const parent = \obiba\mica\ParentChildFilterDto\Relationship::PARENT;
   const AUTHORIZATION_HEADER = 'Authorization';
 
   const COOKIE_HEADER = 'Cookie';
@@ -35,6 +37,10 @@ class MicaClient {
   const HEADER_JSON = 'application/json';
 
   const SIZE_RESPONSE = 30;
+
+  const PAGINATE_study = 0;
+  const PAGINATE_variable = 1;
+  const PAGINATE_dataset = 2;
 
   protected $micaUrl;
 
@@ -213,4 +219,128 @@ class MicaClient {
 
     return $client;
   }
+
+
+  protected function session_facets_builder($aggregations, $dto_type, $request_param = NULL) {
+    if (!empty($aggregations->totalHits)) {
+      $_SESSION[$dto_type]['aggregations'] = $aggregations->aggs;
+      $_SESSION[$dto_type]['aggregations']['totalHits'] = $aggregations->totalHits;
+      $_SESSION[$dto_type]['request'] = !empty($request_param) ? $request_param : NULL;
+
+    }
+  }
+
+  protected function normalize_parameters($request_param) {
+    $requestArry = explode('&', $request_param);
+
+    $formated_term = array();
+    foreach ($requestArry as $term_association) {
+      $term = explode('=', $term_association);
+      if (!empty($term[1])) {
+        $decoded_term = urldecode($term[0]);
+        $formated_term[preg_replace('/\[[^\]]*\]/', '', $decoded_term)][] = $term[1];
+      }
+    }
+    return $formated_term;
+  }
+
+  protected function pagination_parameters($current_page = NULL, $dto_type = NULL) {
+    dpm($dto_type);
+    $nb_pages = ceil($_SESSION[strtolower($dto_type)]['aggregations']['totalHits'] / $this::SIZE_RESPONSE);
+    if (!empty($current_page)) {
+      $pageActuelle = intval($current_page);
+      if ($pageActuelle > $nb_pages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+      {
+        $pageActuelle = $nb_pages;
+      }
+    }
+    else {
+      $pageActuelle = 1; // La page actuelle est la n°1
+    }
+    $premiereEntree = ($pageActuelle) * $this::SIZE_RESPONSE; // On calcul la première entrée à lire
+    return $premiereEntree;
+  }
+
+  /*
+   * Dto filter construction
+   * @param $request_param: url passed parameters,
+   * @param $spec_dto_param: specific  passed parameters,
+   * @param $parent_child: array must be 'parent'=>'<entity parent>' or 'child'=>'<entity parent>',
+   * @param $type_dto_search: must be 'Study' or 'Dataset',
+   *
+   * */
+  protected function dto_filter_construct($request_param = NULL, $parent_child = NULL, $type_dto_search = NULL, $spec_dto_params = NULL) {
+//    dpm($parent_child);
+    // dpm($type_dto_search);
+    $query_dto = new \obiba\mica\QueryDto;
+    $filtered_query_dto = new \obiba\mica\FilteredQueryDto;
+    $bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
+    if (!empty($parent_child)) {
+      $parent_filtered_query_dto = new \obiba\mica\FilteredQueryDto;
+      $parent_bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
+    }
+    if (!empty($spec_dto_params)) {
+      foreach ($spec_dto_params as $spec_dto_param) {
+        foreach ($spec_dto_param['terms'] as $term_value) {
+          $dto_spec_query_term = new \obiba\mica\TermsQueryDto;
+          $dto_spec_query_term->setField($spec_dto_param['field']);
+          $dto_spec_query_term->setValues($term_value);
+          $bool_filter_query_dto->addTerms($dto_spec_query_term);
+        }
+      }
+    }
+    if (!empty($request_param)) {
+      foreach ($this->normalize_parameters(urldecode($request_param)) as $field => $term_association) {
+        if ($field != 'page') {
+          if (strpos($field, key($parent_child)) === FALSE) {
+            foreach ($term_association as $term) {
+              $parent_child_field = explode(':', urldecode($field));
+              $dto_guery_term = new \obiba\mica\TermsQueryDto;
+              $dto_guery_term->setField(str_replace('-', '.', $parent_child_field[1]));
+              $dto_guery_term->setValues(str_replace($parent_child_field[1] . '.', '', $term));
+              $bool_filter_query_dto->addTerms($dto_guery_term);
+            }
+          }
+          else {
+            foreach ($term_association as $term) {
+              $parent_child_field = explode(':', urldecode($field));
+              $parent_child_dto_guery_term = new \obiba\mica\TermsQueryDto;
+              $parent_child_dto_guery_term->setField(str_replace('-', '.', $parent_child_field[1]));
+              $parent_child_dto_guery_term->setValues(str_replace($parent_child_field[1] . '.', '', $term));
+              $parent_bool_filter_query_dto->addTerms($parent_child_dto_guery_term);
+            }
+            if (!empty($parent_bool_filter_query_dto) && !empty($parent_bool_filter_query_dto)) {
+              $parent_query_dto = new \obiba\mica\ParentChildFilterDto;
+              $parent_query_dto->setRelationship(constant("MicaClient::" . key($parent_child)));
+              $parent_query_dto->setType($parent_child[key($parent_child)]);
+              $parent_filtered_query_dto->setFilter($parent_bool_filter_query_dto);
+              $parent_query_dto->setFilteredQuery($parent_filtered_query_dto);
+            }
+          }
+        }
+        if ($field == 'page') {
+          $pagination_param = explode(',', $term_association[0]);
+          if (array_count_values($pagination_param)[0] == constant("MicaClient::PAGINATE_" . $type_dto_search)) {
+            $query_dto->setFrom($this->pagination_parameters($pagination_param[1], $type_dto_search));
+          }
+        }
+
+      }
+    }
+
+    if (!empty($parent_query_dto)) {
+      $bool_filter_query_dto->setParentChildFilter($parent_query_dto);
+    }
+
+    $filtered_query_dto->setFilter($bool_filter_query_dto);
+
+    $query_dto->setFilteredQuery($filtered_query_dto);
+
+    $query_dto->setSize($this::SIZE_RESPONSE);
+    $query_dto->detailed = FALSE;
+
+    $json_query_encoded = Protobuf::encode($query_dto);
+    return $json_query_encoded;
+  }
+
 }

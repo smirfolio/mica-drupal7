@@ -189,10 +189,10 @@ function mica_client_study_block_info() {
 }
 
 function mica_client_study_blockinfo_construc($facet_title, $facet_weight) {
-
+  $facet_title_array = explode('-', $facet_title);
   return array(
-    'info' => t('Facet search @title', array('@title' => drupal_strtolower($facet_title))),
-    'title' => t('@title', array('@title' => $facet_title)),
+    'info' => t('Facet search @title', array('@title' => drupal_strtolower($facet_title_array[0] . ' ' . $facet_title_array[1]))),
+    'title' => t('@title', array('@title' => $facet_title_array[1])),
     'status' => 1,
     'region' => 'sidebar_first',
     'visibility' => BLOCK_VISIBILITY_LISTED,
@@ -208,41 +208,12 @@ function mica_client_study_blockinfo_construc($facet_title, $facet_weight) {
 function mica_client_study_block_view($delta = '') {
   foreach (mica_client_study_resource_return_facets() as $key_facet => $facet) {
     if (user_access('access content') && $delta == 'search-' . $key_facet) { //good idea to check user perms here
-      $block['subject'] = $facet['title'];
-      $block['content'] = mica_client_study_precess_block_theme('search-' . $facet['aggr-pars']);
+      $facet_title_array = explode('-', $facet['title']);
+      $block['subject'] = $facet_title_array;
+      $block['content'] = mica_client_commons_precess_block_theme('search-' . $facet['aggr-pars'], 'study', 'parent');
       return $block;
     }
   }
-}
-
-function mica_client_study_precess_block_theme($block_delta) {
-  $items = array();
-  $agregation_facet = NULL;
-  if (!empty($block_delta)) {
-    $agregation_facet = key(mica_client_study_get_dto_facet_aggs($block_delta));
-    $terms_aggregations = current(mica_client_study_get_dto_facet_aggs($block_delta));
-    if (!empty($terms_aggregations)) {
-      foreach ($terms_aggregations as $term) {
-        $items[$term->key] = array(
-          '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
-            $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
-            $agregation_facet . '-' . $term->key . '" >' .
-            //  '<a href="#"  disabled="disabled" id="checkthebox" term="'. $agregation_facet . '-' . $term->key.'" >'.
-            $term->key . '(' . $term->count . ') </div>'
-        );
-      }
-    }
-  }
-  return theme('mica_client_study_block_search', array('items' => $items, 'formId' => $agregation_facet));
-}
-
-function mica_client_study_get_dto_facet_aggs($tab_block) {
-  foreach ($_SESSION['studies']['aggregations'] as $key_tab => $facet) {
-    if (is_int($key_tab)) {
-      $facet_build['search-' . $facet->aggregation][$facet->aggregation] = !empty($facet->termsAggregations) ? $facet->termsAggregations : NULL;
-    }
-  }
-  return $facet_build[$tab_block];
 }
 
 /**

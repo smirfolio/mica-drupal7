@@ -950,8 +950,8 @@ pre code {
 .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
     position: relative;
     min-height: 1px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
@@ -7491,6 +7491,800 @@ button.close {
     }
 }
 
+#block-system-navigation h2 {
+    font-size: 24px;
+    line-height: 20px;
+    margin-bottom: 0;
+}
+
+#block-system-navigation ul.nav {
+    margin-left: 10px;
+}
+
+#block-mica-powered-by-mica {
+    float: right;
+    font-size: 85%;
+}
+
+#block-mica-powered-by-mica .block-content a {
+    background: url("../logo-small.png") no-repeat scroll 0 0 transparent;
+    padding-left: 25px;
+    margin-left: 5px;
+    height: 25px;
+    display: inline-block;
+}
+
+.workbench-info-block {
+    margin-bottom: 10px !important;
+}
+
+.workbench-info-block form#workbench-moderation-moderate-form select {
+    margin-bottom: 0;
+}
+
+#comments {
+    margin-top: 20px;
+}
+
+#comments #comment-form-wrapper {
+    padding-top: 0;
+}
+
+.facet-bar {
+    font-size: 12px;
+    line-height: 15px;
+    padding: 0;
+    background-color: #FAFAFA;
+    /* current search */
+    /* regular facets */
+    /* range facets */
+}
+
+.facet-bar .block-current-search {
+    padding-bottom: 10px;
+}
+
+.facet-bar .block-current-search h2 {
+    margin: 5px;
+}
+
+.facet-bar .block-current-search .block-content {
+    padding-left: 7px;
+}
+
+.facet-bar .block-current-search h3 {
+    margin: 0;
+    font-size: 12px;
+    line-height: 15px;
+    font-weight: normal;
+    padding-left: 5px;
+    display: inline;
+}
+
+.facet-bar .block-current-search h4.current-search-group-title {
+    line-height: 15px;
+    margin: 0;
+    padding-left: 5px;
+    font-weight: normal;
+}
+
+.facet-bar .block-current-search .current-search-group ul {
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+.facet-bar .block-current-search .current-search-group ul li {
+    line-height: 15px;
+}
+
+.facet-bar .block-mica-client-dataset .selected_item,
+.facet-bar .block-mica-client-study .selected_item {
+    color: gray;
+    text-decoration: line-through;
+}
+
+.facet-bar .block-mica-client-dataset h2,
+.facet-bar .block-mica-client-study h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+}
+
+.facet-bar .block-mica-client-dataset h2 a,
+.facet-bar .block-mica-client-study h2 a {
+    padding-left: 12px;
+    color: #333333;
+}
+
+.facet-bar .block-mica-client-dataset h2.collapsiblock a,
+.facet-bar .block-mica-client-study h2.collapsiblock a {
+    background: url('../img/expanded.png') no-repeat scroll left center transparent;
+}
+
+.facet-bar .block-mica-client-dataset h2.collapsiblockCollapsed a,
+.facet-bar .block-mica-client-study h2.collapsiblockCollapsed a {
+    background: url('../img/collapsed.png') no-repeat scroll left center transparent;
+}
+
+.facet-bar .block-mica-client-dataset .block-content,
+.facet-bar .block-mica-client-study .block-content {
+    padding: 3px 0;
+}
+
+.facet-bar .block-mica-client-dataset a.facetapi-limit-link,
+.facet-bar .block-mica-client-study a.facetapi-limit-link {
+    margin-left: 10px;
+}
+
+.facet-bar .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links,
+.facet-bar .block-mica-client-study ul.facetapi-facetapi-checkbox-links {
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+
+.facet-bar .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li,
+.facet-bar .block-mica-client-study ul.facetapi-facetapi-checkbox-links li {
+    list-style: none;
+}
+
+.facet-bar .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li input,
+.facet-bar .block-mica-client-study ul.facetapi-facetapi-checkbox-links li input {
+    margin-right: 5px;
+    margin-top: -2px;
+}
+
+.facet-bar .search-api-ranges-widget form {
+    margin-bottom: 5px;
+}
+
+.facet-bar .search-api-ranges-widget p.text-range,
+.facet-bar .search-api-ranges-widget .range-slider-box {
+    display: none;
+}
+
+.facet-bar .search-api-ranges-widget input.form-submit,
+.facet-bar .search-api-ranges-widget .yui3-g,
+.facet-bar .search-api-ranges-widget .range-box {
+    display: inline-block;
+}
+
+.facet-bar .search-api-ranges-widget .form-item-range-from,
+.facet-bar .search-api-ranges-widget .form-item-range-to {
+    margin: 0;
+}
+
+.facet-bar .search-api-ranges-widget .yui3-g {
+    margin-bottom: 0;
+    padding-left: 10px;
+}
+
+.facet-bar .search-api-ranges-widget input[type="text"] {
+    width: 80px;
+    padding: 2px 3px;
+    font-size: 12px;
+}
+
+.facet-bar .search-api-ranges-widget label {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+.facet-bar .search-api-ranges-widget button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #ffffff;
+    background-color: #428bca;
+    border-color: #357ebd;
+    padding: 2px 6px;
+    font-size: 12px;
+    margin-top: -12px;
+}
+
+.facet-bar .search-api-ranges-widget button:focus,
+.facet-bar .search-api-ranges-widget button:active:focus,
+.facet-bar .search-api-ranges-widget button.active:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+.facet-bar .search-api-ranges-widget button:hover,
+.facet-bar .search-api-ranges-widget button:focus {
+    color: #333333;
+    text-decoration: none;
+}
+
+.facet-bar .search-api-ranges-widget button:active,
+.facet-bar .search-api-ranges-widget button.active {
+    outline: 0;
+    background-image: none;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.facet-bar .search-api-ranges-widget button.disabled,
+.facet-bar .search-api-ranges-widget button[disabled],
+fieldset[disabled] .facet-bar .search-api-ranges-widget button {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.facet-bar .search-api-ranges-widget button:hover,
+.facet-bar .search-api-ranges-widget button:focus,
+.facet-bar .search-api-ranges-widget button:active,
+.facet-bar .search-api-ranges-widget button.active,
+.open > .dropdown-toggle .facet-bar .search-api-ranges-widget button {
+    color: #ffffff;
+    background-color: #3071a9;
+    border-color: #285e8e;
+}
+
+.facet-bar .search-api-ranges-widget button:active,
+.facet-bar .search-api-ranges-widget button.active,
+.open > .dropdown-toggle .facet-bar .search-api-ranges-widget button {
+    background-image: none;
+}
+
+.facet-bar .search-api-ranges-widget button.disabled,
+.facet-bar .search-api-ranges-widget button[disabled],
+fieldset[disabled] .facet-bar .search-api-ranges-widget button,
+.facet-bar .search-api-ranges-widget button.disabled:hover,
+.facet-bar .search-api-ranges-widget button[disabled]:hover,
+fieldset[disabled] .facet-bar .search-api-ranges-widget button:hover,
+.facet-bar .search-api-ranges-widget button.disabled:focus,
+.facet-bar .search-api-ranges-widget button[disabled]:focus,
+fieldset[disabled] .facet-bar .search-api-ranges-widget button:focus,
+.facet-bar .search-api-ranges-widget button.disabled:active,
+.facet-bar .search-api-ranges-widget button[disabled]:active,
+fieldset[disabled] .facet-bar .search-api-ranges-widget button:active,
+.facet-bar .search-api-ranges-widget button.disabled.active,
+.facet-bar .search-api-ranges-widget button[disabled].active,
+fieldset[disabled] .facet-bar .search-api-ranges-widget button.active {
+    background-color: #428bca;
+    border-color: #357ebd;
+}
+
+.facet-bar .search-api-ranges-widget button .badge {
+    color: #428bca;
+    background-color: #ffffff;
+}
+
+body.page-mica-variables-search .region-facets,
+body.page-mica-studies-search .region-facets,
+body.page-mica-variables-search .region-sidebar-first,
+body.page-mica-studies-search .region-sidebar-first {
+    font-size: 12px;
+    line-height: 15px;
+    padding: 0;
+    background-color: #FAFAFA;
+    /* current search */
+    /* regular facets */
+    /* range facets */
+}
+
+body.page-mica-variables-search .region-facets .block-current-search,
+body.page-mica-studies-search .region-facets .block-current-search,
+body.page-mica-variables-search .region-sidebar-first .block-current-search,
+body.page-mica-studies-search .region-sidebar-first .block-current-search {
+    padding-bottom: 10px;
+}
+
+body.page-mica-variables-search .region-facets .block-current-search h2,
+body.page-mica-studies-search .region-facets .block-current-search h2,
+body.page-mica-variables-search .region-sidebar-first .block-current-search h2,
+body.page-mica-studies-search .region-sidebar-first .block-current-search h2 {
+    margin: 5px;
+}
+
+body.page-mica-variables-search .region-facets .block-current-search .block-content,
+body.page-mica-studies-search .region-facets .block-current-search .block-content,
+body.page-mica-variables-search .region-sidebar-first .block-current-search .block-content,
+body.page-mica-studies-search .region-sidebar-first .block-current-search .block-content {
+    padding-left: 7px;
+}
+
+body.page-mica-variables-search .region-facets .block-current-search h3,
+body.page-mica-studies-search .region-facets .block-current-search h3,
+body.page-mica-variables-search .region-sidebar-first .block-current-search h3,
+body.page-mica-studies-search .region-sidebar-first .block-current-search h3 {
+    margin: 0;
+    font-size: 12px;
+    line-height: 15px;
+    font-weight: normal;
+    padding-left: 5px;
+    display: inline;
+}
+
+body.page-mica-variables-search .region-facets .block-current-search h4.current-search-group-title,
+body.page-mica-studies-search .region-facets .block-current-search h4.current-search-group-title,
+body.page-mica-variables-search .region-sidebar-first .block-current-search h4.current-search-group-title,
+body.page-mica-studies-search .region-sidebar-first .block-current-search h4.current-search-group-title {
+    line-height: 15px;
+    margin: 0;
+    padding-left: 5px;
+    font-weight: normal;
+}
+
+body.page-mica-variables-search .region-facets .block-current-search .current-search-group ul,
+body.page-mica-studies-search .region-facets .block-current-search .current-search-group ul,
+body.page-mica-variables-search .region-sidebar-first .block-current-search .current-search-group ul,
+body.page-mica-studies-search .region-sidebar-first .block-current-search .current-search-group ul {
+    margin-left: 0;
+    margin-bottom: 0;
+}
+
+body.page-mica-variables-search .region-facets .block-current-search .current-search-group ul li,
+body.page-mica-studies-search .region-facets .block-current-search .current-search-group ul li,
+body.page-mica-variables-search .region-sidebar-first .block-current-search .current-search-group ul li,
+body.page-mica-studies-search .region-sidebar-first .block-current-search .current-search-group ul li {
+    line-height: 15px;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset .selected_item,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset .selected_item,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset .selected_item,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset .selected_item,
+body.page-mica-variables-search .region-facets .block-mica-client-study .selected_item,
+body.page-mica-studies-search .region-facets .block-mica-client-study .selected_item,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study .selected_item,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study .selected_item {
+    color: gray;
+    text-decoration: line-through;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset h2,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset h2,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset h2,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset h2,
+body.page-mica-variables-search .region-facets .block-mica-client-study h2,
+body.page-mica-studies-search .region-facets .block-mica-client-study h2,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study h2,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 2px 5px;
+    background-color: #f2f2f2;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset h2 a,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset h2 a,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset h2 a,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset h2 a,
+body.page-mica-variables-search .region-facets .block-mica-client-study h2 a,
+body.page-mica-studies-search .region-facets .block-mica-client-study h2 a,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study h2 a,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study h2 a {
+    padding-left: 12px;
+    color: #333333;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset h2.collapsiblock a,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset h2.collapsiblock a,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset h2.collapsiblock a,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset h2.collapsiblock a,
+body.page-mica-variables-search .region-facets .block-mica-client-study h2.collapsiblock a,
+body.page-mica-studies-search .region-facets .block-mica-client-study h2.collapsiblock a,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study h2.collapsiblock a,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study h2.collapsiblock a {
+    background: url('../img/expanded.png') no-repeat scroll left center transparent;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset h2.collapsiblockCollapsed a,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset h2.collapsiblockCollapsed a,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset h2.collapsiblockCollapsed a,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset h2.collapsiblockCollapsed a,
+body.page-mica-variables-search .region-facets .block-mica-client-study h2.collapsiblockCollapsed a,
+body.page-mica-studies-search .region-facets .block-mica-client-study h2.collapsiblockCollapsed a,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study h2.collapsiblockCollapsed a,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study h2.collapsiblockCollapsed a {
+    background: url('../img/collapsed.png') no-repeat scroll left center transparent;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset .block-content,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset .block-content,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset .block-content,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset .block-content,
+body.page-mica-variables-search .region-facets .block-mica-client-study .block-content,
+body.page-mica-studies-search .region-facets .block-mica-client-study .block-content,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study .block-content,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study .block-content {
+    padding: 3px 0;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset a.facetapi-limit-link,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset a.facetapi-limit-link,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset a.facetapi-limit-link,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset a.facetapi-limit-link,
+body.page-mica-variables-search .region-facets .block-mica-client-study a.facetapi-limit-link,
+body.page-mica-studies-search .region-facets .block-mica-client-study a.facetapi-limit-link,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study a.facetapi-limit-link,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study a.facetapi-limit-link {
+    margin-left: 10px;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links,
+body.page-mica-variables-search .region-facets .block-mica-client-study ul.facetapi-facetapi-checkbox-links,
+body.page-mica-studies-search .region-facets .block-mica-client-study ul.facetapi-facetapi-checkbox-links,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study ul.facetapi-facetapi-checkbox-links,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study ul.facetapi-facetapi-checkbox-links {
+    margin-bottom: 0;
+    margin-left: 10px;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li,
+body.page-mica-variables-search .region-facets .block-mica-client-study ul.facetapi-facetapi-checkbox-links li,
+body.page-mica-studies-search .region-facets .block-mica-client-study ul.facetapi-facetapi-checkbox-links li,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study ul.facetapi-facetapi-checkbox-links li,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study ul.facetapi-facetapi-checkbox-links li {
+    list-style: none;
+}
+
+body.page-mica-variables-search .region-facets .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li input,
+body.page-mica-studies-search .region-facets .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li input,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li input,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-dataset ul.facetapi-facetapi-checkbox-links li input,
+body.page-mica-variables-search .region-facets .block-mica-client-study ul.facetapi-facetapi-checkbox-links li input,
+body.page-mica-studies-search .region-facets .block-mica-client-study ul.facetapi-facetapi-checkbox-links li input,
+body.page-mica-variables-search .region-sidebar-first .block-mica-client-study ul.facetapi-facetapi-checkbox-links li input,
+body.page-mica-studies-search .region-sidebar-first .block-mica-client-study ul.facetapi-facetapi-checkbox-links li input {
+    margin-right: 5px;
+    margin-top: -2px;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget form,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget form,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget form,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget form {
+    margin-bottom: 5px;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget p.text-range,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget p.text-range,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget p.text-range,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget p.text-range,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget .range-slider-box,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget .range-slider-box,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget .range-slider-box,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget .range-slider-box {
+    display: none;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget input.form-submit,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget input.form-submit,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget input.form-submit,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget input.form-submit,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget .yui3-g,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget .yui3-g,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget .yui3-g,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget .yui3-g,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget .range-box,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget .range-box,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget .range-box,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget .range-box {
+    display: inline-block;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget .form-item-range-from,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget .form-item-range-from,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget .form-item-range-from,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget .form-item-range-from,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget .form-item-range-to,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget .form-item-range-to,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget .form-item-range-to,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget .form-item-range-to {
+    margin: 0;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget .yui3-g,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget .yui3-g,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget .yui3-g,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget .yui3-g {
+    margin-bottom: 0;
+    padding-left: 10px;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget input[type="text"],
+body.page-mica-studies-search .region-facets .search-api-ranges-widget input[type="text"],
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget input[type="text"],
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget input[type="text"] {
+    width: 80px;
+    padding: 2px 3px;
+    font-size: 12px;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget label,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget label,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget label,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget label {
+    margin-bottom: 0;
+    font-size: 12px;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #ffffff;
+    background-color: #428bca;
+    border-color: #357ebd;
+    padding: 2px 6px;
+    font-size: 12px;
+    margin-top: -12px;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:focus,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:focus,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:focus,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:focus,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:active:focus,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:active:focus,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:active:focus,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:active:focus,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.active:focus,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.active:focus,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.active:focus,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.active:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:hover,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:hover,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:hover,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:hover,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:focus,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:focus,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:focus,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:focus {
+    color: #333333;
+    text-decoration: none;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:active,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.active {
+    outline: 0;
+    background-image: none;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.disabled,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.disabled,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.disabled,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.disabled,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button[disabled],
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button[disabled],
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button[disabled],
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button[disabled],
+fieldset[disabled] body.page-mica-variables-search .region-facets .search-api-ranges-widget button,
+fieldset[disabled] body.page-mica-studies-search .region-facets .search-api-ranges-widget button,
+fieldset[disabled] body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button,
+fieldset[disabled] body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:hover,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:hover,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:hover,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:hover,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:focus,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:focus,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:focus,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:focus,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:active,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.active,
+.open > .dropdown-toggle body.page-mica-variables-search .region-facets .search-api-ranges-widget button,
+.open > .dropdown-toggle body.page-mica-studies-search .region-facets .search-api-ranges-widget button,
+.open > .dropdown-toggle body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button,
+.open > .dropdown-toggle body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button {
+    color: #ffffff;
+    background-color: #3071a9;
+    border-color: #285e8e;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button:active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button:active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:active,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.active,
+.open > .dropdown-toggle body.page-mica-variables-search .region-facets .search-api-ranges-widget button,
+.open > .dropdown-toggle body.page-mica-studies-search .region-facets .search-api-ranges-widget button,
+.open > .dropdown-toggle body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button,
+.open > .dropdown-toggle body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button {
+    background-image: none;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.disabled,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.disabled,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.disabled,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.disabled,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button[disabled],
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button[disabled],
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button[disabled],
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button[disabled],
+fieldset[disabled] body.page-mica-variables-search .region-facets .search-api-ranges-widget button,
+fieldset[disabled] body.page-mica-studies-search .region-facets .search-api-ranges-widget button,
+fieldset[disabled] body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button,
+fieldset[disabled] body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.disabled:hover,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.disabled:hover,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.disabled:hover,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.disabled:hover,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button[disabled]:hover,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button[disabled]:hover,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button[disabled]:hover,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button[disabled]:hover,
+fieldset[disabled] body.page-mica-variables-search .region-facets .search-api-ranges-widget button:hover,
+fieldset[disabled] body.page-mica-studies-search .region-facets .search-api-ranges-widget button:hover,
+fieldset[disabled] body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:hover,
+fieldset[disabled] body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:hover,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.disabled:focus,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.disabled:focus,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.disabled:focus,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.disabled:focus,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button[disabled]:focus,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button[disabled]:focus,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button[disabled]:focus,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button[disabled]:focus,
+fieldset[disabled] body.page-mica-variables-search .region-facets .search-api-ranges-widget button:focus,
+fieldset[disabled] body.page-mica-studies-search .region-facets .search-api-ranges-widget button:focus,
+fieldset[disabled] body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:focus,
+fieldset[disabled] body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:focus,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.disabled:active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.disabled:active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.disabled:active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.disabled:active,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button[disabled]:active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button[disabled]:active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button[disabled]:active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button[disabled]:active,
+fieldset[disabled] body.page-mica-variables-search .region-facets .search-api-ranges-widget button:active,
+fieldset[disabled] body.page-mica-studies-search .region-facets .search-api-ranges-widget button:active,
+fieldset[disabled] body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button:active,
+fieldset[disabled] body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button:active,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button.disabled.active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button.disabled.active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.disabled.active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.disabled.active,
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button[disabled].active,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button[disabled].active,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button[disabled].active,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button[disabled].active,
+fieldset[disabled] body.page-mica-variables-search .region-facets .search-api-ranges-widget button.active,
+fieldset[disabled] body.page-mica-studies-search .region-facets .search-api-ranges-widget button.active,
+fieldset[disabled] body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button.active,
+fieldset[disabled] body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button.active {
+    background-color: #428bca;
+    border-color: #357ebd;
+}
+
+body.page-mica-variables-search .region-facets .search-api-ranges-widget button .badge,
+body.page-mica-studies-search .region-facets .search-api-ranges-widget button .badge,
+body.page-mica-variables-search .region-sidebar-first .search-api-ranges-widget button .badge,
+body.page-mica-studies-search .region-sidebar-first .search-api-ranges-widget button .badge {
+    color: #428bca;
+    background-color: #ffffff;
+}
+
+#block-mica-mica-search-filters h2 {
+    font-size: 24px;
+    line-height: 20px;
+    margin-bottom: 0;
+}
+
+#block-mica-mica-search-filters tbody {
+    border: none;
+}
+
+#block-mica-mica-search-filters .control-group {
+    margin-bottom: 0;
+}
+
+#block-mica-mica-search-filters .control-group input#edit-search-filter {
+    max-width: 150px;
+}
+
+#block-mica-mica-search-filters #mica-search-filters-form #edit-block {
+    border: 1px solid #DDDDDD;
+    padding: 0;
+    margin-bottom: 5px;
+    margin-top: -26px;
+    position: absolute;
+    z-index: 1000;
+    width: 400px;
+    background-color: #f2f2f2;
+}
+
+#block-mica-mica-search-filters #mica-search-filters-form #edit-block .fieldset-wrapper {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+#block-mica-mica-search-filters #mica-search-filters-form #edit-block .form-item {
+    padding-left: 15px;
+    padding-right: 5px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#block-mica-mica-search-filters #mica-search-filters-form #edit-block .form-item label {
+    padding-left: 10px;
+}
+
+#block-mica-mica-search-filters .advanced {
+    font-size: 14px;
+}
+
 html.overlay-open .navbar-fixed-top {
     z-index: 400;
 }
@@ -7849,4 +8643,25 @@ div.password-suggestions ul {
     margin: 0 -0.25em 0 0.5em;
     position: relative;
     top: 1px;
+}
+
+.prettyprint {
+    min-width: 250px;
+    padding: 8px;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+}
+
+.col-sm-3 {
+    position: relative;
+    min-height: 1px;
+}
+
+.region-content {
+    border-top: 1px solid #e3e3e3;
+    border-left: 1px solid #e3e3e3;
+}
+
+.region-content * {
+    padding: 1px;
 }

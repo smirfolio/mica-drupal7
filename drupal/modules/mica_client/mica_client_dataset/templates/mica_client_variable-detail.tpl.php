@@ -1,20 +1,20 @@
 <?php
 //dpm($variable_dto);
 ?>
-  <article>
-    <header>
-    </header>
-    <footer>
-    </footer>
-  </article>
+<article>
+  <header>
+  </header>
+  <footer>
+  </footer>
+</article>
 
 <?php if (!empty($variable_dto->datasetName) || !empty($variable_dto->studyIds) ||
-  !empty($variable_dto->name) ||
-  !empty($variable_dto->valueType) || !empty($variable_dto->attributes) ||
-  !empty($variable_dto->description) || !empty($variable_dto->comment) ||
-  !empty($variable_dto->label)
+!empty($variable_dto->name) ||
+!empty($variable_dto->valueType) || !empty($variable_dto->attributes) ||
+!empty($variable_dto->description) || !empty($variable_dto->comment) ||
+!empty($variable_dto->label)
 ): ?>
-  <section class="block">
+<section class="block">
   <h2><?php print t('General Information') ?></h2>
 
   <div>
@@ -136,4 +136,20 @@
     </div>
   <?php endif; ?>
 
-<?php endif; ?>
+  <?php if (!empty($variable_dto->harmonizationtab)): ?>
+    <div class="field field-name-field-comment field-type-list-boolean  clearfix">
+      <div class="field-label">
+        <?php print t('Harmonization'); ?> :
+      </div>
+      <div class="field-items">
+        <div class="field-item even">
+          <?php
+          print($variable_dto->harmonizationtab);
+          ?>
+        </div>
+      </div>
+    </div>
+  <?php endif; ?>
+
+
+  <?php endif; ?>

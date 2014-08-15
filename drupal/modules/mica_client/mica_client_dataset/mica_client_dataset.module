@@ -182,7 +182,11 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
     'mica_client_datasets-list' => array('template' => 'mica_client_datasets-list', 'path' => $path_theme),
     'mica_client_datasets-detail' => array('template' => 'mica_client_datasets-detail', 'path' => $path_theme),
     'mica_client_datasets-tables' => array('template' => 'mica_client_datasets-tables', 'path' => $path_theme),
-    'mica_client_variable-detail' => array('template' => 'mica_client_variable-detail', 'path' => $path_theme)
+    'mica_client_variable-detail' => array('template' => 'mica_client_variable-detail', 'path' => $path_theme),
+    'mica_client_variable_block_search' => array(
+      'template' => 'mica_client_variable_block_search',
+      'path' => $path_theme
+    ),
   );
 }
 
@@ -196,18 +200,53 @@ function mica_client_dataset_block_info() {
     --$i;
   }
 
+  $blocks['facet-search-variables'] = array(
+    'info' => t('Facet search variables'),
+    'title' => t('Facet search variables'),
+    'status' => 1,
+    'region' => 'facets',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/variables_search/*',
+    'weight' => --$i,
+    'custom' => 1,
+  );
+
+  $blocks['facet-search-datasets'] = array(
+    'info' => t('Facet search datasets'),
+    'title' => t('Facet search datasets'),
+    'status' => 1,
+    'region' => 'facets',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/variables_search/*',
+    'weight' => --$i,
+    'custom' => 1,
+  );
+
+  $blocks['facet-search'] = array(
+    'info' => t('Facet search'),
+    'title' => t('Facet search'),
+    'status' => 1,
+    'region' => 'facets',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/variables_search/*',
+    'weight' => --$i,
+    'custom' => 1,
+  );
+
+
   return $blocks;
 }
 
 
 function mica_client_dataset_block_info_construc($facet_title, $facet_weight) {
+  $facet_title_array = explode('-', $facet_title);
   return array(
-    'info' => t('Facet search @title', array('@title' => drupal_strtolower($facet_title))),
-    'title' => t('@title', array('@title' => $facet_title)),
-    'status' => 1,
-    'region' => 'sidebar_first',
+    'info' => t('Facet search @title', array('@title' => drupal_strtolower(drupal_strtolower($facet_title_array[0] . ' ' . $facet_title_array[1])))),
+    'title' => t('@title', array('@title' => $facet_title_array[1])),
+    'status' => 0,
+//    'region' => 'sidebar_first',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/variables_search/*',
+    'pages' => '',
     'weight' => $facet_weight,
     'custom' => 1,
   );
@@ -217,43 +256,54 @@ function mica_client_dataset_block_info_construc($facet_title, $facet_weight) {
  * Implements hook_block_view().
  */
 function mica_client_dataset_block_view($delta = '') {
-  foreach (mica_client_dataset_resource_return_facets() as $key_facet => $facet) {
-    if (user_access('access content') && $delta == 'search-' . $key_facet) { //good idea to check user perms here
-      $block['subject'] = $facet['title'];
-      $block['content'] = mica_client_dataset_precess_block_theme('search-' . $facet['aggr-pars']);
-      return $block;
-    }
-  }
-}
-
-function mica_client_dataset_precess_block_theme($block_delta) {
-  $items = array();
-  $agregation_facet = NULL;
-  if (!empty($block_delta)) {
-    $agregation_facet = key(mica_client_dataset_get_dto_facet_aggs($block_delta));
-    $terms_aggregations = current(mica_client_dataset_get_dto_facet_aggs($block_delta));
-    if (!empty($terms_aggregations)) {
-      foreach ($terms_aggregations as $term) {
-        $items[$term->key] = array(
-          '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
-            $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
-            $agregation_facet . '-' . $term->key . '" >' .
-            //  '<a href="#"  disabled="disabled" id="checkthebox" term="'. $agregation_facet . '-' . $term->key.'" >'.
-            $term->key . '(' . $term->count . ') </div>'
-        );
+  switch ($delta) {
+    case 'facet-search':
+      if (!empty($_SESSION['variable']['request']) && $_SESSION['variable']['request'] == 'dataset') {
+        $output = _mica_client_dataset_get_facets_block_by_dto_type('mica_client_dataset', 'variable', 'child');
       }
-    }
+      else {
+        $output = '<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#variable" role="tab" data-toggle="tab">' . t('Variables') . '</a></li>
+  <li><a href="#study" role="tab" data-toggle="tab">' . t('Studies') . '</a></li>
+
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="variable">'
+          . _mica_client_dataset_get_facets_block_by_dto_type('mica_client_dataset', 'variable', 'child') . '</div>
+  <div class="tab-pane" id="study">' . _mica_client_dataset_get_facets_block_by_dto_type('mica_client_study', 'study', 'parent') . '</div>
+
+</div>';
+      }
+      $block['subject'] = t('Facet search variables');
+      $block['content'] = $output;
+      return $block;
+    default:
+      foreach (mica_client_dataset_resource_return_facets() as $key_facet => $facet) {
+        if (user_access('access content') && $delta == 'search-' . $key_facet) { //good idea to check user perms here
+          $facet_title_array = explode('-', $facet['title']);
+          $block['subject'] = $facet_title_array;
+          $block['content'] = mica_client_dataset_precess_block_theme('search-' . $facet['aggr-pars']);
+          return $block;
+        }
+      }
   }
-  return theme('mica_client_study_block_search', array('items' => $items, 'formId' => $agregation_facet));
 }
 
-function mica_client_dataset_get_dto_facet_aggs($tab_block) {
-  foreach ($_SESSION['variables']['aggregations'] as $key_tab => $facet) {
-    if (is_int($key_tab)) {
-      $facet_build['search-' . $facet->aggregation][$facet->aggregation] = !empty($facet->termsAggregations) ? $facet->termsAggregations : NULL;
-    }
+function _mica_client_dataset_get_facets_block_by_dto_type($dto_type, $type, $parent_child = NULL) {
+  $blockto_render = array();
+  $facets = mica_client_dataset_resource_return_facets($dto_type);
+  foreach ($facets as $key_facet => $facet) {
+    $blockto_render[$dto_type . '_search-' . $key_facet] =
+      block_load($dto_type, 'search-' . $key_facet);
+    $facet_title_array = explode('-', $facet['title']);
+    $blockto_render[$dto_type . '_search-' . $key_facet]->subject = $facet_title_array[1];
+    $blockto_render[$dto_type . '_search-' . $key_facet]->content['#markup'] = mica_client_commons_precess_block_theme('search-' . $facet['aggr-pars'], $type, $parent_child);
   }
-  return $facet_build[$tab_block];
+
+  $block_output = _block_get_renderable_array($blockto_render);
+  return drupal_render($block_output);
 }
 
 

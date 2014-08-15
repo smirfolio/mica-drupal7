@@ -9,7 +9,8 @@
           var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
           for (var i = 0; i < hashes.length; i++) {
             hash = hashes[i].split('=');
-            vars.push(hash[1]);
+            //console.log(decodeURIComponent(hash[1]));
+            vars.push(decodeURIComponent(hash[1]));
           }
 
           return vars;

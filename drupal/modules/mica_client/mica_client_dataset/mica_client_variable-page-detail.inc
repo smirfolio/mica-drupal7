@@ -5,21 +5,101 @@ function mica_client_variable_page_detail($id_variable, $resource_variable) {
   drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_get_ajax_variables.js', 'file');
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable('variable', $id_variable);
-
-  dpm($variable);
   $variable->label = _mica_client_variable_attributes_detail($variable, 'label');
   $variable->description = _mica_client_variable_attributes_detail($variable, 'description');
   $variable->comment = _mica_client_variable_attributes_detail($variable, 'comment');
   $variable->categoriestab = mica_client_variable_get_categories($variable->categories);
-  //mica_client_variable_get_harmonizations($variable);
+  $variable->harmonizationtab = mica_client_variable_get_harmonizations($variable);
   drupal_set_title($variable->name);
   return theme('mica_client_variable-detail', array('variable_dto' => $variable));
 }
 
+function mica_client_variable_prepare_prettify() {
+  static $paths = array();
+  if (mica_client_commons_is_bootstrap_based_theme()) {
+    $dir = drupal_get_path('theme', 'micado_bootstrap');
+    $paths['css'] = $dir . '/css/prettify.css';
+    $paths['js'] = $dir . '/js/prettify.js';
+  }
+  if (isset($paths['css'])) {
+    drupal_add_css($paths['css']);
+  }
+  else {
+    throw new Exception('prettify.css library not found!');
+  }
 
-//function mica_client_variable_get_harmonizations($variable){
-//
-//}
+  if (isset($paths['js'])) {
+    drupal_add_js($paths['js']);
+  }
+  else {
+    throw new Exception('prettify.js library not found!');
+  }
+  drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_prettify.js', 'file');
+}
+
+function mica_client_variable_get_harmonizations($variable) {
+  mica_client_variable_prepare_prettify();
+  $rows = array();
+  $variable_resource = new MicaDatasetResource();
+  foreach ($variable->studyIds as $study_id) {
+    $id_variable_resource = $variable->datasetId . ':' . $variable->name . ':Harmonized:' . $study_id;
+    $harmpnized_variable = $variable_resource->get_variable('variable', $id_variable_resource);
+
+    $rows[] = array(
+      _mica_client_variable_acronym_study($study_id),
+      _mica_client_variable_attributes_detail($harmpnized_variable, 'status'),
+      _mica_client_variable_html_truncated(
+        _mica_client_variable_attributes_detail($harmpnized_variable, 'comment'), t('comment'), 200, FALSE),
+      _mica_client_variable_html_truncated(
+        _mica_client_variable_attributes_detail($harmpnized_variable, 'script'), t('script'), 100, TRUE)
+    );
+  }
+  $headers = array(t('study'), t('Status'), t('Comment'), t('Script'));
+  return theme('table', array(
+    'header' => $headers,
+    'rows' => $rows,
+    'empty' => t('No data found'),
+    'sticky' => FALSE,
+    'attributes' => array('id' => 'variables_overview')
+  ));
+}
+
+function _mica_client_variable_html_truncated($text, $label, $size = 200, $is_code = FALSE, $pre_class = '') {
+  $htmlTruncate = '';
+  if (!empty($text)) {
+
+    // split to respect line size
+    if ($is_code) {
+      $htmlTruncate = "<pre class='prettyprint $pre_class'>";
+      // split at ).
+      $lines = explode(").", $text);
+      $text = implode(")\n.", $lines);
+    }
+    else {
+      $lines = str_split($text, 60);
+      $text = implode("\n", $lines);
+    }
+
+    if (strlen($text) > $size) {
+      $htmlTruncate .= check_markup(truncate_utf8($text, $size, FALSE));
+
+      if ($is_code) {
+        $htmlTruncate .= "</pre>";
+      }
+
+      $htmlTruncate .= "[" . $label . " " . t("truncated") . "]";
+    }
+    else {
+      $htmlTruncate .= check_markup($text);
+
+      if ($is_code) {
+        $htmlTruncate .= "</pre>";
+      }
+    }
+  }
+  return $htmlTruncate;
+}
+
 function mica_client_variable_get_categories($categories = NULL) {
   $rows = array();
   if (!empty($categories)) {
@@ -100,7 +180,6 @@ function mica_client_dataset_study_tables($datset_type_resource) {
 }
 
 function _mica_client_variable_attributes_detail($variable, $field) {
-
   foreach ($variable->attributes as $attribute) {
     if (!empty($attribute->name) && $attribute->name == $field) {
       return mica_client_commons_get_localized_field($attribute, 'values');
@@ -229,7 +308,7 @@ function _mica_client_variable_rebuild_stat($variable_stat, $variable) {
 //
 //  $row_variablas = array();
 //  $dataset_resource = new MicaDatasetResource();
-//  $variables = $dataset_resource->get_varaibles($resources, $id_dataset);
+//  $variables = $dataset_resource->get_dataset_varaibles($resources, $id_dataset);
 //
 //  foreach ($variables->getVariablesList() as $key_varable => $list) {
 //    // dpm($list);
