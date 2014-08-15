@@ -43,25 +43,33 @@ function mica_client_variable_get_harmonizations($variable) {
   $variable_resource = new MicaDatasetResource();
   foreach ($variable->studyIds as $study_id) {
     $id_variable_resource = $variable->datasetId . ':' . $variable->name . ':Harmonized:' . $study_id;
-    $harmpnized_variable = $variable_resource->get_variable('variable', $id_variable_resource);
+    $harmonized_variable = $variable_resource->get_variable('variable', $id_variable_resource);
+    if (_mica_client_variable_attributes_detail($harmonized_variable, 'status') ||
+      _mica_client_variable_attributes_detail($harmonized_variable, 'comment') ||
+      _mica_client_variable_attributes_detail($harmonized_variable, 'script')
+    ) {
+      $rows[] = array(
+        _mica_client_variable_acronym_study($study_id),
+        _mica_client_variable_attributes_detail($harmonized_variable, 'status'),
+        _mica_client_variable_html_truncated(
+          _mica_client_variable_attributes_detail($harmonized_variable, 'comment'), t('comment'), 200, FALSE),
+        _mica_client_variable_html_truncated(
+          _mica_client_variable_attributes_detail($harmonized_variable, 'script'), t('script'), 100, TRUE)
+      );
 
-    $rows[] = array(
-      _mica_client_variable_acronym_study($study_id),
-      _mica_client_variable_attributes_detail($harmpnized_variable, 'status'),
-      _mica_client_variable_html_truncated(
-        _mica_client_variable_attributes_detail($harmpnized_variable, 'comment'), t('comment'), 200, FALSE),
-      _mica_client_variable_html_truncated(
-        _mica_client_variable_attributes_detail($harmpnized_variable, 'script'), t('script'), 100, TRUE)
-    );
+    }
   }
-  $headers = array(t('study'), t('Status'), t('Comment'), t('Script'));
-  return theme('table', array(
-    'header' => $headers,
-    'rows' => $rows,
-    'empty' => t('No data found'),
-    'sticky' => FALSE,
-    'attributes' => array('id' => 'variables_overview')
-  ));
+  if (!empty($rows)) {
+    $headers = array(t('study'), t('Status'), t('Comment'), t('Script'));
+    return theme('table', array(
+      'header' => $headers,
+      'rows' => $rows,
+      'empty' => t('No data found'),
+      'sticky' => FALSE,
+      'attributes' => array('id' => 'variables_overview')
+    ));
+  }
+
 }
 
 function _mica_client_variable_html_truncated($text, $label, $size = 200, $is_code = FALSE, $pre_class = '') {
@@ -180,11 +188,14 @@ function mica_client_dataset_study_tables($datset_type_resource) {
 }
 
 function _mica_client_variable_attributes_detail($variable, $field) {
-  foreach ($variable->attributes as $attribute) {
-    if (!empty($attribute->name) && $attribute->name == $field) {
-      return mica_client_commons_get_localized_field($attribute, 'values');
+  if (!empty($variable->attributes)) {
+    foreach ($variable->attributes as $attribute) {
+      if (!empty($attribute->name) && $attribute->name == $field) {
+        return mica_client_commons_get_localized_field($attribute, 'values');
+      }
     }
   }
+  return NULL;
 }
 
 function mica_client_dataset_variable_get_ajax_statistics($id_variable = NULL) {
@@ -192,7 +203,6 @@ function mica_client_dataset_variable_get_ajax_statistics($id_variable = NULL) {
   $variable = $variable_resource->get_variable('variable', $id_variable);
   $statistic_view_type = mica_client_variable_get_stat_view_type($variable);
   $variable_stat = $variable_resource->get_variable('variable', $id_variable, $statistic_view_type);
-  dpm($variable_stat);
   if (count($variable->studyIds) <= 1) {
     $variable_stat_parse[0] = $variable_stat;
   }

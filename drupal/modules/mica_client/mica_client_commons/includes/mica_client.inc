@@ -217,7 +217,6 @@ class MicaClient {
   }
 
   protected function pagination_parameters($current_page = NULL, $dto_type = NULL) {
-    dpm($dto_type);
     $nb_pages = ceil($_SESSION[strtolower($dto_type)]['aggregations']['totalHits'] / $this::SIZE_RESPONSE);
     if (!empty($current_page)) {
       $pageActuelle = intval($current_page);

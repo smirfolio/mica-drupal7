@@ -183,6 +183,11 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
     'mica_client_datasets-detail' => array('template' => 'mica_client_datasets-detail', 'path' => $path_theme),
     'mica_client_datasets-tables' => array('template' => 'mica_client_datasets-tables', 'path' => $path_theme),
     'mica_client_variable-detail' => array('template' => 'mica_client_variable-detail', 'path' => $path_theme),
+    'block__mica_client_dataset' => array(
+      'variables' => array('block' => array()),
+      'template' => 'block--mica_client_dataset',
+      'path' => $path_theme
+    ),
     'mica_client_variable_block_search' => array(
       'template' => 'mica_client_variable_block_search',
       'path' => $path_theme
