@@ -17,7 +17,7 @@ function mica_client_dataset_menu() {
   );
 
   $items['mica/datasets/harmonization-datasets'] = array(
-    'title' => 'Harmonization datasets',
+    'title' => 'Harmonization Datasets',
     'description' => t('Published harmonization datasets'),
     'page callback' => 'mica_client_dataset_get_harmonization_datasets',
     'file' => 'mica_client_datasets-page-list.inc',

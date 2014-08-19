@@ -203,16 +203,9 @@ function mica_client_dataset_variable_get_ajax_statistics($id_variable = NULL) {
   $variable = $variable_resource->get_variable('variable', $id_variable);
   $statistic_view_type = mica_client_variable_get_stat_view_type($variable);
   $variable_stat = $variable_resource->get_variable('variable', $id_variable, $statistic_view_type);
-  if (count($variable->studyIds) <= 1) {
-    $variable_stat_parse[0] = $variable_stat;
-  }
-  else {
-    $variable_stat_parse = $variable_stat;
-  }
-  if (!empty($variable_stat_parse)) {
+  if (!empty($variable_stat)) {
     $callback_stats = 'mica_client_variable_table_stat_' . $statistic_view_type;
-    $stat_tab = $callback_stats($variable, $variable_stat_parse);
-
+    $stat_tab = $callback_stats($variable, $variable_stat);
   }
   print $stat_tab;
 
