@@ -24,10 +24,10 @@
               serializedData = serializedData.concat(SerilizedForm).concat('&');
             }
           });
-//          if (idcheckbox) {
-//            console.log(serializedData);
-//            console.log(idcheckbox);
-//          }
+          if (idcheckbox) {
+            console.log(serializedData);
+            console.log(idcheckbox);
+          }
           return serializedData;
         }
       });
@@ -43,28 +43,9 @@
         }
       });
 
-      $("div#checkthebox").on("click", function () {
-        var idcheckbox = $(this).attr("term");
 
-        $('#' + idcheckbox).change(function () {
-
-          console.log($('#' + idcheckbox).is(":checked"));
-          if ($('#' + idcheckbox).is(":checked")) {
-
-            $('#' + idcheckbox).attr('checked', true);
-            $.sendCheckboxCheckedValues();
-            window.location = '?' + $.sendCheckboxCheckedValues();
-
-          }
-
-          else {
-            $.sendCheckboxCheckedValues(idcheckbox);
-            window.location = '?' + $.sendCheckboxCheckedValues(idcheckbox);
-          }
-
-        });
-
-
+      $("input[type='checkbox']").on("click", function () {
+        window.location = '?' + $.sendCheckboxCheckedValues();
       });
       ///her we goo
       if (Drupal.settings.mica_client_study.queries) {

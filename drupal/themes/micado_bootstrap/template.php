@@ -96,6 +96,15 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/block--mica_client_study.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['block__mica_client_study'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'block--mica_client_study',
+      'path' => $path . '/templates'
+    );
+  }
+
   return $theme_array;
 
 }
@@ -114,6 +123,7 @@ function micado_bootstrap_bootstrap_based_theme() {
  * @see page.tpl.php
  */
 function micado_bootstrap_preprocess_page(&$variables) {
+  drupal_add_js('misc/jquery.cookie.js', 'file');
   // Add information about the number of sidebars.
   if (!empty($variables['page']['facets']) && !empty($variables['page']['sidebar_second'])) {
     $variables['content_column_class'] = ' class="col-sm-6"';
@@ -133,3 +143,4 @@ function micado_bootstrap_preprocess_page(&$variables) {
     $variables['content_column_class'] = ' class="col-sm-12"';
   }
 }
+
