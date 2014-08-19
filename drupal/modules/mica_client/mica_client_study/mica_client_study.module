@@ -108,6 +108,11 @@ function mica_client_study_theme($existing, $type, $theme, $path) {
     'mica_dce_detail' => array('template' => 'mica_client_study-dce-detail', 'path' => $path_theme),
     'mica_client_study_attachments' => array('template' => 'mica_client_study_attachments', 'path' => $path_theme),
     'mica_client_study_block_search' => array('template' => 'mica_client_study_block_search', 'path' => $path_theme),
+    'block__mica_client_study' => array(
+      'variables' => array('block' => array()),
+      'template' => 'block--mica_client_study',
+      'path' => $path_theme
+    ),
     'mica_client_study_opal' => array('template' => 'mica_client_study_opal', 'path' => $path_theme)
   );
 }

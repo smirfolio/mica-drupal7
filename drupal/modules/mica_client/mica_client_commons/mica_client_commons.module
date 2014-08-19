@@ -287,7 +287,6 @@ function mica_client_commons_precess_block_theme($block_delta, $type, $parent_ch
           '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
             $parent_child_string . $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
             $agregation_facet . '-' . $term->key . '" >' .
-            //  '<a href="#"  disabled="disabled" id="checkthebox" term="'. $agregation_facet . '-' . $term->key.'" >'.
             $term->key . '(' . $term->count . ') </div>'
         );
       }
