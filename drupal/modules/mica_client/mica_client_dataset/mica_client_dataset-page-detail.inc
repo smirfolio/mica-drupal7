@@ -10,13 +10,13 @@ function mica_client_dataset_page_detail($resource_dataset, $dataset_id) {
     $study_datasets_dto = $dataset_resource->get_dataset('harmonization-dataset', $dataset_id);
     $datset_type_resource = $study_datasets_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
     drupal_set_title('Harmonized dataset: ' . mica_client_commons_get_localized_field($study_datasets_dto, 'name'));
-    dpm($study_datasets_dto);
+    // dpm($study_datasets_dto);
   }
   elseif (!empty($resource_dataset) && $resource_dataset == 'study') {
     $study_datasets_dto = $dataset_resource->get_dataset('study-dataset', $dataset_id);
     $datset_type_resource = $study_datasets_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
     drupal_set_title('Study dataset: ' . mica_client_commons_get_localized_field($study_datasets_dto, 'name'));
-    dpm($study_datasets_dto);
+    //  dpm($study_datasets_dto);
   }
 
 

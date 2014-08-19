@@ -6,11 +6,15 @@ include_once($module_study_path . '/mica_client_study-page-list.inc');
 
 function mica_client_dataset_variable_page_search($request) {
 
-  drupal_set_title(t('Varibales @request search', array('@request' => $request)));
+  drupal_set_title(t('Varibles @request search', array('@request' => $request)));
+
+  drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_collapse_deal.js', 'file');
+  drupal_add_js(array('mica_client_dataset' => array('queriessetting' => 'hiihaaa')), 'setting');
 
   //drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/mica_studies.css', 'file');
   drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/mica-client-study-search.js', 'file');
-  drupal_add_js(array('mica_client_study' => array('queries' => 'test_param')), 'setting');
+  drupal_add_js(array('mica_client_study' => array('queries' => '')), 'setting');
+
 
   $variable_resource = new MicaDatasetResource();
   $study_resource = new MicaStudyResource();

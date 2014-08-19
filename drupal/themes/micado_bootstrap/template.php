@@ -87,6 +87,15 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/block--mica_client_dataset.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['block__mica_client_dataset'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'block--mica_client_dataset',
+      'path' => $path . '/templates'
+    );
+  }
+
   return $theme_array;
 
 }

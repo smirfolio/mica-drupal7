@@ -68,7 +68,7 @@
       });
       ///her we goo
       if (Drupal.settings.mica_client_study.queries) {
-        console.log(Drupal.settings.mica_client_study.queries);
+        // console.log(Drupal.settings.mica_client_study.queries);
 
       }
 

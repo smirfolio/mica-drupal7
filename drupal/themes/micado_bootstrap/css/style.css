@@ -8662,6 +8662,8 @@ div.password-suggestions ul {
     border-left: 1px solid #e3e3e3;
 }
 
-.region-content * {
-    padding: 1px;
+.region-content div.content,
+.region-content div.block-content {
+    padding-left: 25px;
+    padding-top: 5px;
 }
