@@ -203,16 +203,9 @@ function mica_client_dataset_variable_get_ajax_statistics($id_variable = NULL) {
   $variable = $variable_resource->get_variable('variable', $id_variable);
   $statistic_view_type = mica_client_variable_get_stat_view_type($variable);
   $variable_stat = $variable_resource->get_variable('variable', $id_variable, $statistic_view_type);
-  if (count($variable->studyIds) <= 1) {
-    $variable_stat_parse[0] = $variable_stat;
-  }
-  else {
-    $variable_stat_parse = $variable_stat;
-  }
-  if (!empty($variable_stat_parse)) {
+  if (!empty($variable_stat)) {
     $callback_stats = 'mica_client_variable_table_stat_' . $statistic_view_type;
-    $stat_tab = $callback_stats($variable, $variable_stat_parse);
-
+    $stat_tab = $callback_stats($variable, $variable_stat);
   }
   print $stat_tab;
 
@@ -300,13 +293,14 @@ function _mica_client_variable_acronym_study($study_id) {
 
 function _mica_client_variable_rebuild_stat($variable_stat, $variable) {
   $stats = array();
-  $ids = $variable->studyIds;
-  for ($i = 0; $i<count($ids); $i++) {
-    $study_id = $ids[$i];
-    $stat = $variable_stat[$i][0];
-    $stats[$study_id]['_all'] = $stat->totalHits;
-    foreach ($stat->facets[0]->frequencies as $key_attrib => $frequency) {
-      $stats[$study_id][$key_attrib] = $frequency->count;
+  foreach ($variable->studyIds as $key_study => $study_id) {
+    foreach ($variable_stat as $key_stud => $stat) {
+      if ($key_stud == $key_study) {
+        $stats[$study_id]['_all'] = $stat->totalHits;
+        foreach ($stat->facets[0]->frequencies as $key_attrib => $frequency) {
+          $stats[$study_id][$key_attrib] = $frequency->count;
+        }
+      }
     }
   }
   return $stats;
