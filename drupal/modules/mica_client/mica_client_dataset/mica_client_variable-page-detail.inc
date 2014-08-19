@@ -300,14 +300,13 @@ function _mica_client_variable_acronym_study($study_id) {
 
 function _mica_client_variable_rebuild_stat($variable_stat, $variable) {
   $stats = array();
-  foreach ($variable->studyIds as $key_study => $study_id) {
-    foreach ($variable_stat as $key_stud => $stat) {
-      if ($key_stud == $key_study) {
-        $stats[$study_id]['_all'] = $stat->totalHits;
-        foreach ($stat->facets[0]->frequencies as $key_attrib => $frequency) {
-          $stats[$study_id][$key_attrib] = $frequency->count;
-        }
-      }
+  $ids = $variable->studyIds;
+  for ($i = 0; $i<count($ids); $i++) {
+    $study_id = $ids[$i];
+    $stat = $variable_stat[$i][0];
+    $stats[$study_id]['_all'] = $stat->totalHits;
+    foreach ($stat->facets[0]->frequencies as $key_attrib => $frequency) {
+      $stats[$study_id][$key_attrib] = $frequency->count;
     }
   }
   return $stats;
