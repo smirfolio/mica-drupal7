@@ -7169,3 +7169,10 @@ div.password-suggestions ul {
   position: relative;
   min-height: 1px;
 }
+h5 {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+h5 + p {
+  margin-left: 20px;
+}

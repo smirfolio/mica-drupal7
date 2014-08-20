@@ -52,7 +52,7 @@ function mica_client_dataset_variables_table($variables) {
   }
 //dpm($studies['totalHits']);
   $headers = array(
-    t('Variables'),
+    t('Variable'),
     t('Label'),
     t('Dataset')
   );
