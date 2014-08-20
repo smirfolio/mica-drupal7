@@ -14,7 +14,7 @@
   <p><?php print $variable_dto->description; ?></p>
 <?php endif; ?>
 
-<?php if (!empty($variable_dto->studyIds)): ?>
+<?php if (!empty($variable_dto->studySummaries)): ?>
   <h4>
     <?php if ($variable_dto->variableType == 'Dataschema') {
       print t('Studies');
@@ -25,9 +25,9 @@
   </h4>
   <p>
     <?php
-    foreach ($variable_dto->studyIds as $stuyId) {
-      print l($stuyId, 'mica/study/' . $stuyId .
-          '/' . $stuyId) . '</br>';
+    foreach ($variable_dto->studySummaries as $studySummary) {
+      print l(mica_client_commons_get_localized_field($studySummary, 'acronym'), 'mica/study/' . $studySummary->id .
+          '/' . $studySummary->id) . '</br>';
     }
     ?>
   </p>

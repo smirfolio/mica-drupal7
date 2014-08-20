@@ -49,7 +49,7 @@ function mica_client_variable_get_harmonizations($variable) {
       _mica_client_variable_attributes_detail($harmonized_variable, 'script')
     ) {
       $rows[] = array(
-        _mica_client_variable_acronym_study($study_id),
+        _mica_client_variable_acronym_study($variable, $study_id),
         _mica_client_variable_attributes_detail($harmonized_variable, 'status'),
         _mica_client_variable_html_truncated(
           _mica_client_variable_attributes_detail($harmonized_variable, 'comment'), t('comment'), 200, FALSE),
@@ -222,7 +222,7 @@ function mica_client_variable_table_stat_summary($variable, $variable_stat) {
   $math_dto = 'Math.ContinuousSummaryDto.continuous';
   foreach ($variable->studyIds as $key_stud => $stat) {
     $rows[] = array(
-      _mica_client_variable_acronym_study($stat),
+      _mica_client_variable_acronym_study($variable, $stat),
       !empty($variable_stat[$key_stud]->{$math_dto}->summary->min) ?
         round($variable_stat[$key_stud]->{$math_dto}->summary->min, 3) : 'inf',
       !empty($variable_stat[$key_stud]->{$math_dto}->summary->max) ?
@@ -242,7 +242,7 @@ function mica_client_variable_table_stat_facet($variable, $variable_stat) {
   $stats = _mica_client_variable_rebuild_stat($variable_stat, $variable);
   $headers = array('Value');
   foreach ($stats as $study_id => $stat) {
-    $headers[] = _mica_client_variable_acronym_study($study_id);
+    $headers[] = _mica_client_variable_acronym_study($variable, $study_id);
   }
   $rows = array();
   // Get total of non-missing categories
@@ -290,10 +290,22 @@ function mica_client_variable_table_stat_facet($variable, $variable_stat) {
 
 }
 
-
-function _mica_client_variable_acronym_study($study_id) {
-  $study_resourc = new MicaStudyResource();
-  $study = $study_resourc->study($study_id);
+/**
+ * Get the study acronym from the study summary found in the variable. If not found, fetch the
+ * study summary directly.
+ * @param $variable
+ * @param $study_id
+ * @return the
+ */
+function _mica_client_variable_acronym_study($variable, $study_id) {
+  foreach ($variable->studySummaries as $study) {
+    if ($study->id == $study_id) {
+      return mica_client_commons_get_localized_field($study, 'acronym');
+    }
+  }
+  // not found in the dto, then fetch it
+  $study_resource = new MicaStudyResource();
+  $study = $study_resource->study($study_id);
   return mica_client_commons_get_localized_field($study, 'acronym');
 }
 
