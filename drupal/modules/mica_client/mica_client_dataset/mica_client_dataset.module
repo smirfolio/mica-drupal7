@@ -57,7 +57,7 @@ function mica_client_dataset_menu() {
   );
 
   $items['mica/dataset/%/%'] = array(
-    'title' => 'Mica dataset detail',
+    'title' => 'Dataset',
     'page callback' => 'mica_client_dataset_page_detail',
     'file' => 'mica_client_dataset-page-detail.inc',
     'access callback' => TRUE,
@@ -65,7 +65,7 @@ function mica_client_dataset_menu() {
   );
 
   $items['mica/variable/%/%'] = array(
-    'title' => 'Mica dataset detail',
+    'title' => 'Variable',
     'page callback' => 'mica_client_variable_page_detail',
     'file' => 'mica_client_variable-page-detail.inc',
     'access callback' => TRUE,
@@ -93,32 +93,32 @@ function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_
   $links = array();
   //dpm($root_path);
   switch ($root_path) {
-    case 'mica/dataset/%/%':
-      if ($router_item['page_arguments'][0] == 'study') {
-        $title = t('Studies variables Search');
-      }
-      else {
-        $title = t('Datasets variables Search');
-      }
-      $links['mica/variables'] = array(
-
-        '#weight' => 30,
-        '#theme' => 'menu_local_action',
-        '#link' => array(
-          'title' => $title,
-          'href' => 'mica/variables_search/' . $router_item['page_arguments'][0],
-          'localized_options' => array(
-//                  'query' => array(
-//                    'f[0]' => 'search_api_combined_1:' . $node->nid
-//                  ),
-            'attributes' => array(
-              'class' => 'highlight',
-            ),
-          ),
-        ),
-      );
-
-      break;
+//    case 'mica/dataset/%/%':
+//      if ($router_item['page_arguments'][0] == 'study') {
+//        $title = t('Studies variables Search');
+//      }
+//      else {
+//        $title = t('Datasets variables Search');
+//      }
+//      $links['mica/variables'] = array(
+//
+//        '#weight' => 30,
+//        '#theme' => 'menu_local_action',
+//        '#link' => array(
+//          'title' => $title,
+//          'href' => 'mica/variables_search/' . $router_item['page_arguments'][0],
+//          'localized_options' => array(
+////                  'query' => array(
+////                    'f[0]' => 'search_api_combined_1:' . $node->nid
+////                  ),
+//            'attributes' => array(
+//              'class' => 'highlight',
+//            ),
+//          ),
+//        ),
+//      );
+//
+//      break;
 
     case 'mica/datasets/harmonization-datasets':
       $links['mica/variables'] = array(

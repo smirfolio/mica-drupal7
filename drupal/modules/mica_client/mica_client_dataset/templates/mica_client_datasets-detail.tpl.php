@@ -1,6 +1,6 @@
 <?php
 //dpm($dataset_dto);
-//dpm($dataset_type);
+//dpm($dataset_type_dto);
 ?>
 
 <section>
@@ -13,9 +13,10 @@
     <?php endif; ?>
 
     <h5><?php print t('Dataset Type'); ?></h5>
+
     <p>
       <?php
-      if (!empty($dataset_type->project)):
+      if (!empty($dataset_type_dto->project)):
         echo t('Harmonization dataset');
       else:
         echo t('Study dataset');
@@ -23,5 +24,27 @@
       ?>
     </p>
 
+  </div>
+</section>
+
+<section>
+  <h3><?php print t('Variables') ?></h3>
+
+  <div>
+
+    <h5><?php print t('Number of variables') ?></h5>
+    <p>
+      <?php
+      print mica_client_dataset_get_variables($dataset_dto->id)['totalHits'];
+      ?>
+    </p>
+
+    <?php
+    print l(t('Search Variables'), 'mica/variables_search/dataset',
+      array(
+        'query' => array('child:datasetId[]' => 'datasetId.' . $dataset_dto->id),
+        'attributes' => array('class' => 'btn btn-primary')
+      ));
+    ?>
   </div>
 </section>
