@@ -56,7 +56,7 @@ function mica_client_study_study_summaries_table_headers() {
   return array(
     t('Short Name'),
     t('Name'),
-    t('Study Design'),
+    t('Study Designs'),
     t('Target Number'),
     t('Countries'),
   );
