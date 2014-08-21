@@ -40,6 +40,7 @@ function mica_client_dataset_variable_page_search($request) {
 
 
 function mica_client_dataset_variables_table($variables) {
+  $rows = array();
   if (!empty($variables['data'])) {
     foreach ($variables['data'] as $variable) {
       $name = $variable->name;
