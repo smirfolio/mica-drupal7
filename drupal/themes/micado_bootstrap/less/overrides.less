@@ -147,6 +147,38 @@ body {
   }
 }
 
+// Sections
+.block-content {
+  section {
+    background-color: #f9f9f9;
+    margin: 20px 0 20px 0;
+    .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+      background-color: #fff;
+    }
+    h3 {
+      background-color: #e3e4e4;
+      padding: 5px 10px 5px 10px;
+    }
+    h5 {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    h5 + p {
+      margin-left: 20px;
+    }
+  }
+  section > div {
+    padding: 0 10px 10px 10px;
+  }
+}
+
+.modal-body {
+  section {
+    background-color: #ffffff;
+    margin: 0;
+  }
+}
+
 // Search form.
 form#search-block-form {
   margin: 0;
@@ -356,11 +388,3 @@ div.password-suggestions ul {
   min-height: 1px;
 }
 
-h5 {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-h5 + p {
-  margin-left: 20px;
-}

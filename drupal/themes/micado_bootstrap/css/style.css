@@ -6961,6 +6961,32 @@ body.admin-menu .navbar-fixed-top {
 .block h2.block-title {
   margin-top: 0;
 }
+.block-content section {
+  background-color: #f9f9f9;
+  margin: 20px 0 20px 0;
+}
+.block-content section .table-striped > tbody > tr:nth-child(even) > td,
+.block-content section .table-striped > tbody > tr:nth-child(even) > th {
+  background-color: #fff;
+}
+.block-content section h3 {
+  background-color: #e3e4e4;
+  padding: 5px 10px 5px 10px;
+}
+.block-content section h5 {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.block-content section h5 + p {
+  margin-left: 20px;
+}
+.block-content section > div {
+  padding: 0 10px 10px 10px;
+}
+.modal-body section {
+  background-color: #ffffff;
+  margin: 0;
+}
 form#search-block-form {
   margin: 0;
 }
@@ -7168,11 +7194,4 @@ div.password-suggestions ul {
 .col-sm-3 {
   position: relative;
   min-height: 1px;
-}
-h5 {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-h5 + p {
-  margin-left: 20px;
 }

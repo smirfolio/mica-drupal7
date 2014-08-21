@@ -15,7 +15,7 @@ function mica_client_study_page_detail($study_id) {
   $StudyDto = $study_resource->study($study_id);
   $output = $StudyDto;
   drupal_set_title(mica_client_commons_get_localized_field($StudyDto, 'name'));
-  dpm($StudyDto);
+  //dpm($StudyDto);
 
   $dataset_output = (module_exists('mica_client_dataset')) ?
     mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
@@ -27,7 +27,6 @@ function mica_client_study_page_detail($study_id) {
   mica_client_study_get_populations_detail($output) .
   $opal_dataset .
   $dataset_output;
-
 }
 
 /*
@@ -35,7 +34,6 @@ function mica_client_study_page_detail($study_id) {
  * */
 function mica_client_study_get_opal_url($opal_url) {
   return theme('mica_client_study_opal', array('opal_url' => $opal_url));
-
 }
 
 /**
@@ -89,12 +87,12 @@ function mica_client_study_get_timeline_detail($study_detail) {
   $study_json = json_encode($study_detail);
   $page_render_timeline = NULL;
   $page_render_timeline .= '
-<section> <h2 class="block-title">' . t("Study Timeline") . '</h2><div> <article>
+<section> <h3>' . t("Study Timeline") . '</h3><div>
         ';
-  $page_render_timeline .= '<div class="timeline-help"> ' . t('
+  $page_render_timeline .= '<p class="timeline-help"> ' . t('
     Each colour in the timeline graph below represents a separate Study Population, while each segment in the graph
     represents a separate Data Collection Event. Clicking on a segment gives more detailed
-     information on a Data Collection Event.') . ' </div>';
+     information on a Data Collection Event.') . ' </p>';
 
   drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/mica_studies.css', 'file');
   drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/timeline.css', 'file');
@@ -104,7 +102,7 @@ function mica_client_study_get_timeline_detail($study_detail) {
   drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/example.js', 'file');
   drupal_add_js(array('mica_client_study' => array('study_json' => $study_json)), 'setting');
 
-  $page_render_timeline .= '</article>  </div></section>';
+  $page_render_timeline .= '</div></section>';
 
   return $page_render_timeline;
 }
@@ -116,17 +114,16 @@ function mica_client_study_get_timeline_detail($study_detail) {
 function mica_client_study_get_populations_detail($study_detail) {
   $page_render_populations = NULL;
   $page_render_populations .= '
-<section> <h2 class="block-title">' . t("Populations") . '</h2><div> <article>
+<section> <h3>' . t("Populations") . '</h3><div>
         ';
   foreach ($study_detail->populations as $population) {
-    $page_render_populations .= '<header>
-            <h2>
-             <svg width="25" height="25">
+    $page_render_populations .= '
+            <h4>
+             <svg width="25" height="25" style="vertical-align: bottom;">
                     <rect width="20" height="20" x="2" y="2" rx="5" ry="5" style="fill:#9a3034;"> </rect>
              </svg>
-                <a href="">' . mica_client_commons_get_localized_field($population, 'name') . '</a>
-            </h2>
-                                </header>';
+                ' . mica_client_commons_get_localized_field($population, 'name') . '
+            </h4>';
     if (!empty($population->dataCollectionEvents)) {
       $dce_rows = mica_client_study_get_dce_table($population->dataCollectionEvents);
       uasort($dce_rows, 'mica_client_study_sort_dce');
@@ -146,7 +143,7 @@ function mica_client_study_get_populations_detail($study_detail) {
     }
     $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
   }
-  $page_render_populations .= '</article>  </div></section>';
+  $page_render_populations .= '</div></section>';
   return $page_render_populations;
 }
 

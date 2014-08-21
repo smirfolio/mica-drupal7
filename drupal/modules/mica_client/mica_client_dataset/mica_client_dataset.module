@@ -316,22 +316,15 @@ function mica_client_dataset_get_all_datasets_studies($study_id) {
 
   $output = NULL;
   $dataset_resource = new MicaDatasetResource();
+  $datasets = array();
 
-  $study_datasets_dto = $dataset_resource->get_datasetes('study-datasets', $study_id);
-  if (!empty($study_datasets_dto)) {
-    $study_datasets_tab = mica_client_dataset_get_datasets_list($study_datasets_dto, 'study', $study_id);
-    $output .= '<section> <h2 class="block-title">' . t('Study Dataset') . '</h2><div> <article>';
-    $output .= mica_client_dataset_get_datasets_tables($study_datasets_tab);
-    $output .= '</article></div></section>';
-  }
+  $datasets = array_merge($dataset_resource->get_datasetes('study-datasets', $study_id), $dataset_resource->get_datasetes('harmonization-datasets', $study_id));
 
-  $harmonization_datasets_dto = $dataset_resource->get_datasetes('harmonization-datasets', $study_id);
-  if (!empty($harmonization_datasets_dto)) {
-    $harmonization_datasets_tab = mica_client_dataset_get_datasets_list($harmonization_datasets_dto, 'dataset', $study_id);
-    $output .= '<section> <h2 class="block-title">' . t('Harmonization Dataset') . '</h2><div> <article>';
-    $output .= mica_client_dataset_get_datasets_tables($harmonization_datasets_tab);
-    $output .= '</article></div></section>';
-
+  if (!empty($datasets)) {
+    $datasets_tab = mica_client_dataset_get_datasets_list($datasets);
+    $output .= '<section> <h3>' . t('Datasets') . '</h3><div>';
+    $output .= mica_client_dataset_get_datasets_tables($datasets_tab);
+    $output .= '</div></section>';
   }
 
   //dpm($harmonization_datasets_dto);
@@ -342,68 +335,36 @@ function mica_client_dataset_get_all_datasets_studies($study_id) {
 /*
  * Format Datasets tables  detail
  * */
-function mica_client_dataset_get_datasets_tables($datastes) {
-
-  return theme('mica_client_datasets-list', array("context_datasets_list" => $datastes));
+function mica_client_dataset_get_datasets_tables($datasets) {
+  return theme('mica_client_datasets-list', array("context_datasets_list" => $datasets));
 }
 
-
-/*
- * retrieve Datasetes
- * */
-function mica_client_dataset_get_datasets_table($datasets, $type, $study_id) {
+function mica_client_dataset_get_datasets_list($datasets) {
   $dataset_rows = array();
   foreach ($datasets as $key_dataset => $dataset_dto) {
-    $dce_description = NULL;
-    $study_table = mica_client_dataset_get_current_study_project($dataset_dto, $type, $study_id);
+    $dataset_description = NULL;
     if (!empty($dataset_dto->description)) {
       $dataset_description = theme('box', truncate_utf8(mica_client_commons_get_localized_field($dataset_dto, 'description'), 50, TRUE, TRUE));
     }
     $dataset_name = mica_client_commons_get_localized_field($dataset_dto, 'name');
+    $type = $dataset_dto->hasExtension('obiba.mica.StudyDatasetDto.type') ? 'study' : 'dataset';
+    $type_name = $dataset_dto->hasExtension('obiba.mica.StudyDatasetDto.type') ? 'Study dataset' : 'Harmonization dataset';
     $dataset_rows[$key_dataset] = array(
       'data' => array(
         'label' => l($dataset_name, 'mica/dataset/' . mica_client_commons_to_slug($dataset_name) . '/' . $type . '/' . $dataset_dto->id),
-        'project' => !empty($study_table['project']) ? $study_table['project'] : '-',
-        'table' => !empty($study_table['table']) ? $study_table['table'] : '-',
+        'type' => t($type_name),
         'desc' => !empty($dataset_description) ? $dataset_description : '-'
       )
     );
   }
-  return $dataset_rows;
-}
 
-
-function mica_client_dataset_get_current_study_project($dataset_dto, $type, $study_id) {
-  if (!empty($type) && $type == 'dataset') {
-    foreach ($dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type')->studyTables as $study_table) {
-      if ($study_table->studyId == $study_id) {
-        $study_tab['project'] = $study_table->project;
-        $study_tab['table'] = $study_table->table;
-        return $study_tab;
-      }
-    }
-  }
-  if (!empty($type) && $type == 'study') {
-    if ($dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type')->studyTable->studyId == $study_id) {
-      $study_tab['project'] = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type')->studyTable->project;
-      $study_tab['table'] = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type')->studyTable->table;
-      return $study_tab;
-    }
-  }
-  return FALSE;
-}
-
-function mica_client_dataset_get_datasets_list($datasets, $type, $study_id) {
-
-  $dataset_rows = mica_client_dataset_get_datasets_table($datasets, $type, $study_id);
   $dataset['dataset-tab'] = theme(
     'table',
     array(
-      'header' => array(t('Name'), t('Project'), t('Table'), t('Description')),
+      'header' => array(t('Name'), t('Type'), t('Description')),
       'rows' => $dataset_rows,
-      'empty' => t('No data found'),
-      'sticky' => FALSE,
-      'attributes' => array('id' => 'variables_overview')
+      'empty' => t('No dataset found'),
+      'sticky' => FALSE
     )
   );
   return $dataset;
