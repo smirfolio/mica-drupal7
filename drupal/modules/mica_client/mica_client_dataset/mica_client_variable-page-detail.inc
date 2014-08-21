@@ -60,7 +60,7 @@ function mica_client_variable_get_harmonizations($variable) {
     }
   }
   if (!empty($rows)) {
-    $headers = array(t('study'), t('Status'), t('Comment'), t('Script'));
+    $headers = array(t('Study'), t('Status'), t('Comment'), t('Script'));
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,

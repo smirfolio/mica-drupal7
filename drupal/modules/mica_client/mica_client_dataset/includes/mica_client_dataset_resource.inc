@@ -119,8 +119,11 @@ class MicaDatasetResource extends MicaClient {
       $dto_data_response = json_decode($data);
       $this->session_facets_builder($dto_data_response, 'variable', $request_param);
 
-      // dpm($dto_data_response);
-      $summaries_variables = $dto_data_response->{'obiba.mica.DatasetVariableResultDto.result'}->summaries;
+      //dpm($dto_data_response);
+      $summaries_variables = array();
+      if ($dto_data_response->totalHits > 0) {
+        $summaries_variables = $dto_data_response->{'obiba.mica.DatasetVariableResultDto.result'}->summaries;
+      }
       $dtoObj = '\obiba\mica\DatasetVariableResolverDto';
       $dtos = array();
       $summarier_data = !empty($summaries_variables) ? $summaries_variables : NULL;
