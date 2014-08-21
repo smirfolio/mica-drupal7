@@ -58,14 +58,15 @@ class MicaDatasetResource extends MicaClient {
     }
   }
 
-  public function variables_search($request_param, $spec_dto_params = NULL) {
+  public function variables_search($request_param, $spec_dto_params = NULL, $size = NULL) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/variables/' . $request_param . '/_search?size=' . parent::SIZE_RESPONSE;
+    $limit_param = is_null($size) ? parent::SIZE_RESPONSE : $size;
+    $url = $this->micaUrl . '/variables/' . $request_param . '/_search?limit=' . $limit_param;
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     if (empty($url_parm[1])) {
       $dto_param = $this->dto_filter_construct(NULL, NULL, 'variable', $spec_dto_params);
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
-        $url = $this->micaUrl . '/variables/' . $request_param . '/_search?from=' . json_decode($dto_param)->from . '&size=' . parent::SIZE_RESPONSE;
+        $url = $this->micaUrl . '/variables/' . $request_param . '/_search?from=' . json_decode($dto_param)->from . '&limit=' . $limit_param;
 
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
@@ -90,7 +91,7 @@ class MicaDatasetResource extends MicaClient {
     else {
       $dto_param = $this->dto_filter_construct($url_parm[1], array('parent' => 'Study'), 'variable', $spec_dto_params);
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
-        $url = $this->micaUrl . '/variables/' . $request_param . '/_search?from=' . json_decode($dto_param)->from . '&size=' . parent::SIZE_RESPONSE;
+        $url = $this->micaUrl . '/variables/' . $request_param . '/_search?from=' . json_decode($dto_param)->from . '&limit=' . $limit_param;
 
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
@@ -135,15 +136,15 @@ class MicaDatasetResource extends MicaClient {
       $dtos['totalHits'] = $dto_data_response->totalHits;
       return $dtos;
     } catch (HttpClientException $e) {
-      return array();
+      return array('totalHits' => 0);
     }
   }
 
-  public function get_dataset_varaibles($resource, $dataset_id) {
-
+  public function get_dataset_varaibles($resource, $dataset_id, $size = NULL) {
     $this->setLastResponse(NULL);
+    $limit_param = is_null($size) ? parent::SIZE_RESPONSE : $size;
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
-    $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables?size=' . parent::SIZE_RESPONSE;
+    $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables?limit=' . $size_param;
 
     if (empty($url_parm[1])) {
       $request = new HttpClientRequest($url, array(
@@ -156,7 +157,7 @@ class MicaDatasetResource extends MicaClient {
     }
     else {
       $dto_param = $this->dto_filter_construct($url_parm[1], NULL, 'variable');
-      $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables?from=' . json_decode($dto_param)->from . '&size=' . parent::SIZE_RESPONSE;
+      $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables?from=' . json_decode($dto_param)->from . '&limit=' . $size_param;
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
