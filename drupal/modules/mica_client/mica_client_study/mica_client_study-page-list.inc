@@ -41,7 +41,7 @@ function mica_client_study_study_summaries_table_rows($study_summaries) {
       $name = mica_client_commons_get_localized_field($study_summary, 'name');
       $rows[] = array(
         mica_client_commons_get_localized_field($study_summary, 'acronym'),
-        l($name, 'mica/study/' . mica_client_commons_to_slug($name) . '/' . $study_summary->id),
+        l($name, 'mica/study/' . $study_summary->id . '/' .  mica_client_commons_to_slug($name)),
         implode(', ', t($study_summary->designs)),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,

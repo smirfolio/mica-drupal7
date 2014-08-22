@@ -6987,6 +6987,7 @@ body.admin-menu .navbar-fixed-top {
 .modal-body section {
   background-color: #ffffff;
   margin: 0;
+  border: none;
 }
 form#search-block-form {
   margin: 0;
