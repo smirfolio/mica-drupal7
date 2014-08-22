@@ -25,7 +25,8 @@ function mica_client_dataset_page_detail($resource_dataset, $dataset_id) {
 
     return theme('mica_client_datasets-detail', array(
       'dataset_dto' => $dataset_dto,
-      'dataset_type' => $dataset_type_dto
+      'dataset_type' => $dataset_type_dto,
+      'dataset_variables_aggs' => mica_client_dataset_get_variables($dataset_dto->id)
     )) .
     mica_client_dataset_study_tables($dataset_type_dto);
   }
@@ -68,6 +69,11 @@ function mica_client_dataset_study_tables($dataset_type_resource) {
   return theme('mica_client_datasets-tables', array('tab_var' => $study_tab, 'title_section' => $title));
 }
 
+/**
+ * Get the facets of the variables for this dataset.
+ * @param $dataset_id
+ * @return array
+ */
 function mica_client_dataset_get_variables($dataset_id) {
   $dataset_resource = new MicaDatasetResource();
   return $dataset_resource->variables_search('dataset', array(

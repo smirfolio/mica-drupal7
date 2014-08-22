@@ -1,6 +1,7 @@
 <?php
 //dpm($dataset_dto);
 //dpm($dataset_type_dto);
+//dpm($dataset_variables_aggs);
 ?>
 
 <section>
@@ -35,9 +36,11 @@
     <h5><?php print t('Number of variables') ?></h5>
     <p>
       <?php
-      print mica_client_dataset_get_variables($dataset_dto->id)['totalHits'];
+      print $dataset_variables_aggs['totalHits'];
       ?>
     </p>
+
+    <!-- Variable aggregations can be reported here -->
 
     <?php
     print l(t('Search Variables'), 'mica/variables_search/dataset',

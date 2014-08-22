@@ -260,15 +260,16 @@ class MicaClient {
     return $premiereEntree;
   }
 
-  /*
+  /**
    * Dto filter construction
-   * @param $request_param: url passed parameters,
-   * @param $spec_dto_param: specific  passed parameters,
-   * @param $parent_child: array must be 'parent'=>'<entity parent>' or 'child'=>'<entity parent>',
-   * @param $type_dto_search: must be 'Study' or 'Dataset',
-   *
-   * */
-  protected function dto_filter_construct($request_param = NULL, $parent_child = NULL, $type_dto_search = NULL, $spec_dto_params = NULL) {
+   * @param null $request_param url passed parameters,
+   * @param null $parent_child array must be 'parent'=>'<entity parent>' or 'child'=>'<entity parent>',
+   * @param null $type_dto_search must be 'study' or 'dataset',
+   * @param null $spec_dto_params specific passed parameters,
+   * @param null $size number of results
+   * @return string
+   */
+  protected function dto_filter_construct($request_param = NULL, $parent_child = NULL, $type_dto_search = NULL, $spec_dto_params = NULL, $size = NULL) {
 //    dpm($parent_child);
     // dpm($type_dto_search);
     $query_dto = new \obiba\mica\QueryDto;
@@ -335,7 +336,7 @@ class MicaClient {
 
     $query_dto->setFilteredQuery($filtered_query_dto);
 
-    $query_dto->setSize($this::SIZE_RESPONSE);
+    $query_dto->setSize(is_null($size) ? $this::SIZE_RESPONSE : $size);
     $query_dto->detailed = FALSE;
 
     $json_query_encoded = Protobuf::encode($query_dto);
