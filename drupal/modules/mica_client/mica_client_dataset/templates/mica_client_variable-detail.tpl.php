@@ -28,8 +28,8 @@
       <p>
         <?php
         foreach ($variable_dto->studySummaries as $studySummary) {
-          print l(mica_client_commons_get_localized_field($studySummary, 'acronym'), 'mica/study/' . $studySummary->id .
-              '/' . $studySummary->id) . '</br>';
+          print l(mica_client_commons_get_localized_field($studySummary, 'name'), 'mica/study/' . $studySummary->id .
+            '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($studySummary, 'name')));
         }
         ?>
       </p>
@@ -39,8 +39,8 @@
       <h5><?php print t('Dataset'); ?></h5>
       <p>
         <?php
-        print l(mica_client_commons_get_localized_field($variable_dto, 'datasetName'), 'mica/dataset/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($variable_dto, 'datasetName')) .
-            '/dataset/' . $variable_dto->datasetId) . '</br>';
+        print l(mica_client_commons_get_localized_field($variable_dto, 'datasetName'), 'mica/' . mica_client_variable_dataset_type($variable_dto)
+          . '/' . $variable_dto->datasetId . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($variable_dto, 'datasetName')));
         ?>
       </p>
     <?php endif; ?>

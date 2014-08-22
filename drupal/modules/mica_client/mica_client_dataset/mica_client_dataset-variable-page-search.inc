@@ -45,7 +45,7 @@ function mica_client_dataset_variables_table($variables) {
     foreach ($variables['data'] as $variable) {
       $name = $variable->name;
       $rows[] = array(
-        l($name, 'mica/variable/' . mica_client_commons_to_slug($name) . '/' . $variable->id),
+        l($name, 'mica/variable/' . $variable->id  . '/' . mica_client_commons_to_slug($name)),
         !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : '-',
         !empty($variable->datasetName) ? mica_client_commons_get_localized_field($variable, 'datasetName') : '-',
       );

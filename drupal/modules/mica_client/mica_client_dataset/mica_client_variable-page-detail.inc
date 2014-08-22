@@ -1,10 +1,10 @@
 <?php
 include_once('includes/mica_client_dataset_resource.inc');
 
-function mica_client_variable_page_detail($id_variable, $resource_variable) {
+function mica_client_variable_page_detail($variable_id) {
   drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_get_ajax_variables.js', 'file');
   $variable_resource = new MicaDatasetResource();
-  $variable = $variable_resource->get_variable('variable', $id_variable);
+  $variable = $variable_resource->get_variable('variable', $variable_id);
   $variable->label = _mica_client_variable_attributes_detail($variable, 'label');
   $variable->description = _mica_client_variable_attributes_detail($variable, 'description');
   $variable->comment = _mica_client_variable_attributes_detail($variable, 'comment');
@@ -322,6 +322,10 @@ function _mica_client_variable_rebuild_stat($variable_stat, $variable) {
     }
   }
   return $stats;
+}
+
+function mica_client_variable_dataset_type($variable) {
+  return $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
 }
 
 
