@@ -266,7 +266,7 @@ function mica_client_facet_search_block_view($delta = '') {
         if (user_access('access content') && $delta == 'search-' . $key_facet) { //good idea to check user perms here
           $facet_title_array = explode('-', $facet['title']);
           $block['subject'] = $facet_title_array;
-          $block['content'] = $block['content'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggr-pars'], 'studies');
+          $block['content'] = $block['content'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggs'], 'studies');
           return $block;
         }
       }
@@ -282,7 +282,7 @@ function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type
       block_load('mica_client_facet_search', 'search-' . $key_facet);
     $facet_title_array = explode('-', $facet['title']);
     $blockto_render[$dto_type . '_search-' . $key_facet]->subject = $facet_title_array[1];
-    $blockto_render[$dto_type . '_search-' . $key_facet]->content['#markup'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggr-pars'], $type, $parent_child);
+    $blockto_render[$dto_type . '_search-' . $key_facet]->content['#markup'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggs'], $type, $parent_child);
   }
 
   $block_output = _block_get_renderable_array($blockto_render);

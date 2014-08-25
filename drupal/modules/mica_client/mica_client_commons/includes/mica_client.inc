@@ -282,7 +282,7 @@ class MicaClient {
    * @param null $size number of results
    * @return string
    */
-  protected function dto_filter_construct($request_param = NULL, $hierarchical_relation = NULL, $type_dto_search = NULL, $spec_dto_params = NULL) {
+  protected function dto_filter_construct($request_param = NULL, $hierarchical_relation = NULL, $type_dto_search = NULL, $spec_dto_params = NULL, $size = NULL) {
     $query_dto = new \obiba\mica\QueryDto;
     $filtered_query_dto = new \obiba\mica\FilteredQueryDto;
     $bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
@@ -340,7 +340,7 @@ class MicaClient {
 
     $query_dto->setFilteredQuery($filtered_query_dto);
 
-    $query_dto->setSize($this::SIZE_RESPONSE);
+    $query_dto->setSize(is_null($size) ? $this::SIZE_RESPONSE : $size);
     $query_dto->detailed = FALSE;
 
     $json_query_encoded = Protobuf::encode($query_dto);

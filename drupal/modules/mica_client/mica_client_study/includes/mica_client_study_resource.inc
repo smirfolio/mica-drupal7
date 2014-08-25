@@ -92,8 +92,8 @@ class MicaStudyResource extends MicaClient {
         $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
       $dtoObj = '\obiba\mica\StudySummaryDto';
       $dtos = array();
-      $summarier_data = !empty($summaries_studies) ? $summaries_studies : NULL;
-      if ($summarier_data) {
+      $summaries_data = !empty($summaries_studies) ? $summaries_studies : NULL;
+      if ($summaries_data) {
         foreach ($summaries_studies as $study) {
           $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($study));
         }
