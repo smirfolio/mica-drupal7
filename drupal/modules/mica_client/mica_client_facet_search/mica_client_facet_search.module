@@ -371,6 +371,7 @@ function mica_client_facet_search_studies_table($studies) {
       );
     }
   }
+
   $headers = array(
     t('Short Name'),
     t('Name'),
