@@ -330,7 +330,7 @@ function mica_client_facet_search_variables_table($variables) {
     foreach ($variables['data'] as $variable) {
       $name = $variable->name;
       $rows[] = array(
-        l($name, 'mica/variable/' . mica_client_commons_to_slug($name) . '/' . $variable->id),
+        l($name, 'mica/variable/' . $variable->id),
         !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : '-',
         !empty($variable->datasetName) ? mica_client_commons_get_localized_field($variable, 'datasetName') : '-',
       );
@@ -363,7 +363,7 @@ function mica_client_facet_search_studies_table($studies) {
       $name = mica_client_commons_get_localized_field($study, 'name');
       $rows[] = array(
         mica_client_commons_get_localized_field($study, 'acronym'),
-        l($name, 'mica/study/' . mica_client_commons_to_slug($name) . '/' . $study->id),
+        l($name, 'mica/study/' . $study->id),
         implode(', ', t($study->designs)),
         isset($study->targetNumber->noLimit) ? t('No Limit') :
           isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,

@@ -464,4 +464,71 @@ class MicaClient {
     return $json_query_encoded;
   }
 
+
+  protected function dto_filter_extension_construct_reft($request_param = NULL, $hierarchical_relation = NULL, $type_dto_search = NULL, $spec_dto_params = NULL) {
+    $query_dto = new \obiba\mica\QueryDto;
+    $filtered_query_dto = new \obiba\mica\FilteredQueryDto;
+    $bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
+
+    if (!empty($request_param)) {
+
+      foreach ($this->normalize_parameters(urldecode($request_param)) as $field => $term_association) {
+
+
+        if ($field != 'page') {
+          if (strpos($field, key($hierarchical_relation)) === 0 && !empty($hierarchical_relation)) {
+
+            $parent_filtered_query_dto = new \obiba\mica\FilteredQueryDto;
+            $parent_bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
+            $filter_query_dto_relational = new \obiba\mica\FilterQueryDto;
+            $parent_child_field = explode(':', urldecode($field));
+            $filter_query_dto_relational->setField(str_replace('-', '.', $parent_child_field[1]));
+            $terms_filter_dto = $this->_construct_filtered_query_dto($parent_child_field, $term_association);
+            $filter_query_dto_relational->setExtension("obiba.mica.TermsFilterQueryDto.terms", $terms_filter_dto);
+
+            $parent_query_dto = new \obiba\mica\ParentChildFilterDto;
+            $parent_query_dto->setRelationship(constant("MicaClient::" . key($hierarchical_relation)));
+            $parent_query_dto->setType($hierarchical_relation[key($hierarchical_relation)]);
+
+
+            $parent_bool_filter_query_dto->addFilters($filter_query_dto_relational);
+            $parent_filtered_query_dto->setFilter($parent_bool_filter_query_dto);
+            $parent_query_dto->setFilteredQuery($parent_filtered_query_dto);
+
+          }
+          elseif (strpos($field, key($hierarchical_relation)) === FALSE) {
+            $filter_query_dto = new \obiba\mica\FilterQueryDto;
+            $parent_child_field = explode(':', urldecode($field));
+            $filter_query_dto->setField(str_replace('-', '.', $parent_child_field[1]));
+            $terms_filter_dto = $this->_construct_filtered_query_dto($parent_child_field, $term_association);
+            $filter_query_dto->setExtension("obiba.mica.TermsFilterQueryDto.terms", $terms_filter_dto);
+            $bool_filter_query_dto->addFilters($filter_query_dto);
+          }
+        }
+        if ($field == 'page') {
+          $pagination_param = explode(',', $term_association[0]);
+          if (array_count_values($pagination_param)[0] == constant("MicaClient::PAGINATE_" . $type_dto_search)) {
+            $query_dto->setFrom($this->pagination_parameters($pagination_param[1], $type_dto_search));
+          }
+        }
+
+      }
+
+    }
+    if (!empty($parent_query_dto)) {
+      $bool_filter_query_dto->setParentChildFilter($parent_query_dto);
+    }
+
+    $filtered_query_dto->setFilter($bool_filter_query_dto);
+
+    $query_dto->setFilteredQuery($filtered_query_dto);
+
+    $query_dto->setSize($this::SIZE_RESPONSE);
+    $query_dto->detailed = FALSE;
+
+    $json_query_encoded = Protobuf::encode($query_dto);
+    return $json_query_encoded;
+
+  }
+
 }
