@@ -35,7 +35,6 @@ class MicaSearchResource extends MicaClient {
       $dto_param = $this->dto_filter_construct(NULL, NULL, $resource, $spec_dto_params, $size);
 
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
-        dpm($url);
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
           'headers' => $this->authorizationHeader(array(
