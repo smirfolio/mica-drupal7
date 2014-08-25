@@ -21,8 +21,8 @@ function mica_client_study_studies_table($studies) {
 //  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variable);
 //  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variable);
 
-  $args = array('quantity' => $studies['totalHits'], 'element' => MicaStudyResource::PAGINATE_study);
-  $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaStudyResource::PAGINATE_study);
+  $args = array('quantity' => $studies['totalHits'], 'element' => MicaStudyResource::PAGINATE_studies);
+  $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaStudyResource::PAGINATE_studies);
   $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
     'table',
@@ -41,7 +41,7 @@ function mica_client_study_study_summaries_table_rows($study_summaries) {
       $name = mica_client_commons_get_localized_field($study_summary, 'name');
       $rows[] = array(
         mica_client_commons_get_localized_field($study_summary, 'acronym'),
-        l($name, 'mica/study/' . $study_summary->id . '/' .  mica_client_commons_to_slug($name)),
+        l($name, 'mica/study/' . $study_summary->id . '/' . mica_client_commons_to_slug($name)),
         implode(', ', t($study_summary->designs)),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,

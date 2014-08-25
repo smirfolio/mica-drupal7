@@ -4,6 +4,8 @@
 
       /*******************/
       $.extend({
+
+
         getUrlVars: function () {
           var vars = [], hash;
           var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -18,18 +20,18 @@
         sendCheckboxCheckedValues: function (idcheckbox) {
           var serializedData = "";
           $('form').each(function () {
+            $('input', 'form').each(function () {
+              $(this).val() == "" && $(this).remove();
+            })
             var SerilizedForm = ($(this).serialize());
             if (SerilizedForm && $(this).attr('id').match(/facet-search/g)) {
-
               serializedData = serializedData.concat(SerilizedForm).concat('&');
             }
           });
-          if (idcheckbox) {
-            console.log(serializedData);
-            console.log(idcheckbox);
-          }
+
           return serializedData;
         }
+
       });
 
 
@@ -45,13 +47,31 @@
 
 
       $("input[type='checkbox']").on("click", function () {
+        //  $.sendCheckboxCheckedValues();
         window.location = '?' + $.sendCheckboxCheckedValues();
       });
-      ///her we goo
-      if (Drupal.settings.mica_client_study.queries) {
-        // console.log(Drupal.settings.mica_client_study.queries);
 
-      }
+      $("input[id='range-auto-fill']").on("blur", function () {
+
+
+        var minid = $(this).attr('termselect') + '-min';
+        var maxid = $(this).attr('termselect') + '-max';
+        console.log(maxid);
+        console.log(minid);
+        var minvalue = $("input[term='" + minid + "']").val();
+        var maxvalue = $("input[term='" + maxid + "']").val();
+
+
+        $('#' + $(this).attr('termselect')).val('[ ' + minvalue + ' to ' + maxvalue + ' ]');
+
+      });
+
+
+      ///her we goo
+//      if (Drupal.settings.mica_client_study.queries) {
+//        // console.log(Drupal.settings.mica_client_study.queries);
+//
+//      }
 
 
     }
