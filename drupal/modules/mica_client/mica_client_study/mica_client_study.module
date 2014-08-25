@@ -4,7 +4,6 @@
  * Mica studies file
  */
 
-include_once('includes/mica_client_study_resource_facets_conf.inc');
 function mica_client_study_menu() {
   $items = array();
 
@@ -18,15 +17,6 @@ function mica_client_study_menu() {
     'type' => MENU_NORMAL_ITEM
   );
 
-  $items['mica/studies_search/%'] = array(
-    'title' => t('Studies Search'),
-    'description' => t('Search published studies'),
-    'page callback' => 'mica_client_study_page_search',
-    'file' => 'mica_client_study-page-search.inc',
-    'access callback' => TRUE,
-    'page arguments' => array(2)
-  );
-
   $items['mica/study/%'] = array(
     'title' => t('Mica study detail'),
     'page callback' => 'mica_client_study_page_detail',
@@ -36,58 +26,6 @@ function mica_client_study_menu() {
   );
   return $items;
 }
-
-function mica_client_study_menu_local_tasks_alter(&$data, $router_item, $root_path) {
-  $links = array();
-  switch ($root_path) {
-    case 'mica/studies':
-      $links['mica/studies_search'] = array(
-        '#weight' => 30,
-        '#theme' => 'menu_local_action',
-        '#link' => array(
-          'title' => t('Studies Search'),
-          'href' => 'mica/studies_search/_all',
-          'localized_options' => array(
-//                  'query' => array(
-//                    'f[0]' => 'search_api_combined_1:' . $node->nid
-//                  ),
-            'attributes' => array(
-              'class' => 'highlight',
-            ),
-          ),
-        ),
-      );
-
-      break;
-  }
-
-  $data['actions']['output'] = array_merge($data['actions']['output'], $links);
-}
-
-/**
- * Implements hook_requirements().
- */
-
-//function mica_client_study_requirements($phase) {
-//  $requirements = array();
-//  // Ensure translations do not break at install time
-//  $t = get_t();
-//  $requirements['micatimelines'] = array(
-//    'title' => $t('Time lines  Library'),
-//  );
-//  $libraries = libraries_get_libraries();
-//  if (isset($libraries['micatimelines'])) {
-//    $requirements['micatimelines']['value'] = $t('Installed');
-//    $requirements['micatimelines']['severity'] = REQUIREMENT_OK;
-//  }
-//  else {
-//    $requirements['micatimelines']['value'] = $t('Not Installed');
-//    $requirements['micatimelines']['severity'] = REQUIREMENT_ERROR;
-//    $requirements['micatimelines']['description'] = $t('Please install the the time lines library %url.', array('%url' => 'http://obiba.org.com'));
-//  }
-//
-//  return $requirements;
-//}
 
 /**
  * Implements hook_theme().
@@ -102,17 +40,10 @@ function mica_client_study_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
   return array(
     'mica_client_study_list' => array('template' => 'mica_client_study-list', 'path' => $path_theme),
-    'mica_client_study_search' => array('template' => 'mica_client_study-search', 'path' => $path_theme),
     'mica_client_study_detail' => array('template' => 'mica_client_study-detail', 'path' => $path_theme),
     'mica_population_detail' => array('template' => 'mica_client_study-population-detail', 'path' => $path_theme),
     'mica_dce_detail' => array('template' => 'mica_client_study-dce-detail', 'path' => $path_theme),
     'mica_client_study_attachments' => array('template' => 'mica_client_study_attachments', 'path' => $path_theme),
-    'mica_client_study_block_search' => array('template' => 'mica_client_study_block_search', 'path' => $path_theme),
-    'block__mica_client_study' => array(
-      'variables' => array('block' => array()),
-      'template' => 'block--mica_client_study',
-      'path' => $path_theme
-    ),
     'mica_client_study_opal' => array('template' => 'mica_client_study_opal', 'path' => $path_theme)
   );
 }
@@ -177,81 +108,6 @@ function mica_client_study_get_attachment_url($study_id, $attachment) {
     variable_get('mica_url', 'https://localhost:8445'),
     $study_id,
     $attachment->id);
-}
-
-/**
- * Implements hook_block_info().
- */
-function mica_client_study_block_info() {
-  $i = 0 - count(mica_client_study_resource_return_facets());
-  foreach (mica_client_study_resource_return_facets() as $key_facet => $facet) {
-    $blocks['search-' . $key_facet] =
-      mica_client_study_blockinfo_construc($facet['title'], $i);
-    ++$i;
-  }
-
-  return $blocks;
-}
-
-function mica_client_study_blockinfo_construc($facet_title, $facet_weight) {
-  $facet_title_array = explode('-', $facet_title);
-  return array(
-    'info' => t('Facet search @title', array('@title' => drupal_strtolower($facet_title_array[0] . ' ' . $facet_title_array[1]))),
-    'title' => t('@title', array('@title' => $facet_title_array[1])),
-    'status' => 1,
-    'region' => 'sidebar_first',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies_search*',
-    'weight' => $facet_weight,
-    'custom' => 1,
-  );
-}
-
-/**
- * Implements hook_block_view().
- */
-function mica_client_study_block_view($delta = '') {
-  foreach (mica_client_study_resource_return_facets() as $key_facet => $facet) {
-    if (user_access('access content') && $delta == 'search-' . $key_facet) { //good idea to check user perms here
-      $facet_title_array = explode('-', $facet['title']);
-      $block['subject'] = $facet_title_array;
-      $block['content'] = mica_client_commons_precess_block_theme('search-' . $facet['aggr-pars'], 'study', 'parent');
-      return $block;
-    }
-  }
-}
-
-/**
- * Implements hook_init().
- */
-function mica_client_study_init() {
-  //load the settings
-  if (module_exists('collapsiblock')) {
-    global $theme;
-    $current_theme = $theme ? $theme : variable_get('theme_default', 'garland');
-    variable_set(str_replace('/', '_', 'theme_' . $current_theme . '_settings'),
-      array(
-        'collapsiblock_block' => 'section.block',
-        'collapsiblock_content' => 'div.block-content'
-      ));
-    $theme_settings = variable_get(str_replace('/', '_', 'theme_' . $current_theme . '_settings'), array());
-    $theme_settings = array_merge(collapsiblock_default_settings(), $theme_settings, array());
-    drupal_add_js(array(
-      'collapsiblock' => array(
-        'blocks' => variable_get('collapsiblock_settings', array()),
-        'default_state' => variable_get('collapsiblock_default_state', 1),
-        'slide_type' => variable_get('collapsiblock_slide_type', 1),
-        'slide_speed' => variable_get('collapsiblock_slide_speed', 200),
-        'block_title' => $theme_settings['collapsiblock_title'],
-        'block' => $theme_settings['collapsiblock_block'],
-        'block_content' => $theme_settings['collapsiblock_content'],
-      )
-    ), array(
-      'type' => 'setting'
-    ,
-      'scope' => JS_DEFAULT
-    ));
-  }
 }
 
 

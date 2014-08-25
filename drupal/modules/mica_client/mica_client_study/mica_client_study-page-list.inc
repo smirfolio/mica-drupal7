@@ -21,8 +21,8 @@ function mica_client_study_studies_table($studies) {
 //  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variable);
 //  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variable);
 
-  $args = array('quantity' => $studies['totalHits'], 'element' => MicaStudyResource::PAGINATE_study);
-  $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaStudyResource::PAGINATE_study);
+  $args = array('quantity' => $studies['totalHits'], 'element' => MicaStudyResource::PAGINATE_studies);
+  $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaStudyResource::PAGINATE_studies);
   $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
     'table',

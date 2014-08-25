@@ -1,0 +1,12 @@
+name = "Mica client facet search"
+description = "Mica client facet search cunstruction blocks"
+package = Mica
+core = 7.x
+
+
+
+dependencies[] = mica_client_commons
+dependencies[] = mica_client_model
+
+scripts[] = 'js/mica-client-facet-search.js'
+scripts[] = 'js/mica-client-facet-search_collapse_deal.js'

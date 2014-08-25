@@ -117,7 +117,7 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dto_data_response = json_decode($data);
-      $this->session_facets_builder($dto_data_response, 'variable', $request_param);
+      $this->session_facets_builder($dto_data_response, 'variables', $request_param);
 
       //dpm($dto_data_response);
       $summaries_variables = array();
@@ -140,7 +140,6 @@ class MicaDatasetResource extends MicaClient {
   }
 
   public function get_dataset_varaibles($resource, $dataset_id) {
-
     $this->setLastResponse(NULL);
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables?size=' . parent::SIZE_RESPONSE;

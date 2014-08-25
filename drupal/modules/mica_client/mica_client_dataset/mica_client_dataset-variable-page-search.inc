@@ -58,8 +58,8 @@ function mica_client_dataset_variables_table($variables) {
     t('Dataset')
   );
 
-  $args = array('quantity' => $variables['totalHits'], 'element' => MicaDatasetResource::PAGINATE_variable);
-  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_variable);
+  $args = array('quantity' => $variables['totalHits'], 'element' => MicaDatasetResource::PAGINATE_variables);
+  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_variables);
 
   return theme(
     'table',

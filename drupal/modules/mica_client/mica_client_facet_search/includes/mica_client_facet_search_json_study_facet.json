@@ -1,0 +1,57 @@
+{
+  "methods-designs": {
+    "title": "Study-STUDY DESIGN",
+    "key": "methods-designs",
+    "aggr-pars": "methods-designs"
+  },
+  "populations-countriesIso": {
+    "title": "Study-COUNTRY OF RESIDENCE",
+    "key": "populations-countriesIso",
+    "aggr-pars": "populations-selectionCriteria-countriesIso"
+  },
+  "populations-ageMin": {
+    "title": "Study-MINIMUM AGE",
+    "key": "populations-ageMin",
+    "aggr-pars": "populations-selectionCriteria-ageMin"
+  },
+  "populations-ageMax": {
+    "title": "Study-MAXIMUM AGE",
+    "key": "populations-ageMax",
+    "aggr-pars": "populations-selectionCriteria-ageMax"
+  },
+  "populations-gender": {
+    "title": "Study-GENDER",
+    "key": "populations-gender",
+    "aggr-pars": "populations-selectionCriteria-gender"
+  },
+  "participant-number": {
+    "title": "Study-TARGET NUMBER OF PARTICIPANTS",
+    "key": "participant-number",
+    "aggr-pars": "numberOfParticipants-participant-number"
+  },
+  "parti-samples-number": {
+    "title": "Study-TARGET NUMBER OF PARTICIPANTS WITH SAMPLES",
+    "key": "parti-samples-number",
+    "aggr-pars": "numberOfParticipants-sample-number"
+  },
+  "methods-recruitments": {
+    "title": "Study-RECRUITMENT TARGET",
+    "key": "methods-recruitments",
+    "aggr-pars": "methods-recruitments"
+  },
+  "access": {
+    "title": "Study-ACCESS",
+    "key": "access",
+    "aggr-pars": "access"
+  },
+  "start": {
+    "title": "Study-DATE START",
+    "key": "start",
+    "aggr-pars": "start"
+  },
+  "end": {
+    "title": "Study-DATE END",
+    "key": "end",
+    "aggr-pars": "end"
+  }
+}
