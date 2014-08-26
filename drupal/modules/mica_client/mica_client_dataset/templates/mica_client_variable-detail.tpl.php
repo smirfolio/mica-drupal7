@@ -57,7 +57,15 @@
 
             <h5><?php print t('Variable Type'); ?></h5>
 
-            <p><?php print t($variable_dto->variableType); ?></p>
+            <p>
+              <?php print t($variable_dto->variableType); ?>
+              <?php if ($variable_dto->variableType == 'Harmonized'): ?>
+                <?php
+                print '(' . l($variable_dto->name, 'mica/variable/' . $variable_dto->datasetId . ':' . $variable_dto->name
+                  . ':Dataschema' . '/' . mica_client_commons_to_slug($variable_dto->name)) . ')';
+                ?>
+              <?php endif; ?>
+            </p>
 
             <?php if (!empty($variable_dto->comment)): ?>
               <h5><?php print t('Comment'); ?></h5>
