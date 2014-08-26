@@ -1,5 +1,6 @@
 <?php
 //dpm($variable_dto);
+//dpm($variable_harmonization);
 ?>
 <article>
 
@@ -66,7 +67,7 @@
               <?php if ($variable_dto->variableType == 'Harmonized'): ?>
                 <?php
                 print '(' . l($variable_dto->name, 'mica/variable/' . $variable_dto->datasetId . ':' . $variable_dto->name
-                  . ':Dataschema' . '/' . mica_client_commons_to_slug($variable_dto->name)) . ')';
+                    . ':Dataschema' . '/' . mica_client_commons_to_slug($variable_dto->name)) . ')';
                 ?>
               <?php endif; ?>
             </p>
@@ -80,17 +81,15 @@
         <div class="col-xs-6">
           <?php if (!empty($variable_dto->categories)): ?>
             <h5><?php print t('Categories') ?></h5>
-
-            <div>
-              <p><?php print mica_client_variable_get_categories($variable_dto->categories); ?></p>
-            </div>
+            <p><?php print mica_client_variable_get_categories($variable_dto->categories); ?></p>
           <?php endif; ?>
           <?php if (!empty($variable_dto->attributes)): ?>
             <h5><?php print t('Attributes') ?></h5>
-
-            <div>
-              <p><?php print mica_client_variable_get_attributes($variable_dto->attributes, 'maelstrom', array('description')); ?></p>
-            </div>
+            <p><?php print mica_client_dataset_attributes_tab($variable_dto->attributes, 'maelstrom', array(
+                'description',
+                'comment',
+                'status'
+              )); ?></p>
           <?php endif; ?>
         </div>
       </div>
@@ -115,10 +114,24 @@
     </div>
   </section>
 
-  <?php if (!empty($variable_dto->harmonization_tab)): ?>
+  <?php if ($variable_dto->variableType != 'Study'): ?>
     <section>
       <h3><?php print t('Harmonization') ?></h3>
-      <?php print($variable_dto->harmonization_tab); ?>
+      <?php if ($variable_dto->variableType == 'Dataschema'): ?>
+        <?php print mica_client_variable_get_harmonizations($variable_dto); ?>
+      <?php endif; ?>
+
+      <?php if (!empty($variable_harmonization)): ?>
+        <h5><?php print t('Status'); ?></h5>
+        <p><?php print t($variable_harmonization['status']); ?></p>
+
+        <h5><?php print t('Comment'); ?></h5>
+        <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : $variable_harmonization['comment']; ?></p>
+
+        <h5><?php print t('Script'); ?></h5>
+
+        <?php print $variable_harmonization['script']; ?>
+      <?php endif; ?>
     </section>
   <?php endif; ?>
 

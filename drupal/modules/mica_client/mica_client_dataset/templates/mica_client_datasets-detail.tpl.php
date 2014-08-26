@@ -2,31 +2,44 @@
 //dpm($dataset_dto);
 //dpm($dataset_type_dto);
 //dpm($dataset_variables_aggs);
-//dpm($dataset_studies_tab);
 ?>
 
 <article>
+
   <section>
     <h3><?php print t('General Information') ?></h3>
 
-    <div>
-      <?php if (!empty($dataset_dto->description)): ?>
-        <h5><?php print t('Description'); ?></h5>
-        <p><?php print mica_client_commons_get_localized_field($dataset_dto, 'description'); ?></p>
-      <?php endif; ?>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-6 right-indent">
+          <?php if (!empty($dataset_dto->description)): ?>
+            <h5><?php print t('Description'); ?></h5>
+            <p><?php print mica_client_commons_get_localized_field($dataset_dto, 'description'); ?></p>
+          <?php endif; ?>
 
-      <h5><?php print t('Dataset Type'); ?></h5>
+          <h5><?php print t('Entity Type'); ?></h5>
 
-      <p>
-        <?php
-        if (!empty($dataset_type_dto->project)):
-          echo t('Harmonization dataset');
-        else:
-          echo t('Study dataset');
-        endif;
-        ?>
-      </p>
+          <p><?php print t($dataset_dto->entityType); ?></p>
 
+          <h5><?php print t('Dataset Type'); ?></h5>
+
+          <p>
+            <?php
+            if (!empty($dataset_type_dto->project)):
+              echo t('Harmonization dataset');
+            else:
+              echo t('Study dataset');
+            endif;
+            ?>
+          </p>
+        </div>
+        <div class="col-xs-6">
+          <?php if (!empty($dataset_dto->attributes)): ?>
+            <h5><?php print t('Attributes') ?></h5>
+            <p><?php print mica_client_dataset_attributes_tab($dataset_dto->attributes, 'maelstrom'); ?></p>
+          <?php endif; ?>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -60,6 +73,6 @@
 
   <section>
     <h3><?php print t('Studies') ?></h3>
-    <?php print $dataset_studies_tab ?>
+    <?php print mica_client_dataset_study_tables($dataset_type) ?>
   </section>
 </article>

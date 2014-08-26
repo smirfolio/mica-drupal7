@@ -8,9 +8,11 @@ function mica_client_variable_page_detail($variable_id) {
   $variable->label = _mica_client_variable_attributes_detail($variable, 'label');
   $variable->description = _mica_client_variable_attributes_detail($variable, 'description');
   $variable->comment = _mica_client_variable_attributes_detail($variable, 'comment');
-  $variable->harmonization_tab = mica_client_variable_get_harmonizations($variable);
   drupal_set_title($variable->name);
-  return theme('mica_client_variable-detail', array('variable_dto' => $variable));
+  return theme('mica_client_variable-detail', array(
+    'variable_dto' => $variable,
+    'variable_harmonization' => mica_client_variable_get_harmonization($variable),
+  ));
 }
 
 function mica_client_variable_prepare_prettify() {
@@ -43,12 +45,14 @@ function mica_client_variable_get_harmonizations($variable) {
   foreach ($variable->studyIds as $study_id) {
     $id_variable_resource = $variable->datasetId . ':' . $variable->name . ':Harmonized:' . $study_id;
     $harmonized_variable = $variable_resource->get_variable('variable', $id_variable_resource);
+
     if (_mica_client_variable_attributes_detail($harmonized_variable, 'status') ||
       _mica_client_variable_attributes_detail($harmonized_variable, 'comment') ||
       _mica_client_variable_attributes_detail($harmonized_variable, 'script')
     ) {
       $rows[] = array(
-        _mica_client_variable_acronym_study($variable, $study_id),
+        l($harmonized_variable->name, 'mica/variable/' . $harmonized_variable->id . '/' . mica_client_commons_to_slug($harmonized_variable->name)),
+        l(_mica_client_variable_acronym_study($variable, $study_id), 'mica/study/' . $study_id),
         _mica_client_variable_attributes_detail($harmonized_variable, 'status'),
         _mica_client_variable_html_truncated(
           _mica_client_variable_attributes_detail($harmonized_variable, 'comment'), t('comment'), 200, FALSE),
@@ -59,7 +63,7 @@ function mica_client_variable_get_harmonizations($variable) {
     }
   }
   if (!empty($rows)) {
-    $headers = array(t('Study'), t('Status'), t('Comment'), t('Script'));
+    $headers = array(t('Harmonized Variable'), t('Study'), t('Status'), t('Comment'), t('Script'));
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,
@@ -69,6 +73,23 @@ function mica_client_variable_get_harmonizations($variable) {
     ));
   }
 
+}
+
+function mica_client_variable_get_harmonization($harmonized_variable) {
+  $rows = array();
+
+  if (_mica_client_variable_attributes_detail($harmonized_variable, 'status') ||
+    _mica_client_variable_attributes_detail($harmonized_variable, 'comment') ||
+    _mica_client_variable_attributes_detail($harmonized_variable, 'script')
+  ) {
+    $rows = array(
+      'status' => _mica_client_variable_attributes_detail($harmonized_variable, 'status'),
+      'comment' => _mica_client_variable_attributes_detail($harmonized_variable, 'comment'),
+      'script' => '<pre class="prettyprint lang-js">' . _mica_client_variable_attributes_detail($harmonized_variable, 'script') . '</pre>',
+    );
+  }
+
+  return $rows;
 }
 
 function _mica_client_variable_html_truncated($text, $label, $size = 200, $is_code = FALSE, $pre_class = '') {
@@ -104,6 +125,9 @@ function _mica_client_variable_html_truncated($text, $label, $size = 200, $is_co
       }
     }
   }
+  else {
+    $htmlTruncate = '-';
+  }
   return $htmlTruncate;
 }
 
@@ -125,40 +149,6 @@ function mica_client_variable_get_categories($categories = NULL) {
         'empty' => t('No category found'),
         'sticky' => FALSE,
         'attributes' => array('id' => 'variable_categories')
-      )
-    );
-  }
-
-  return FALSE;
-}
-
-/**
- * @param null $attributes
- * @param null $namespace
- * @param array $excluded_names
- * @return bool|string
- */
-function mica_client_variable_get_attributes($attributes = NULL, $namespace = NULL, $excluded_names = array()) {
-  $rows = array();
-  if (!empty($attributes)) {
-    foreach ($attributes as $attribute) {
-      if (empty($namespace) || !empty($attribute->namespace) && $namespace == $attribute->namespace) {
-        if (empty($excluded_names) || !in_array($attribute->name, $excluded_names)) {
-          $rows[] = array(
-            t($attribute->name),
-            mica_client_commons_get_localized_field($attribute, 'values'),
-          );
-        }
-      }
-    }
-    return theme(
-      'table',
-      array(
-        'header' => array(t('Name'), t('Value')),
-        'rows' => $rows,
-        'empty' => t('No attribute found'),
-        'sticky' => FALSE,
-        'attributes' => array('id' => 'variable_attributes')
       )
     );
   }
@@ -253,9 +243,16 @@ function mica_client_dataset_variable_get_ajax_statistics($id_variable = NULL) {
 function mica_client_variable_table_stat_summary($variable, $variable_stat) {
   $rows = array();
   $math_dto = 'Math.ContinuousSummaryDto.continuous';
-  foreach ($variable->studyIds as $key_stud => $stat) {
-    $rows[] = array(
-      _mica_client_variable_acronym_study($variable, $stat),
+  if ($variable->variableType == 'Dataschema') {
+
+  }
+  foreach ($variable->studyIds as $key_stud => $study_id) {
+    $row = array();
+    if ($variable->variableType == 'Dataschema') {
+      $row = array(l(_mica_client_variable_acronym_study($variable, $study_id), 'mica/study/' . $study_id));
+    }
+    array_push(
+      $row,
       !empty($variable_stat[$key_stud]->{$math_dto}->summary->min) ?
         round($variable_stat[$key_stud]->{$math_dto}->summary->min, 3) : 'inf',
       !empty($variable_stat[$key_stud]->{$math_dto}->summary->max) ?
@@ -263,19 +260,28 @@ function mica_client_variable_table_stat_summary($variable, $variable_stat) {
       !empty($variable_stat[$key_stud]->{$math_dto}->summary->mean) ?
         round($variable_stat[$key_stud]->{$math_dto}->summary->mean, 3) : 'inf',
       !empty($variable_stat[$key_stud]->{$math_dto}->summary->stdDev) ?
-        round($variable_stat[$key_stud]->{$math_dto}->summary->stdDev, 3) : 'nan',
+        round($variable_stat[$key_stud]->{$math_dto}->summary->stdDev, 3) : 'NaN',
       $variable_stat[$key_stud]->{$math_dto}->summary->n
     );
+    $rows[] = $row;
   }
-  $headers = array('Study', 'Min', 'Max', 'Mean', 'Std. Dev', 'Count');
+  $headers = array();
+  if ($variable->variableType == 'Dataschema') {
+    $headers = array('Study');
+  }
+  array_push($headers, 'Min', 'Max', 'Mean', 'Std. Dev', 'Count');
   return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No studies available')));
 }
 
 function mica_client_variable_table_stat_facet($variable, $variable_stat) {
   $stats = _mica_client_variable_rebuild_stat($variable_stat, $variable);
   $headers = array('Value');
-  foreach ($stats as $study_id => $stat) {
-    $headers[] = _mica_client_variable_acronym_study($variable, $study_id);
+  if ($variable->variableType == 'Dataschema') {
+    foreach ($stats as $study_id => $stat) {
+      $headers[] = l(_mica_client_variable_acronym_study($variable, $study_id), 'mica/study/' . $study_id);
+    }
+  } else {
+    array_push($headers, t('Frequency'));
   }
   $rows = array();
   // Get total of non-missing categories
