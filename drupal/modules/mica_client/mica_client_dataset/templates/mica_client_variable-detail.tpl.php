@@ -51,6 +51,10 @@
               </p>
             <?php endif; ?>
 
+            <h5><?php print t('Entity Type'); ?></h5>
+
+            <p><?php print t($variable_dto->entityType); ?></p>
+
             <h5><?php print t('Value Type'); ?></h5>
 
             <p><?php print t($variable_dto->valueType); ?></p>
@@ -74,11 +78,18 @@
           </div>
         </div>
         <div class="col-xs-6">
-          <?php if (!empty($variable_dto->categoriestab)): ?>
+          <?php if (!empty($variable_dto->categories)): ?>
             <h5><?php print t('Categories') ?></h5>
 
             <div>
-              <p><?php print($variable_dto->categoriestab); ?></p>
+              <p><?php print mica_client_variable_get_categories($variable_dto->categories); ?></p>
+            </div>
+          <?php endif; ?>
+          <?php if (!empty($variable_dto->attributes)): ?>
+            <h5><?php print t('Attributes') ?></h5>
+
+            <div>
+              <p><?php print mica_client_variable_get_attributes($variable_dto->attributes, 'maelstrom', array('description')); ?></p>
             </div>
           <?php endif; ?>
         </div>
@@ -104,10 +115,10 @@
     </div>
   </section>
 
-  <?php if (!empty($variable_dto->harmonizationtab)): ?>
+  <?php if (!empty($variable_dto->harmonization_tab)): ?>
     <section>
       <h3><?php print t('Harmonization') ?></h3>
-      <?php print($variable_dto->harmonizationtab); ?>
+      <?php print($variable_dto->harmonization_tab); ?>
     </section>
   <?php endif; ?>
 

@@ -8,8 +8,7 @@ function mica_client_variable_page_detail($variable_id) {
   $variable->label = _mica_client_variable_attributes_detail($variable, 'label');
   $variable->description = _mica_client_variable_attributes_detail($variable, 'description');
   $variable->comment = _mica_client_variable_attributes_detail($variable, 'comment');
-  $variable->categoriestab = mica_client_variable_get_categories($variable->categories);
-  $variable->harmonizationtab = mica_client_variable_get_harmonizations($variable);
+  $variable->harmonization_tab = mica_client_variable_get_harmonizations($variable);
   drupal_set_title($variable->name);
   return theme('mica_client_variable-detail', array('variable_dto' => $variable));
 }
@@ -123,9 +122,43 @@ function mica_client_variable_get_categories($categories = NULL) {
       array(
         'header' => array(t('Name'), t('Label'), t('Missing')),
         'rows' => $rows,
-        'empty' => t('No data found'),
+        'empty' => t('No category found'),
         'sticky' => FALSE,
-        'attributes' => array('id' => 'variables_overview')
+        'attributes' => array('id' => 'variable_categories')
+      )
+    );
+  }
+
+  return FALSE;
+}
+
+/**
+ * @param null $attributes
+ * @param null $namespace
+ * @param array $excluded_names
+ * @return bool|string
+ */
+function mica_client_variable_get_attributes($attributes = NULL, $namespace = NULL, $excluded_names = array()) {
+  $rows = array();
+  if (!empty($attributes)) {
+    foreach ($attributes as $attribute) {
+      if (empty($namespace) || !empty($attribute->namespace) && $namespace == $attribute->namespace) {
+        if (empty($excluded_names) || !in_array($attribute->name, $excluded_names)) {
+          $rows[] = array(
+            t($attribute->name),
+            mica_client_commons_get_localized_field($attribute, 'values'),
+          );
+        }
+      }
+    }
+    return theme(
+      'table',
+      array(
+        'header' => array(t('Name'), t('Value')),
+        'rows' => $rows,
+        'empty' => t('No attribute found'),
+        'sticky' => FALSE,
+        'attributes' => array('id' => 'variable_attributes')
       )
     );
   }
