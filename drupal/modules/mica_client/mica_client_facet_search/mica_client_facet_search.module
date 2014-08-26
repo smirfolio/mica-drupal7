@@ -1,0 +1,397 @@
+<?php
+$path_module_protobuf = drupal_get_path('module', 'mica_client_study');
+include_once($path_module_protobuf . '/mica_client_study-page-list.inc');
+
+include_once('includes/mica_client_facet_search_resource.inc');
+include_once('includes/mica_client_facet_search_resource_facet_conf.inc');
+
+
+function mica_client_facet_search_menu() {
+  $items = array();
+
+  $items['mica/variables_search/%'] = array(
+    'title' => 'Variables Search',
+    'description' => t('Search published variables'),
+    'page callback' => 'mica_client_facet_search_variable_page_search',
+    //  'file' => 'mica_client_dataset-variable-page-search.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2)
+  );
+
+  $items['mica/studies_search/%'] = array(
+    'title' => t('Studies Search'),
+    'description' => t('Search published studies'),
+    'page callback' => 'mica_client_facet_search_study_page_search',
+    //  'file' => 'mica_client_study-page-search.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2)
+  );
+
+  return $items;
+}
+
+function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $root_path) {
+  $links = array();
+  switch ($root_path) {
+    case 'mica/studies':
+      $links['mica/studies_search'] = array(
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Studies Search'),
+          'href' => 'mica/studies_search/_all',
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+    case 'mica/dataset/%/%':
+      if ($router_item['page_arguments'][0] == 'study') {
+        $title = t('Studies variables Search');
+      }
+      else {
+        $title = t('Datasets variables Search');
+      }
+      $links['mica/variables'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => $title,
+          'href' => 'mica/variables_search/' . $router_item['page_arguments'][0],
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+    case 'mica/datasets/harmonization-datasets':
+      $links['mica/variables'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Datasets variables Search'),
+          'href' => 'mica/variables_search/dataset',
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+    case 'mica/datasets/study-datasets':
+      $links['mica/variables'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Studies variables Search'),
+          'href' => 'mica/variables_search/study',
+          'localized_options' => array(
+//                  'query' => array(
+//                    'f[0]' => 'search_api_combined_1:' . $node->nid
+//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+  }
+
+  $data['actions']['output'] = array_merge($data['actions']['output'], $links);
+}
+
+
+/**
+ * Implements hook_theme().
+ *
+ * copy '<modules>/mica_client_dataset/templates/'   files in  your customized theme  '<YOUR_THEME>/templates/' path
+ * you can modify default display of listed page templates by rearrange block field for example
+ * don't forget to clear the theme registry.
+ *
+ */
+
+function mica_client_facet_search_theme($existing, $type, $theme, $path) {
+  $path_theme = $path . '/templates';
+  return array(
+    'block__mica_client_facet_search' => array(
+      'variables' => array('block' => array()),
+      'template' => 'block--mica_client_facet_search',
+      'path' => $path_theme
+    ),
+    'mica_client_facet_search_block_search' => array(
+      'template' => 'mica_client_facet_search_block_search',
+      'path' => $path_theme
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function mica_client_facet_search_block_info() {
+  $i = 0 - count(mica_client_facet_search_resource_return_facets('mica_client_dataset'));
+  foreach (mica_client_facet_search_resource_return_facets('mica_client_dataset') as $key_facet => $facet) {
+    $blocks['search-' . $key_facet] = mica_client_facet_search_block_info_construct($facet['title'], $i);
+    --$i;
+  }
+
+  $j = 0 - count(mica_client_facet_search_resource_return_facets('mica_client_study'));
+  foreach (mica_client_facet_search_resource_return_facets('mica_client_study') as $key_facet => $facet) {
+    $blocks['search-' . $key_facet] = mica_client_facet_search_block_info_construct($facet['title'], $j);
+    --$j;
+  }
+
+  $blocks['facet-search-variables'] = array(
+    'info' => t('Facet search variables'),
+    'title' => t('Facet search variables'),
+    'status' => 1,
+    'region' => 'facets',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/variables_search/*',
+    'weight' => --$i,
+    'custom' => 1,
+  );
+
+  $blocks['facet-search-studies'] = array(
+    'info' => t('Facet search studies'),
+    'title' => t('Facet search studies'),
+    'status' => 1,
+    'region' => 'facets',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/variables_search/*, *mica/studies_search/*',
+    'weight' => --$i,
+    'custom' => 1,
+  );
+  $blocks['facet-studies'] = array(
+    'info' => t('Facet search studies'),
+    'title' => t('Facet search studies'),
+    'status' => 1,
+    'region' => 'facets',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies_search/*',
+    'weight' => --$i,
+    'custom' => 1,
+  );
+
+  $blocks['facet-search'] = array(
+    'info' => t('Facet search'),
+    'title' => t('Facet search'),
+    'status' => 1,
+    'region' => 'facets',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/variables_search/*',
+    'weight' => --$i,
+    'custom' => 1,
+  );
+
+
+  return $blocks;
+}
+
+function mica_client_facet_search_block_info_construct($facet_title, $facet_weight) {
+  $facet_title_array = explode('-', $facet_title);
+  return array(
+    'info' => t('Facet search @title', array('@title' => drupal_strtolower(drupal_strtolower($facet_title_array[0] . ' ' . $facet_title_array[1])))),
+    'title' => t('@title', array('@title' => $facet_title_array[1])),
+    'status' => 0,
+//    'region' => 'sidebar_first',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '',
+    'weight' => $facet_weight,
+    'custom' => 1,
+  );
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function mica_client_facet_search_block_view($delta = '') {
+  switch ($delta) {
+    case 'facet-search':
+      if (!empty($_SESSION['variables']['request']) && $_SESSION['variables']['request'] == 'dataset') {
+        $output = _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_dataset', 'variables', 'child');
+      }
+      else {
+        $output = '<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#variable" role="tab" data-toggle="tab">' . t('Variables') . '</a></li>
+  <li><a href="#study" role="tab" data-toggle="tab">' . t('Studies') . '</a></li>
+
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="variable">'
+          . _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_dataset', 'variables', 'child') . '</div>
+  <div class="tab-pane" id="study">' . _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_study', 'studies', 'parent') . '</div>
+
+</div>';
+      }
+      $block['subject'] = t('Facet search variables');
+      $block['content'] = $output;
+      return $block;
+    case 'facet-studies' :
+      $output = _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_study', 'studies', 'parent');
+      $block['subject'] = t('Facet search studies');
+      $block['content'] = $output;
+      return $block;
+    default:
+      foreach (mica_client_facet_search_resource_return_facets() as $key_facet => $facet) {
+        if (user_access('access content') && $delta == 'search-' . $key_facet) { //good idea to check user perms here
+          $facet_title_array = explode('-', $facet['title']);
+          $block['subject'] = $facet_title_array;
+          $block['content'] = $block['content'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggs'], 'studies');
+          return $block;
+        }
+      }
+  }
+}
+
+function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type, $parent_child = NULL) {
+  $blockto_render = array();
+  $facets = mica_client_facet_search_resource_return_facets($dto_type);
+  //dpm(drupal_json_encode($facets));
+  foreach ($facets as $key_facet => $facet) {
+    $blockto_render[$dto_type . '_search-' . $key_facet] =
+      block_load('mica_client_facet_search', 'search-' . $key_facet);
+    $facet_title_array = explode('-', $facet['title']);
+    $blockto_render[$dto_type . '_search-' . $key_facet]->subject = $facet_title_array[1];
+    $blockto_render[$dto_type . '_search-' . $key_facet]->content['#markup'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggs'], $type, $parent_child);
+  }
+
+  $block_output = _block_get_renderable_array($blockto_render);
+  return drupal_render($block_output);
+}
+
+function mica_client_facet_search_variable_page_search($request) {
+
+  drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
+
+  $search_resources = new MicaSearchResource();
+
+  $variables = $search_resources->search_variables($request);
+
+  $studies = $search_resources->search_studies();
+  $output = '<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#variabletab" role="tab" data-toggle="tab">' . t('Variables') . ' (' . $variables['totalHits'] . ')' . '</a></li>
+  <li><a href="#studytab" role="tab" data-toggle="tab">' . t('Studies') . ' (' . $studies['totalHits'] . ')' . '</a></li>
+
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="variabletab">'
+    . mica_client_facet_search_variables_table($variables) . '</div>
+  <div class="tab-pane" id="studytab">' . mica_client_facet_search_studies_table($studies) . '</div>
+
+</div>';
+
+  return $output;
+
+}
+
+function mica_client_facet_search_study_page_search($request) {
+  $output['title'] = t('Study search page');
+  $search_resources = new MicaSearchResource();
+  $studies = $search_resources->search_studies();
+
+  return mica_client_facet_search_studies_table($studies);
+}
+
+
+function mica_client_facet_search_variables_table($variables) {
+  if (!empty($variables['data'])) {
+    foreach ($variables['data'] as $variable) {
+      $name = $variable->name;
+      $rows[] = array(
+        l($name, 'mica/variable/' . $variable->id),
+        !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : '-',
+        !empty($variable->datasetName) ? mica_client_commons_get_localized_field($variable, 'datasetName') : '-',
+      );
+    }
+  }
+//dpm($studies['totalHits']);
+  $headers = array(
+    t('Variable'),
+    t('Label'),
+    t('Dataset')
+  );
+
+  $args = array('quantity' => $variables['totalHits'], 'element' => MicaSearchResource::PAGINATE_variables);
+  pager_default_initialize($variables['totalHits'], MicaSearchResource::SIZE_RESPONSE, MicaSearchResource::PAGINATE_variables);
+
+  return theme(
+    'table',
+    array(
+      'header' => $headers,
+      'rows' => $rows, // empty($chunks) ? array() : $chunks[$current_page],
+      'empty' => t('No data found')
+    )
+  ) . theme('pager', $args);
+}
+
+function mica_client_facet_search_studies_table($studies) {
+  $rows = array();
+  if (!empty($studies['data'])) {
+    foreach ($studies['data'] as $study) {
+      $name = mica_client_commons_get_localized_field($study, 'name');
+      $rows[] = array(
+        mica_client_commons_get_localized_field($study, 'acronym'),
+        l($name, 'mica/study/' . $study->id),
+        implode(', ', t($study->designs)),
+        isset($study->targetNumber->noLimit) ? t('No Limit') :
+          isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,
+        implode($study->countries),
+      );
+    }
+  }
+  $headers = array(
+    t('Short Name'),
+    t('Name'),
+    t('Study Design'),
+    t('Target number of participants'),
+    t('Country of residence'),
+  );
+  $per_page = 20;
+
+//  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variables);
+//  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variables);
+
+  $args = array('quantity' => $studies['totalHits'], 'element' => MicaSearchResource::PAGINATE_studies);
+  $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaSearchResource::PAGINATE_studies);
+  $chunks = array_chunk($rows, $per_page, TRUE);
+  return theme(
+    'table',
+    array(
+      'header' => $headers,
+      'rows' => empty($chunks) ? array() : $chunks[$current_page],
+      'empty' => t('No data found')
+    )
+  ) . theme('pager', $args);
+}

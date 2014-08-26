@@ -45,7 +45,7 @@ function mica_client_dataset_variables_table($variables) {
     foreach ($variables['data'] as $variable) {
       $name = $variable->name;
       $rows[] = array(
-        l($name, 'mica/variable/' . $variable->id  . '/' . mica_client_commons_to_slug($name)),
+        l($name, 'mica/variable/' . $variable->id . '/' . mica_client_commons_to_slug($name)),
         !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : '-',
         !empty($variable->datasetName) ? mica_client_commons_get_localized_field($variable, 'datasetName') : '-',
       );
@@ -58,8 +58,8 @@ function mica_client_dataset_variables_table($variables) {
     t('Dataset')
   );
 
-  $args = array('quantity' => $variables['totalHits'], 'element' => MicaDatasetResource::PAGINATE_variable);
-  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_variable);
+  $args = array('quantity' => $variables['totalHits'], 'element' => MicaDatasetResource::PAGINATE_variables);
+  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_variables);
 
   return theme(
     'table',

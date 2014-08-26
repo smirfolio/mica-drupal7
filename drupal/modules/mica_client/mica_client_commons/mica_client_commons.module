@@ -262,36 +262,3 @@ function mica_client_commons_get_current_theme() {
   }
   return $theme ? $theme : 'micado_bootstrap';
 }
-
-function mica_client_commons_get_dto_facet_aggs($tab_block, $type) {
-  foreach ($_SESSION[$type]['aggregations'] as $key_tab => $facet) {
-    if (is_int($key_tab)) {
-      if ($tab_block == 'search-' . $facet->aggregation) {
-        $facet_build['search-' . $facet->aggregation][$facet->aggregation] = !empty($facet->termsAggregations) ? $facet->termsAggregations : NULL;
-        return $facet_build['search-' . $facet->aggregation];
-      }
-    }
-  }
-}
-
-function mica_client_commons_precess_block_theme($block_delta, $type, $parent_child = NULL) {
-  $items = array();
-  $agregation_facet = NULL;
-  $parent_child_string = !empty($parent_child) ? $parent_child . ':' : NULL;
-  if (!empty($block_delta)) {
-    $agregation_facet = key(mica_client_commons_get_dto_facet_aggs($block_delta, $type));
-    $terms_aggregations = current(mica_client_commons_get_dto_facet_aggs($block_delta, $type));
-    if (!empty($terms_aggregations)) {
-      foreach ($terms_aggregations as $term) {
-        $items[$term->key] = array(
-          '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
-            $parent_child_string . $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
-            $agregation_facet . '-' . $term->key . '" >' .
-            $term->key . '(' . $term->count . ') </div>'
-        );
-      }
-    }
-  }
-  return theme('mica_client_' . $type . '_block_search', array('items' => $items, 'formId' => $agregation_facet));
-}
-

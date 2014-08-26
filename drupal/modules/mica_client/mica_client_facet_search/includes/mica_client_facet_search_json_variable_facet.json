@@ -1,0 +1,62 @@
+{
+  "entityType": {
+    "title": "dataset-ENTITY TYPE",
+    "key": "entityType",
+    "aggs": "entityType"
+  },
+  "period": {
+    "title": "dataset-PERIOD",
+    "key": "period",
+    "aggs": "attributes-maelstrom__period-en"
+  },
+  "status": {
+    "title": "dataset-STATUS",
+    "key": "status",
+    "aggs": "attributes-maelstrom__status-und"
+  },
+  "variableType": {
+    "title": "dataset-VARIABLE TYPE",
+    "key": "variableType",
+    "aggs": "variableType"
+  },
+  "measure": {
+    "title": "dataset-MEASURE",
+    "key": "measure",
+    "aggs": "attributes-maelstrom__measure-en"
+  },
+  "target": {
+    "title": "dataset-TARGET",
+    "key": "target",
+    "aggs": "attributes-maelstrom__target-en"
+  },
+  "essence": {
+    "title": "dataset-ESSENCE",
+    "key": "essence",
+    "aggs": "attributes-maelstrom__essence-en"
+  },
+  "repeatable": {
+    "title": "dataset-REPEATABLE",
+    "key": "repeatable",
+    "aggs": "repeatable"
+  },
+  "valueType": {
+    "title": "dataset-VALUE TYPE",
+    "key": "valueType",
+    "aggs": "valueType"
+  },
+  "socio_demo_char": {
+    "title": "dataset-SOCIODEMOGRAPHIC CHARACTERISTICS",
+    "key": "socio_demo_char",
+    "aggs": "attributes-maelstrom__sociodemographic_characteristics-en"
+  },
+  "occurrenceGroup": {
+    "title": "dataset-OCCURRENCE GROUP",
+    "key": "occurrenceGroup",
+    "aggs": "occurrenceGroup"
+  },
+  "datasetId": {
+    "title": "dataset-DATASETS",
+    "key": "datasetId",
+    "aggs": "datasetId"
+  }
+}

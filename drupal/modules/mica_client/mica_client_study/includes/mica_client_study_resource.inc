@@ -85,15 +85,15 @@ class MicaStudyResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dto_data_response = json_decode($data);
-      $this->session_facets_builder($dto_data_response, 'study');
+      $this->session_facets_builder($dto_data_response, 'studies');
 
       // dpm($dto_data_response);
       $summaries_studies = !empty($dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries) ?
         $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
       $dtoObj = '\obiba\mica\StudySummaryDto';
       $dtos = array();
-      $summarier_data = !empty($summaries_studies) ? $summaries_studies : NULL;
-      if ($summarier_data) {
+      $summaries_data = !empty($summaries_studies) ? $summaries_studies : NULL;
+      if ($summaries_data) {
         foreach ($summaries_studies as $study) {
           $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($study));
         }

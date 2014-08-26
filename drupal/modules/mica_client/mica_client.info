@@ -11,4 +11,5 @@ dependencies[] = variable
 dependencies[] = i18n
 dependencies[] = collapsiblock
 dependencies[] = mica_client_study
+dependencies[] = mica_client_facet_search
 dependencies[] = mica_client_dataset

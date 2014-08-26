@@ -47,8 +47,7 @@
   }
 
   /* regular facets */
-  .block-mica-client-dataset,
-  .block-mica-client-study {
+  .block-mica-client-facet-search {
     .selected_item {
       color: gray;
       text-decoration: line-through;
@@ -95,17 +94,8 @@
   }
 
   /* range facets */
-  .search-api-ranges-widget {
-
-    form {
-      margin-bottom: 5px;
-    }
-
-    p.text-range,
-    .range-slider-box {
-      display: none;
-    }
-
+  .facet_terms_range {
+    margin-left: -10px;
     input.form-submit,
     .yui3-g,
     .range-box {
@@ -123,12 +113,13 @@
     }
 
     input[type="text"] {
-      width: 80px;
+      width: 60px;
       padding: 2px 3px;
       font-size: @facet_font_size;
     }
 
     label {
+      margin-left: -10px;
       margin-bottom: 0;
       font-size: @facet_font_size;
     }
@@ -138,7 +129,6 @@
       .btn-primary;
       padding: 2px 6px;
       font-size: @facet_font_size;
-      margin-top: -12px;
     }
 
   }

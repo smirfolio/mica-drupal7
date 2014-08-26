@@ -96,11 +96,11 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/block--mica_client_study.tpl.php');
+  $destination_path = file_exists($path . '/templates/block--mica_client_facet_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['block__mica_client_study'] = array(
+    $theme_array['block__mica_client_facet_search.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'block--mica_client_study',
+      'template' => 'block--mica_client_facet_search',
       'path' => $path . '/templates'
     );
   }
