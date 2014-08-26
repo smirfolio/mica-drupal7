@@ -116,6 +116,12 @@ function micado_bootstrap_bootstrap_based_theme() {
   return array('micado_bootstrap' => TRUE);
 }
 
+/**
+ * Implements hook_preprocess_html().
+ */
+function micado_bootstrap_preprocess_html(&$variables) {
+  drupal_add_css('https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700,700italic', array('type' => 'external'));
+}
 
 /**
  * Implements hook_preprocess_page().

@@ -115,7 +115,7 @@ function mica_client_variable_get_categories($categories = NULL) {
       $rows[] = array(
         $category->name,
         _mica_client_variable_attributes_detail($category, 'label'),
-        $category->missing
+        $category->missing ? '<span class="glyphicon glyphicon-ok"></span>' : NULL
       );
     }
     return theme(
