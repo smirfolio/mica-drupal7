@@ -2,7 +2,7 @@ mica_version=1.0-dev
 mica_branch=7.x-1.x
 drupal_org_mica=git.drupal.org:project/obiba_mica.git
 
-drupal_version = 7.27
+drupal_version = 7.31
 
 #
 # Mysql db access
