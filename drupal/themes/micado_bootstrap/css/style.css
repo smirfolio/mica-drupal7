@@ -6927,13 +6927,13 @@ body.admin-menu .navbar-fixed-top {
   width: 24%;
 }
 .block-content article section .col-xs-6 {
-  width: 49%;
+  width: 48%;
 }
 .block-content article section .col-xs-9 {
   width: 74%;
 }
 .block-content article section .right-indent {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 .block-content .table {
   border: 1px solid #dddddd;
