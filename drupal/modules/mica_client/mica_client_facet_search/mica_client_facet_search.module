@@ -329,10 +329,15 @@ function mica_client_facet_search_variables_table($variables) {
   if (!empty($variables['data'])) {
     foreach ($variables['data'] as $variable) {
       $name = $variable->name;
+      $dataset_name = !empty($variable->datasetName) ? mica_client_commons_get_localized_field($variable, 'datasetName') : $variable->datasetId;
+      $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
+      $study_name = !empty($variable->studyAcronym) ? mica_client_commons_get_localized_field($variable, 'studyAcronym') : NULL;
+      //dpm($variable);
       $rows[] = array(
         l($name, 'mica/variable/' . $variable->id),
         !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : '-',
-        !empty($variable->datasetName) ? mica_client_commons_get_localized_field($variable, 'datasetName') : '-',
+        l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId),
+        empty($variable->studyId) ? '-' : l($study_name, 'mica/study/' . $variable->studyId),
       );
     }
   }
@@ -340,7 +345,8 @@ function mica_client_facet_search_variables_table($variables) {
   $headers = array(
     t('Variable'),
     t('Label'),
-    t('Dataset')
+    t('Dataset'),
+    t('Study')
   );
 
   $args = array('quantity' => $variables['totalHits'], 'element' => MicaSearchResource::PAGINATE_variables);
