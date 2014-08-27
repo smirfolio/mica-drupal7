@@ -242,9 +242,9 @@ class MicaClient {
       if (!empty($term[1])) {
 
         if (strstr($term[0], '-range')) {
-          $decoded_term = str_replace('-range', '', $term[0]);
+          $decoded_term = str_replace('-range[]', '', $term[0]);
           $vals = explode('to', $term[1]);
-          $termval['min'] = str_replace('[', '', trim($vals[0]));
+          $termval['min'] = preg_replace('/^[^\[]*\[\s*/', '', trim($vals[0]));
           $termval['max'] = str_replace(']', '', trim($vals[1]));
           $formated_term[preg_replace('/\[[^\]]*\]/', '', $decoded_term)] = $termval;
         }
@@ -331,8 +331,9 @@ class MicaClient {
 
     $query_dto->setSize(is_null($size) ? $this::SIZE_RESPONSE : $size);
     $query_dto->detailed = FALSE;
-
+    Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
     $json_query_encoded = Protobuf::encode($query_dto);
+    dpm($query_dto);
     dpm($json_query_encoded);
     return $json_query_encoded;
 
@@ -340,38 +341,39 @@ class MicaClient {
 
 
   protected function _construct_filtered_query_dto($parent_child_field, $term_association) {
-    if (is_numeric(key($term_association))) {
+
+    if (!is_numeric(key($term_association))) {
+      $filter_query_dto_relational_range = new \obiba\mica\FilterQueryDto;
+      $filter_query_dto_relational_range->setField(str_replace('-', '.', $parent_child_field[1]));
+      $range_filter_dto = new \obiba\mica\RangeFilterQueryDto;
+
+      if (!empty($term_association['min'])) {
+        $conditionmin = new \obiba\mica\RangeConditionDto;
+
+        $conditionmin->setOp(\obiba\mica\RangeConditionDto\Operator::GTE);
+        $conditionmin->setValue(trim($term_association['min']));
+        $range_filter_dto->setFrom($conditionmin);
+      }
+      if (!empty($term_association['max'])) {
+        $conditionmax = new \obiba\mica\RangeConditionDto;
+        $conditionmax->setOp(\obiba\mica\RangeConditionDto\Operator::LTE);
+        $conditionmax->setValue(trim($term_association['max']));
+        $range_filter_dto->setTo($conditionmax);
+      }
+
+      $filter_query_dto_relational_range->setExtension("obiba.mica.RangeFilterQueryDto.range", $range_filter_dto);
+      return $filter_query_dto_relational_range;
+    }
+
+    else {
       $filter_query_dto_relational = new \obiba\mica\FilterQueryDto;
       $filter_query_dto_relational->setField(str_replace('-', '.', $parent_child_field[1]));
       $terms_filter_dto = new \obiba\mica\TermsFilterQueryDto;
       foreach ($term_association as $term) {
         $terms_filter_dto->addValues(str_replace($parent_child_field[1] . '.', '', $term));
       }
-      return $filter_query_dto_relational->setExtension("obiba.mica.TermsFilterQueryDto.terms", $terms_filter_dto);
-    }
-
-    else {
-
-      $filter_query_dto_relational_range = new \obiba\mica\FilterQueryDto;
-      $filter_query_dto_relational_range->setField(str_replace('-', '.', $parent_child_field[1]));
-      $range_filter_dto = new \obiba\mica\RangeFilterQueryDto;
-
-      if (!empty($term_association['min'])) {
-        $conditionmin = new \obiba\mica\RangeFilterQueryDto\Condition;
-        $conditionmin->setOp('RangeFilterQueryDto.Operator.GTE');
-        $conditionmin->setValue(intval(trim($term_association['min'])));
-        $range_filter_dto->setFrom($conditionmin);
-      }
-      if (!empty($term_association['max'])) {
-        $conditionmax = new \obiba\mica\RangeFilterQueryDto\Condition;
-        $conditionmax->setOp('RangeFilterQueryDto.Operator.LTE');
-        $conditionmax->setValue(intval(trim($term_association['max'])));
-        $range_filter_dto->setTo($conditionmax);
-      }
-
-      //dpm($filter_query_dto_relational_range);
-      //dpm($filter_query_dto_relational_range->setExtension("obiba.mica.RangeFilterQueryDto.range", $range_filter_dto));
-      return $filter_query_dto_relational_range->setExtension("obiba.mica.RangeFilterQueryDto.range", $range_filter_dto);
+      $filter_terms = $filter_query_dto_relational->setExtension("obiba.mica.TermsFilterQueryDto.terms", $terms_filter_dto);
+      return $filter_terms;
 
     }
 

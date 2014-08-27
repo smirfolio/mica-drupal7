@@ -23,7 +23,7 @@ class MicaStudyResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
+    Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
   }
 
   public function studies_search($spec_dto_params = NULL) {
@@ -112,7 +112,7 @@ class MicaStudyResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
+            'Accept' => array(parent::HEADER_BINARY),
           )
         ),
     ));
@@ -122,6 +122,7 @@ class MicaStudyResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dtoObj = '\obiba\mica\StudyDto';
+      Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
       return $data ? Protobuf::decode($dtoObj, $data) : NULL;
     } catch (HttpClientException $e) {
       return array();
