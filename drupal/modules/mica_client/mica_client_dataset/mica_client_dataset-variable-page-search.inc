@@ -8,7 +8,6 @@ function mica_client_dataset_variable_page_search($request) {
 
   drupal_set_title(t('Variables @request search', array('@request' => $request)));
 
-  //drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/mica_studies.css', 'file');
   drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/mica-client-study-search.js', 'file');
   drupal_add_js(array('mica_client_study' => array('queries' => '')), 'setting');
 

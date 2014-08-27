@@ -4,19 +4,17 @@
 //dpm($dataset_variables_aggs);
 ?>
 
-<article>
+<?php if (!empty($dataset_dto->description)): ?>
+  <p><?php print mica_client_commons_get_localized_field($dataset_dto, 'description'); ?></p>
+<?php endif; ?>
 
+<article>
   <section>
     <h3><?php print t('General Information') ?></h3>
 
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-6 right-indent">
-          <?php if (!empty($dataset_dto->description)): ?>
-            <h5><?php print t('Description'); ?></h5>
-            <p><?php print mica_client_commons_get_localized_field($dataset_dto, 'description'); ?></p>
-          <?php endif; ?>
-
           <h5><?php print t('Entity Type'); ?></h5>
 
           <p><?php print t($dataset_dto->entityType); ?></p>
