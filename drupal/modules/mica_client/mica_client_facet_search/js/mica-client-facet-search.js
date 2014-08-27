@@ -41,7 +41,7 @@
         var currInputValue = $(this).attr('value');
         if ($.inArray(currInputValue, allVars) !== -1) {
           $(this).attr('checked', true);
-          $(this).parent().addClass("selected_item");
+          $(this).parent().parent().addClass("selected_item");
         }
       });
 
