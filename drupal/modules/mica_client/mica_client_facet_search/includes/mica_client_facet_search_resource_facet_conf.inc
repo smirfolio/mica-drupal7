@@ -63,14 +63,26 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type, $rela
 }
 
 function mica_client_facet_search_get_checkbox_term_field($fields_terms, $relationship_string, $agregation_facet) {
+  $color = 1;
   foreach ($fields_terms as $term) {
     //  dpm($fields_terms);
     $items[$term->key] = array(
-      '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
+      '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '">
+
+      <input class ="color_checkbox_' . $color . ' regular-checkbox" type="checkbox" name="' .
         $relationship_string . $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
-        $agregation_facet . '-' . $term->key . '" >' .
-        $term->key . '(' . $term->count . ') </div>'
+        $agregation_facet . '-' . $term->key . '" >
+        <label  class="terms_checkbox" for="' . $agregation_facet . '-' . $term->key . '">
+        </label><span class="terms_stat"></span> <span class"terms_field">' .
+        $term->key . '</span>
+        <span class="terms_count">' . $term->count . '</span>
+         </div>'
     );
+
+    $color++;
+    if ($color == 6) {
+      $color = 0;
+    }
   }
   return $items;
 }
