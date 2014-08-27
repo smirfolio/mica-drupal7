@@ -2,25 +2,21 @@
 //dpm($variable_dto);
 //dpm($variable_harmonization);
 ?>
-<article>
 
+<?php if (!empty($variable_dto->description)): ?>
+  <p><?php print $variable_dto->description; ?></p>
+<?php endif; ?>
+
+<article>
   <section>
     <h3><?php print t('General Information') ?></h3>
 
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-6 right-indent">
-
-
-          <div>
             <?php if (!empty($variable_dto->label)): ?>
               <h5><?php print t('Label') ?></h5>
               <p><?php print $variable_dto->label; ?></p>
-            <?php endif; ?>
-
-            <?php if (!empty($variable_dto->description)): ?>
-              <h5><?php print t('Description'); ?></h5>
-              <p><?php print $variable_dto->description; ?></p>
             <?php endif; ?>
 
             <?php if (!empty($variable_dto->studySummaries)): ?>
@@ -76,7 +72,6 @@
               <h5><?php print t('Comment'); ?></h5>
               <p><?php print($variable_dto->comment); ?></p>
             <?php endif; ?>
-          </div>
         </div>
         <div class="col-xs-6">
           <?php if (!empty($variable_dto->categories)): ?>
