@@ -45,24 +45,39 @@
         }
       });
 
+      $('input[type="hidden"]').each(function () {
+        var currInputid = $(this).attr('id');
+        if (allVars.toString().search(currInputid) != -1) {
+          $.grep(allVars, function (element, i) {
+            if (!element.indexOf(currInputid)) {
+              console.log(element);
+              $('#' + currInputid).val(element.replace(/\+/g, ' '));
+            }
+          });
+        }
+      });
 
-      $("input[type='checkbox']").on("click", function () {
+      $("input[type='checkbox'], div#checkthebox").on("click", function () {
         //  $.sendCheckboxCheckedValues();
         window.location = '?' + $.sendCheckboxCheckedValues();
       });
 
       $("input[id='range-auto-fill']").on("blur", function () {
 
+        var term = $(this).attr('termselect');
+        var minid = term + '-min';
+        var maxid = term + '-max';
 
-        var minid = $(this).attr('termselect') + '-min';
-        var maxid = $(this).attr('termselect') + '-max';
-        console.log(maxid);
-        console.log(minid);
         var minvalue = $("input[term='" + minid + "']").val();
         var maxvalue = $("input[term='" + maxid + "']").val();
 
 
-        $('#' + $(this).attr('termselect')).val('[ ' + minvalue + ' to ' + maxvalue + ' ]');
+        if (minvalue || maxvalue) {
+          $('#' + $(this).attr('termselect')).val(term + '.[ ' + minvalue + ' to ' + maxvalue + ' ]');
+        }
+        if (!maxvalue && !minvalue) {
+          $('#' + $(this).attr('termselect')).val('');
+        }
 
       });
 

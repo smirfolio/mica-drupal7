@@ -88,13 +88,12 @@ maxlength="75" class="form-control form-item-range-from">
 <input type="text" id="range-auto-fill"  termselect ="' . $agregation_facet . '" term="' . $agregation_facet . '-max" value="' . $fields_terms['max'] . '"
 maxlength="75" class="form-control form-item-range-from">
 
-
 <input type="hidden" id="' .
       $agregation_facet . '" name="' .
-      $relationship_string . $agregation_facet . '-range" value="" maxlength="75" class="form-control form-item-range-from">
+      $relationship_string . $agregation_facet . '-range[]" value="" maxlength="75" class="form-control form-item-range-from">
 
-
-<button class="btn btn-primary btn-xs" id="edit-submit--2" name="op" value="Go" type="submit">Go</button>
+<div class="btn btn-primary btn-xs" id="checkthebox">Go</div>
+</div>
 '
   );
   // return $items;
