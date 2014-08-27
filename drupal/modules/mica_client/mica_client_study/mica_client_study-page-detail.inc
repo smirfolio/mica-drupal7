@@ -12,26 +12,25 @@ if (module_exists('mica_client_dataset')) {
 function mica_client_study_page_detail($study_id) {
   $page_render_study = NULL;
   $study_resource = new MicaStudyResource();
-  $StudyDto = $study_resource->study($study_id);
-  $output = $StudyDto;
-  drupal_set_title(mica_client_commons_get_localized_field($StudyDto, 'name'));
+  $study_dto = $study_resource->study($study_id);
+  drupal_set_title(mica_client_commons_get_localized_field($study_dto, 'name'));
   //dpm($StudyDto);
 
   $dataset_output = (module_exists('mica_client_dataset')) ?
     mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
 
-  $opal_dataset = !empty($StudyDto->opal) ? mica_client_study_get_opal_url($StudyDto->opal) : NULL;
+  $opal_output = !empty($study_dto->opal) ? mica_client_study_get_opal_url($study_dto->opal) : NULL;
 
-  return mica_client_study_get_study_detail($output) .
-  mica_client_study_get_timeline_detail($output) .
-  mica_client_study_get_populations_detail($output) .
-  $opal_dataset .
-  $dataset_output;
+  return theme('mica_client_study_detail',
+    array(
+      'study_dto' => $study_dto,
+      'timeline' => mica_client_study_get_timeline_detail($study_dto),
+      'populations' => mica_client_study_get_populations_detail($study_dto),
+      'datasets' => $dataset_output,
+      'opal' => $opal_output,
+    ));
 }
 
-/*
- *
- * */
 function mica_client_study_get_opal_url($opal_url) {
   return theme('mica_client_study_opal', array('opal_url' => $opal_url));
 }
@@ -46,14 +45,6 @@ function mica_client_study_get_study_attachement($StudyDto_id, $StudyDto_attachm
     'documents' => $StudyDto_attachments
   ));
 }
-
-/*
- * Format Study detail
- * */
-function mica_client_study_get_study_detail($study_detail) {
-  return theme('mica_client_study_detail', array("context_detail" => $study_detail));
-}
-
 
 /**
  * Implements hook_library().
@@ -85,24 +76,14 @@ function mica_client_study_library() {
  * */
 function mica_client_study_get_timeline_detail($study_detail) {
   $study_json = json_encode($study_detail);
-  $page_render_timeline = NULL;
-  $page_render_timeline .= '
-<section> <h3>' . t("Study Timeline") . '</h3><div>
-        ';
-  $page_render_timeline .= '<p class="timeline-help"> ' . t('
-    Each colour in the timeline graph below represents a separate Study Population, while each segment in the graph
-    represents a separate Data Collection Event. Clicking on a segment gives more detailed
-     information on a Data Collection Event.') . ' </p>';
 
   drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/mica_studies.css', 'file');
   drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/timeline.css', 'file');
   drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/d3.min.js', 'file');
   drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/mica-study-timeline.js', 'file');
-  $page_render_timeline .= '<div id="vis" style="width=100%"></div>';
+  $page_render_timeline = '<div id="vis" style="width=100%"></div>';
   drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/example.js', 'file');
   drupal_add_js(array('mica_client_study' => array('study_json' => $study_json)), 'setting');
-
-  $page_render_timeline .= '</div></section>';
 
   return $page_render_timeline;
 }
@@ -112,10 +93,8 @@ function mica_client_study_get_timeline_detail($study_detail) {
  * */
 
 function mica_client_study_get_populations_detail($study_detail) {
-  $page_render_populations = NULL;
-  $page_render_populations .= '
-<section> <h3>' . t("Populations") . '</h3><div>
-        ';
+  $page_render_populations = '';
+
   foreach ($study_detail->populations as $population) {
     $page_render_populations .= '
             <h4>
@@ -143,7 +122,7 @@ function mica_client_study_get_populations_detail($study_detail) {
     }
     $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
   }
-  $page_render_populations .= '</div></section>';
+
   return $page_render_populations;
 }
 

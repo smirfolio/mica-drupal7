@@ -202,22 +202,15 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
 }
 
 function mica_client_dataset_get_all_datasets_studies($study_id) {
-
   $output = NULL;
   $dataset_resource = new MicaDatasetResource();
-  $datasets = array();
 
   $datasets = array_merge($dataset_resource->get_datasetes('study-datasets', $study_id), $dataset_resource->get_datasetes('harmonization-datasets', $study_id));
 
   if (!empty($datasets)) {
-    $datasets_tab = mica_client_dataset_get_datasets_list($datasets);
-    $output .= '<section> <h3>' . t('Datasets') . '</h3><div>';
-    $output .= mica_client_dataset_get_datasets_tables($datasets_tab);
-    $output .= '</div></section>';
+    $output = mica_client_dataset_get_datasets_tables(mica_client_dataset_get_datasets_list($datasets));
   }
 
-  //dpm($harmonization_datasets_dto);
-  // dpm($study_datasets_dto);
   return $output;
 }
 
@@ -259,3 +252,36 @@ function mica_client_dataset_get_datasets_list($datasets) {
   return $dataset;
 }
 
+/**
+ * @param null $attributes
+ * @param null $namespace
+ * @param array $excluded_names
+ * @return bool|string
+ */
+function mica_client_dataset_attributes_tab($attributes = NULL, $namespace = NULL, $excluded_names = array()) {
+  $rows = array();
+  if (!empty($attributes)) {
+    foreach ($attributes as $attribute) {
+      if (empty($namespace) || !empty($attribute->namespace) && $namespace == $attribute->namespace) {
+        if (empty($excluded_names) || !in_array($attribute->name, $excluded_names)) {
+          $rows[] = array(
+            t($attribute->name),
+            mica_client_commons_get_localized_field($attribute, 'values'),
+          );
+        }
+      }
+    }
+    return theme(
+      'table',
+      array(
+        'header' => array(t('Name'), t('Value')),
+        'rows' => $rows,
+        'empty' => t('No attribute found'),
+        'sticky' => FALSE,
+        'attributes' => array('id' => 'variable_attributes')
+      )
+    );
+  }
+
+  return FALSE;
+}

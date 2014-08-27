@@ -138,6 +138,7 @@ body {
 // Page header.
 .page-header {
   margin-top: 0;
+  border: none;
 }
 
 // Blocks
@@ -149,38 +150,52 @@ body {
 
 // Sections
 .block-content {
-  section {
-    //background-color: #f9f9f9;
-    border: 1px solid #eeeeee;
-    margin: 20px 0 20px 0;
-    .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
-      background-color: #fff;
-    }
-    h3 {
-      background-color: #e3e4e4;
-      padding: 5px 10px 5px 10px;
-      margin-top: 0;
-    }
-    h5 {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    h5 + p {
-      margin-left: 20px;
+  article {
+    border-top: 1px solid #cccccc;
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+
+    section {
+      //background-color: #f9f9f9;
+      border-bottom: 1px solid #cccccc;
+      margin: 0;
+      padding: 0 20px 20px 20px;
+      .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+        background-color: #fff;
+      }
+      h5 {
+        margin-bottom: 5px;
+      }
+      h5 + p {
+        margin-left: 20px;
+      }
+      .col-xs-3 {
+        width: 24%;
+      }
+      .col-xs-6 {
+        width: 49%;
+      }
+      .col-xs-9 {
+        width: 74%;
+      }
+      .right-indent {
+        margin-right: 20px;
+      }
     }
   }
-  section > div {
-    padding: 0 10px 10px 10px;
+  .table {
+    border: 1px solid #dddddd;
+  }
+  .modal-body {
+    section {
+      background-color: #ffffff;
+      margin: 0;
+      border: none;
+    }
   }
 }
 
-.modal-body {
-  section {
-    background-color: #ffffff;
-    margin: 0;
-    border: none;
-  }
-}
+
 
 // Search form.
 form#search-block-form {
