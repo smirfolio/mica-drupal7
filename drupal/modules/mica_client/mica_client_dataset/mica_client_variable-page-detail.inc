@@ -8,7 +8,19 @@ function mica_client_variable_page_detail($variable_id) {
   $variable->label = _mica_client_variable_attributes_detail($variable, 'label');
   $variable->description = _mica_client_variable_attributes_detail($variable, 'description');
   $variable->comment = _mica_client_variable_attributes_detail($variable, 'comment');
+
   drupal_set_title($variable->name);
+
+  $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
+
+  drupal_set_breadcrumb(array(
+    l('Home', '<front>'),
+    l(t('Datasets'), 'mica/datasets'),
+    l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
+    l(mica_client_commons_get_localized_field($variable, 'datasetName'), 'mica/' . mica_client_variable_dataset_type($variable)
+      . '/' . $variable->datasetId)
+  ));
+
   return theme('mica_client_variable-detail', array(
     'variable_dto' => $variable,
     'variable_harmonization' => mica_client_variable_get_harmonization($variable),
@@ -280,7 +292,8 @@ function mica_client_variable_table_stat_facet($variable, $variable_stat) {
     foreach ($stats as $study_id => $stat) {
       $headers[] = l(_mica_client_variable_acronym_study($variable, $study_id), 'mica/study/' . $study_id);
     }
-  } else {
+  }
+  else {
     array_push($headers, t('Frequency'));
   }
   $rows = array();

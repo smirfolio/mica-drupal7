@@ -13,8 +13,13 @@ function mica_client_study_page_detail($study_id) {
   $page_render_study = NULL;
   $study_resource = new MicaStudyResource();
   $study_dto = $study_resource->study($study_id);
+
   drupal_set_title(mica_client_commons_get_localized_field($study_dto, 'name'));
-  //dpm($StudyDto);
+
+  drupal_set_breadcrumb(array(
+    l('Home', '<front>'),
+    l(t('Studies'), 'mica/studies'),
+  ));
 
   $dataset_output = (module_exists('mica_client_dataset')) ?
     mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
