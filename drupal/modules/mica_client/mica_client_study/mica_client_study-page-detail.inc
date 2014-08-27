@@ -68,7 +68,6 @@ function mica_client_study_library() {
         $lib_path . '/js/mica-study-timeline.js' => array()
       ),
       'css' => array(
-        $lib_path . '/css/mica_studies.css' => array(),
         $lib_path . '/css/timeline.css' => array(),
       )
     );

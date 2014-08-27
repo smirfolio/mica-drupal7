@@ -3,7 +3,6 @@
 function mica_client_study_page_list() {
   $output['title'] = t('Study Catalogue');
   $output['data'] = mica_client_study_studies_table(mica_client_study_get_studies());
-  drupal_add_css(drupal_get_path('module', 'mica_client_study') . '/css/mica_studies.css', 'file');
   return theme('mica_client_study_list', array("context_detail" => $output));
 }
 
