@@ -6,6 +6,7 @@
           href="<?php print mica_client_study_get_attachment_url($study_id, $document) ?>"
           type="<?php print $document->type; ?>; length=<?php print $document->size; ?>"
           title="<?php print $document->fileName; ?>">
+          <span class="glyphicon glyphicon-download"></span>
           <?php print $document->fileName; ?></a>
 
       </li>
