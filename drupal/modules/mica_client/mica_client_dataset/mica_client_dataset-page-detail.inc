@@ -1,6 +1,5 @@
 <?php
 include_once('includes/mica_client_dataset_resource.inc');
-include_once('mica_client_dataset-variable-page-search.inc');
 
 function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
   $dataset_resource = new MicaDatasetResource();

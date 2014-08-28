@@ -48,9 +48,11 @@
 
   /* regular facets */
   .block-mica-client-facet-search {
+
     .selected_item {
+
       color: gray;
-      text-decoration: line-through;
+
     }
 
     h2 {
@@ -91,6 +93,110 @@
         }
       }
     }
+    /************checkbox******/
+
+    label.terms_checkbox {
+      display: inline;
+      margin-bottom: -3px;
+      margin-right: 5px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .regular-checkbox {
+      display: none;
+    }
+
+    .color_checkbox_1 + label.terms_checkbox {
+      border: 2px solid #2a85a0;
+    }
+    .color_checkbox_1:checked + label.terms_checkbox {
+      border: 2px solid #20E4E4;
+    }
+
+    .color_checkbox_2 + label.terms_checkbox {
+      border: 2px solid #942a25;
+    }
+    .color_checkbox_2:checked + label.terms_checkbox {
+      border: 2px solid #e45822;
+    }
+    .color_checkbox_3 + label.terms_checkbox {
+      border: 2px solid #ffc40d;
+    }
+    .color_checkbox_3:checked + label.terms_checkbox {
+      border: 2px solid #e4dd95;
+    }
+    .color_checkbox_4 + label.terms_checkbox {
+      border: 2px solid #004000;
+    }
+    .color_checkbox_4:checked + label.terms_checkbox {
+      border: 2px solid #008000;
+    }
+
+    .color_checkbox_5 + label.terms_checkbox {
+      border: 2px solid #550000;
+    }
+    .color_checkbox_5:checked + label.terms_checkbox {
+      border: 2px solid #ad6704;
+    }
+    .color_checkbox_6 + label.terms_checkbox {
+      border: 2px solid #ce7656;
+    }
+    .color_checkbox_6:checked + label.terms_checkbox {
+      border: 2px solid #ce8483;
+    }
+
+    .regular-checkbox + label.terms_checkbox {
+
+      background-color: #fafafa;
+
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+      padding: 6px;
+      border-radius: 3px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .regular-checkbox + label.terms_checkbox:active, .regular-checkbox:checked + label.terms_checkbox:active {
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .regular-checkbox:checked + label.terms_checkbox {
+      background-color: #e9ecee;
+
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+      color: #99a1a7;
+    }
+
+    .regular-checkbox:checked + label.terms_checkbox:after {
+      content: '\2714';
+      font-size: 14px;
+      position: absolute;
+      top: -3px;
+      left: 0px;
+      color: #99a1a7;
+    }
+
+    //    span.terms_count{
+    //      display: inline;
+    //      float: right;
+    //      padding-right: 10px;
+    //    }
+    //
+    //    span.terms_field{
+    //      float: left;
+    //    }
+    //
+    //
+    //
+    //    span.terms_stat{
+    //      transition: width 1s;
+    //      position: absolute;
+    //      background-color: #245269;
+    //      height: 25px;
+    //      width: 100px;
+    //    }
+
   }
 
   /* range facets */

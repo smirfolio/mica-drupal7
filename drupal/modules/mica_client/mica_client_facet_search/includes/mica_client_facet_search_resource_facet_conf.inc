@@ -63,39 +63,30 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type, $rela
 }
 
 function mica_client_facet_search_get_checkbox_term_field($fields_terms, $relationship_string, $agregation_facet) {
+  $color = 1;
   foreach ($fields_terms as $term) {
     //  dpm($fields_terms);
-    $items[$term->key] = array(
-      '#markup' => '<div id="checkthebox" class="terms_checkbox" term="' . $agregation_facet . '-' . $term->key . '"><input type="checkbox" name="' .
-        $relationship_string . $agregation_facet . '[]" value="' . $agregation_facet . '.' . $term->key . '" id="' .
-        $agregation_facet . '-' . $term->key . '" >' .
-        $term->key . '(' . $term->count . ') </div>'
-    );
+    $items[$term->key]['#markup'] = theme('mica_client_facet_search_checkbox_term', array(
+      'agregation_facet' => $agregation_facet,
+      'relationship_string' => $relationship_string,
+      'term' => $term,
+      'color' => $color
+    ));
+
+    $color++;
+    if ($color == 6) {
+      $color = 0;
+    }
   }
   return $items;
 }
 
 function mica_client_facet_search_get_range_field($fields_terms, $relationship_string, $agregation_facet) {
-  $items['range'] = array(
-    '#markup' => '  <div  id="range" class="facet_terms_range form-inline"  term="' . $agregation_facet . '-range">
-      ranges from ' . $fields_terms['min'] . ' to ' . $fields_terms['max'] . '
-<br />
-  <label for="edit-range-from" >From </label>
-<input type="text" id="range-auto-fill"  termselect ="' . $agregation_facet . '"  term="' . $agregation_facet . '-min" value="' . $fields_terms['min'] . '"
-maxlength="75" class="form-control form-item-range-from">
-
-  <label for="edit-range-to" class="control-label">To </label>
-<input type="text" id="range-auto-fill"  termselect ="' . $agregation_facet . '" term="' . $agregation_facet . '-max" value="' . $fields_terms['max'] . '"
-maxlength="75" class="form-control form-item-range-from">
-
-<input type="hidden" id="' .
-      $agregation_facet . '" name="' .
-      $relationship_string . $agregation_facet . '-range[]" value="" maxlength="75" class="form-control form-item-range-from">
-
-<div class="btn btn-primary btn-xs" id="checkthebox">Go</div>
-</div>
-'
-  );
+  $items['range']['#markup'] = theme('mica_client_facet_search_input_text_range', array(
+    'agregation_facet' => $agregation_facet,
+    'fields_terms' => $fields_terms,
+    'relationship_string' => $relationship_string
+  ));
   // return $items;
   return $items;
 }
