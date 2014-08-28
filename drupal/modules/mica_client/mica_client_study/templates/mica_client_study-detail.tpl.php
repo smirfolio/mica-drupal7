@@ -1,4 +1,7 @@
-<?php //dpm($study_dto);?>
+<?php
+//dpm($study_dto);
+//dpm($study_variables_aggs);
+?>
 
 <?php if (!empty($study_dto->logo)): ?>
   <img typeof="foaf:Image"
@@ -22,7 +25,7 @@
           !empty($study_dto->startYear) || !empty($study_dto->endYear) ||
           !empty($study_dto->networks)
         ): ?>
-          <h3><?php print t('General Information') ?></h3>
+          <h3><?php print t('Overview') ?></h3>
 
           <?php if (!empty($study_dto->acronym)): ?>
             <h5><?php print t('Acronym') ?></h5>
@@ -102,7 +105,7 @@
           !empty($study_dto->numberOfParticipants->sample->number) ||
           !empty($study_dto->numberOfParticipants->info)
         ): ?>
-          <h3><?php print t('General Design') ?></h3>
+          <h3><?php print t('Design') ?></h3>
 
           <?php if (!empty($study_dto->methods->designs)): ?>
             <h5><?php print t('Study Designs') ?></h5>
@@ -295,6 +298,38 @@
   <section>
     <h3><?php print t('Datasets'); ?></h3>
     <?php print $datasets; ?>
+  </section>
+<?php endif; ?>
+
+<!-- VARIABLES -->
+<?php if (!empty($datasets) && !empty($study_variables_aggs)): ?>
+  <section>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-3 right-indent">
+          <h3><?php print t('Variables') ?></h3>
+
+          <h5><?php print t('Number of variables') ?></h5>
+
+          <p>
+            <?php print $study_variables_aggs['totalHits']; ?>
+          </p>
+
+          <?php
+          print l(t('Search Variables'), 'mica/variables_search/study',
+            array(
+              'query' => array('parent:id[]' => 'id.' . $study_dto->id),
+              'attributes' => array('class' => 'btn btn-primary')
+            ));
+          ?>
+        </div>
+        <div class="col-xs-9">
+          <h3><?php print t('Domain Coverage') ?></h3>
+          <!-- Variable aggregations can be reported here -->
+          <div class="alert alert-info" role="alert"><strong>TODO</strong> charts here</div>
+        </div>
+      </div>
+    </div>
   </section>
 <?php endif; ?>
 

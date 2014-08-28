@@ -9,7 +9,7 @@
 
 <article>
   <section>
-    <h3><?php print t('General Information') ?></h3>
+    <h3><?php print t('Overview') ?></h3>
 
     <div class="container-fluid">
       <div class="row">
