@@ -10,7 +10,7 @@
 
 <article>
   <section>
-    <h3><?php print t('General Information') ?></h3>
+    <h3><?php print t('Overview') ?></h3>
 
     <div class="container-fluid">
       <div class="row">
@@ -42,11 +42,11 @@
   </section>
 
   <section>
-    <h3><?php print t('Variables') ?></h3>
-
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-3 right-indent">
+          <h3><?php print t('Variables') ?></h3>
+
           <h5><?php print t('Number of variables') ?></h5>
 
           <p>
@@ -62,6 +62,7 @@
           ?>
         </div>
         <div class="col-xs-9">
+          <h3><?php print t('Domain Coverage') ?></h3>
           <!-- Variable aggregations can be reported here -->
           <div class="alert alert-info" role="alert"><strong>TODO</strong> charts here</div>
         </div>
