@@ -12,13 +12,9 @@ function mica_client_study_get_studies() {
 }
 
 function mica_client_study_studies_table($studies) {
-  $rows = array();
   $rows = mica_client_study_study_summaries_table_rows($studies['data']);
   $headers = mica_client_study_study_summaries_table_headers();
   $per_page = 20;
-
-//  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variable);
-//  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variable);
 
   $args = array('quantity' => $studies['totalHits'], 'element' => MicaStudyResource::PAGINATE_studies);
   $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaStudyResource::PAGINATE_studies);
@@ -28,7 +24,7 @@ function mica_client_study_studies_table($studies) {
     array(
       'header' => $headers,
       'rows' => empty($chunks) ? array() : $chunks[$current_page],
-      'empty' => t('No data found')
+      'empty' => t('No study found')
     )
   ) . theme('pager', $args);
 }

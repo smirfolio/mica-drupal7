@@ -118,7 +118,7 @@ function mica_client_study_get_populations_detail($study_detail) {
         array(
           'header' => array(t('Name'), t('Description'), t('Start'), t('End')),
           'rows' => $dce_rows,
-          'empty' => t('No data found'),
+          'empty' => t('No data collection event found'),
           'sticky' => FALSE,
           'attributes' => array('id' => 'variables_overview')
         )

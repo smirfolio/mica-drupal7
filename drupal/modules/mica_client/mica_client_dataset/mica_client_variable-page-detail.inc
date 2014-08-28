@@ -344,33 +344,3 @@ function _mica_client_variable_rebuild_stat($variable_stat, $variable) {
 function mica_client_variable_dataset_type($variable) {
   return $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
 }
-
-
-//function mica_client_dataset_get_variables($resources, $id_dataset) {
-//
-//  $row_variablas = array();
-//  $dataset_resource = new MicaDatasetResource();
-//  $variables = $dataset_resource->get_dataset_varaibles($resources, $id_dataset);
-//
-//  foreach ($variables->getVariablesList() as $key_varable => $list) {
-//    // dpm($list);
-//    $row_variablas[$key_varable] = array(
-//      'name' => l($list->name, 'mica/study/' . mica_client_commons_to_slug($list->name) . '/' . $list->id),
-//      'label' => mica_client_commons_get_localized_field($list->getAttributes(0), 'values'),
-//      'dataset' => mica_client_commons_get_localized_field($list, 'datasetName'),
-//    );
-//  }
-//  $per_page = $dataset_resource::SIZE_RESPONSE;
-//  pager_default_initialize($variables->total, $per_page);
-//  // dpm( theme('pager', array('quantity' => $variables->total)));
-//  $var_tab = theme('table',
-//      array(
-//        'header' => array(t('Name'), t('Label'), t('Dataset')),
-//        'rows' => $row_variablas,
-//        'empty' => t('No data found'),
-//        'sticky' => FALSE,
-//        'attributes' => array('id' => 'variables_overview')
-//      )
-//    ) . theme('pager', array('quantity' => 5, 'tags' => array('<<', '<', '', '>', '>>')));
-//  return theme('mica_client_datasets-tables', array('tab_var' => $var_tab, 'title_section' => t('Variables')));
-//}
