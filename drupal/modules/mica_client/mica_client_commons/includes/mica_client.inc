@@ -287,6 +287,9 @@ class MicaClient {
     $filtered_query_dto = new \obiba\mica\FilteredQueryDto;
     $bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
 
+    $parent_filtered_query_dto = new \obiba\mica\FilteredQueryDto;
+    $parent_bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
+
     if (!empty($spec_dto_params)) {
       foreach ($spec_dto_params as $param) {
         $field[1] = $param['field'];
@@ -300,8 +303,7 @@ class MicaClient {
       foreach ($this->normalize_parameters(urldecode($request_param)) as $field => $term_association) {
         if ($field != 'page') {
           if (strpos($field, key($hierarchical_relation)) === 0 && !empty($hierarchical_relation)) {
-            $parent_filtered_query_dto = new \obiba\mica\FilteredQueryDto;
-            $parent_bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
+
             $parent_child_field = explode(':', urldecode($field));
             $filter_query_dto_relational = $this->_construct_filtered_query_dto($parent_child_field, $term_association);
             $parent_query_dto = new \obiba\mica\ParentChildFilterDto;
