@@ -79,7 +79,7 @@ function mica_client_variable_get_harmonizations($variable) {
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t('No data found'),
+      'empty' => t('No variable found'),
       'sticky' => FALSE,
       'attributes' => array('id' => 'variables_overview')
     ));
@@ -185,41 +185,6 @@ function mica_client_variable_get_stat_view_type($variable) {
     return 'summary';
   }
   return 'TodoTerm';
-}
-
-function mica_client_dataset_study_tables($datset_type_resource) {
-  $study_tab_rows = array();
-  ///$datset_type_resource
-  if (!empty($datset_type_resource->studyTables)) {
-    foreach ($datset_type_resource->studyTables as $key_dataset => $study_table) {
-      $study_tab_rows[$key_dataset] = array(
-        'data' => array(
-          'study' => l($study_table->studyId, 'mica/study/' . $study_table->studyId .
-            '/' . $study_table->studyId),
-          'project' => $study_table->project,
-          'table' => $study_table->table
-        )
-      );
-
-    }
-    $study_tab = theme(
-      'table',
-      array(
-        'header' => array(t('Study'), t('Project'), t('Table')),
-        'rows' => $study_tab_rows,
-        'empty' => t('No data found'),
-        'sticky' => FALSE,
-        'attributes' => array('id' => 'variables_overview')
-      )
-    );
-  }
-
-  if (!empty($datset_type_resource->studyTable)) {
-    $study_tab['study-dataset'] = $datset_type_resource->studyTable;
-  }
-
-
-  return theme('mica_client_datasets-tables', array('tab_var' => $study_tab, 'title_section' => t('Studies')));
 }
 
 function _mica_client_variable_attributes_detail($variable, $field) {

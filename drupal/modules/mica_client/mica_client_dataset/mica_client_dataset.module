@@ -105,7 +105,7 @@ function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_
         '#weight' => 30,
         '#theme' => 'menu_local_action',
         '#link' => array(
-          'title' => t('Search Datasets Variables'),
+          'title' => t('Search Dataset Variables'),
           'href' => 'mica/variables_search/dataset',
           'localized_options' => array(
             'attributes' => array(

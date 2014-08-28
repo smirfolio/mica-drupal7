@@ -38,12 +38,9 @@ function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $
         '#weight' => 30,
         '#theme' => 'menu_local_action',
         '#link' => array(
-          'title' => t('Studies Search'),
+          'title' => t('Search Studies'),
           'href' => 'mica/studies_search/_all',
           'localized_options' => array(
-//                  'query' => array(
-//                    'f[0]' => 'search_api_combined_1:' . $node->nid
-//                  ),
             'attributes' => array(
               'class' => 'highlight',
             ),

@@ -38,9 +38,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
 
 
 function mica_client_dataset_study_tables($dataset_type_resource) {
-  //dpm($dataset_type_resource);
   $study_summaries = array();
-  $title = t('Studies');
   if (!empty($dataset_type_resource->studyTables)) {
     foreach ($dataset_type_resource->studyTables as $key_dataset => $study_table) {
       array_push($study_summaries, $study_table->studySummary);
@@ -48,7 +46,6 @@ function mica_client_dataset_study_tables($dataset_type_resource) {
   }
 
   if (!empty($dataset_type_resource->studyTable)) {
-    $title = t('Study');
     $study_table = $dataset_type_resource->studyTable;
     array_push($study_summaries, $study_table->studySummary);
   }
@@ -61,7 +58,7 @@ function mica_client_dataset_study_tables($dataset_type_resource) {
     array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t('No data found'),
+      'empty' => t('No study found'),
       'sticky' => FALSE
     )
   );

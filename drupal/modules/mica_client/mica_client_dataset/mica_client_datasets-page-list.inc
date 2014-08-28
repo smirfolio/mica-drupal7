@@ -57,7 +57,7 @@ function _mica_client_dataset_get_datasets_table($datasets, $type) {
     array(
       'header' => array(t('Name'), t('Description')),
       'rows' => $dataset_rows,
-      'empty' => t('No data found'),
+      'empty' => t('No dataset found'),
       'sticky' => FALSE,
       'attributes' => array('id' => 'variables_overview')
     )
