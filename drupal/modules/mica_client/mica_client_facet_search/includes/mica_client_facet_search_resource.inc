@@ -128,7 +128,11 @@ class MicaSearchResource extends MicaClient {
         $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($study));
       }
     }
-    $dtos ['totalHits'] = $dto_data_response->totalHits;
+    if (!empty($dto_data_response)) {
+      $dtos ['totalHits'] = $dto_data_response->totalHits;
+    } else {
+      $dtos ['totalHits'] = 0;
+    }
 
     return $dtos;
   }

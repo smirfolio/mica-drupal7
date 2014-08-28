@@ -65,7 +65,7 @@ function mica_client_dataset_variables_table($variables) {
     array(
       'header' => $headers,
       'rows' => $rows, // empty($chunks) ? array() : $chunks[$current_page],
-      'empty' => t('No data found')
+      'empty' => t('No variable found')
     )
   ) . theme('pager', $args);
 }
