@@ -105,12 +105,9 @@ function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_
         '#weight' => 30,
         '#theme' => 'menu_local_action',
         '#link' => array(
-          'title' => t('Datasets variables Search'),
+          'title' => t('Search Datasets Variables'),
           'href' => 'mica/variables_search/dataset',
           'localized_options' => array(
-//                  'query' => array(
-//                    'f[0]' => 'search_api_combined_1:' . $node->nid
-//                  ),
             'attributes' => array(
               'class' => 'highlight',
             ),
@@ -123,12 +120,47 @@ function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_
         '#weight' => 0,
         '#theme' => 'menu_local_action',
         '#link' => array(
-          'title' => t('Study variables Search'),
+          'title' => t('Search Study Variables'),
           'href' => 'mica/variables_search/study',
           'localized_options' => array(
-//                  'query' => array(
-//                    'f[0]' => 'search_api_combined_1:' . $node->nid
-//                  ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+    case 'mica/datasets/study-datasets':
+      $links['mica/variables_search/dataset'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Search Variables'),
+          'href' => 'mica/variables_search/dataset',
+          'localized_options' => array(
+            'query' => array('child:variableType[]' => 'variableType.study'),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+
+      break;
+
+    case 'mica/datasets/harmonization-datasets':
+      $links['mica/variables_search/dataset'] = array(
+
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Search Variables'),
+          'href' => 'mica/variables_search/dataset',
+          'localized_options' => array(
+            'query' => array('child:variableType[]' => 'variableType.dataschema'),
             'attributes' => array(
               'class' => 'highlight',
             ),
