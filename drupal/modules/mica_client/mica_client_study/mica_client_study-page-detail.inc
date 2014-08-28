@@ -33,6 +33,7 @@ function mica_client_study_page_detail($study_id) {
       'populations' => mica_client_study_get_populations_detail($study_dto),
       'datasets' => $dataset_output,
       'opal' => $opal_output,
+      'study_variables_aggs' => mica_client_study_get_variables($study_dto->id),
     ));
 }
 
@@ -181,4 +182,19 @@ function mica_client_study_get_dce_table($dataCollectionEvents) {
 
 function mica_client_study_get_attachment_file($study_id, $attachments) {
   return theme('mica_client_study_attachments', array('study_id' => $study_id, 'documents' => $attachments));
+}
+
+/**
+ * Get the facets of the variables for this study.
+ * @param $dataset_id
+ * @return array
+ */
+function mica_client_study_get_variables($study_id) {
+  $dataset_resource = new MicaDatasetResource();
+  return $dataset_resource->variables_search('study', array(
+    0 => array(
+      'field' => 'studyId',
+      'terms' => array($study_id)
+    )
+  ), 0);
 }
