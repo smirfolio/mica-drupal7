@@ -7,7 +7,7 @@ base theme = bootstrap
 ;;;;;;;;;;;;;;;;;;;;;
 ;; Regions
 ;;;;;;;;;;;;;;;;;;;;;
-regions[facets]     = 'facets'
+regions[facets]         = 'Facets'
 regions[navigation]     = 'Navigation'
 regions[header]         = 'Top Bar'
 regions[highlighted]    = 'Highlighted'
