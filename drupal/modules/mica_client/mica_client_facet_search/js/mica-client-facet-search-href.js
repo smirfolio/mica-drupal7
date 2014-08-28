@@ -5,6 +5,7 @@
       /*******************/
       $.extend({
 
+
         getUrlVars: function () {
           var vars = [], hash;
           var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -13,9 +14,9 @@
             //console.log(decodeURIComponent(hash[1]));
             vars.push(decodeURIComponent(hash[1]));
           }
+
           return vars;
         },
-
         sendCheckboxCheckedValues: function (idcheckbox) {
           var serializedData = "";
           $('form').each(function () {
@@ -27,7 +28,11 @@
               serializedData = serializedData.concat(SerilizedForm).concat('&');
             }
           });
+
           return serializedData;
+        },
+        checkthevalue: function () {
+          console.log($(this));
         }
 
       });
@@ -35,7 +40,6 @@
 
       /**********************/
       var allVars = $.getUrlVars();
-      /**Check all checkbox with values from url*/
       $('input[type="checkbox"]').each(function () {
         var currInputValue = $(this).attr('value');
         if ($.inArray(currInputValue, allVars) !== -1) {
@@ -44,25 +48,25 @@
         }
       });
 
-      /*fiil in the inputs hidden field the range value of ech term from url*/
       $('input[type="hidden"]').each(function () {
         var currInputid = $(this).attr('id');
         if (allVars.toString().search(currInputid) != -1) {
           $.grep(allVars, function (element, i) {
             if (!element.indexOf(currInputid)) {
+              console.log(element);
               $('#' + currInputid).val(element.replace(/\+/g, ' '));
             }
           });
         }
       });
 
-      /*send request search on checking the box or on click go button */
-      $("input[type='checkbox'], div#checkthebox").on("click", function () {
-        //  $.sendCheckboxCheckedValues();
-        window.location = '?' + $.sendCheckboxCheckedValues();
+      $("#checkthebox").on("click", function (e) {
+        //e.preventDefault();
+        console.log($(this));
+        //window.location = '?' + $.sendCheckboxCheckedValues();
+        return false;
       });
 
-      /*if ou search by range fill the the hidden input the new values*/
       $("input[id='range-auto-fill']").on("blur", function () {
 
         var term = $(this).attr('termselect');
@@ -71,6 +75,7 @@
 
         var minvalue = $("input[term='" + minid + "']").val();
         var maxvalue = $("input[term='" + maxid + "']").val();
+
 
         if (minvalue || maxvalue) {
           $('#' + $(this).attr('termselect')).val(term + '.[ ' + minvalue + ' to ' + maxvalue + ' ]');

@@ -87,20 +87,47 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/block--mica_client_dataset.tpl.php');
-  if (!empty($destination_path)) {
-    $theme_array['block__mica_client_dataset'] = array(
-      'variables' => array('block' => array()),
-      'template' => 'block--mica_client_dataset',
-      'path' => $path . '/templates'
-    );
-  }
-
   $destination_path = file_exists($path . '/templates/block--mica_client_facet_search.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['block__mica_client_facet_search.tpl.php'] = array(
       'variables' => array('block' => array()),
       'template' => 'block--mica_client_facet_search',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_variable-search.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_variable-search.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_facet_search_variable-search',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_input_text_range.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_input_text_range.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_facet_search_input_text_range',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_checkbox_term.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_checkbox_term.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_facet_search_checkbox_term',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_tab_block.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_tab_block.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_facet_search_tab_block',
       'path' => $path . '/templates'
     );
   }

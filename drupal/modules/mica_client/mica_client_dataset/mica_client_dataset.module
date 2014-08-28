@@ -45,15 +45,6 @@ function mica_client_dataset_menu() {
     'weight' => 3
   );
 
-  $items['mica/variables_search/%'] = array(
-    'title' => 'Variables Search',
-    'description' => t('Search published variables'),
-    'page callback' => 'mica_client_dataset_variable_page_search',
-    'file' => 'mica_client_dataset-variable-page-search.inc',
-    'access callback' => TRUE,
-    'page arguments' => array(2)
-  );
-
   $items['mica/study-dataset/%'] = array(
     'title' => 'Dataset',
     'page callback' => 'mica_client_dataset_page_detail',
@@ -190,15 +181,6 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
     'mica_client_datasets-detail' => array('template' => 'mica_client_datasets-detail', 'path' => $path_theme),
     'mica_client_datasets-tables' => array('template' => 'mica_client_datasets-tables', 'path' => $path_theme),
     'mica_client_variable-detail' => array('template' => 'mica_client_variable-detail', 'path' => $path_theme),
-    'block__mica_client_dataset' => array(
-      'variables' => array('block' => array()),
-      'template' => 'block--mica_client_dataset',
-      'path' => $path_theme
-    ),
-    'mica_client_variable_block_search' => array(
-      'template' => 'mica_client_variable_block_search',
-      'path' => $path_theme
-    ),
   );
 }
 

@@ -13,7 +13,6 @@ function mica_client_facet_search_menu() {
     'title' => 'Variables Search',
     'description' => t('Search published variables'),
     'page callback' => 'mica_client_facet_search_variable_page_search',
-    //  'file' => 'mica_client_dataset-variable-page-search.inc',
     'access callback' => TRUE,
     'page arguments' => array(2)
   );
@@ -22,7 +21,6 @@ function mica_client_facet_search_menu() {
     'title' => t('Studies Search'),
     'description' => t('Search published studies'),
     'page callback' => 'mica_client_facet_search_study_page_search',
-    //  'file' => 'mica_client_study-page-search.inc',
     'access callback' => TRUE,
     'page arguments' => array(2)
   );
@@ -74,6 +72,22 @@ function mica_client_facet_search_theme($existing, $type, $theme, $path) {
     ),
     'mica_client_facet_search_block_search' => array(
       'template' => 'mica_client_facet_search_block_search',
+      'path' => $path_theme
+    ),
+    'mica_client_facet_search_variable-search' => array(
+      'template' => 'mica_client_facet_search_variable-search',
+      'path' => $path_theme
+    ),
+    'mica_client_facet_search_checkbox_term' => array(
+      'template' => 'mica_client_facet_search_checkbox_term',
+      'path' => $path_theme
+    ),
+    'mica_client_facet_search_input_text_range' => array(
+      'template' => 'mica_client_facet_search_input_text_range',
+      'path' => $path_theme
+    ),
+    'mica_client_facet_search_tab_block' => array(
+      'template' => 'mica_client_facet_search_tab_block',
       'path' => $path_theme
     ),
   );
@@ -167,19 +181,12 @@ function mica_client_facet_search_block_view($delta = '') {
         $output = _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_dataset', 'variables', 'child');
       }
       else {
-        $output = '<ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="#variable" role="tab" data-toggle="tab">' . t('Variables') . '</a></li>
-  <li><a href="#study" role="tab" data-toggle="tab">' . t('Studies') . '</a></li>
-
-</ul>
-
-<!-- Tab panes -->
-<div class="tab-content">
-  <div class="tab-pane active" id="variable">'
-          . _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_dataset', 'variables', 'child') . '</div>
-  <div class="tab-pane" id="study">' . _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_study', 'studies', 'parent') . '</div>
-
-</div>';
+        $output = theme('mica_client_facet_search_tab_block', array(
+          'mica_client_dataset' =>
+            _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_dataset', 'variables', 'child'),
+          'mica_client_study' =>
+            _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_study', 'studies', 'parent')
+        ));
       }
       $block['subject'] = t('Facet search variables');
       $block['content'] = $output;
@@ -218,29 +225,24 @@ function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type
 }
 
 function mica_client_facet_search_variable_page_search($request) {
-
   drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
 
   $search_resources = new MicaSearchResource();
+  switch ($request) {
+    case 'study' :
+      $studies = $search_resources->search_studies();
+      $variables = $search_resources->search_variables($request);
+      $output = theme('mica_client_facet_search_variable-search', array(
+        'variables' => mica_client_facet_search_variables_table($variables),
+        'studies' => mica_client_facet_search_studies_table($studies)
+      ));
+      return $output;
+    case 'dataset':
+      $variables = $search_resources->search_variables($request);
+      $output = mica_client_facet_search_variables_table($variables);
+      return $output;
+  }
 
-  $variables = $search_resources->search_variables($request);
-
-  $studies = $search_resources->search_studies();
-  $output = '<ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="#variabletab" role="tab" data-toggle="tab">' . t('Variables') . ' (' . $variables['totalHits'] . ')' . '</a></li>
-  <li><a href="#studytab" role="tab" data-toggle="tab">' . t('Studies') . ' (' . $studies['totalHits'] . ')' . '</a></li>
-
-</ul>
-
-<!-- Tab panes -->
-<div class="tab-content">
-  <div class="tab-pane active" id="variabletab">'
-    . mica_client_facet_search_variables_table($variables) . '</div>
-  <div class="tab-pane" id="studytab">' . mica_client_facet_search_studies_table($studies) . '</div>
-
-</div>';
-
-  return $output;
 
 }
 
