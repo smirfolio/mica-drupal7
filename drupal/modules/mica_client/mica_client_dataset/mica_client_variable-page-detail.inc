@@ -9,7 +9,12 @@ function mica_client_variable_page_detail($variable_id) {
   $variable->description = _mica_client_variable_attributes_detail($variable, 'description');
   $variable->comment = _mica_client_variable_attributes_detail($variable, 'comment');
 
-  drupal_set_title($variable->name);
+  $title = $variable->name;
+  if ($variable->variableType == 'Harmonized') {
+    $title .= ' -- ' . (mica_client_commons_get_localized_field($variable->studySummaries[0], 'acronym')) . '';
+  }
+
+  drupal_set_title($title);
 
   $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
 
