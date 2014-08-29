@@ -5,6 +5,27 @@
       /*******************/
       $.extend({
 
+        checkthebox: function (obj_span) {
+          obj_span.removeClass("unchecked");
+          obj_span.addClass("checked");
+          obj_span.children(":first").removeClass();
+          obj_span.children(":first").addClass("glyphicon glyphicon-ok");
+        },
+
+        uncheckthebox: function (obj_span) {
+          obj_span.removeClass("checked");
+          obj_span.addClass("unchecked");
+          obj_span.children(":first").removeClass();
+          obj_span.children(":first").addClass("glyphicon glyphicon-unchecked");
+        },
+        rollover: function (obj_span) {
+          obj_span.children(":first").removeClass();
+          obj_span.children(":first").toggleClass("glyphicon glyphicon-remove");
+        },
+        rollout: function (obj_span) {
+          obj_span.children(":first").removeClass();
+          obj_span.children(":first").toggleClass("glyphicon glyphicon-ok");
+        },
 
         getUrlVars: function () {
           var vars = [], hash;
@@ -30,16 +51,13 @@
           });
 
           return serializedData;
-        },
-        checkthevalue: function () {
-          console.log($(this));
         }
 
       });
 
 
       /**********************/
-      var allVars = $.getUrlVars();
+      var allVars = $.getUrlVars();//console.log(allVars);
       $('input[type="checkbox"]').each(function () {
         var currInputValue = $(this).attr('value');
         if ($.inArray(currInputValue, allVars) !== -1) {
@@ -53,18 +71,42 @@
         if (allVars.toString().search(currInputid) != -1) {
           $.grep(allVars, function (element, i) {
             if (!element.indexOf(currInputid)) {
-              console.log(element);
+
               $('#' + currInputid).val(element.replace(/\+/g, ' '));
             }
           });
         }
       });
 
-      $("#checkthebox").on("click", function (e) {
+      $("span#checkthebox").on("click", function (e) {
         //e.preventDefault();
-        console.log($(this));
+
+        if ($(this).hasClass("unchecked")) {
+          $.checkthebox($(this));
+          return false;
+
+        }
+        if ($(this).hasClass("checked")) {
+          $.uncheckthebox($(this));
+          return false;
+
+        }
         //window.location = '?' + $.sendCheckboxCheckedValues();
-        return false;
+        // return false;
+      });
+
+      $("span#checkthebox").mouseover(function () {
+        if ($(this).hasClass("checked")) {
+          $.rollover($(this));
+          return false;
+        }
+      });
+
+      $("span#checkthebox").mouseout(function () {
+        if ($(this).hasClass("checked")) {
+          $.rollout($(this));
+          return false;
+        }
       });
 
       $("input[id='range-auto-fill']").on("blur", function () {
