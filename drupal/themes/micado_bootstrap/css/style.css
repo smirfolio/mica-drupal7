@@ -7632,54 +7632,6 @@ button.close {
     display: none;
 }
 
-.facet-bar .block-mica-client-facet-search .color_checkbox_1 + label.terms_checkbox {
-    border: 2px solid #2a85a0;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_1:checked + label.terms_checkbox {
-    border: 2px solid #20E4E4;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_2 + label.terms_checkbox {
-    border: 2px solid #942a25;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_2:checked + label.terms_checkbox {
-    border: 2px solid #e45822;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_3 + label.terms_checkbox {
-    border: 2px solid #ffc40d;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_3:checked + label.terms_checkbox {
-    border: 2px solid #e4dd95;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_4 + label.terms_checkbox {
-    border: 2px solid #004000;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_4:checked + label.terms_checkbox {
-    border: 2px solid #008000;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_5 + label.terms_checkbox {
-    border: 2px solid #550000;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_5:checked + label.terms_checkbox {
-    border: 2px solid #ad6704;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_6 + label.terms_checkbox {
-    border: 2px solid #ce7656;
-}
-
-.facet-bar .block-mica-client-facet-search .color_checkbox_6:checked + label.terms_checkbox {
-    border: 2px solid #ce8483;
-}
-
 .facet-bar .block-mica-client-facet-search .regular-checkbox + label.terms_checkbox {
     background-color: #fafafa;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
@@ -7707,6 +7659,28 @@ button.close {
     top: -3px;
     left: 0px;
     color: #99a1a7;
+}
+
+.facet-bar .block-mica-client-facet-search span.terms_count {
+    display: inline;
+    float: right;
+    padding-right: 10px;
+    z-index: 0;
+}
+
+.facet-bar .block-mica-client-facet-search span.terms_field {
+    float: left;
+    z-index: 0;
+}
+
+.facet-bar .block-mica-client-facet-search span.terms_stat {
+    position: absolute;
+    bottom: 0;
+    height: 15%;
+    right: 0;
+    transition: width 1s;
+    z-index: 2;
+    opacity: 0.5;
 }
 
 .facet-bar .facet_terms_range {
@@ -7949,54 +7923,6 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
     display: none;
 }
 
-.region-facets .block-mica-client-facet-search .color_checkbox_1 + label.terms_checkbox {
-    border: 2px solid #2a85a0;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_1:checked + label.terms_checkbox {
-    border: 2px solid #20E4E4;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_2 + label.terms_checkbox {
-    border: 2px solid #942a25;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_2:checked + label.terms_checkbox {
-    border: 2px solid #e45822;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_3 + label.terms_checkbox {
-    border: 2px solid #ffc40d;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_3:checked + label.terms_checkbox {
-    border: 2px solid #e4dd95;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_4 + label.terms_checkbox {
-    border: 2px solid #004000;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_4:checked + label.terms_checkbox {
-    border: 2px solid #008000;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_5 + label.terms_checkbox {
-    border: 2px solid #550000;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_5:checked + label.terms_checkbox {
-    border: 2px solid #ad6704;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_6 + label.terms_checkbox {
-    border: 2px solid #ce7656;
-}
-
-.region-facets .block-mica-client-facet-search .color_checkbox_6:checked + label.terms_checkbox {
-    border: 2px solid #ce8483;
-}
-
 .region-facets .block-mica-client-facet-search .regular-checkbox + label.terms_checkbox {
     background-color: #fafafa;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
@@ -8024,6 +7950,28 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
     top: -3px;
     left: 0px;
     color: #99a1a7;
+}
+
+.region-facets .block-mica-client-facet-search span.terms_count {
+    display: inline;
+    float: right;
+    padding-right: 10px;
+    z-index: 0;
+}
+
+.region-facets .block-mica-client-facet-search span.terms_field {
+    float: left;
+    z-index: 0;
+}
+
+.region-facets .block-mica-client-facet-search span.terms_stat {
+    position: absolute;
+    bottom: 0;
+    height: 15%;
+    right: 0;
+    transition: width 1s;
+    z-index: 2;
+    opacity: 0.5;
 }
 
 .region-facets .facet_terms_range {

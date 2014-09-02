@@ -1,36 +1,20 @@
-<?php //dpm($mica_client_dataset);?>
-
-<!--<div id="checkthebox" class="terms_checkbox" term=" --><?php //print $agregation_facet . '-' . $term->key ?><!--">-->
-<!---->
-<!--  <input type="checkbox" class="color_checkbox_--><?php //print $color; ?><!-- regular-checkbox"-->
-<!--         name="--><?php //print $relationship_string . $agregation_facet . '[]'; ?><!--"-->
-<!--         value="--><?php //print $agregation_facet . '.' . $term->key; ?><!--"-->
-<!--         id="--><?php //print $agregation_facet . '-' . $term->key; ?><!--">-->
-<!---->
-<!--  <label class="terms_checkbox"-->
-<!--         for="--><?php //print  $agregation_facet . '-' . $term->key; ?><!--">-->
-<!--  </label>-->
-<!--  <span class="terms_stat"></span>-->
-<!--  <span class"terms_field">--><?php //print  $term->key; ?><!--</span>-->
-<!--  <span class="terms_count">--><?php //print  $term->count; ?><!--</span>-->
-<!--</div>-->
-<!---->
-<!--<div>-->
-<!--  <input type="hidden" value="--><?php //print $agregation_facet . '.' . $term->key; ?><!--"-->
-<!--         id="--><?php //print $agregation_facet . '-' . $term->key; ?><!--">-->
-<!--</div>-->
-
+<?php //dpm($totalhits);?>
+<?php // dpm((((($term->count*200)/$totalhits))*100)/200);?>
 <li class="facets">
-  <span class="" style="width: 50.931677018633536%;"></span>
-
+  <span class="terms_stat" style="background-color:<?php print $color; ?>;
+    width: <?php print  (((($term->count * 100) / $totalhits))) ?>%;"></span>
   <span id="checkthebox"
-        class="<?php print $relationship_string . $agregation_facet; ?> unchecked"
+        class="terms_field <?php print $relationship_string . $agregation_facet; ?> unchecked"
         aggregation="<?php print $relationship_string . $agregation_facet . '[]'; ?>"
         value="<?php print $agregation_facet . '.' . $term->key; ?>">
     <i style="color:<?php print $color; ?>" class="glyphicon glyphicon-unchecked"></i>
     <?php print  $term->key; ?>
-    </span>
+    <input
+      id="<?php print $agregation_facet . '.' . $term->key ?>"
+      name="<?php print $relationship_string . $agregation_facet . '[]'; ?>"
+      type="hidden" value="">
+  </span>
 
-  <span class=""><?php print  $term->count; ?></span>
+  <span class="terms_count"><?php print  $term->count; ?></span>
 
 </li>

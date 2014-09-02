@@ -4,7 +4,6 @@
 
       /*******************/
       $.extend({
-
         checkthebox: function (obj_span) {
           obj_span.removeClass("unchecked");
           obj_span.addClass("checked");
@@ -35,7 +34,6 @@
             //console.log(decodeURIComponent(hash[1]));
             vars.push(decodeURIComponent(hash[1]));
           }
-
           return vars;
         },
         sendCheckboxCheckedValues: function (idcheckbox) {
@@ -49,15 +47,12 @@
               serializedData = serializedData.concat(SerilizedForm).concat('&');
             }
           });
-
           return serializedData;
         }
-
       });
 
-
       /**********************/
-      var allVars = $.getUrlVars();//console.log(allVars);
+      var allVars = $.getUrlVars();
       $('input[type="checkbox"]').each(function () {
         var currInputValue = $(this).attr('value');
         if ($.inArray(currInputValue, allVars) !== -1) {
@@ -71,28 +66,44 @@
         if (allVars.toString().search(currInputid) != -1) {
           $.grep(allVars, function (element, i) {
             if (!element.indexOf(currInputid)) {
-
               $('#' + currInputid).val(element.replace(/\+/g, ' '));
             }
           });
         }
       });
 
-      $("span#checkthebox").on("click", function (e) {
-        //e.preventDefault();
+      $('span#checkthebox').each(function () {
+        var currInputid = $(this).attr('value');
+        if (allVars.toString().search(currInputid) != -1) {
+          //console.log(currInputid);
+          if ($(this).hasClass("unchecked")) {
+            $.checkthebox($(this));
+            $(this).children('input[type="hidden"]').val($(this).attr("value"));
+          }
+        }
+        else {
+          if ($(this).hasClass("checked")) {
+            $.uncheckthebox($(this));
+            $(this).children('input[type="hidden"]').val('');
+          }
+        }
+      });
 
+      $("span#checkthebox").on("click", function (e) {
         if ($(this).hasClass("unchecked")) {
           $.checkthebox($(this));
+          $(this).children('input[type="hidden"]').val($(this).attr("value"));
+          window.location = '?' + $.sendCheckboxCheckedValues();
           return false;
 
         }
         if ($(this).hasClass("checked")) {
           $.uncheckthebox($(this));
+          $(this).children('input[type="hidden"]').val('');
+          window.location = '?' + $.sendCheckboxCheckedValues();
+          //  console.log($.sendCheckboxCheckedValues());
           return false;
-
         }
-        //window.location = '?' + $.sendCheckboxCheckedValues();
-        // return false;
       });
 
       $("span#checkthebox").mouseover(function () {
@@ -109,15 +120,19 @@
         }
       });
 
+      /*send request search on checking the box or on click go button */
+      $("div#checkthebox").on("click", function () {
+        //  $.sendCheckboxCheckedValues();
+        window.location = '?' + $.sendCheckboxCheckedValues();
+      });
+
       $("input[id='range-auto-fill']").on("blur", function () {
 
         var term = $(this).attr('termselect');
         var minid = term + '-min';
         var maxid = term + '-max';
-
         var minvalue = $("input[term='" + minid + "']").val();
         var maxvalue = $("input[term='" + maxid + "']").val();
-
 
         if (minvalue || maxvalue) {
           $('#' + $(this).attr('termselect')).val(term + '.[ ' + minvalue + ' to ' + maxvalue + ' ]');

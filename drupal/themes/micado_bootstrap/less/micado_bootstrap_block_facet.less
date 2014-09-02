@@ -107,45 +107,6 @@
       display: none;
     }
 
-    .color_checkbox_1 + label.terms_checkbox {
-      border: 2px solid #2a85a0;
-    }
-    .color_checkbox_1:checked + label.terms_checkbox {
-      border: 2px solid #20E4E4;
-    }
-
-    .color_checkbox_2 + label.terms_checkbox {
-      border: 2px solid #942a25;
-    }
-    .color_checkbox_2:checked + label.terms_checkbox {
-      border: 2px solid #e45822;
-    }
-    .color_checkbox_3 + label.terms_checkbox {
-      border: 2px solid #ffc40d;
-    }
-    .color_checkbox_3:checked + label.terms_checkbox {
-      border: 2px solid #e4dd95;
-    }
-    .color_checkbox_4 + label.terms_checkbox {
-      border: 2px solid #004000;
-    }
-    .color_checkbox_4:checked + label.terms_checkbox {
-      border: 2px solid #008000;
-    }
-
-    .color_checkbox_5 + label.terms_checkbox {
-      border: 2px solid #550000;
-    }
-    .color_checkbox_5:checked + label.terms_checkbox {
-      border: 2px solid #ad6704;
-    }
-    .color_checkbox_6 + label.terms_checkbox {
-      border: 2px solid #ce7656;
-    }
-    .color_checkbox_6:checked + label.terms_checkbox {
-      border: 2px solid #ce8483;
-    }
-
     .regular-checkbox + label.terms_checkbox {
 
       background-color: #fafafa;
@@ -177,25 +138,27 @@
       color: #99a1a7;
     }
 
-    //    span.terms_count{
-    //      display: inline;
-    //      float: right;
-    //      padding-right: 10px;
-    //    }
-    //
-    //    span.terms_field{
-    //      float: left;
-    //    }
-    //
-    //
-    //
-    //    span.terms_stat{
-    //      transition: width 1s;
-    //      position: absolute;
-    //      background-color: #245269;
-    //      height: 25px;
-    //      width: 100px;
-    //    }
+    span.terms_count {
+      display: inline;
+      float: right;
+      padding-right: 10px;
+      z-index: 0;
+    }
+
+    span.terms_field {
+      float: left;
+      z-index: 0;
+    }
+
+    span.terms_stat {
+      position: absolute;
+      bottom: 0;
+      height: 15%;
+      right: 0;
+      transition: width 1s;
+      z-index: 2;
+      opacity: 0.5;
+    }
 
   }
 
