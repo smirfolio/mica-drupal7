@@ -224,9 +224,15 @@ function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type
   return drupal_render($block_output);
 }
 
+function mica_client_facet_search_load_libs() {
+  $module_path_ = drupal_get_path('module', 'mica_client_facet_search');
+  drupal_add_js($module_path_ . '/js/mica-client-facet-search_collapse_deal.js');
+  drupal_add_js($module_path_ . '/js/mica-client-facet-search-href.js');
+}
+
 function mica_client_facet_search_variable_page_search($request) {
   drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
-
+  mica_client_facet_search_load_libs();
   $search_resources = new MicaSearchResource();
   switch ($request) {
     case 'study' :
@@ -242,12 +248,11 @@ function mica_client_facet_search_variable_page_search($request) {
       $output = mica_client_facet_search_variables_table($variables);
       return $output;
   }
-
-
 }
 
 function mica_client_facet_search_study_page_search($request) {
   $output['title'] = t('Study search page');
+  mica_client_facet_search_load_libs();
   $search_resources = new MicaSearchResource();
   $studies = $search_resources->search_studies();
 
