@@ -56,7 +56,7 @@
     }
 
     h2 {
-      font-size: @facet_font_size;
+      font-size: @facet_font_size+5;
       text-transform: uppercase;
       margin: 0;
       padding: 2px 5px;
@@ -99,7 +99,6 @@
       display: inline;
       margin-bottom: -3px;
       margin-right: 5px;
-      font-weight: normal;
       cursor: pointer;
     }
 
@@ -144,26 +143,38 @@
       span.terms_count {
         position: relative;
         float: right;
-      padding-right: 10px;
-        padding-top: 7px
+        padding-right: 10px;
+        padding-top: 7px;
+        font-weight: normal;
       }
 
-    span.terms_field {
-      position: relative;
-      display: inline-block;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      padding-top: 7px;
-    }
+      span.terms_field {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding-top: 7px;
+        font-weight: normal;
+      }
 
-    span.terms_stat {
-      background-color: #e2e2e2;
-      position: absolute;
-      height: 100%;
-      transition: width 1s;
-      right: 0;
-    }
+      div.stat-container {
+        height: 30px;
+        width: 225px;
+        position: absolute;
+        transition: width 1s;
+        right: 0;
+        background-color: #daf2fb;
+
+      }
+      span.terms_stat {
+        max-width: 225px;
+        position: absolute;
+        height: 30px;
+        transition: width 1s;
+        right: 0;
+        background-color: #e2e2e2;
+      }
 
       label.span-checkbox {
         position: relative;
@@ -172,15 +183,10 @@
         padding-left: 15px;
         padding-top: 5px;
       }
-      div.stat-container {
-        width: 150px;
-        border-bottom: 1px;
 
-      }
     }
 
     div.chekedterms {
-      background-color: #daf2fb;
       span.terms_count {
         position: relative;
         float: right;
@@ -196,14 +202,26 @@
         text-overflow: ellipsis;
         padding-top: 7px;
         margin-left: 5px;
+        color: #1693c0;
+        font-weight: bold;
       }
 
       span.terms_stat {
-        background-color: #C4C4C4;
+
+        background-color: #bbe7f7;
         position: absolute;
-        height: 25px;
+        height: 30px;
+        transition: width 1s;
+        max-width: 225px;
+      }
+      div.stat-container {
+        height: 30px;
+        width: 225px;
+        position: absolute;
         transition: width 1s;
         right: 0;
+        background-color: #daf2fb;
+
       }
 
       label.span-checkbox {
@@ -215,11 +233,6 @@
 
       }
 
-      div.stat-container {
-        width: 150px;
-        border-bottom: 1px;
-
-      }
     }
 
   }

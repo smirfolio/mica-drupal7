@@ -52,11 +52,16 @@
       });
 
       /**********************/
+      /*hide main search facet block*/
+      $("section#block-mica-client-facet-search-facet-search").find("h2:first").css("display", "none");
+
       var allVars = $.getUrlVars();
 
       $('input[type="hidden"]').each(function () {
+        var currInputidPattern = $(this).attr('id') + "\\W";
         var currInputid = $(this).attr('id');
-        if (allVars.toString().search(currInputid) != -1) {
+        // console.log(currInputid);
+        if (allVars.toString().search(new RegExp(currInputidPattern)) != -1) {
           $.grep(allVars, function (element, i) {
             if (!element.indexOf(currInputid)) {
               $('#' + currInputid).val(element.replace(/\+/g, ' '));
@@ -67,10 +72,14 @@
 
 
       $('span#checkthebox').each(function () {
+        var currInputidPattern = $(this).attr('value') + "\\W";
         var currInputid = $(this).attr('value');
+
+
         var aggregation_name = $(this).attr('value');
 
-        if (allVars.toString().search(currInputid) != -1) {
+        if (allVars.toString().search(new RegExp(currInputidPattern)) != -1) {
+          console.log(currInputid);
 
           if ($(this).hasClass("unchecked")) {
             $(this).parents("label.span-checkbox").css("display", "inline");

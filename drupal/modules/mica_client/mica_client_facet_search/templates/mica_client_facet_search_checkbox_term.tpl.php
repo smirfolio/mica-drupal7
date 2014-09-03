@@ -1,9 +1,11 @@
 <?php //dpm($totalhits);?>
 <?php // dpm((((($term->count*200)/$totalhits))*100)/200);?>
 <li class="facets">
-
+  <div class="stat-container">
     <span class="terms_stat"
-          style="width: <?php print  (((($term->count * 100) / $totalhits))) ?>%;"></span>
+          style="width: <?php print  (((($term->count * 100) / $totalhits))) ?>%;">
+          </span>
+  </div>
   <span id="checkthebox"
         class="terms_field <?php print $relationship_string . $agregation_facet; ?> unchecked"
         aggregation="<?php print $relationship_string . $agregation_facet . '[]'; ?>"
