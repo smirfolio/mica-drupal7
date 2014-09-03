@@ -137,27 +137,89 @@
       left: 0px;
       color: #99a1a7;
     }
-
-    span.terms_count {
-      display: inline;
-      float: right;
-      padding-right: 10px;
-      z-index: 0;
+    li.facets {
+      cursor: pointer;
     }
+    div.block-content {
+      span.terms_count {
+        position: relative;
+        float: right;
+      padding-right: 10px;
+        padding-top: 7px
+      }
 
     span.terms_field {
-      float: left;
-      z-index: 0;
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding-top: 7px;
     }
 
     span.terms_stat {
+      background-color: #e2e2e2;
       position: absolute;
-      bottom: 0;
-      height: 15%;
-      right: 0;
+      height: 100%;
       transition: width 1s;
-      z-index: 2;
-      opacity: 0.5;
+      right: 0;
+    }
+
+      label.span-checkbox {
+        position: relative;
+        display: block;
+        min-height: 25px;
+        padding-left: 15px;
+        padding-top: 5px;
+      }
+      div.stat-container {
+        width: 150px;
+        border-bottom: 1px;
+
+      }
+    }
+
+    div.chekedterms {
+      background-color: #daf2fb;
+      span.terms_count {
+        position: relative;
+        float: right;
+        padding-right: 10px;
+        padding-top: 7px
+      }
+
+      span.terms_field {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding-top: 7px;
+        margin-left: 5px;
+      }
+
+      span.terms_stat {
+        background-color: #C4C4C4;
+        position: absolute;
+        height: 25px;
+        transition: width 1s;
+        right: 0;
+      }
+
+      label.span-checkbox {
+        position: relative;
+        display: block;
+        min-height: 25px;
+        padding-left: 15px;
+        padding-top: 5px;
+
+      }
+
+      div.stat-container {
+        width: 150px;
+        border-bottom: 1px;
+
+      }
     }
 
   }
@@ -188,7 +250,7 @@
     }
 
     label {
-      margin-left: -10px;
+      margin-left: 5px;
       margin-bottom: 0;
       font-size: @facet_font_size;
     }
