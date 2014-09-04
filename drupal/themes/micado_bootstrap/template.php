@@ -132,6 +132,15 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_charts.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_charts.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_facet_search_charts',
+      'path' => $path . '/templates'
+    );
+  }
+
   return $theme_array;
 
 }

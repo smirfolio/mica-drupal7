@@ -90,6 +90,10 @@ function mica_client_facet_search_theme($existing, $type, $theme, $path) {
       'template' => 'mica_client_facet_search_tab_block',
       'path' => $path_theme
     ),
+    'mica_client_facet_search_charts' => array(
+      'template' => 'mica_client_facet_search_charts',
+      'path' => $path_theme
+    ),
   );
 }
 
@@ -238,16 +242,73 @@ function mica_client_facet_search_variable_page_search($request) {
     case 'study' :
       $studies = $search_resources->search_studies();
       $variables = $search_resources->search_variables($request);
-      $output = theme('mica_client_facet_search_variable-search', array(
-        'variables' => mica_client_facet_search_variables_table($variables),
-        'studies' => mica_client_facet_search_studies_table($studies)
-      ));
+      $output = theme('mica_client_facet_search_charts', array(
+          'charts' => mica_client_facet_search_get_facets_chart($_SESSION['variables']['aggregations'])
+        )) .
+        theme('mica_client_facet_search_variable-search', array(
+          'variables' => mica_client_facet_search_variables_table($variables),
+          'studies' => mica_client_facet_search_studies_table($studies)
+        ));
       return $output;
     case 'dataset':
       $variables = $search_resources->search_variables($request);
       $output = mica_client_facet_search_variables_table($variables);
       return $output;
   }
+}
+
+function mica_client_facet_search_get_facets_chart($data, $library = NULL, $id = NULL) {
+  if ($library && $library_info = chart_get_library($library)) {
+    $charts_info = array($library => $library_info);
+  }
+  else {
+    $charts_info = charts_info();
+  }
+  foreach ($charts_info as $library => $chart_library_info) {
+    $table['header'][] = array(
+      'width' => (1 / count($charts_info) * 100) . '%',
+      'data' => $chart_library_info['label'],
+    );
+  }
+  $charts = array();
+  foreach ($data as $facet) {
+    if (!empty($facet->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+      $terms_title = array();
+      $count_terms = array();
+      foreach ($facet->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+        $terms_title[] = $term->key;
+        $count_terms[] = $term->count;
+      }
+      $charts[] = mica_client_facet_search_pie_chart($terms_title, $count_terms, $facet->aggregation);
+
+    }
+  }
+  return $charts;
+}
+
+function mica_client_facet_search_pie_chart($labels, $data, $title) {
+  $chart = array(
+    '#type' => 'chart',
+    '#chart_type' => 'pie',
+    '#width' => 350,
+    '#height' => 200,
+    '#title' => $title,
+    '#chart_library' => 'highcharts',
+    '#legend_position' => 'none',
+    '#data_labels' => FALSE,
+    '#legend' => FALSE,
+    '#tooltips' => TRUE,
+  );
+  $chart['pie_data'] = array(
+    '#type' => 'chart_data',
+    '#title' => $title,
+    '#labels' => $labels,
+    '#data' => $data,
+  );
+
+  $example['chart'] = $chart;
+
+  return $example;
 }
 
 function mica_client_facet_search_study_page_search($request) {
