@@ -136,10 +136,12 @@
       left: 0px;
       color: #99a1a7;
     }
-    li.facets {
-      cursor: pointer;
-    }
+
     div.block-content {
+      li {
+        margin-bottom: -10px;
+        border-bottom: rgb(202, 188, 188) dashed 1px;
+      }
       span.terms_count {
         position: relative;
         float: right;
@@ -156,11 +158,12 @@
         text-overflow: ellipsis;
         padding-top: 7px;
         font-weight: normal;
+        cursor: pointer;
       }
 
       div.stat-container {
-        height: 30px;
-        width: 225px;
+        height: 25px;
+        width: 200px;
         position: absolute;
         transition: width 1s;
         right: 0;
@@ -168,9 +171,9 @@
 
       }
       span.terms_stat {
-        max-width: 225px;
+        max-width: 200px;
         position: absolute;
-        height: 30px;
+        height: 25px;
         transition: width 1s;
         right: 0;
         background-color: #e2e2e2;
@@ -187,6 +190,10 @@
     }
 
     div.chekedterms {
+      li {
+        margin-bottom: 0px;
+        border-bottom: rgb(202, 188, 188) dashed 1px;
+      }
       span.terms_count {
         position: relative;
         float: right;
@@ -204,19 +211,20 @@
         margin-left: 5px;
         color: #1693c0;
         font-weight: bold;
+        cursor: pointer;
       }
 
       span.terms_stat {
 
         background-color: #bbe7f7;
         position: absolute;
-        height: 30px;
+        height: 25px;
         transition: width 1s;
-        max-width: 225px;
+        max-width: 200px;
       }
       div.stat-container {
-        height: 30px;
-        width: 225px;
+        height: 25px;
+        width: 200px;
         position: absolute;
         transition: width 1s;
         right: 0;
