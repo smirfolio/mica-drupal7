@@ -1,25 +1,30 @@
 <?php //dpm($charts);?>
 
 <div class="panel panel-default">
-  <?php $nch = 0; ?>
-  <?php foreach ($charts as $chart) : ?>
-    <?php if ($nch < 3) : ?>
-      <div class="col-md-4"><?php print render($chart); ?> </div>
-    <?php endif; ?>
-    <?php $nch++; ?>
-  <?php endforeach; ?>
-
+  <div class="container-fluid">
+    <div class="row">
+      <?php $nch = 0; ?>
+      <?php foreach ($charts as $chart) : ?>
+        <?php if ($nch < 4) : ?>
+          <div class="col-xs-3"><?php print render($chart); ?> </div>
+        <?php endif; ?>
+        <?php $nch++; ?>
+      <?php endforeach; ?>
+    </div>
+  </div>
 
   <div id="collapseOne" class="charts panel-collapse collapse">
     <div class="panel-body">
-      <div class="row">
+      <div class="container-fluid">
+        <div class="row">
         <?php $nch = 0; ?>
         <?php foreach ($charts as $chart) : ?>
-          <?php if ($nch > 3) : ?>
-            <div class="col-md-4"><?php print render($chart); ?> </div>
+          <?php if ($nch > 4) : ?>
+            <div class="col-xs-3"><?php print render($chart); ?> </div>
           <?php endif; ?>
           <?php $nch++; ?>
         <?php endforeach; ?>
+        </div>
       </div>
     </div>
   </div>

@@ -7525,7 +7525,7 @@ button.close {
 }
 
 div.charts {
-    height: 200px;
+    height: 150px;
 }
 
 .botton-container {
@@ -7775,6 +7775,7 @@ div.charts {
 }
 
 .facet-bar .facet_terms_range {
+    font-weight: normal;
     margin-left: -10px;
 }
 
@@ -7801,6 +7802,7 @@ div.charts {
 }
 
 .facet-bar .facet_terms_range label {
+    font-weight: normal;
     margin-left: 5px;
     margin-bottom: 0;
     font-size: 12px;
@@ -8143,6 +8145,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 
 .region-facets .facet_terms_range {
+    font-weight: normal;
     margin-left: -10px;
 }
 
@@ -8169,6 +8172,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 
 .region-facets .facet_terms_range label {
+    font-weight: normal;
     margin-left: 5px;
     margin-bottom: 0;
     font-size: 12px;
