@@ -46,6 +46,7 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type, $rela
   $agregation_facet = NULL;
   $relationship_string = !empty($relationship) ? $relationship . ':' : NULL;
   $totalHits = !empty($type) ? $_SESSION[$type]['aggregations']['totalHits'] : NULL;
+  $totalCount = !empty($type) ? $_SESSION[$type]['aggregations']['totalCount'] : NULL;
 
   if (!empty($block_delta)) {
     //  dpm(mica_client_commons_get_dto_facet_aggs($block_delta, $type));
@@ -54,7 +55,7 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type, $rela
       $agregation_facet = key($facet_pars);
       $terms_aggregations = current($facet_pars);
       if (!empty($terms_aggregations) && !empty($terms_aggregations['term'])) {
-        $items = mica_client_facet_search_get_checkbox_term_field($terms_aggregations['term'], $relationship_string, $agregation_facet, $totalHits);
+        $items = mica_client_facet_search_get_checkbox_term_field($terms_aggregations['term'], $relationship_string, $agregation_facet, $totalHits, $totalCount);
       }
       if (!empty($terms_aggregations) && !empty($terms_aggregations['range'])) {
         $items = mica_client_facet_search_get_range_field($terms_aggregations['range'], $relationship_string, $agregation_facet);
@@ -64,7 +65,7 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type, $rela
   return theme('mica_client_facet_search_block_search', array('items' => $items, 'formId' => $agregation_facet));
 }
 
-function mica_client_facet_search_get_checkbox_term_field($fields_terms, $relationship_string, $agregation_facet, $totalHits = NULL) {
+function mica_client_facet_search_get_checkbox_term_field($fields_terms, $relationship_string, $agregation_facet, $totalHits = NULL, $totalCount = NULL) {
   $color = array(
     1 => "#2a85a0",
     2 => "#20E4E4",
@@ -86,7 +87,8 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $relati
       'relationship_string' => $relationship_string,
       'term' => $term,
       'color' => $color[$key],
-      'totalhits' => $totalHits
+      'totalHits' => $totalHits,
+      'totalCount' => $totalCount
     ));
 
     $key++;

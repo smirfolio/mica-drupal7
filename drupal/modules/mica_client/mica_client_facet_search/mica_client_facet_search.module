@@ -273,7 +273,9 @@ function mica_client_facet_search_variables_table($variables) {
   if (!empty($variables['data'])) {
     foreach ($variables['data'] as $variable) {
       $name = $variable->name;
-      $dataset_name = !empty($variable->datasetName) ? mica_client_commons_get_localized_field($variable, 'datasetName') : $variable->datasetId;
+      $dataset_name = !empty($variable->datasetName) ?
+        mica_client_commons_get_localized_field($variable, 'datasetName') :
+        $variable->datasetId;
       $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
       $study_name = !empty($variable->studyAcronym) ? mica_client_commons_get_localized_field($variable, 'studyAcronym') : NULL;
       //dpm($variable);

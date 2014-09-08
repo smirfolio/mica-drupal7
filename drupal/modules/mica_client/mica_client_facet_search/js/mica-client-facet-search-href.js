@@ -79,7 +79,7 @@
         var aggregation_name = $(this).attr('value');
 
         if (allVars.toString().search(new RegExp(currInputidPattern)) != -1) {
-          console.log(currInputid);
+          var $current_width_percent = $(this).parent().find('.terms_stat:first').attr('witdh-val');
 
           if ($(this).hasClass("unchecked")) {
             $(this).parents("label.span-checkbox").css("display", "inline");
@@ -89,6 +89,9 @@
             var copy_chekbox = $(this).parent().clone();
             var divtofind = $(this).parents("section:first").find(".chekedterms:first");
             $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
+
+            copy_chekbox.find('.terms_stat').width($current_width_percent);
+
             divtofind.append(copy_chekbox);
             $(this).parents("li.facets").remove();
           }

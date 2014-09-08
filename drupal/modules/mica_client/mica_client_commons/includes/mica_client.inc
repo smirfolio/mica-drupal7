@@ -229,6 +229,7 @@ class MicaClient {
     if (!empty($aggregations->totalHits)) {
       $_SESSION[$dto_type]['aggregations'] = $aggregations->aggs;
       $_SESSION[$dto_type]['aggregations']['totalHits'] = $aggregations->totalHits;
+      $_SESSION[$dto_type]['aggregations']['totalCount'] = $aggregations->totalCount;
       $_SESSION[$dto_type]['request'] = !empty($request_param) ? $request_param : NULL;
     }
   }
