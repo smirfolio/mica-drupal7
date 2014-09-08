@@ -21,7 +21,7 @@ function mica_client_facet_search_get_facets_chart($data, $library = NULL, $id =
     if (!empty($facet->{'obiba.mica.TermsAggregationResultDto.terms'})) {
       $terms_title = array();
       $count_terms = array();
-      $sorted_terms = mica_client_facet_search_sort_terms($facet->{'obiba.mica.TermsAggregationResultDto.terms'}, $data['totalHits']);
+      $sorted_terms = mica_client_facet_search_group_terms($facet->{'obiba.mica.TermsAggregationResultDto.terms'}, $data['totalHits']);
       foreach ($sorted_terms as $term) {
         $terms_title[] = $term->key;
         $count_terms[] = $term->count;
@@ -35,7 +35,7 @@ function mica_client_facet_search_get_facets_chart($data, $library = NULL, $id =
   return $charts;
 }
 
-function mica_client_facet_search_sort_terms($terms, $total) {
+function mica_client_facet_search_group_terms($terms, $total) {
   $temp_val = array();
   $temp_val_other = new stdClass();
   $Total_other = 0;
