@@ -6,10 +6,10 @@
  */
 function mica_client_drush_command() {
   $items['highcharts-download'] = array(
-    'callback' => 'mica_client_drush_download',
+    'callback' => 'mica_client_drush_highcharts_download',
     'aliases' => 'dhi',
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
-    'description' => dt('Downloads the required highcharts library from highcharts.com.'),
+    'description' => dt('Downloads the Optional highcharts library from highcharts.com.'),
     'arguments' => array(
       'path' => dt('Optional. The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries/highcharts</code>).'),
     ),
@@ -20,7 +20,7 @@ function mica_client_drush_command() {
 /**
  * Downloads
  */
-function mica_client_drush_download() {
+function mica_client_drush_highcharts_download() {
   $args = func_get_args();
   if ($args[0]) {
     $path = $args[0];
