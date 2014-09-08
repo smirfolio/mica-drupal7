@@ -4,6 +4,7 @@ include_once($path_module_protobuf . '/mica_client_study-page-list.inc');
 
 include_once('includes/mica_client_facet_search_resource.inc');
 include_once('includes/mica_client_facet_search_resource_facet_conf.inc');
+include_once('mica_client_facet_search_charts.php');
 
 
 function mica_client_facet_search_menu() {
@@ -88,6 +89,10 @@ function mica_client_facet_search_theme($existing, $type, $theme, $path) {
     ),
     'mica_client_facet_search_tab_block' => array(
       'template' => 'mica_client_facet_search_tab_block',
+      'path' => $path_theme
+    ),
+    'mica_client_facet_search_charts' => array(
+      'template' => 'mica_client_facet_search_charts',
       'path' => $path_theme
     ),
   );
@@ -238,10 +243,13 @@ function mica_client_facet_search_variable_page_search($request) {
     case 'study' :
       $studies = $search_resources->search_studies();
       $variables = $search_resources->search_variables($request);
-      $output = theme('mica_client_facet_search_variable-search', array(
-        'variables' => mica_client_facet_search_variables_table($variables),
-        'studies' => mica_client_facet_search_studies_table($studies)
-      ));
+      $output = theme('mica_client_facet_search_charts', array(
+          'charts' => mica_client_facet_search_get_facets_chart($_SESSION['variables']['aggregations'])
+        )) .
+        theme('mica_client_facet_search_variable-search', array(
+          'variables' => mica_client_facet_search_variables_table($variables),
+          'studies' => mica_client_facet_search_studies_table($studies)
+        ));
       return $output;
     case 'dataset':
       $variables = $search_resources->search_variables($request);
@@ -249,6 +257,7 @@ function mica_client_facet_search_variable_page_search($request) {
       return $output;
   }
 }
+
 
 function mica_client_facet_search_study_page_search($request) {
   $output['title'] = t('Study search page');

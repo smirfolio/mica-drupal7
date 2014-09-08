@@ -35,6 +35,7 @@
 
         saveCookieData(newst1);
       }
+
 //when a group is shown, save it as the active accordion group
       $(".block").on('shown.bs.collapse', function () {
         $(".block-content").each(function (id, state) {
@@ -67,6 +68,17 @@
         saveCookieData(newst)
       });
 
+
+      /********** Show more show less on search page********/
+
+      $('.charts').on('shown.bs.collapse', function () {
+        $('.text-button-field').html('Show less');
+      });
+
+      $('.charts').on('hidden.bs.collapse', function () {
+        $('.text-button-field').html('Show all');
+      });
+      /********************/
       function saveCookieData(newst) {
 
         // Stringify the object in JSON format for saving in the cookie.

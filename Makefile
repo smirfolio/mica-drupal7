@@ -21,7 +21,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update cc
+all: clean setup-drupal wwww import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update cc chart-enable
 
 clean:
 	rm -rf target
@@ -84,6 +84,10 @@ cas:
 	cd target/drupal && \
 	drush dl -y cas && \
 	drush en -y cas
+
+chart-enable:
+	cd target/drupal && \
+	drush highcharts-download
 
 cc:
 	cd target/drupal && drush cc all

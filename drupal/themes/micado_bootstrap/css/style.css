@@ -7524,6 +7524,20 @@ button.close {
     padding-top: 0;
 }
 
+div.charts {
+    height: 150px;
+}
+
+.botton-container {
+    text-align: center;
+}
+
+.show-button {
+    border: #E4E4E4 solid 1px;
+    padding: 5px;
+    background-color: #ffffff;
+}
+
 .facet-bar {
     font-size: 12px;
     line-height: 15px;
@@ -7660,8 +7674,9 @@ button.close {
     color: #99a1a7;
 }
 
-.facet-bar .block-mica-client-facet-search li.facets {
-    cursor: pointer;
+.facet-bar .block-mica-client-facet-search div.block-content li {
+    margin-bottom: -10px;
+    border-bottom: #cabcbc dashed 1px;
 }
 
 .facet-bar .block-mica-client-facet-search div.block-content span.terms_count {
@@ -7680,11 +7695,12 @@ button.close {
     text-overflow: ellipsis;
     padding-top: 7px;
     font-weight: normal;
+    cursor: pointer;
 }
 
 .facet-bar .block-mica-client-facet-search div.block-content div.stat-container {
-    height: 30px;
-    width: 225px;
+    height: 25px;
+    width: 200px;
     position: absolute;
     transition: width 1s;
     right: 0;
@@ -7692,9 +7708,9 @@ button.close {
 }
 
 .facet-bar .block-mica-client-facet-search div.block-content span.terms_stat {
-    max-width: 225px;
+    max-width: 200px;
     position: absolute;
-    height: 30px;
+    height: 25px;
     transition: width 1s;
     right: 0;
     background-color: #e2e2e2;
@@ -7706,6 +7722,11 @@ button.close {
     min-height: 25px;
     padding-left: 15px;
     padding-top: 5px;
+}
+
+.facet-bar .block-mica-client-facet-search div.chekedterms li {
+    margin-bottom: 0px;
+    border-bottom: #cabcbc dashed 1px;
 }
 
 .facet-bar .block-mica-client-facet-search div.chekedterms span.terms_count {
@@ -7725,19 +7746,20 @@ button.close {
     margin-left: 5px;
     color: #1693c0;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .facet-bar .block-mica-client-facet-search div.chekedterms span.terms_stat {
     background-color: #bbe7f7;
     position: absolute;
-    height: 30px;
+    height: 25px;
     transition: width 1s;
-    max-width: 225px;
+    max-width: 200px;
 }
 
 .facet-bar .block-mica-client-facet-search div.chekedterms div.stat-container {
-    height: 30px;
-    width: 225px;
+    height: 25px;
+    width: 200px;
     position: absolute;
     transition: width 1s;
     right: 0;
@@ -7753,6 +7775,7 @@ button.close {
 }
 
 .facet-bar .facet_terms_range {
+    font-weight: normal;
     margin-left: -10px;
 }
 
@@ -7779,6 +7802,7 @@ button.close {
 }
 
 .facet-bar .facet_terms_range label {
+    font-weight: normal;
     margin-left: 5px;
     margin-bottom: 0;
     font-size: 12px;
@@ -8020,8 +8044,9 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
     color: #99a1a7;
 }
 
-.region-facets .block-mica-client-facet-search li.facets {
-    cursor: pointer;
+.region-facets .block-mica-client-facet-search div.block-content li {
+    margin-bottom: -10px;
+    border-bottom: #cabcbc dashed 1px;
 }
 
 .region-facets .block-mica-client-facet-search div.block-content span.terms_count {
@@ -8040,11 +8065,12 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
     text-overflow: ellipsis;
     padding-top: 7px;
     font-weight: normal;
+    cursor: pointer;
 }
 
 .region-facets .block-mica-client-facet-search div.block-content div.stat-container {
-    height: 30px;
-    width: 225px;
+    height: 25px;
+    width: 200px;
     position: absolute;
     transition: width 1s;
     right: 0;
@@ -8052,9 +8078,9 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 
 .region-facets .block-mica-client-facet-search div.block-content span.terms_stat {
-    max-width: 225px;
+    max-width: 200px;
     position: absolute;
-    height: 30px;
+    height: 25px;
     transition: width 1s;
     right: 0;
     background-color: #e2e2e2;
@@ -8066,6 +8092,11 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
     min-height: 25px;
     padding-left: 15px;
     padding-top: 5px;
+}
+
+.region-facets .block-mica-client-facet-search div.chekedterms li {
+    margin-bottom: 0px;
+    border-bottom: #cabcbc dashed 1px;
 }
 
 .region-facets .block-mica-client-facet-search div.chekedterms span.terms_count {
@@ -8085,19 +8116,20 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
     margin-left: 5px;
     color: #1693c0;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .region-facets .block-mica-client-facet-search div.chekedterms span.terms_stat {
     background-color: #bbe7f7;
     position: absolute;
-    height: 30px;
+    height: 25px;
     transition: width 1s;
-    max-width: 225px;
+    max-width: 200px;
 }
 
 .region-facets .block-mica-client-facet-search div.chekedterms div.stat-container {
-    height: 30px;
-    width: 225px;
+    height: 25px;
+    width: 200px;
     position: absolute;
     transition: width 1s;
     right: 0;
@@ -8113,6 +8145,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 
 .region-facets .facet_terms_range {
+    font-weight: normal;
     margin-left: -10px;
 }
 
@@ -8139,6 +8172,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 
 .region-facets .facet_terms_range label {
+    font-weight: normal;
     margin-left: 5px;
     margin-bottom: 0;
     font-size: 12px;
