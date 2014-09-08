@@ -1,9 +1,10 @@
-<?php //dpm($totalhits);?>
+<?php //dpm($totalCount);?>
 <?php // dpm((((($term->count*200)/$totalhits))*100)/200);?>
 <li class="facets">
   <div class="stat-container">
     <span class="terms_stat"
-          style="width: <?php print  (((($term->count * 100) / $totalhits))) ?>%;">
+          witdh-val=" <?php print  (((($term->count * 100) / $totalCount))) ?>"
+          style="width: <?php print  (((($term->count * 100) / $totalCount))) ?>%;">
           </span>
   </div>
   <span id="checkthebox"
