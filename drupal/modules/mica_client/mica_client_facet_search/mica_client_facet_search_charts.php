@@ -16,11 +16,13 @@ function mica_client_facet_search_get_facets_chart($data, $library = NULL, $id =
     );
   }
   $charts = array();
+
   foreach ($data as $facet) {
     if (!empty($facet->{'obiba.mica.TermsAggregationResultDto.terms'})) {
       $terms_title = array();
       $count_terms = array();
-      foreach ($facet->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+      $sorted_terms = mica_client_facet_search_group_terms($facet->{'obiba.mica.TermsAggregationResultDto.terms'}, $data['totalHits']);
+      foreach ($sorted_terms as $term) {
         $terms_title[] = $term->key;
         $count_terms[] = $term->count;
       }
@@ -31,6 +33,34 @@ function mica_client_facet_search_get_facets_chart($data, $library = NULL, $id =
     }
   }
   return $charts;
+}
+
+function mica_client_facet_search_group_terms($terms, $total) {
+  $temp_val = array();
+  $temp_val_other = new stdClass();
+  $Total_other = 0;
+
+  foreach ($terms as $key => $row_term) {
+    if (($total / $row_term->count < 60)) {
+      $temp_val_obj = new stdClass();
+      $temp_val_obj->key = $row_term->key;
+      $temp_val_obj->count = $row_term->count;
+      $temp_val[] = $temp_val_obj;
+      $total_count[] = $row_term->count;
+    }
+    else {
+      $temp_val_other->key = t('Others');
+      $Total_other = $row_term->count + $Total_other;
+      $temp_val_other->count = $Total_other;
+    }
+  }
+  if (!empty($temp_val_other->count)) {
+    $temp_val[] = $temp_val_other;
+    $total_count[] = $temp_val_other->count;
+  }
+
+  array_multisort($total_count, SORT_DESC, $temp_val);
+  return $temp_val;
 }
 
 function mica_client_facet_search_get_title_chart($aggregations = NULL) {
