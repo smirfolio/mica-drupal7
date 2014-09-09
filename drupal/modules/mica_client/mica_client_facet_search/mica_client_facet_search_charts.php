@@ -1,7 +1,7 @@
 <?php
 include_once('includes/mica_client_facet_search_resource_facet_conf.inc');
 
-function mica_client_facet_search_get_facets_chart($data, $library = NULL, $id = NULL) {
+function mica_client_facet_search_get_facets_chart($type = NULL, $data, $library = NULL, $id = NULL) {
   if ($library && $library_info = chart_get_library($library)) {
     $charts_info = array($library => $library_info);
   }
@@ -22,11 +22,12 @@ function mica_client_facet_search_get_facets_chart($data, $library = NULL, $id =
       $terms_title = array();
       $count_terms = array();
       $sorted_terms = mica_client_facet_search_group_terms($facet->{'obiba.mica.TermsAggregationResultDto.terms'}, $data['totalHits']);
+
       foreach ($sorted_terms as $term) {
         $terms_title[] = $term->key;
         $count_terms[] = $term->count;
       }
-      $title_chart = mica_client_facet_search_get_title_chart($facet->aggregation);
+      $title_chart = mica_client_facet_search_get_title_chart($type, $facet->aggregation);
       if (!empty($title_chart)) {
         $charts[] = mica_client_facet_search_pie_chart($terms_title, $count_terms, $title_chart);
       }
@@ -63,8 +64,8 @@ function mica_client_facet_search_group_terms($terms, $total) {
   return $temp_val;
 }
 
-function mica_client_facet_search_get_title_chart($aggregations = NULL) {
-  foreach (mica_client_facet_search_resource_return_facets('mica_client_dataset') as $agg) {
+function mica_client_facet_search_get_title_chart($type = NULL, $aggregations = NULL) {
+  foreach (mica_client_facet_search_resource_return_facets($type) as $agg) {
     if ($aggregations == $agg['aggs']) {
       $title = explode('-', $agg['title']);
       return ucwords(drupal_strtolower($title[1]));
