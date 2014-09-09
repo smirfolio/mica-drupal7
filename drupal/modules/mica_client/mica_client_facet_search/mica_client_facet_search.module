@@ -243,17 +243,25 @@ function mica_client_facet_search_variable_page_search($request) {
     case 'study' :
       $studies = $search_resources->search_studies();
       $variables = $search_resources->search_variables($request);
-      $output = theme('mica_client_facet_search_charts', array(
-          'charts' => mica_client_facet_search_get_facets_chart($_SESSION['variables']['aggregations'])
-        )) .
-        theme('mica_client_facet_search_variable-search', array(
-          'variables' => mica_client_facet_search_variables_table($variables),
-          'studies' => mica_client_facet_search_studies_table($studies)
-        ));
+      $Variable_charts = theme('mica_client_facet_search_charts', array(
+        'charts' => mica_client_facet_search_get_facets_chart('mica_client_dataset', $_SESSION['variables']['aggregations'])
+      ));
+      $study_charts = theme('mica_client_facet_search_charts', array(
+        'charts' => mica_client_facet_search_get_facets_chart('mica_client_study', $_SESSION['studies']['aggregations'])
+      ));
+      $output = theme('mica_client_facet_search_variable-search', array(
+        'variables' => mica_client_facet_search_variables_table($variables),
+        'variable_charts' => $Variable_charts,
+        'study_charts' => $study_charts,
+        'studies' => mica_client_facet_search_studies_table($studies)
+      ));
       return $output;
     case 'dataset':
+      $Variable_charts = theme('mica_client_facet_search_charts', array(
+        'charts' => mica_client_facet_search_get_facets_chart('mica_client_dataset', $_SESSION['variables']['aggregations'])
+      ));
       $variables = $search_resources->search_variables($request);
-      $output = mica_client_facet_search_variables_table($variables);
+      $output = $Variable_charts . mica_client_facet_search_variables_table($variables);
       return $output;
   }
 }
@@ -264,8 +272,11 @@ function mica_client_facet_search_study_page_search($request) {
   mica_client_facet_search_load_libs();
   $search_resources = new MicaSearchResource();
   $studies = $search_resources->search_studies();
+  $study_charts = theme('mica_client_facet_search_charts', array(
+    'charts' => mica_client_facet_search_get_facets_chart('mica_client_study', $_SESSION['studies']['aggregations'])
+  ));
 
-  return mica_client_facet_search_studies_table($studies);
+  return $study_charts . mica_client_facet_search_studies_table($studies);
 }
 
 
