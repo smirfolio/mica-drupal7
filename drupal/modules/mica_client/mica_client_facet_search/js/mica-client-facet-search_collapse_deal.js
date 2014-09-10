@@ -105,7 +105,7 @@
         else {
           return '';
         }
-      };
+      }
 
       function dealwithhrefico(current_id, collapse) {
         if (collapse && current_id) {

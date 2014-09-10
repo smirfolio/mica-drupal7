@@ -51,6 +51,18 @@
         }
       });
 
+
+      /**************************/
+      //deal with tabs
+      var tabparam = '';
+      if ($.urlParam('tab')) {
+        var div = $("div.search-result").find("div.tab-pane");
+        div.removeClass("active");
+        $("div#" + $.urlParam('tab')).addClass("active");
+        $('#result-search a[href$="#' + $.urlParam('tab') + '"]').tab('show');
+        tabparam = '&' + 'tab=' + $.urlParam('tab');
+      }
+
       /**********************/
       /*hide main search facet block*/
       $("section#block-mica-client-facet-search-facet-search").find("h2:first").css("display", "none");
@@ -109,13 +121,13 @@
         if ($(this).hasClass("unchecked")) {
           $.checkthebox($(this));
           $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
-          window.location = '?' + $.sendCheckboxCheckedValues();
+          window.location = '?' + $.sendCheckboxCheckedValues() + tabparam;
           return false;
         }
         if ($(this).hasClass("checked")) {
           $.uncheckthebox($(this));
           $("input[id=" + aggregation_name + "]").val('');
-          window.location = '?' + $.sendCheckboxCheckedValues();
+          window.location = '?' + $.sendCheckboxCheckedValues() + tabparam;
           //  console.log($.sendCheckboxCheckedValues());
           return false;
         }
