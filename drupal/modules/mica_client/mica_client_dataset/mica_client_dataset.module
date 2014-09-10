@@ -91,29 +91,17 @@ function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_
   //dpm($root_path);
   switch ($root_path) {
     case 'mica/datasets':
-      $links['mica/variables_search/dataset'] = array(
+      $links['mica/search'] = array(
 
         '#weight' => 30,
         '#theme' => 'menu_local_action',
         '#link' => array(
-          'title' => t('Search Dataset Variables'),
-          'href' => 'mica/variables_search/dataset',
+          'title' => t('Search Variables'),
+          'href' => 'mica/search',
           'localized_options' => array(
-            'attributes' => array(
-              'class' => 'highlight',
+            'query' => array(
+              'type' => 'Variable',
             ),
-          ),
-        ),
-      );
-
-      $links['mica/variables_search/study'] = array(
-
-        '#weight' => 0,
-        '#theme' => 'menu_local_action',
-        '#link' => array(
-          'title' => t('Search Study Variables'),
-          'href' => 'mica/variables_search/study',
-          'localized_options' => array(
             'attributes' => array(
               'class' => 'highlight',
             ),
@@ -124,15 +112,18 @@ function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_
       break;
 
     case 'mica/datasets/study-datasets':
-      $links['mica/variables_search/dataset'] = array(
+      $links['mica/search'] = array(
 
         '#weight' => 30,
         '#theme' => 'menu_local_action',
         '#link' => array(
           'title' => t('Search Variables'),
-          'href' => 'mica/variables_search/dataset',
+          'href' => 'mica/search',
           'localized_options' => array(
-            'query' => array('child:variableType[]' => 'variableType.study'),
+            'query' => array(
+              'type' => 'Variable',
+              'child:variableType[]' => 'variableType.study'
+            ),
             'attributes' => array(
               'class' => 'highlight',
             ),
@@ -143,15 +134,18 @@ function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_
       break;
 
     case 'mica/datasets/harmonization-datasets':
-      $links['mica/variables_search/dataset'] = array(
+      $links['mica/search'] = array(
 
         '#weight' => 30,
         '#theme' => 'menu_local_action',
         '#link' => array(
           'title' => t('Search Variables'),
-          'href' => 'mica/variables_search/dataset',
+          'href' => 'mica/search',
           'localized_options' => array(
-            'query' => array('child:variableType[]' => 'variableType.dataschema'),
+            'query' => array(
+              'type' => 'Variable',
+              'child:variableType[]' => 'variableType.dataschema'
+            ),
             'attributes' => array(
               'class' => 'highlight',
             ),

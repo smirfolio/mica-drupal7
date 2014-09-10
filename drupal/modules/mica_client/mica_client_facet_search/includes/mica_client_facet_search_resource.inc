@@ -29,7 +29,8 @@ class MicaSearchResource extends MicaClient {
   private function _search_resource($resource, $request_param = NULL, $parent_child, $type_parent_child, $spec_dto_params = NULL, $size = NULL) {
     $this->setLastResponse(NULL);
     $request_param = !empty($request_param) ? '/' . $request_param : NULL;
-    $url = $this->micaUrl . '/' . $resource . $request_param . '/_search/?' . 'size=' . (is_null($size) ? $this::SIZE_RESPONSE : $size);
+    $url = $this->micaUrl . '/' . $resource . $request_param . '/_search?' . 'size=' . (is_null($size) ? $this::SIZE_RESPONSE : $size);
+    //dpm($url);
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     if (empty($url_parm[1])) {
       $dto_param = $this->dto_filter_construct(NULL, NULL, $resource, $spec_dto_params, $size);
@@ -59,7 +60,7 @@ class MicaSearchResource extends MicaClient {
     else {
       $dto_param = $this->dto_filter_construct($url_parm[1], array($parent_child => $type_parent_child), $resource, $spec_dto_params, $size);
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
-        $url = $this->micaUrl . '/' . $resource . $request_param . '/_search/?from=' . json_decode($dto_param)->from . '&size=' . (is_null($size) ? $this::SIZE_RESPONSE : $size);
+        $url = $this->micaUrl . '/' . $resource . $request_param . '/_search?from=' . json_decode($dto_param)->from . '&size=' . (is_null($size) ? $this::SIZE_RESPONSE : $size);
 
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
@@ -83,10 +84,10 @@ class MicaSearchResource extends MicaClient {
     }
     $client = $this->client();
     try {
+      //dpm($request);
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      //  $dto_data_response = Protobuf::decode('\obiba\mica\QueryResultDto', $data);
-      // dpm(json_decode($data));
+      //dpm(json_decode($data));
 
       return json_decode($data);
 

@@ -54,9 +54,12 @@
           </p>
 
           <?php
-          print l(t('Search Variables'), 'mica/variables_search/dataset',
+          print l(t('Search Variables'), 'mica/search',
             array(
-              'query' => array('child:datasetId[]' => 'datasetId.' . $dataset_dto->id),
+              'query' => array(
+                'type' => 'Variable',
+                'child:datasetId[]' => 'datasetId.' . $dataset_dto->id
+              ),
               'attributes' => array('class' => 'btn btn-primary')
             ));
           ?>

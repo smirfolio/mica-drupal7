@@ -70,7 +70,7 @@ function mica_client_dataset_study_tables($dataset_type_resource) {
  */
 function mica_client_dataset_get_variables($dataset_id) {
   $dataset_resource = new MicaDatasetResource();
-  return $dataset_resource->variables_search('dataset', array(
+  return $dataset_resource->variables_search(array(
     0 => array(
       'field' => 'datasetId',
       'terms' => array($dataset_id)

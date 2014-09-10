@@ -316,9 +316,12 @@
           </p>
 
           <?php
-          print l(t('Search Variables'), 'mica/variables_search/study',
+          print l(t('Search Variables'), 'mica/search',
             array(
-              'query' => array('parent:id[]' => 'id.' . $study_dto->id),
+              'query' => array(
+                'type' => 'Variable',
+                'parent:id[]' => 'id.' . $study_dto->id
+              ),
               'attributes' => array('class' => 'btn btn-primary')
             ));
           ?>
