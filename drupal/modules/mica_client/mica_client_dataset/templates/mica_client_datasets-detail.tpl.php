@@ -57,7 +57,7 @@
           print l(t('Search Variables'), 'mica/search',
             array(
               'query' => array(
-                'type' => 'Variable',
+                'tab' => 'variables',
                 'child:datasetId[]' => 'datasetId.' . $dataset_dto->id
               ),
               'attributes' => array('class' => 'btn btn-primary')

@@ -234,7 +234,7 @@ class MicaClient {
     }
   }
 
-  protected function normalize_parameters($request_param) {
+  static function normalize_parameters($request_param) {
     $requestArry = explode('&', $request_param);
 
     $formated_term = array();
@@ -304,7 +304,7 @@ class MicaClient {
     //dpm($request_param);
     if (!empty($request_param)) {
       foreach ($this->normalize_parameters(urldecode($request_param)) as $field => $term_association) {
-        if ($field != 'page' && $field != 'type') {
+        if ($field != 'page' && $field != 'tab') {
           if (strpos($field, key($hierarchical_relation)) === 0 && !empty($hierarchical_relation)) {
 
             $parent_child_field = explode(':', urldecode($field));
