@@ -231,6 +231,7 @@ function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type
 function mica_client_facet_search_load_libs() {
   $module_path_ = drupal_get_path('module', 'mica_client_facet_search');
   drupal_add_js($module_path_ . '/js/mica-client-facet-search_collapse_deal.js');
+  drupal_add_js($module_path_ . '/js/mica-client-facet-search_tab_deal.js');
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-href.js');
 }
 
