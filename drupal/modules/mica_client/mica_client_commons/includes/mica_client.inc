@@ -291,6 +291,7 @@ class MicaClient {
     $parent_filtered_query_dto = new \obiba\mica\FilteredQueryDto;
     $parent_bool_filter_query_dto = new \obiba\mica\BoolFilterQueryDto;
 
+    //dpm($spec_dto_params);
     if (!empty($spec_dto_params)) {
       foreach ($spec_dto_params as $param) {
         $field[1] = $param['field'];
@@ -300,9 +301,10 @@ class MicaClient {
 
     }
 
+    //dpm($request_param);
     if (!empty($request_param)) {
       foreach ($this->normalize_parameters(urldecode($request_param)) as $field => $term_association) {
-        if ($field != 'page') {
+        if ($field != 'page' && $field != 'type') {
           if (strpos($field, key($hierarchical_relation)) === 0 && !empty($hierarchical_relation)) {
 
             $parent_child_field = explode(':', urldecode($field));
@@ -340,7 +342,7 @@ class MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
     $json_query_encoded = Protobuf::encode($query_dto);
 //    dpm($query_dto);
-//    dpm($json_query_encoded);
+    //dpm($json_query_encoded);
     return $json_query_encoded;
 
   }

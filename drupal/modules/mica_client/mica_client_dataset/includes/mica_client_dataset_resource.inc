@@ -58,15 +58,15 @@ class MicaDatasetResource extends MicaClient {
     }
   }
 
-  public function variables_search($request_param, $spec_dto_params = NULL, $size = NULL) {
+  public function variables_search($spec_dto_params = NULL, $size = NULL) {
     $this->setLastResponse(NULL);
     $size_param = is_null($size) ? parent::SIZE_RESPONSE : $size;
-    $url = $this->micaUrl . '/variables/' . $request_param . '/_search?size=' . $size_param;
+    $url = $this->micaUrl . '/variables/_search?size=' . $size_param;
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     if (empty($url_parm[1])) {
       $dto_param = $this->dto_filter_construct(NULL, NULL, 'variable', $spec_dto_params, $size_param);
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
-        $url = $this->micaUrl . '/variables/' . $request_param . '/_search?from=' . json_decode($dto_param)->from . '&size=' . $size_param;
+        $url = $this->micaUrl . '/variables/_search?from=' . json_decode($dto_param)->from . '&size=' . $size_param;
 
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
@@ -91,7 +91,7 @@ class MicaDatasetResource extends MicaClient {
     else {
       $dto_param = $this->dto_filter_construct($url_parm[1], array('parent' => 'Study'), 'variable', $spec_dto_params, $size_param);
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
-        $url = $this->micaUrl . '/variables/' . $request_param . '/_search?from=' . json_decode($dto_param)->from . '&size=' . $size_param;
+        $url = $this->micaUrl . '/variables/_search?from=' . json_decode($dto_param)->from . '&size=' . $size_param;
 
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
@@ -118,7 +118,7 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dto_data_response = json_decode($data);
-      $this->session_facets_builder($dto_data_response, 'variable', $request_param);
+      $this->session_facets_builder($dto_data_response, 'variable');
 
       //dpm($dto_data_response);
       $variable_summaries = array();

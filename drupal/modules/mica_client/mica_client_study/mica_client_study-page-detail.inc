@@ -191,7 +191,7 @@ function mica_client_study_get_attachment_file($study_id, $attachments) {
  */
 function mica_client_study_get_variables($study_id) {
   $dataset_resource = new MicaDatasetResource();
-  return $dataset_resource->variables_search('study', array(
+  return $dataset_resource->variables_search(array(
     0 => array(
       'field' => 'studyId',
       'terms' => array($study_id)

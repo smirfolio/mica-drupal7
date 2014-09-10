@@ -87,7 +87,8 @@ cas:
 
 chart-enable:
 	cd target/drupal && \
-	drush highcharts-download
+	drush highcharts-download && \
+	drush en -y charts_highcharts
 
 cc:
 	cd target/drupal && drush cc all
