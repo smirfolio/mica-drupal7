@@ -41,6 +41,7 @@ class MicaClient {
   const PAGINATE_studies = 0;
   const PAGINATE_variables = 1;
   const PAGINATE_datasets = 2;
+  const PAGINATE_networks = 3;
 
   protected $micaUrl;
 

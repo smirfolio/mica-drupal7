@@ -52,7 +52,7 @@ function mica_client_commons_get_localized_field($std, $field, $lang = NULL) {
       }
     }
   }
-  elseif (!empty($std[$field])) {
+  elseif (is_array($std) && !empty($std[$field])) {
     foreach ($std[$field] as $field_value) {
       if (!empty($lang) && $lang == $field_value['lang']) {
         return $field_value['value'];

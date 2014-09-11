@@ -14,3 +14,4 @@ dependencies[] = charts
 dependencies[] = mica_client_study
 dependencies[] = mica_client_facet_search
 dependencies[] = mica_client_dataset
+dependencies[] = mica_client_network
