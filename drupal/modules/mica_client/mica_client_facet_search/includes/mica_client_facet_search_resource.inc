@@ -132,6 +132,7 @@ class MicaSearchResource extends MicaClient {
     }
     if (!empty($dto_data_response)) {
       $dtos ['totalHits'] = $dto_data_response->totalHits;
+      $dtos ['totalCount'] = $dto_data_response->totalCount;
     }
     else {
       $dtos ['totalHits'] = 0;

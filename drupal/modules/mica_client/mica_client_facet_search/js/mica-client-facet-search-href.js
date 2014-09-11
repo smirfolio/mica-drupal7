@@ -56,6 +56,7 @@
       //deal with tabs
       var tabparam = '';
       if ($.urlParam('tab')) {
+        var NewUrlparameters = $.urlParamToAdd();
         var div = $("div.search-result").find("div.tab-pane");
         div.removeClass("active");
         $("div#" + $.urlParam('tab')).addClass("active");

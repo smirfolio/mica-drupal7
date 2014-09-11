@@ -319,7 +319,7 @@
           print l(t('Search Variables'), 'mica/search',
             array(
               'query' => array(
-                'tab' => 'variables',
+                'type' => 'variables',
                 'parent:id[]' => 'id.' . $study_dto->id
               ),
               'attributes' => array('class' => 'btn btn-primary')
