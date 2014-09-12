@@ -24,6 +24,9 @@ function mica_client_study_page_detail($study_id) {
   $dataset_output = (module_exists('mica_client_dataset')) ?
     mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
 
+  $network_output = (module_exists('mica_client_network')) ?
+    mica_client_network_networks_list($study_id) : NULL;
+
   $opal_output = !empty($study_dto->opal) ? mica_client_study_get_opal_url($study_dto->opal) : NULL;
 
   return theme('mica_client_study_detail',
@@ -32,6 +35,7 @@ function mica_client_study_page_detail($study_id) {
       'timeline' => mica_client_study_get_timeline_detail($study_dto),
       'populations' => mica_client_study_get_populations_detail($study_dto),
       'datasets' => $dataset_output,
+      'networks' => $network_output,
       'opal' => $opal_output,
       'study_variables_aggs' => mica_client_study_get_variables($study_dto->id),
     ));

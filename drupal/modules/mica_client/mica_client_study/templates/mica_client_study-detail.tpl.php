@@ -293,6 +293,14 @@
   </section>
 <?php endif; ?>
 
+<!-- NETWORKS -->
+<?php if (!empty($networks)): ?>
+  <section>
+    <h3><?php print t('Networks'); ?></h3>
+    <?php print $networks; ?>
+  </section>
+<?php endif; ?>
+
 <!-- DATASETS -->
 <?php if (!empty($datasets)): ?>
   <section>

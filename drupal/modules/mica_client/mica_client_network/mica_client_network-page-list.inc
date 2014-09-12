@@ -4,17 +4,20 @@ include_once('includes/mica_client_network_resource.inc');
 
 function mica_client_network_page_list() {
   $output['title'] = t('Network Catalogue');
-  $output['data'] = mica_client_network_networks_table(mica_client_network_get_networks());
+  $output['data'] = mica_client_network_networks_list();
   return theme('mica_client_study_list', array("context_detail" => $output));
 }
 
-function mica_client_network_get_networks() {
+function mica_client_network_get_networks($study_id) {
   $resource = new MicaNetworkResource();
-  return $resource->get_networks();
+  return $resource->get_networks($study_id);
 }
 
 function mica_client_network_networks_table($networks_result) {
-  $rows = mica_client_network_networks_table_rows($networks_result->networks);
+  $rows = array();
+  if (!empty($networks_result->total) && $networks_result->total > 0) {
+    $rows = mica_client_network_networks_table_rows($networks_result->networks);
+  }
   $headers = mica_client_network_networks_table_headers();
   $per_page = 20;
 
