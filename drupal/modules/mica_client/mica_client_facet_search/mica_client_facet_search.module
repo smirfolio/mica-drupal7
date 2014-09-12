@@ -6,6 +6,9 @@ include_once('includes/mica_client_facet_search_resource.inc');
 include_once('includes/mica_client_facet_search_resource_facet_conf.inc');
 include_once('mica_client_facet_search_charts.php');
 
+/*********Temporary*********/
+$path_module_networks = drupal_get_path('module', 'mica_client_network');
+include_once($path_module_networks . '/mica_client_network-page-list.inc');
 
 function mica_client_facet_search_menu() {
   $items = array();
@@ -321,6 +324,7 @@ function mica_client_facet_search_variable_page_search() {
   $studies = NULL;
   $study_charts = NULL;
   $variables = NULL;
+  $networks = NULL;
   $Variable_charts = NULL;
   $search_resources = new MicaSearchResource();
 
@@ -328,6 +332,12 @@ function mica_client_facet_search_variable_page_search() {
   if (!empty($resource)) {
 
     switch ($resource) {
+      case  'networks':
+        $networks = mica_client_network_get_networks();
+
+        $networksarray['totalHits'] = $networksarray['totalCount'] = count($networks->networks);
+
+        break;
       case  'studies':
         $studies = $search_resources->search_studies();
         $study_charts = theme('mica_client_facet_search_charts', array(
@@ -362,7 +372,13 @@ function mica_client_facet_search_variable_page_search() {
       'totalHits' => !empty($studies['totalHits']) ? $studies['totalHits'] : NULL,
       'totalCount' => !empty($studies['totalCount']) ? $studies['totalCount'] : NULL
     ),
-    'study_charts' => $study_charts
+    'study_charts' => $study_charts,
+    'networks' => array(
+      'data' => mica_client_network_networks_table($networks),
+      'totalHits' => !empty($networksarray['totalHits']) ? $networksarray['totalHits'] : NULL,
+      'totalCount' => !empty($networksarray['totalCount']) ? $networksarray['totalCount'] : NULL
+    ),
+    'network_charts' => $study_charts
   ));
   return $output;
 }

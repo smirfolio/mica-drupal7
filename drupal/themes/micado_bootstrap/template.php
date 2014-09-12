@@ -141,6 +141,25 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/mica_client_network-detail.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_network-detail.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_network-detail',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_network-list.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_network-list.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_network-list',
+      'path' => $path . '/templates'
+    );
+  }
+
+
   return $theme_array;
 
 }
