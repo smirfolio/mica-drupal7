@@ -12,12 +12,17 @@ function mica_client_study_get_studies() {
 }
 
 function mica_client_study_studies_table($studies) {
-  $rows = mica_client_study_study_summaries_table_rows($studies['data']);
+  $rows = array();
+  $total = 0;
+  if (!empty($studies['totalHits']) && $studies['totalHits'] > 0) {
+    $total = $studies['totalHits'];
+    $rows = mica_client_study_study_summaries_table_rows($studies['data']);
+  }
   $headers = mica_client_study_study_summaries_table_headers();
   $per_page = 20;
 
-  $args = array('quantity' => $studies['totalHits'], 'element' => MicaStudyResource::PAGINATE_studies);
-  $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaStudyResource::PAGINATE_studies);
+  $args = array('quantity' => $total, 'element' => MicaStudyResource::PAGINATE_studies);
+  $current_page = pager_default_initialize($total, $per_page, MicaStudyResource::PAGINATE_studies);
   $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
     'table',
