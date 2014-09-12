@@ -55,13 +55,15 @@
       /**************************/
       //deal with tabs
       var tabparam = '';
-      if ($.urlParam('tab')) {
+      var urlTabParam = $.urlParam('type');
+      console.log(urlTabParam);
+      if (urlTabParam) {
         var NewUrlparameters = $.urlParamToAdd();
         var div = $("div.search-result").find("div.tab-pane");
         div.removeClass("active");
-        $("div#" + $.urlParam('tab')).addClass("active");
-        $('#result-search a[href$="#' + $.urlParam('tab') + '"]').tab('show');
-        tabparam = '&' + 'tab=' + $.urlParam('tab');
+        $("div#" + urlTabParam).addClass("active");
+        $('#result-search a[href$="#' + urlTabParam + '"]').tab('show');
+        tabparam = '&' + 'type=' + urlTabParam;
       }
 
       /**********************/

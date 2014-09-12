@@ -2,8 +2,8 @@
 //dpm($variables_result);
 ?>
 <div id="search-result">
-  <ul class="nav nav-tabs facets-tab" role="tablist" id="result-search">
-    <li class="active"><a href="#variables" role="tab" data-toggle="tab"><?php print t('Variables') ?>
+  <ul class="nav nav-tabs" role="tablist" id="result-search">
+  <li class="active"><a href="#variables" role="tab" data-toggle="tab"><?php print t('Variables') ?>
         <?php if (!empty($variables_result['totalHits'])) : ?>
           (  <?php print $variables_result['totalHits']; ?> )
         <?php endif; ?>

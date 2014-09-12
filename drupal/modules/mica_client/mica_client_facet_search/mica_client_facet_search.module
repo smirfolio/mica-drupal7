@@ -353,14 +353,14 @@ function mica_client_facet_search_variable_page_search() {
     'noval' => '',
     'variables_result' => array(
       'data' => mica_client_facet_search_variables_table($variables),
-      'totalHits' => $variables['totalHits'],
-      'totalCount' => $variables['totalCount']
+      'totalHits' => !empty($variables['totalHits']) ? $variables['totalHits'] : NULL,
+      'totalCount' => !empty($variables['totalCount']) ? $variables['totalCount'] : NULL
     ),
     'variable_charts' => $Variable_charts,
     'studies' => array(
       'data' => mica_client_facet_search_studies_table($studies),
-      'totalHits' => $studies['totalHits'],
-      'totalCount' => $studies['totalCount']
+      'totalHits' => !empty($studies['totalHits']) ? $studies['totalHits'] : NULL,
+      'totalCount' => !empty($studies['totalCount']) ? $studies['totalCount'] : NULL
     ),
     'study_charts' => $study_charts
   ));
