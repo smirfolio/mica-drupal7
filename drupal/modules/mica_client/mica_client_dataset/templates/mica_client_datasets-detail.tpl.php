@@ -15,6 +15,11 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-6 right-indent">
+          <?php if (!empty($dataset_dto->acronym)): ?>
+            <h5><?php print t('Acronym') ?></h5>
+            <p><?php print mica_client_commons_get_localized_field($dataset_dto, 'acronym'); ?></p>
+          <?php endif; ?>
+
           <h5><?php print t('Entity Type'); ?></h5>
 
           <p><?php print t($dataset_dto->entityType); ?></p>
