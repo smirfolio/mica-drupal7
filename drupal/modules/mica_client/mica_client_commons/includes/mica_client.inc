@@ -305,7 +305,7 @@ class MicaClient {
     //dpm($request_param);
     if (!empty($request_param)) {
       foreach ($this->normalize_parameters(urldecode($request_param)) as $field => $term_association) {
-        if ($field != 'page' && $field != 'tab') {
+        if ($field != 'page' && $field != 'type') {
           if (strpos($field, key($hierarchical_relation)) === 0 && !empty($hierarchical_relation)) {
 
             $parent_child_field = explode(':', urldecode($field));

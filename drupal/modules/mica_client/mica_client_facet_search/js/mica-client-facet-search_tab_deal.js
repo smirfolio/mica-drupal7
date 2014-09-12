@@ -1,68 +1,56 @@
 (function ($) {
-  Drupal.behaviors.mica_client_dataset_collapse = {
+  Drupal.behaviors.mica_client_facet_search_collapse_tab = {
     attach: function (context, settings) {
+      /***Here we deal with facet tab that is retrieved from cookies *******************/
+      //get active facet tab from cooki
+      var activeTabCooki = $.getCookieDataTabs('activeFacetTab');
 
-      $.urlParam = function (name) {
-        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        if (results == null) {
-          return null;
-        }
-        else {
-
-          return results[1] || 0;
-        }
-      };
-
-      $.urlParamToAdd = function () {
-        {
-          var url = window.location.href;
-          param = 'tab';
-          var urlparts = url.split('?');
-          if (urlparts.length >= 2) {
-            var prefix = encodeURIComponent(param) + '=';
-            var pars = urlparts[1].split(/[&;]/g);
-            for (var i = pars.length; i-- > 0;) {
-              if (pars[i].indexOf(prefix, 0) == 0) {
-                pars.splice(i, 1);
-              }
-            }
-            if (pars.length > 0) {
-              return pars.join('&');
-            }
-            else {
-              return '';
-            }
+      //if empty cookie save current facet tab state
+      if (jQuery.isEmptyObject(activeTabCooki)) {
+        $(".facets-tab>li").each(function (id, state) {
+          //   var current_id = this.firstChild().attr('href');
+          console.log($(this).attr('class'));
+          if ($(this).attr('class') == 'active') {
+            console.log($(this).find('a').attr('href'));
+            activeTabCooki['active'] = $(this).find('a').attr('href');
           }
-          else {
-            return '';
-          }
-        }
-
-      };
-
-      if ($.urlParam('tab')) {
-        var NewUrlparameters = $.urlParamToAdd();
-        var div = $("div.search-result").find("div.tab-pane");
-        div.removeClass("active");
-        $("div#" + $.urlParam('tab')).addClass("active");
-        $('#result-search a[href$="#' + $.urlParam('tab') + '"]').tab('show');
+        });
+        //save current facet tab state
+        $.saveCookieDataTabs(activeTabCooki, 'activeFacetTab');
       }
-
-      /****Bug displaying studies and variables tab*****/
-
-      $("div#search-result").find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+      else {
+        //open active facet tab (retrived from cookies)
+        $('#facet-search a[href$="' + activeTabCooki["active"] + '"]').tab('show');
+        console.log($(this).attr('class'));
+      }
+      //save current stat of facet tab in cookie
+      $("div#search-facets").find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         // e.target // activated tab
         // e.relatedTarget // previous tab
-
-        var targetPanel = e.target.hash;
-        window.location = '?' + 'tab=' + targetPanel.replace('#', '') + '&' + $.urlParamToAdd();
         e.preventDefault();
-//        var div = $("div.search-result").find("div.tab-pane");
-//        //console.log(div);
-//        div.removeClass("active");
-//        $("div" + targetPanel).addClass("active");
+        var targetPanel = e.target.hash;
+        $.saveCookieDataTabs('', 'activeFacetTab');
+        activeTabCooki['active'] = targetPanel;
+        $.saveCookieDataTabs(activeTabCooki, 'activeFacetTab');
+      });
 
-      })
+      /***Here we deal with result search tab that is retrieved from url *******************/
+      if ($.urlParam('type')) {
+        var div = $("div.search-result").find("div.tab-pane");
+        div.removeClass("active");
+        $("div#" + $.urlParam('type')).addClass("active");
+        $('#result-search a[href$="#' + $.urlParam('type') + '"]').tab('show');
+      }
+
+      $("div#search-result").find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        //TODO we need to stop show tab and refresh  the page
+        // e.target // activated tab
+        // e.relatedTarget // previous tab
+        e.preventDefault();
+        var targetPanel = e.target.hash;
+        window.location = '?' + 'type=' + targetPanel.replace('#', '') + '&' + $.urlParamToAdd();
+      });
+
     }
   }
 }(jQuery));

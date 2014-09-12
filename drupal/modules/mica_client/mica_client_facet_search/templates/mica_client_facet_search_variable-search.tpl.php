@@ -1,23 +1,29 @@
 <?php //dvm('search var',$studies);
-// dvm('search var', current($variables));
+//dpm($variables_result);
 ?>
 <div id="search-result">
   <ul class="nav nav-tabs" role="tablist" id="result-search">
-    <li class="active"><a href="#variables" role="tab" data-toggle="tab"><?php print t('Variables') ?> </a></li>
-    <li><a href="#studies" role="tab" data-toggle="tab"> <?php print t('Studies') ?> </a></li>
-
+  <li class="active"><a href="#variables" role="tab" data-toggle="tab"><?php print t('Variables') ?>
+        <?php if (!empty($variables_result['totalHits'])) : ?>
+          (  <?php print $variables_result['totalHits']; ?> )
+        <?php endif; ?>
+      </a></li>
+    <li><a href="#studies" role="tab" data-toggle="tab"> <?php print t('Studies') ?>
+        <?php if (!empty($studies['totalHits'])) : ?>
+          (  <?php print $studies['totalHits']; ?> )
+        <?php endif; ?>
+      </a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content search-result">
     <div class="tab-pane active" id="variables">
-
     <?php print $variable_charts; ?>
-      <?php print current($variables); ?>
+    <?php print $variables_result['data']; ?>
     </div>
     <div class="tab-pane" id="studies">
     <?php print $study_charts; ?>
-      <?php print $studies; ?>
+    <?php print $studies['data']; ?>
     </div>
 
   </div>

@@ -1,10 +1,12 @@
 (function ($) {
-  Drupal.behaviors.mica_client_dataset_collapse = {
+  Drupal.behaviors.mica_client_facet_search_collapse_block = {
     attach: function (context, settings) {
+
       var newst = {};
       var newst1 = {};
       var sectionid;
-      var st = getCookieData();
+      var st = $.getCookieDataTabs('activeAccordionGroup');
+
       if (jQuery.isEmptyObject(st)) {
         $(".block-content").each(function (id, state) {
           var current_id = this.id;
@@ -13,7 +15,7 @@
 
         });
 
-        saveCookieData(st);
+        $.saveCookieDataTabs(newst1, 'activeAccordionGroup');
       }
       else {
         $(".block-content").each(function (id, state) {
@@ -33,11 +35,12 @@
 
         });
 
-        saveCookieData(newst1);
+        $.saveCookieDataTabs(newst1, 'activeAccordionGroup');
       }
 
 //when a group is shown, save it as the active accordion group
       $(".block").on('shown.bs.collapse', function () {
+        console.log('collapse');
         $(".block-content").each(function (id, state) {
           //var id_active = $(".panel-collapse .in").attr('id');
           var current_id = this.id;
@@ -49,7 +52,7 @@
             delete newst[current_id];
           }
         });
-        saveCookieData(newst);
+        $.saveCookieDataTabs(newst, 'activeAccordionGroup');
       });
 
       //when a group is shown, save it as the active accordion group
@@ -65,7 +68,7 @@
           }
 
         });
-        saveCookieData(newst)
+        $.saveCookieDataTabs(newst, 'activeAccordionGroup')
       });
 
 
@@ -78,34 +81,6 @@
       $('.charts').on('hidden.bs.collapse', function () {
         $('.text-button-field').html('Show all');
       });
-      /********************/
-      function saveCookieData(newst) {
-
-        // Stringify the object in JSON format for saving in the cookie.
-        var cookieString = '{ ';
-        var cookieParts = [];
-
-        $.each(newst, function (id, setting) {
-
-          cookieParts[cookieParts.length] = '"' + id + '": "' + setting + '"';
-        });
-        cookieString += cookieParts.join(', ') + ' }';
-        // console.log(cookieString);
-        $.cookie('activeAccordionGroup', cookieString, {
-          time: 1,
-          path: window.location.pathname
-        });
-      };
-
-      function getCookieData() {
-        if ($.cookie) {
-          var cookieString = $.cookie('activeAccordionGroup');
-          return cookieString ? $.parseJSON(cookieString) : {};
-        }
-        else {
-          return '';
-        }
-      }
 
       function dealwithhrefico(current_id, collapse) {
         if (collapse && current_id) {
