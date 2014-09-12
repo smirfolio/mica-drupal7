@@ -141,4 +141,31 @@ class MicaSearchResource extends MicaClient {
     return $dtos;
   }
 
+
+  public function search_networks() {
+    $dto_data_response = $this->_search_resource('networks', NULL, 'child', 'Study', NULL);
+    //$this->session_facets_builder($dto_data_response, 'studies');
+    // dpm($dto_data_response);
+    dpm($dto_data_response);
+//    $summaries_networks = !empty($dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries) ?
+//      $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
+//    $dtoObj = '\obiba\mica\NetworkDto';
+//    $dtos = array();
+//    $summaries_data = !empty($summaries_networks) ? $summaries_networks : NULL;
+//    if ($summaries_data) {
+//      foreach ($summaries_networks as $network) {
+//        $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($network));
+//      }
+//    }
+//    if (!empty($dto_data_response)) {
+//      $dtos ['totalHits'] = $dto_data_response->totalHits;
+//      $dtos ['totalCount'] = $dto_data_response->totalCount;
+//    }
+//    else {
+//      $dtos ['totalHits'] = 0;
+//    }
+//
+//    return $dtos;
+  }
+
 }

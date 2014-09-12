@@ -5,10 +5,10 @@ include_once('includes/mica_client_network_resource.inc');
 function mica_client_network_page_list() {
   $output['title'] = t('Network Catalogue');
   $output['data'] = mica_client_network_networks_list();
-  return theme('mica_client_study_list', array("context_detail" => $output));
+  return theme('mica_client_network-list', array("context_detail" => $output));
 }
 
-function mica_client_network_get_networks($study_id) {
+function mica_client_network_get_networks($study_id = NULL) {
   $resource = new MicaNetworkResource();
   return $resource->get_networks($study_id);
 }
