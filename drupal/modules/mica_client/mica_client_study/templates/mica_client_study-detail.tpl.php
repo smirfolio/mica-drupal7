@@ -182,9 +182,9 @@
       <div class="col-xs-6 right-indent">
         <!-- ACCESS -->
         <h3><?php print t('Access') ?></h3>
-        <?php if (in_array('data', $study_dto->access) ||
-          in_array('bio_samples', $study_dto->access) ||
-          in_array('other', $study_dto->access)
+        <?php if (!empty($study_dto->access) && (in_array('data', $study_dto->access) ||
+            in_array('bio_samples', $study_dto->access) ||
+            in_array('other', $study_dto->access))
         ): ?>
 
           <p><?php print t('Access to external researchers or third parties provided or foreseen for:'); ?></p>

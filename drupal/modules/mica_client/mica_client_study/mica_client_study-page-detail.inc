@@ -14,31 +14,37 @@ function mica_client_study_page_detail($study_id) {
   $study_resource = new MicaStudyResource();
   $study_dto = $study_resource->study($study_id);
 
-  drupal_set_title(mica_client_commons_get_localized_field($study_dto, 'name'));
+  if (!empty($study_dto)) {
+    drupal_set_title(mica_client_commons_get_localized_field($study_dto, 'name'));
 
-  drupal_set_breadcrumb(array(
-    l('Home', '<front>'),
-    l(t('Studies'), 'mica/studies'),
-  ));
-
-  $dataset_output = (module_exists('mica_client_dataset')) ?
-    mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
-
-  $network_output = (module_exists('mica_client_network')) ?
-    mica_client_network_networks_list($study_id) : NULL;
-
-  $opal_output = !empty($study_dto->opal) ? mica_client_study_get_opal_url($study_dto->opal) : NULL;
-
-  return theme('mica_client_study_detail',
-    array(
-      'study_dto' => $study_dto,
-      'timeline' => mica_client_study_get_timeline_detail($study_dto),
-      'populations' => mica_client_study_get_populations_detail($study_dto),
-      'datasets' => $dataset_output,
-      'networks' => $network_output,
-      'opal' => $opal_output,
-      'study_variables_aggs' => mica_client_study_get_variables($study_dto->id),
+    drupal_set_breadcrumb(array(
+      l('Home', '<front>'),
+      l(t('Studies'), 'mica/studies'),
     ));
+
+    $dataset_output = (module_exists('mica_client_dataset')) ?
+      mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
+
+    $network_output = (module_exists('mica_client_network')) ?
+      mica_client_network_networks_list($study_id) : NULL;
+
+    $opal_output = !empty($study_dto->opal) ? mica_client_study_get_opal_url($study_dto->opal) : NULL;
+
+    return theme('mica_client_study_detail',
+      array(
+        'study_dto' => $study_dto,
+        'timeline' => mica_client_study_get_timeline_detail($study_dto),
+        'populations' => mica_client_study_get_populations_detail($study_dto),
+        'datasets' => $dataset_output,
+        'networks' => $network_output,
+        'opal' => $opal_output,
+        'study_variables_aggs' => mica_client_study_get_variables($study_id),
+      ));
+  }
+  else {
+    drupal_set_title(t('Study not found'));
+    return '';
+  }
 }
 
 function mica_client_study_get_opal_url($opal_url) {
@@ -104,32 +110,34 @@ function mica_client_study_get_timeline_detail($study_detail) {
 function mica_client_study_get_populations_detail($study_detail) {
   $page_render_populations = '';
 
-  foreach ($study_detail->populations as $population) {
-    $page_render_populations .= '
+  if (!empty($study_detail->populations)) {
+    foreach ($study_detail->populations as $population) {
+      $page_render_populations .= '
             <h4>
              <svg width="25" height="25" style="vertical-align: bottom;">
                     <rect width="20" height="20" x="2" y="2" rx="5" ry="5" style="fill:#9a3034;"> </rect>
              </svg>
                 ' . mica_client_commons_get_localized_field($population, 'name') . '
             </h4>';
-    if (!empty($population->dataCollectionEvents)) {
-      $dce_rows = mica_client_study_get_dce_table($population->dataCollectionEvents);
-      uasort($dce_rows, 'mica_client_study_sort_dce');
-      _mica_client_commons_normalize_rows($dce_rows);
+      if (!empty($population->dataCollectionEvents)) {
+        $dce_rows = mica_client_study_get_dce_table($population->dataCollectionEvents);
+        uasort($dce_rows, 'mica_client_study_sort_dce');
+        _mica_client_commons_normalize_rows($dce_rows);
 
-      $population['dce-tab'] = theme(
-        'table',
-        array(
-          'header' => array(t('Name'), t('Description'), t('Start'), t('End')),
-          'rows' => $dce_rows,
-          'empty' => t('No data collection event found'),
-          'sticky' => FALSE,
-          'attributes' => array('id' => 'variables_overview')
-        )
-      );
-      $population['dce-modal'] = mica_client_study_get_dce_detail($study_detail->id, $population->dataCollectionEvents);
+        $population['dce-tab'] = theme(
+          'table',
+          array(
+            'header' => array(t('Name'), t('Description'), t('Start'), t('End')),
+            'rows' => $dce_rows,
+            'empty' => t('No data collection event found'),
+            'sticky' => FALSE,
+            'attributes' => array('id' => 'variables_overview')
+          )
+        );
+        $population['dce-modal'] = mica_client_study_get_dce_detail($study_detail->id, $population->dataCollectionEvents);
+      }
+      $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
     }
-    $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
   }
 
   return $page_render_populations;
