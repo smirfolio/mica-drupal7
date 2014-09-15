@@ -39,6 +39,7 @@ function mica_client_study_menu() {
 function mica_client_study_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
   return array(
+    'mica_client_study_list-page' => array('template' => 'mica_client_study-list-page', 'path' => $path_theme),
     'mica_client_study_list' => array('template' => 'mica_client_study-list', 'path' => $path_theme),
     'mica_client_study_detail' => array('template' => 'mica_client_study-detail', 'path' => $path_theme),
     'mica_population_detail' => array('template' => 'mica_client_study-population-detail', 'path' => $path_theme),
@@ -46,6 +47,39 @@ function mica_client_study_theme($existing, $type, $theme, $path) {
     'mica_client_study_attachments' => array('template' => 'mica_client_study_attachments', 'path' => $path_theme),
     'mica_client_study_opal' => array('template' => 'mica_client_study_opal', 'path' => $path_theme)
   );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function mica_client_study_block_info() {
+  $blocks['studies-tab-list'] = array(
+    'info' => t('Studies list'),
+    'title' => '',
+    'status' => 1,
+    'region' => 'content',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/studies',
+    'weight' => 3,
+    'custom' => 1,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function mica_client_study_block_view($delta = '') {
+  switch ($delta) {
+    case 'studies-tab-list' :
+      $output = theme('mica_client_study_list', array('list_studies' => mica_client_study_get_studies()));
+      $block['subject'] = '';
+      $block['content'] = $output;
+      return $block;
+
+    default:
+      break;
+  }
 }
 
 /**

@@ -15,6 +15,14 @@
 function micado_bootstrap_theme($existing, $type, $theme, $path) {
   $theme_array = array();
 
+  $destination_path = file_exists($path . '/templates/mica_client_study-list-page.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_study_list-page'] = array(
+      'template' => 'mica_client_study-list-page',
+      'path' => $path . '/templates'
+    );
+  }
+
   $destination_path = file_exists($path . '/templates/mica_client_study-list.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['mica_client_study_list'] = array(
@@ -158,6 +166,14 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
       'path' => $path . '/templates'
     );
   }
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_block_studies_search.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_block_studies_search.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_facet_search_block_studies_search-list',
+      'path' => $path . '/templates'
+    );
+  }
 
 
   return $theme_array;
@@ -178,12 +194,38 @@ function micado_bootstrap_preprocess_html(&$variables) {
   drupal_add_css('https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700,700italic', array('type' => 'external'));
 }
 
+function micado_bootstrap_letters_badge_title() {
+  $current_item = explode('/', current_path());
+
+  if (!empty($current_item[1])) {
+    if (strstr($current_item[1], 'study-') || strstr($current_item[1], 'harmonization-')) {
+      return 'D';
+    }
+    elseif (strstr($current_item[1], 'search')) {
+      if (!empty($_GET['type'])) {
+        return drupal_strtoupper(drupal_substr($_GET['type'], 0, 1));
+      }
+    }
+    else {
+      return drupal_strtoupper(drupal_substr($current_item[1], 0, 1));
+    }
+  }
+  else {
+    return NULL;
+  }
+}
+
 /**
  * Implements hook_preprocess_page().
  *
  * @see page.tpl.php
  */
 function micado_bootstrap_preprocess_page(&$variables) {
+//add badge letter
+  $first_letter_title = micado_bootstrap_letters_badge_title();
+  if (!empty($first_letter_title)) {
+    $variables['classes_array']['title_page'] = micado_bootstrap_letters_badge_title();
+  }
   drupal_add_js('misc/jquery.cookie.js', 'file');
   // Add information about the number of sidebars.
   if (!empty($variables['page']['facets']) && !empty($variables['page']['sidebar_second'])) {
