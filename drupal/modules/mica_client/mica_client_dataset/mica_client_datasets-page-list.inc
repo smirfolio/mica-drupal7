@@ -1,6 +1,7 @@
 <?php
 
 include_once('includes/mica_client_dataset_resource.inc');
+
 function mica_client_dataset_get_datastes() {
   $node_rendred = node_view(node_load(variable_get('dataset_page')));
   $node_rendred['#node']->title = '';
@@ -12,25 +13,29 @@ function mica_client_dataset_get_harmonization_datasets() {
   $node_rendred = node_view(node_load(variable_get('harmo_dataset_page')));
   $harmo_datasets_dto = $dataset_resource->get_datasets('harmonization-datasets');
   $node_rendred['#node']->title = '';
-  $datasets_table = _mica_client_dataset_get_datasets_table($harmo_datasets_dto, 'harmonization-dataset');
-  $node_rendred['body']['#items'][1]['value'] = $datasets_table;
-  $node_rendred['body']['#items'][1]['safe_value'] = $datasets_table;
-  $node_rendred['body'][1]['#markup'] = $datasets_table;
-  return $node_rendred;
+
+  return theme('mica_client_datasets-list', array(
+    'datasets' => $harmo_datasets_dto,
+    'node_page' => $node_rendred,
+    'type' => 'harmonization-dataset'
+  ));
 }
 
 function mica_client_dataset_get_study_datasets() {
-  $output = array();
   $dataset_resource = new MicaDatasetResource();
   $node_rendred = node_view(node_load(variable_get('study_dataset_page')));
   $study_datasets_dto = $dataset_resource->get_datasets('study-datasets');
   $node_rendred['#node']->title = '';
-  $datasets_table = _mica_client_dataset_get_datasets_table($study_datasets_dto, 'study-dataset');
-  $node_rendred['body']['#items'][1]['value'] = $datasets_table;
-  $node_rendred['body']['#items'][1]['safe_value'] = $datasets_table;
-  $node_rendred['body'][1]['#markup'] = $datasets_table;
 
-  return $node_rendred;
+  return theme('mica_client_datasets-list', array(
+    'datasets' => $study_datasets_dto,
+    'node_page' => $node_rendred,
+    'type' => 'study-dataset'
+  ));
+}
+
+function _mica_client_dataset_get_datasets_list_rendered($datasets, $type) {
+  return theme('mica_client_datasets-list-page', array('list_datasets' => $datasets, 'type' => $type));
 }
 
 function _mica_client_dataset_get_datasets_table($datasets, $type) {

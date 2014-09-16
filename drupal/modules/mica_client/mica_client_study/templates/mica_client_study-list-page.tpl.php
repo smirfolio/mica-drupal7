@@ -20,17 +20,17 @@
 
 
         <div class="study-item">
-          <div class="col-xs-2 col-md-2">
+          <div class="col-xs-2">
             <h1 class="big-caracter">
            <span class="t_badge color_S">
            <?php print drupal_substr(mica_client_commons_get_localized_field($study, 'name'), 0, 1); ?>
            </span>
             </h1>
-            <!--        <img class="img-responsive"-->
-            <!--             src="http://localhost:8082/ws/draft/study/adoquest/file/54173315c4aac4d2f380d516/_download">-->
+            <!--  <img class="img-responsive"-->
+            <!--  src="http://localhost:8082/ws/draft/study/adoquest/file/<?php print $study->id ?>/_download">-->
           </div>
-          <div class="col-xs-10 col-md-10">
-            <h4><a
+          <div class="col-xs-10">
+          <h4><a
                 href="study/<?php print $study->id ?>"><?php print mica_client_commons_get_localized_field($study, 'acronym'); ?>
                 -
                 <?php print  mica_client_commons_get_localized_field($study, 'name'); ?> </a></h4>
