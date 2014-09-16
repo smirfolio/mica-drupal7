@@ -11,6 +11,7 @@ function mica_client_dataset_menu() {
     'access callback' => TRUE,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
+    'expanded' => TRUE,
     'weight' => 3
   );
 
@@ -119,7 +120,7 @@ function mica_client_dataset_get_all_datasets_studies($study_id) {
   $output = NULL;
   $dataset_resource = new MicaDatasetResource();
 
-  $datasets = array_merge($dataset_resource->get_datasetes('study-datasets', $study_id), $dataset_resource->get_datasetes('harmonization-datasets', $study_id));
+  $datasets = $dataset_resource->get_datasets('datasets', $study_id);
 
   if (!empty($datasets)) {
     $output = mica_client_dataset_get_datasets_tables(mica_client_dataset_get_datasets_list($datasets));

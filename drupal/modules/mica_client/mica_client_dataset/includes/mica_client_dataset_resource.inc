@@ -26,12 +26,12 @@ class MicaDatasetResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
-  public function get_datasetes($resource, $study_id = NULL) {
+  public function get_datasets($resource = 'datasets', $study_id = NULL) {
     $this->setLastResponse(NULL);
     $study_resouce = !empty($study_id) ? '&study=' . $study_id : '';
-    $url_study_datasets = $this->micaUrl . '/' . $resource . '/?limit=-1' . $study_resouce;
+    $url_datasets = $this->micaUrl . '/' . $resource . '?limit=-1' . $study_resouce;
     //dpm($url_study_datasets);
-    $request = new HttpClientRequest($url_study_datasets, array(
+    $request = new HttpClientRequest($url_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_JSON),
@@ -142,47 +142,7 @@ class MicaDatasetResource extends MicaClient {
     }
   }
 
-  public function get_dataset_varaibles($resource, $dataset_id, $size = NULL) {
-    $this->setLastResponse(NULL);
-    $size_param = is_null($size) ? parent::SIZE_RESPONSE : $size;
-    $url_parm = explode('?', $_SERVER['REQUEST_URI']);
-    $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables?size=' . $size_param;
-
-    if (empty($url_parm[1])) {
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-              'Accept' => array(parent::HEADER_JSON),
-            )
-          ),
-      ));
-    }
-    else {
-      $dto_param = $this->dto_filter_construct($url_parm[1], NULL, 'variable', NULL, $size);
-      $url = $this->micaUrl . '/' . $resource . '/' . $dataset_id . '/variables?from=' . json_decode($dto_param)->from . '&size=' . $size_param;
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-              'Accept' => array(parent::HEADER_JSON),
-            )
-          ),
-      ));
-    }
-
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      // return $data;
-      $this->setLastResponse($client->lastResponse);
-      $dtoObj = '\obiba\mica\DatasetVariablesDto';
-
-      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
-    } catch (HttpClientException $e) {
-      return array();
-    }
-  }
-
-  public function get_dataset($resource_dataset, $dataset_id) {
+  public function get_dataset($resource_dataset = 'dataset', $dataset_id) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/' . $resource_dataset . '/' . $dataset_id;
 
