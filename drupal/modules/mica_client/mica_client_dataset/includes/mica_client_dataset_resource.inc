@@ -26,12 +26,12 @@ class MicaDatasetResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
-  public function get_datasetes($resource, $study_id = NULL) {
+  public function get_datasets($resource = 'datasets', $study_id = NULL) {
     $this->setLastResponse(NULL);
     $study_resouce = !empty($study_id) ? '&study=' . $study_id : '';
-    $url_study_datasets = $this->micaUrl . '/' . $resource . '/?limit=-1' . $study_resouce;
+    $url_datasets = $this->micaUrl . '/' . $resource . '?limit=-1' . $study_resouce;
     //dpm($url_study_datasets);
-    $request = new HttpClientRequest($url_study_datasets, array(
+    $request = new HttpClientRequest($url_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_JSON),
@@ -182,7 +182,7 @@ class MicaDatasetResource extends MicaClient {
     }
   }
 
-  public function get_dataset($resource_dataset, $dataset_id) {
+  public function get_dataset($resource_dataset = 'dataset', $dataset_id) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/' . $resource_dataset . '/' . $dataset_id;
 

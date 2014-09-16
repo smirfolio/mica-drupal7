@@ -10,7 +10,7 @@ function mica_client_dataset_get_datastes() {
 function mica_client_dataset_get_harmonization_datasets() {
   $dataset_resource = new MicaDatasetResource();
   $node_rendred = node_view(node_load(variable_get('harmo_dataset_page')));
-  $harmo_datasets_dto = $dataset_resource->get_datasetes('harmonization-datasets');
+  $harmo_datasets_dto = $dataset_resource->get_datasets('harmonization-datasets');
   $node_rendred['#node']->title = '';
   $datasets_table = _mica_client_dataset_get_datasets_table($harmo_datasets_dto, 'harmonization-dataset');
   $node_rendred['body']['#items'][1]['value'] = $datasets_table;
@@ -23,7 +23,7 @@ function mica_client_dataset_get_study_datasets() {
   $output = array();
   $dataset_resource = new MicaDatasetResource();
   $node_rendred = node_view(node_load(variable_get('study_dataset_page')));
-  $study_datasets_dto = $dataset_resource->get_datasetes('study-datasets');
+  $study_datasets_dto = $dataset_resource->get_datasets('study-datasets');
   $node_rendred['#node']->title = '';
   $datasets_table = _mica_client_dataset_get_datasets_table($study_datasets_dto, 'study-dataset');
   $node_rendred['body']['#items'][1]['value'] = $datasets_table;
