@@ -1,4 +1,4 @@
-<?php dpm($datasets); ?>
+<?php //dpm($datasets); ?>
 <?php print render($node_page) ?>
 <hr>
 <div class="clearfix">
@@ -18,22 +18,22 @@
       $dataset_name = mica_client_commons_get_localized_field($dataset, 'name');
       ?>
 
-      <div class="study-item">
-        <h1 class="big-caracter">
+
+      <h1 class="big-caracter">
            <span class="t_badge color_D">
           D
 <!--             --><?php //print drupal_substr(mica_client_commons_get_localized_field($dataset, 'name'), 0, 1); ?>
            </span>
-          <a href="../<?php print $type ?>/<?php print $dataset->id ?>/<?php print $dataset_name ?>">
-            <?php print  $dataset_name; ?>
-          </a>
-        </h1>
-        <?php if (!empty($dataset)): ?>
-          <p>
-            <?php print   mica_client_commons_get_localized_field($dataset, 'description'); ?>
-          </p>
-        <?php endif; ?>
-      </div>
+        <a href="../<?php print $type ?>/<?php print $dataset->id ?>/<?php print $dataset_name ?>">
+          <?php print  $dataset_name; ?>
+        </a>
+      </h1>
+      <?php if (!empty($dataset)): ?>
+      <p>
+        <?php print   mica_client_commons_get_localized_field($dataset, 'description'); ?>
+      </p>
+    <?php endif; ?>
+
       <div class="clearfix"></div>
     <?php endforeach; ?>
   </div>
