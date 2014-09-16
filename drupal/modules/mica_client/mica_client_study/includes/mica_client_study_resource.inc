@@ -26,10 +26,12 @@ class MicaStudyResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
   }
 
-  public function get_studies() {
+  public function get_studies($query = NULL) {
     $this->setLastResponse(NULL);
     $url_studies = $this->micaUrl . '/studies?limit=-1';
-
+    if (!empty($query)) {
+      $url_studies .= '&query=' . $query;
+    }
     $request = new HttpClientRequest($url_studies, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(

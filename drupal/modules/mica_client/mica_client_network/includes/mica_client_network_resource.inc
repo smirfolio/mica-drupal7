@@ -26,10 +26,13 @@ class MicaNetworkResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
   }
 
-  public function get_networks($study_id = NULL) {
+  public function get_networks($study_id = NULL, $query = NULL) {
     $this->setLastResponse(NULL);
-    $study_param = !empty($study_id) ? '&study=' . $study_id : '';
-    $url_networks = $this->micaUrl . '/networks?limit=-1' . $study_param;
+    $params = !empty($study_id) ? '&study=' . $study_id : '';
+    if (!empty($query)) {
+      $params .= '&query=' . $query;
+    }
+    $url_networks = $this->micaUrl . '/networks?limit=-1' . $params;
 
     $request = new HttpClientRequest($url_networks, array(
       'method' => HttpClientRequest::METHOD_GET,
