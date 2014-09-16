@@ -1,17 +1,71 @@
 <?php
 
 function mica_client_study_page_list() {
+  $study_query = NULL;
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   $node_rendred['#node']->title = '';
+  if (!empty($_GET['studies-query'])) {
+    $study_query = $_GET['studies-query'];
+  }
+
   return theme('mica_client_study_list-page', array(
+    "form_search" => drupal_get_form('mica_client_study_create_form'),
     "node_page" => $node_rendred,
-    "list_studies" => mica_client_study_get_studies()
+    "list_studies" => mica_client_study_get_studies($study_query)
   ));
 }
 
-function mica_client_study_get_studies() {
+function mica_client_study_create_form() {
+  $form = array();
+  // Autocomplete field
+
+  $form['studies-sort'] = array(
+    '#type' => 'select',
+    '#title' => '',
+    '#description' => 'Sort By',
+    '#options' => array(
+      'name' => t('Name'),
+      'countries' => t('Yes'),
+    ),
+    '#autocomplete_path' => 'mica/autocomplete',
+    '#prefix' => '<div class="col-md-2">',
+    '#suffix' => '</div>',
+  );
+
+  $form['studies-query'] = array(
+    '#type' => 'textfield',
+    '#title' => '',
+    '#description' => 'Search studies',
+    '#autocomplete_path' => 'mica/autocomplete',
+    '#prefix' => '<div class="col-md-6">',
+    '#suffix' => '</div>',
+  );
+
+  // Form Submit button
+//  $form['submit'] = array(
+//    '#type' => 'submit',
+//    '#value' => t('Send'),
+//    '#validate' => array('validate_message'),
+//  );
+  return $form;
+}
+
+function mica_client_study_retrieve_studies($string) {
   $study_resource = new MicaStudyResource();
-  return $studies = $study_resource->get_studies();
+  $studies = $study_resource->get_studies($string);
+  $result_studies = array();
+  foreach ($studies->studySummaries as $study) {
+    $result_studies[] = mica_client_commons_get_localized_field($study, 'acronym');
+  }
+  dpm($result_studies);
+  dpm($studies);
+  drupal_json_output($result_studies);
+  exit;
+}
+
+function mica_client_study_get_studies($query = NULL) {
+  $study_resource = new MicaStudyResource();
+  return $studies = $study_resource->get_studies($query);
 }
 
 function mica_client_study_studies_table($studies) {
