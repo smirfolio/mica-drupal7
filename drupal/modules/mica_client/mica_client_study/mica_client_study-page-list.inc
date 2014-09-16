@@ -4,8 +4,8 @@ function mica_client_study_page_list() {
   $study_query = NULL;
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   $node_rendred['#node']->title = '';
-  if (!empty($_GET['studies-query'])) {
-    $study_query = $_GET['studies-query'];
+  if (!empty($_POST['studies-query'])) {
+    $study_query = $_POST['studies-query'];
   }
 
   return theme('mica_client_study_list-page', array(
