@@ -157,11 +157,7 @@ function mica_client_facet_search_theme($existing, $type, $theme, $path) {
     'mica_client_facet_search_charts' => array(
       'template' => 'mica_client_facet_search_charts',
       'path' => $path_theme
-    ),
-    'mica_client_facet_search_block_studies_search' => array(
-      'template' => 'mica_client_facet_search_block_studies_search',
-      'path' => $path_theme
-    ),
+    )
   );
 }
 
