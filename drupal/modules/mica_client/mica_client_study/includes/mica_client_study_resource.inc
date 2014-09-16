@@ -26,6 +26,27 @@ class MicaStudyResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
   }
 
+  public function get_studies() {
+    $this->setLastResponse(NULL);
+    $url_studies = $this->micaUrl . '/studies?limit=-1';
+
+    $request = new HttpClientRequest($url_studies, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        )
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return json_decode($data);
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
   public function studies_search($spec_dto_params = NULL) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/studies/_search/?' . 'size=' . parent::SIZE_RESPONSE;
@@ -105,7 +126,7 @@ class MicaStudyResource extends MicaClient {
     }
   }
 
-  public function study($study_id) {
+  public function get_study($study_id) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/study/' . $study_id;
 

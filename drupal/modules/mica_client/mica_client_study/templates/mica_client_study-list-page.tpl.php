@@ -10,13 +10,13 @@
     </div>
   </div>
   <div class="clearfix">
-    <?php //dpm($list_studies); ?>
+    <?php dpm($list_studies); ?>
 
 
 
     <div class="list-page">
 
-      <?php foreach ($list_studies['data'] as $study) : ?>
+      <?php foreach ($list_studies->studySummaries as $study) : ?>
 
 
         <div class="study-item">

@@ -11,7 +11,7 @@ function mica_client_study_page_list() {
 
 function mica_client_study_get_studies() {
   $study_resource = new MicaStudyResource();
-  return $studies = $study_resource->studies_search();
+  return $studies = $study_resource->get_studies();
 }
 
 function mica_client_study_studies_table($studies) {
