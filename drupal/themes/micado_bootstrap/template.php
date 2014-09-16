@@ -23,14 +23,6 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study-list.tpl.php');
-  if (!empty($destination_path)) {
-    $theme_array['mica_client_study_list'] = array(
-      'template' => 'mica_client_study-list',
-      'path' => $path . '/templates'
-    );
-  }
-
   $destination_path = file_exists($path . '/templates/mica_client_study_search.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['mica_client_study_search'] = array(
@@ -166,16 +158,6 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
       'path' => $path . '/templates'
     );
   }
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_block_studies_search.tpl.php');
-  if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_block_studies_search.tpl.php'] = array(
-      'variables' => array('block' => array()),
-      'template' => 'mica_client_facet_search_block_studies_search-list',
-      'path' => $path . '/templates'
-    );
-  }
-
-
   return $theme_array;
 
 }

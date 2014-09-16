@@ -224,18 +224,6 @@ function mica_client_facet_search_block_info() {
     'custom' => 1,
   );
 
-  $blocks['facet-page-std-search'] = array(
-    'info' => t('Search studies'),
-    'title' => '',
-    'status' => 1,
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies',
-    'weight' => 2,
-    'custom' => 1,
-  );
-
-
   return $blocks;
 }
 
@@ -277,11 +265,6 @@ function mica_client_facet_search_block_view($delta = '') {
     case 'facet-studies' :
       $output = _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_study', 'studies', 'parent');
       $block['subject'] = t('Facet search studies');
-      $block['content'] = $output;
-      return $block;
-    case 'facet-page-std-search' :
-      $output = theme('mica_client_facet_search_block_studies_search', array());
-      $block['subject'] = '';
       $block['content'] = $output;
       return $block;
     default:

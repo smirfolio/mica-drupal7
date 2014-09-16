@@ -3,7 +3,10 @@
 function mica_client_study_page_list() {
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   $node_rendred['#node']->title = '';
-  return theme('mica_client_study_list-page', array("node_page" => $node_rendred));
+  return theme('mica_client_study_list-page', array(
+    "node_page" => $node_rendred,
+    "list_studies" => mica_client_study_get_studies()
+  ));
 }
 
 function mica_client_study_get_studies() {
