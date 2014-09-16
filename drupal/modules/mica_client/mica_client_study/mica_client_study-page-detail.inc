@@ -13,7 +13,6 @@ function mica_client_study_page_detail($study_id) {
   $page_render_study = NULL;
   $study_resource = new MicaStudyResource();
   $study_dto = $study_resource->study($study_id);
-
   if (!empty($study_dto)) {
     drupal_set_title(mica_client_commons_get_localized_field($study_dto, 'name'));
 

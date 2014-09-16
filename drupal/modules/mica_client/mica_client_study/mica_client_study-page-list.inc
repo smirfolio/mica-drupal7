@@ -1,9 +1,12 @@
 <?php
 
 function mica_client_study_page_list() {
-  $output['title'] = t('Study Catalogue');
-  $output['data'] = mica_client_study_studies_table(mica_client_study_get_studies());
-  return theme('mica_client_study_list', array("context_detail" => $output));
+  $node_rendred = node_view(node_load(variable_get('study_list_page')));
+  $node_rendred['#node']->title = '';
+  return theme('mica_client_study_list-page', array(
+    "node_page" => $node_rendred,
+    "list_studies" => mica_client_study_get_studies()
+  ));
 }
 
 function mica_client_study_get_studies() {

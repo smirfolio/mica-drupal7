@@ -8,7 +8,6 @@ function mica_client_dataset_get_datastes() {
 }
 
 function mica_client_dataset_get_harmonization_datasets() {
-  $output = array();
   $dataset_resource = new MicaDatasetResource();
   $node_rendred = node_view(node_load(variable_get('harmo_dataset_page')));
   $harmo_datasets_dto = $dataset_resource->get_datasetes('harmonization-datasets');
