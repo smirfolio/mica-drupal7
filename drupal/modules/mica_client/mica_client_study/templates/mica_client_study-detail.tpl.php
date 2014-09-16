@@ -1,5 +1,5 @@
 <?php
-//dpm($study_dto);
+dpm($study_dto);
 //dpm($study_variables_aggs);
 ?>
 
@@ -305,7 +305,7 @@
 <?php if (!empty($datasets)): ?>
   <section>
     <h3><?php print t('Datasets'); ?></h3>
-    <?php print $datasets; ?>
+    <?php print render($datasets['dataset-tab']); ?>
   </section>
 <?php endif; ?>
 
