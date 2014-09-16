@@ -34,10 +34,6 @@ function mica_client_dataset_get_study_datasets() {
   ));
 }
 
-function _mica_client_dataset_get_datasets_list_rendered($datasets, $type) {
-  return theme('mica_client_datasets-list-page', array('list_datasets' => $datasets, 'type' => $type));
-}
-
 function _mica_client_dataset_get_datasets_table($datasets, $type) {
   $dataset_rows = array();
   foreach ($datasets as $key_dataset => $dataset_dto) {
