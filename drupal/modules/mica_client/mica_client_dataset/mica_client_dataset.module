@@ -11,6 +11,7 @@ function mica_client_dataset_menu() {
     'access callback' => TRUE,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
+    'expanded' => TRUE,
     'weight' => 3
   );
 
