@@ -112,6 +112,7 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
     'mica_client_datasets-detail' => array('template' => 'mica_client_datasets-detail', 'path' => $path_theme),
     'mica_client_datasets-tables' => array('template' => 'mica_client_datasets-tables', 'path' => $path_theme),
     'mica_client_variable-detail' => array('template' => 'mica_client_variable-detail', 'path' => $path_theme),
+    'mica_client_datasets-list-page' => array('template' => 'mica_client_datasets-list-page', 'path' => $path_theme),
   );
 }
 
@@ -122,17 +123,10 @@ function mica_client_dataset_get_all_datasets_studies($study_id) {
   $datasets = array_merge($dataset_resource->get_datasetes('study-datasets', $study_id), $dataset_resource->get_datasetes('harmonization-datasets', $study_id));
 
   if (!empty($datasets)) {
-    $output = mica_client_dataset_get_datasets_tables(mica_client_dataset_get_datasets_list($datasets));
+    $output = mica_client_dataset_get_datasets_list($datasets);
   }
 
   return $output;
-}
-
-/*
- * Format Datasets tables  detail
- * */
-function mica_client_dataset_get_datasets_tables($datasets) {
-  return theme('mica_client_datasets-list', array("context_datasets_list" => $datasets));
 }
 
 function mica_client_dataset_get_datasets_list($datasets) {
