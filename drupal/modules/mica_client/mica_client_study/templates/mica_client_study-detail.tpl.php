@@ -1,5 +1,5 @@
 <?php
-dpm($study_dto);
+//dpm($study_dto);
 //dpm($study_variables_aggs);
 ?>
 
