@@ -37,7 +37,7 @@ function mica_client_study_page_detail($study_id) {
         'datasets' => $dataset_output,
         'networks' => $network_output,
         'opal' => $opal_output,
-        'study_variables_aggs' => mica_client_study_get_variables($study_id),
+        'study_variables_aggs' => NULL,//mica_client_study_get_variables($study_id),
       ));
   }
   else {

@@ -26,7 +26,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
     return theme('mica_client_datasets-detail', array(
       'dataset_dto' => $dataset_dto,
       'dataset_type' => $dataset_type_dto,
-      'dataset_variables_aggs' => mica_client_dataset_get_variables($dataset_dto->id),
+      'dataset_variables_aggs' => NULL,//mica_client_dataset_get_variables($dataset_dto->id),
     ));
   }
   else {

@@ -55,7 +55,7 @@
           <h5><?php print t('Number of variables') ?></h5>
 
           <p>
-            <?php print $dataset_variables_aggs['totalHits']; ?>
+            <?php print empty($dataset_variables_aggs['totalHits']) ? 0 : $dataset_variables_aggs['totalHits']; ?>
           </p>
 
           <?php
