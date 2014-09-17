@@ -193,3 +193,14 @@ function mica_client_dataset_attributes_tab($attributes = NULL, $namespace = NUL
 
   return FALSE;
 }
+
+function _mica_client_variable_attributes_detail($variable, $field) {
+  if (!empty($variable->attributes)) {
+    foreach ($variable->attributes as $attribute) {
+      if (!empty($attribute->name) && $attribute->name == $field) {
+        return mica_client_commons_get_localized_field($attribute, 'values');
+      }
+    }
+  }
+  return NULL;
+}
