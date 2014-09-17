@@ -9,7 +9,7 @@ drupal_version = 7.31
 #
 db_name = drupal
 db_user = root
-db_pass = rootadmin
+db_pass = 1234
 
 
 help:
