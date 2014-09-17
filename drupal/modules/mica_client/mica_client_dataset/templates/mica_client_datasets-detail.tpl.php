@@ -1,6 +1,7 @@
 <?php
 //dpm($dataset_dto);
 //dpm($dataset_type_dto);
+//dpm($dataset_harmonizations_dto);
 //dpm($dataset_variables_aggs);
 ?>
 
@@ -9,6 +10,7 @@
 <?php endif; ?>
 
 <article>
+  <!-- OVERVIEW -->
   <section>
     <h3><?php print t('Overview') ?></h3>
 
@@ -46,6 +48,7 @@
     </div>
   </section>
 
+  <!-- VARIABLES -->
   <section>
     <div class="container-fluid">
       <div class="row">
@@ -78,8 +81,17 @@
     </div>
   </section>
 
+  <!-- STUDIES -->
   <section>
     <h3><?php print t('Studies') ?></h3>
-    <?php print mica_client_dataset_study_tables($dataset_type) ?>
+    <?php print mica_client_dataset_study_tables_table($dataset_type_dto) ?>
   </section>
+
+  <!-- HARMONIZATION -->
+  <?php if (!empty($dataset_harmonizations_dto)): ?>
+    <section>
+      <h3><?php print t('Harmonization') ?></h3>
+      <?php print mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto) ?>
+    </section>
+  <?php endif; ?>
 </article>

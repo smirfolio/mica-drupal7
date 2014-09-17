@@ -147,6 +147,43 @@ class MicaDatasetResource extends MicaClient {
   }
 
   /**
+   * Get the list variable harmonization status for a harmonization dataset.
+   *
+   * @param $resource "dataset" or "harmonization-dataset" or "study-dataset"
+   * @param $dataset_id
+   * @param int $from
+   * @param $limit
+   * @param null $sort field name to sort by
+   * @param null $order "asc" or "desc"
+   * @return array|Protobuf\Message|null
+   */
+  public function get_variables_harmonizations($resource, $dataset_id, $from = 0, $limit = -1, $sort = NULL, $order = NULL) {
+    $this->setLastResponse(NULL);
+    $params = empty($from) ? 'from=0' : 'from=' . $from;
+    $params .= empty($limit) ? '&limit=-1' : '&limit=' . $limit;
+    $params .= empty($sort) ? '' : '&sort=' . $sort;
+    $params .= empty($order) ? '' : '&order=' . $order;
+
+    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id . '/variables/harmonizations?' . $params;
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      $dtoObj = '\obiba\mica\DatasetVariablesHarmonizationsDto';
+      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
+  /**
    * Get the variable by its ID.
    *
    * @param $variable_id

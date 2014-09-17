@@ -178,16 +178,7 @@ function mica_client_variable_get_categories($categories = NULL) {
   return FALSE;
 }
 
-function _mica_client_variable_attributes_detail($variable, $field) {
-  if (!empty($variable->attributes)) {
-    foreach ($variable->attributes as $attribute) {
-      if (!empty($attribute->name) && $attribute->name == $field) {
-        return mica_client_commons_get_localized_field($attribute, 'values');
-      }
-    }
-  }
-  return NULL;
-}
+
 
 function mica_client_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   $variable_resource = new MicaDatasetResource();
