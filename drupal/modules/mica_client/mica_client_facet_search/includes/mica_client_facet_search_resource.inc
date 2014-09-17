@@ -98,9 +98,9 @@ class MicaSearchResource extends MicaClient {
   }
 
   public function search_variables($request_param = NULL, $spec_dto_params = NULL, $size = NULL) {
-    $dto_data_response = $this->_search_resource('variables', $request_param, 'parent', 'Study', $spec_dto_params, $size);
+    $data_response = $this->_search_resource('variables', $request_param, 'parent', 'Study', $spec_dto_params, $size);
+    $dto_data_response = $data_response->variableResultDto;
     $this->session_facets_builder($dto_data_response, 'variables', $request_param);
-
     // dpm($dto_data_response);
     $summaries_variables = $dto_data_response->{'obiba.mica.DatasetVariableResultDto.result'}->summaries;
     $dtoObj = '\obiba\mica\DatasetVariableResolverDto';
@@ -117,9 +117,9 @@ class MicaSearchResource extends MicaClient {
   }
 
   public function search_studies() {
-    $dto_data_response = $this->_search_resource('studies', NULL, 'child', 'Variable', NULL);
+    $data_response = $this->_search_resource('studies', NULL, 'child', 'Variable', NULL);
+    $dto_data_response = $data_response->studyResultDto;
     $this->session_facets_builder($dto_data_response, 'studies');
-    // dpm($dto_data_response);
     $summaries_studies = !empty($dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries) ?
       $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
     $dtoObj = '\obiba\mica\StudySummaryDto';

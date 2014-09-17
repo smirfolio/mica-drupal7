@@ -6,20 +6,25 @@ function mica_client_study_page_list() {
   $study_sort_by = NULL;
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   $node_rendred['#node']->title = '';
-  if (!empty($_POST['studies-query'])) {
-    $study_query = $_POST['studies-query'];
+  if (!empty($_GET['studies-query'])) {
+    $study_query = $_GET['studies-query'];
   }
-  if (!empty($_POST['studies-sort'])) {
-    $study_sort = $_POST['studies-sort'];
+  if (!empty($_GET['studies-sort'])) {
+    $study_sort = $_GET['studies-sort'];
   }
-  if (!empty($_POST['studies-sort-order'])) {
-    $study_sort_by = $_POST['studies-sort-order'];
+  if (!empty($_GET['studies-sort-order'])) {
+    $study_sort_by = $_GET['studies-sort-order'];
   }
+
+  $list_studies = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
+  pager_default_initialize($list_studies->total, 5, $element = 0);
+  $pager_output = theme('pager', array('quantity' => $list_studies->total));
 
   return theme('mica_client_study_list-page', array(
     "form_search" => drupal_get_form('mica_client_study_create_form'),
     "node_page" => $node_rendred,
-    "list_studies" => mica_client_study_get_studies($study_query, $study_sort, $study_sort_by)
+    "list_studies" => $list_studies,
+    "pager_wrap" => $pager_output
   ));
 }
 
@@ -29,7 +34,7 @@ function mica_client_study_create_form() {
   $sort_acronym = 'acronym.' . $language->language;
 
   $form = array();
-
+  $form['#method'] = 'get';
   $form['studies-sort'] = array(
     '#type' => 'select',
     '#title' => '',
@@ -40,7 +45,7 @@ function mica_client_study_create_form() {
       'numberOfParticipants.participant.number' => t('Target Number'),
       'populations.selectionCriteria.countriesIso' => t('Countries'),
     ),
-    '#default_value' => !empty($_POST['studies-sort']) ? $_POST['studies-sort'] : NULL,
+    '#default_value' => !empty($_GET['studies-sort']) ? $_GET['studies-sort'] : NULL,
     '#prefix' => '<div class="col-md-2">',
     '#suffix' => '</div>',
   );
@@ -53,6 +58,7 @@ function mica_client_study_create_form() {
       'asc' => t('ASC'),
       'desc' => t('DESC'),
     ),
+    '#default_value' => !empty($_GET['studies-sort-order']) ? $_GET['studies-sort-order'] : NULL,
     '#prefix' => '<div class="col-md-2">',
     '#suffix' => '</div>',
 
@@ -63,7 +69,7 @@ function mica_client_study_create_form() {
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Search studies',
-    '#default_value' => !empty($_POST['studies-query']) ? $_POST['studies-query'] : NULL,
+    '#default_value' => !empty($_GET['studies-query']) ? $_GET['studies-query'] : NULL,
     '#prefix' => '<div class="col-md-4">',
     '#suffix' => '</div>',
   );
@@ -73,8 +79,14 @@ function mica_client_study_create_form() {
 }
 
 function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NULL) {
+  $from = 0;
   $study_resource = new MicaStudyResource();
-  return $studies = $study_resource->get_studies($query, NULL, NULL, $sort, $order);
+  if (!empty($_GET['page'])) {
+    $from = $study_resource->pagination_list_searcch_parameters($_GET['page'], 'list-studies');
+  }
+  $studies = $study_resource->get_studies($query, $from, NULL, $sort, $order);
+  $_SESSION['list-studies']['aggregations']['totalHits'] = $studies->total;
+  return $studies;
 }
 
 function mica_client_study_studies_table($studies) {

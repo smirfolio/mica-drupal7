@@ -26,10 +26,9 @@
 <div class="clearfix"></div>
 <?php //dpm($list_studies); ?>
 
-
-
 <div class="list-page">
-  <?php foreach ($list_studies->studySummaries as $study) : ?>
+  <?php if (!empty($list_studies->studySummaries)): ?>
+    <?php foreach ($list_studies->studySummaries as $study) : ?>
     <div class="row">
       <div class="col-md-1 col-xs-1">
         <h1 class="big-caracter">
@@ -53,15 +52,12 @@
           ... <a href="study/<?php print $study->id ?>">Learn more</a>
         </p>
 
-        <!--            <p>-->
-        <!--              Member of the <a>BioShare</a>, <a>NODN</a> , and <a>CPTP</a> study networks-->
-        <!--            </p>-->
-        <!---->
-        <!--            <p>-->
-        <!--              Includes [8000 variables] from [5 study] and [2 harmonized] datasets-->
-        <!--            </p>-->
       </div>
     </div>
-  <?php endforeach; ?>
+
+    <?php endforeach; ?>
+    <div><?php print $pager_wrap; ?></div>
+  <?php else: print t('No Studies Found'); ?>
+  <?php endif; ?>
 </div>
 

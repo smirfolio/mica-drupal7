@@ -8781,7 +8781,6 @@ div.password-suggestions ul {
     background: #2555d3;
 }
 
-/******List studies page*******/
 .list-page {
     display: inline-block;
     text-wrap: avoid;
@@ -8814,6 +8813,10 @@ div.password-suggestions ul {
 
 .search-box-items {
     margin-left: 125px;
+}
+
+.search-box-items .form-item {
+    margin-left: 10px;
 }
 
 .search-box-items .form-type-radio {
