@@ -32,8 +32,8 @@
     <div class="row">
       <div class="col-md-1 col-xs-1">
         <h1 class="big-caracter">
-           <span class="t_badge color_S">
-           <?php print drupal_substr(mica_client_commons_get_localized_field($study, 'name'), 0, 1); ?>
+           <span class="t_badge color_S">S
+<!--           --><?php //print drupal_substr(mica_client_commons_get_localized_field($study, 'name'), 0, 1); ?>
            </span>
         </h1>
         <!--           <img class="img-responsive"-->
