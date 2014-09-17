@@ -259,7 +259,7 @@ class MicaClient {
     return $formated_term;
   }
 
-  protected function pagination_parameters($current_page = NULL, $dto_type = NULL) {
+  public function pagination_parameters($current_page = NULL, $dto_type = NULL) {
     $nb_pages = ceil($_SESSION[strtolower($dto_type)]['aggregations']['totalHits'] / $this::SIZE_RESPONSE);
     if (!empty($current_page)) {
       $pageActuelle = intval($current_page);
@@ -272,6 +272,22 @@ class MicaClient {
       $pageActuelle = 1; // La page actuelle est la n°1
     }
     $premiereEntree = ($pageActuelle) * $this::SIZE_RESPONSE; // On calcul la première entrée à lire
+    return $premiereEntree;
+  }
+
+  public function pagination_list_searcch_parameters($current_page = NULL, $type = NULL) {
+    $nb_pages = ceil($_SESSION[strtolower($type)]['aggregations']['totalHits'] / 5);
+    if (!empty($current_page)) {
+      $pageActuelle = intval($current_page);
+      if ($pageActuelle > $nb_pages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
+      {
+        $pageActuelle = $nb_pages;
+      }
+    }
+    else {
+      $pageActuelle = 1; // La page actuelle est la n°1
+    }
+    $premiereEntree = ($pageActuelle) * 5; // On calcul la première entrée à lire
     return $premiereEntree;
   }
 
