@@ -26,12 +26,25 @@ class MicaStudyResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
   }
 
-  public function get_studies($query = NULL) {
+  /**
+   * Get the list of studies.
+   *
+   * @param null $query
+   * @param int $from
+   * @param $limit
+   * @param null $sort field name to sort by
+   * @param null $order "asc" or "desc"
+   * @return array|mixed
+   */
+  public function get_studies($query = NULL, $from = 0, $limit = -1, $sort = NULL, $order = NULL) {
     $this->setLastResponse(NULL);
-    $url_studies = $this->micaUrl . '/studies?limit=-1';
-    if (!empty($query)) {
-      $url_studies .= '&query=' . $query;
-    }
+    $params = empty($from) ? 'from=0' : 'from=' . $from;
+    $params .= empty($limit) ? '&limit=-1' : '&limit=' . $limit;
+    $params .= empty($sort) ? '' : '&sort=' . $sort;
+    $params .= empty($order) ? '' : '&order=' . $order;
+    $params .= empty($query) ? '' : '&query=' . $query;
+    $url_studies = $this->micaUrl . '/studies?' . $params;
+
     $request = new HttpClientRequest($url_studies, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -44,6 +57,36 @@ class MicaStudyResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return json_decode($data);
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
+  /**
+   * Get a study by its ID.
+   *
+   * @param $study_id
+   * @return array|Protobuf\Message|null
+   */
+  public function get_study($study_id) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/study/' . $study_id;
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_BINARY),
+          )
+        ),
+    ));
+
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      $dtoObj = '\obiba\mica\StudyDto';
+      Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
+      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
     } catch (HttpClientException $e) {
       return array();
     }
@@ -123,30 +166,6 @@ class MicaStudyResource extends MicaClient {
       }
       $dtos ['totalHits'] = $dto_data_response->totalHits;
       return $dtos;
-    } catch (HttpClientException $e) {
-      return array();
-    }
-  }
-
-  public function get_study($study_id) {
-    $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/study/' . $study_id;
-
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_BINARY),
-          )
-        ),
-    ));
-
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $dtoObj = '\obiba\mica\StudyDto';
-      Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
-      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
     } catch (HttpClientException $e) {
       return array();
     }
