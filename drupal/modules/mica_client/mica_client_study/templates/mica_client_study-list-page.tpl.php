@@ -1,16 +1,20 @@
-<?php //dpm($node_page);?>
+<?php dpm($list_studies->studySummaries); ?>
 <?php print render($node_page) ?>
 <div class="clearfix"></div>
 <div class="row">
   <div class="col-md-7" role="alert">
     <div class="row">
-      <div class="col-md-2">43 <?php print t('Studies'); ?></div>
+      <div class="col-md-2">
+        <div class="search-box-items">
+          <?php print count($list_studies->studySummaries) . ' ' . t('Studies'); ?>
+        </div>
+      </div>
       <?php print render($form_search); ?>
     </div>
   </div>
   <div class="col-md-5 ">
-    <div class="studies-link-center">
-      <?php print t('Open IN'); ?> : <a href="search?type=studies"><?php print t('Advanced search'); ?></a> |
+    <div class="advanced-search-link-center">
+    <?php print t('Open IN'); ?> : <a href="search?type=studies"><?php print t('Advanced search'); ?></a> |
       <a href=""><?php print t('Domain Coverage'); ?> </a>
     </div>
   </div>

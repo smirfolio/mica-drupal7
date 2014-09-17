@@ -25,9 +25,9 @@ function mica_client_study_create_form() {
     '#description' => 'Sort By',
     '#options' => array(
       'name' => t('Name'),
-      'countries' => t('Yes'),
+      'targetNumber' => t('Target Number'),
+      'countries' => t('Countries'),
     ),
-    '#autocomplete_path' => 'mica/autocomplete',
     '#prefix' => '<div class="col-md-2">',
     '#suffix' => '</div>',
   );
@@ -36,7 +36,8 @@ function mica_client_study_create_form() {
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Search studies',
-    '#autocomplete_path' => 'mica/autocomplete',
+    //'#autocomplete_path' => 'mica/autocomplete',
+
     '#prefix' => '<div class="col-md-6">',
     '#suffix' => '</div>',
   );
@@ -50,18 +51,18 @@ function mica_client_study_create_form() {
   return $form;
 }
 
-function mica_client_study_retrieve_studies($string) {
-  $study_resource = new MicaStudyResource();
-  $studies = $study_resource->get_studies($string);
-  $result_studies = array();
-  foreach ($studies->studySummaries as $study) {
-    $result_studies[] = mica_client_commons_get_localized_field($study, 'acronym');
-  }
-  dpm($result_studies);
-  dpm($studies);
-  drupal_json_output($result_studies);
-  exit;
-}
+//function mica_client_study_autocomplete_retrieve_studies($string) {
+//  $study_resource = new MicaStudyResource();
+//  $studies = $study_resource->get_studies($string);
+//  $result_studies = array();
+//  foreach ($studies->studySummaries as $study) {
+//    $result_studies[] = mica_client_commons_get_localized_field($study, 'acronym');
+//  }
+//  dpm($result_studies);
+//  dpm($studies);
+//  drupal_json_output($result_studies);
+//  exit;
+//}
 
 function mica_client_study_get_studies($query = NULL) {
   $study_resource = new MicaStudyResource();
