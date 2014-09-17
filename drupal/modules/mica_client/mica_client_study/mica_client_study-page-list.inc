@@ -63,33 +63,14 @@ function mica_client_study_create_form() {
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Search studies',
-    //'#autocomplete_path' => 'mica/autocomplete',
     '#default_value' => !empty($_POST['studies-query']) ? $_POST['studies-query'] : NULL,
     '#prefix' => '<div class="col-md-4">',
     '#suffix' => '</div>',
   );
 
-  //  Form Submit button
-//  $form['submit'] = array(
-//    '#type' => 'submit',
-//    '#value' => t('Send'),
-//  );
-//  $form['#action'] ='studies';
+
   return $form;
 }
-
-//function mica_client_study_autocomplete_retrieve_studies($string) {
-//  $study_resource = new MicaStudyResource();
-//  $studies = $study_resource->get_studies($string);
-//  $result_studies = array();
-//  foreach ($studies->studySummaries as $study) {
-//    $result_studies[] = mica_client_commons_get_localized_field($study, 'acronym');
-//  }
-//  dpm($result_studies);
-//  dpm($studies);
-//  drupal_json_output($result_studies);
-//  exit;
-//}
 
 function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NULL) {
   $study_resource = new MicaStudyResource();
