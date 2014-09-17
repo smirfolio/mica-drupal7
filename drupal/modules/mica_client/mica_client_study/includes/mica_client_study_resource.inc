@@ -37,6 +37,7 @@ class MicaStudyResource extends MicaClient {
    * @return array|mixed
    */
   public function get_studies($query = NULL, $from = 0, $limit = -1, $sort = NULL, $order = NULL) {
+
     $this->setLastResponse(NULL);
     $params = empty($from) ? 'from=0' : 'from=' . $from;
     $params .= empty($limit) ? '&limit=-1' : '&limit=' . $limit;
@@ -44,7 +45,6 @@ class MicaStudyResource extends MicaClient {
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $url_studies = $this->micaUrl . '/studies?' . $params;
-
     $request = new HttpClientRequest($url_studies, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(

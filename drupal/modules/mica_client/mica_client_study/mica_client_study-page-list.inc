@@ -2,52 +2,79 @@
 
 function mica_client_study_page_list() {
   $study_query = NULL;
+  $study_sort = NULL;
+  $study_sort_by = NULL;
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   $node_rendred['#node']->title = '';
   if (!empty($_POST['studies-query'])) {
     $study_query = $_POST['studies-query'];
   }
+  if (!empty($_POST['studies-sort'])) {
+    $study_sort = $_POST['studies-sort'];
+  }
+  if (!empty($_POST['studies-sort-order'])) {
+    $study_sort_by = $_POST['studies-sort-order'];
+  }
 
   return theme('mica_client_study_list-page', array(
     "form_search" => drupal_get_form('mica_client_study_create_form'),
     "node_page" => $node_rendred,
-    "list_studies" => mica_client_study_get_studies($study_query)
+    "list_studies" => mica_client_study_get_studies($study_query, $study_sort, $study_sort_by)
   ));
 }
 
 function mica_client_study_create_form() {
+  global $language;
+  $sort_name = 'name.' . $language->language;
+  $sort_acronym = 'acronym.' . $language->language;
+
   $form = array();
-  // Autocomplete field
 
   $form['studies-sort'] = array(
     '#type' => 'select',
     '#title' => '',
     '#description' => 'Sort By',
     '#options' => array(
-      'name' => t('Name'),
-      'targetNumber' => t('Target Number'),
-      'countries' => t('Countries'),
+      $sort_name => t('Name'),
+      $sort_acronym => t('Acronyme'),
+      'numberOfParticipants.participant.number' => t('Target Number'),
+      'populations.selectionCriteria.countriesIso' => t('Countries'),
     ),
+    '#default_value' => !empty($_POST['studies-sort']) ? $_POST['studies-sort'] : NULL,
     '#prefix' => '<div class="col-md-2">',
     '#suffix' => '</div>',
   );
+
+  $form['studies-sort-order'] = array(
+    '#type' => 'select',
+    '#title' => '',
+    '#description' => 'Sort order',
+    '#options' => array(
+      'asc' => t('ASC'),
+      'desc' => t('DESC'),
+    ),
+    '#prefix' => '<div class="col-md-2">',
+    '#suffix' => '</div>',
+
+  );
+
 
   $form['studies-query'] = array(
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Search studies',
     //'#autocomplete_path' => 'mica/autocomplete',
-
-    '#prefix' => '<div class="col-md-6">',
+    '#default_value' => !empty($_POST['studies-query']) ? $_POST['studies-query'] : NULL,
+    '#prefix' => '<div class="col-md-4">',
     '#suffix' => '</div>',
   );
 
-  // Form Submit button
+  //  Form Submit button
 //  $form['submit'] = array(
 //    '#type' => 'submit',
 //    '#value' => t('Send'),
-//    '#validate' => array('validate_message'),
 //  );
+//  $form['#action'] ='studies';
   return $form;
 }
 
@@ -64,9 +91,9 @@ function mica_client_study_create_form() {
 //  exit;
 //}
 
-function mica_client_study_get_studies($query = NULL) {
+function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NULL) {
   $study_resource = new MicaStudyResource();
-  return $studies = $study_resource->get_studies($query);
+  return $studies = $study_resource->get_studies($query, NULL, NULL, $sort, $order);
 }
 
 function mica_client_study_studies_table($studies) {
