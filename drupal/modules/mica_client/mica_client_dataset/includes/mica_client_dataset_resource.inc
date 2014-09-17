@@ -105,6 +105,127 @@ class MicaDatasetResource extends MicaClient {
     }
   }
 
+  /**
+   * Get the list of variables of the dataset.
+   *
+   * @param $resource "dataset" or "harmonization-dataset" or "study-dataset"
+   * @param $dataset_id
+   * @param int $from
+   * @param $limit
+   * @param null $sort field name to sort by
+   * @param null $order "asc" or "desc"
+   * @return array|Protobuf\Message|mixed|null
+   */
+  public function get_variables($resource, $dataset_id, $from = 0, $limit = -1, $sort = NULL, $order = NULL) {
+    $this->setLastResponse(NULL);
+    $params = empty($from) ? 'from=0' : 'from=' . $from;
+    $params .= empty($limit) ? '&limit=-1' : '&limit=' . $limit;
+    $params .= empty($sort) ? '' : '&sort=' . $sort;
+    $params .= empty($order) ? '' : '&order=' . $order;
+
+    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id . '/variables?' . $params;
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+
+      $this->setLastResponse($client->lastResponse);
+      if (!empty($detail)) {
+        return json_decode($data);
+      }
+      $dtoObj = '\obiba\mica\DatasetVariablesDto';
+      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
+  /**
+   * Get the variable by its ID.
+   *
+   * @param $variable_id
+   * @return array|Protobuf\Message|null
+   */
+  public function get_variable($variable_id) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/variable/' . $variable_id;
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      $dtoObj = '\obiba\mica\DatasetVariableDto';
+      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
+  /**
+   * Get the facet (=summary from ES) of the variable.
+   *
+   * @param $variable_id
+   * @return array|mixed
+   */
+  public function get_variable_facet($variable_id) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/variable/' . $variable_id . '/facet';
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return json_decode($data);
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
+  /**
+   * Get the harmonizations of a dataschema variable.
+   *
+   * @param $variable_id
+   * @return array|Protobuf\Message|null
+   */
+  public function get_variable_harmonizations($variable_id) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/variable/' . $variable_id . '/harmonizations';
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      $dtoObj = '\obiba\mica\DatasetVariableHarmonizationDto';
+      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
   public function variables_search($spec_dto_params = NULL, $size = NULL) {
     $this->setLastResponse(NULL);
     $size_param = is_null($size) ? parent::SIZE_RESPONSE : $size;
@@ -189,29 +310,6 @@ class MicaDatasetResource extends MicaClient {
     }
   }
 
-  public function get_variable($resource_dataset, $dataset_id, $detail = NULL) {
-    $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/' . $resource_dataset . '/' . $dataset_id . '/' . $detail;
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-    ));
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
 
-      $this->setLastResponse($client->lastResponse);
-      if (!empty($detail)) {
-        return json_decode($data);
-      }
-      $dtoObj = '\obiba\mica\DatasetVariableDto';
-      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
-    } catch (HttpClientException $e) {
-      return array();
-    }
-  }
 
 }
