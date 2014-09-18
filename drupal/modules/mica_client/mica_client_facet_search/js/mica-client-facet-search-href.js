@@ -2,6 +2,82 @@
   Drupal.behaviors.queries = {
     attach: function (context, settings) {
 
+      /**
+       * Desrializes the form JSON into an array of aggregation values. Only range agg values are formatted
+       * @param json
+       * @returns {Array}
+       */
+      function desrializeFormJsonAsKeyValue(json) {
+        var values = [];
+        $.each(json, function(type, typeValues){
+          $.each(typeValues, function(aggType, aggs){
+            $.each(aggs, function(i, keyValue) {
+              $.each(keyValue, function(name, value) {
+                values.push(aggType === "terms" ? value : name+".[+"+value.min+"+to+"+value.max+"+]");
+              });
+
+            })
+          });
+        });
+
+        return values;
+      }
+
+      function serializeFormAsJson(formData) {
+
+        /**
+         * Helper used to extract entry information needed to build the form JSON
+         * @param value
+         * @returns {{type: *, agg: *, aggType: *, aggValue: *}}
+         */
+        function extractFormEntry(value) {
+          var tuple = /(\w+):(.*)-(terms|range)[\\[\\]]*=(.*)$/.exec(value);
+          return {type: tuple[1], agg: tuple[2], aggType: tuple[3], aggValue: extractAggValue(tuple[4])};
+        }
+
+        /**
+         * If the agg value has range info, return value as min-max
+         * @param value
+         * @returns {*}
+         */
+        function extractAggValue(value) {
+          var tuple = /\[\+([+-]*\d+)\+to\+([+-]*\d+)\+\]/.exec(value);
+          if (tuple != null) return {min: tuple[1], max: tuple[2]};
+          return value;
+        }
+
+        /**
+         * Parses the formData serialized as a DOM object and returns it as JSON object
+         * @param formData
+         * @returns {{}}
+         */
+        function parse(formData) {
+          var jsonForm = {};
+
+          $.each(decodeURIComponent(formData).split('&'), function(i, value) {
+            if (value != null && value.length > 0) {
+              var entry = extractFormEntry(value);
+
+              if (!jsonForm.hasOwnProperty(entry.type)) {
+                jsonForm[entry.type] = {};
+              }
+
+              if (!jsonForm[entry.type].hasOwnProperty(entry.aggType)) {
+                jsonForm[entry.type][entry.aggType] = [];
+              }
+
+              var item = {};
+              item[entry.agg] = entry.aggValue;
+              jsonForm[entry.type][entry.aggType].push(item);
+            }
+          });
+
+          return jsonForm;
+        }
+
+        return parse(formData);
+      }
+
       /*******************/
       $.extend({
         checkthebox: function (obj_span) {
@@ -27,13 +103,12 @@
         },
 
         getUrlVars: function () {
-          var vars = [], hash;
-          var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-          for (var i = 0; i < hashes.length; i++) {
-            hash = hashes[i].split('=');
-            //console.log(decodeURIComponent(hash[1]));
-            vars.push(decodeURIComponent(hash[1]));
-          }
+          var pos = window.location.href.indexOf('?');
+          if (pos === -1) return [];
+
+          var vars = desrializeFormJsonAsKeyValue(JSON.parse(decodeURIComponent(window.location.href.slice(pos + 1))));
+          // TODO until we find out why we have to add empty entry at the end
+          vars.push("");
           return vars;
         },
         sendCheckboxCheckedValues: function (idcheckbox) {
@@ -47,7 +122,9 @@
               serializedData = serializedData.concat(SerilizedForm).concat('&');
             }
           });
-          return serializedData;
+
+//          return serializedData;
+          return JSON.stringify(serializeFormAsJson(serializedData));
         }
       });
 
