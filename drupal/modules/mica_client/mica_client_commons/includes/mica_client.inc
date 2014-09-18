@@ -226,12 +226,23 @@ class MicaClient {
   }
 
 
-  protected function session_facets_builder($aggregations, $dto_type, $request_param = NULL) {
-    if (!empty($aggregations->totalHits)) {
-      $_SESSION[$dto_type]['aggregations'] = $aggregations->aggs;
-      $_SESSION[$dto_type]['aggregations']['totalHits'] = $aggregations->totalHits;
-      $_SESSION[$dto_type]['aggregations']['totalCount'] = $aggregations->totalCount;
-      $_SESSION[$dto_type]['request'] = !empty($request_param) ? $request_param : NULL;
+  protected function session_facets_builder($aggregations, $request_param = NULL) {
+    foreach ($aggregations as $type_aggregations => $aggre) {
+      if (!empty($aggre->totalHits)) {
+        if ($type_aggregations == 'variableResultDto') {
+          $_SESSION['variables']['aggregations'] = $aggre->aggs;
+          $_SESSION['variables']['aggregations']['totalHits'] = $aggre->totalHits;
+          $_SESSION['variables']['aggregations']['totalCount'] = $aggre->totalCount;
+          $_SESSION['variables']['request'] = !empty($request_param) ? $request_param : NULL;
+        }
+
+        if ($type_aggregations == 'studyResultDto') {
+          $_SESSION['studies']['aggregations'] = $aggre->aggs;
+          $_SESSION['studies']['aggregations']['totalHits'] = $aggre->totalHits;
+          $_SESSION['studies']['aggregations']['totalCount'] = $aggre->totalCount;
+          $_SESSION['studies']['request'] = !empty($request_param) ? $request_param : NULL;
+        }
+      }
     }
   }
 
@@ -245,17 +256,20 @@ class MicaClient {
 
         if (strstr($term[0], '-range')) {
           $decoded_term = str_replace('-range[]', '', $term[0]);
+          $decoded_term = $decoded_term . '-range';
           $vals = explode('to', $term[1]);
           $termval['min'] = preg_replace('/^[^\[]*\[\s*/', '', trim($vals[0]));
           $termval['max'] = str_replace(']', '', trim($vals[1]));
           $formated_term[preg_replace('/\[[^\]]*\]/', '', $decoded_term)] = $termval;
         }
         else {
+          $term[0] = $term[0] . '-terms';
           $decoded_term = urldecode($term[0]);
           $formated_term[preg_replace('/\[[^\]]*\]/', '', $decoded_term)][] = $term[1];
         }
       }
     }
+//dpm(json_encode($formated_term));
     return $formated_term;
   }
 
@@ -334,11 +348,6 @@ class MicaClient {
             $parent_query_dto->setFilteredQuery($parent_filtered_query_dto);
             $bool_filter_query_dto->setParentChildFilter($parent_query_dto);
 
-          }
-          elseif (strpos($field, key($hierarchical_relation)) === FALSE) {
-            $parent_child_field = explode(':', urldecode($field));
-            $filter_query_dto = $this->_construct_filtered_query_dto($parent_child_field, $term_association);
-            $bool_filter_query_dto->addFilters($filter_query_dto);
           }
         }
         if ($field == 'page') {
