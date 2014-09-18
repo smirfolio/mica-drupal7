@@ -286,7 +286,7 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dto_data_response = json_decode($data);
-      $this->session_facets_builder($dto_data_response, 'variable');
+      $this->session_facets_builder($dto_data_response);
 
       //dpm($dto_data_response);
       $variable_summaries = array();
@@ -309,7 +309,6 @@ class MicaDatasetResource extends MicaClient {
       return array('totalHits' => 0);
     }
   }
-
 
 
 }

@@ -165,14 +165,14 @@ function mica_client_facet_search_theme($existing, $type, $theme, $path) {
  * Implements hook_block_info().
  */
 function mica_client_facet_search_block_info() {
-  $i = 0 - count(mica_client_facet_search_resource_return_facets('mica_client_dataset'));
-  foreach (mica_client_facet_search_resource_return_facets('mica_client_dataset') as $key_facet => $facet) {
+  $i = 0 - count(mica_client_facet_search_resource_return_facets('facet_conf_variable'));
+  foreach (mica_client_facet_search_resource_return_facets('facet_conf_variable') as $key_facet => $facet) {
     $blocks['search-' . $key_facet] = mica_client_facet_search_block_info_construct($facet['title'], $i);
     --$i;
   }
 
-  $j = 0 - count(mica_client_facet_search_resource_return_facets('mica_client_study'));
-  foreach (mica_client_facet_search_resource_return_facets('mica_client_study') as $key_facet => $facet) {
+  $j = 0 - count(mica_client_facet_search_resource_return_facets('facet_conf_study'));
+  foreach (mica_client_facet_search_resource_return_facets('facet_conf_study') as $key_facet => $facet) {
     $blocks['search-' . $key_facet] = mica_client_facet_search_block_info_construct($facet['title'], $j);
     --$j;
   }
@@ -219,7 +219,6 @@ function mica_client_facet_search_block_info() {
     'weight' => --$i,
     'custom' => 1,
   );
-
   return $blocks;
 }
 
@@ -245,21 +244,21 @@ function mica_client_facet_search_block_view($delta = '') {
   switch ($delta) {
     case 'facet-search':
       if (!empty($_SESSION['variables']['request']) && $_SESSION['variables']['request'] == 'dataset') {
-        $output = _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_dataset', 'variables', 'child');
+        $output = _mica_client_facet_search_get_facets_block_by_dto_type('facet_conf_variable', 'variables', 'child');
       }
       else {
         $output = theme('mica_client_facet_search_tab_block', array(
-          'mica_client_dataset' =>
-            _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_dataset', 'variables', 'child'),
+          'mica_client_variable' =>
+            _mica_client_facet_search_get_facets_block_by_dto_type('facet_conf_variable', 'variables', 'variable'),
           'mica_client_study' =>
-            _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_study', 'studies', 'parent')
+            _mica_client_facet_search_get_facets_block_by_dto_type('facet_conf_study', 'studies', 'study')
         ));
       }
       $block['subject'] = t('Facet search variables');
       $block['content'] = $output;
       return $block;
     case 'facet-studies' :
-      $output = _mica_client_facet_search_get_facets_block_by_dto_type('mica_client_study', 'studies', 'parent');
+      $output = _mica_client_facet_search_get_facets_block_by_dto_type('facet_conf_study', 'studies', 'study');
       $block['subject'] = t('Facet search studies');
       $block['content'] = $output;
       return $block;
@@ -340,13 +339,13 @@ function mica_client_facet_search_variable_page_search() {
       case  'studies':
         $studies = $search_resources->search_studies();
         $study_charts = theme('mica_client_facet_search_charts', array(
-          'charts' => mica_client_facet_search_get_facets_chart('mica_client_study', $_SESSION['studies']['aggregations'])
+          'charts' => mica_client_facet_search_get_facets_chart('facet_conf_study', $_SESSION['studies']['aggregations'])
         ));
         break;
       default :
         $variables = $search_resources->search_variables();
         $Variable_charts = theme('mica_client_facet_search_charts', array(
-          'charts' => mica_client_facet_search_get_facets_chart('mica_client_dataset', $_SESSION['variables']['aggregations'])
+          'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
         ));
     }
 
@@ -354,7 +353,7 @@ function mica_client_facet_search_variable_page_search() {
   else {
     $variables = $search_resources->search_variables();
     $Variable_charts = theme('mica_client_facet_search_charts', array(
-      'charts' => mica_client_facet_search_get_facets_chart('mica_client_dataset', $_SESSION['variables']['aggregations'])
+      'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
     ));
   }
 
