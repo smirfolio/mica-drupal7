@@ -8,8 +8,8 @@
           </span>
   </div>
   <span id="checkthebox"
-        class="terms_field <?php print $relationship_string . $agregation_facet; ?> unchecked"
-        aggregation="<?php print $relationship_string . $agregation_facet . '[]'; ?>"
+        class="terms_field <?php print $type_string . $agregation_facet; ?> unchecked"
+        aggregation="<?php print $type_string . $agregation_facet . '[]'; ?>"
         value="<?php print  $term->key; ?>">
     <i style="color:<?php print $color; ?>" class="glyphicon glyphicon-unchecked"></i>
     <?php print  $term->key; ?>
@@ -20,5 +20,5 @@
 </li>
 <input
   id="<?php print  $term->key ?>"
-  name="<?php print $relationship_string . $agregation_facet . '[]'; ?>"
+  name="<?php print $type_string . $agregation_facet . '-terms[]'; ?>"
   type="hidden" value="">

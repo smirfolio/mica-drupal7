@@ -18,7 +18,7 @@
 
   <input type="hidden"
          id="<?php print $agregation_facet; ?>"
-         name="<?php print $relationship_string . $agregation_facet . '-range[]'; ?>"
+         name="<?php print $type_string . $agregation_facet . '-range[]'; ?>"
          value="" maxlength="75" class="form-control form-item-range-from">
 
   <div class="btn btn-primary btn-xs" id="checkthebox">Go</div>
