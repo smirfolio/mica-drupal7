@@ -2,63 +2,147 @@
   Drupal.behaviors.queries = {
     attach: function (context, settings) {
 
-      /*******************/
-      $.extend({
-        checkthebox: function (obj_span) {
-          obj_span.removeClass("unchecked");
-          obj_span.addClass("checked");
-          obj_span.children(":first").removeClass();
-          obj_span.children(":first").addClass("glyphicon glyphicon-ok");
-        },
+      function getSelectedtermsAggSearchKey(attrAgg, value) {
+        return attrAgg.replace("[]", "-terms[]")+value;
+      }
 
-        uncheckthebox: function (obj_span) {
-          obj_span.removeClass("checked");
-          obj_span.addClass("unchecked");
-          obj_span.children(":first").removeClass();
-          obj_span.children(":first").addClass("glyphicon glyphicon-unchecked");
-        },
-        rollover: function (obj_span) {
-          obj_span.children(":first").removeClass();
-          obj_span.children(":first").toggleClass("glyphicon glyphicon-remove");
-        },
-        rollout: function (obj_span) {
-          obj_span.children(":first").removeClass();
-          obj_span.children(":first").toggleClass("glyphicon glyphicon-ok");
-        },
+      /**
+       * Desrializes the form JSON into an array of aggregation values. Only range agg values are formatted
+       * @param json
+       * @returns {Array}
+       */
+      function desrializeFormJsonAsKeyValue(json) {
+        var values = {};
+        $.each(json, function(type, typeValues){
+          $.each(typeValues, function(aggType, aggs){
+            $.each(aggs, function(i, keyValue) {
+              $.each(keyValue, function(name, value) {
+                var formattedName = name + "-" + aggType + "[]";
+                var key = type+":"+formattedName + (aggType === "terms" ? value : name);
+                values[key] = aggType === "terms" ? value : name+".[+"+value.min+"+to+"+value.max+"+]";
+              });
+            })
+          });
+        });
 
-        getUrlVars: function () {
-          var vars = [], hash;
-          var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-          for (var i = 0; i < hashes.length; i++) {
-            hash = hashes[i].split('=');
-            //console.log(decodeURIComponent(hash[1]));
-            vars.push(decodeURIComponent(hash[1]));
-          }
-          return vars;
-        },
-        sendCheckboxCheckedValues: function (idcheckbox) {
-          var serializedData = "";
-          $('form').each(function () {
-            $('input', 'form').each(function () {
-              $(this).val() == "" && $(this).remove();
-            });
-            var SerilizedForm = ($(this).serialize());
-            if (SerilizedForm && $(this).attr('id').match(/facet-search/g)) {
-              serializedData = serializedData.concat(SerilizedForm).concat('&');
+        return $.isEmptyObject(values) ? null : values;
+      }
+
+      function serializeFormAsJson(formData) {
+
+        /**
+         * Helper used to extract entry information needed to build the form JSON
+         * @param value
+         * @returns {{type: *, agg: *, aggType: *, aggValue: *}}
+         */
+        function extractFormEntry(value) {
+          var entry = /(\w+):(.*)-(terms|range)[\\[\\]]*=(.*)$/.exec(value);
+          return {type: entry[1], agg: entry[2], aggType: entry[3], aggValue: extractAggValue(entry[4])};
+        }
+
+        /**
+         * If the agg value has range info, return value as min-max
+         * @param value
+         * @returns {*}
+         */
+        function extractAggValue(value) {
+          var entry = /\[\+([+-]*\d+)\+to\+([+-]*\d+)\+\]/.exec(value);
+          if (entry != null) return {min: entry[1], max: entry[2]};
+          return value;
+        }
+
+        /**
+         * Parses the formData serialized as a DOM object and returns it as JSON object
+         * @param formData
+         * @returns {{}}
+         */
+        function parse(formData) {
+          var jsonForm = {};
+
+          $.each(decodeURIComponent(formData).split('&'), function(i, value) {
+            if (value != null && value.length > 0) {
+              var entry = extractFormEntry(value);
+
+              if (!jsonForm.hasOwnProperty(entry.type)) {
+                jsonForm[entry.type] = {};
+              }
+
+              if (!jsonForm[entry.type].hasOwnProperty(entry.aggType)) {
+                jsonForm[entry.type][entry.aggType] = [];
+              }
+
+              var item = {};
+              item[entry.agg] = entry.aggValue;
+              jsonForm[entry.type][entry.aggType].push(item);
             }
           });
-          return serializedData;
-        }
-      });
 
+          return jsonForm;
+        }
+
+        return parse(formData);
+      }
+
+      function checkthebox(obj_span) {
+        obj_span.removeClass("unchecked");
+        obj_span.addClass("checked");
+        obj_span.children(":first").removeClass();
+        obj_span.children(":first").addClass("glyphicon glyphicon-ok");
+      }
+
+      function uncheckthebox(obj_span) {
+        obj_span.removeClass("checked");
+        obj_span.addClass("unchecked");
+        obj_span.children(":first").removeClass();
+        obj_span.children(":first").addClass("glyphicon glyphicon-unchecked");
+      }
+
+      function rollover(obj_span) {
+        obj_span.children(":first").removeClass();
+        obj_span.children(":first").toggleClass("glyphicon glyphicon-remove");
+      }
+
+      function rollout(obj_span) {
+        obj_span.children(":first").removeClass();
+        obj_span.children(":first").toggleClass("glyphicon glyphicon-ok");
+      }
+
+      function getUrlVars() {
+        var pos = window.location.href.indexOf('?');
+        if (pos === -1) return [];
+        return desrializeFormJsonAsKeyValue(JSON.parse(decodeURIComponent(window.location.href.slice(pos + 1))));
+      }
+
+      function sendCheckboxCheckedValues(idcheckbox) {
+        var serializedData = "";
+        $('form').each(function () {
+          $('input', 'form').each(function () {
+            $(this).val() == "" && $(this).remove();
+          });
+          var SerilizedForm = ($(this).serialize());
+          if (SerilizedForm && $(this).attr('id').match(/facet-search/g)) {
+            serializedData = serializedData.concat(SerilizedForm).concat('&');
+          }
+        });
+
+        return JSON.stringify(serializeFormAsJson(serializedData));
+      }
+
+      /*******************/
+      $.extend({
+        checkthebox: checkthebox,
+        uncheckthebox: uncheckthebox,
+        rollover: rollover,
+        rollout: rollout,
+        getUrlVars: getUrlVars,
+        sendCheckboxCheckedValues: sendCheckboxCheckedValues
+      });
 
       /**************************/
       //deal with tabs
       var tabparam = '';
       var urlTabParam = $.urlParam('type');
-      console.log(urlTabParam);
       if (urlTabParam) {
-        var NewUrlparameters = $.urlParamToAdd();
         var div = $("div.search-result").find("div.tab-pane");
         div.removeClass("active");
         $("div#" + urlTabParam).addClass("active");
@@ -70,30 +154,22 @@
       /*hide main search facet block*/
       $("section#block-mica-client-facet-search-facet-search").find("h2:first").css("display", "none");
 
-      var allVars = $.getUrlVars();
+      var selectedVars = $.getUrlVars();
 
       $('input[type="hidden"]').each(function () {
-        var currInputidPattern = $(this).attr('id') + "\\W";
-        var currInputid = $(this).attr('id');
-        // console.log(currInputid);
-        if (allVars.toString().search(new RegExp(currInputidPattern)) != -1) {
-          $.grep(allVars, function (element, i) {
-            if (!element.indexOf(currInputid)) {
-              $('#' + currInputid).val(element.replace(/\+/g, ' '));
-            }
-          });
+        var currInputId = $(this).attr('id');
+        var currInputName = $(this).attr('name');
+        var selectedVar = selectedVars[currInputName+currInputId];
+        if (selectedVar) {
+          $('#' + currInputId).val(selectedVar.replace(/\+/g, ' '));
         }
+
       });
 
-
       $('span#checkthebox').each(function () {
-        var currInputidPattern = $(this).attr('value') + "\\W";
-        var currInputid = $(this).attr('value');
-
-
         var aggregation_name = $(this).attr('value');
-
-        if (allVars.toString().search(new RegExp(currInputidPattern)) != -1) {
+        var selectedVar = selectedVars[getSelectedtermsAggSearchKey($(this).attr('aggregation'), aggregation_name)];
+        if (selectedVar) {
           var $current_width_percent = $(this).parent().find('.terms_stat:first').attr('witdh-val');
 
           if ($(this).hasClass("unchecked")) {
@@ -131,7 +207,6 @@
           $.uncheckthebox($(this));
           $("input[id=" + aggregation_name + "]").val('');
           window.location = '?' + $.sendCheckboxCheckedValues() + tabparam;
-          //  console.log($.sendCheckboxCheckedValues());
           return false;
         }
       });
@@ -171,7 +246,6 @@
         }
 
       });
-
     }
   }
 })(jQuery);
