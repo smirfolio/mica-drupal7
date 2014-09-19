@@ -312,12 +312,23 @@ function mica_client_facet_search_get_url_tab_parameter() {
   if (!empty($url_param[1])) {
     $parameters = $search_resources::normalize_parameters($url_param[1]);
     foreach ($parameters as $parameter => $value) {
-      if (!empty($parameter) && $parameter == 'type') {
+      if (!empty($parameter) && $parameter == 'type-terms') {
         return $value[0];
       }
     }
   }
   return NULL;
+}
+
+function mica_client_get_hits_entities_variable($entity) {
+  return array(
+    'study_totalHits' => !empty($entity['study_totalHits']) ? $entity['study_totalHits'] : NULL,
+    'study_totalCount' => !empty($entity['study_totalHits']) ? $entity['study_totalHits'] : NULL,
+    'variable_totalHits' => !empty($entity['variable_totalHits']) ? $entity['variable_totalHits'] : NULL,
+    'variable_totalCount' => !empty($entity['variable_totalCount']) ? $entity['variable_totalCount'] : NULL,
+    'network_totalHits' => !empty($entity['network_totalHits']) ? $entity['network_totalHits'] : NULL,
+    'network_totalCount' => !empty($entity['network_totalCount']) ? $entity['network_totalCount'] : NULL
+  );
 }
 
 function mica_client_facet_search_variable_page_search() {
@@ -331,23 +342,25 @@ function mica_client_facet_search_variable_page_search() {
   $search_resources = new MicaSearchResource();
 
   $resource = mica_client_facet_search_get_url_tab_parameter();
+
   if (!empty($resource)) {
 
     switch ($resource) {
       case  'networks':
-        $networks = mica_client_network_get_networks();
-
-        $networksarray['totalHits'] = $networksarray['totalCount'] = count($networks->networks);
-
+        $networks = $search_resources->search_networks();
+        extract(mica_client_get_hits_entities_variable($networks), EXTR_OVERWRITE);
         break;
       case  'studies':
         $studies = $search_resources->search_studies();
+        extract(mica_client_get_hits_entities_variable($studies), EXTR_OVERWRITE);
+
         $study_charts = theme('mica_client_facet_search_charts', array(
           'charts' => mica_client_facet_search_get_facets_chart('facet_conf_study', $_SESSION['studies']['aggregations'])
         ));
         break;
       default :
         $variables = $search_resources->search_variables();
+        extract(mica_client_get_hits_entities_variable($variables), EXTR_OVERWRITE);
         $Variable_charts = theme('mica_client_facet_search_charts', array(
           'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
         ));
@@ -360,27 +373,27 @@ function mica_client_facet_search_variable_page_search() {
       'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
     ));
   }
-
   $output = theme('mica_client_facet_search_variable-search', array(
     'noval' => '',
     'variables_result' => array(
-      'data' => mica_client_facet_search_variables_table($variables),
-      'totalHits' => !empty($variables['totalHits']) ? $variables['totalHits'] : NULL,
-      'totalCount' => !empty($variables['totalCount']) ? $variables['totalCount'] : NULL
+      'data' => mica_client_facet_search_variables_table($variables)
     ),
     'variable_charts' => $Variable_charts,
     'studies' => array(
-      'data' => mica_client_facet_search_studies_table($studies),
-      'totalHits' => !empty($studies['totalHits']) ? $studies['totalHits'] : NULL,
-      'totalCount' => !empty($studies['totalCount']) ? $studies['totalCount'] : NULL
+      'data' => mica_client_facet_search_studies_table($studies)
+
     ),
     'study_charts' => $study_charts,
     'networks' => array(
-      'data' => mica_client_network_networks_table($networks),
-      'totalHits' => !empty($networksarray['totalHits']) ? $networksarray['totalHits'] : NULL,
-      'totalCount' => !empty($networksarray['totalCount']) ? $networksarray['totalCount'] : NULL
+      'data' => mica_client_facet_search_networks_table($networks)
     ),
-    'network_charts' => $study_charts
+    'network_charts' => $study_charts,
+    'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
+    'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
+    'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
+    'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
+    'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
+    'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL
   ));
   return $output;
 }
@@ -394,7 +407,6 @@ function mica_client_facet_search_study_page_search($request) {
   $study_charts = theme('mica_client_facet_search_charts', array(
     'charts' => mica_client_facet_search_get_facets_chart('mica_client_study', $_SESSION['studies']['aggregations'])
   ));
-
   return $study_charts . mica_client_facet_search_studies_table($studies);
 }
 
@@ -426,8 +438,8 @@ function mica_client_facet_search_variables_table($variables) {
     t('Study')
   );
 
-  $args = array('quantity' => $variables['totalHits'], 'element' => MicaSearchResource::PAGINATE_variables);
-  pager_default_initialize($variables['totalHits'], MicaSearchResource::SIZE_RESPONSE, MicaSearchResource::PAGINATE_variables);
+  $args = array('quantity' => $variables['variable_totalHits'], 'element' => MicaSearchResource::PAGINATE_variables);
+  pager_default_initialize($variables['variable_totalHits'], MicaSearchResource::SIZE_RESPONSE, MicaSearchResource::PAGINATE_variables);
 
   return theme(
     'table',
@@ -467,8 +479,44 @@ function mica_client_facet_search_studies_table($studies) {
 //  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variables);
 //  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variables);
 
-  $args = array('quantity' => $studies['totalHits'], 'element' => MicaSearchResource::PAGINATE_studies);
-  $current_page = pager_default_initialize($studies['totalHits'], $per_page, MicaSearchResource::PAGINATE_studies);
+  $args = array('quantity' => $studies['study_totalHits'], 'element' => MicaSearchResource::PAGINATE_studies);
+  $current_page = pager_default_initialize($studies['study_totalHits'], $per_page, MicaSearchResource::PAGINATE_studies);
+  $chunks = array_chunk($rows, $per_page, TRUE);
+  return theme(
+    'table',
+    array(
+      'header' => $headers,
+      'rows' => empty($chunks) ? array() : $chunks[$current_page],
+      'empty' => t('No study found')
+    )
+  ) . theme('pager', $args);
+}
+
+function mica_client_facet_search_networks_table($networks) {
+  $rows = array();
+  if (!empty($networks['data'])) {
+    foreach ($networks['data'] as $network) {
+      $name = mica_client_commons_get_localized_field($network, 'name');
+      $rows[] = array(
+        mica_client_commons_get_localized_field($network, 'acronym'),
+        l($name, 'mica/network/' . $network->id . '/' . mica_client_commons_to_slug($name)),
+        mica_client_commons_get_localized_field($network, 'description')
+      );
+    }
+  }
+
+  $headers = array(
+    t('Short Name'),
+    t('Name'),
+    t('Description'),
+  );
+  $per_page = 20;
+
+//  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variables);
+//  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variables);
+
+  $args = array('quantity' => $networks['study_totalHits'], 'element' => MicaSearchResource::PAGINATE_studies);
+  $current_page = pager_default_initialize($networks['study_totalHits'], $per_page, MicaSearchResource::PAGINATE_studies);
   $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
     'table',
