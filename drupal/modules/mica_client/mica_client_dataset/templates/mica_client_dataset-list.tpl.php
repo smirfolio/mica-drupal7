@@ -24,10 +24,12 @@
           print l(mica_client_commons_get_localized_field($dataset, 'acronym') . ' - ' . $dataset_name,
             'mica/' . mica_client_dataset_type($dataset) . '/' . $dataset->id); ?>
         </h4>
-        <?php if (!empty($dataset)): ?>
+        <?php if (!empty($dataset->description)): ?>
           <p>
             <?php print truncate_utf8(mica_client_commons_get_localized_field($dataset, 'description'), 300, TRUE, TRUE); ?>
           </p>
+        <?php else: ?>
+          <i><small><?php print t('No description'); ?></small></i>
         <?php endif; ?>
       </div>
     <?php endforeach; ?>
