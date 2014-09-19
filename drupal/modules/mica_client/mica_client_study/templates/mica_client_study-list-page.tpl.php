@@ -1,63 +1,49 @@
 <?php //dpm($list_studies->studySummaries); ?>
 <?php print render($node_page) ?>
-<div class="clearfix"></div>
-
-<div class="row">
-  <div class="col-md-7 ">
-    <div class="search-box-items">
-      <div class="row">
-        <div class="col-md-2">
-          <div class="count-item-center">
-            <?php print $list_studies->total . ' ' . t('Studies'); ?>
-          </div>
-        </div>
-        <?php print render($form_search); ?>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-5 ">
-    <div class="advanced-search-link-center">
-      <?php print t('Open IN'); ?> : <a href="search?type=studies"><?php print t('Advanced search'); ?></a>
-      <!-- | <a href=""><?php print t('Domain Coverage'); ?> </a> -->
-    </div>
-  </div>
-</div>
-
-<div class="clearfix"></div>
 <?php //dpm($list_studies); ?>
 
 <div class="list-page">
+  <div class="row">
+    <div class="col-md-2 col-xs-2 md-top-margin">
+      <?php if ($list_studies->total > 0): ?>
+        <?php print $list_studies->total . ' ' . ($list_studies->total == 1 ? t('Study') : t('Studies')); ?>
+      <?php else: print t('No studies found'); ?>
+      <?php endif; ?>
+    </div>
+    <div class="col-md-10 col-xs-10">
+      <?php print render($form_search); ?>
+    </div>
+  </div>
+
   <?php if (!empty($list_studies->studySummaries)): ?>
     <?php foreach ($list_studies->studySummaries as $study) : ?>
-    <div class="row">
-      <div class="col-md-1 col-xs-1">
-        <h1 class="big-caracter">
-           <span class="t_badge color_S">S
-<!--           --><?php //print drupal_substr(mica_client_commons_get_localized_field($study, 'name'), 0, 1); ?>
-           </span>
-        </h1>
-        <!--           <img class="img-responsive"-->
-        <!--              src="http://localhost:8082/ws/draft/study/adoquest/file/54188036c4aa7c77915a67fe/_download">-->
-        <!--  src="http://localhost:8082/ws/draft/study/adoquest/file/<?php print $study->id ?>/_download">-->
-      </div>
-      <div class="col-md-11 col-xs-10">
-        <h4><a
-            href="study/<?php print $study->id ?>"><?php print mica_client_commons_get_localized_field($study, 'acronym'); ?>
-            -
-            <?php print  mica_client_commons_get_localized_field($study, 'name'); ?> </a></h4>
+      <div class="row lg-bottom-margin">
+        <div class="col-md-2 col-xs-2">
+          <?php if (!empty($study->logo)): ?>
+            <img typeof="foaf:Image"
+                 src="http://localhost:8082/ws/draft/study/<?php print $study->id ?>/file/<?php print $study->logo->id ?>/_download"
+                 width="120" height="96" alt="">
+          <?php else : ?>
+            <h1 class="big-character">
+              <span class="t_badge color_S"><?php print t('S') ?></span>
+            </h1>
+          <?php endif; ?>
+        </div>
+        <div class="col-md-10 col-xs-10">
+          <h4><a
+              href="study/<?php print $study->id ?>">
+              <?php print mica_client_commons_get_localized_field($study, 'acronym') . ' - ' . mica_client_commons_get_localized_field($study, 'name'); ?>
+            </a>
+          </h4>
 
-        <p>
-          <?php print  mica_client_commons_get_localized_field($study, 'name'); ?>
-          This page displays the list of the consortium's studies. Each study is described in a
-          ... <a href="study/<?php print $study->id ?>">Learn more</a>
-        </p>
-
+          <p>
+            <?php print truncate_utf8(mica_client_commons_get_localized_field($study, 'objectives'), 300, TRUE, TRUE); ?>
+          </p>
+        </div>
       </div>
-    </div>
 
     <?php endforeach; ?>
     <div><?php print $pager_wrap; ?></div>
-  <?php else: print t('No Studies Found'); ?>
   <?php endif; ?>
 </div>
 

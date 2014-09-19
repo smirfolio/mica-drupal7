@@ -171,10 +171,10 @@ body {
       .col-xs-9 {
         width: 74%;
       }
-      .right-indent {
-        margin-right: 10px;
-      }
     }
+  }
+  .right-indent {
+    margin-right: 10px;
   }
   .table {
     border: 1px solid #dddddd;
@@ -185,6 +185,27 @@ body {
       margin: 0;
       border: none;
     }
+  }
+  .sm-width {
+    max-width: 50px;
+  }
+  .md-width {
+     max-width: 100px;
+  }
+  .lg-width {
+      max-width: 200px;
+  }
+  .sm-top-margin {
+    margin-top: 5px;
+  }
+  .md-top-margin {
+    margin-top: 10px;
+  }
+  .lg-top-margin {
+    margin-top: 20px;
+  }
+  .lg-bottom-margin {
+    margin-bottom: 20px;
   }
 }
 
@@ -217,7 +238,7 @@ fieldset.search-advanced {
 
 // Action Links
 ul.action-links {
-  margin-bottom: 2em;
+  margin: 0;
   li {
     display: inline;
     padding-right: 1.5em;
@@ -429,12 +450,11 @@ div.password-suggestions ul {
 }
 
 .list-page {
-  display: inline-block;
-  text-wrap: avoid;
   min-height: 150px;
-  .big-caracter {
+  .big-character {
     min-width: 114px;
     font-size: 40px;
+    text-align: center;
   }
 
   img {
@@ -442,9 +462,14 @@ div.password-suggestions ul {
     margin-top: 25px;
   }
   .row {
-    margin-top: 25px;
+    margin-right: 0px;
+    margin-left: 0px;
   }
 
+}
+
+.inline-form > form > div {
+  display: inline-flex;
 }
 
 .advanced-search-link-center {
@@ -457,15 +482,6 @@ div.password-suggestions ul {
   float: left;
 }
 
-.search-box-items {
-  margin-left: 125px;
-  .form-item {
-    margin-left: 10px;
-  }
-  .form-type-radio {
-    display: inline-block;
-  }
-}
 
 
 
