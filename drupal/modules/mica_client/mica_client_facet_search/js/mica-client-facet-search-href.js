@@ -2,25 +2,30 @@
   Drupal.behaviors.queries = {
     attach: function (context, settings) {
 
+      function getSelectedtermsAggSearchKey(attrAgg, value) {
+        return attrAgg.replace("[]", "-terms[]")+value;
+      }
+
       /**
        * Desrializes the form JSON into an array of aggregation values. Only range agg values are formatted
        * @param json
        * @returns {Array}
        */
       function desrializeFormJsonAsKeyValue(json) {
-        var values = [];
+        var values = {};
         $.each(json, function(type, typeValues){
           $.each(typeValues, function(aggType, aggs){
             $.each(aggs, function(i, keyValue) {
               $.each(keyValue, function(name, value) {
-                values.push(aggType === "terms" ? value : name+".[+"+value.min+"+to+"+value.max+"+]");
+                var formattedName = name + "-" + aggType + "[]";
+                var key = type+":"+formattedName + (aggType === "terms" ? value : name);
+                values[key] = aggType === "terms" ? value : name+".[+"+value.min+"+to+"+value.max+"+]";
               });
-
             })
           });
         });
 
-        return values;
+        return $.isEmptyObject(values) ? null : values;
       }
 
       function serializeFormAsJson(formData) {
@@ -31,8 +36,8 @@
          * @returns {{type: *, agg: *, aggType: *, aggValue: *}}
          */
         function extractFormEntry(value) {
-          var tuple = /(\w+):(.*)-(terms|range)[\\[\\]]*=(.*)$/.exec(value);
-          return {type: tuple[1], agg: tuple[2], aggType: tuple[3], aggValue: extractAggValue(tuple[4])};
+          var entry = /(\w+):(.*)-(terms|range)[\\[\\]]*=(.*)$/.exec(value);
+          return {type: entry[1], agg: entry[2], aggType: entry[3], aggValue: extractAggValue(entry[4])};
         }
 
         /**
@@ -41,8 +46,8 @@
          * @returns {*}
          */
         function extractAggValue(value) {
-          var tuple = /\[\+([+-]*\d+)\+to\+([+-]*\d+)\+\]/.exec(value);
-          if (tuple != null) return {min: tuple[1], max: tuple[2]};
+          var entry = /\[\+([+-]*\d+)\+to\+([+-]*\d+)\+\]/.exec(value);
+          if (entry != null) return {min: entry[1], max: entry[2]};
           return value;
         }
 
@@ -78,64 +83,66 @@
         return parse(formData);
       }
 
+      function checkthebox(obj_span) {
+        obj_span.removeClass("unchecked");
+        obj_span.addClass("checked");
+        obj_span.children(":first").removeClass();
+        obj_span.children(":first").addClass("glyphicon glyphicon-ok");
+      }
+
+      function uncheckthebox(obj_span) {
+        obj_span.removeClass("checked");
+        obj_span.addClass("unchecked");
+        obj_span.children(":first").removeClass();
+        obj_span.children(":first").addClass("glyphicon glyphicon-unchecked");
+      }
+
+      function rollover(obj_span) {
+        obj_span.children(":first").removeClass();
+        obj_span.children(":first").toggleClass("glyphicon glyphicon-remove");
+      }
+
+      function rollout(obj_span) {
+        obj_span.children(":first").removeClass();
+        obj_span.children(":first").toggleClass("glyphicon glyphicon-ok");
+      }
+
+      function getUrlVars() {
+        var pos = window.location.href.indexOf('?');
+        if (pos === -1) return [];
+        return desrializeFormJsonAsKeyValue(JSON.parse(decodeURIComponent(window.location.href.slice(pos + 1))));
+      }
+
+      function sendCheckboxCheckedValues(idcheckbox) {
+        var serializedData = "";
+        $('form').each(function () {
+          $('input', 'form').each(function () {
+            $(this).val() == "" && $(this).remove();
+          });
+          var SerilizedForm = ($(this).serialize());
+          if (SerilizedForm && $(this).attr('id').match(/facet-search/g)) {
+            serializedData = serializedData.concat(SerilizedForm).concat('&');
+          }
+        });
+
+        return JSON.stringify(serializeFormAsJson(serializedData));
+      }
+
       /*******************/
       $.extend({
-        checkthebox: function (obj_span) {
-          obj_span.removeClass("unchecked");
-          obj_span.addClass("checked");
-          obj_span.children(":first").removeClass();
-          obj_span.children(":first").addClass("glyphicon glyphicon-ok");
-        },
-
-        uncheckthebox: function (obj_span) {
-          obj_span.removeClass("checked");
-          obj_span.addClass("unchecked");
-          obj_span.children(":first").removeClass();
-          obj_span.children(":first").addClass("glyphicon glyphicon-unchecked");
-        },
-        rollover: function (obj_span) {
-          obj_span.children(":first").removeClass();
-          obj_span.children(":first").toggleClass("glyphicon glyphicon-remove");
-        },
-        rollout: function (obj_span) {
-          obj_span.children(":first").removeClass();
-          obj_span.children(":first").toggleClass("glyphicon glyphicon-ok");
-        },
-
-        getUrlVars: function () {
-          var pos = window.location.href.indexOf('?');
-          if (pos === -1) return [];
-
-          var vars = desrializeFormJsonAsKeyValue(JSON.parse(decodeURIComponent(window.location.href.slice(pos + 1))));
-          // TODO until we find out why we have to add empty entry at the end
-          vars.push("");
-          return vars;
-        },
-        sendCheckboxCheckedValues: function (idcheckbox) {
-          var serializedData = "";
-          $('form').each(function () {
-            $('input', 'form').each(function () {
-              $(this).val() == "" && $(this).remove();
-            });
-            var SerilizedForm = ($(this).serialize());
-            if (SerilizedForm && $(this).attr('id').match(/facet-search/g)) {
-              serializedData = serializedData.concat(SerilizedForm).concat('&');
-            }
-          });
-
-//          return serializedData;
-          return JSON.stringify(serializeFormAsJson(serializedData));
-        }
+        checkthebox: checkthebox,
+        uncheckthebox: uncheckthebox,
+        rollover: rollover,
+        rollout: rollout,
+        getUrlVars: getUrlVars,
+        sendCheckboxCheckedValues: sendCheckboxCheckedValues
       });
-
 
       /**************************/
       //deal with tabs
       var tabparam = '';
       var urlTabParam = $.urlParam('type');
-      console.log(urlTabParam);
       if (urlTabParam) {
-        var NewUrlparameters = $.urlParamToAdd();
         var div = $("div.search-result").find("div.tab-pane");
         div.removeClass("active");
         $("div#" + urlTabParam).addClass("active");
@@ -147,30 +154,22 @@
       /*hide main search facet block*/
       $("section#block-mica-client-facet-search-facet-search").find("h2:first").css("display", "none");
 
-      var allVars = $.getUrlVars();
+      var selectedVars = $.getUrlVars();
 
       $('input[type="hidden"]').each(function () {
-        var currInputidPattern = $(this).attr('id') + "\\W";
-        var currInputid = $(this).attr('id');
-        // console.log(currInputid);
-        if (allVars.toString().search(new RegExp(currInputidPattern)) != -1) {
-          $.grep(allVars, function (element, i) {
-            if (!element.indexOf(currInputid)) {
-              $('#' + currInputid).val(element.replace(/\+/g, ' '));
-            }
-          });
+        var currInputId = $(this).attr('id');
+        var currInputName = $(this).attr('name');
+        var selectedVar = selectedVars[currInputName+currInputId];
+        if (selectedVar) {
+          $('#' + currInputId).val(selectedVar.replace(/\+/g, ' '));
         }
+
       });
 
-
       $('span#checkthebox').each(function () {
-        var currInputidPattern = $(this).attr('value') + "\\W";
-        var currInputid = $(this).attr('value');
-
-
         var aggregation_name = $(this).attr('value');
-
-        if (allVars.toString().search(new RegExp(currInputidPattern)) != -1) {
+        var selectedVar = selectedVars[getSelectedtermsAggSearchKey($(this).attr('aggregation'), aggregation_name)];
+        if (selectedVar) {
           var $current_width_percent = $(this).parent().find('.terms_stat:first').attr('witdh-val');
 
           if ($(this).hasClass("unchecked")) {
@@ -208,7 +207,6 @@
           $.uncheckthebox($(this));
           $("input[id=" + aggregation_name + "]").val('');
           window.location = '?' + $.sendCheckboxCheckedValues() + tabparam;
-          //  console.log($.sendCheckboxCheckedValues());
           return false;
         }
       });
@@ -248,7 +246,6 @@
         }
 
       });
-
     }
   }
 })(jQuery);
