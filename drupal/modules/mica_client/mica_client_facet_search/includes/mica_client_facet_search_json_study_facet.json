@@ -53,5 +53,11 @@
     "title": "Study-DATE END",
     "key": "end",
     "aggs": "end"
+  },
+
+  "networkId": {
+    "title": "network-NETWORKS",
+    "key": "networkId",
+    "aggs": "networkId"
   }
 }

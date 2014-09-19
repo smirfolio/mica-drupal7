@@ -54,6 +54,11 @@
     "key": "occurrenceGroup",
     "aggs": "occurrenceGroup"
   },
+  "studyIds": {
+    "title": "Study-Studies",
+    "key": "studyIds",
+    "aggs": "studyIds"
+  },
   "datasetId": {
     "title": "dataset-DATASETS",
     "key": "datasetId",
