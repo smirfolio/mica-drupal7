@@ -34,6 +34,7 @@
             //console.log(decodeURIComponent(hash[1]));
             vars.push(decodeURIComponent(hash[1]));
           }
+          console.log(vars);
           return vars;
         },
         sendCheckboxCheckedValues: function (idcheckbox) {
@@ -56,7 +57,6 @@
       //deal with tabs
       var tabparam = '';
       var urlTabParam = $.urlParam('type');
-      console.log(urlTabParam);
       if (urlTabParam) {
         var NewUrlparameters = $.urlParamToAdd();
         var div = $("div.search-result").find("div.tab-pane");
