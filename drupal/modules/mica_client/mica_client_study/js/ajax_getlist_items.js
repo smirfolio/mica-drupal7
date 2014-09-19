@@ -6,7 +6,7 @@
       var text_study = Drupal.t('Study');
       $("#edit-studies-query").on("keypress", function () {
         $.ajax({
-          url: 'refresh_list_studies/' + $(this).val() + '/' + $("#edit-studies-sort").val() + '/' + $("#edit-studies-sort-order").val(),
+          url: 'refresh_studies/' + $(this).val() + '/' + $("#edit-studies-sort").val() + '/' + $("#edit-studies-sort-order").val(),
           success: function (data) {
             if (data) {
               $('#refresh-list').empty().append(data.studies);
@@ -19,7 +19,7 @@
 
       $("#edit-studies-query").on("blur", function () {
         $.ajax({
-          url: 'refresh_list_studies/' + $(this).val() + '/' + $("#edit-studies-sort").val() + '/' + $("#edit-studies-sort-order").val(),
+          url: 'refresh_studies/' + $(this).val() + '/' + $("#edit-studies-sort").val() + '/' + $("#edit-studies-sort-order").val(),
           success: function (data) {
             if (data) {
               $('#refresh-list').empty().append(data.studies);
@@ -33,7 +33,7 @@
       $("#edit-studies-sort-order").on("change", function () {
 
         $.ajax({
-          url: 'refresh_list_studies/' + $("#edit-studies-query").val() + '/' + $("#edit-studies-sort").val() + '/' + $(this).val(),
+          url: 'refresh_studies/' + $("#edit-studies-query").val() + '/' + $("#edit-studies-sort").val() + '/' + $(this).val(),
           success: function (data) {
             if (data) {
               $('#refresh-list').empty().append(data.studies);
@@ -46,7 +46,7 @@
 
       $("#edit-studies-sort").on("change", function () {
         $.ajax({
-          url: 'refresh_list_studies/' + $("#edit-studies-query").val() + '/' + $(this).val() + '/' + $("#edit-studies-sort-order").val(),
+          url: 'refresh_studies/' + $("#edit-studies-query").val() + '/' + $(this).val() + '/' + $("#edit-studies-sort-order").val(),
           success: function (data) {
             if (data) {
               $('#refresh-list').empty().append(data.studies);
