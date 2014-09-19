@@ -35,18 +35,20 @@ function mica_client_study_create_form() {
 
   $form = array();
   $form['#method'] = 'get';
+  $form['#prefix'] = '<div class="inline-form">';
+  $form['#suffix'] = '</div>';
   $form['studies-sort'] = array(
     '#type' => 'select',
     '#title' => '',
-    '#description' => 'Sort By',
+    '#description' => t('Sort by'),
     '#options' => array(
       $sort_name => t('Name'),
-      $sort_acronym => t('Acronyme'),
+      $sort_acronym => t('Acronym'),
       'numberOfParticipants.participant.number' => t('Target Number'),
       'populations.selectionCriteria.countriesIso' => t('Countries'),
     ),
     '#default_value' => !empty($_GET['studies-sort']) ? $_GET['studies-sort'] : NULL,
-    '#prefix' => '<div class="col-md-2">',
+    '#prefix' => '<div class="right-indent lg-width">',
     '#suffix' => '</div>',
   );
 
@@ -59,7 +61,7 @@ function mica_client_study_create_form() {
       'desc' => t('DESC'),
     ),
     '#default_value' => !empty($_GET['studies-sort-order']) ? $_GET['studies-sort-order'] : NULL,
-    '#prefix' => '<div class="col-md-2">',
+    '#prefix' => '<div class="right-indent md-width">',
     '#suffix' => '</div>',
 
   );
@@ -68,9 +70,9 @@ function mica_client_study_create_form() {
   $form['studies-query'] = array(
     '#type' => 'textfield',
     '#title' => '',
-    '#description' => 'Search studies',
+    '#description' => 'Filter by',
     '#default_value' => !empty($_GET['studies-query']) ? $_GET['studies-query'] : NULL,
-    '#prefix' => '<div class="col-md-4">',
+    '#prefix' => '<div class="right-indent lg-width">',
     '#suffix' => '</div>',
   );
 

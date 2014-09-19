@@ -101,8 +101,11 @@ function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $
         '#theme' => 'menu_local_action',
         '#link' => array(
           'title' => t('Search Studies'),
-          'href' => 'mica/studies_search/_all',
+          'href' => 'mica/search',
           'localized_options' => array(
+            'query' => array(
+              'type' => 'studies',
+            ),
             'attributes' => array(
               'class' => 'highlight',
             ),
