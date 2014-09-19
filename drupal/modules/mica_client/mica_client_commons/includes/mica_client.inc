@@ -227,23 +227,42 @@ class MicaClient {
 
 
   protected function session_facets_builder($aggregations, $request_param = NULL) {
-    foreach ($aggregations as $type_aggregations => $aggre) {
-      if (!empty($aggre->totalHits)) {
+    dpm($aggregations);
+
+    foreach ($aggregations as $type_aggregations => $aggregation) {
+      if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {
-          $_SESSION['variables']['aggregations'] = $aggre->aggs;
-          $_SESSION['variables']['aggregations']['totalHits'] = $aggre->totalHits;
-          $_SESSION['variables']['aggregations']['totalCount'] = $aggre->totalCount;
+          $_SESSION['variables']['studies'] = $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'}->summaries;
+          $_SESSION['variables']['datasets'] = $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->datasets;
+          $_SESSION['variables']['aggregations'] = $aggregation->aggs;
+          $_SESSION['variables']['aggregations'][] = $aggregation->aggs;
+          $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
+          $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
           $_SESSION['variables']['request'] = !empty($request_param) ? $request_param : NULL;
         }
 
         if ($type_aggregations == 'studyResultDto') {
-          $_SESSION['studies']['aggregations'] = $aggre->aggs;
-          $_SESSION['studies']['aggregations']['totalHits'] = $aggre->totalHits;
-          $_SESSION['studies']['aggregations']['totalCount'] = $aggre->totalCount;
+          $_SESSION['studies']['networks'] = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks;
+          $_SESSION['studies']['aggregations'] = $aggregation->aggs;
+          $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
+          $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
           $_SESSION['studies']['request'] = !empty($request_param) ? $request_param : NULL;
         }
       }
     }
+  }
+
+  static function get_name_entity_by_id_aggregation($type, $agregation_facet, $id) {
+    foreach ($_SESSION[$type][$agregation_facet] as $entity) {
+      if ($entity->id == $id) {
+        // dpm(mica_client_commons_get_localized_field($dataset,'name'));
+        return mica_client_commons_get_localized_field($entity, 'name');
+      }
+    }
+//dpm($type);
+//dpm($id);
+
+    return NULL;
   }
 
   static function normalize_parameters($request_param) {

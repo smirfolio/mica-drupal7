@@ -277,7 +277,7 @@ function mica_client_facet_search_block_view($delta = '') {
   }
 }
 
-function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type, $parent_child = NULL) {
+function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type) {
   $blockto_render = array();
   $facets = mica_client_facet_search_resource_return_facets($dto_type);
   //dpm(drupal_json_encode($facets));
@@ -286,7 +286,8 @@ function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type
       block_load('mica_client_facet_search', 'search-' . $key_facet);
     $facet_title_array = explode('-', $facet['title']);
     $blockto_render[$dto_type . '_search-' . $key_facet]->subject = $facet_title_array[1];
-    $blockto_render[$dto_type . '_search-' . $key_facet]->content['#markup'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggs'], $type, $parent_child);
+    $blockto_render[$dto_type . '_search-' . $key_facet]->content['#markup'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggs'], $type);
+
   }
 
   $block_output = _block_get_renderable_array($blockto_render);
