@@ -21,8 +21,8 @@ function mica_client_study_page_detail($study_id) {
       l(t('Studies'), 'mica/studies'),
     ));
 
-    $dataset_output = NULL; //(module_exists('mica_client_dataset')) ?
-      //mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
+    $dataset_output = (module_exists('mica_client_dataset')) ?
+      mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
 
     $network_output = (module_exists('mica_client_network')) ?
       mica_client_network_networks_list($study_id) : NULL;
