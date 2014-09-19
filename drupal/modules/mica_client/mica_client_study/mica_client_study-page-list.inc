@@ -16,15 +16,15 @@ function mica_client_study_page_list() {
     $study_sort_by = $_GET['studies-sort-order'];
   }
 
-  $list_studies = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
-  pager_default_initialize($list_studies->total, 5, $element = 0);
-  $pager_output = theme('pager', array('quantity' => $list_studies->total));
+  $studies = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
+  pager_default_initialize($studies->total, 5, $element = 0);
+  $pager_output = theme('pager', array('quantity' => $studies->total));
 
   return theme('mica_client_study_list-page', array(
-    "form_search" => drupal_get_form('mica_client_study_create_form'),
-    "node_page" => $node_rendred,
-    "list_studies" => $list_studies,
-    "pager_wrap" => $pager_output
+    'form_search' => drupal_get_form('mica_client_study_create_form'),
+    'node_page' => $node_rendred,
+    'studies' => $studies,
+    'pager_wrap' => $pager_output
   ));
 }
 
