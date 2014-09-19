@@ -3,9 +3,21 @@
 include_once('includes/mica_client_network_resource.inc');
 
 function mica_client_network_page_list() {
-  $output['title'] = t('Network Catalogue');
-  $output['data'] = mica_client_network_networks_list();
-  return theme('mica_client_network-list', array("context_detail" => $output));
+  $node_view = node_view(node_load(variable_get('networks_page')));
+  $node_view['#node']->title = '';
+
+  $resource = new MicaNetworkResource();
+  $networks = $resource->get_networks();
+  // TODO implement search form and pagination
+
+  pager_default_initialize($networks->total, 5, $element = 0);
+  $pager_output = theme('pager', array('quantity' => $networks->total));
+
+  return theme('mica_client_network-list', array(
+    'node_page' => $node_view,
+    'networks' => $networks,
+    'pager_wrap' => $pager_output
+  ));
 }
 
 function mica_client_network_get_networks($study_id = NULL) {
