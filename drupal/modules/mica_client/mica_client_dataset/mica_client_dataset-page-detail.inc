@@ -26,7 +26,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's')
     ));
 
-    return theme('mica_client_datasets-detail', array(
+    return theme('mica_client_dataset-detail', array(
       'dataset_dto' => $dataset_dto,
       'dataset_type_dto' => $dataset_type_dto,
       'dataset_harmonizations_dto' => $dataset_harmonizations_dto,

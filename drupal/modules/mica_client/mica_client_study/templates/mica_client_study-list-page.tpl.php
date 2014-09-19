@@ -1,12 +1,12 @@
-<?php //dpm($list_studies->studySummaries); ?>
+<?php //dpm($studies->studySummaries); ?>
 <?php print render($node_page) ?>
-<?php //dpm($list_studies); ?>
+<?php //dpm($studies); ?>
 
 <div class="list-page">
   <div class="row">
     <div class="col-md-2 col-xs-2 md-top-margin">
-      <?php if ($list_studies->total > 0): ?>
-        <?php print $list_studies->total . ' ' . ($list_studies->total == 1 ? t('Study') : t('Studies')); ?>
+      <?php if ($studies->total > 0): ?>
+        <?php print $studies->total . ' ' . ($studies->total == 1 ? t('Study') : t('Studies')); ?>
       <?php else: print t('No studies found'); ?>
       <?php endif; ?>
     </div>
@@ -15,8 +15,8 @@
     </div>
   </div>
 
-  <?php if (!empty($list_studies->studySummaries)): ?>
-    <?php foreach ($list_studies->studySummaries as $study) : ?>
+  <?php if (!empty($studies->studySummaries)): ?>
+    <?php foreach ($studies->studySummaries as $study) : ?>
       <div class="row lg-bottom-margin">
         <div class="col-md-2 col-xs-2">
           <?php if (!empty($study->logo)): ?>

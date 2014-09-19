@@ -60,16 +60,7 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dtos = array();
-      // dpm(json_decode($data));
-
-      if (!empty(json_decode($data)->datasets)) {
-        foreach (json_decode($data)->datasets as $dataset) {
-          $dtoObj = '\obiba\mica\DatasetDto';
-          $dtos [] = Protobuf::decode($dtoObj, json_encode($dataset));
-        }
-      }
-
-      return $dtos;
+      return json_decode($data);
     } catch (HttpClientException $e) {
       return array();
     }
