@@ -5,8 +5,8 @@ function mica_client_study_page_list() {
   $study_query = NULL;
   $study_sort = NULL;
   $study_sort_by = NULL;
-  $node_view = node_view(node_load(variable_get('study_list_page')));
-  $node_view['#node']->title = '';
+  $node_rendred = node_view(node_load(variable_get('study_list_page')));
+  $node_rendred['#node']->title = '';
   if (!empty($_GET['studies-query'])) {
     $study_query = $_GET['studies-query'];
   }
@@ -17,30 +17,32 @@ function mica_client_study_page_list() {
     $study_sort_by = $_GET['studies-sort-order'];
   }
 
-  $studies = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
-  pager_default_initialize($studies->total, 5, $element = 0);
-  $pager_output = theme('pager', array('quantity' => $studies->total));
-  $studies = theme('mica_client_study-list-page-block', array(
-    'studies' => $studies,
-    'pager_wrap' => $pager_output
+  $list_studies = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
+  $total_studies = $list_studies->total;
+  pager_default_initialize($list_studies->total, 5, $element = 0);
+  $pager_output = theme('pager', array('quantity' => $list_studies->total));
+  $list_studies = theme('mica_client_study-list-page-block', array(
+    'list_studies' => $list_studies,
+    "pager_wrap" => $pager_output
   ));
   return theme('mica_client_study_list-page', array(
-    'form_search' => drupal_get_form('mica_client_study_create_form'),
-    'node_page' => $node_view,
-    'studies' => $studies
+    "form_search" => drupal_get_form('mica_client_study_create_form'),
+    "node_page" => $node_rendred,
+    "total_items" => $total_studies,
+    "list_studies" => $list_studies
   ));
 }
 
 function mica_client_study_retrieve_studies($query, $sort = NULL, $sort_order = NULL) {
-  $studies = mica_client_study_get_studies($query, $sort, $sort_order);
-  pager_default_initialize($studies->total, 5, $element = 0);
-  $pager_output = theme('pager', array('quantity' => $studies->total));
-  $studies_rendered = theme('mica_client_study-list-page-block', array(
-    'studies' => $studies,
-    'pager_wrap' => $pager_output
+  $list_studies = mica_client_study_get_studies($query, $sort, $sort_order);
+  pager_default_initialize($list_studies->total, 5, $element = 0);
+  $pager_output = theme('pager', array('quantity' => $list_studies->total));
+  $list_studies_rendered = theme('mica_client_study-list-page-block', array(
+    'list_studies' => $list_studies,
+    "pager_wrap" => $pager_output
   ));
-  $data['studies'] = $studies_rendered;
-  $data['total'] = $studies->total;
+  $data['list_studies'] = $list_studies_rendered;
+  $data['total'] = $list_studies->total;
   drupal_json_output($data);
 }
 
@@ -100,10 +102,10 @@ function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NUL
   $from = 0;
   $study_resource = new MicaStudyResource();
   if (!empty($_GET['page'])) {
-    $from = $study_resource->pagination_list_searcch_parameters($_GET['page'], 'studies');
+    $from = $study_resource->pagination_list_searcch_parameters($_GET['page'], 'list-studies');
   }
   $studies = $study_resource->get_studies($query, $from, NULL, $sort, $order);
-  $_SESSION['studies']['aggregations']['totalHits'] = $studies->total;
+  $_SESSION['list-studies']['aggregations']['totalHits'] = $studies->total;
   return $studies;
 }
 

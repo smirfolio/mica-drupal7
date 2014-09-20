@@ -1,8 +1,8 @@
-<?php //dpm($studies->studySummaries); ?>
-<?php //dpm($studies); ?>
+<?php //dpm($list_studies->studySummaries); ?>
+<?php //dpm($list_studies); ?>
 
-<?php if (!empty($studies->studySummaries)): ?>
-  <?php foreach ($studies->studySummaries as $study) : ?>
+<?php if (!empty($list_studies->studySummaries)): ?>
+  <?php foreach ($list_studies->studySummaries as $study) : ?>
     <div class="row lg-bottom-margin">
       <div class="col-md-2 col-xs-2">
         <?php if (!empty($study->logo)): ?>
@@ -21,6 +21,7 @@
             <?php print mica_client_commons_get_localized_field($study, 'acronym') . ' - ' . mica_client_commons_get_localized_field($study, 'name'); ?>
           </a>
         </h4>
+
         <p>
           <?php print truncate_utf8(mica_client_commons_get_localized_field($study, 'objectives'), 300, TRUE, TRUE); ?>
         </p>

@@ -2,6 +2,8 @@
   Drupal.behaviors.queries = {
     attach: function (context, settings) {
 
+      var URL_PARAM_QUERY = 'query';
+
       function getSelectedtermsAggSearchKey(attrAgg, value) {
         return attrAgg.replace("[]", "-terms[]")+value;
       }
@@ -12,20 +14,20 @@
        * @returns {Array}
        */
       function desrializeFormJsonAsKeyValue(json) {
-        var values = {};
+        var formData = {};
         $.each(json, function(type, typeValues){
           $.each(typeValues, function(aggType, aggs){
-            $.each(aggs, function(i, keyValue) {
-              $.each(keyValue, function(name, value) {
+            $.each(aggs, function (name, values) {
+              $.each(values, function (i, value) {
                 var formattedName = name + "-" + aggType + "[]";
                 var key = type+":"+formattedName + (aggType === "terms" ? value : name);
-                values[key] = aggType === "terms" ? value : name+".[+"+value.min+"+to+"+value.max+"+]";
+                formData[key] = aggType === "terms" ? value : name + ".[+" + value.min + "+to+" + value.max + "+]";
               });
             })
           });
         });
 
-        return $.isEmptyObject(values) ? null : values;
+        return $.isEmptyObject(formData) ? null : formData;
       }
 
       function serializeFormAsJson(formData) {
@@ -68,12 +70,14 @@
               }
 
               if (!jsonForm[entry.type].hasOwnProperty(entry.aggType)) {
-                jsonForm[entry.type][entry.aggType] = [];
+                jsonForm[entry.type][entry.aggType] = {};
               }
 
-              var item = {};
-              item[entry.agg] = entry.aggValue;
-              jsonForm[entry.type][entry.aggType].push(item);
+              if (!jsonForm[entry.type][entry.aggType].hasOwnProperty(entry.agg)) {
+                jsonForm[entry.type][entry.aggType][entry.agg] = [];
+              }
+
+              jsonForm[entry.type][entry.aggType][entry.agg].push(entry.aggValue);
             }
           });
 
@@ -108,9 +112,9 @@
       }
 
       function getUrlVars() {
-        var pos = window.location.href.indexOf('?');
+        var pos = window.location.href.indexOf(URL_PARAM_QUERY + "=");
         if (pos === -1) return [];
-        return desrializeFormJsonAsKeyValue(JSON.parse(decodeURIComponent(window.location.href.slice(pos + 1))));
+        return desrializeFormJsonAsKeyValue(JSON.parse(decodeURIComponent($.urlParam(URL_PARAM_QUERY))));
       }
 
       function sendCheckboxCheckedValues(idcheckbox) {
@@ -154,62 +158,83 @@
       /*hide main search facet block*/
       $("section#block-mica-client-facet-search-facet-search").find("h2:first").css("display", "none");
 
+      /**
+       * Iterates through each hidden input that has been selected/unselected
+       * @param selectedVars
+       */
+      function processTermsAggregationInputs(selectedVars) {
+        $('input[type="hidden"]').each(function () {
+          var currInputId = $(this).attr('id');
+          var currInputName = $(this).attr('name');
+          var selectedVar = selectedVars[currInputName + currInputId];
+          if (selectedVar) {
+            $('#' + currInputId).val(selectedVar.replace(/\+/g, ' '));
+          }
+
+        });
+
+        $('span#checkthebox').each(function () {
+          var aggregation_name = $(this).attr('value');
+          var selectedVar = selectedVars[getSelectedtermsAggSearchKey($(this).attr('aggregation'), aggregation_name)];
+          if (selectedVar) {
+            var $current_width_percent = $(this).parent().find('.terms_stat:first').attr('witdh-val');
+
+            if ($(this).hasClass("unchecked")) {
+              $(this).parents("label.span-checkbox").css("display", "inline");
+              $(this).parents("label.span-checkbox").removeClass();
+
+              $.checkthebox($(this));
+              var copy_chekbox = $(this).parent().clone();
+              var divtofind = $(this).parents("section:first").find(".chekedterms:first");
+              $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
+
+              copy_chekbox.find('.terms_stat').width($current_width_percent);
+
+              divtofind.append(copy_chekbox);
+              $(this).parents("li.facets").remove();
+            }
+          }
+          else {
+            if ($(this).hasClass("checked")) {
+              $.uncheckthebox($(this));
+              $("input[id=" + aggregation_name + "]").val('');
+            }
+          }
+        });
+      }
+
       var selectedVars = $.getUrlVars();
+      console.log(selectedVars);
+      if (selectedVars) {
+        processTermsAggregationInputs(selectedVars);
+      }
 
-      $('input[type="hidden"]').each(function () {
-        var currInputId = $(this).attr('id');
-        var currInputName = $(this).attr('name');
-        var selectedVar = selectedVars[currInputName+currInputId];
-        if (selectedVar) {
-          $('#' + currInputId).val(selectedVar.replace(/\+/g, ' '));
-        }
-
-      });
-
-      $('span#checkthebox').each(function () {
-        var aggregation_name = $(this).attr('value');
-        var selectedVar = selectedVars[getSelectedtermsAggSearchKey($(this).attr('aggregation'), aggregation_name)];
-        if (selectedVar) {
-          var $current_width_percent = $(this).parent().find('.terms_stat:first').attr('witdh-val');
-
-          if ($(this).hasClass("unchecked")) {
-            $(this).parents("label.span-checkbox").css("display", "inline");
-            $(this).parents("label.span-checkbox").removeClass();
-
-            $.checkthebox($(this));
-            var copy_chekbox = $(this).parent().clone();
-            var divtofind = $(this).parents("section:first").find(".chekedterms:first");
-            $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
-
-            copy_chekbox.find('.terms_stat').width($current_width_percent);
-
-            divtofind.append(copy_chekbox);
-            $(this).parents("li.facets").remove();
-          }
-        }
-        else {
-          if ($(this).hasClass("checked")) {
-            $.uncheckthebox($(this));
-            $("input[id=" + aggregation_name + "]").val('');
-          }
-        }
-      });
-
-      $("span#checkthebox").on("click", function (e) {
+      function updateCheckboxes() {
         var aggregation_name = $(this).attr('value');
         if ($(this).hasClass("unchecked")) {
           $.checkthebox($(this));
           $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
-          window.location = '?' + $.sendCheckboxCheckedValues() + tabparam;
+          updateWindowLocation($.sendCheckboxCheckedValues());
           return false;
         }
         if ($(this).hasClass("checked")) {
           $.uncheckthebox($(this));
           $("input[id=" + aggregation_name + "]").val('');
-          window.location = '?' + $.sendCheckboxCheckedValues() + tabparam;
+          updateWindowLocation($.sendCheckboxCheckedValues());
           return false;
         }
-      });
+      }
+
+      function updateWindowLocation(checkboxValues) {
+        if (!checkboxValues || "{}" === checkboxValues) {
+          window.location = '?' + (tabparam ? tabparam : '');
+        }
+        else {
+          window.location = '?' + (tabparam ? tabparam + '&' : '') + URL_PARAM_QUERY + '=' + checkboxValues;
+        }
+      }
+
+      $("span#checkthebox").on("click", updateCheckboxes);
 
       $("span#checkthebox").mouseover(function () {
         if ($(this).hasClass("checked")) {
@@ -228,7 +253,7 @@
       /*send request search on checking the box or on click go button */
       $("div#checkthebox").on("click", function () {
         //  $.sendCheckboxCheckedValues();
-        window.location = '?' + $.sendCheckboxCheckedValues();
+        updateWindowLocation($.sendCheckboxCheckedValues());
       });
 
       $("input[id='range-auto-fill']").on("blur", function () {

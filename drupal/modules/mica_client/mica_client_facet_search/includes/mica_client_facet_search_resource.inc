@@ -26,7 +26,55 @@ class MicaSearchResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
-  private function _search_resource($resource, $request_param = NULL, $parent_child, $type_parent_child, $spec_dto_params = NULL, $size = NULL) {
+  private function  _search_resource() {
+    $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+
+    parse_str($url_parm[1], $parts);
+    dpm($parts);
+    $url = $this->micaUrl . '/' . $parts['type'] . '/_search';
+    if (!empty($parts['query'])) {
+      $dto_param = $this->dto_filter_construct($parts['query']);
+
+
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_POST,
+        'headers' => $this->authorizationHeader(array(
+              'Accept' => array(parent::HEADER_JSON),
+              'Content-Type' => array(parent::HEADER_JSON)
+            )
+          ),
+        'data' => $dto_param,
+      ));
+    }
+    else {
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+              'Accept' => array(parent::HEADER_JSON),
+            )
+          ),
+      ));
+    }
+    dpm($url);
+    dpm($dto_param);
+    $client = $this->client();
+    try {
+      //dpm($request);
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      dpm(json_decode($data));
+
+      return json_decode($data);
+
+    } catch (HttpClientException $e) {
+
+      return array();
+    }
+
+  }
+
+
+  private function _search_resource_($resource, $request_param = NULL, $parent_child, $type_parent_child, $spec_dto_params = NULL, $size = NULL) {
     $this->setLastResponse(NULL);
     $request_param = !empty($request_param) ? '/' . $request_param : NULL;
     $url = $this->micaUrl . '/' . $resource . $request_param . '/_search?' . 'size=' . (is_null($size) ? $this::SIZE_RESPONSE : $size);

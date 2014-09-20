@@ -25,7 +25,7 @@ function mica_client_study_menu() {
     'page arguments' => array(2),
   );
 
-  $items['mica/refresh_studies/%/%/%'] = array(
+  $items['mica/refresh_list_studies/%/%/%'] = array(
     //'title' => t('AutoComp Menu'),
     'page callback' => 'mica_client_study_retrieve_studies',
     'file' => 'mica_client_study-page-list.inc',
@@ -84,7 +84,7 @@ function mica_client_study_block_info() {
 function mica_client_study_block_view($delta = '') {
   switch ($delta) {
     case 'studies-tab-list' :
-      $output = theme('mica_client_study_list', array('studies' => mica_client_study_get_studies()));
+      $output = theme('mica_client_study_list', array('list_studies' => mica_client_study_get_studies()));
       $block['subject'] = '';
       $block['content'] = $output;
       return $block;
