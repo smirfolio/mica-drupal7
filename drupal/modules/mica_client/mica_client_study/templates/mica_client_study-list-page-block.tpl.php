@@ -29,7 +29,6 @@
     </div>
 
   <?php endforeach; ?>
-  <div><?php print $pager_wrap; ?></div>
 <?php endif; ?>
 
 
