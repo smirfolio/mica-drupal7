@@ -30,7 +30,7 @@ class MicaSearchResource extends MicaClient {
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
 
     parse_str($url_parm[1], $parts);
-    dpm($parts);
+
     $url = $this->micaUrl . '/' . $parts['type'] . '/_search';
     if (!empty($parts['query'])) {
       $dto_param = $this->dto_filter_construct($parts['query']);
@@ -55,19 +55,16 @@ class MicaSearchResource extends MicaClient {
           ),
       ));
     }
-    dpm($url);
-    dpm($dto_param);
+
     $client = $this->client();
     try {
       //dpm($request);
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      dpm(json_decode($data));
-
+      // dpm(json_decode($data));
       return json_decode($data);
 
     } catch (HttpClientException $e) {
-
       return array();
     }
 
@@ -175,11 +172,11 @@ class MicaSearchResource extends MicaClient {
     return $dtos;
   }
 
-  public function search_studies() {
-    $data_response = $this->_search_resource('studies', NULL, 'child', 'Variable', NULL);
+  public function search_studies($request_param = NULL, $spec_dto_params = NULL, $size = NULL) {
+    $data_response = $this->_search_resource('studies', $request_param, 'child', 'Variable', NULL);
 
     $dto_data_response = $data_response->studyResultDto;
-    $this->session_facets_builder($data_response);
+    $this->session_facets_builder($data_response, $request_param);
     $summaries_studies = !empty($dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries) ?
       $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
     $dtoObj = '\obiba\mica\StudySummaryDto';
@@ -203,7 +200,7 @@ class MicaSearchResource extends MicaClient {
 
 
   public function search_networks($request_param = NULL, $spec_dto_params = NULL, $size = NULL) {
-    $data_response = $this->_search_resource('networks', NULL, 'child', 'Study', NULL);
+    $data_response = $this->_search_resource('networks', $request_param, 'child', 'Study', NULL);
     //$this->session_facets_builder($dto_data_response, 'networks');
     // dpm($dto_data_response);
 

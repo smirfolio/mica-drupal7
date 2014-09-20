@@ -23,13 +23,13 @@ function mica_client_study_page_list() {
   $pager_output = theme('pager', array('quantity' => $list_studies->total));
   $list_studies = theme('mica_client_study-list-page-block', array(
     'list_studies' => $list_studies,
-    "pager_wrap" => $pager_output
   ));
   return theme('mica_client_study_list-page', array(
     "form_search" => drupal_get_form('mica_client_study_create_form'),
     "node_page" => $node_rendred,
     "total_items" => $total_studies,
-    "list_studies" => $list_studies
+    "list_studies" => $list_studies,
+    "pager_wrap" => $pager_output
   ));
 }
 
