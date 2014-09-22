@@ -132,7 +132,7 @@
       <h1 class="page-header">
         <?php if (!empty($classes_array['title_page'])) : ?>
           <span class="t_badge color_<?php print $classes_array['title_page']; ?>">
-          <?php print $classes_array['title_page']; ?></span>
+          </span>
         <?php endif; ?>
         <?php print $title; ?>
       </h1>

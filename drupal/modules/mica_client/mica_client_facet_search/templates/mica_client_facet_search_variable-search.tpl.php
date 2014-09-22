@@ -18,6 +18,8 @@
     <li><a href="#networks" role="tab" data-toggle="tab"> <?php print t('Networks') ?>
         <?php if (!empty($network_totalHits)) : ?>
           (  <?php print $network_totalHits; ?> )
+        <?php else : ?>
+          (<?php print 0; ?>)
         <?php endif; ?>
       </a></li>
   </ul>

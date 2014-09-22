@@ -40,12 +40,14 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
 
       $totalDataset = count($_SESSION[$type]['networks']);
       $i = 0;
-      foreach ($_SESSION[$type]['networks'] as $network) {
-        $values_obj = new stdClass();
-        $values_obj->key = $network->id;
-        $values_obj->count = $totalDataset;
-        $aggs[$i] = $values_obj;
-        $i++;
+      if (!empty($_SESSION[$type]['networks'])) {
+        foreach ($_SESSION[$type]['networks'] as $network) {
+          $values_obj = new stdClass();
+          $values_obj->key = $network->id;
+          $values_obj->count = $totalDataset;
+          $aggs[$i] = $values_obj;
+          $i++;
+        }
       }
       $facet_build[$tab_block]['networkId']['term'] = $aggs;
       return $facet_build[$tab_block];
