@@ -153,7 +153,7 @@ class MicaClient {
     }
     else {
       // authenticate by anonymous credentials
-      watchdog('obiba_mica', 'Atuh by anonymous credentials');
+      watchdog('obiba_mica', 'Auth by anonymous credentials');
       $credentials = variable_get_value('mica_anonymous_name') . ':' . variable_get_value('mica_anonymous_password');
       $headers[self::AUTHORIZATION_HEADER] = array('Basic ' . base64_encode($credentials));
     }
