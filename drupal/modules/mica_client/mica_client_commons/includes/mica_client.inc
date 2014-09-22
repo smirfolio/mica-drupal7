@@ -73,7 +73,7 @@ class MicaClient {
     if (isset($lastResponse)) {
       $this->setLastResponseCookies();
     }
-    }
+  }
 
   /**
    * Get the last response headers (if any).
@@ -150,26 +150,26 @@ class MicaClient {
         $headers[self::COOKIE_HEADER] = array($cookie);
       }
     }
-        else {
-          if (isset($_SESSION[self::OBIBA_COOKIE])) {
-            // authenticate by cookies coming from session (case of anonymous user logged in via Agate)
-            $obibaid = $_SESSION[self::OBIBA_COOKIE];
-            $micasid = isset($_SESSION[self::MICA_COOKIE]) ? $_SESSION[self::MICA_COOKIE] : NULL;
-            $cookie = $this->cookieHeaderValue($obibaid, $micasid);
+    else {
+      if (isset($_SESSION[self::OBIBA_COOKIE])) {
+        // authenticate by cookies coming from session (case of anonymous user logged in via Agate)
+        $obibaid = $_SESSION[self::OBIBA_COOKIE];
+        $micasid = isset($_SESSION[self::MICA_COOKIE]) ? $_SESSION[self::MICA_COOKIE] : NULL;
+        $cookie = $this->cookieHeaderValue($obibaid, $micasid);
 
-            if (isset($headers[self::COOKIE_HEADER])) {
-              array_push($headers[self::COOKIE_HEADER], $cookie);
-            }
-            else {
-              $headers[self::COOKIE_HEADER] = array($cookie);
-            }
-          }
-          else {
-            // authenticate by anonymous credentials
-            $credentials = variable_get_value('mica_anonymous_name') . ':' . variable_get_value('mica_anonymous_password');
-            $headers[self::AUTHORIZATION_HEADER] = array('Basic ' . base64_encode($credentials));
-          }
+        if (isset($headers[self::COOKIE_HEADER])) {
+          array_push($headers[self::COOKIE_HEADER], $cookie);
         }
+        else {
+          $headers[self::COOKIE_HEADER] = array($cookie);
+        }
+      }
+      else {
+        // authenticate by anonymous credentials
+        $credentials = variable_get_value('mica_anonymous_name') . ':' . variable_get_value('mica_anonymous_password');
+        $headers[self::AUTHORIZATION_HEADER] = array('Basic ' . base64_encode($credentials));
+      }
+    }
 
     return $headers;
   }
@@ -241,7 +241,9 @@ class MicaClient {
         }
 
         if ($type_aggregations == 'studyResultDto') {
-          $_SESSION['studies']['networks'] = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks;
+          $_SESSION['studies']['networks'] =
+            !empty($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks) ?
+              $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks : NULL;
           $_SESSION['studies']['aggregations'] = $aggregation->aggs;
           $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
@@ -249,7 +251,7 @@ class MicaClient {
         }
       }
     }
-    }
+  }
 
   static function get_name_entity_by_id_aggregation($type, $agregation_facet, $id) {
     foreach ($_SESSION[$type][$agregation_facet] as $entity) {

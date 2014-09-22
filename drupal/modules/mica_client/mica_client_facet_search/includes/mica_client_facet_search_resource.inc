@@ -149,8 +149,10 @@ class MicaSearchResource extends MicaClient {
       'study_totalCount' => $dto_data_response->studyResultDto->totalCount,
       'variable_totalHits' => $dto_data_response->variableResultDto->totalHits,
       'variable_totalCount' => $dto_data_response->variableResultDto->totalCount,
-      'network_totalHits' => $dto_data_response->networkResultDto->totalHits,
-      'network_totalCount' => $dto_data_response->networkResultDto->totalCount
+      'network_totalHits' => !empty($dto_data_response->networkResultDto->totalHits) ?
+          $dto_data_response->networkResultDto->totalHits : 0,
+      'network_totalCount' => !empty($dto_data_response->networkResultDto->totalCount) ?
+          $dto_data_response->networkResultDto->totalCount : 0
     );
   }
 
@@ -202,22 +204,25 @@ class MicaSearchResource extends MicaClient {
   public function search_networks($request_param = NULL, $spec_dto_params = NULL, $size = NULL) {
     $data_response = $this->_search_resource('networks', $request_param, 'child', 'Study', NULL);
     //$this->session_facets_builder($dto_data_response, 'networks');
-    // dpm($dto_data_response);
 
-    $dto_data_response = $data_response->networkResultDto;
-    /*ad to session aggregation from other dto entities*/
-    $this->session_facets_builder($data_response, $request_param);
-    $summaries_networks = $dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks;
-    $dtoObj = '\obiba\mica\NetworkDto';
-    $dtos = array();
-    $summaries_data = !empty($summaries_networks) ? $summaries_networks : NULL;
-    if ($summaries_data) {
-      foreach ($summaries_networks as $networks) {
-        $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($networks));
+
+    if (!empty($data_response->networkResultDto)) {
+      $dto_data_response = $data_response->networkResultDto;
+      /*ad to session aggregation from other dto entities*/
+      $this->session_facets_builder($data_response, $request_param);
+      $summaries_networks = $dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks;
+      $dtoObj = '\obiba\mica\NetworkDto';
+      $dtos = array();
+      $summaries_data = !empty($summaries_networks) ? $summaries_networks : NULL;
+      if ($summaries_data) {
+        foreach ($summaries_networks as $networks) {
+          $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($networks));
+        }
       }
+      $dtos = $this->get_stats_entities_count($dtos, $data_response);
+      return $dtos;
     }
-    $dtos = $this->get_stats_entities_count($dtos, $data_response);
-    return $dtos;
+
   }
 
 }

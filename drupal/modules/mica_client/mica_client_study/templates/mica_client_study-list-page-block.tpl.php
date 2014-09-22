@@ -11,7 +11,7 @@
                width="120" height="96" alt="">
         <?php else : ?>
           <h1 class="big-character">
-            <span class="t_badge color_S"><?php print t('S') ?></span>
+            <span class="t_badge color_S"></span>
           </h1>
         <?php endif; ?>
       </div>
