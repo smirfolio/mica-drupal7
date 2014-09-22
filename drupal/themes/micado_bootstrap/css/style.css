@@ -8846,3 +8846,7 @@ div.password-suggestions ul {
     margin-top: 10px;
     float: left;
 }
+
+.region-facets .block-mica-client-facet-search div.block-content li {
+    margin-bottom: 0px;
+}
