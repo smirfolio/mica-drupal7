@@ -44,7 +44,7 @@ function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $
           'localized_options' => array(
             'query' => array(
               'type' => 'variables',
-              'child:variableType[]' => 'variableType.study'
+              'query' => '{"variables":{"terms":{"variableType":["study"]}}}'
             ),
             'attributes' => array(
               'class' => 'highlight',
@@ -65,7 +65,7 @@ function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $
           'localized_options' => array(
             'query' => array(
               'type' => 'variables',
-              'child:variableType[]' => 'variableType.dataschema'
+              'query' => '{"variables":{"terms":{"variableType":["dataschema"]}}}'
             ),
             'attributes' => array(
               'class' => 'highlight',
