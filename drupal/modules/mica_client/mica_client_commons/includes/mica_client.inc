@@ -138,6 +138,7 @@ class MicaClient {
   protected function authorizationHeader(array $headers) {
     if (isset($_COOKIE[self::OBIBA_COOKIE])) {
       // authenticate by cookies coming from request (case of regular user logged in via Agate)
+      watchdog('obiba_mica', 'Auth by cookies from request');
       $obibaid = $_COOKIE[self::OBIBA_COOKIE];
       $micasid = isset($_COOKIE[self::MICA_COOKIE]) ? $_COOKIE[self::MICA_COOKIE] : NULL;
       $cookie = $this->cookieHeaderValue($obibaid, $micasid);
@@ -150,24 +151,10 @@ class MicaClient {
       }
     }
     else {
-      if (isset($_SESSION[self::OBIBA_COOKIE])) {
-        // authenticate by cookies coming from session (case of anonymous user logged in via Agate)
-        $obibaid = $_SESSION[self::OBIBA_COOKIE];
-        $micasid = isset($_SESSION[self::MICA_COOKIE]) ? $_SESSION[self::MICA_COOKIE] : NULL;
-        $cookie = $this->cookieHeaderValue($obibaid, $micasid);
-
-        if (isset($headers[self::COOKIE_HEADER])) {
-          array_push($headers[self::COOKIE_HEADER], $cookie);
-        }
-        else {
-          $headers[self::COOKIE_HEADER] = array($cookie);
-        }
-      }
-      else {
-        // authenticate by anonymous credentials
-        $credentials = variable_get_value('mica_anonymous_name') . ':' . variable_get_value('mica_anonymous_password');
-        $headers[self::AUTHORIZATION_HEADER] = array('Basic ' . base64_encode($credentials));
-      }
+      // authenticate by anonymous credentials
+      watchdog('obiba_mica', 'Atuh by anonymous credentials');
+      $credentials = variable_get_value('mica_anonymous_name') . ':' . variable_get_value('mica_anonymous_password');
+      $headers[self::AUTHORIZATION_HEADER] = array('Basic ' . base64_encode($credentials));
     }
 
     return $headers;
