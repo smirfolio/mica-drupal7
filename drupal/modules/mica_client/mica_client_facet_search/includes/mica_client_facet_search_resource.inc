@@ -33,7 +33,8 @@ class MicaSearchResource extends MicaClient {
 
     $url = $this->micaUrl . '/' . $parts['type'] . '/_search';
     if (!empty($parts['query'])) {
-      $dto_param = $this->dto_filter_construct($parts['query']);
+      // TODO use a variable for from
+      $dto_param = $this->dto_filter_construct($parts['type'], $parts['query'], 0);
 
 
       $request = new HttpClientRequest($url, array(
