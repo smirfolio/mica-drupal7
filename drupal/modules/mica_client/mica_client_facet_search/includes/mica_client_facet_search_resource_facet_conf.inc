@@ -26,6 +26,7 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
 
       $totalDataset = count($_SESSION[$type]['datasets']);
       $i = 0;
+      //if(!empty())
       foreach ($_SESSION[$type]['datasets'] as $dataset) {
         $values_obj = new stdClass();
         $values_obj->key = $dataset->id;
@@ -33,6 +34,7 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
         $aggs[$i] = $values_obj;
         $i++;
       }
+
       $facet_build[$tab_block]['datasetId']['term'] = $aggs;
       return $facet_build[$tab_block];
     case 'search-networkId' :

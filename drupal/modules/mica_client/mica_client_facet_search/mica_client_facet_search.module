@@ -438,8 +438,8 @@ function mica_client_facet_search_variables_table($variables) {
     t('Study')
   );
 
-  $args = array('quantity' => $variables['variable_totalHits'], 'element' => MicaSearchResource::PAGINATE_variables);
-  pager_default_initialize($variables['variable_totalHits'], MicaSearchResource::SIZE_RESPONSE, MicaSearchResource::PAGINATE_variables);
+  $args = array('quantity' => $variables['variable_totalHits']);
+  pager_default_initialize($variables['variable_totalHits'], MicaSearchResource::SIZE_RESPONSE);
 
   return theme(
     'table',
@@ -474,19 +474,15 @@ function mica_client_facet_search_studies_table($studies) {
     t('Target number of participants'),
     t('Country of residence'),
   );
-  $per_page = 20;
 
-//  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variables);
-//  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variables);
+  $args = array('quantity' => $studies['study_totalHits']);
+  pager_default_initialize($studies['study_totalHits'], MicaClient::SIZE_RESPONSE);
 
-  $args = array('quantity' => $studies['study_totalHits'], 'element' => MicaSearchResource::PAGINATE_studies);
-  $current_page = pager_default_initialize($studies['study_totalHits'], $per_page, MicaSearchResource::PAGINATE_studies);
-  $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
     'table',
     array(
       'header' => $headers,
-      'rows' => empty($chunks) ? array() : $chunks[$current_page],
+      'rows' => $rows,
       'empty' => t('No study found')
     )
   ) . theme('pager', $args);

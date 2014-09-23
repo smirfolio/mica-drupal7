@@ -30,14 +30,26 @@ class MicaSearchResource extends MicaClient {
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
 
     parse_str($url_parm[1], $parts);
-
+    $dto_param = $this->dto_filter_construct($parts['type'], $parts['query'], 0);
     $url = $this->micaUrl . '/' . $parts['type'] . '/_search';
-    if (!empty($parts['query'])) {
-      // TODO use a variable for from
-      $dto_param = $this->dto_filter_construct($parts['type'], $parts['query'], 0);
+    if (!empty($parts['query']) && empty($parts['page'])) {
+      $dto_param = $this->dto_filter_construct($parts['query']);
+    }
+    if (!empty($parts['page']) && empty($parts['query'])) {
+      $from = $this->pagination_list_search_parameters($_GET['page'], 'list-studies', $this::SIZE_RESPONSE);
+      $dto_param = $this->dto_filter_construct(NULL, $from);
+    }
+    if (!empty($parts['page']) && !empty($parts['query'])) {
+      $from = $this->pagination_list_search_parameters($_GET['page'], 'list-studies', $this::SIZE_RESPONSE);
+      $dto_param = $this->dto_filter_construct($parts['query'], $from);
+    }
 
-
-      $request = new HttpClientRequest($url, array(
+    if (empty($parts['page']) && empty($parts['query'])) {
+      $dto_param = $dto_param = $this->dto_filter_construct();
+    }
+    dpm($dto_param);
+    dpm($url);
+    $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_POST,
         'headers' => $this->authorizationHeader(array(
               'Accept' => array(parent::HEADER_JSON),
@@ -46,16 +58,24 @@ class MicaSearchResource extends MicaClient {
           ),
         'data' => $dto_param,
       ));
-    }
-    else {
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-              'Accept' => array(parent::HEADER_JSON),
-            )
-          ),
-      ));
-    }
+
+//    else {
+//      $url_param = $url . '?size=20';
+//      if (!empty($_GET['page'])) {
+//        $from = $this->pagination_list_search_parameters($_GET['page'], 'list-studies', $this::SIZE_RESPONSE);
+//      }
+//      if (!empty($from)) {
+//        $url_param .= '&from=' . $from;
+//      }
+//      dpm($url_param);
+//      $request = new HttpClientRequest($url_param, array(
+//        'method' => HttpClientRequest::METHOD_GET,
+//        'headers' => $this->authorizationHeader(array(
+//              'Accept' => array(parent::HEADER_JSON),
+//            )
+//          ),
+//      ));
+//    }
 
     $client = $this->client();
     try {

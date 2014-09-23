@@ -37,7 +37,7 @@ class MicaClient {
 
   const HEADER_JSON = 'application/json';
 
-  const SIZE_RESPONSE = 30;
+  const SIZE_RESPONSE = 20;
 
   const PAGINATE_studies = 0;
   const PAGINATE_variables = 1;
@@ -215,11 +215,14 @@ class MicaClient {
 
 
   protected function session_facets_builder($aggregations, $request_param = NULL) {
+    dpm($aggregations);
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {
           $_SESSION['variables']['studies'] = $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'}->summaries;
-          $_SESSION['variables']['datasets'] = $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->datasets;
+          $_SESSION['variables']['datasets'] =
+            !empty($aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->datasets) ?
+              $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->datasets : NULL;
           $_SESSION['variables']['aggregations'] = $aggregation->aggs;
           $_SESSION['variables']['aggregations'][] = $aggregation->aggs;
           $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
@@ -296,8 +299,8 @@ class MicaClient {
     return $premiereEntree;
   }
 
-  public function pagination_list_searcch_parameters($current_page = NULL, $type = NULL) {
-    $nb_pages = ceil($_SESSION[strtolower($type)]['aggregations']['totalHits'] / 5);
+  public function pagination_list_search_parameters($current_page = NULL, $type = NULL, $size = 20) {
+    $nb_pages = ceil($_SESSION[strtolower($type)]['aggregations']['totalHits'] / $size);
     if (!empty($current_page)) {
       $pageActuelle = intval($current_page);
       if ($pageActuelle > $nb_pages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
@@ -308,7 +311,7 @@ class MicaClient {
     else {
       $pageActuelle = 1; // La page actuelle est la n°1
     }
-    $premiereEntree = ($pageActuelle) * 5; // On calcul la première entrée à lire
+    $premiereEntree = ($pageActuelle) * $size; // On calcul la première entrée à lire
     return $premiereEntree;
   }
 
