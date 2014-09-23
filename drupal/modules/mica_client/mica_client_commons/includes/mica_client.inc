@@ -314,29 +314,25 @@ class MicaClient {
 
   /**
    * Dto filter construction
+   * @param $type
    * @param null $request_param url passed parameters,
-   * @param null $hierarchical_relation
-   * @param null $type_dto_search must be 'study' or 'dataset',
-   * @param null $spec_dto_params specific passed parameters,
-   * @param null $size number of results
+   * @param $from
+   * @internal param null $hierarchical_relation
+   * @internal param null $type_dto_search must be 'study' or 'dataset',
+   * @internal param null $spec_dto_params specific passed parameters,
+   * @internal param null $size number of results
    * @internal param null $parent_child array must be 'parent'=>'<entity parent>' or 'child'=>'<entity parent>',
    * @return string
    */
-  protected function dto_filter_construct($request_param = NULL) {
+  protected function dto_filter_construct($type, $request_param = NULL, $from = 0) {
 
     if (!empty($request_param)) {
-      $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param));
+      $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $this::SIZE_RESPONSE);
 
       Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
-      $queryDto = //
-        $queryDtoBuilder //
-          ->variableQueryPaging(0, 10) //
-          ->datasetQueryPaging(0, 10) //
-          ->studyQueryPaging(0, 10) //
-          ->networkQueryPaging(0, 10) //
-          ->build(); //
+      $json_query_encoded = //
+        Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE)->build());
 
-      $json_query_encoded = Protobuf::encode($queryDto);
       return $json_query_encoded;
     }
   }
