@@ -7402,3 +7402,12 @@ div.password-suggestions ul {
 .region-facets .block-mica-client-facet-search div.block-content li {
   margin-bottom: 0px;
 }
+
+/**********Page Searche*********************/
+.search-result table > thead {
+    font-size: 12px;
+}
+
+.search-result table > tbody {
+    font-size: 12px;
+}
