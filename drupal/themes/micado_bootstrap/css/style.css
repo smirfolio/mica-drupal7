@@ -7411,3 +7411,12 @@ div.password-suggestions ul {
 .search-result table > tbody {
     font-size: 12px;
 }
+
+/**********Page Searche*********************/
+.search-result table > thead {
+    font-size: 12px;
+}
+
+.search-result table > tbody {
+    font-size: 12px;
+}
