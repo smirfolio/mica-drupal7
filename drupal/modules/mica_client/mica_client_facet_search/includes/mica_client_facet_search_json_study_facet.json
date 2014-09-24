@@ -4,6 +4,11 @@
     "key": "methods-designs",
     "aggs": "methods-designs"
   },
+  "recruitment-dataSources": {
+    "title": "Study-RECRUITEMENT DATASOURCE",
+    "key": "recruitment-dataSources",
+    "aggs": "populations-recruitment-dataSources"
+  },
   "populations-countriesIso": {
     "title": "Study-COUNTRY OF RESIDENCE",
     "key": "populations-countriesIso",
@@ -24,6 +29,11 @@
     "key": "populations-gender",
     "aggs": "populations-selectionCriteria-gender"
   },
+  "populations-criteria": {
+    "title": "Study-SELECTION CRITERIA",
+    "key": "populations-criteria",
+    "aggs": "populations-selectionCriteria-criteria"
+  },
   "participant-number": {
     "title": "Study-TARGET NUMBER OF PARTICIPANTS",
     "key": "participant-number",
@@ -39,10 +49,20 @@
     "key": "methods-recruitments",
     "aggs": "methods-recruitments"
   },
+  "generalPopulationSources": {
+    "title": "Study-GENERAL POPULATION SOURCES",
+    "key": "generalPopulationSources",
+    "aggs": "populations-recruitment-generalPopulationSources"
+  },
   "access": {
     "title": "Study-ACCESS",
     "key": "access",
     "aggs": "access"
+  },
+  "bioSamples": {
+    "title": "Study-Bio-SAMPLES",
+    "key": "bioSamples",
+    "aggs": "populations-dataCollectionEvents-bioSamples"
   },
   "start": {
     "title": "Study-DATE START",

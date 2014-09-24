@@ -232,6 +232,9 @@ class MicaClient {
           $_SESSION['studies']['networks'] =
             !empty($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks) ?
               $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks : NULL;
+          $_SESSION['studies']['variables'] =
+            !empty($aggregations->variableResultDto->aggs) ?
+              $aggregations->variableResultDto->aggs[11] : NULL;
           $_SESSION['studies']['aggregations'] = $aggregation->aggs;
           $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
@@ -250,6 +253,15 @@ class MicaClient {
 //dpm($type);
 //dpm($id);
 
+    return NULL;
+  }
+
+  static function mica_client_facet_search_get_nember_variables($type, $agregation_facet, $id) {
+    foreach ($_SESSION[$type][$agregation_facet]->{'obiba.mica.TermsAggregationResultDto.terms'} as $id_study) {
+      if ($id_study->key == $id) {
+        return $id_study->count;
+      }
+    }
     return NULL;
   }
 
@@ -295,4 +307,36 @@ class MicaClient {
     return $json_query_encoded;
   }
 
+  /*
+   * merge any associative array query parameters to current json parameter
+   * @ param_to_add : associative array of pram to add array('variables' =>array('terms'=>array('studyIds'=>'clsa-elcv-1')))
+   * */
+  static function add_parameter_dto_query_link($param_to_add) {
+
+    $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+    if (!empty($url_parm[1])) {
+      parse_str($url_parm[1], $parts);
+      if (!empty($parts['query'])) {
+        $array_current_query = json_decode($parts['query']);
+      }
+      else {
+        $array_current_query = new stdClass();
+      }
+      foreach ($param_to_add as $entity_name => $entity) {
+        foreach ($entity['terms'] as $term_name => $term_value) {
+          $array_current_query->{$entity_name}->terms->{$term_name}[] = $term_value;
+        }
+      }
+      return json_encode($array_current_query);
+    }
+    else {
+      $array_current_query = new stdClass();
+    }
+    foreach ($param_to_add as $entity_name => $entity) {
+      foreach ($entity['terms'] as $term_name => $term_value) {
+        $array_current_query->{$entity_name}->terms->{$term_name}[] = $term_value;
+      }
+    }
+    return json_encode($array_current_query);
+  }
 }
