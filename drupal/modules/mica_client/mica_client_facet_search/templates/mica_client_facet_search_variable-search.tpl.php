@@ -1,6 +1,7 @@
 <?php //dvm('search var',$studies);
 //dpm($variables_result);
 ?>
+
 <div id="search-result">
   <ul class="nav nav-tabs" role="tablist" id="result-search">
     <li class="active"><a href="#variables" role="tab" data-toggle="tab"><?php print t('Variables') ?>

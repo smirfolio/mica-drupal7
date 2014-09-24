@@ -48,7 +48,11 @@
         // e.relatedTarget // previous tab
         e.preventDefault();
         var targetPanel = e.target.hash;
-        window.location = '?' + 'type=' + targetPanel.replace('#', '') + '&' + $.urlParamToAdd();
+
+        var current_page = ($.getCookieDataTabs('page_' + targetPanel.replace('#', ''))) ?
+          '&page=' + $.getCookieDataTabs('page_' + targetPanel.replace('#', '')) : '';
+
+        window.location = '?' + 'type=' + targetPanel.replace('#', '') + '&' + $.urlParamToAdd() + current_page
       });
 
     }

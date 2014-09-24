@@ -102,7 +102,7 @@ function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NUL
   $from = 0;
   $study_resource = new MicaStudyResource();
   if (!empty($_GET['page'])) {
-    $from = $study_resource->pagination_list_searcch_parameters($_GET['page'], 'list-studies');
+    $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-studies', 5);
   }
   $studies = $study_resource->get_studies($query, $from, NULL, $sort, $order);
   $_SESSION['list-studies']['aggregations']['totalHits'] = $studies->total;
