@@ -420,7 +420,7 @@ function mica_client_facet_search_variables_table($variables) {
         $variable->datasetId;
       $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
       $study_name = !empty($variable->studyAcronym) ? mica_client_commons_get_localized_field($variable, 'studyAcronym') : NULL;
-      //dpm($variable);
+
       $rows[] = array(
         l($name, 'mica/variable/' . $variable->id),
         !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : '-',
@@ -436,10 +436,7 @@ function mica_client_facet_search_variables_table($variables) {
     t('Dataset'),
     t('Study')
   );
-
-  $args = array('quantity' => $variables['variable_totalHits']);
   pager_default_initialize($variables['variable_totalHits'], MicaSearchResource::SIZE_RESPONSE);
-
   return theme(
     'table',
     array(
@@ -447,21 +444,32 @@ function mica_client_facet_search_variables_table($variables) {
       'rows' => $rows, // empty($chunks) ? array() : $chunks[$current_page],
       'empty' => t('No variable found')
     )
-  ) . theme('pager', $args);
+  ) . theme('pager');
 }
 
 function mica_client_facet_search_studies_table($studies) {
   $rows = array();
+
+
   if (!empty($studies['data'])) {
     foreach ($studies['data'] as $study) {
+      $number_variables = MicaClient::mica_client_facet_search_get_nember_variables('studies', 'variables', $study->id);
       $name = mica_client_commons_get_localized_field($study, 'name');
+      $query_param = MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study->id))));
       $rows[] = array(
         mica_client_commons_get_localized_field($study, 'acronym'),
         l($name, 'mica/study/' . $study->id),
         implode(', ', t($study->designs)),
         isset($study->targetNumber->noLimit) ? t('No Limit') :
           isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,
-        implode($study->countries),
+        !empty($number_variables) ?
+          l($number_variables, 'mica/search', array(
+            'query' => array(
+              'type' => 'variables',
+              'query' => $query_param
+            )
+          ))
+          : '-',
       );
     }
   }
@@ -470,13 +478,11 @@ function mica_client_facet_search_studies_table($studies) {
     t('Short Name'),
     t('Name'),
     t('Study Design'),
-    t('Target number of participants'),
-    t('Country of residence'),
+    t('Participants'),
+    t('Variables'),
   );
 
-  $args = array('quantity' => $studies['study_totalHits']);
   pager_default_initialize($studies['study_totalHits'], MicaClient::SIZE_RESPONSE);
-
   return theme(
     'table',
     array(
@@ -484,7 +490,7 @@ function mica_client_facet_search_studies_table($studies) {
       'rows' => $rows,
       'empty' => t('No study found')
     )
-  ) . theme('pager', $args);
+  ) . theme('pager');
 }
 
 function mica_client_facet_search_networks_table($networks) {
@@ -510,8 +516,7 @@ function mica_client_facet_search_networks_table($networks) {
 //  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variables);
 //  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variables);
 
-  $args = array('quantity' => $networks['study_totalHits'], 'element' => MicaSearchResource::PAGINATE_studies);
-  $current_page = pager_default_initialize($networks['study_totalHits'], $per_page, MicaSearchResource::PAGINATE_studies);
+  $current_page = pager_default_initialize($networks['study_totalHits'], MicaClient::SIZE_RESPONSE);
   $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
     'table',
@@ -520,5 +525,5 @@ function mica_client_facet_search_networks_table($networks) {
       'rows' => empty($chunks) ? array() : $chunks[$current_page],
       'empty' => t('No study found')
     )
-  ) . theme('pager', $args);
+  ) . theme('pager');
 }

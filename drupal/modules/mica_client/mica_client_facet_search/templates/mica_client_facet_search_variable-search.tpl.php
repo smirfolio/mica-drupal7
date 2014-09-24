@@ -37,7 +37,6 @@
       <?php print $studies['data']; ?>
     </div>
     <div class="tab-pane" id="networks">
-      <?php print $study_charts; ?>
       <?php print $networks['data']; ?>
     </div>
 
