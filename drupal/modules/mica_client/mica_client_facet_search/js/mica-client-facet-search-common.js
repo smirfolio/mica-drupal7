@@ -23,7 +23,7 @@
       $.getCookieDataTabs = function (nameCookie) {
         if ($.cookie) {
           var cookieString = $.cookie(nameCookie);
-          return cookieString ? $.parseJSON(cookieString) : {};
+          return cookieString ? $.parseJSON(cookieString) : '';
         }
         else {
           return '';
@@ -44,16 +44,24 @@
       $.urlParamToAdd = function () {
         {
           var url = window.location.href;
-          param = 'type';
+          var type = 'type';
+          var page = 'page';
           var urlparts = url.split('?');
           if (urlparts.length >= 2) {
-            var prefix = encodeURIComponent(param) + '=';
+            var typeParam = encodeURIComponent(type) + '=';
+            var pageParam = encodeURIComponent(page) + '=';
             var pars = urlparts[1].split(/[&;]/g);
             for (var i = pars.length; i-- > 0;) {
-              if (pars[i].indexOf(prefix, 0) == 0) {
+              if (pars[i].indexOf(typeParam, 0) == 0) {
                 pars.splice(i, 1);
               }
             }
+            for (var i = pars.length; i-- > 0;) {
+              if (pars[i].indexOf(pageParam, 0) == 0) {
+                pars.splice(i, 1);
+              }
+            }
+
             if (pars.length > 0) {
               return pars.join('&');
             }

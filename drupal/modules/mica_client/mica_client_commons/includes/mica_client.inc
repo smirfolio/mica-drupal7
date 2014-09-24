@@ -214,8 +214,7 @@ class MicaClient {
   }
 
 
-  protected function session_facets_builder($aggregations, $request_param = NULL) {
-    dpm($aggregations);
+  protected function session_facets_builder($aggregations) {
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {
@@ -227,7 +226,6 @@ class MicaClient {
           $_SESSION['variables']['aggregations'][] = $aggregation->aggs;
           $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
-          $_SESSION['variables']['request'] = !empty($request_param) ? $request_param : NULL;
         }
 
         if ($type_aggregations == 'studyResultDto') {
@@ -237,7 +235,6 @@ class MicaClient {
           $_SESSION['studies']['aggregations'] = $aggregation->aggs;
           $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
-          $_SESSION['studies']['request'] = !empty($request_param) ? $request_param : NULL;
         }
       }
     }
@@ -256,63 +253,19 @@ class MicaClient {
     return NULL;
   }
 
-  static function normalize_parameters($request_param) {
-    $requestArry = explode('&', $request_param);
-
-    $formated_term = array();
-    foreach ($requestArry as $term_association) {
-      $term = explode('=', $term_association);
-      if (!empty($term[1])) {
-
-        if (strstr($term[0], '-range')) {
-          $decoded_term = str_replace('-range[]', '', $term[0]);
-          $decoded_term = $decoded_term . '-range';
-          $vals = explode('to', $term[1]);
-          $termval['min'] = preg_replace('/^[^\[]*\[\s*/', '', trim($vals[0]));
-          $termval['max'] = str_replace(']', '', trim($vals[1]));
-          $formated_term[preg_replace('/\[[^\]]*\]/', '', $decoded_term)] = $termval;
-        }
-        else {
-          $term[0] = $term[0] . '-terms';
-          $decoded_term = urldecode($term[0]);
-          $formated_term[preg_replace('/\[[^\]]*\]/', '', $decoded_term)][] = $term[1];
-        }
-      }
-    }
-//dpm(json_encode($formated_term));
-    return $formated_term;
-  }
-
-  public function pagination_parameters($current_page = NULL, $dto_type = NULL) {
-    $nb_pages = ceil($_SESSION[strtolower($dto_type)]['aggregations']['totalHits'] / $this::SIZE_RESPONSE);
-    if (!empty($current_page)) {
-      $pageActuelle = intval($current_page);
-      if ($pageActuelle > $nb_pages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
-      {
-        $pageActuelle = $nb_pages;
-      }
-    }
-    else {
-      $pageActuelle = 1; // La page actuelle est la n°1
-    }
-    $premiereEntree = ($pageActuelle) * $this::SIZE_RESPONSE; // On calcul la première entrée à lire
-    return $premiereEntree;
-  }
-
-  public function pagination_list_search_parameters($current_page = NULL, $type = NULL, $size = 20) {
+  public function pagination_list_search_parameters($current_page = 0, $type = NULL, $size = self::SIZE_RESPONSE) {
     $nb_pages = ceil($_SESSION[strtolower($type)]['aggregations']['totalHits'] / $size);
     if (!empty($current_page)) {
       $pageActuelle = intval($current_page);
-      if ($pageActuelle > $nb_pages) // Si la valeur de $pageActuelle (le numéro de la page) est plus grande que $nombreDePages...
-      {
+      if ($pageActuelle > $nb_pages) {
         $pageActuelle = $nb_pages;
       }
     }
     else {
-      $pageActuelle = 1; // La page actuelle est la n°1
+      $pageActuelle = 1;
     }
-    $premiereEntree = ($pageActuelle) * $size; // On calcul la première entrée à lire
-    return $premiereEntree;
+    $from = ($pageActuelle) * $size;
+    return $from;
   }
 
   /**
@@ -328,56 +281,18 @@ class MicaClient {
    * @return string
    */
   protected function dto_filter_construct($type, $request_param = NULL, $from = 0) {
-
-    if (!empty($request_param)) {
-      $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $this::SIZE_RESPONSE);
-
-      Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
-      $json_query_encoded = //
-        Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE)->build());
-
-      return $json_query_encoded;
+    if ($from == 0) {
+      unset($_COOKIE['page_' . $type]);
+      setcookie('page_' . $type, 0, time() - 3600); // empty value and old timestamp
     }
-  }
-
-
-  protected function _construct_filtered_query_dto($parent_child_field, $term_association) {
-    if (!is_numeric(key($term_association))) {
-      $filter_query_dto_relational_range = new \obiba\mica\FilterQueryDto;
-      $filter_query_dto_relational_range->setField(str_replace('-', '.', $parent_child_field[1]));
-      $range_filter_dto = new \obiba\mica\RangeFilterQueryDto;
-
-      if (!empty($term_association['min'])) {
-        $conditionmin = new \obiba\mica\RangeConditionDto;
-
-        $conditionmin->setOp(\obiba\mica\RangeConditionDto\Operator::GTE);
-        $conditionmin->setValue(trim($term_association['min']));
-        $range_filter_dto->setFrom($conditionmin);
-      }
-      if (!empty($term_association['max'])) {
-        $conditionmax = new \obiba\mica\RangeConditionDto;
-        $conditionmax->setOp(\obiba\mica\RangeConditionDto\Operator::LTE);
-        $conditionmax->setValue(trim($term_association['max']));
-        $range_filter_dto->setTo($conditionmax);
-      }
-
-      $filter_query_dto_relational_range->setExtension("obiba.mica.RangeFilterQueryDto.range", $range_filter_dto);
-      return $filter_query_dto_relational_range;
-    }
-
     else {
-      $filter_query_dto_relational = new \obiba\mica\FilterQueryDto;
-      $filter_query_dto_relational->setField(str_replace('-', '.', $parent_child_field[1]));
-      $terms_filter_dto = new \obiba\mica\TermsFilterQueryDto;
-      foreach ($term_association as $term) {
-        $terms_filter_dto->addValues(str_replace($parent_child_field[1] . '.', '', $term));
-      }
-      $filter_terms = $filter_query_dto_relational->setExtension("obiba.mica.TermsFilterQueryDto.terms", $terms_filter_dto);
-      return $filter_terms;
-
+      setcookie('page_' . $type, $_GET['page'], time() + 3600 * 24 * 180);
     }
-
-
+    $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $this::SIZE_RESPONSE);
+    Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
+    $json_query_encoded = //
+      Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE)->build());
+    return $json_query_encoded;
   }
 
 }

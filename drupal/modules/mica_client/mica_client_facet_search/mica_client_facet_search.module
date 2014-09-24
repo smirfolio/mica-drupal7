@@ -307,17 +307,15 @@ function mica_client_facet_search_load_libs() {
  * @return tab parameter if exist
  * */
 function mica_client_facet_search_get_url_tab_parameter() {
-  $url_param = explode('?', $_SERVER['REQUEST_URI']);
-  $search_resources = new MicaSearchResource();
-  if (!empty($url_param[1])) {
-    $parameters = $search_resources::normalize_parameters($url_param[1]);
-    foreach ($parameters as $parameter => $value) {
-      if (!empty($parameter) && $parameter == 'type-terms') {
-        return $value[0];
-      }
+  $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+  $type = NULL;
+  if (!empty($url_parm[1])) {
+    parse_str($url_parm[1], $parts);
+    if (!empty($parts['type'])) {
+      $type = $parts['type'];
     }
   }
-  return NULL;
+  return $type;
 }
 
 function mica_client_get_hits_entities_variable($entity) {
@@ -342,9 +340,7 @@ function mica_client_facet_search_variable_page_search() {
   $search_resources = new MicaSearchResource();
 
   $resource = mica_client_facet_search_get_url_tab_parameter();
-
   if (!empty($resource)) {
-
     switch ($resource) {
       case  'networks':
         $networks = $search_resources->search_networks();
@@ -358,12 +354,15 @@ function mica_client_facet_search_variable_page_search() {
           'charts' => mica_client_facet_search_get_facets_chart('facet_conf_study', $_SESSION['studies']['aggregations'])
         ));
         break;
-      default :
+      case  'variables' :
         $variables = $search_resources->search_variables();
         extract(mica_client_get_hits_entities_variable($variables), EXTR_OVERWRITE);
         $Variable_charts = theme('mica_client_facet_search_charts', array(
           'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
         ));
+        break;
+      default:
+        break;
     }
 
   }
