@@ -215,6 +215,7 @@ class MicaClient {
 
 
   protected function session_facets_builder($aggregations) {
+    dpm($aggregations);
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {
@@ -227,20 +228,29 @@ class MicaClient {
           $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
         }
-
         if ($type_aggregations == 'studyResultDto') {
           $_SESSION['studies']['networks'] =
             !empty($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks) ?
               $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks : NULL;
-          $_SESSION['studies']['variables'] =
-            !empty($aggregations->variableResultDto->aggs) ?
-              $aggregations->variableResultDto->aggs[11] : NULL;
+          $variable_studies_id_aggregations =
+            $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
+          $_SESSION['studies']['variables'] = !empty($variable_studies_id_aggregations) ?
+            $variable_studies_id_aggregations : NULL;
           $_SESSION['studies']['aggregations'] = $aggregation->aggs;
           $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
         }
       }
     }
+  }
+
+  protected function _get_aggregations_by_entity_dto($entity_aggr, $aggregations_term) {
+    foreach ($entity_aggr as $agg) {
+      if ($agg->aggregation == $aggregations_term) {
+        return $agg->{'obiba.mica.TermsAggregationResultDto.terms'};
+      }
+    }
+    return NULL;
   }
 
   static function get_name_entity_by_id_aggregation($type, $agregation_facet, $id) {
@@ -257,7 +267,7 @@ class MicaClient {
   }
 
   static function mica_client_facet_search_get_nember_variables($type, $agregation_facet, $id) {
-    foreach ($_SESSION[$type][$agregation_facet]->{'obiba.mica.TermsAggregationResultDto.terms'} as $id_study) {
+    foreach ($_SESSION[$type][$agregation_facet] as $id_study) {
       if ($id_study->key == $id) {
         return $id_study->count;
       }
