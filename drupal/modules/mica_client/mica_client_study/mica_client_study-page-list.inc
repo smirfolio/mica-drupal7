@@ -19,8 +19,8 @@ function mica_client_study_page_list() {
 
   $list_studies = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
   $total_studies = $list_studies->total;
-  pager_default_initialize($list_studies->total, 5, $element = 0);
-  $pager_output = theme('pager', array('quantity' => $list_studies->total));
+  pager_default_initialize($list_studies->total, 5);
+  $pager_output = theme('pager', array('quantity' => 5));
   $list_studies = theme('mica_client_study-list-page-block', array(
     'list_studies' => $list_studies,
   ));
@@ -35,8 +35,8 @@ function mica_client_study_page_list() {
 
 function mica_client_study_retrieve_studies($query, $sort = NULL, $sort_order = NULL) {
   $list_studies = mica_client_study_get_studies($query, $sort, $sort_order);
-  pager_default_initialize($list_studies->total, 5, $element = 0);
-  $pager_output = theme('pager', array('quantity' => $list_studies->total));
+  pager_default_initialize($list_studies->total, 5);
+  $pager_output = theme('pager', array('quantity' => 5));
   $list_studies_rendered = theme('mica_client_study-list-page-block', array(
     'list_studies' => $list_studies,
     "pager_wrap" => $pager_output
