@@ -455,18 +455,56 @@ function mica_client_facet_search_variables_table($variables) {
 function mica_client_facet_search_studies_table($studies) {
   $rows = array();
 
-
   if (!empty($studies['data'])) {
+    $rows[] = array(
+      '',
+      '',
+      '',
+      '',
+      t('Quest'),
+      t('PM'),
+      t('Bio'),
+      t('Others'),
+      '',
+      '',
+      t('Study'),
+      t('Harmonized'),
+      ''
+    );
     foreach ($studies['data'] as $study) {
-      $number_variables = MicaClient::mica_client_facet_search_get_nember_variables('studies', 'variables', $study->id);
-      $name = mica_client_commons_get_localized_field($study, 'name');
+      $number_variables = MicaClient::mica_client_facet_search_get_nember_item('studies', 'variables', NULL, $study->id);
       $query_param = MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study->id))));
+      $number_tables_study_harmo = MicaClient::mica_client_facet_search_get_nember_item('studies', 'studyTables-studyId', $study->id);
+      $number_table_study_study = MicaClient::mica_client_facet_search_get_nember_item('studies', 'studyTable-studyId', $study->id);
+      $number_networks_study = MicaClient::mica_client_facet_search_get_nember_item('studies', 'networks-studyId', $study->id);
+      $name = mica_client_commons_get_localized_field($study, 'name');
       $rows[] = array(
+        /*id*/
+        l($study->id, 'mica/study/' . $study->id),
+        /*acronym*/
         mica_client_commons_get_localized_field($study, 'acronym'),
+        /*name*/
         l($name, 'mica/study/' . $study->id),
+        /*Type*/
         implode(', ', t($study->designs)),
+        /*Quest-DSA*/
+        mica_client_facet_search_has_datasource($study->dataSources, 'questionnaires') ? 'yes' : 'no',
+        /*PM-DSA*/
+        mica_client_facet_search_has_datasource($study->dataSources, 'physical_measures') ? 'yes' : 'no',
+        /*Bio-DSA*/
+        mica_client_facet_search_has_datasource($study->dataSources, 'biological_samples') ? 'yes' : 'no',
+        /*Others-DSA*/
+        mica_client_facet_search_has_datasource($study->dataSources, 'others') ? 'yes' : 'no',
+        /*Participants*/
         isset($study->targetNumber->noLimit) ? t('No Limit') :
           isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,
+        /*Networks*/
+        !empty($number_networks_study) ? $number_networks_study : '-',
+        /*Study-dataset*/
+        !empty($number_table_study_study) ? $number_table_study_study : '-',
+        /*Harmonization-dataset*/
+        !empty($number_tables_study_harmo) ? $number_tables_study_harmo : '-',
+        /*Variables*/
         !empty($number_variables) ?
           l($number_variables, 'mica/search', array(
             'query' => array(
@@ -478,13 +516,17 @@ function mica_client_facet_search_studies_table($studies) {
       );
     }
   }
-
+// t('Quest'), t('PM'), t('Bio'),t('Others'),
   $headers = array(
-    t('Short Name'),
-    t('Name'),
-    t('Study Design'),
-    t('Participants'),
-    t('Variables'),
+    array('data' => t('Id'), 'class' => 'col-sm-1'),
+    array('data' => t('Acronym'), 'class' => 'col-sm-1'),
+    array('data' => t('Name'), 'class' => 'col-sm-3'),
+    array('data' => t('Type'), 'class' => 'col-sm-1'),
+    array('data' => t('Data Sources Available'), 'colspan' => 4, 'class' => 'col-sm-3'),
+    array('data' => t('Participants'), 'class' => 'col-sm-1'),
+    array('data' => t('Networks'), 'class' => 'col-sm-1'),
+    array('data' => t('Datasets'), 'colspan' => 2, 'class' => 'col-sm-2'),
+    array('data' => t('Variables'), 'class' => 'col-sm-1'),
   );
 
   pager_default_initialize($studies['study_totalHits'], MicaClient::SIZE_RESPONSE);
@@ -493,9 +535,19 @@ function mica_client_facet_search_studies_table($studies) {
     array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t('No study found')
+      'empty' => t('No study found'),
+      'attributes' => array('class' => array('table-bordered', 'table-hover', 'table-condensed'))
     )
   ) . theme('pager');
+}
+
+function mica_client_facet_search_has_datasource($dataSources, $value) {
+  foreach ($dataSources as $value_term) {
+    if ($value_term == $value) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 function mica_client_facet_search_networks_table($networks) {
@@ -528,7 +580,7 @@ function mica_client_facet_search_networks_table($networks) {
     array(
       'header' => $headers,
       'rows' => empty($chunks) ? array() : $chunks[$current_page],
-      'empty' => t('No study found')
+      'empty' => t('No Networks found'),
     )
   ) . theme('pager');
 }
