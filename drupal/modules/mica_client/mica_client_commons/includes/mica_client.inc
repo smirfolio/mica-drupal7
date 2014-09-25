@@ -215,7 +215,6 @@ class MicaClient {
 
 
   protected function session_facets_builder($aggregations) {
-    dpm($aggregations);
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {
