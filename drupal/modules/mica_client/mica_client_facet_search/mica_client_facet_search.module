@@ -300,7 +300,11 @@ function mica_client_facet_search_load_libs() {
   drupal_add_js($module_path_ . '/js/mica-client-facet-search_collapse_deal.js');
   drupal_add_js($module_path_ . '/js/mica-client-facet-search_tab_deal.js');
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-href.js');
-  drupal_add_js($module_path_ . '/js/mica-client-facet-search-query-builder.js');
+  $facet_conf["studies"] = mica_client_facet_search_resource_return_facets('facet_conf_study');
+  $facet_conf["variables"] = mica_client_facet_search_resource_return_facets('facet_conf_variable');
+  drupal_add_js($module_path_ . '/js/mica-client-facet-search-query-renderer.js');
+  drupal_add_js(array('mica_client_facet' => array('facet_conf' => $facet_conf)), 'setting');
+
 }
 
 /*
