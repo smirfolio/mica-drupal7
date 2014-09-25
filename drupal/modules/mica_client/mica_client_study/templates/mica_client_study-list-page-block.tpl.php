@@ -4,14 +4,14 @@
 <?php if (!empty($list_studies->studySummaries)): ?>
   <?php foreach ($list_studies->studySummaries as $study) : ?>
     <div class="row lg-bottom-margin">
-      <div class="col-md-2 col-xs-2">
+      <div class="col-md-2 col-xs-2 text-center">
         <?php if (!empty($study->logo)): ?>
           <img typeof="foaf:Image"
                src="http://localhost:8082/ws/draft/study/<?php print $study->id ?>/file/<?php print $study->logo->id ?>/_download"
-               width="120" height="96" alt="">
+               width="100" alt="">
         <?php else : ?>
           <h1 class="big-character">
-            <span class="t_badge color_S"></span>
+            <span class="t_badge color_S t_badge_100"></span>
           </h1>
         <?php endif; ?>
       </div>
