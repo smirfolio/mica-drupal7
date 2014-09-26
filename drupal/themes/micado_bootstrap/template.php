@@ -158,6 +158,14 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/mica_client_network-list-page-block.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_network-list-page-block'] = array(
+      'template' => 'mica_client_network-list-page-block',
+      'path' => $path . '/templates'
+    );
+  }
+
   $destination_path = file_exists($path . '/templates/mica_client_network-list.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['mica_client_network-list.tpl.php'] = array(

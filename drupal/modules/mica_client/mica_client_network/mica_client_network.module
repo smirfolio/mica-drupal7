@@ -26,6 +26,15 @@ function mica_client_network_menu() {
     'access callback' => TRUE,
     'page arguments' => array(2),
   );
+
+  $items['mica/refresh_list_networks/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'mica_client_network_retrieve_networks',
+    'file' => 'mica_client_network-page-list.inc',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 3, 4)
+  );
+
   return $items;
 }
 
@@ -42,6 +51,7 @@ function mica_client_network_theme($existing, $type, $theme, $path) {
   return array(
     'mica_client_network-detail' => array('template' => 'mica_client_network-detail', 'path' => $path_theme),
     'mica_client_network-list' => array('template' => 'mica_client_network-list', 'path' => $path_theme),
+    'mica_client_network-list-page-block' => array('template' => 'mica_client_network-list-page-block', 'path' => $path_theme),
   );
 }
 
