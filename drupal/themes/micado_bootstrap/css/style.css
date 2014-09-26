@@ -8979,3 +8979,11 @@ div.password-suggestions ul {
 .search-result table > tbody {
     font-size: 12px;
 }
+
+.search-result table > tbody > tr > td.checkebox {
+    text-align: center;
+}
+
+.search-result table#studies-results > tbody > tr:first-child {
+    font-weight: bolder;
+}

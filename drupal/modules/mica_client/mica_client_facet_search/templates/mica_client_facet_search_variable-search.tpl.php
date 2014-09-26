@@ -15,7 +15,13 @@
           (  <?php print $study_totalHits; ?> )
         <?php endif; ?>
       </a></li>
-
+    <li><a href="#datasets" role="tab" data-toggle="tab"> <?php print t('Datasets') ?>
+        <?php if (!empty($dataset_totalHits)) : ?>
+          (  <?php print $dataset_totalCount; ?> )
+        <?php else : ?>
+          (<?php print 0; ?>)
+        <?php endif; ?>
+      </a></li>
     <li><a href="#networks" role="tab" data-toggle="tab"> <?php print t('Networks') ?>
         <?php if (!empty($network_totalHits)) : ?>
           (  <?php print $network_totalHits; ?> )
@@ -35,6 +41,9 @@
     <div class="tab-pane" id="studies">
       <?php print $study_charts; ?>
       <?php print $studies['data']; ?>
+    </div>
+    <div class="tab-pane" id="datasets">
+      <?php print $datasets['data']; ?>
     </div>
     <div class="tab-pane" id="networks">
       <?php print $networks['data']; ?>
