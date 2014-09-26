@@ -436,10 +436,12 @@ function mica_client_facet_search_variables_table($variables) {
         $variable->datasetId;
       $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
       $study_name = !empty($variable->studyAcronym) ? mica_client_commons_get_localized_field($variable, 'studyAcronym') : NULL;
+      $variable_label = !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : NULL;
 
       $rows[] = array(
-        l($name, 'mica/variable/' . $variable->id),
-        !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : '-',
+        l($variable->id, 'mica/variable/' . $variable->id),
+        $name,
+        !empty($variable_label) ? $variable_label : '-',
         l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId),
         empty($variable->studyId) ? '-' : l($study_name, 'mica/study/' . $variable->studyId),
       );
@@ -447,6 +449,7 @@ function mica_client_facet_search_variables_table($variables) {
   }
 //dpm($studies['totalHits']);
   $headers = array(
+    t('id'),
     t('Variable'),
     t('Label'),
     t('Dataset'),
@@ -506,7 +509,7 @@ function mica_client_facet_search_studies_table($studies) {
         /*acronym*/
         mica_client_commons_get_localized_field($study, 'acronym'),
         /*name*/
-        l($name, 'mica/study/' . $study->id),
+        $name,
         /*Type*/
         implode(', ', t($study->designs)),
         /*Quest-DSA*/
@@ -608,35 +611,48 @@ function mica_client_facet_search_has_datasource($dataSources, $value) {
 }
 
 function mica_client_facet_search_datasets_table($datasets) {
+  //dpm($datasets);
   $rows = array();
   if (!empty($datasets['data'])) {
     foreach ($datasets['data'] as $dataset) {
+      if (!empty($dataset->{'obiba.mica.StudyDatasetDto.type'})) {
+        $type_dataset_link = 'study-dataset';
+        $type_dataset = t('Study');
+        $count_studies = 1;
+      }
+      else {
+        $type_dataset_link = 'harmonization-dataset';
+        $type_dataset = t('Harmonized');
+        $count_studies = count($dataset->{'obiba.mica.HarmonizationDatasetDto.type'}->studyTables);
+      }
       $name = mica_client_commons_get_localized_field($dataset, 'name');
       $rows[] = array(
-        mica_client_commons_get_localized_field($dataset, 'acronym'),
-        l($name, 'mica/dataset/' . $dataset->id . '/' . mica_client_commons_to_slug($name)),
-        mica_client_commons_get_localized_field($dataset, 'description')
+        l($dataset->id, 'mica/' . $type_dataset_link . '/' . $dataset->id),
+        $name,
+        $type_dataset,
+        "(Fake) 1",
+        $count_studies,
+        '(Fake) 200'
+
       );
     }
   }
 
   $headers = array(
-    t('Short Name'),
+    t('Id'),
     t('Name'),
-    t('Description'),
+    t('Type'),
+    t('Networks'),
+    t('Studies'),
+    t('Variables'),
   );
-  $per_page = 20;
 
-//  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variables);
-//  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variables);
-
-  $current_page = pager_default_initialize($datasets['dataset_totalHits'], MicaClient::SIZE_RESPONSE);
-  $chunks = array_chunk($rows, $per_page, TRUE);
+  pager_default_initialize($datasets['dataset_totalHits'], MicaClient::SIZE_RESPONSE);
   return theme(
     'table',
     array(
       'header' => $headers,
-      'rows' => empty($chunks) ? array() : $chunks[$current_page],
+      'rows' => $rows,
       'empty' => t('No Networks found'),
     )
   ) . theme('pager');
@@ -648,8 +664,9 @@ function mica_client_facet_search_networks_table($networks) {
     foreach ($networks['data'] as $network) {
       $name = mica_client_commons_get_localized_field($network, 'name');
       $rows[] = array(
+        l($network->id, 'mica/network/' . $network->id),
         mica_client_commons_get_localized_field($network, 'acronym'),
-        l($name, 'mica/network/' . $network->id . '/' . mica_client_commons_to_slug($name)),
+        $name,
         mica_client_commons_get_localized_field($network, 'description')
       );
     }
@@ -660,18 +677,14 @@ function mica_client_facet_search_networks_table($networks) {
     t('Name'),
     t('Description'),
   );
-  $per_page = 20;
 
-//  $args = array('quantity'=>$studies['totalHits'], 'element' => MicaDatasetResource::PAGINATE_Variables);
-//  pager_default_initialize($variables['totalHits'], MicaDatasetResource::SIZE_RESPONSE, MicaDatasetResource::PAGINATE_Variables);
+  pager_default_initialize($networks['network_totalHits'], MicaClient::SIZE_RESPONSE);
 
-  $current_page = pager_default_initialize($networks['study_totalHits'], MicaClient::SIZE_RESPONSE);
-  $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
     'table',
     array(
       'header' => $headers,
-      'rows' => empty($chunks) ? array() : $chunks[$current_page],
+      'rows' => $rows,
       'empty' => t('No Networks found'),
     )
   ) . theme('pager');

@@ -166,15 +166,15 @@ class MicaSearchResource extends MicaClient {
       /*ad to session aggregation from other dto entities*/
       $this->session_facets_builder($data_response);
       $summaries_datasets = $dto_data_response->{'obiba.mica.DatasetResultDto.result'}->datasets;
-      $dtoObj = '\obiba\mica\DatasetDto';
       $dtos = array();
       $summaries_data = !empty($summaries_datasets) ? $summaries_datasets : NULL;
       if ($summaries_data) {
         foreach ($summaries_datasets as $dataset) {
-          $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($dataset));
+          $dtos ['data'][] = $dataset;
         }
       }
       $dtos = $this->get_stats_entities_count($dtos, $data_response);
+      //$dtos['data'
       return $dtos;
     }
   }
