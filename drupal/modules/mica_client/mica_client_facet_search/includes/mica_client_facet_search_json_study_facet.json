@@ -54,6 +54,11 @@
     "key": "generalPopulationSources",
     "aggs": "populations-recruitment-generalPopulationSources"
   },
+  "dataSources": {
+    "title": "Study-DATA SOURCES",
+    "key": "dataSources",
+    "aggs": "populations-dataCollectionEvents-dataSources"
+  },
   "access": {
     "title": "Study-ACCESS",
     "key": "access",

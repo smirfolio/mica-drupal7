@@ -215,6 +215,8 @@ class MicaClient {
 
 
   protected function session_facets_builder($aggregations) {
+    unset($_SESSION['variables']);
+    unset($_SESSION['studies']);
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {
@@ -231,10 +233,27 @@ class MicaClient {
           $_SESSION['studies']['networks'] =
             !empty($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks) ?
               $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks : NULL;
+
           $variable_studies_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
           $_SESSION['studies']['variables'] = !empty($variable_studies_id_aggregations) ?
             $variable_studies_id_aggregations : NULL;
+          $networks_studies_id_aggregations =
+            $this->_get_aggregations_by_entity_dto($aggregations->networkResultDto->aggs, 'studyIds');
+          $_SESSION['studies']['networks-studyId'] = !empty($networks_studies_id_aggregations) ?
+            $networks_studies_id_aggregations : NULL;
+
+          $datasets_studyTableSstudyIdstudies_id_aggregations =
+            $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTable-studyId');
+          $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_studyTableSstudyIdstudies_id_aggregations) ?
+            $datasets_studyTableSstudyIdstudies_id_aggregations : NULL;
+
+          $datasets_studyTablesSstudyIdstudies_id_aggregations =
+            $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTables-studyId');
+
+          $_SESSION['studies']['studyTables-studyId'] = !empty($datasets_studyTablesSstudyIdstudies_id_aggregations) ?
+            $datasets_studyTablesSstudyIdstudies_id_aggregations : NULL;
+
           $_SESSION['studies']['aggregations'] = $aggregation->aggs;
           $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
@@ -245,7 +264,8 @@ class MicaClient {
 
   protected function _get_aggregations_by_entity_dto($entity_aggr, $aggregations_term) {
     foreach ($entity_aggr as $agg) {
-      if ($agg->aggregation == $aggregations_term) {
+      if ($agg->aggregation == $aggregations_term && !empty($agg->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+
         return $agg->{'obiba.mica.TermsAggregationResultDto.terms'};
       }
     }
@@ -265,10 +285,12 @@ class MicaClient {
     return NULL;
   }
 
-  static function mica_client_facet_search_get_nember_variables($type, $agregation_facet, $id) {
-    foreach ($_SESSION[$type][$agregation_facet] as $id_study) {
+  static function mica_client_facet_search_get_nember_item($type, $agregation_facet, $id) {
+    if (!empty($_SESSION[$type][$agregation_facet])) {
+      foreach ($_SESSION[$type][$agregation_facet] as $id_study) {
       if ($id_study->key == $id) {
         return $id_study->count;
+      }
       }
     }
     return NULL;

@@ -26,15 +26,14 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
 
       $totalDataset = count($_SESSION[$type]['datasets']);
       $i = 0;
-      //if(!empty())
       if (!empty($_SESSION[$type]['datasets'])) {
         foreach ($_SESSION[$type]['datasets'] as $dataset) {
-        $values_obj = new stdClass();
-        $values_obj->key = $dataset->id;
-        $values_obj->count = $totalDataset;
-        $aggs[$i] = $values_obj;
-        $i++;
-      }
+          $values_obj = new stdClass();
+          $values_obj->key = $dataset->id;
+          $values_obj->count = $totalDataset;
+          $aggs[$i] = $values_obj;
+          $i++;
+        }
       }
       $facet_build[$tab_block]['datasetId']['term'] = $aggs;
       return $facet_build[$tab_block];
@@ -132,8 +131,8 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
     $items[$term->key]['#markup'] = theme('mica_client_facet_search_checkbox_term', array(
       'agregation_facet' => $agregation_facet,
       'type_string' => $type_string,
-      'term' => $term,
-      'color' => $color[$key],
+      'term' => !empty($term) ? $term : '',
+      'color' => !empty($color[$key]) ? $color[$key] : '#ce8483',
       'totalHits' => $totalHits,
       'totalCount' => $totalCount
     ));
@@ -142,6 +141,7 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
     if ($key == 12) {
       $key = 0;
     }
+
   }
   return $items;
 }
