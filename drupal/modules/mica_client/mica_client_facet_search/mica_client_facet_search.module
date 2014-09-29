@@ -495,7 +495,7 @@ function mica_client_facet_search_studies_table($studies) {
       $number_table_study_study =
         MicaClient::mica_client_facet_search_get_item_count('studies', 'studyTable-studyId', $study->id);
       $query_dataset_study_param =
-        MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study->id))));
+        MicaClient::add_parameter_dto_query_link(array('datasets' => array('terms' => array('studyIds' => $study->id))));
 
       $number_networks_study =
         MicaClient::mica_client_facet_search_get_item_count('studies', 'networks-studyId', $study->id);
@@ -515,25 +515,25 @@ function mica_client_facet_search_studies_table($studies) {
         /*Quest-DSA*/
         array(
           'data' => mica_client_facet_search_has_datasource($study->dataSources, 'questionnaires') ?
-              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '-',
+              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*PM-DSA*/
         array(
           'data' => mica_client_facet_search_has_datasource($study->dataSources, 'physical_measures') ?
-              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '-',
+              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*Bio-DSA*/
         array(
           'data' => mica_client_facet_search_has_datasource($study->dataSources, 'biological_samples') ?
-              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '-',
+              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*Others-DSA*/
         array(
           'data' => mica_client_facet_search_has_datasource($study->dataSources, 'others') ?
-              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '-',
+              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*Participants*/
@@ -661,21 +661,60 @@ function mica_client_facet_search_datasets_table($datasets) {
 function mica_client_facet_search_networks_table($networks) {
   $rows = array();
   if (!empty($networks['data'])) {
+    $rows[] = array(
+      '',
+      '',
+      '',
+      '',
+      t('study'),
+      t('Harmonized'),
+      ''
+    );
+
     foreach ($networks['data'] as $network) {
+
+      $studies = mica_client_facet_search_get_studies_count_from_dto($network);
+      $query =
+        MicaClient::add_parameter_dto_query_link(array('networks' => array('terms' => array('id' => $network->id))));
       $name = mica_client_commons_get_localized_field($network, 'name');
+
+      $count_var = mica_client_facet_search_get_variables_count_from_studies_dto($studies['ids']);
+
       $rows[] = array(
         l($network->id, 'mica/network/' . $network->id),
         mica_client_commons_get_localized_field($network, 'acronym'),
         $name,
-        mica_client_commons_get_localized_field($network, 'description')
+        l($studies['count'], 'mica/search', array(
+          'query' => array(
+            'type' => 'studies',
+            'query' => $query
+          )
+        )),
+        '(Fake)5',
+        '(Fake)1',
+        l($count_var, 'mica/search', array(
+          'query' => array(
+            'type' => 'variables',
+            'query' => $query
+          )
+        )),
       );
     }
   }
 
   $headers = array(
-    t('Short Name'),
+    /*Id*/
+    t('Id'),
+    /*Short Name*/
+    t('Acronym'),
+    /*Name*/
     t('Name'),
-    t('Description'),
+    /*Studies cout*/
+    t('Studies'),
+    /*Datasets counts*/
+    array('data' => t('Datasets'), 'colspan' => 2),
+    /*Variables Counts*/
+    t('Variables'),
   );
 
   pager_default_initialize($networks['network_totalHits'], MicaClient::SIZE_RESPONSE);
@@ -686,6 +725,38 @@ function mica_client_facet_search_networks_table($networks) {
       'header' => $headers,
       'rows' => $rows,
       'empty' => t('No Networks found'),
+      'attributes' => array(
+        'id' => 'networks-results',
+        'class' => array('table-bordered', 'table-hover', 'table-condensed')
+      )
     )
   ) . theme('pager');
 }
+
+function mica_client_facet_search_get_studies_count_from_dto($dto) {
+  $studies = array();
+  $count_study = 0;
+  $studyIds = array();
+  foreach ($dto->studyIds as $studyId) {
+    $studies['count'] = ++$count_study;
+    $studyIds[] = $studyId;
+  }
+  $studies['ids'] = $studyIds;
+  return $studies;
+}
+
+function mica_client_facet_search_get_variables_count_from_studies_dto($studies) {
+  $varcount = 0;
+  foreach ($_SESSION['variables']['aggregations'] as $aggregation) {
+    if ($aggregation->aggregation == 'studyIds') {
+      foreach ($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'} as $stuy) {
+        if (in_array($stuy->key, $studies)) {
+          $varcount += $stuy->count;
+        }
+      }
+      return $varcount;
+    }
+  }
+}
+
+

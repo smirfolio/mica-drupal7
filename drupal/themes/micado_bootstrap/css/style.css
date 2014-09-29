@@ -8984,6 +8984,7 @@ div.password-suggestions ul {
     text-align: center;
 }
 
-.search-result table#studies-results > tbody > tr:first-child {
+.search-result table#studies-results > tbody > tr:first-child,
+.search-result table#networks-results > tbody > tr:first-child {
     font-weight: bolder;
 }
