@@ -76,7 +76,7 @@ class MicaSearchResource extends MicaClient {
 
   }
 
-  public function get_stats_entities_count($dto, $dto_data_response) {
+  public function get_stats_entities_count($dto, $dto_data_response) { //dpm($dto_data_response);
     return array(
       'data' => $dto['data'],
       'study_totalHits' => $dto_data_response->studyResultDto->totalHits,
@@ -86,7 +86,11 @@ class MicaSearchResource extends MicaClient {
       'network_totalHits' => !empty($dto_data_response->networkResultDto->totalHits) ?
           $dto_data_response->networkResultDto->totalHits : 0,
       'network_totalCount' => !empty($dto_data_response->networkResultDto->totalCount) ?
-          $dto_data_response->networkResultDto->totalCount : 0
+          $dto_data_response->networkResultDto->totalCount : 0,
+      'dataset_totalHits' => !empty($dto_data_response->datasetResultDto->totalHits) ?
+          $dto_data_response->datasetResultDto->totalHits : 0,
+      'dataset_totalCount' => !empty($dto_data_response->datasetResultDto->totalCount) ?
+          $dto_data_response->datasetResultDto->totalCount : 0
     );
   }
 
@@ -152,5 +156,26 @@ class MicaSearchResource extends MicaClient {
       return $dtos;
     }
   }
+
+  public function search_datasets() {
+    $data_response = $this->_search_resource();
+
+    if (!empty($data_response->datasetResultDto)) {
+      $dto_data_response = $data_response->datasetResultDto;
+      /*ad to session aggregation from other dto entities*/
+      $this->session_facets_builder($data_response);
+      $summaries_datasets = $dto_data_response->{'obiba.mica.DatasetResultDto.result'}->datasets;
+      $dtos = array();
+      $summaries_data = !empty($summaries_datasets) ? $summaries_datasets : NULL;
+      if ($summaries_data) {
+        foreach ($summaries_datasets as $dataset) {
+          $dtos ['data'][] = $dataset;
+        }
+      }
+      $dtos = $this->get_stats_entities_count($dtos, $data_response);
+      return $dtos;
+    }
+  }
+
 
 }
