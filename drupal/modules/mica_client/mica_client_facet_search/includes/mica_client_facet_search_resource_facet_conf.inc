@@ -126,6 +126,8 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
       $term->name = MicaClient::get_name_entity_by_id_aggregation('variables', 'datasets', $term->key);
     }
     if ($agregation_facet == 'networkId') {
+      $agregation_facet = 'id';
+      $type_string = 'networks:';
       $term->name = MicaClient::get_name_entity_by_id_aggregation('studies', 'networks', $term->key);
     }
     $items[$term->key]['#markup'] = theme('mica_client_facet_search_checkbox_term', array(
