@@ -1,20 +1,23 @@
 <?php
 
 function mica_client_study_page_list() {
-  drupal_add_js(drupal_get_path('module', 'mica_client_study') . '/js/ajax_getlist_items.js', 'file');
+  $context['captions'] = array('default' => 'Study', 'plural' => 'Studies');
+  $context['url'] = 'refresh_list_studies';
+  drupal_add_js(drupal_get_path('module', 'mica_client_commons') . '/js/ajax_getlist_items.js', 'file');
+  drupal_add_js(array('context' => $context), 'setting');
   $study_query = NULL;
   $study_sort = NULL;
   $study_sort_by = NULL;
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   $node_rendred['#node']->title = '';
-  if (!empty($_GET['studies-query'])) {
-    $study_query = $_GET['studies-query'];
+  if (!empty($_GET['search-query'])) {
+    $study_query = $_GET['search-query'];
   }
-  if (!empty($_GET['studies-sort'])) {
-    $study_sort = $_GET['studies-sort'];
+  if (!empty($_GET['search-sort'])) {
+    $study_sort = $_GET['search-sort'];
   }
-  if (!empty($_GET['studies-sort-order'])) {
-    $study_sort_by = $_GET['studies-sort-order'];
+  if (!empty($_GET['search-sort-order'])) {
+    $study_sort_by = $_GET['search-sort-order'];
   }
 
   $list_studies = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
@@ -47,55 +50,16 @@ function mica_client_study_retrieve_studies($query, $sort = NULL, $sort_order = 
 }
 
 function mica_client_study_create_form() {
-  global $language;
-  $sort_name = 'name.' . $language->language;
-  $sort_acronym = 'acronym.' . $language->language;
+  $context =
+    array(
+      'options' => //
+        array( //
+          'numberOfParticipants.participant.number' => t('Target Number'), //
+          'populations.selectionCriteria.countriesIso' => t('Countries') //
+        ) //
+    );
 
-  $form = array();
-  $form['#method'] = 'get';
-  $form['#prefix'] = '<div class="inline-form">';
-  $form['#suffix'] = '</div>';
-  $form['studies-sort'] = array(
-    '#type' => 'select',
-    '#title' => '',
-    '#description' => t('Sort by'),
-    '#options' => array(
-      $sort_name => t('Name'),
-      $sort_acronym => t('Acronym'),
-      'numberOfParticipants.participant.number' => t('Target Number'),
-      'populations.selectionCriteria.countriesIso' => t('Countries'),
-    ),
-    '#default_value' => !empty($_GET['studies-sort']) ? $_GET['studies-sort'] : NULL,
-    '#prefix' => '<div class="right-indent lg-width">',
-    '#suffix' => '</div>',
-  );
-
-  $form['studies-sort-order'] = array(
-    '#type' => 'select',
-    '#title' => '',
-    '#description' => 'Sort order',
-    '#options' => array(
-      'asc' => t('ASC'),
-      'desc' => t('DESC'),
-    ),
-    '#default_value' => !empty($_GET['studies-sort-order']) ? $_GET['studies-sort-order'] : NULL,
-    '#prefix' => '<div class="right-indent md-width">',
-    '#suffix' => '</div>',
-
-  );
-
-
-  $form['studies-query'] = array(
-    '#type' => 'textfield',
-    '#title' => '',
-    '#description' => 'Filter by',
-    '#default_value' => !empty($_GET['studies-query']) ? $_GET['studies-query'] : NULL,
-    '#prefix' => '<div class="right-indent lg-width">',
-    '#suffix' => '</div>',
-  );
-
-
-  return $form;
+  return mica_client_commons_create_search_form($context);
 }
 
 function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NULL) {
@@ -105,7 +69,6 @@ function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NUL
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-studies', 5);
   }
   $studies = $study_resource->get_studies($query, $from, NULL, $sort, $order);
-  $_SESSION['list-studies']['aggregations']['totalHits'] = $studies->total;
   return $studies;
 }
 
