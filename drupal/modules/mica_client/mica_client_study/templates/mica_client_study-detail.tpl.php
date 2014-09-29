@@ -4,9 +4,15 @@
 ?>
 
 <?php if (!empty($study_dto->logo)): ?>
-  <img typeof="foaf:Image"
-       src="http://localhost:8082/ws/draft/study/<?php print $study_dto->id ?>/file/<?php print $study_dto->logo->id ?>/_download"
-       width="120" height="96" alt="">
+  <?php
+  $url = "http://localhost:8082/ws/draft/study/$study_dto->id/file/5425c337c4aafa17c3dad270/_download";
+  print theme('imagecache_external', array(
+    'path' => $url,
+    'style_name' => 'thumbnail',
+    'alt' => 'Druplicon',
+    'attributes' => array('class' => 'imageThumb')
+  ));
+  ?>
 <?php endif; ?>
 
 <p>

@@ -6,9 +6,17 @@
     <div class="row lg-bottom-margin">
       <div class="col-md-2 col-xs-2 text-center">
         <?php if (!empty($study->logo)): ?>
-          <img typeof="foaf:Image"
-               src="http://localhost:8082/ws/draft/study/<?php print $study->id ?>/file/<?php print $study->logo->id ?>/_download"
-               width="100" alt="">
+
+          <?php
+          $url = "http://localhost:8082/ws/draft/study/$study->id/file/" . $study->logo->id . "/_download";
+          print theme('imagecache_external', array(
+            'path' => $url,
+            'style_name' => 'thumbnail',
+            'alt' => 'Druplicon',
+            'attributes' => array('class' => 'listImageThumb')
+          ));
+          ?>
+
         <?php else : ?>
           <h1 class="big-character">
             <span class="t_badge color_S t_badge_100"></span>
