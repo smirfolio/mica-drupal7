@@ -57,10 +57,7 @@ function mica_client_network_create_form() {
   $context =
     array(
       'options' => //
-        array( //
-          'test1' => t('Test1'), //
-          'test2' => t('Test2') //
-        ) //
+        array()
     );
 
   return mica_client_commons_create_search_form($context);
