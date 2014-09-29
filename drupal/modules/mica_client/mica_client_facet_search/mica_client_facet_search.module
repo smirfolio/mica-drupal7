@@ -486,19 +486,19 @@ function mica_client_facet_search_studies_table($studies) {
       ''
     );
     foreach ($studies['data'] as $study) {
-      $number_variables = MicaClient::mica_client_facet_search_get_nember_item('studies', 'variables', $study->id);
+      $number_variables = MicaClient::mica_client_facet_search_get_item_count('studies', 'variables', $study->id);
       $query_variables_param =
         MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study->id))));
 
       $number_tables_study_harmo =
-        MicaClient::mica_client_facet_search_get_nember_item('studies', 'studyTables-studyId', $study->id);
+        MicaClient::mica_client_facet_search_get_item_count('studies', 'studyTables-studyId', $study->id);
       $number_table_study_study =
-        MicaClient::mica_client_facet_search_get_nember_item('studies', 'studyTable-studyId', $study->id);
+        MicaClient::mica_client_facet_search_get_item_count('studies', 'studyTable-studyId', $study->id);
       $query_dataset_study_param =
         MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study->id))));
 
       $number_networks_study =
-        MicaClient::mica_client_facet_search_get_nember_item('studies', 'networks-studyId', $study->id);
+        MicaClient::mica_client_facet_search_get_item_count('studies', 'networks-studyId', $study->id);
       $query_networks_param =
         MicaClient::add_parameter_dto_query_link(array('networks' => array('terms' => array('studyIds' => $study->id))));
       $name = mica_client_commons_get_localized_field($study, 'name');

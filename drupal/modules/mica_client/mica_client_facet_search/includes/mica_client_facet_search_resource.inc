@@ -159,7 +159,6 @@ class MicaSearchResource extends MicaClient {
 
   public function search_datasets() {
     $data_response = $this->_search_resource();
-    //$this->session_facets_builder($dto_data_response, 'networks');
 
     if (!empty($data_response->datasetResultDto)) {
       $dto_data_response = $data_response->datasetResultDto;
@@ -174,7 +173,6 @@ class MicaSearchResource extends MicaClient {
         }
       }
       $dtos = $this->get_stats_entities_count($dtos, $data_response);
-      //$dtos['data'
       return $dtos;
     }
   }

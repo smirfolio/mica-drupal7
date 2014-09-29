@@ -285,7 +285,7 @@ class MicaClient {
     return NULL;
   }
 
-  static function mica_client_facet_search_get_nember_item($type, $agregation_facet, $id) {
+  static function mica_client_facet_search_get_item_count($type, $agregation_facet, $id) {
     if (!empty($_SESSION[$type][$agregation_facet])) {
       foreach ($_SESSION[$type][$agregation_facet] as $value) {
         if ($value->key == $id) {
