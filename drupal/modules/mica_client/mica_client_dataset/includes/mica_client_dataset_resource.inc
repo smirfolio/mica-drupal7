@@ -75,7 +75,7 @@ class MicaDatasetResource extends MicaClient {
    */
   public function get_dataset($resource = 'dataset', $dataset_id) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
+    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id);
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -114,7 +114,7 @@ class MicaDatasetResource extends MicaClient {
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
 
-    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id . '/variables?' . $params;
+    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id) . '/variables?' . $params;
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -155,7 +155,7 @@ class MicaDatasetResource extends MicaClient {
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
 
-    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id . '/variables/harmonizations?' . $params;
+    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id) . '/variables/harmonizations?' . $params;
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -182,7 +182,7 @@ class MicaDatasetResource extends MicaClient {
    */
   public function get_variable($variable_id) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/variable/' . $variable_id;
+    $url = $this->micaUrl . '/variable/' . rawurlencode($variable_id);
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -209,7 +209,7 @@ class MicaDatasetResource extends MicaClient {
    */
   public function get_variable_facet($variable_id) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/variable/' . $variable_id . '/facet';
+    $url = $this->micaUrl . '/variable/' . rawurlencode($variable_id) . '/facet';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -235,7 +235,7 @@ class MicaDatasetResource extends MicaClient {
    */
   public function get_variable_harmonizations($variable_id) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/variable/' . $variable_id . '/harmonizations';
+    $url = $this->micaUrl . '/variable/' . rawurlencode($variable_id) . '/harmonizations';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
