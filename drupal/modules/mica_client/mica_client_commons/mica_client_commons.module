@@ -162,54 +162,6 @@ function mica_client_commons_format_year($year, $month) {
   return empty($month) ? "$year" : "$year (" . mica_client_commons_get_month_name($month) . ")";
 }
 
-
-//function mica_client_commons_get_list($path, $dtoObj) {
-//  $dtos = array();
-//  Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
-//  $data = _mica_client_commons_ws_client_get($path, 'GET', array('Accept' => array(HEADER_JSON)));
-//  if ($data) {
-//    foreach (json_decode($data) as $study) {
-//      $dtos [] = Protobuf::decode($dtoObj, json_encode($study));
-//    }
-//  }
-//  return $dtos;
-//}
-
-//function mica_client_commons_get_detail($path, $dtoObj) {
-//  Protobuf::setDefaultCodec(new Protobuf\Codec\Binary());
-//  $data = _mica_client_commons_ws_client_get($path, 'GET', array('Accept' => array(HEADER_BINARY)));
-//  return $data ? Protobuf::decode($dtoObj, $data) : NULL;
-//}
-
-
-//function _mica_client_commons_ws_client_get($path, $method, $header, $data = NULL) {
-//  $url = 'http://localhost:8082/ws/' . $path;
-//
-//  $post = new HttpClientRequest($url, array(
-//    'method' => $method, //GET. POST
-//    'headers' => $header, //array('Content-Type' => array('application/json')),
-//    'data' => $data,
-//    'parameters' => array(),
-//  ));
-//
-//  try {
-//    $client = new HttpClient($formatter = FALSE);
-//    $body = $client->execute($post);
-//  } catch (HttpClientException $e) {
-//    if ($e->getCode() == 0) {
-//      // curl error
-//
-//      throw new Exception($e->getMessage());
-//    }
-//    elseif (!in_array($e->getCode(), array(200, 201, 202, 203, 204, 205, 206))) {
-//
-//      throw $e;
-//    }
-//    $body = $e->getResponse()->body;
-//  }
-//  return $body;
-//}
-
 function mica_client_commons_add_page($title, $body_html, $alias = NULL, $format = 'full_html') {
 
   $page_wrapper = entity_property_values_create_entity(
@@ -310,25 +262,26 @@ function mica_client_commons_create_search_form($context) {
   return $form;
 }
 
-function mica_client_commons_safe_expose_server_url($entity_id, $file_resource) {
+function mica_client_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type) {
   if (!empty($file_resource)) {
     $micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
-    $url = $micaUrl . "/draft/study/" . $entity_id . "/file/"
+    $url = $micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/"
       . $file_resource->id . "/_download";
     $resource_data = drupal_http_request($url);
-    $extention_file = _mica_client_commons_get_extention_file($file_resource);
-    $file = file_unmanaged_save_data($resource_data->data, 'public://tmp' . $file_resource->id . '.' . $extention_file, FILE_EXISTS_REPLACE);
-    $exposed_url = file_create_url($file);
-    return $exposed_url;
+    $response_code = floor($resource_data->code / 100) * 100;
+    if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
+      $extension_file = _mica_client_commons_get_extention_file($file_resource);
+      $file = file_unmanaged_save_data($resource_data->data, 'public://tmp' . $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
+      $exposed_url = file_create_url($file);
+      return $exposed_url;
+    }
   }
-  else {
-    return NULL;
-  }
+  return NULL;
 }
 
 function _mica_client_commons_get_extention_file($file_resource) {
   $file_array = explode('.', $file_resource->fileName);
-  $index_extention = count($file_array);
+  $extension_file = count($file_array);
 
-  return $file_array[$index_extention - 1];
+  return $file_array[$extension_file - 1];
 }

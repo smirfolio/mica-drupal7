@@ -8988,6 +8988,7 @@ div.password-suggestions ul {
 .list-page img {
     display: inline;
     margin-top: 25px;
+    width: 125px;
 }
 
 .list-page .row {

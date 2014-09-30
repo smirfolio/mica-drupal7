@@ -1,12 +1,11 @@
 <?php //dpm($list_studies->studySummaries); ?>
 <?php //dpm($list_studies); ?>
 
-<?php if (!empty($list_studies->studySummaries)): ?>
-  <?php foreach ($list_studies->studySummaries as $study) : ?>
-    <div class="row lg-bottom-margin">
+
+<div class="row lg-bottom-margin">
       <div class="col-md-2 col-xs-2 text-center">
-        <?php if (!empty($study->logo)): ?>
-          <img src="<?php print mica_client_commons_safe_expose_server_url($study->id, $study->logo) ?>"
+        <?php if (!empty($logo_url)): ?>
+          <img src="<?php print $logo_url ?>"
                class="listImageThumb"/>
         <?php else : ?>
           <h1 class="big-character">
@@ -27,7 +26,5 @@
       </div>
     </div>
 
-  <?php endforeach; ?>
-<?php endif; ?>
 
 

@@ -2,15 +2,18 @@
 //dpm($study_dto);
 //dpm($study_variables_aggs);
 ?>
+<div>
+  <?php if (!empty($study_dto->logo->id)): ?>
 
-<?php if (!empty($study_dto->logo->id)): ?>
-  <img src="<?php print mica_client_commons_safe_expose_server_url($study_dto->id, $study_dto->logo) ?>"
-       class="imageThumb">
+    <img src="<?php print mica_client_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
+         class="imageThumb">
 <?php endif; ?>
-<p>
+
+  <p>
   <?php print mica_client_commons_get_localized_field($study_dto, 'objectives'); ?>
 </p>
-
+</div>
+<div class="clearfix"></div>
 <article>
 
 <section>
@@ -263,7 +266,11 @@
         <?php if (!empty($study_dto->attachments)): ?>
           <h3><?php print t('Documents'); ?></h3>
           <div>
-            <?php print mica_client_study_get_attachment_file($study_dto->id, $study_dto->attachments); ?>
+            <?php if (!empty($study_attachements)): ?>
+              <ul class="list-group">
+                <?php print $study_attachements; ?>
+              </ul>
+            <?php endif; ?>
           </div>
         <?php endif; ?>
       </div>
