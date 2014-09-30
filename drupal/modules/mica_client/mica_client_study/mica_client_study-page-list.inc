@@ -10,6 +10,8 @@ function mica_client_study_page_list() {
   $study_sort_by = NULL;
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   $node_rendred['#node']->title = '';
+  $themed_studies = '';
+
   if (!empty($_GET['search-query'])) {
     $study_query = $_GET['search-query'];
   }
@@ -24,14 +26,23 @@ function mica_client_study_page_list() {
   $total_studies = $list_studies->total;
   pager_default_initialize($list_studies->total, 5);
   $pager_output = theme('pager', array('quantity' => 5));
-  $list_studies = theme('mica_client_study-list-page-block', array(
-    'list_studies' => $list_studies,
-  ));
+  foreach ($list_studies->studySummaries as $study) {
+    if (!empty($study->logo->id)) {
+      $logo_url = mica_client_commons_safe_expose_server_url($study->id, $study->logo, 'study');
+    }
+    else {
+      $logo_url = NULL;
+    }
+    $themed_studies .= theme('mica_client_study-list-page-block', array(
+      'study' => $study,
+      'logo_url' => $logo_url
+    ));
+  }
   return theme('mica_client_study_list-page', array(
     "form_search" => drupal_get_form('mica_client_study_create_form'),
     "node_page" => $node_rendred,
     "total_items" => $total_studies,
-    "list_studies" => $list_studies,
+    "list_studies" => $themed_studies,
     "pager_wrap" => $pager_output
   ));
 }
@@ -69,6 +80,7 @@ function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NUL
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-studies', 5);
   }
   $studies = $study_resource->get_studies($query, $from, NULL, $sort, $order);
+  $_SESSION['list-studies']['aggregations']['totalHits'] = $studies->total;
   return $studies;
 }
 

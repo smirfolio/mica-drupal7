@@ -215,8 +215,12 @@ class MicaClient {
 
 
   protected function session_facets_builder($aggregations) {
-    unset($_SESSION['variables']);
-    unset($_SESSION['studies']);
+    if (!empty($aggregations->variableResultDto)) {
+      unset($_SESSION['variables']);
+    }
+    if (!empty($aggregations->studyResultDto)) {
+      unset($_SESSION['studies']);
+    }
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {

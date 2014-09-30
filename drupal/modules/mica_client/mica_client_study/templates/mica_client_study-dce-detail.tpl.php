@@ -72,9 +72,11 @@
             <p><?php print mica_client_commons_get_localized_field($dce, 'tissueTypes'); ?></p>
           <?php endif; ?>
 
-          <?php if (!empty($dce->attachments)): ?>
+          <?php if (!empty($attachements)): ?>
             <h5><?php print t('Documents') ?></h5>
-            <?php print mica_client_study_get_attachment_file($study_id, $dce->attachments); ?>
+            <ul class="list-group">
+              <?php print $attachements; ?>
+            </ul>
           <?php endif; ?>
         </section>
       </div>

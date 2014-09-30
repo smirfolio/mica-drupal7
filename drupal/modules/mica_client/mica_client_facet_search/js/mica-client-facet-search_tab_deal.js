@@ -42,16 +42,11 @@
         $('#result-search a[href$="#' + $.urlParam('type') + '"]').tab('show');
       }
 
-      $("div#search-result").find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        //TODO we need to stop show tab and refresh  the page
-        // e.target // activated tab
-        // e.relatedTarget // previous tab
+      $("div#search-result").find('a[role="tab"]').on('click', function (e) {
         e.preventDefault();
         var targetPanel = e.target.hash;
-
         var current_page = ($.getCookieDataTabs('page_' + targetPanel.replace('#', ''))) ?
           '&page=' + $.getCookieDataTabs('page_' + targetPanel.replace('#', '')) : '';
-
         window.location = '?' + 'type=' + targetPanel.replace('#', '') + '&' + $.urlParamToAdd() + current_page
       });
 

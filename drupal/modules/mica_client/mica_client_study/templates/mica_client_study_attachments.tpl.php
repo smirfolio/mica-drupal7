@@ -1,15 +1,10 @@
-<?php if (!empty($documents)): ?>
-  <ul class="list-group">
-    <?php foreach ($documents as $document) : ?>
-      <li class="list-group-item">
+<li class="list-group-item">
         <a
-          href="<?php print mica_client_study_get_attachment_url($study_id, $document) ?>"
-          type="<?php print $document->type; ?>; length=<?php print $document->size; ?>"
-          title="<?php print $document->fileName; ?>">
+          href="<?php print mica_client_commons_safe_expose_server_url($study_id, $attachment, 'study') ?>"
+          type="<?php print $attachment->type; ?>; length=<?php print $attachment->size; ?>"
+          title="<?php print $attachment->fileName; ?>">
           <span class="glyphicon glyphicon-download"></span>
-          <?php print $document->fileName; ?></a>
+          <?php print urldecode($attachment->fileName); ?></a>
 
-      </li>
-    <?php endforeach; ?>
-  </ul>
-<?php endif; ?>
+</li>
+

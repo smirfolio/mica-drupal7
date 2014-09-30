@@ -4,25 +4,25 @@
 <div id="search-query"></div>
 <div id="search-result">
   <ul class="nav nav-tabs" role="tablist" id="result-search">
-    <li class="active"><a href="#variables" role="tab" data-toggle="tab"><?php print t('Variables') ?>
+    <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
         <?php if (!empty($variable_totalHits)) : ?>
           (  <?php print $variable_totalHits; ?> )
         <?php endif; ?>
       </a></li>
 
-    <li><a href="#studies" role="tab" data-toggle="tab"> <?php print t('Studies') ?>
+    <li><a href="#studies" role="tab"> <?php print t('Studies') ?>
         <?php if (!empty($study_totalHits)) : ?>
           (  <?php print $study_totalHits; ?> )
         <?php endif; ?>
       </a></li>
-    <li><a href="#datasets" role="tab" data-toggle="tab"> <?php print t('Datasets') ?>
+    <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
         <?php if (!empty($dataset_totalHits)) : ?>
           (  <?php print $dataset_totalCount; ?> )
         <?php else : ?>
           (<?php print 0; ?>)
         <?php endif; ?>
       </a></li>
-    <li><a href="#networks" role="tab" data-toggle="tab"> <?php print t('Networks') ?>
+    <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
         <?php if (!empty($network_totalHits)) : ?>
           (  <?php print $network_totalHits; ?> )
         <?php else : ?>
