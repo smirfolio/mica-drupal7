@@ -90,11 +90,6 @@ chart-enable:
 	drush highcharts-download && \
 	drush en -y charts_highcharts
 
-imagecache-enable:
-	cd target/drupal && \
-	drush en -y imagecache_external && \
-	drush en -y imagecache_external
-
 cc:
 	cd target/drupal && drush cc all
 

@@ -3,18 +3,10 @@
 //dpm($study_variables_aggs);
 ?>
 
-<?php if (!empty($study_dto->logo)): ?>
-  <?php
-  $url = "http://localhost:8082/ws/draft/study/$study_dto->id/file/5425c337c4aafa17c3dad270/_download";
-  print theme('imagecache_external', array(
-    'path' => $url,
-    'style_name' => 'thumbnail',
-    'alt' => 'Druplicon',
-    'attributes' => array('class' => 'imageThumb')
-  ));
-  ?>
+<?php if (!empty($study_dto->logo->id)): ?>
+  <img src="<?php print mica_client_commons_safe_expose_server_url($study_dto->id, $study_dto->logo) ?>"
+       class="imageThumb">
 <?php endif; ?>
-
 <p>
   <?php print mica_client_commons_get_localized_field($study_dto, 'objectives'); ?>
 </p>
