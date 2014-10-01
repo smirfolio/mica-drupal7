@@ -8764,10 +8764,20 @@ input[type="color"],
 }
 
 input.error {
-    color: #f0ad4e;
-    border-color: #f0ad4a;
-}
+    color:(color
 
+: #C7254E
+
+)
+;
+border-color:
+
+(
+color: #C7254E
+
+)
+;
+}
 .form-type-checkbox input,
 .form-type-radio input {
     float: left;
@@ -8831,10 +8841,17 @@ input.error {
 
 .control-group.error label,
 .control-group.error .control-label {
-    color: #f0ad4e;
-    font-weight: 600;
-}
+    color:(color
 
+: #C7254E
+
+)
+;
+font-weight:
+
+600
+;
+}
 ul li.collapsed,
 ul li.expanded,
 ul li.leaf {
@@ -8970,6 +8987,14 @@ div.password-suggestions ul {
 .color_D-h {
     background-color: #47AE48;
     background-size: cover;
+}
+
+.color_D-h {
+    background-color: #47AE48;
+    background-size: cover;
+    font-size: 38px;
+    padding-left: 2px;
+    padding-top: 11px;
 }
 
 .color_N {
