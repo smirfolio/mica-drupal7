@@ -131,7 +131,8 @@
     <?php if (!empty($title)): ?>
       <h1 class="page-header">
         <?php if (!empty($classes_array['title_page'])) : ?>
-          <span class="t_badge color_<?php print $classes_array['title_page']; ?>">
+          <span
+            class="t_badge color_<?php print $classes_array['title_page']; ?> i-obiba-<?php print $classes_array['title_page']; ?>">
           </span>
         <?php endif; ?>
         <?php print $title; ?>

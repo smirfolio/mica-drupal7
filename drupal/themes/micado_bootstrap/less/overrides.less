@@ -5,6 +5,8 @@
 @tablet: ~"(min-width: 768px) and (max-width: 979px)";
 @normal: ~"(min-width: 980px) and (max-width: 1199px)";
 @wide: ~"(min-width: 1200px)";
+@errorText : ~"(color: #C7254E)";
+@errorBorder: ~"(color: #C7254E)";
 
 // Border Radius
 .border-radius(@radius) {
@@ -425,36 +427,45 @@ div.password-suggestions ul {
 
 .t_badge {
   display: inline-block;
-  height: 55px;
-  width: 55px;
+  height: 60px;
+  width: 60px;
   text-align: center;
   vertical-align: middle;
   border-radius: 50%;
   color: #ffffff;
+  padding-top: 10px;
+  /* padding-left: 3px; */
+  font-size: 40px;
 }
 
 .t_badge_100 {
   height: 100px;
   width: 100px;
+  font-size: 70px;
+  padding-top: 14px;
 }
 
 .color_S {
-  background: url('../img/ST.png') no-repeat center center;
+  //background: url('../img/ST.png') no-repeat center center;
+  background-color: #50A6DC;
   background-size: cover;
 }
 
-.color_D {
-  background: url('../img/HDS.png') no-repeat center center;
+.color_D, .color_D-h {
+  //background: url('../img/HDS.png') no-repeat center center;
+  background-color: #47AE48;
   background-size: cover;
 }
 
 .color_N {
-  background: url('../img/NW.png') no-repeat center center;
+  //background: url('../img/NW.png') no-repeat center center;
+  background-color: #A8509E;
   background-size: cover;
 }
 
 .color_V {
-  background: url('../img/VR.png') no-repeat center center;
+  //background: url('../img/VR.png') no-repeat center center;
+  background-color: #EF4C3D;
   background-size: cover;
 }
 

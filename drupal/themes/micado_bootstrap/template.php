@@ -196,8 +196,15 @@ function micado_bootstrap_letters_badge_title() {
   $current_item = explode('/', current_path());
 
   if (!empty($current_item[1])) {
-    if (strstr($current_item[1], 'study-') || strstr($current_item[1], 'harmonization-')) {
+    dpm($current_item);
+    if ((!empty($current_item[2]) && strstr($current_item[2], 'study-')) || strstr($current_item[1], 'study-') ||
+      strstr($current_item[1], 'datasets')
+    ) {
       return 'D';
+    }
+    if ((!empty($current_item[2]) && strstr($current_item[2], 'harmonization-')) || strstr($current_item[1], 'harmonization-')) {
+      dpm($current_item);
+      return 'D-h';
     }
     elseif (strstr($current_item[1], 'search')) {
       if (!empty($_GET['type'])) {
