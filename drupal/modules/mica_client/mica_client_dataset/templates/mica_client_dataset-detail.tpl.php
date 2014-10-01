@@ -66,7 +66,7 @@
             array(
               'query' => array(
                 'type' => 'variables',
-                'query' => '{"dataset":{"terms":{"id":["' . $dataset_dto->id . '"]}}}'
+                'query' => '{"variables":{"terms":{"datasetId":["' . $dataset_dto->id . '"]}}}'
               ),
               'attributes' => array('class' => 'btn btn-primary')
             ));

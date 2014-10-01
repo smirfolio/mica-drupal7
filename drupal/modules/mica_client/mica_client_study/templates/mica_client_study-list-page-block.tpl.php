@@ -9,7 +9,7 @@
                class="listImageThumb"/>
         <?php else : ?>
           <h1 class="big-character">
-            <span class="t_badge color_S t_badge_100"></span>
+            <span class="t_badge color_S t_badge_100 i-obiba-S"></span>
           </h1>
         <?php endif; ?>
       </div>
