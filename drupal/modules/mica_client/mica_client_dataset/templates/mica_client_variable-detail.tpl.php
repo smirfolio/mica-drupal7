@@ -14,82 +14,114 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-6 right-indent">
-            <?php if (!empty($variable_dto->label)): ?>
-              <h5><?php print t('Label') ?></h5>
-              <p><?php print $variable_dto->label; ?></p>
-            <?php endif; ?>
+          <?php if (!empty($variable_dto->label)): ?>
+            <h5><?php print t('Label') ?></h5>
+            <p><?php print $variable_dto->label; ?></p>
+          <?php endif; ?>
 
-            <?php if (!empty($variable_dto->studySummaries)): ?>
-              <h5>
-                <?php if ($variable_dto->variableType == 'Dataschema') {
-                  print t('Studies');
-                }
-                else {
-                  print t('Study');
-                }?>
-              </h5>
-              <p>
-                <?php
-                foreach ($variable_dto->studySummaries as $studySummary) {
-                  print l(mica_client_commons_get_localized_field($studySummary, 'name'), 'mica/study/' . $studySummary->id .
-                    '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($studySummary, 'name')));
-                }
-                ?>
-              </p>
-            <?php endif; ?>
-
-            <?php if (!empty($variable_dto->datasetId)): ?>
-              <h5><?php print t('Dataset'); ?></h5>
-              <p>
-                <?php
-                print l(mica_client_commons_get_localized_field($variable_dto, 'datasetName'), 'mica/' . mica_client_variable_dataset_type($variable_dto)
-                  . '/' . $variable_dto->datasetId . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($variable_dto, 'datasetName')));
-                ?>
-              </p>
-            <?php endif; ?>
-
-            <h5><?php print t('Entity Type'); ?></h5>
-
-            <p><?php print t($variable_dto->entityType); ?></p>
-
-            <h5><?php print t('Value Type'); ?></h5>
-
-            <p><?php print t($variable_dto->valueType); ?></p>
-
-            <h5><?php print t('Variable Type'); ?></h5>
-
+          <?php if (!empty($variable_dto->studySummaries)): ?>
+            <h5>
+              <?php if ($variable_dto->variableType == 'Dataschema') {
+                print t('Studies');
+              }
+              else {
+                print t('Study');
+              }?>
+            </h5>
             <p>
-              <?php print t($variable_dto->variableType); ?>
-              <?php if ($variable_dto->variableType == 'Harmonized'): ?>
-                <?php
-                print '(' . l($variable_dto->name, 'mica/variable/' . $variable_dto->datasetId . ':' . $variable_dto->name
-                    . ':Dataschema' . '/' . mica_client_commons_to_slug($variable_dto->name)) . ')';
-                ?>
-              <?php endif; ?>
+              <?php
+              foreach ($variable_dto->studySummaries as $studySummary) {
+                print l(mica_client_commons_get_localized_field($studySummary, 'name'), 'mica/study/' . $studySummary->id .
+                  '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($studySummary, 'name')));
+              }
+              ?>
             </p>
+          <?php endif; ?>
 
-            <?php if (!empty($variable_dto->comment)): ?>
-              <h5><?php print t('Comment'); ?></h5>
-              <p><?php print($variable_dto->comment); ?></p>
+          <?php if (!empty($variable_dto->datasetId)): ?>
+            <h5><?php print t('Dataset'); ?></h5>
+            <p>
+              <?php
+              print l(mica_client_commons_get_localized_field($variable_dto, 'datasetName'), 'mica/' . mica_client_variable_dataset_type($variable_dto)
+                . '/' . $variable_dto->datasetId . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($variable_dto, 'datasetName')));
+              ?>
+            </p>
+          <?php endif; ?>
+
+          <h5><?php print t('Entity Type'); ?></h5>
+
+          <p><?php print t($variable_dto->entityType); ?></p>
+
+          <h5><?php print t('Value Type'); ?></h5>
+
+          <p><?php print t($variable_dto->valueType); ?></p>
+
+          <h5><?php print t('Variable Type'); ?></h5>
+
+          <p>
+            <?php print t($variable_dto->variableType); ?>
+            <?php if ($variable_dto->variableType == 'Harmonized'): ?>
+              <?php
+              print '(' . l($variable_dto->name, 'mica/variable/' . $variable_dto->datasetId . ':' . $variable_dto->name
+                  . ':Dataschema' . '/' . mica_client_commons_to_slug($variable_dto->name)) . ')';
+              ?>
             <?php endif; ?>
+          </p>
+
+          <?php if (!empty($variable_dto->comment)): ?>
+            <h5><?php print t('Comment'); ?></h5>
+            <p><?php print($variable_dto->comment); ?></p>
+          <?php endif; ?>
         </div>
         <div class="col-xs-6">
+          <!-- Categories -->
+          <h5><?php print t('Categories') ?></h5>
           <?php if (!empty($variable_dto->categories)): ?>
-            <h5><?php print t('Categories') ?></h5>
             <p><?php print mica_client_variable_get_categories($variable_dto->categories); ?></p>
-          <?php endif; ?>
-          <?php if (!empty($variable_dto->attributes)): ?>
-            <h5><?php print t('Attributes') ?></h5>
-            <p><?php print mica_client_dataset_attributes_tab($variable_dto->attributes, 'maelstrom', array(
-                'description',
-                'comment',
-                'status'
-              )); ?></p>
+          <?php else: ?>
+            <p><i><?php print t('No categories'); ?></i></p>
           <?php endif; ?>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- Taxonomy terms -->
+  <?php if (!empty($variable_dto->termAttributes)): ?>
+
+    <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
+      <section>
+        <h3 data-toggle="tooltip"
+            title="<?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>">
+          <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
+        </h3>
+
+        <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
+          <h5 data-toggle="tooltip"
+              title="<?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>">
+            <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
+          </h5>
+
+          <?php if (count($termAttribute->terms == 1)): ?>
+            <p data-toggle="tooltip"
+               title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
+              <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
+            </p>
+          <?php else: ?>
+            <ul>
+              <?php foreach ($termAttribute->terms as $term) : ?>
+                <li data-toggle="tooltip"
+                    title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
+                  <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
+        <?php endforeach; ?>
+
+      </section>
+    <?php endforeach; ?>
+  <?php endif; ?>
 
   <section>
     <h3><?php print t('Statistics') ?></h3>
