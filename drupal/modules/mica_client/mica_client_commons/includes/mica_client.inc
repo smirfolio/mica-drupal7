@@ -224,7 +224,11 @@ class MicaClient {
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {
-          $_SESSION['variables']['studies'] = $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'}->summaries;
+          $study_result = $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'};
+          $_SESSION['variables']['studies'] = //
+            empty($study_result->summaries) //
+              ? $study_result->digests //
+              : $study_result->summaries; //
           $_SESSION['variables']['datasets'] =
             !empty($aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->datasets) ?
               $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->datasets : NULL;
