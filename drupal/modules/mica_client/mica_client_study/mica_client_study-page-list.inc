@@ -26,17 +26,22 @@ function mica_client_study_page_list() {
   $total_studies = $list_studies->total;
   pager_default_initialize($list_studies->total, 5);
   $pager_output = theme('pager', array('quantity' => 5));
-  foreach ($list_studies->studySummaries as $study) {
-    if (!empty($study->logo->id)) {
-      $logo_url = mica_client_commons_safe_expose_server_url($study->id, $study->logo, 'study');
+  if (!empty($list_studies->studySummaries)) {
+    foreach ($list_studies->studySummaries as $study) {
+      if (!empty($study->logo->id)) {
+        $logo_url = mica_client_commons_safe_expose_server_url($study->id, $study->logo, 'study');
+      }
+      else {
+        $logo_url = NULL;
+      }
+      $themed_studies .= theme('mica_client_study-list-page-block', array(
+        'study' => $study,
+        'logo_url' => $logo_url
+      ));
     }
-    else {
-      $logo_url = NULL;
-    }
-    $themed_studies .= theme('mica_client_study-list-page-block', array(
-      'study' => $study,
-      'logo_url' => $logo_url
-    ));
+  }
+  else {
+    $themed_studies = t('No studies found');
   }
   return theme('mica_client_study_list-page', array(
     "form_search" => drupal_get_form('mica_client_study_create_form'),
@@ -49,13 +54,13 @@ function mica_client_study_page_list() {
 
 function mica_client_study_retrieve_studies($query, $sort = NULL, $sort_order = NULL) {
   $list_studies = mica_client_study_get_studies($query, $sort, $sort_order);
-  pager_default_initialize($list_studies->total, 5);
-  $pager_output = theme('pager', array('quantity' => 5));
-  $list_studies_rendered = theme('mica_client_study-list-page-block', array(
-    'list_studies' => $list_studies,
-    "pager_wrap" => $pager_output
-  ));
-  $data['list_studies'] = $list_studies_rendered;
+  $list_studies_rendered = '';
+  foreach ($list_studies->studySummaries as $study) {
+    $list_studies_rendered .= theme('mica_client_study-list-page-block', array(
+      'study' => $study,
+    ));
+  }
+  $data['list'] = $list_studies_rendered;
   $data['total'] = $list_studies->total;
   drupal_json_output($data);
 }

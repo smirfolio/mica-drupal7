@@ -7,13 +7,13 @@ function mica_client_network_page_list() {
   $context['url'] = 'refresh_list_networks';
   drupal_add_js(drupal_get_path('module', 'mica_client_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
+
   $node_view = node_view(node_load(variable_get('networks_page')));
   $node_view['#node']->title = '';
   $query = NULL;
   $sort = NULL;
   $sort_by = NULL;
-  $node_rendred = node_view(node_load(variable_get('networks_page')));
-  $node_rendred['#node']->title = '';
+  $list_networks = '';
   if (!empty($_GET['search-query'])) {
     $query = $_GET['search-query'];
   }
@@ -24,15 +24,30 @@ function mica_client_network_page_list() {
     $sort_by = $_GET['search-sort-order'];
   }
 
-  $networks = mica_client_network_get_networks($query, $sort, $sort_by);
-  $total_networks = $networks->total;
-  // TODO implement search form and pagination
+  $networks_list = mica_client_network_get_networks($query, $sort, $sort_by);
+  $total_networks = $networks_list->total;
+
 
   pager_default_initialize($total_networks, 2);
   $pager_output = theme('pager', array('quantity' => $total_networks));
-  $list_networks = theme('mica_client_network-list-page-block', array(
-    'list_networks' => $networks,
-  ));
+  if (!empty($networks_list->networks)) {
+    foreach ($networks_list->networks as $network) {
+      if (!empty($network->logo->id)) {
+        $logo_url = mica_client_commons_safe_expose_server_url($network->id, $network->logo, 'network');
+      }
+      else {
+        $logo_url = NULL;
+      }
+
+      $list_networks .= theme('mica_client_network-list-page-block', array(
+        'network' => $network,
+        'logo_url' => $logo_url
+      ));
+    }
+  }
+  else {
+    $list_networks = t('No networks found');
+  }
 
   return theme('mica_client_network-list', array(
     "form_search" => drupal_get_form('mica_client_network_create_form'),
@@ -50,6 +65,7 @@ function mica_client_network_get_networks($query, $sort, $sort_by) {
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-networks', 5);
   }
   $networks = $study_resource->get_networks(NULL, $query, $from, NULL, $sort, $sort_by);
+  $_SESSION['list-networks']['aggregations']['totalHits'] = $networks->total;
   return $networks;
 }
 
@@ -104,14 +120,14 @@ function mica_client_network_networks_table_rows($networks) {
 
 function mica_client_network_retrieve_networks($query, $sort = NULL, $sort_order = NULL) {
   $list_networks = mica_client_network_get_networks($query, $sort, $sort_order);
-  dpm($list_networks);
-  pager_default_initialize($list_networks->total, 5);
-  $pager_output = theme('pager', array('quantity' => 5));
-  $list_networks_rendered = theme('mica_client_network-list-page-block', array(
-    'list_networks' => $list_networks,
-    "pager_wrap" => $pager_output
-  ));
-  $data['list_studies'] = $list_networks_rendered;
+  $list_networks_rendered = '';
+  //dpm($list_networks);
+  foreach ($list_networks->networks as $network) {
+    $list_networks_rendered .= theme('mica_client_network-list-page-block', array(
+      'network' => $network
+    ));
+  }
+  $data['list'] = $list_networks_rendered;
   $data['total'] = $list_networks->total;
   drupal_json_output($data);
 }

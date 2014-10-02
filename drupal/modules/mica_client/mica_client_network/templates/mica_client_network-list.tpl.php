@@ -19,8 +19,7 @@
   <div id="refresh-list">
     <?php if (!empty($list_networks)): ?>
       <?php print render($list_networks); ?>
-      <div><?php print $pager_wrap; ?></div>
     <?php endif; ?>
   </div>
-
+  <div><?php print $pager_wrap; ?></div>
 </div>
