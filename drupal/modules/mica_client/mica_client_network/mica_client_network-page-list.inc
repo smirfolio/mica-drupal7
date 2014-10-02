@@ -12,8 +12,7 @@ function mica_client_network_page_list() {
   $query = NULL;
   $sort = NULL;
   $sort_by = NULL;
-  $node_rendred = node_view(node_load(variable_get('networks_page')));
-  $node_rendred['#node']->title = '';
+
   if (!empty($_GET['search-query'])) {
     $query = $_GET['search-query'];
   }
@@ -50,6 +49,7 @@ function mica_client_network_get_networks($query, $sort, $sort_by) {
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-networks', 5);
   }
   $networks = $study_resource->get_networks(NULL, $query, $from, NULL, $sort, $sort_by);
+  $_SESSION['list-networks']['aggregations']['totalHits'] = $networks->total;
   return $networks;
 }
 
@@ -104,7 +104,7 @@ function mica_client_network_networks_table_rows($networks) {
 
 function mica_client_network_retrieve_networks($query, $sort = NULL, $sort_order = NULL) {
   $list_networks = mica_client_network_get_networks($query, $sort, $sort_order);
-  dpm($list_networks);
+  //dpm($list_networks);
   pager_default_initialize($list_networks->total, 5);
   $pager_output = theme('pager', array('quantity' => 5));
   $list_networks_rendered = theme('mica_client_network-list-page-block', array(

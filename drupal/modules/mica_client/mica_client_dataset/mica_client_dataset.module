@@ -6,7 +6,7 @@ function mica_client_dataset_menu() {
   $items['mica/datasets'] = array(
     'title' => t('Datasets'),
     'description' => t('Published datasets'),
-    'page callback' => 'mica_client_dataset_get_datasets',
+    'page callback' => 'mica_client_dataset_get_datasets_list',
     'file' => 'mica_client_dataset-page-list.inc',
     'access callback' => TRUE,
     'menu_name' => 'main-menu',
@@ -18,7 +18,7 @@ function mica_client_dataset_menu() {
   $items['mica/datasets/harmonization-datasets'] = array(
     'title' => t('Harmonization Datasets'),
     'description' => t('Published harmonization datasets'),
-    'page callback' => 'mica_client_dataset_get_harmonization_datasets',
+    'page callback' => 'mica_client_dataset_get_harmonization_datasets_list',
     'file' => 'mica_client_dataset-page-list.inc',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
@@ -27,7 +27,7 @@ function mica_client_dataset_menu() {
 
   $items['mica/datasets/study-datasets'] = array(
     'title' => t('Study Datasets'),
-    'page callback' => 'mica_client_dataset_get_study_datasets',
+    'page callback' => 'mica_client_dataset_get_study_datasets_list',
     'file' => 'mica_client_dataset-page-list.inc',
     'access callback' => TRUE,
     //  'menu_name' => 'main-menu',
@@ -67,6 +67,30 @@ function mica_client_dataset_menu() {
     'access callback' => TRUE,
     'page arguments' => array(2),
   );
+
+  $items['mica/refresh_list_datasets_datasets/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'mica_client_dataset_retrieve_datasets',
+    'file' => 'mica_client_dataset-page-list.inc',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 3, 4)
+  );
+
+  $items['mica/refresh_list_datasets_harmonization-datasets/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'mica_client_dataset_retrieve_harmonizationDatasets',
+    'file' => 'mica_client_dataset-page-list.inc',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 3, 4)
+  );
+  $items['mica/refresh_list_datasets_study-datasets/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'mica_client_dataset_studyDataset',
+    'file' => 'mica_client_dataset-page-list.inc',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 3, 4)
+  );
+
   return $items;
 }
 
@@ -76,24 +100,6 @@ function mica_client_dataset_menu_link_alter(&$items) {
   }
 }
 
-///**
-// * Restrict access to /node
-// */
-//function mica_client_dataset_menu_alter(&$items) {
-//  dpm($items);
-//  $items['node']['access callback'] = FALSE;
-//}
-
-
-//function mica_client_dataset_menu_local_tasks_alter(&$data, $router_item, $root_path) {
-//  $links = array();
-//  //dpm($root_path);
-//  switch ($root_path) {
-//
-//  }
-//
-//  $data['actions']['output'] = array_merge($data['actions']['output'], $links);
-//}
 
 /**
  * Implements hook_theme().
@@ -109,6 +115,10 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
   return array(
     'mica_client_dataset-list' => array('template' => 'mica_client_dataset-list', 'path' => $path_theme),
     'mica_client_dataset-detail' => array('template' => 'mica_client_dataset-detail', 'path' => $path_theme),
+    'mica_client_dataset-list-page-block' => array(
+      'template' => 'mica_client_dataset-list-page-block',
+      'path' => $path_theme
+    ),
     'mica_client_dataset-tables' => array('template' => 'mica_client_dataset-tables', 'path' => $path_theme),
     'mica_client_variable-detail' => array('template' => 'mica_client_variable-detail', 'path' => $path_theme)
   );
@@ -121,13 +131,13 @@ function mica_client_dataset_get_all_datasets_studies($study_id) {
   $datasets = $dataset_resource->get_datasets('datasets', $study_id);
 
   if (!empty($datasets)) {
-    $output = mica_client_dataset_get_datasets_list($datasets);
+    $output = mica_client_dataset_get_datasets_list_tab($datasets);
   }
 
   return $output;
 }
 
-function mica_client_dataset_get_datasets_list($datasets) {
+function mica_client_dataset_get_datasets_list_tab($datasets) {
   $dataset_rows = array();
   if (!empty($datasets->datasets)) {
     foreach ($datasets->datasets as $key_dataset => $dataset_dto) {
