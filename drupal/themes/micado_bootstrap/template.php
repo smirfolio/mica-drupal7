@@ -216,10 +216,15 @@ function micado_bootstrap_letters_badge_title() {
     if (strstr($current_item[1], 'datasets')) {
       return 'D';
     }
+    if (strstr($current_item[1], 'coverage')) {
+      return 'taxonomy';
+    }
 
     elseif (strstr($current_item[1], 'search')) {
       if (!empty($_GET['type'])) {
         return drupal_strtoupper(drupal_substr($_GET['type'], 0, 1));
+      } else {
+        return 'V';
       }
     }
     else {

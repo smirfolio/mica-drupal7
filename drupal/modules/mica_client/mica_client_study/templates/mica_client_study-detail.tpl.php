@@ -2,17 +2,13 @@
 //dpm($study_dto);
 //dpm($study_variables_aggs);
 ?>
-<div>
+<p>
   <?php if (!empty($study_dto->logo->id)): ?>
-
     <img src="<?php print mica_client_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
          class="imageThumb">
-<?php endif; ?>
-
-  <p>
+  <?php endif; ?>
   <?php print mica_client_commons_get_localized_field($study_dto, 'objectives'); ?>
 </p>
-</div>
 <div class="clearfix"></div>
 <article>
 
