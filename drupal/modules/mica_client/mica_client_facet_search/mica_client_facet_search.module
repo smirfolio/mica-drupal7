@@ -516,7 +516,7 @@ function mica_client_facet_search_studies_table($studies) {
       '',
       '',
       t('Study'),
-      t('Harmonized'),
+      t('Harmonization'),
       ''
     );
     foreach ($studies['data'] as $study) {
@@ -731,8 +731,8 @@ function mica_client_facet_search_networks_table($networks) {
       '',
       '',
       '',
-      t('study'),
-      t('Harmonized'),
+      t('Study'),
+      t('Harmonization'),
       ''
     );
 
