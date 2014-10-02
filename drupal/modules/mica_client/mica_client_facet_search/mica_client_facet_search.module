@@ -518,21 +518,21 @@ function mica_client_facet_search_studies_table($studies) {
       ''
     );
     foreach ($studies['data'] as $study) {
-      $number_variables = MicaClient::mica_client_facet_search_get_item_count('studies', 'variables', $study->id);
-      $query_variables_param =
+      $query_studies_param =
         MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study->id))));
 
-      $number_tables_study_harmo =
-        MicaClient::mica_client_facet_search_get_item_count('studies', 'studyTables-studyId', $study->id);
-      $number_table_study_study =
-        MicaClient::mica_client_facet_search_get_item_count('studies', 'studyTable-studyId', $study->id);
-      $query_dataset_study_param =
-        MicaClient::add_parameter_dto_query_link(array('datasets' => array('terms' => array('studyIds' => $study->id))));
+      $number_variables = $study->{'obiba.mica.CountStatsDto.studyCountStats'}->variables;
+      //MicaClient::mica_client_facet_search_get_item_count('studies', 'variables', $study->id);
 
-      $number_networks_study =
-        MicaClient::mica_client_facet_search_get_item_count('studies', 'networks-studyId', $study->id);
-      $query_networks_param =
-        MicaClient::add_parameter_dto_query_link(array('networks' => array('terms' => array('studyIds' => $study->id))));
+
+      $number_tables_study_harmo = $study->{'obiba.mica.CountStatsDto.studyCountStats'}->harmonizationDatasets;
+      //    MicaClient::mica_client_facet_search_get_item_count('studies', 'studyTables-studyId', $study->id);
+      $number_table_study_study = $study->{'obiba.mica.CountStatsDto.studyCountStats'}->studyDatasets;
+      // MicaClient::mica_client_facet_search_get_item_count('studies', 'studyTable-studyId', $study->id);
+
+      $number_networks_study = $study->{'obiba.mica.CountStatsDto.studyCountStats'}->networks;
+      // MicaClient::mica_client_facet_search_get_item_count('studies', 'networks-studyId', $study->id);
+
       $name = mica_client_commons_get_localized_field($study, 'name');
 
       $rows[] = array(
@@ -576,21 +576,21 @@ function mica_client_facet_search_studies_table($studies) {
           l($number_networks_study, 'mica/search', array(
             'query' => array(
               'type' => 'networks',
-              'query' => $query_networks_param
+              'query' => $query_studies_param
             )
           )) : '-',
         /*Study-dataset*/
         !empty($number_table_study_study) ? l($number_table_study_study, 'mica/search', array(
           'query' => array(
             'type' => 'datasets',
-            'query' => $query_dataset_study_param
+            'query' => $query_studies_param
           )
         )) : '-',
         /*Harmonization-dataset*/
         !empty($number_tables_study_harmo) ? l($number_tables_study_harmo, 'mica/search', array(
           'query' => array(
             'type' => 'datasets',
-            'query' => $query_dataset_study_param
+            'query' => $query_studies_param
           )
         )) : '-',
         /*Variables*/
@@ -598,7 +598,7 @@ function mica_client_facet_search_studies_table($studies) {
           l($number_variables, 'mica/search', array(
             'query' => array(
               'type' => 'variables',
-              'query' => $query_variables_param
+              'query' => $query_studies_param
             )
           ))
           : '-',
@@ -647,24 +647,55 @@ function mica_client_facet_search_datasets_table($datasets) {
   $rows = array();
   if (!empty($datasets['data'])) {
     foreach ($datasets['data'] as $dataset) {
+      $query_datasets_param =
+        MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset->id))));
+
+      $count_networks = !empty($dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->networks) ?
+        $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->networks : NULL;
+
+      $count_studies = !empty($dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->studies) ?
+        $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->studies : NULL;
+
+      $count_variables = !empty($dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables) ?
+        $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables : NULL;
+
       if (!empty($dataset->{'obiba.mica.StudyDatasetDto.type'})) {
         $type_dataset_link = 'study-dataset';
         $type_dataset = t('Study');
-        $count_studies = 1;
       }
       else {
         $type_dataset_link = 'harmonization-dataset';
         $type_dataset = t('Harmonized');
-        $count_studies = count($dataset->{'obiba.mica.HarmonizationDatasetDto.type'}->studyTables);
       }
       $name = mica_client_commons_get_localized_field($dataset, 'name');
       $rows[] = array(
         l($dataset->id, 'mica/' . $type_dataset_link . '/' . $dataset->id),
         $name,
         $type_dataset,
-        "(Fake) 1",
-        $count_studies,
-        '(Fake) 200'
+        !empty($count_networks) ?
+          l($count_networks, 'mica/search', array(
+            'query' => array(
+              'type' => 'networks',
+              'query' => $query_datasets_param
+            )
+          ))
+          : '--',
+        !empty($count_studies) ?
+          l($count_studies, 'mica/search', array(
+            'query' => array(
+              'type' => 'studies',
+              'query' => $query_datasets_param
+            )
+          ))
+          : '--',
+        !empty($count_variables) ?
+          l($count_variables, 'mica/search', array(
+            'query' => array(
+              'type' => 'variables',
+              'query' => $query_datasets_param
+            )
+          ))
+          : '--'
 
       );
     }
@@ -704,30 +735,50 @@ function mica_client_facet_search_networks_table($networks) {
     );
 
     foreach ($networks['data'] as $network) {
-
-      $studies = mica_client_facet_search_get_studies_count_from_dto($network);
-      $query =
+      $param_network_query =
         MicaClient::add_parameter_dto_query_link(array('networks' => array('terms' => array('id' => $network->id))));
+
+      $studies_count = !empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->studies) ?
+        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->studies : NULL;
+
+      $datasets_study_count = !empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyDatasets) ?
+        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyDatasets : NULL;
+
+      $datasets_harmonized_count = !empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->harmonizationDatasets) ?
+        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->harmonizationDatasets : NULL;
+
+      $variables_count = !empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->variables) ?
+        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->variables : NULL;
+
       $name = mica_client_commons_get_localized_field($network, 'name');
 
-      $count_var = mica_client_facet_search_get_variables_count_from_studies_dto($studies['ids']);
 
       $rows[] = array(
         l($network->id, 'mica/network/' . $network->id),
         mica_client_commons_get_localized_field($network, 'acronym'),
         $name,
-        l($studies['count'], 'mica/search', array(
+        l($studies_count, 'mica/search', array(
           'query' => array(
             'type' => 'studies',
-            'query' => $query
+            'query' => $param_network_query
           )
         )),
-        '(Fake)5',
-        '(Fake)1',
-        l($count_var, 'mica/search', array(
+        l($datasets_study_count, 'mica/search', array(
+          'query' => array(
+            'type' => 'studies',
+            'query' => $param_network_query
+          )
+        )),
+        l($datasets_harmonized_count, 'mica/search', array(
+          'query' => array(
+            'type' => 'studies',
+            'query' => $param_network_query
+          )
+        )),
+        l($variables_count, 'mica/search', array(
           'query' => array(
             'type' => 'variables',
-            'query' => $query
+            'query' => $param_network_query
           )
         )),
       );
