@@ -21,6 +21,6 @@
   <div id="refresh-list">
     <?php if (!empty($list_studies)): ?>
       <?php print render($list_studies); ?>
-      <div><?php print $pager_wrap; ?></div>
     <?php endif; ?>
   </div>
+  <div><?php print $pager_wrap; ?></div>

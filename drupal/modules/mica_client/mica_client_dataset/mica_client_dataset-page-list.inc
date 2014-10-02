@@ -11,24 +11,24 @@ function mica_client_dataset_get_datasets_list() {
 function mica_client_dataset_get_harmonization_datasets_list() {
   $node_view = node_view(node_load(variable_get('harmo_dataset_page')));
   $node_view['#node']->title = '';
-  return _mica_client_dataset_get_datasets_page($node_view, 'harmonization-datasets');
+  return _mica_client_dataset_get_datasets_page($node_view, 'harmonization_datasets');
 }
 
 function mica_client_dataset_get_study_datasets_list() {
   $node_view = node_view(node_load(variable_get('study_dataset_page')));
   $node_view['#node']->title = '';
-  return _mica_client_dataset_get_datasets_page($node_view, 'study-datasets');
+  return _mica_client_dataset_get_datasets_page($node_view, 'study_datasets');
 }
 
 function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
   $context['captions'] = array('default' => 'Dataset', 'plural' => 'Datasets');
-  $context['url'] = 'refresh_list_datasets_' . $dataset_resource;
+  $context['url'] = '/drupal/mica/refresh_list_datasets_' . $dataset_resource;
   drupal_add_js(drupal_get_path('module', 'mica_client_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
   $query = NULL;
   $sort = NULL;
   $sort_by = NULL;
-
+  $list_datasets = '';
   if (!empty($_GET['search-query'])) {
     $query = $_GET['search-query'];
   }
@@ -39,13 +39,16 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
     $sort_by = $_GET['search-sort-order'];
   }
 
-  $datasets = mica_client_dataset_get_datasets($query, $sort, $sort_by, $dataset_resource);
+
+  $datasets = mica_client_dataset_get_datasets($query, $sort, $sort_by, mica_client_dataset_correct_resource_server($dataset_resource));
 
   pager_default_initialize($datasets->total, 5);
   $pager_output = theme('pager', array('quantity' => 5));
-  $list_datasets = theme('mica_client_dataset-list-page-block', array(
-    'list_dataset' => $datasets,
-  ));
+  foreach ($datasets->datasets as $dataset) {
+    $list_datasets .= theme('mica_client_dataset-list-page-block', array(
+      'dataset' => $dataset,
+    ));
+  }
   return theme('mica_client_dataset-list', array(
     "form_search" => drupal_get_form('mica_client_dataset_create_form'),
     'node_page' => $node_view,
@@ -53,6 +56,15 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
     'list_datasets' => $list_datasets,
     'pager_wrap' => $pager_output
   ));
+}
+
+function mica_client_dataset_correct_resource_server($dataset_resource) {
+  $resource = array(
+    'datasets' => 'datasets',
+    'harmonization_datasets' => 'harmonization-datasets',
+    'study_datasets' => 'study-datasets'
+  );
+  return $resource[$dataset_resource];
 }
 
 function mica_client_dataset_get_datasets($query, $sort, $sort_by, $dataset_resource) {
@@ -79,45 +91,30 @@ function mica_client_dataset_create_form() {
 
 function mica_client_dataset_retrieve_datasets($query, $sort = NULL, $sort_order = NULL) {
   $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'datasets');
-//  dpm($list_datasets);
-  pager_default_initialize($list_datasets->total, 5);
-  $pager_output = theme('pager', array('quantity' => 5));
-  $list_datasets_rendered = theme('mica_client_dataset-list-page-block', array(
-    'list_dataset' => $list_datasets,
-    "pager_wrap" => $pager_output
-  ));
-  $data['list_studies'] = $list_datasets_rendered;
-  $data['total'] = $list_datasets->total;
-  drupal_json_output($data);
+  drupal_json_output(mica_client_dataset_themed_list_dataset($list_datasets));
 }
 
 function mica_client_dataset_retrieve_harmonizationDatasets($query, $sort = NULL, $sort_order = NULL) {
   $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'harmonization-datasets');
-  dpm($list_datasets);
-  pager_default_initialize($list_datasets->total, 5);
-  $pager_output = theme('pager', array('quantity' => 5));
-  $list_datasets_rendered = theme('mica_client_dataset-list-page-block', array(
-    'list_dataset' => $list_datasets,
-    "pager_wrap" => $pager_output
-  ));
-  $data['list_studies'] = $list_datasets_rendered;
-  $data['total'] = $list_datasets->total;
-  drupal_json_output($data);
+  drupal_json_output(mica_client_dataset_themed_list_dataset($list_datasets));
 }
 
 function mica_client_dataset_retrieve_studyDatasets($query, $sort = NULL, $sort_order = NULL) {
-  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'study-dataset');
-  pager_default_initialize($list_datasets->total, 5);
-  $pager_output = theme('pager', array('quantity' => 5));
-  $list_datasets_rendered = theme('mica_client_dataset-list-page-block', array(
-    'list_dataset' => $list_datasets,
-    "pager_wrap" => $pager_output
-  ));
-  $data['list_studies'] = $list_datasets_rendered;
-  $data['total'] = $list_datasets->total;
-  drupal_json_output($data);
+  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'study-datasets');
+  drupal_json_output(mica_client_dataset_themed_list_dataset($list_datasets));
 }
 
+Function mica_client_dataset_themed_list_dataset($list_datasets) {
+  $list_datasets_rendered = '';
+  foreach ($list_datasets->datasets as $dataset) {
+    $list_datasets_rendered .= theme('mica_client_dataset-list-page-block', array(
+      'dataset' => $dataset,
+    ));
+  }
+  $data['list'] = $list_datasets_rendered;
+  $data['total'] = $list_datasets->total;
+  return $data;
+}
 
 function _mica_client_dataset_get_datasets_table($datasets, $type) {
   $dataset_rows = array();

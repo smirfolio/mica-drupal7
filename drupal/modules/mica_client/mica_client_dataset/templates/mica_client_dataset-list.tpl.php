@@ -18,8 +18,7 @@
   <div id="refresh-list">
     <?php if (!empty($list_datasets)): ?>
       <?php print render($list_datasets); ?>
-      <div><?php print $pager_wrap; ?></div>
     <?php endif; ?>
   </div>
-
+  <div><?php print $pager_wrap; ?></div>
 </div>

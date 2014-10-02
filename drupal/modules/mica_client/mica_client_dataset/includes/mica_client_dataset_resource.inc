@@ -59,6 +59,8 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dtos = array();
+//      dpm($request);
+//      dpm(json_decode($data));
       return json_decode($data);
     } catch (HttpClientException $e) {
       return array();

@@ -76,16 +76,16 @@ function mica_client_dataset_menu() {
     'page arguments' => array(2, 3, 4)
   );
 
-  $items['mica/refresh_list_datasets_harmonization-datasets/%/%/%'] = array(
+  $items['mica/refresh_list_datasets_harmonization_datasets/%/%/%'] = array(
     //'title' => t('AutoComp Menu'),
     'page callback' => 'mica_client_dataset_retrieve_harmonizationDatasets',
     'file' => 'mica_client_dataset-page-list.inc',
     'access arguments' => array('access content'),
     'page arguments' => array(2, 3, 4)
   );
-  $items['mica/refresh_list_datasets_study-datasets/%/%/%'] = array(
+  $items['mica/refresh_list_datasets_study_datasets/%/%/%'] = array(
     //'title' => t('AutoComp Menu'),
-    'page callback' => 'mica_client_dataset_studyDataset',
+    'page callback' => 'mica_client_dataset_retrieve_studyDatasets',
     'file' => 'mica_client_dataset-page-list.inc',
     'access arguments' => array('access content'),
     'page arguments' => array(2, 3, 4)
