@@ -102,14 +102,7 @@ class MicaSearchResource extends MicaClient {
       /*ad to session aggregation from other dto entities*/
       $this->session_facets_builder($data_response);
       $summaries_variables = $dto_data_response->{'obiba.mica.DatasetVariableResultDto.result'}->summaries;
-      $dtoObj = '\obiba\mica\DatasetVariableResolverDto';
-      $dtos = array();
-      $summaries_data = !empty($summaries_variables) ? $summaries_variables : NULL;
-      if ($summaries_data) {
-        foreach ($summaries_variables as $variable) {
-          $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($variable));
-        }
-      }
+      $dtos ['data'] = $summaries_variables;
       $dtos = $this->get_stats_entities_count($dtos, $data_response);
       return $dtos;
     }
@@ -123,14 +116,8 @@ class MicaSearchResource extends MicaClient {
       $this->session_facets_builder($data_response);
       $summaries_studies = !empty($dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries) ?
         $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
-      $dtoObj = '\obiba\mica\StudySummaryDto';
       $dtos = array();
-      $summaries_data = !empty($summaries_studies) ? $summaries_studies : NULL;
-      if ($summaries_data) {
-        foreach ($summaries_studies as $study) {
-          $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($study));
-        }
-      }
+      $dtos ['data'] = $summaries_studies;
       if (!empty($dto_data_response)) {
         $dtos = $this->get_stats_entities_count($dtos, $data_response);
       }
@@ -150,15 +137,9 @@ class MicaSearchResource extends MicaClient {
       $dto_data_response = $data_response->networkResultDto;
       /*ad to session aggregation from other dto entities*/
       $this->session_facets_builder($data_response);
-      $summaries_networks = $dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks;
-      $dtoObj = '\obiba\mica\NetworkDto';
-      $dtos = array();
-      $summaries_data = !empty($summaries_networks) ? $summaries_networks : NULL;
-      if ($summaries_data) {
-        foreach ($summaries_networks as $networks) {
-          $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($networks));
-        }
-      }
+      $summaries_networks = !empty($dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks) ?
+        $dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks : NULL;
+      $dtos ['data'] = $summaries_networks;
       $dtos = $this->get_stats_entities_count($dtos, $data_response);
       return $dtos;
     }
@@ -169,19 +150,13 @@ class MicaSearchResource extends MicaClient {
 
   public function search_datasets() {
     $data_response = $this->_search_resource();
-
     if (!empty($data_response->datasetResultDto)) {
       $dto_data_response = $data_response->datasetResultDto;
       /*ad to session aggregation from other dto entities*/
       $this->session_facets_builder($data_response);
-      $summaries_datasets = $dto_data_response->{'obiba.mica.DatasetResultDto.result'}->datasets;
-      $dtos = array();
-      $summaries_data = !empty($summaries_datasets) ? $summaries_datasets : NULL;
-      if ($summaries_data) {
-        foreach ($summaries_datasets as $dataset) {
-          $dtos ['data'][] = $dataset;
-        }
-      }
+      $summaries_datasets = !empty($dto_data_response->{'obiba.mica.DatasetResultDto.result'}->datasets) ?
+        $dto_data_response->{'obiba.mica.DatasetResultDto.result'}->datasets : NULL;
+      $dtos ['data'] = $summaries_datasets;
       $dtos = $this->get_stats_entities_count($dtos, $data_response);
       return $dtos;
     }
