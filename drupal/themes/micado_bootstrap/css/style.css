@@ -6190,8 +6190,9 @@ button.close {
 div.charts {
   height: 150px;
 }
-.botton-container {
+.bottom-container {
   text-align: center;
+  margin-bottom: -20px;
 }
 .show-button {
   border: #E4E4E4 solid 1px;
@@ -7119,7 +7120,7 @@ body.admin-menu .navbar-fixed-top {
 .block-content article section {
   border-bottom: 1px solid #cccccc;
   margin: 0;
-  padding: 0 20px 20px 20px;
+  padding: 0 20px 10px 20px;
 }
 .block-content article section .table-striped > tbody > tr:nth-child(even) > td,
 .block-content article section .table-striped > tbody > tr:nth-child(even) > th {
@@ -7139,6 +7140,12 @@ body.admin-menu .navbar-fixed-top {
 }
 .block-content article section .col-xs-9 {
   width: 74%;
+}
+.block-content .tab-pane article {
+  border-top: none;
+}
+.block-content .indent {
+  margin-left: 10px;
 }
 .block-content .right-indent {
   margin-right: 10px;
@@ -7171,6 +7178,12 @@ body.admin-menu .navbar-fixed-top {
 }
 .block-content .lg-bottom-margin {
   margin-bottom: 20px;
+}
+.block-content .md-top-padding {
+  padding-top: 10px;
+}
+.block-content .lg-top-padding {
+  padding-top: 20px;
 }
 .region.region-sidebar-first.well {
   margin-right: 20px;

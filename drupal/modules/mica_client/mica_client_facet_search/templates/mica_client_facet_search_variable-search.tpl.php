@@ -2,51 +2,152 @@
 //dpm($variables_result);
 ?>
 <div id="search-query"></div>
+
 <div id="search-result">
   <ul class="nav nav-tabs" role="tablist" id="result-search">
     <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
-        <?php if (!empty($variable_totalHits)) : ?>
-          (  <?php print $variable_totalHits; ?> )
-        <?php endif; ?>
+        <small>
+          <?php if (!empty($variable_totalHits)) : ?>
+            - <?php print $variable_totalHits; ?>
+          <?php else : ?>
+            - <?php print 0; ?>
+          <?php endif; ?>
+        </small>
+      </a></li>
+
+    <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
+        <small>
+          <?php if (!empty($dataset_totalHits)) : ?>
+            - <?php print $dataset_totalCount; ?>
+          <?php else : ?>
+            - <?php print 0; ?>
+          <?php endif; ?>
+        </small>
       </a></li>
 
     <li><a href="#studies" role="tab"> <?php print t('Studies') ?>
-        <?php if (!empty($study_totalHits)) : ?>
-          (  <?php print $study_totalHits; ?> )
-        <?php endif; ?>
+        <small>
+          <?php if (!empty($study_totalHits)) : ?>
+            - <?php print $study_totalHits; ?>
+          <?php else : ?>
+            - <?php print 0; ?>
+          <?php endif; ?>
+        </small>
       </a></li>
-    <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
-        <?php if (!empty($dataset_totalHits)) : ?>
-          (  <?php print $dataset_totalCount; ?> )
-        <?php else : ?>
-          (<?php print 0; ?>)
-        <?php endif; ?>
-      </a></li>
+
     <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
-        <?php if (!empty($network_totalHits)) : ?>
-          (  <?php print $network_totalHits; ?> )
-        <?php else : ?>
-          (<?php print 0; ?>)
-        <?php endif; ?>
+        <small>
+          <?php if (!empty($network_totalHits)) : ?>
+            - <?php print $network_totalHits; ?>
+          <?php else : ?>
+            - <?php print 0; ?>
+          <?php endif; ?>
+        </small>
       </a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content search-result">
     <div class="tab-pane active" id="variables">
-      <?php print $variable_charts; ?>
-      <?php print $variables_result['data']; ?>
+      <article>
+        <section>
+          <?php print $variable_charts; ?>
+        </section>
+        <section>
+          <h3 class="pull-left"><?php print t('Variables') ?></h3>
+
+          <p class="pull-right">
+            <?php print l(t('Coverage'), 'mica/coverage', array(
+              'attributes' => array(
+                'class' => array(
+                  'btn',
+                  'btn-primary',
+                  'lg-top-margin'
+                )
+              ),
+              'query' => array(
+                'query' => $query
+              ),
+            )); ?>
+          </p>
+          <?php print $variables_result['data']; ?>
+        </section>
+      </article>
+    </div>
+
+    <div class="tab-pane" id="datasets">
+      <article>
+        <section>
+          <h3 class="pull-left"><?php print t('Datasets') ?></h3>
+
+          <p class="pull-right">
+            <?php print l(t('Coverage'), 'mica/coverage', array(
+              'attributes' => array(
+                'class' => array(
+                  'btn',
+                  'btn-primary',
+                  'lg-top-margin'
+                )
+              ),
+              'query' => array(
+                'query' => $query
+              ),
+            )); ?>
+          </p>
+          <?php print $datasets['data']; ?>
+        </section>
+      </article>
     </div>
 
     <div class="tab-pane" id="studies">
-      <?php print $study_charts; ?>
-      <?php print $studies['data']; ?>
+      <article>
+        <section>
+          <?php print $study_charts; ?>
+        </section>
+        <section>
+          <h3 class="pull-left"><?php print t('Studies') ?></h3>
+
+          <p class="pull-right">
+            <?php print l(t('Coverage'), 'mica/coverage', array(
+              'attributes' => array(
+                'class' => array(
+                  'btn',
+                  'btn-primary',
+                  'lg-top-margin'
+                )
+              ),
+              'query' => array(
+                'query' => $query
+              ),
+            )); ?>
+          </p>
+          <?php print $studies['data']; ?>
+        </section>
+      </article>
     </div>
-    <div class="tab-pane" id="datasets">
-      <?php print $datasets['data']; ?>
-    </div>
+
     <div class="tab-pane" id="networks">
-      <?php print $networks['data']; ?>
+      <article>
+        <section>
+          <h3 class="pull-left"><?php print t('Networks') ?></h3>
+
+          <p class="pull-right">
+            <?php print l(t('Coverage'), 'mica/coverage', array(
+              'attributes' => array(
+                'class' => array(
+                  'btn',
+                  'btn-primary',
+                  'lg-top-margin'
+                )
+              ),
+              'query' => array(
+                'query' => $query
+              ),
+            )); ?>
+          </p>
+          <?php print $networks['data']; ?>
+        </section>
+      </article>
     </div>
 
   </div>

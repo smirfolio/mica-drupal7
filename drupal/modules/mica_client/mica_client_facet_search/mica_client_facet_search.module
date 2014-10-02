@@ -20,6 +20,13 @@ function mica_client_facet_search_menu() {
     'access callback' => TRUE
   );
 
+  $items['mica/coverage'] = array(
+    'title' => 'Coverage',
+    'description' => t('Coverage'),
+    'page callback' => 'mica_client_facet_search_coverage_page',
+    'access callback' => TRUE
+  );
+
   $items['mica/studies_search/%'] = array(
     'title' => t('Studies Search'),
     'description' => t('Search published studies'),
@@ -143,6 +150,10 @@ function mica_client_facet_search_theme($existing, $type, $theme, $path) {
     ),
     'mica_client_facet_search_variable-search' => array(
       'template' => 'mica_client_facet_search_variable-search',
+      'path' => $path_theme
+    ),
+    'mica_client_facet_search_coverage' => array(
+      'template' => 'mica_client_facet_search_coverage',
       'path' => $path_theme
     ),
     'mica_client_facet_search_checkbox_term' => array(
@@ -384,8 +395,13 @@ function mica_client_facet_search_variable_page_search() {
       'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
     ));
   }
+
+  $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+  parse_str($url_parm[1], $parts);
+
   $output = theme('mica_client_facet_search_variable-search', array(
     'noval' => '',
+    'query' => empty($parts['query']) ? '' : $parts['query'],
     'variables_result' => array(
       'data' => mica_client_facet_search_variables_table($variables)
     ),
@@ -409,6 +425,22 @@ function mica_client_facet_search_variable_page_search() {
     'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
     'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
     'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL
+  ));
+  return $output;
+}
+
+function mica_client_facet_search_coverage_page() {
+  mica_client_facet_search_load_libs();
+
+  $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+  parse_str($url_parm[1], $parts);
+
+  $search_resources = new MicaSearchResource();
+  $coverages = $search_resources->taxonomies_coverage();
+
+  $output = theme('mica_client_facet_search_coverage', array(
+    'coverages' => $coverages,
+    'query' => empty($parts['query']) ? '' : $parts['query'],
   ));
   return $output;
 }
