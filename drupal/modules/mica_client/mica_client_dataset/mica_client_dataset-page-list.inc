@@ -52,7 +52,7 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
     }
   }
   else {
-    $list_datasets = t('No datasets found');
+    $list_datasets = t('No dataset found');
   }
   return theme('mica_client_dataset-list', array(
     "form_search" => drupal_get_form('mica_client_dataset_create_form'),

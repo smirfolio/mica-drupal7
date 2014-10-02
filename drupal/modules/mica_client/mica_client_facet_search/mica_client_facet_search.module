@@ -687,7 +687,7 @@ function mica_client_facet_search_datasets_table($datasets) {
     array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t('No Networks found'),
+      'empty' => t('No dataset found'),
     )
   ) . theme('pager');
 }
@@ -758,7 +758,7 @@ function mica_client_facet_search_networks_table($networks) {
     array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t('No Networks found'),
+      'empty' => t('No network found'),
       'attributes' => array(
         'id' => 'networks-results',
         'class' => array('table-bordered', 'table-hover', 'table-condensed')

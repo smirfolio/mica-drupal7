@@ -46,7 +46,7 @@ function mica_client_network_page_list() {
     }
   }
   else {
-    $list_networks = t('No networks found');
+    $list_networks = t('No network found');
   }
 
   return theme('mica_client_network-list', array(

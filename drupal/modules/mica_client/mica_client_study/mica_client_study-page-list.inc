@@ -41,7 +41,7 @@ function mica_client_study_page_list() {
     }
   }
   else {
-    $themed_studies = t('No studies found');
+    $themed_studies = t('No study found');
   }
   return theme('mica_client_study_list-page', array(
     "form_search" => drupal_get_form('mica_client_study_create_form'),
