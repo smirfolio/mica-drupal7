@@ -17,7 +17,7 @@ include_once($path_module_protos . '/protos/Mica.php');
 include_once($path_module_protos . '/protos/MicaSearch.php');
 
 /**
- * Class MicaStudyResource
+ * Class MicaSearchResource
  */
 class MicaSearchResource extends MicaClient {
 
@@ -26,17 +26,25 @@ class MicaSearchResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
-  private function  _search_resource() {
+  public function taxonomies_coverage() {
+    return $this->_aggregation_resource('coverage');
+  }
+
+  private function _search_resource() {
+    return $this->_aggregation_resource('search');
+  }
+
+  private function  _aggregation_resource($aggregation_type = 'search') {
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     $type = 'variables';
-    $url = $this->micaUrl . '/' . $type . '/_search';
+    $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
     if (!empty($url_parm[1])) {
       parse_str($url_parm[1], $parts);
       if (!empty($parts['type'])) {
         $type = $parts['type'];
       }
 
-      $url = $this->micaUrl . '/' . $type . '/_search';
+      $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
       if (!empty($parts['query']) && empty($parts['page'])) {
         $dto_param = $this->dto_filter_construct($type, $parts['query'], 0);
       }
