@@ -73,7 +73,11 @@
                         </td>
                         <td style="width:50px; text-align: center;"
                             title="<?php print empty($vocabulary_coverage->hits) ? 0 : floor($term_coverage->hits * 10000 / $vocabulary_coverage->hits) / 100; ?>%">
-                          <?php print $term_coverage->hits; ?>
+                          <?php if (empty($term_coverage->hits)): ?>
+                            <?php print 0; ?>
+                           <?php else: ?>
+                            <span class="badge alert-success"><?php print $term_coverage->hits; ?></span>
+                           <?php endif ?>
                         </td>
                       </tr>
                     <?php endforeach; ?>
