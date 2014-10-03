@@ -18,7 +18,7 @@
     <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
         <small>
           <?php if (!empty($dataset_totalHits)) : ?>
-            - <?php print $dataset_totalCount; ?>
+            - <?php print $dataset_totalHits; ?>
           <?php else : ?>
             - <?php print 0; ?>
           <?php endif; ?>
