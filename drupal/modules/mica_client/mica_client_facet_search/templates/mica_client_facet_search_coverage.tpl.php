@@ -23,6 +23,9 @@
     ),
   )); ?>
 </p>
+
+<?php $has_coverage = FALSE; ?>
+
 <article>
   <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
     <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
@@ -34,6 +37,7 @@
 
         <?php foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) : ?>
           <?php if (!empty($vocabulary_coverage->hits)): ?>
+            <?php $has_coverage = TRUE; ?>
             <h5 data-toggle="tooltip"
                 title="<?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'descriptions'); ?>">
               <?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'); ?>
@@ -89,5 +93,10 @@
       </section>
     <?php endif ?>
   <?php endforeach; ?>
-
 </article>
+
+<?php if(!$has_coverage): ?>
+  <p class="md-top-margin">
+    <i><?php print t('No coverage'); ?></i>
+  </p>
+<?php endif ?>
