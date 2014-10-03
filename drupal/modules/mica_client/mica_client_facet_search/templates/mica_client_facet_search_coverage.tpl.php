@@ -9,7 +9,11 @@
     '%hits' => $coverages->totalHits,
     '%count' => $coverages->totalCount
   )) ?>
-  <?php print l(t('Search'), 'mica/search', array(
+  <?php
+
+  $query_to_pass = !empty($query) ? array('query' => $query) : NULL;
+
+  print l(t('Search'), 'mica/search', array(
     'attributes' => array(
       'class' => array(
         'btn',
@@ -19,7 +23,7 @@
     ),
     'query' => array(
       'type' => 'variables',
-      'query' => $query
+      $query_to_pass
     ),
   )); ?>
 </p>
