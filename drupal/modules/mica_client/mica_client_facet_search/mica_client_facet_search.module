@@ -484,7 +484,21 @@ function mica_client_facet_search_studies_table($studies) {
     );
     foreach ($studies['data'] as $study) {
       $query_studies_param =
-        MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study->id))));
+        MicaClient::add_parameter_dto_query_link(array(
+          'variables' => array('terms' => array('studyIds' => $study->id))
+        ));
+
+      $query_studies_param_harmo =
+        MicaClient::add_parameter_dto_query_link(array(
+          'variables' =>
+            array('terms' => array('studyIds' => $study->id, 'variableType' => 'dataschema'))
+        ));
+
+      $query_studies_param_dataset =
+        MicaClient::add_parameter_dto_query_link(array(
+          'variables' =>
+            array('terms' => array('studyIds' => $study->id, 'variableType' => 'study'))
+        ));
 
       $number_variables = $study->{'obiba.mica.CountStatsDto.studyCountStats'}->variables;
       //MicaClient::mica_client_facet_search_get_item_count('studies', 'variables', $study->id);
@@ -546,14 +560,14 @@ function mica_client_facet_search_studies_table($studies) {
         !empty($number_table_study_study) ? l($number_table_study_study, 'mica/search', array(
           'query' => array(
             'type' => 'datasets',
-            'query' => $query_studies_param
+            'query' => $query_studies_param_dataset
           )
         )) : '-',
         /*Harmonization-dataset*/
         !empty($number_tables_study_harmo) ? l($number_tables_study_harmo, 'mica/search', array(
           'query' => array(
             'type' => 'datasets',
-            'query' => $query_studies_param
+            'query' => $query_studies_param_harmo
           )
         )) : '-',
         /*Variables*/
@@ -698,6 +712,22 @@ function mica_client_facet_search_networks_table($networks) {
       $param_network_query =
         MicaClient::add_parameter_dto_query_link(array('networks' => array('terms' => array('id' => $network->id))));
 
+      $param_network_query_harmo_dataset =
+        MicaClient::add_parameter_dto_query_link(
+          array(
+            'networks' => array('terms' => array('id' => $network->id)),
+            'variables' => array('terms' => array('variableType' => 'dataschema'))
+          )
+        );
+
+      $param_network_query_study_dataset =
+        MicaClient::add_parameter_dto_query_link(
+          array(
+            'networks' => array('terms' => array('id' => $network->id)),
+            'variables' => array('terms' => array('variableType' => 'study'))
+          )
+        );
+
       $studies_count = !empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->studies) ?
         $network->{'obiba.mica.CountStatsDto.networkCountStats'}->studies : NULL;
 
@@ -724,14 +754,14 @@ function mica_client_facet_search_networks_table($networks) {
         )),
         l($datasets_study_count, 'mica/search', array(
           'query' => array(
-            'type' => 'studies',
-            'query' => $param_network_query
+            'type' => 'datasets',
+            'query' => $param_network_query_study_dataset
           )
         )),
         l($datasets_harmonized_count, 'mica/search', array(
           'query' => array(
-            'type' => 'studies',
-            'query' => $param_network_query
+            'type' => 'datasets',
+            'query' => $param_network_query_harmo_dataset
           )
         )),
         l($variables_count, 'mica/search', array(
