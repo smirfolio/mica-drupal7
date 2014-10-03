@@ -97,9 +97,10 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
       if (!empty($terms_aggregations) && !empty($terms_aggregations['range'])) {
         $items = mica_client_facet_search_get_range_field($terms_aggregations['range'], $type_string, $agregation_facet);
       }
+      return theme('mica_client_facet_search_block_search', array('items' => $items, 'formId' => $agregation_facet));
     }
   }
-  return theme('mica_client_facet_search_block_search', array('items' => $items, 'formId' => $agregation_facet));
+  return NULL;
 }
 
 function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_string, $agregation_facet, $totalHits = NULL, $totalCount = NULL) {

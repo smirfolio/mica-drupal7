@@ -295,16 +295,24 @@ function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type
   $facets = mica_client_facet_search_resource_return_facets($dto_type);
   //dpm(drupal_json_encode($facets));
   foreach ($facets as $key_facet => $facet) {
-    $blockto_render[$dto_type . '_search-' . $key_facet] =
-      block_load('mica_client_facet_search', 'search-' . $key_facet);
-    $facet_title_array = explode('-', $facet['title']);
-    $blockto_render[$dto_type . '_search-' . $key_facet]->subject = $facet_title_array[1];
-    $blockto_render[$dto_type . '_search-' . $key_facet]->content['#markup'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggs'], $type);
+    $has_terms = MicaClient::has_entity_by_id_aggregation($facet['aggs']);
+    if (!empty($has_terms) || ($facet['aggs'] == 'datasetId') || ($facet['aggs'] == 'networkId')) {
+      $blockto_render[$dto_type . '_search-' . $key_facet] =
+        block_load('mica_client_facet_search', 'search-' . $key_facet);
+      $facet_title_array = explode('-', $facet['title']);
+      $blockto_render[$dto_type . '_search-' . $key_facet]->subject = $facet_title_array[1];
+      $blockto_render[$dto_type . '_search-' . $key_facet]->content['#markup'] = mica_client_facet_search_precess_block_theme('search-' . $facet['aggs'], $type);
+
+    }
 
   }
-
-  $block_output = _block_get_renderable_array($blockto_render);
+  if (!empty($blockto_render)) {
+    $block_output = _block_get_renderable_array($blockto_render);
   return drupal_render($block_output);
+}
+  else {
+    return NULL;
+  }
 }
 
 function mica_client_facet_search_load_libs() {

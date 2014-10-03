@@ -233,7 +233,6 @@ class MicaClient {
             !empty($aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->datasets) ?
               $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->datasets : NULL;
           $_SESSION['variables']['aggregations'] = $aggregation->aggs;
-          $_SESSION['variables']['aggregations'][] = $aggregation->aggs;
           $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
         }
@@ -246,6 +245,7 @@ class MicaClient {
             $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
           $_SESSION['studies']['variables'] = !empty($variable_studies_id_aggregations) ?
             $variable_studies_id_aggregations : NULL;
+
           $networks_studies_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->networkResultDto->aggs, 'studyIds');
           $_SESSION['studies']['networks-studyId'] = !empty($networks_studies_id_aggregations) ?
@@ -291,6 +291,32 @@ class MicaClient {
 //dpm($id);
 
     return NULL;
+  }
+
+  static function has_entity_by_id_aggregation($facet) {
+    foreach ($_SESSION['studies']['aggregations'] as $entity) {
+      if (!empty($entity->aggregation) && $entity->aggregation == $facet) {
+        if (!empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'}) ||
+          !empty($entity->{'obiba.mica.StatsAggregationResultDto.stats'})
+        ) {
+          return TRUE;
+        }
+        else {
+          return FALSE;
+        }
+      }
+    }
+    foreach ($_SESSION['variables']['aggregations'] as $entity) {
+      if (!empty($entity->aggregation) && $entity->aggregation == $facet) {
+        if (!empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+          return TRUE;
+        }
+        else {
+          return FALSE;
+        }
+      }
+    }
+    return FALSE;
   }
 
   static function mica_client_facet_search_get_item_count($type, $agregation_facet, $id) {
