@@ -186,7 +186,7 @@
               $.checkthebox($(this));
               var copy_chekbox = $(this).parent().clone();
               var divtofind = $(this).parents("section:first").find(".chekedterms:first");
-              $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
+              $("input[id=" + getAggrgationMoniker(this) + "]").val($(this).attr("value"));
 
               copy_chekbox.find('.terms_stat').width($current_width_percent);
 
@@ -204,13 +204,16 @@
       }
 
       var selectedVars = $.getUrlVars();
-      console.log(selectedVars);
       if (selectedVars) {
         processTermsAggregationInputs(selectedVars);
       }
 
+      function getAggrgationMoniker(aggElement) {
+        return "\""+$(aggElement).attr("aggregation")+"-"+$(aggElement).attr('value')+"\"";
+      }
+
       function updateCheckboxes() {
-        var aggregation_name = $(this).attr('value');
+        var aggregation_name = getAggrgationMoniker(this);
         if ($(this).hasClass("unchecked")) {
           $.checkthebox($(this));
           $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
