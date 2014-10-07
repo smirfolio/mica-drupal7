@@ -280,8 +280,8 @@ class MicaClient {
     return NULL;
   }
 
-  static function get_name_entity_by_id_aggregation($type, $agregation_facet, $id) {
-    foreach ($_SESSION[$type][$agregation_facet] as $entity) {
+  static function get_name_entity_by_id_aggregation($type, $aggregation_facet, $id) {
+    foreach ($_SESSION[$type][$aggregation_facet] as $entity) {
       if ($entity->id == $id) {
         // dpm(mica_client_commons_get_localized_field($dataset,'name'));
         return mica_client_commons_get_localized_field($entity, 'name');
@@ -319,9 +319,9 @@ class MicaClient {
     return FALSE;
   }
 
-  static function mica_client_facet_search_get_item_count($type, $agregation_facet, $id) {
-    if (!empty($_SESSION[$type][$agregation_facet])) {
-      foreach ($_SESSION[$type][$agregation_facet] as $value) {
+  static function mica_client_facet_search_get_item_count($type, $aggregation_facet, $id) {
+    if (!empty($_SESSION[$type][$aggregation_facet])) {
+      foreach ($_SESSION[$type][$aggregation_facet] as $value) {
         if ($value->key == $id) {
           return $value->count;
         }

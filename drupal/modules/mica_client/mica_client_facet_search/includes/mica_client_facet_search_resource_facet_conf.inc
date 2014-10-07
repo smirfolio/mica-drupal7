@@ -79,7 +79,7 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
 
 function mica_client_facet_search_precess_block_theme($block_delta, $type) {
   $items = array();
-  $agregation_facet = NULL;
+  $aggregation_facet = NULL;
 
   $type_string = $type . ':';
   $totalHits = !empty($type) ? $_SESSION[$type]['aggregations']['totalHits'] : NULL;
@@ -89,21 +89,21 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
     //  dpm(mica_client_commons_get_dto_facet_aggs($block_delta, $type));
     $facet_pars = mica_client_facet_search_get_dto_facet_aggs($block_delta, $type);
     if (!empty($facet_pars)) {
-      $agregation_facet = key($facet_pars);
+      $aggregation_facet = key($facet_pars);
       $terms_aggregations = current($facet_pars);
       if (!empty($terms_aggregations) && !empty($terms_aggregations['term'])) {
-        $items = mica_client_facet_search_get_checkbox_term_field($terms_aggregations['term'], $type_string, $agregation_facet, $totalHits, $totalCount);
+        $items = mica_client_facet_search_get_checkbox_term_field($terms_aggregations['term'], $type_string, $aggregation_facet, $totalHits, $totalCount);
       }
       if (!empty($terms_aggregations) && !empty($terms_aggregations['range'])) {
-        $items = mica_client_facet_search_get_range_field($terms_aggregations['range'], $type_string, $agregation_facet);
+        $items = mica_client_facet_search_get_range_field($terms_aggregations['range'], $type_string, $aggregation_facet);
       }
-      return theme('mica_client_facet_search_block_search', array('items' => $items, 'formId' => $agregation_facet));
+      return theme('mica_client_facet_search_block_search', array('items' => $items, 'formId' => $aggregation_facet));
     }
   }
   return NULL;
 }
 
-function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_string, $agregation_facet, $totalHits = NULL, $totalCount = NULL) {
+function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_string, $aggregation_facet, $totalHits = NULL, $totalCount = NULL) {
   $color = array(
     1 => "#2a85a0",
     2 => "#20E4E4",
@@ -120,19 +120,19 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
   );
   $key = 1;
   foreach ($fields_terms as $term) {
-    if ($agregation_facet == 'studyIds') {
+    if ($aggregation_facet == 'studyIds') {
       $term->name = MicaClient::get_name_entity_by_id_aggregation('variables', 'studies', $term->key);
     }
-    if ($agregation_facet == 'datasetId') {
+    if ($aggregation_facet == 'datasetId') {
       $term->name = MicaClient::get_name_entity_by_id_aggregation('variables', 'datasets', $term->key);
     }
-    if ($agregation_facet == 'networkId') {
-      $agregation_facet = 'id';
+    if ($aggregation_facet == 'networkId') {
+      $aggregation_facet = 'id';
       $type_string = 'networks:';
       $term->name = MicaClient::get_name_entity_by_id_aggregation('studies', 'networks', $term->key);
     }
     $items[$term->key]['#markup'] = theme('mica_client_facet_search_checkbox_term', array(
-      'agregation_facet' => $agregation_facet,
+      'aggregation_facet' => $aggregation_facet,
       'type_string' => $type_string,
       'term' => !empty($term) ? $term : '',
       'color' => !empty($color[$key]) ? $color[$key] : '#ce8483',
@@ -149,9 +149,9 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
   return $items;
 }
 
-function mica_client_facet_search_get_range_field($fields_terms, $type_string, $agregation_facet) {
+function mica_client_facet_search_get_range_field($fields_terms, $type_string, $aggregation_facet) {
   $items['range']['#markup'] = theme('mica_client_facet_search_input_text_range', array(
-    'agregation_facet' => $agregation_facet,
+    'aggregation_facet' => $aggregation_facet,
     'fields_terms' => $fields_terms,
     'type_string' => $type_string
   ));
