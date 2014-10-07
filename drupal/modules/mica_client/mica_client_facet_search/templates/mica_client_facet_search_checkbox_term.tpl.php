@@ -18,6 +18,6 @@
 
 </li>
 <input
-  id="<?php print  $term->key ?>"
+  id="<?php print $type_string . $agregation_facet . '[]-' . $term->key; ?>"
   name="<?php print $type_string . $agregation_facet . '-terms[]'; ?>"
   type="hidden" value="">
