@@ -22,12 +22,13 @@ function mica_client_study_page_list() {
     $study_sort_by = $_GET['search-sort-order'];
   }
 
-  $list_studies = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
-  $total_studies = $list_studies->total;
-  pager_default_initialize($list_studies->total, 5);
+  $response = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
+  $total_studies = $response->getTotalHits();
+  pager_default_initialize($total_studies, 5);
   $pager_output = theme('pager', array('quantity' => 5));
-  if (!empty($list_studies->studySummaries)) {
-    foreach ($list_studies->studySummaries as $study) {
+  $summaries = $response->getSummaries();
+  if (!empty($summaries)) {
+    foreach ($summaries as $study) {
       if (!empty($study->logo->id)) {
         $logo_url = mica_client_commons_safe_expose_server_url($study->id, $study->logo, 'study');
       }
@@ -36,7 +37,8 @@ function mica_client_study_page_list() {
       }
       $themed_studies .= theme('mica_client_study-list-page-block', array(
         'study' => $study,
-        'logo_url' => $logo_url
+        'logo_url' => $logo_url,
+        'network_digests' => $response->getNetworkDigests()
       ));
     }
   }
@@ -84,9 +86,11 @@ function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NUL
   if (!empty($_GET['page'])) {
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-studies', 5);
   }
-  $studies = $study_resource->get_studies($query, $from, NULL, $sort, $order);
-  $_SESSION['list-studies']['aggregations']['totalHits'] = $studies->total;
-  return $studies;
+
+  $response = $study_resource->get_studies($query, $from, NULL, $sort, $order);
+  $_SESSION['list-studies']['aggregations']['totalHits'] = $response->getTotalHits();
+
+  return $response;
 }
 
 function mica_client_study_studies_table($studies) {
