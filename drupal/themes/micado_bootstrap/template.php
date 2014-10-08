@@ -116,8 +116,15 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
   $destination_path = file_exists($path . '/templates/mica_client_facet_search_coverage.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['mica_client_facet_search_coverage.tpl.php'] = array(
-      'variables' => array('block' => array()),
       'template' => 'mica_client_facet_search_coverage',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_vocabulary_coverage.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_vocabulary_coverage.tpl.php'] = array(
+      'template' => 'mica_client_facet_search_vocabulary_coverage',
       'path' => $path . '/templates'
     );
   }
@@ -154,6 +161,14 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     $theme_array['mica_client_facet_search_charts.tpl.php'] = array(
       'variables' => array('block' => array()),
       'template' => 'mica_client_facet_search_charts',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_vocabulary_charts.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_vocabulary_charts.tpl.php'] = array(
+      'template' => 'mica_client_facet_search_vocabulary_charts',
       'path' => $path . '/templates'
     );
   }

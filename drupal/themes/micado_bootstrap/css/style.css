@@ -7135,6 +7135,11 @@ body.admin-menu .navbar-fixed-top {
 .block-content article section h5 + p {
   margin-left: 20px;
 }
+.block-content article section h3 + p.help-block,
+.block-content article section h4 + p.help-block,
+.block-content article section h3 + p.help-block {
+  padding: 0;
+}
 .block-content article section .col-xs-3 {
   width: 24%;
 }
