@@ -44,18 +44,34 @@ function mica_client_facet_search_get_title_chart($type = NULL, $aggregations = 
   }
 }
 
-function mica_client_facet_search_pie_chart($labels, $data, $title) {
+function mica_client_facet_search_vocabulary_chart($vocabulary_coverage) {
+  if (empty($vocabulary_coverage->hits)) {
+    return '';
+  }
+  //dpm($vocabulary_coverage);
+
+  $labels = array();
+  $data = array();
+  foreach ($vocabulary_coverage->terms as $term_coverage) {
+    if (!empty($term_coverage->hits)) {
+      $labels[] = mica_client_commons_get_localized_field($term_coverage->term, 'titles');
+      $data[] = $term_coverage->hits;
+    }
+  }
+  return mica_client_facet_search_pie_chart($labels, $data, mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'bottom');
+}
+
+function mica_client_facet_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
-    '#width' => 250,
-    '#height' => 175,
+    '#width' => $width,
+    '#height' => $height,
     '#title' => $title,
-    '#title_font_size' => 13,
     '#chart_library' => 'highcharts',
-    '#legend_position' => 'none',
+    '#legend_position' => $legend_position,
     '#data_labels' => FALSE,
-    '#legend' => FALSE,
+    '#legend' => $legend_position != 'none',
     '#tooltips' => TRUE,
   );
   $chart['pie_data'] = array(
