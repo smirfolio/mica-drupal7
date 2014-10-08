@@ -274,16 +274,24 @@ class FilteredQueryDtoBuilder extends AbstractDtoBuilder
 
 class QueryDtoBuilder extends AbstractDtoBuilder
 {
-  private function __construct($from, $size)
+  private function __construct($from, $size, $group_by)
   {
     $this->dto = new \obiba\mica\QueryDto();
     $this->dto->setFrom($from);
     $this->dto->setSize($size);
+    if (!empty($group_by)) {
+      if (is_array($group_by)) {
+        $this->dto->setAggsBy($group_by);
+      }
+      else {
+        $this->dto->addAggsBy($group_by);
+      }
+    }
   }
 
-  static function newBuilder($from, $size)
+  static function newBuilder($from, $size, $group_by)
   {
-    return new QueryDtoBuilder($from, $size);
+    return new QueryDtoBuilder($from, $size, $group_by);
   }
 
   function filteredQuery(\obiba\mica\FilteredQueryDto $dto)
@@ -326,16 +334,16 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
     return new JoinQueryDtoBuilder($data, $defaultSize);
   }
 
-  function documentQuery($type, $from, $size)
+  function documentQuery($type, $from, $size, $group_by = NULL)
   {
     $this->setQuery($type, array_key_exists($type, $this->builderMap) //
-      ? $this->createQuery($this->builderMap[$type], $from, $size) //
-      : QueryDtoBuilder::newBuilder($from, $size)->build() //
+      ? $this->createQuery($this->builderMap[$type], $from, $size, $group_by) //
+      : QueryDtoBuilder::newBuilder($from, $size, $group_by)->build() //
     );
 
     foreach ($this->builderMap as $builderType => $builders) {
       if ($type !== $builderType && array_key_exists($builderType, $this->builderMap)) {
-        $this->setQuery($builderType, $this->createQuery($builders, 0, $this->defaultSize));
+        $this->setQuery($builderType, $this->createQuery($builders, 0, $this->defaultSize, $group_by));
       }
     }
 
@@ -391,9 +399,9 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
   }
 
 
-  private function createQuery($builders, $from, $size)
+  private function createQuery($builders, $from, $size, $group_by = NULL)
   {
-    return QueryDtoBuilder::newBuilder($from, $size)->filteredQueryBuilder(
+    return QueryDtoBuilder::newBuilder($from, $size, $group_by)->filteredQueryBuilder(
       FilteredQueryDtoBuilder::newBuilder()->filterBuilder(
         BoolFilterQueryDtoBuilder::newBuilder()->mustBuilders($builders)))->build();
   }

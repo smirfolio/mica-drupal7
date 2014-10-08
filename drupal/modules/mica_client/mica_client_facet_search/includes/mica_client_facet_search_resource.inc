@@ -44,21 +44,12 @@ class MicaSearchResource extends MicaClient {
         $type = $parts['type'];
       }
 
+      $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
+      $q = empty($parts['query']) ? NULL : $parts['query'];
+      $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
+      $dto_param = $this->dto_filter_construct($type, $q, $from, $group_by);
+
       $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
-      if (!empty($parts['query']) && empty($parts['page'])) {
-        $dto_param = $this->dto_filter_construct($type, $parts['query'], 0);
-      }
-      if (!empty($parts['page']) && empty($parts['query'])) {
-        $from = $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
-        $dto_param = $this->dto_filter_construct($type, NULL, $from);
-      }
-      if (!empty($parts['page']) && !empty($parts['query'])) {
-        $from = $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
-        $dto_param = $this->dto_filter_construct($type, $parts['query'], $from);
-      }
-      if (empty($parts['page']) && empty($parts['query'])) {
-        $dto_param = $dto_param = $this->dto_filter_construct($type, NULL, 0);
-      }
     }
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_POST,
@@ -67,7 +58,7 @@ class MicaSearchResource extends MicaClient {
             'Content-Type' => array(parent::HEADER_JSON)
           )
         ),
-      'data' => !empty($dto_param) ? $dto_param : $this->dto_filter_construct($type, NULL, 0),
+      'data' => !empty($dto_param) ? $dto_param : $this->dto_filter_construct($type, NULL, 0, NULL),
     ));
 
     $client = $this->client();

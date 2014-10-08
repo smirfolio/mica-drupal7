@@ -454,6 +454,7 @@ function mica_client_facet_search_coverage_page() {
   if (!empty($url_parm[1])) {
     parse_str($url_parm[1], $parts);
   }
+
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage();
 
@@ -475,7 +476,8 @@ function mica_client_facet_search_coverage_page() {
   $output = theme('mica_client_facet_search_coverage', array(
     'coverages' => $coverages,
     'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,
-    'query' => !empty($parts['query']) ? $parts['query'] : NULL
+    'query' => !empty($parts['query']) ? $parts['query'] : NULL,
+    'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
   ));
   return $output;
 }

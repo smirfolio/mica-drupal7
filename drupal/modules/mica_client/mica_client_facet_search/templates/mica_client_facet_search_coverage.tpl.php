@@ -2,36 +2,71 @@
 //dpm($coverages);
 //dpm($vocabulary_coverage_outputs);
 //dpm($query);
+//dpm($group_by);
 ?>
 
   <div id="search-query"></div>
-  <p>
-    <?php print t('%hits variables (among %count)', array(
-      '%hits' => $coverages->totalHits,
-      '%count' => $coverages->totalCount
-    )) ?>
-    <?php
+  <div>
+    <p class="pull-left">
+      <?php print t('%hits variables (among %count)', array(
+        '%hits' => $coverages->totalHits,
+        '%count' => $coverages->totalCount
+      )) ?>
+      <?php
+      print l(t('Search'), 'mica/search', array(
+        'attributes' => array(
+          'class' => array(
+            'btn',
+            'btn-primary',
+            'indent'
+          )
+        ),
+        'query' => array(
+          'type' => 'variables',
+          array('query' => $query)
+        ),
+      )); ?>
+    </p>
 
-    $query_to_pass = !empty($query) ? array('query' => $query) : NULL;
-
-    print l(t('Search'), 'mica/search', array(
-      'attributes' => array(
-        'class' => array(
-          'btn',
-          'btn-primary',
-          'indent'
-        )
-      ),
-      'query' => array(
-        'type' => 'variables',
-        $query_to_pass
-      ),
-    )); ?>
-  </p>
+    <ul class="nav nav-pills pull-right">
+      <li class="<?php if (empty($group_by)) print 'active' ?>">
+        <?php
+        print l(t('All'), 'mica/coverage', array(
+          'query' => array(
+            array('query' => $query)
+          ),
+        )); ?>
+      </li>
+      <li class="<?php if (!empty($group_by) && $group_by == 'studyIds') print 'active' ?>" data-toggle="tooltip"
+          data-placement="top" title="<?php print t('Group by study') ?>">
+        <?php
+        print l(t('Study'), 'mica/coverage', array(
+          'query' => array(
+            array(
+              'query' => $query,
+              'group-by' => 'studyIds'
+            )
+          ),
+        )); ?>
+      </li>
+      <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
+          data-placement="top" title="<?php print t('Group by dataset') ?>">
+        <?php
+        print l(t('Dataset'), 'mica/coverage', array(
+          'query' => array(
+            array(
+              'query' => $query,
+              'group-by' => 'datasetId'
+            )
+          ),
+        )); ?>
+      </li>
+    </ul>
+  </div>
 
 <?php $has_coverage = FALSE; ?>
 
-  <article>
+  <article class="pull-left">
     <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
       <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
         <section>
