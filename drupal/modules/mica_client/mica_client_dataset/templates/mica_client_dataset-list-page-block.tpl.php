@@ -12,18 +12,31 @@
       <?php endif; ?>
     </div>
     <div class="col-md-10 col-xs-10">
-      <div class="panel panel-default">
-        <div class="panel-heading">
+      <h4>
+        <?php
+        print l(mica_client_commons_get_localized_field($dataset, 'acronym') . ' - ' . mica_client_commons_get_localized_field($dataset, 'name'),
+          'mica/' . mica_client_dataset_type($dataset) . '/' . $dataset->id); ?>
+      </h4>
+      <hr class="no-margin">
+      <p class="md-top-margin help-block">
+        <?php print empty($dataset->description) ? '' : truncate_utf8(mica_client_commons_get_localized_field($dataset, 'description'), 250, TRUE, TRUE);; ?>
+      </p>
+      <ul class="search-item-list-no-style sm-top-margin help-block">
+        <li>
           <?php
-          print l(mica_client_commons_get_localized_field($dataset, 'acronym') . ' - ' . mica_client_commons_get_localized_field($dataset, 'name'),
-            'mica/' . mica_client_dataset_type($dataset) . '/' . $dataset->id); ?>
-        </div>
-        <div class="panel-body">
-          <p>
-            <?php print empty($dataset->description) ? t('No desription') : truncate_utf8(mica_client_commons_get_localized_field($dataset, 'description'), 300, TRUE, TRUE); ?>
-          </p>
-        </div>
-      </div>
+          $counts = $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'};
+          $variabes = $counts->variables;
+          $vars_caption = $variabes < 2 ? t('variable') : t('variables');
+          $studies = $counts->studies;
+          $studies_caption = $studies < 2 ? t('study') : t('studies');
+          ?>
+          <span>
+          <?php print t('Includes') ?> <a class=""
+                                          href=''><?php print $variabes ?></a> <?php print $vars_caption . t(' used in ') ?>
+            <a href=''><?php print $studies ?></a> <?php print $studies_caption ?>
+        </span>
+        </li>
+
     </div>
   </div>
 

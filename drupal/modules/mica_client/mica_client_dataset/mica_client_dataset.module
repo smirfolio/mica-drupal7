@@ -139,18 +139,19 @@ function mica_client_dataset_get_all_datasets_studies($study_id) {
 
 function mica_client_dataset_get_datasets_list_tab($datasets) {
   $dataset_rows = array();
-  if (!empty($datasets->datasets)) {
-    foreach ($datasets->datasets as $key_dataset => $dataset_dto) {
+  $summaries = $datasets->getSummaries();
+  if (!empty($summaries)) {
+    foreach ($summaries as $key_dataset => $dataset) {
       $dataset_description = NULL;
-      if (!empty($dataset_dto->description)) {
-        $dataset_description = theme('box', truncate_utf8(mica_client_commons_get_localized_field($dataset_dto, 'description'), 50, TRUE, TRUE));
+      if (!empty($dataset->description)) {
+        $dataset_description = theme('box', truncate_utf8(mica_client_commons_get_localized_field($dataset, 'description'), 50, TRUE, TRUE));
       }
-      $dataset_name = mica_client_commons_get_localized_field($dataset_dto, 'name');
-      $dataset_type = !empty($dataset_dto->{'obiba.mica.StudyDatasetDto.type'}) ? 'study-dataset' : 'harmonization-dataset';
-      $dataset_type_name = !empty($dataset_dto->{'obiba.mica.StudyDatasetDto.type'}) ? 'Study dataset' : 'Harmonization dataset';
+      $dataset_name = mica_client_commons_get_localized_field($dataset, 'name');
+      $dataset_type = !empty($dataset->{'obiba.mica.StudyDatasetDto.type'}) ? 'study-dataset' : 'harmonization-dataset';
+      $dataset_type_name = !empty($dataset->{'obiba.mica.StudyDatasetDto.type'}) ? 'Study dataset' : 'Harmonization dataset';
       $dataset_rows[$key_dataset] = array(
         'data' => array(
-          'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $dataset_dto->id . '/' . mica_client_commons_to_slug($dataset_name)),
+          'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $dataset->id . '/' . mica_client_commons_to_slug($dataset_name)),
           'type' => t($dataset_type_name),
           'desc' => !empty($dataset_description) ? $dataset_description : '-'
         )

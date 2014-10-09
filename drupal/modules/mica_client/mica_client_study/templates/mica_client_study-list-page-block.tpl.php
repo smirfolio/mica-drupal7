@@ -1,7 +1,7 @@
 <?php //dpm($list_studies->studySummaries); ?>
-<?php dpm($network_digests); ?>
+<?php //dpm($network_digests); ?>
 
-<div class="row lg-bottom-margin document-item-list">
+<div class="row sm-bottom-margin document-item-list flex-row">
   <div class="col-md-2 col-xs-2 text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
@@ -19,17 +19,14 @@
         href="study/<?php print $study->id ?>">
         <?php print mica_client_commons_get_localized_field($study, 'acronym') . ' - ' . mica_client_commons_get_localized_field($study, 'name'); ?>
       </a>
-      <hr class="sm-top-margin">
       </h4>
-    </div
-    <hr>
-    <div>
-      <p class="sm-top-margin help-block">
-        <?php print truncate_utf8(mica_client_commons_get_localized_field($study, 'objectives'), 150, TRUE, TRUE); ?>
+      <hr class="no-margin">
+      <p class="md-top-margin help-block">
+        <?php print truncate_utf8(mica_client_commons_get_localized_field($study, 'objectives'), 250, TRUE, TRUE); ?>
       </p>
     </div>
-    <ul class="obiba-fa-list lg-top-margin help-block">
-      <li class="no-margin no-padding">
+    <ul class="search-item-list-no-style sm-top-margin help-block">
+      <li>
         <?php foreach($network_digests as $digest) {
           $names = array();
           array_push($names, mica_client_commons_get_localized_field($digest, 'name'));
@@ -41,12 +38,12 @@
         ?>
       </li>
 
-      <li class="no-margin no-padding">
+      <li>
         <?php print empty($study->designs) ? '' : t('Study design')?>: <span><?php print implode(', ', $study->designs)?></span>
         <?php print empty($study->targetNumber) ? '' : t('; Target number of participants')?>: <span><?php print $study->targetNumber->noLimit
             ? t('No limits') : $study->targetNumber->number ?></span>
       </li>
-      <li class="no-margin no-padding">
+      <li>
         <?php
         $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
         $vars = $counts->variables;
@@ -55,8 +52,8 @@
         $dataset_caption = $datasets < 2 ? "dataset" : "datasets";
         ?>
         <span>
-          <a class="badge" href=''><?php print $datasets ?></a> <?php print $dataset_caption ?>,
-          <a class="badge" href=''><?php print $vars?></a> <?php print $var_caption?>
+          <a class="" href=''><?php print $datasets ?></a> <?php print $dataset_caption ?>,
+          <a class="" href=''><?php print $vars?></a> <?php print $var_caption?>
         </span>
       </li>
 

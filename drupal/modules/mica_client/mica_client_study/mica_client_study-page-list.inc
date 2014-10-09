@@ -1,7 +1,6 @@
 <?php
 
 function mica_client_study_page_list() {
-  $context['captions'] = array('default' => 'Study', 'plural' => 'Studies');
   $context['url'] = 'refresh_list_studies';
   drupal_add_js(drupal_get_path('module', 'mica_client_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
@@ -38,7 +37,7 @@ function mica_client_study_page_list() {
       $themed_studies .= theme('mica_client_study-list-page-block', array(
         'study' => $study,
         'logo_url' => $logo_url,
-        'network_digests' => $response->getNetworkDigests()
+        'network_digests' => $response->getNetworkDigests($study->id)
       ));
     }
   }
@@ -57,13 +56,13 @@ function mica_client_study_page_list() {
 function mica_client_study_retrieve_studies($query, $sort = NULL, $sort_order = NULL) {
   $list_studies = mica_client_study_get_studies($query, $sort, $sort_order);
   $list_studies_rendered = '';
-  foreach ($list_studies->studySummaries as $study) {
+  foreach ($list_studies->getSummaries() as $study) {
     $list_studies_rendered .= theme('mica_client_study-list-page-block', array(
       'study' => $study,
     ));
   }
   $data['list'] = $list_studies_rendered;
-  $data['total'] = $list_studies->total;
+  $data['total'] = $list_studies->getTotalHits();
   drupal_json_output($data);
 }
 

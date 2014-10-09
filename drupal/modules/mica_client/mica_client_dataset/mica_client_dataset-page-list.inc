@@ -21,7 +21,6 @@ function mica_client_dataset_get_study_datasets_list() {
 }
 
 function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
-  $context['captions'] = array('default' => 'Dataset', 'plural' => 'Datasets');
   $context['url'] = '/drupal/mica/refresh_list_datasets_' . $dataset_resource;
   drupal_add_js(drupal_get_path('module', 'mica_client_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
@@ -40,12 +39,13 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
   }
 
   $resource_dataset = mica_client_dataset_correct_resource_server($dataset_resource);
-  $datasets = mica_client_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset);
-
-  pager_default_initialize($datasets->total, 5);
+  $response = mica_client_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset);
+  $totalHits = $response->getTotalHits();
+  pager_default_initialize($totalHits, 5);
   $pager_output = theme('pager', array('quantity' => 5));
-  if (!empty($datasets->datasets)) {
-    foreach ($datasets->datasets as $dataset) {
+  $summaries = $response->getSummaries();
+  if (!empty($summaries)) {
+    foreach ($summaries as $dataset) {
       $list_datasets .= theme('mica_client_dataset-list-page-block', array(
         'dataset' => $dataset
       ));
@@ -57,7 +57,7 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
   return theme('mica_client_dataset-list', array(
     "form_search" => drupal_get_form('mica_client_dataset_create_form'),
     'node_page' => $node_view,
-    "total_items" => $datasets->total,
+    "total_items" => $totalHits,
     'list_datasets' => $list_datasets,
     'pager_wrap' => $pager_output
   ));
@@ -66,8 +66,8 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
 function mica_client_dataset_correct_resource_server($dataset_resource) {
   $resource = array(
     'datasets' => 'datasets',
-    'harmonization_datasets' => 'harmonization-datasets',
-    'study_datasets' => 'study-datasets'
+    'harmonization_datasets' => 'harmonization',
+    'study_datasets' => 'study'
   );
   return $resource[$dataset_resource];
 }
@@ -79,9 +79,9 @@ function mica_client_dataset_get_datasets($query, $sort, $sort_by, $dataset_reso
     $from = $resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 5);
   }
 
-  $datasets = $resource->get_datasets($dataset_resource, NULL, $query, $from, NULL, $sort, $sort_by);
-  $_SESSION['list-datasets']['aggregations']['totalHits'] = $datasets->total;
-  return $datasets;
+  $response = $resource->get_datasets($dataset_resource, NULL, $query, $from, NULL, $sort, $sort_by);
+  $_SESSION['list-datasets']['aggregations']['totalHits'] = $response->getTotalHits();
+  return $response;
 }
 
 function mica_client_dataset_create_form() {
@@ -100,24 +100,24 @@ function mica_client_dataset_retrieve_datasets($query, $sort = NULL, $sort_order
 }
 
 function mica_client_dataset_retrieve_harmonizationDatasets($query, $sort = NULL, $sort_order = NULL) {
-  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'harmonization-datasets');
+  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'harmonization');
   drupal_json_output(mica_client_dataset_themed_list_dataset($list_datasets));
 }
 
 function mica_client_dataset_retrieve_studyDatasets($query, $sort = NULL, $sort_order = NULL) {
-  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'study-datasets');
+  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'study');
   drupal_json_output(mica_client_dataset_themed_list_dataset($list_datasets));
 }
 
 Function mica_client_dataset_themed_list_dataset($list_datasets) {
   $list_datasets_rendered = '';
-  foreach ($list_datasets->datasets as $dataset) {
+  foreach ($list_datasets->getSummaries() as $dataset) {
     $list_datasets_rendered .= theme('mica_client_dataset-list-page-block', array(
       'dataset' => $dataset,
     ));
   }
   $data['list'] = $list_datasets_rendered;
-  $data['total'] = $list_datasets->total;
+  $data['total'] = $list_datasets->getTotalHits();
   return $data;
 }
 
