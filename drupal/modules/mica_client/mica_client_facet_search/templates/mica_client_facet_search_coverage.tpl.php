@@ -69,7 +69,28 @@
   <article class="pull-left">
     <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
       <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
+
         <section>
+<!--          --><?php //if (!empty($taxonomy_coverage->buckets)): ?>
+<!--            <div class="btn-group pull-right">-->
+<!--              <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">-->
+<!--                --><?php //print t('Display'); ?><!-- <span class="caret"></span>-->
+<!--              </button>-->
+<!--              <ul class="dropdown-menu" role="menu">-->
+<!--                <li><a href="#">--><?php //print t('All'); ?>
+<!--                    <div class="pull-right help-inline">--><?php //print $taxonomy_coverage->hits; ?><!--</div>-->
+<!--                  </a></li>-->
+<!--                <li class="divider"></li>-->
+<!--                --><?php //foreach ($taxonomy_coverage->buckets as $bucket): ?>
+<!--                  <li><a href="#--><?php //print $bucket->value; ?><!--">--><?php //print $bucket->value; ?>
+<!--                      <div class="pull-right help-inline">--><?php //print $bucket->hits; ?><!--</div>-->
+<!--                    </a>-->
+<!--                  </li>-->
+<!--                --><?php //endforeach ?>
+<!--              </ul>-->
+<!--            </div>-->
+<!--          --><?php //endif ?>
+
           <h3>
             <?php print mica_client_commons_get_localized_field($taxonomy_coverage->taxonomy, 'titles'); ?>
           </h3>
@@ -77,7 +98,6 @@
           <p class="help-block">
             <?php print mica_client_commons_get_localized_field($taxonomy_coverage->taxonomy, 'descriptions'); ?>
           </p>
-
           <?php foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) : ?>
             <?php if (!empty($vocabulary_coverage->hits)): ?>
               <?php $has_coverage = TRUE; ?>

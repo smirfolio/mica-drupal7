@@ -7,3 +7,4 @@ core = 7.x
 
 dependencies[] = mica_client_commons
 dependencies[] = mica_client_model
+dependencies[] = charts_google
