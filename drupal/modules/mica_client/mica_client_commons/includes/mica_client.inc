@@ -357,7 +357,7 @@ class MicaClient {
    * @internal param null $parent_child array must be 'parent'=>'<entity parent>' or 'child'=>'<entity parent>',
    * @return string
    */
-  protected function dto_filter_construct($type, $request_param = NULL, $from = 0) {
+  protected function dto_filter_construct($type, $request_param = NULL, $from = 0, $group_by = NULL) {
     if ($from == 0) {
       unset($_COOKIE['page_' . $type]);
       setcookie('page_' . $type, 0, time() - 3600); // empty value and old timestamp
@@ -368,7 +368,7 @@ class MicaClient {
     $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $this::SIZE_RESPONSE);
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
     $json_query_encoded = //
-      Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE)->build());
+      Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE, $group_by)->build());
     return $json_query_encoded;
   }
 
