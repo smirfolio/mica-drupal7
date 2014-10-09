@@ -15,7 +15,8 @@ Protobuf::autoload();
 
 include_once($path_module_protos . '/protos/Mica.php');
 include_once($path_module_protos . '/protos/MicaSearch.php');
-include_once("mica_client_facet_search_query_dto_builders.inc");
+include_once("mica_client_commons_query_dto_builders.inc");
+include_once("mica_client_commons_query_response_wrappers.inc");
 
 /**
  * Class MicaClient

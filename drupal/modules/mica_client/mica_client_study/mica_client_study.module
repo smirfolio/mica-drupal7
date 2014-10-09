@@ -82,16 +82,16 @@ function mica_client_study_block_info() {
  * Implements hook_block_view().
  */
 function mica_client_study_block_view($delta = '') {
-  switch ($delta) {
-    case 'studies-tab-list' :
-      $output = theme('mica_client_study_list', array('list_studies' => mica_client_study_get_studies()));
-      $block['subject'] = '';
-      $block['content'] = $output;
-      return $block;
-
-    default:
-      break;
-  }
+//  switch ($delta) {
+//    case 'studies-tab-list' :
+//      $output = theme('mica_client_study_list', array('list_studies' => mica_client_study_get_studies()));
+//      $block['subject'] = '';
+//      $block['content'] = $output;
+//      return $block;
+//
+//    default:
+//      break;
+//  }
 }
 
 /**

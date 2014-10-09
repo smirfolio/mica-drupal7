@@ -43,7 +43,7 @@ class MicaStudyResource extends MicaClient {
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
-    $url_studies = $this->micaUrl . '/studies?' . $params;
+    $url_studies = $this->micaUrl . '/studies/_search?' . $params;
     $request = new HttpClientRequest($url_studies, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -55,7 +55,7 @@ class MicaStudyResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return json_decode($data);
+      return new StudyJoinResponseWrapper(json_decode($data));
     } catch (HttpClientException $e) {
       return array();
     }
@@ -152,7 +152,6 @@ class MicaStudyResource extends MicaClient {
       $dto_data_response = json_decode($data);
       $this->session_facets_builder($dto_data_response);
 
-      // dpm($dto_data_response);
       $summaries_studies = !empty($dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries) ?
         $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
       $dtoObj = '\obiba\mica\StudySummaryDto';

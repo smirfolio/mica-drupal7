@@ -37,15 +37,15 @@ class MicaNetworkResource extends MicaClient {
    * @param null $order "asc" or "desc"
    * @return array|mixed
    */
-  public function get_networks($study_id = NULL, $query = NULL, $from = 0, $limit = -1, $sort = NULL, $order = NULL) {
+  public function get_networks($study_id = NULL, $query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
     $this->setLastResponse(NULL);
     $params = empty($from) ? 'from=0' : 'from=' . $from;
-    $params .= empty($limit) ? '&limit=-1' : '&limit=' . $limit;
+    $params .= empty($limit) ? '&limit=5' : '&limit=' . $limit;
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $params .= empty($study_id) ? '' : '&study=' . $study_id;
-    $url_networks = $this->micaUrl . '/networks?' . $params;
+    $url_networks = $this->micaUrl . '/networks/_search?' . $params;
 
     $request = new HttpClientRequest($url_networks, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -58,7 +58,7 @@ class MicaNetworkResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return json_decode($data);
+      return new NetworkJoinResponseWrapper(json_decode($data));
     } catch (HttpClientException $e) {
       return array();
     }

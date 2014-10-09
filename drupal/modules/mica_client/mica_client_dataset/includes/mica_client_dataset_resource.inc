@@ -38,15 +38,15 @@ class MicaDatasetResource extends MicaClient {
    * @param null $order "asc" or "desc"
    * @return array
    */
-  public function get_datasets($resource = 'datasets', $study_id = NULL, $query = NULL, $from = 0, $limit = -1, $sort = NULL, $order = NULL) {
+  public function get_datasets($resource = 'datasets', $study_id = NULL, $query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
     $this->setLastResponse(NULL);
     $params = empty($from) ? 'from=0' : 'from=' . $from;
-    $params .= empty($limit) ? '&limit=-1' : '&limit=' . $limit;
+    $params .= empty($limit) ? '&limit=5' : '&limit=' . $limit;
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $params .= empty($study_id) ? '' : '&study=' . $study_id;
-    $url_datasets = $this->micaUrl . '/' . (empty($resource) ? 'datasets' : $resource) . '?' . $params;
+    $url_datasets = $this->micaUrl . '/datasets' . (empty($resource) ? '' : '/'.$resource) . '/_search?' . $params;
     $request = new HttpClientRequest($url_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -58,11 +58,9 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      $dtos = array();
-//      dpm($request);
-//      dpm(json_decode($data));
-      return json_decode($data);
+      return new DatasetJoinResponseWrapper(json_decode($data));
     } catch (HttpClientException $e) {
+      dpm($e);
       return array();
     }
   }

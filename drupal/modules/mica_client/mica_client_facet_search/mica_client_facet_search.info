@@ -1,4 +1,4 @@
-name = "Mica client facet search"
+ovver = "Mica client facet search"
 description = "Mica client facet search cunstruction blocks"
 package = Mica
 core = 7.x
