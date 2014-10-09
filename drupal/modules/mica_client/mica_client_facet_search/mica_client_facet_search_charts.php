@@ -45,6 +45,13 @@ function mica_client_facet_search_get_title_chart($type = NULL, $aggregations = 
 }
 
 function mica_client_facet_search_vocabulary_chart($vocabulary_coverage) {
+  if (empty($vocabulary_coverage->buckets)) {
+    return mica_client_facet_search_vocabulary_pie_chart($vocabulary_coverage);
+  }
+  return mica_client_facet_search_vocabulary_bar_chart($vocabulary_coverage, TRUE);
+}
+
+function mica_client_facet_search_vocabulary_pie_chart($vocabulary_coverage) {
   if (empty($vocabulary_coverage->hits)) {
     return '';
   }
@@ -61,13 +68,78 @@ function mica_client_facet_search_vocabulary_chart($vocabulary_coverage) {
   return mica_client_facet_search_pie_chart($labels, $data, mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'bottom');
 }
 
+function mica_client_facet_search_vocabulary_bar_chart($vocabulary_coverage, $with_buckets = FALSE) {
+  if (empty($vocabulary_coverage->hits)) {
+    return '';
+  }
+  //dpm($vocabulary_coverage);
+
+  $labels = array();
+  $data = array();
+  if ($with_buckets) {
+    $bucket_names = array();
+    foreach ($vocabulary_coverage->buckets as $bucket) {
+      $bucket_names[] = $bucket->value;
+    }
+    foreach ($vocabulary_coverage->terms as $term_coverage) {
+      if (!empty($term_coverage->hits)) {
+        $labels[] = mica_client_commons_get_localized_field($term_coverage->term, 'titles');
+        foreach ($bucket_names as $bucket_name) {
+          if (empty($data[$bucket_name])) {
+            $data[$bucket_name] = array();
+          }
+          $found = FALSE;
+          foreach ($term_coverage->buckets as $term_bucket) {
+            if ($term_bucket->value == $bucket_name) {
+              $found = TRUE;
+              $data[$bucket_name][] = $term_bucket->hits;
+              break;
+            }
+          }
+          if (!$found) {
+            $data[$bucket_name][] = 0;
+          }
+        }
+      }
+    }
+  }
+  else {
+    foreach ($vocabulary_coverage->terms as $term_coverage) {
+      if (!empty($term_coverage->hits)) {
+        $labels[] = mica_client_commons_get_localized_field($term_coverage->term, 'titles');
+        $data[] = $term_coverage->hits;
+      }
+    }
+    $data = array(t('All') => $data);
+  }
+  return mica_client_facet_search_stacked_column_chart($labels, $data, mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'none');
+}
+
+function mica_client_facet_search_term_chart($term_coverage) {
+  if (empty($term_coverage->hits) || empty($term_coverage->buckets)) {
+    return '';
+  }
+  //dpm($term_coverage);
+
+  $labels = array();
+  $data = array();
+  foreach ($term_coverage->buckets as $term_bucket) {
+    if (!empty($term_bucket->hits)) {
+      $labels[] = $term_bucket->value;
+      $data[] = $term_bucket->hits;
+    }
+  }
+  //return mica_client_facet_search_pie_chart($labels, $data, '', 100, 100, 'none');
+  return mica_client_facet_search_mini_column_chart($labels, $data, '', 200, 50, 'none');
+}
+
 function mica_client_facet_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
     '#width' => $width,
     '#height' => $height,
-    '#title' => $title,
+    '#title' => empty($title) ? ' ' : $title,
     '#chart_library' => 'highcharts',
     '#legend_position' => $legend_position,
     '#data_labels' => FALSE,
@@ -76,12 +148,73 @@ function mica_client_facet_search_pie_chart($labels, $data, $title, $width = 250
   );
   $chart['pie_data'] = array(
     '#type' => 'chart_data',
-    '#title' => $title,
+    '#title' => empty($title) ? ' ' : $title,
     '#labels' => $labels,
     '#data' => $data,
   );
 
-  $example['chart'] = $chart;
+  return $chart;
+}
 
-  return $example;
+function mica_client_facet_search_mini_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+  $chart = array(
+    '#type' => 'chart',
+    '#chart_type' => 'column',
+    '#width' => $width,
+    '#height' => $height,
+    '#title' => empty($title) ? ' ' : $title,
+    '#legend_position' => $legend_position,
+    '#legend' => $legend_position != 'none',
+    '#chart_library' => 'highcharts',
+  );
+  $chart['counts'] = array(
+    '#type' => 'chart_data',
+    '#title' => t('Counts'),
+    '#data' => $data,
+  );
+  $chart['xaxis'] = array(
+    '#type' => 'chart_xaxis',
+    '#labels' => $labels,
+    '#labels_font_size' => '0px',
+    '#labels_rotation' => 90,
+    '#labels_color' => 'transparent',
+    '#grid_line_color' => 'transparent',
+    '#minor_grid_line_color' => 'transparent',
+  );
+  $chart['yaxis'] = array(
+    '#type' => 'chart_yaxis',
+    '#labels_color' => 'transparent',
+    '#labels_font_size' => '0px',
+    '#grid_line_color' => 'transparent',
+  );
+  return $chart;
+}
+
+function mica_client_facet_search_stacked_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+  //dpm($labels);
+  //dpm($data);
+  $chart = array(
+    '#type' => 'chart',
+    '#chart_type' => 'column',
+    '#stacking' => TRUE,
+    '#width' => $width,
+    '#height' => $height,
+    '#title' => empty($title) ? ' ' : $title,
+    '#legend_position' => $legend_position,
+    '#legend' => $legend_position != 'none',
+    '#chart_library' => 'highcharts',
+  );
+  foreach ($data as $key => $datum) {
+    $chart[$key] = array(
+      '#type' => 'chart_data',
+      '#title' => ' ' . $key, // google chart has a bug when title is a number
+      '#data' => $datum,
+    );
+  }
+  $chart['xaxis'] = array(
+    '#type' => 'chart_xaxis',
+    '#labels' => $labels,
+    //'#labels_rotation' => 90,
+  );
+  return $chart;
 }
