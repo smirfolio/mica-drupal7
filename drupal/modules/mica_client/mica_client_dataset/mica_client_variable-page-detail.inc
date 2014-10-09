@@ -275,7 +275,7 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
     foreach ($stats as $study_id => $stat) {
       if (!$missing && isset($stat[$category_name]) && $totals[$study_id] > 0) {
         $percent = round(($stat[$category_name] / $totals[$study_id]) * 100, 1);
-        $row[] = isset($stat[$category_name]) ? $stat[$category_name] . '<br>(' . $percent . '%)' : 0;
+        $row[] = isset($stat[$category_name]) ? $stat[$category_name] . '<p class="help-inline">(' . $percent . '%)</p>' : 0;
       }
       else {
         $row[] = isset($stat[$category_name]) ? $stat[$category_name] : 0;

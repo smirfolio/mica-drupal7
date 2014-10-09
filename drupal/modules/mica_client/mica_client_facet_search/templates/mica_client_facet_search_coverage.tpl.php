@@ -110,7 +110,7 @@
   </article>
 
 <?php if (!$has_coverage): ?>
-  <p class="md-top-margin">
+  <p class="md-top-margin pull-left">
     <i><?php print t('No coverage'); ?></i>
   </p>
 <?php endif ?>

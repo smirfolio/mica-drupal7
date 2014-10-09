@@ -165,8 +165,16 @@ body {
       h5 + p {
         margin-left: 20px;
       }
-      h3 + p.help-block, h4 + p.help-block, h3 + p.help-block {
+      h3 + p.help-block, h4 + p.help-block, h5 + p.help-block {
         padding: 0;
+      }
+      h5 + p.help-block {
+        margin-left: 0;
+        margin-top: 0px;
+      }
+      td h5 {
+        margin-top: 0;
+        margin-bottom: 0;
       }
       .col-xs-3 {
         width: 24%;
@@ -185,8 +193,14 @@ body {
   .indent {
     margin-left: 10px;
   }
+  .lg-indent {
+    margin-left: 20px;
+  }
   .right-indent {
     margin-right: 10px;
+  }
+  .lg-right-indent {
+    margin-right: 20px;
   }
   .table {
     border: 1px solid #dddddd;
@@ -215,6 +229,9 @@ body {
   }
   .lg-top-margin {
     margin-top: 20px;
+  }
+  .md-bottom-margin {
+    margin-bottom: 10px;
   }
   .lg-bottom-margin {
     margin-bottom: 20px;
