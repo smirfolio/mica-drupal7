@@ -1,4 +1,6 @@
-<?php //dpm($dataset); ?>
+<?php
+dpm($dataset);
+?>
 <?php if (!empty($dataset)): ?>
   <div class="row lg-bottom-margin">
     <div class="col-md-2 col-xs-2 text-center">
@@ -7,19 +9,24 @@
              class="listImageThumb"/>
       <?php else : ?>
         <h1 class="big-character">
-          <span class="t_badge color_light i-obiba-D"></span>
+          <span
+            class="t_badge color_light <?php print empty($dataset->{'obiba.mica.HarmonizationDatasetDto.type'}) ? 'i-obiba-D' : 'i-obiba-D-h' ?>"></span>
         </h1>
       <?php endif; ?>
     </div>
     <div class="col-md-10 col-xs-10">
       <h4>
         <?php
-        print l(mica_client_commons_get_localized_field($dataset, 'acronym') . ' - ' . mica_client_commons_get_localized_field($dataset, 'name'),
+        $acronym = mica_client_commons_get_localized_field($dataset, 'acronym');
+        $name = mica_client_commons_get_localized_field($dataset, 'name');
+        print l($acronym == $name ? $acronym : $acronym . ' - ' . $name,
           'mica/' . mica_client_dataset_type($dataset) . '/' . $dataset->id); ?>
       </h4>
       <hr class="no-margin">
-      <p class="md-top-margin help-block">
-        <?php print empty($dataset->description) ? '' : truncate_utf8(mica_client_commons_get_localized_field($dataset, 'description'), 250, TRUE, TRUE);; ?>
+      <p class="md-top-margin">
+        <small>
+          <?php print empty($dataset->description) ? '' : truncate_utf8(mica_client_commons_get_localized_field($dataset, 'description'), 250, TRUE, TRUE);; ?>
+        </small>
       </p>
       <ul class="search-item-list-no-style sm-top-margin help-block">
         <li>

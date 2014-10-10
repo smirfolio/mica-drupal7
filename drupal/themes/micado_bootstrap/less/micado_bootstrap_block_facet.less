@@ -66,6 +66,7 @@
         background: url('../img/expanded.png') no-repeat scroll left center transparent;
         padding-left: 12px;
         color: @text-color;
+        font-weight: @headings-font-weight;
       }
       a.collapsed {
         background: url('../img/collapsed.png') no-repeat scroll left center transparent;
@@ -73,7 +74,7 @@
     }
 
     .block-content {
-      padding: 3px 0;
+      padding: 0;
     }
 
     a.facetapi-limit-link {
@@ -140,7 +141,7 @@
     div.block-content {
       li {
         margin-bottom: -10px;
-        border-bottom: rgb(202, 188, 188) dashed 1px;
+        padding-left: 10px;
       }
       span.terms_count {
         position: relative;
@@ -167,7 +168,7 @@
         position: absolute;
         transition: width 1s;
         right: 0;
-        background-color: #daf2fb;
+        background-color: transparent;
 
       }
       span.terms_stat {
@@ -183,8 +184,8 @@
         position: relative;
         display: block;
         min-height: 25px;
-        padding-left: 15px;
-        padding-top: 5px;
+        margin-bottom: 0;
+        border-bottom: rgb(202, 188, 188) dashed 1px;
       }
 
     }
@@ -198,7 +199,7 @@
         position: relative;
         float: right;
         padding-right: 10px;
-        padding-top: 7px
+//        padding-top: 7px
       }
 
       span.terms_field {
@@ -207,16 +208,13 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-        padding-top: 7px;
-        margin-left: 5px;
         color: #1693c0;
         font-weight: bold;
         cursor: pointer;
       }
 
       span.terms_stat {
-
-        background-color: #bbe7f7;
+        background-color: transparent;
         position: absolute;
         height: 25px;
         transition: width 1s;
@@ -228,8 +226,7 @@
         position: absolute;
         transition: width 1s;
         right: 0;
-        background-color: #daf2fb;
-
+        background-color: transparent;
       }
 
       label.span-checkbox {

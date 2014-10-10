@@ -70,6 +70,7 @@
               ),
             )); ?>
           </p>
+          <div class="clearfix"/>
           <?php print $variables_result['data']; ?>
         </section>
       </article>
@@ -94,6 +95,7 @@
               ),
             )); ?>
           </p>
+          <div class="clearfix"/>
           <?php print $datasets['data']; ?>
         </section>
       </article>
@@ -121,6 +123,7 @@
               ),
             )); ?>
           </p>
+          <div class="clearfix"/>
           <?php print $studies['data']; ?>
         </section>
       </article>
@@ -145,6 +148,7 @@
               ),
             )); ?>
           </p>
+          <div class="clearfix"/>
           <?php print $networks['data']; ?>
         </section>
       </article>

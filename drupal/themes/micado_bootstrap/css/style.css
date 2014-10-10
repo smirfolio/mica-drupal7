@@ -333,7 +333,7 @@ hr {
   margin-top: 20px;
   margin-bottom: 20px;
   border: 0;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid #d9d9d9;
 }
 .sr-only {
   position: absolute;
@@ -586,7 +586,7 @@ a.bg-danger:hover {
 .page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #d9d9d9;
 }
 ul,
 ol {
@@ -653,7 +653,7 @@ blockquote {
   padding: 10px 20px;
   margin: 0 0 20px;
   font-size: 17.5px;
-  border-left: 5px solid #eeeeee;
+  border-left: 5px solid #d9d9d9;
 }
 blockquote p:last-child,
 blockquote ul:last-child,
@@ -677,7 +677,7 @@ blockquote .small:before {
 blockquote.pull-right {
   padding-right: 15px;
   padding-left: 0;
-  border-right: 5px solid #eeeeee;
+  border-right: 5px solid #d9d9d9;
   border-left: 0;
   text-align: right;
 }
@@ -1757,7 +1757,7 @@ output {
 .form-control[readonly],
 fieldset[disabled] .form-control {
   cursor: not-allowed;
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
   opacity: 1;
 }
 textarea.form-control {
@@ -3502,7 +3502,7 @@ select[multiple] .input-group-sm > .input-group-btn > .btn {
   line-height: 1;
   color: #555555;
   text-align: center;
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
   border: 1px solid #cccccc;
   border-radius: 4px;
 }
@@ -3587,7 +3587,7 @@ select[multiple] .input-group-sm > .input-group-btn > .btn {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
 }
 .nav > li.disabled > a {
   color: #777777;
@@ -3602,7 +3602,7 @@ select[multiple] .input-group-sm > .input-group-btn > .btn {
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
   border-color: #428bca;
 }
 .nav .nav-divider {
@@ -3628,7 +3628,7 @@ select[multiple] .input-group-sm > .input-group-btn > .btn {
   border-radius: 4px 4px 0 0;
 }
 .nav-tabs > li > a:hover {
-  border-color: #eeeeee #eeeeee #dddddd;
+  border-color: #d9d9d9 #d9d9d9 #dddddd;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
@@ -4338,7 +4338,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > li > a:focus,
 .pagination > li > span:focus {
   color: #2a6496;
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
   border-color: #dddddd;
 }
 .pagination > .active > a,
@@ -4414,7 +4414,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pager li > a:hover,
 .pager li > a:focus {
   text-decoration: none;
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
 }
 .pager .next > a,
 .pager .next > span {
@@ -4542,7 +4542,7 @@ a.list-group-item.active > .badge,
   padding: 30px;
   margin-bottom: 30px;
   color: inherit;
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
 }
 .jumbotron h1,
 .jumbotron .h1 {
@@ -4554,7 +4554,7 @@ a.list-group-item.active > .badge,
   font-weight: 200;
 }
 .jumbotron > hr {
-  border-top-color: #d5d5d5;
+  border-top-color: #bfbfbf;
 }
 .container .jumbotron {
   border-radius: 6px;
@@ -4845,7 +4845,7 @@ a.list-group-item:focus {
 .list-group-item.disabled,
 .list-group-item.disabled:hover,
 .list-group-item.disabled:focus {
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
   color: #777777;
 }
 .list-group-item.disabled .list-group-item-heading,
@@ -6256,12 +6256,13 @@ div.charts {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
   padding-left: 12px;
   color: #333333;
+  font-weight: 300;
 }
 .facet-bar .block-mica-client-facet-search h2 a.collapsed {
   background: url('../img/collapsed.png') no-repeat scroll left center transparent;
 }
 .facet-bar .block-mica-client-facet-search .block-content {
-  padding: 3px 0;
+  padding: 0;
 }
 .facet-bar .block-mica-client-facet-search a.facetapi-limit-link {
   margin-left: 10px;
@@ -6313,7 +6314,7 @@ div.charts {
 }
 .facet-bar .block-mica-client-facet-search div.block-content li {
   margin-bottom: -10px;
-  border-bottom: #cabcbc dashed 1px;
+  padding-left: 10px;
 }
 .facet-bar .block-mica-client-facet-search div.block-content span.terms_count {
   position: relative;
@@ -6338,7 +6339,7 @@ div.charts {
   position: absolute;
   transition: width 1s;
   right: 0;
-  background-color: #daf2fb;
+  background-color: transparent;
 }
 .facet-bar .block-mica-client-facet-search div.block-content span.terms_stat {
   max-width: 200px;
@@ -6352,8 +6353,8 @@ div.charts {
   position: relative;
   display: block;
   min-height: 25px;
-  padding-left: 15px;
-  padding-top: 5px;
+  margin-bottom: 0;
+  border-bottom: #cabcbc dashed 1px;
 }
 .facet-bar .block-mica-client-facet-search div.chekedterms li {
   margin-bottom: 0px;
@@ -6363,7 +6364,6 @@ div.charts {
   position: relative;
   float: right;
   padding-right: 10px;
-  padding-top: 7px;
 }
 .facet-bar .block-mica-client-facet-search div.chekedterms span.terms_field {
   position: relative;
@@ -6371,14 +6371,12 @@ div.charts {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-top: 7px;
-  margin-left: 5px;
   color: #1693c0;
   font-weight: bold;
   cursor: pointer;
 }
 .facet-bar .block-mica-client-facet-search div.chekedterms span.terms_stat {
-  background-color: #bbe7f7;
+  background-color: transparent;
   position: absolute;
   height: 25px;
   transition: width 1s;
@@ -6390,7 +6388,7 @@ div.charts {
   position: absolute;
   transition: width 1s;
   right: 0;
-  background-color: #daf2fb;
+  background-color: transparent;
 }
 .facet-bar .block-mica-client-facet-search div.chekedterms label.span-checkbox {
   position: relative;
@@ -6575,12 +6573,13 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
   padding-left: 12px;
   color: #333333;
+  font-weight: 300;
 }
 .region-facets .block-mica-client-facet-search h2 a.collapsed {
   background: url('../img/collapsed.png') no-repeat scroll left center transparent;
 }
 .region-facets .block-mica-client-facet-search .block-content {
-  padding: 3px 0;
+  padding: 0;
 }
 .region-facets .block-mica-client-facet-search a.facetapi-limit-link {
   margin-left: 10px;
@@ -6632,7 +6631,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 .region-facets .block-mica-client-facet-search div.block-content li {
   margin-bottom: -10px;
-  border-bottom: #cabcbc dashed 1px;
+  padding-left: 10px;
 }
 .region-facets .block-mica-client-facet-search div.block-content span.terms_count {
   position: relative;
@@ -6657,7 +6656,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   position: absolute;
   transition: width 1s;
   right: 0;
-  background-color: #daf2fb;
+  background-color: transparent;
 }
 .region-facets .block-mica-client-facet-search div.block-content span.terms_stat {
   max-width: 200px;
@@ -6671,8 +6670,8 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   position: relative;
   display: block;
   min-height: 25px;
-  padding-left: 15px;
-  padding-top: 5px;
+  margin-bottom: 0;
+  border-bottom: #cabcbc dashed 1px;
 }
 .region-facets .block-mica-client-facet-search div.chekedterms li {
   margin-bottom: 0px;
@@ -6682,7 +6681,6 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   position: relative;
   float: right;
   padding-right: 10px;
-  padding-top: 7px;
 }
 .region-facets .block-mica-client-facet-search div.chekedterms span.terms_field {
   position: relative;
@@ -6690,14 +6688,12 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  padding-top: 7px;
-  margin-left: 5px;
   color: #1693c0;
   font-weight: bold;
   cursor: pointer;
 }
 .region-facets .block-mica-client-facet-search div.chekedterms span.terms_stat {
-  background-color: #bbe7f7;
+  background-color: transparent;
   position: absolute;
   height: 25px;
   transition: width 1s;
@@ -6709,7 +6705,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   position: absolute;
   transition: width 1s;
   right: 0;
-  background-color: #daf2fb;
+  background-color: transparent;
 }
 .region-facets .block-mica-client-facet-search div.chekedterms label.span-checkbox {
   position: relative;
@@ -7034,6 +7030,9 @@ html.js input.throbbing {
   background-position: 100% -13px;
   /* LTR */
 }
+a {
+  font-weight: 500;
+}
 body,
 body h1,
 body h2,
@@ -7244,7 +7243,7 @@ ul.action-links {
 }
 ul.action-links li {
   display: inline;
-  padding-right: 1.5em;
+  padding-right: 0.8em;
 }
 ul.action-links [class^="icon-"],
 ul.action-links [class*=" icon-"] {
@@ -7479,7 +7478,7 @@ div.password-suggestions ul {
   background-size: cover;
 }
 .color_light {
-  background-color: #eeeeee;
+  background-color: #d9d9d9;
   background-size: cover;
 }
 .list-page {
