@@ -613,26 +613,25 @@ function mica_client_facet_search_variables_table($variables) {
   $rows = array();
   if (!empty($variables['data'])) {
     foreach ($variables['data'] as $variable) {
+      dpm($variable);
       $name = $variable->name;
-      $dataset_name = !empty($variable->datasetName) ?
-        mica_client_commons_get_localized_field($variable, 'datasetName') :
+      $dataset_name = !empty($variable->datasetAcronym) ?
+        mica_client_commons_get_localized_field($variable, 'datasetAcronym') :
         $variable->datasetId;
       $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
       $study_name = !empty($variable->studyAcronym) ? mica_client_commons_get_localized_field($variable, 'studyAcronym') : NULL;
       $variable_label = !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : NULL;
 
       $rows[] = array(
-        l($variable->id, 'mica/variable/' . $variable->id),
-        $name,
+        l($name, 'mica/variable/' . $variable->id),
         !empty($variable_label) ? $variable_label : '-',
         l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId),
         empty($variable->studyId) ? '-' : l($study_name, 'mica/study/' . $variable->studyId),
       );
     }
   }
-//dpm($studies['totalHits']);
+
   $headers = array(
-    t('id'),
     t('Variable'),
     t('Label'),
     t('Dataset'),
@@ -654,7 +653,6 @@ function mica_client_facet_search_studies_table($studies) {
 
   if (!empty($studies['data'])) {
     $rows[] = array(
-      '',
       '',
       '',
       '',
@@ -687,10 +685,8 @@ function mica_client_facet_search_studies_table($studies) {
       $name = mica_client_commons_get_localized_field($study, 'name');
 
       $rows[] = array(
-        /*id*/
-        l($study->id, 'mica/study/' . $study->id),
         /*acronym*/
-        mica_client_commons_get_localized_field($study, 'acronym'),
+        l(mica_client_commons_get_localized_field($study, 'acronym'), 'mica/study/' . $study->id),
         /*name*/
         $name,
         /*Type*/
@@ -698,25 +694,25 @@ function mica_client_facet_search_studies_table($studies) {
         /*Quest-DSA*/
         array(
           'data' => mica_client_facet_search_has_datasource($study->dataSources, 'questionnaires') ?
-              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '--',
+              '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*PM-DSA*/
         array(
           'data' => mica_client_facet_search_has_datasource($study->dataSources, 'physical_measures') ?
-              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '--',
+              '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*Bio-DSA*/
         array(
           'data' => mica_client_facet_search_has_datasource($study->dataSources, 'biological_samples') ?
-              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '--',
+              '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*Others-DSA*/
         array(
           'data' => mica_client_facet_search_has_datasource($study->dataSources, 'others') ?
-              '<i style="color:#2a85a0" class="glyphicon glyphicon-ok"></i>' : '--',
+              '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*Participants*/
@@ -758,7 +754,6 @@ function mica_client_facet_search_studies_table($studies) {
   }
 // t('Quest'), t('PM'), t('Bio'),t('Others'),
   $headers = array(
-    array('data' => t('Id'), 'class' => 'col-sm-1'),
     array('data' => t('Acronym'), 'class' => 'col-sm-1'),
     array('data' => t('Name'), 'class' => 'col-sm-3'),
     array('data' => t('Type'), 'class' => 'col-sm-1'),
@@ -820,7 +815,7 @@ function mica_client_facet_search_datasets_table($datasets) {
       }
       $name = mica_client_commons_get_localized_field($dataset, 'name');
       $rows[] = array(
-        l($dataset->id, 'mica/' . $type_dataset_link . '/' . $dataset->id),
+        l(mica_client_commons_get_localized_field($dataset, 'acronym'), 'mica/' . $type_dataset_link . '/' . $dataset->id),
         $name,
         $type_dataset,
         !empty($count_networks) ?
@@ -853,7 +848,7 @@ function mica_client_facet_search_datasets_table($datasets) {
   }
 
   $headers = array(
-    t('Id'),
+    t('Acronym'),
     t('Name'),
     t('Type'),
     t('Networks'),
@@ -876,7 +871,6 @@ function mica_client_facet_search_networks_table($networks) {
   $rows = array();
   if (!empty($networks['data'])) {
     $rows[] = array(
-      '',
       '',
       '',
       '',
@@ -905,8 +899,7 @@ function mica_client_facet_search_networks_table($networks) {
 
 
       $rows[] = array(
-        l($network->id, 'mica/network/' . $network->id),
-        mica_client_commons_get_localized_field($network, 'acronym'),
+        l(mica_client_commons_get_localized_field($network, 'acronym'), 'mica/network/' . $network->id),
         $name,
         l($studies_count, 'mica/search', array(
           'query' => array(
@@ -937,8 +930,6 @@ function mica_client_facet_search_networks_table($networks) {
   }
 
   $headers = array(
-    /*Id*/
-    t('Id'),
     /*Short Name*/
     t('Acronym'),
     /*Name*/
