@@ -66,8 +66,8 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
 function mica_client_dataset_correct_resource_server($dataset_resource) {
   $resource = array(
     'datasets' => 'datasets',
-    'harmonization_datasets' => 'harmonization',
-    'study_datasets' => 'study'
+    'harmonization_datasets' => 'datasets/harmonization',
+    'study_datasets' => 'datasets/study'
   );
   return $resource[$dataset_resource];
 }

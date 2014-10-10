@@ -46,7 +46,7 @@ class MicaDatasetResource extends MicaClient {
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $params .= empty($study_id) ? '' : '&study=' . $study_id;
-    $url_datasets = $this->micaUrl . '/datasets' . (empty($resource) ? '' : '/'.$resource) . '/_search?' . $params;
+    $url_datasets = $this->micaUrl . (empty($resource) ? '' : '/'.$resource) . '/_search?' . $params;
     $request = new HttpClientRequest($url_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
