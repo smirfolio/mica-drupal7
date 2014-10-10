@@ -7152,6 +7152,9 @@ body.admin-menu .navbar-fixed-top {
   margin-top: 0;
   margin-bottom: 0;
 }
+.block-content article section td ul {
+  padding-left: 20px;
+}
 .block-content article section .col-xs-3 {
   width: 24%;
 }
