@@ -23,7 +23,7 @@ function mica_client_network_page_list() {
     $sort_by = $_GET['search-sort-order'];
   }
 
-  $response = mica_client_network_get_networks($query, $sort, $sort_by);
+  $response = mica_client_network_get_networks(NULL, $query, $sort, $sort_by);
   $total_networks = $response->getTotalHits();
 
 
@@ -59,13 +59,13 @@ function mica_client_network_page_list() {
   ));
 }
 
-function mica_client_network_get_networks($query, $sort, $sort_by) {
+function mica_client_network_get_networks($study_id, $query, $sort, $sort_by) {
   $from = 0;
   $study_resource = new MicaNetworkResource();
   if (!empty($_GET['page'])) {
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-networks', 5);
   }
-  $networks = $study_resource->get_networks(NULL, $query, $from, NULL, $sort, $sort_by);
+  $networks = $study_resource->get_networks($study_id, $query, $from, NULL, $sort, $sort_by);
   $_SESSION['list-networks']['aggregations']['totalHits'] = $networks->getTotalHits();
   return $networks;
 }
@@ -82,10 +82,9 @@ function mica_client_network_create_form() {
 
 function mica_client_network_networks_table($networks_result) {
   $rows = array();
-  $total = 0;
-  if (!empty($networks_result->total) && $networks_result->total > 0) {
-    $total = $networks_result->total;
-    $rows = mica_client_network_networks_table_rows($networks_result->networks);
+  $total = $networks_result->getTotalHits();
+  if ($total > 0) {
+    $rows = mica_client_network_networks_table_rows($networks_result->getSummaries());
   }
   $headers = mica_client_network_networks_table_headers();
   $per_page = 20;
@@ -122,7 +121,7 @@ function mica_client_network_networks_table_rows($networks) {
 }
 
 function mica_client_network_retrieve_networks($query, $sort = NULL, $sort_order = NULL) {
-  $list_networks = mica_client_network_get_networks($query, $sort, $sort_order);
+  $list_networks = mica_client_network_get_networks(NULL, $query, $sort, $sort_order);
   $list_networks_rendered = '';
   //dpm($list_networks);
   foreach ($list_networks->getSummaries() as $network) {

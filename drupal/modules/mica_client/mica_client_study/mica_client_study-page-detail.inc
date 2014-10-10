@@ -150,7 +150,8 @@ function mica_client_study_get_dce_detail($study_id, $dataCollectionEvents) {
   foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
     if (!empty($dce_wrapper->attachments)) {
       foreach ($dce_wrapper->attachments as $attachment) {
-        $themed_attachment .= mica_client_study_get_attachment_file($dce_wrapper->id, $attachment, 'study');
+        // TODO this should be addressed from the server-side
+//        $themed_attachment .= mica_client_study_get_attachment_file($dce_wrapper->id, $attachment, 'study');
       }
     }
     $page_render_dces .= theme('mica_dce_detail', array(

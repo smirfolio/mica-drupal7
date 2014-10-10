@@ -60,5 +60,5 @@ function mica_client_network_theme($existing, $type, $theme, $path) {
 
 
 function mica_client_network_networks_list($study_id = NULL) {
-  return mica_client_network_networks_table(mica_client_network_get_networks($study_id, NULL, NULL));
+  return mica_client_network_networks_table(mica_client_network_get_networks($study_id, NULL, NULL, NULL));
 }
