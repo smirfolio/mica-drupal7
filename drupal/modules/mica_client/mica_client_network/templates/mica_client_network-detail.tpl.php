@@ -13,44 +13,64 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-6 right-indent">
-          <?php if (!empty($network_dto->acronym)): ?>
-            <h5><?php print t('Acronym') ?></h5>
-            <p><?php print mica_client_commons_get_localized_field($network_dto, 'acronym'); ?></p>
-          <?php endif; ?>
 
-          <?php if (!empty($network_dto->investigators)): ?>
-            <h5><?php print t('Investigators') ?></h5>
-            <ul>
-              <?php foreach ($network_dto->investigators as $investigator) : ?>
-                <li>
-                  <a href="">
-                    <?php print $investigator->title; ?>
-                    <?php print $investigator->firstName; ?>
-                    <?php print $investigator->lastName; ?>
-                    ( <?php print mica_client_commons_get_localized_field($investigator->institution, 'name'); ?>
-                    )
-                  </a>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          <?php endif; ?>
+          <table class="table table-striped">
+            <tbody>
+            <?php if (!empty($network_dto->acronym)): ?>
+            <tr>
+              <td><h5><?php print t('Acronym') ?></h5></td>
+              <td><p><?php print mica_client_commons_get_localized_field($network_dto, 'acronym'); ?></p></td>
+            </tr>
+            <?php endif; ?>
 
-          <?php if (!empty($network_dto->contacts)): ?>
-            <h5><?php print t('Contacts') ?></h5>
-            <ul>
-              <?php foreach ($network_dto->contacts as $contact) : ?>
-                <li>
-                  <a href="">
-                    <?php print $contact->title; ?>
-                    <?php print $contact->firstName; ?>
-                    <?php print $contact->lastName; ?>
-                    ( <?php print mica_client_commons_get_localized_field($contact->institution, 'name'); ?>
-                    )
-                  </a>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          <?php endif; ?>
+            <?php if (!empty($network_dto->investigators)): ?>
+            <tr>
+              <td><h5><?php print t('Investigators') ?></h5></td>
+              <td>
+                <ul>
+                  <?php foreach ($network_dto->investigators as $investigator) : ?>
+                    <li>
+                      <a href="">
+                        <?php print $investigator->title; ?>
+                        <?php print $investigator->firstName; ?>
+                        <?php print $investigator->lastName; ?>
+                        ( <?php print mica_client_commons_get_localized_field($investigator->institution, 'name'); ?>
+                        )
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              </td>
+            </tr>
+            <?php endif; ?>
+
+            <?php if (!empty($network_dto->contacts)): ?>
+            <tr>
+              <td><h5><?php print t('Contacts') ?></h5></td>
+              <td>
+                <ul>
+                  <?php foreach ($network_dto->contacts as $contact) : ?>
+                    <li>
+                      <a href="">
+                        <?php print $contact->title; ?>
+                        <?php print $contact->firstName; ?>
+                        <?php print $contact->lastName; ?>
+                        ( <?php print mica_client_commons_get_localized_field($contact->institution, 'name'); ?>
+                        )
+                      </a>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              </td>
+            </tr>
+            <?php endif; ?>
+
+            <tr>
+              <td></td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
 
         </div>
         <div class="col-xs-6">

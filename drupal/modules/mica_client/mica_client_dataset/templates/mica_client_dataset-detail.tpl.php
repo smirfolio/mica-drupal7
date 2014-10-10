@@ -11,7 +11,7 @@
   <?php endif; ?>
   <div class="pull-right md-bottom-margin">
     <?php
-    print l(t('Search'), 'mica/search',
+    print l(t('Search Variables'), 'mica/search',
       array(
         'query' => array(
           'type' => 'variables',
@@ -33,8 +33,9 @@
   </div>
 </div>
 
+<div class="clearfix"></div>
 
-<article class="pull-left">
+<article>
   <!-- OVERVIEW -->
   <section>
     <h3><?php print t('Overview') ?></h3>

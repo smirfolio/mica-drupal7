@@ -138,9 +138,13 @@ function mica_client_dataset_get_all_datasets_studies($study_id) {
 }
 
 function mica_client_dataset_get_datasets_list_tab($datasets) {
+  if (empty($datasets)) return NULL;
   $dataset_rows = array();
   $summaries = $datasets->getSummaries();
-  if (!empty($summaries)) {
+
+  if (empty($summaries)) {
+    return NULL;
+  } else {
     foreach ($summaries as $key_dataset => $summary) {
       $dataset_description = NULL;
       if (!empty($summary->description)) {

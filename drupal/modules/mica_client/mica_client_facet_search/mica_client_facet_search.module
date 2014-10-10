@@ -61,6 +61,24 @@ function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $
           ),
         ),
       );
+      $links['mica/coverage'] = array(
+
+        '#weight' => 31,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Coverage'),
+          'href' => 'mica/coverage',
+          'localized_options' => array(
+            'query' => array(
+              'group-by' => 'datasetId',
+              'query' => '{"variables":{"terms":{"variableType":["study"]}}}'
+            ),
+            'attributes' => array(
+              'class' => 'highlight btn btn-primary',
+            ),
+          ),
+        ),
+      );
 
       break;
     case 'mica/datasets/harmonization-datasets':
@@ -78,6 +96,24 @@ function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $
             ),
             'attributes' => array(
               'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+      $links['mica/coverage'] = array(
+
+        '#weight' => 31,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Coverage'),
+          'href' => 'mica/coverage',
+          'localized_options' => array(
+            'query' => array(
+              'group-by' => 'datasetId',
+              'query' => '{"variables":{"terms":{"variableType":["dataschema"]}}}'
+            ),
+            'attributes' => array(
+              'class' => 'highlight btn btn-primary',
             ),
           ),
         ),
@@ -102,6 +138,23 @@ function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $
           ),
         ),
       );
+      $links['mica/coverage'] = array(
+
+        '#weight' => 31,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Coverage'),
+          'href' => 'mica/coverage',
+          'localized_options' => array(
+            'query' => array(
+              'group-by' => 'datasetId',
+            ),
+            'attributes' => array(
+              'class' => 'highlight btn btn-primary',
+            ),
+          ),
+        ),
+      );
 
       break;
     case 'mica/studies':
@@ -117,6 +170,57 @@ function mica_client_facet_search_menu_local_tasks_alter(&$data, $router_item, $
             ),
             'attributes' => array(
               'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+      $links['mica/studies_coverage'] = array(
+        '#weight' => 31,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Coverage'),
+          'href' => 'mica/coverage',
+          'localized_options' => array(
+            'query' => array(
+              'group-by' => 'studyIds',
+            ),
+            'attributes' => array(
+              'class' => 'highlight btn btn-primary',
+            ),
+          ),
+        ),
+      );
+
+      break;
+    case 'mica/networks':
+      $links['mica/networks_search'] = array(
+        '#weight' => 30,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Search Networks'),
+          'href' => 'mica/search',
+          'localized_options' => array(
+            'query' => array(
+              'type' => 'networks',
+            ),
+            'attributes' => array(
+              'class' => 'highlight',
+            ),
+          ),
+        ),
+      );
+      $links['mica/networks_coverage'] = array(
+        '#weight' => 31,
+        '#theme' => 'menu_local_action',
+        '#link' => array(
+          'title' => t('Coverage'),
+          'href' => 'mica/coverage',
+          'localized_options' => array(
+            'query' => array(
+              'group-by' => 'studyIds',
+            ),
+            'attributes' => array(
+              'class' => 'highlight btn btn-primary',
             ),
           ),
         ),

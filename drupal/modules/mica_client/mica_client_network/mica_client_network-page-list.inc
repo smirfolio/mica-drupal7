@@ -90,6 +90,8 @@ function mica_client_network_networks_table($networks_result) {
   $headers = mica_client_network_networks_table_headers();
   $per_page = 20;
 
+  if (empty($total)) return NULL;
+
   $args = array('quantity' => $total, 'element' => MicaNetworkResource::PAGINATE_networks);
   $current_page = pager_default_initialize($total, $per_page, MicaNetworkResource::PAGINATE_networks);
   $chunks = array_chunk($rows, $per_page, TRUE);
