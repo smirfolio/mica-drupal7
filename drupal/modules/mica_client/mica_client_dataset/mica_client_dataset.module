@@ -141,17 +141,17 @@ function mica_client_dataset_get_datasets_list_tab($datasets) {
   $dataset_rows = array();
   $summaries = $datasets->getSummaries();
   if (!empty($summaries)) {
-    foreach ($summaries as $key_dataset => $dataset) {
+    foreach ($summaries as $key_dataset => $summary) {
       $dataset_description = NULL;
-      if (!empty($dataset->description)) {
-        $dataset_description = theme('box', truncate_utf8(mica_client_commons_get_localized_field($dataset, 'description'), 50, TRUE, TRUE));
+      if (!empty($summary->description)) {
+        $dataset_description = theme('box', truncate_utf8(mica_client_commons_get_localized_field($summary, 'description'), 50, TRUE, TRUE));
       }
-      $dataset_name = mica_client_commons_get_localized_field($dataset, 'name');
-      $dataset_type = !empty($dataset->{'obiba.mica.StudyDatasetDto.type'}) ? 'study-dataset' : 'harmonization-dataset';
-      $dataset_type_name = !empty($dataset->{'obiba.mica.StudyDatasetDto.type'}) ? 'Study dataset' : 'Harmonization dataset';
+      $dataset_name = mica_client_commons_get_localized_field($summary, 'name');
+      $dataset_type = !empty($summary->{'obiba.mica.StudyDatasetDto.type'}) ? 'study-dataset' : 'harmonization-dataset';
+      $dataset_type_name = !empty($summary->{'obiba.mica.StudyDatasetDto.type'}) ? 'Study dataset' : 'Harmonization dataset';
       $dataset_rows[$key_dataset] = array(
         'data' => array(
-          'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $dataset->id . '/' . mica_client_commons_to_slug($dataset_name)),
+          'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id . '/' . mica_client_commons_to_slug($dataset_name)),
           'type' => t($dataset_type_name),
           'desc' => !empty($dataset_description) ? $dataset_description : '-'
         )
