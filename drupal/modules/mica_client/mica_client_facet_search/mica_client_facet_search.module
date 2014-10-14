@@ -567,11 +567,11 @@ function mica_client_facet_search_coverage_page() {
     $vocabulary_coverage_output = array();
     foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
 
-      $term_charts = array();
+      $bucket_names = array();
 
-      if (!empty($vocabulary_coverage->terms)) {
-        foreach($vocabulary_coverage->terms as $term_coverage) {
-          $term_charts[$term_coverage->term->name] = mica_client_facet_search_term_chart($term_coverage);
+      if (!empty($vocabulary_coverage->buckets)) {
+        foreach($vocabulary_coverage->buckets as $bucket) {
+          $bucket_names[] = $bucket->value;
         }
       }
 
@@ -581,7 +581,7 @@ function mica_client_facet_search_coverage_page() {
           'vocabulary_coverage' => $vocabulary_coverage,
           'chart' => mica_client_facet_search_vocabulary_chart($vocabulary_coverage),
         )),
-        'term_charts' => $term_charts,
+        'bucket_names' => $bucket_names,
       ));
     }
     $vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name] = $vocabulary_coverage_output;
