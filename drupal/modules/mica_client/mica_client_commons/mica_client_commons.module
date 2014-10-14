@@ -255,8 +255,8 @@ function mica_client_commons_create_search_form($context) {
     '#title' => '',
     '#description' => 'Filter by',
     '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
-    '#prefix' => '<div class="right-indent lg-width">',
-    '#suffix' => '</div>',
+    '#prefix' => '<div class="right-indent lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+    '#suffix' => '</div></div>',
   );
 
   return $form;
