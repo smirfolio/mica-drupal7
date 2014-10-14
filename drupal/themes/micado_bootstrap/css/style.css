@@ -7181,6 +7181,9 @@ body.admin-menu .navbar-fixed-top {
 .block-content .table {
   border: 1px solid #dddddd;
 }
+.block-content .table td {
+  font-size: 12px;
+}
 .block-content .modal-body section {
   background-color: #ffffff;
   margin: 0;
