@@ -1,11 +1,12 @@
 <?php
 include_once('includes/mica_client_dataset_resource.inc');
+include_once(drupal_get_path('module', 'markdown') . '/markdown.php');
 
 function mica_client_variable_page_detail($variable_id) {
   drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_get_ajax_variables.js', 'file');
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
-  if (empty($variable)){
+  if (empty($variable)) {
     drupal_set_title(t('Variable not found'));
     return '';
   }
@@ -72,20 +73,42 @@ function mica_client_variable_get_harmonizations($variable) {
       $study_id = $variable_resolver->studyId;
       $harmonized_variable_id = $variable->datasetId . ':' . $variable->name . ':Harmonized:' . $study_id;
 
+      $status = strtolower(_mica_client_variable_attributes_detail($variable_harmonization, 'status', array(
+        'maelstrom',
+        'Mlstr_harmo'
+      )));
+
+      if (empty($status)) {
+        $status = '-';
+      }
+      elseif ($status == 'complete') {
+        $status = '<span class="glyphicon glyphicon-ok-sign alert-success" title="' . t('Complete') . '"></span>';
+      }
+      elseif ($status == 'impossible') {
+        $status = '<span class="glyphicon glyphicon-remove-sign alert-danger" title="' . t('Impossible') . '"></span>';
+      }
+      elseif ($status == 'undetermined') {
+        $status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>';
+      }
+      else {
+        $status = '-';
+      }
+
       $rows[] = array(
         l($variable->name, 'mica/variable/' . $harmonized_variable_id . '/' . mica_client_commons_to_slug($variable->name)),
         l(_mica_client_variable_acronym_study($variable, $study_id), 'mica/study/' . $study_id),
-        _mica_client_variable_attributes_detail($variable_harmonization, 'status'),
+        l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
         _mica_client_variable_html_truncated(
-          _mica_client_variable_attributes_detail($variable_harmonization, 'comment'), t('comment'), 200, FALSE),
-        _mica_client_variable_html_truncated(
-          _mica_client_variable_attributes_detail($variable_harmonization, 'script'), t('script'), 100, TRUE)
+          _mica_client_variable_attributes_detail($variable_harmonization, 'comment', array(
+            'maelstrom',
+            'Mlstr_harmo'
+          )), t('comment'), 200, FALSE),
       );
     }
   }
 
   if (!empty($rows)) {
-    $headers = array(t('Harmonized Variable'), t('Study'), t('Status'), t('Comment'), t('Script'));
+    $headers = array(t('Harmonized Variable'), t('Study'), t('Status'), t('Comment'));
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,
@@ -99,17 +122,25 @@ function mica_client_variable_get_harmonizations($variable) {
 
 function mica_client_variable_get_harmonization($harmonized_variable) {
   $rows = array();
-
-  if (_mica_client_variable_attributes_detail($harmonized_variable, 'status') ||
-    _mica_client_variable_attributes_detail($harmonized_variable, 'comment') ||
-    _mica_client_variable_attributes_detail($harmonized_variable, 'script')
-  ) {
-    $rows = array(
-      'status' => _mica_client_variable_attributes_detail($harmonized_variable, 'status'),
-      'comment' => _mica_client_variable_attributes_detail($harmonized_variable, 'comment'),
-      'script' => '<pre class="prettyprint lang-js">' . _mica_client_variable_attributes_detail($harmonized_variable, 'script') . '</pre>',
-    );
+  if ($harmonized_variable->variableType != 'Harmonized') {
+    ;
   }
+
+  $rows = array(
+    'status' => _mica_client_variable_attributes_detail($harmonized_variable, 'status', array(
+      'maelstrom',
+      'Mlstr_harmo'
+    )),
+    'comment' => _mica_client_variable_attributes_detail($harmonized_variable, 'comment', array(
+      'maelstrom',
+      'Mlstr_harmo'
+    )),
+    'algorithm' => Markdown(_mica_client_variable_attributes_detail($harmonized_variable, 'algorithm', array(
+      'maelstrom',
+      'Mlstr_harmo'
+    ))),
+    'script' => _mica_client_variable_attributes_detail($harmonized_variable, 'script'),
+  );
 
   return $rows;
 }
@@ -179,7 +210,6 @@ function mica_client_variable_get_categories($categories = NULL) {
 }
 
 
-
 function mica_client_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
@@ -223,7 +253,8 @@ function _mica_client_variable_table_stat_continuous($variable, $variable_stat) 
         !empty($statistics->stdDeviation) ? round($statistics->stdDeviation, 3) : 'NaN',
         $statistics->count
       );
-    } else {
+    }
+    else {
       array_push(
         $row,
         'NaN',
