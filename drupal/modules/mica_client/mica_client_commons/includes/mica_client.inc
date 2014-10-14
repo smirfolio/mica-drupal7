@@ -389,7 +389,9 @@ class MicaClient {
       }
       foreach ($param_to_add as $entity_name => $entity) {
         foreach ($entity['terms'] as $term_name => $term_value) {
-          $array_current_query->{$entity_name}->terms->{$term_name}[] = $term_value;
+          if (empty($array_current_query->{$entity_name}->terms->{$term_name}) || !in_array($term_value, $array_current_query->{$entity_name}->terms->{$term_name})) {
+            $array_current_query->{$entity_name}->terms->{$term_name}[] = $term_value;
+          }
         }
       }
       return json_encode($array_current_query);
@@ -399,7 +401,9 @@ class MicaClient {
     }
     foreach ($param_to_add as $entity_name => $entity) {
       foreach ($entity['terms'] as $term_name => $term_value) {
-        $array_current_query->{$entity_name}->terms->{$term_name}[] = $term_value;
+        if (empty($array_current_query->{$entity_name}->terms->{$term_name}) || !in_array($term_value, $array_current_query->{$entity_name}->terms->{$term_name})) {
+          $array_current_query->{$entity_name}->terms->{$term_name}[] = $term_value;
+        }
       }
     }
     return json_encode($array_current_query);
