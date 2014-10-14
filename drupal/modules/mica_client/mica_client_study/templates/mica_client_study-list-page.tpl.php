@@ -12,7 +12,18 @@
       <span class="search-count"><span id="refrech-count"><?php print $count ?></span> <span><?php print $caption ?></span></span>
     </div>
     <div class="col-md-10 col-xs-10">
-      <?php print render($form_search); ?>
+      <div class="row">
+        <div class="col-md-7 col-xs-7">
+          <?php print render($form_search); ?>
+        </div>
+        <div class="col-md-5 col-xs-5 pull-right">
+          <ul class="search-list-no-style pull-right">
+            <li><?php print MicaClientAnchorHelper::search_studies(t('Search Studies')) ?></li>
+            <li><?php print MicaClientAnchorHelper::coverage_studies(t('Coverage')) ?></li>
+          </ul>
+        </div>
+      </div>
+
     </div>
   </div>
 

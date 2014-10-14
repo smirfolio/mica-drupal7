@@ -33,7 +33,7 @@
         $counts = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
         $studies = $counts->studies;
         $caption = $studies < 2 ? t('study') : t('studies');
-        $line = $studies < 1 ? '' : t('Includes ') . MicaClientAnchorHelper::search_network_studies($studies, $network->id) . ' ' . $caption;
+        $line = $studies < 1 ? '' : t('Includes ') . MicaClientAnchorHelper::network_studies($studies, $network->id) . ' ' . $caption;
         ?>
         <span>
           <?php print $line ?>
