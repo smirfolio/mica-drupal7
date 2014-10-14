@@ -563,28 +563,30 @@ function mica_client_facet_search_coverage_page() {
   $coverages = $search_resources->taxonomies_coverage();
 
   $vocabulary_coverage_outputs = array();
-  foreach ($coverages->taxonomies as $taxonomy_coverage) {
-    $vocabulary_coverage_output = array();
-    foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
+  if (!empty($coverages->taxonomies)) {
+    foreach ($coverages->taxonomies as $taxonomy_coverage) {
+      $vocabulary_coverage_output = array();
+      foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
 
-      $bucket_names = array();
+        $bucket_names = array();
 
-      if (!empty($vocabulary_coverage->buckets)) {
-        foreach($vocabulary_coverage->buckets as $bucket) {
-          $bucket_names[] = $bucket->value;
+        if (!empty($vocabulary_coverage->buckets)) {
+          foreach ($vocabulary_coverage->buckets as $bucket) {
+            $bucket_names[] = $bucket->value;
+          }
         }
-      }
 
-      $vocabulary_coverage_output[$vocabulary_coverage->vocabulary->name] = theme('mica_client_facet_search_vocabulary_coverage', array(
-        'vocabulary_coverage' => $vocabulary_coverage,
-        'chart' => theme('mica_client_facet_search_vocabulary_charts', array(
+        $vocabulary_coverage_output[$vocabulary_coverage->vocabulary->name] = theme('mica_client_facet_search_vocabulary_coverage', array(
           'vocabulary_coverage' => $vocabulary_coverage,
-          'chart' => mica_client_facet_search_vocabulary_chart($vocabulary_coverage),
-        )),
-        'bucket_names' => $bucket_names,
-      ));
+          'chart' => theme('mica_client_facet_search_vocabulary_charts', array(
+            'vocabulary_coverage' => $vocabulary_coverage,
+            'chart' => mica_client_facet_search_vocabulary_chart($vocabulary_coverage),
+          )),
+          'bucket_names' => $bucket_names,
+        ));
+      }
+      $vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name] = $vocabulary_coverage_output;
     }
-    $vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name] = $vocabulary_coverage_output;
   }
 
   $output = theme('mica_client_facet_search_coverage', array(
