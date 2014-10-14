@@ -59,7 +59,8 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
     'node_page' => $node_view,
     "total_items" => $totalHits,
     'list_datasets' => $list_datasets,
-    'pager_wrap' => $pager_output
+    'pager_wrap' => $pager_output,
+    'dataset_type' => $dataset_resource
   ));
 }
 

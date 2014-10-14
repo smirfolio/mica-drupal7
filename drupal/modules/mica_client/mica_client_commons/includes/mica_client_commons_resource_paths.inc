@@ -12,6 +12,7 @@ class MicaClientPathProvider
   const HARMONIZATION_DATASETS = 'mica/datasets/harmonization-datasets';
   const HARMONIZATION_DATASET = 'mica/harmonization-dataset/{id}';
   const SEARCH = 'mica/search';
+  const COVERAGE = 'mica/coverage';
 
 
   static function study($id)
@@ -38,7 +39,7 @@ class MicaClientPathProvider
 class MicaClientAnchorHelper
 {
 
-  static function search_study_datasets($text, $studyId)
+  static function study_datasets($text, $studyId)
   {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('studyIds' => $studyId))) //
@@ -54,7 +55,7 @@ class MicaClientAnchorHelper
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
-  static function search_study_variables($text, $studyId)
+  static function study_variables($text, $studyId)
   {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('studyIds' => $studyId))) //
@@ -70,7 +71,7 @@ class MicaClientAnchorHelper
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
-  static function search_network_studies($text, $networkId)
+  static function network_studies($text, $networkId)
   {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('networks' => array('terms' => array('id' => $networkId))) //
@@ -86,7 +87,31 @@ class MicaClientAnchorHelper
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
-  static function search_dataset_variables($text, $datasetId)
+  static function search_networks($text)
+  {
+    $options = array(
+      'query' => array(
+        'type' => 'networks'
+      ),
+      'attributes' => array('class' =>'highlight btn btn-primary')
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
+  static function coverage_networks($text)
+  {
+    $options = array(
+      'query' => array(
+        'group-by' => 'studyIds'
+      ),
+      'attributes' => array('class' =>'highlight btn btn-primary')
+    );
+
+    return l($text, MicaClientPathProvider::COVERAGE, $options);
+  }
+
+  static function dataset_variables($text, $datasetId)
   {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('datasetId' => $datasetId))) //
@@ -102,7 +127,7 @@ class MicaClientAnchorHelper
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
-  static function search_dataset_studies($text, $datasetId)
+  static function dataset_studies($text, $datasetId)
   {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('datasetId' => $datasetId))) //
@@ -117,4 +142,81 @@ class MicaClientAnchorHelper
 
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
+
+  static function search_studies($text)
+  {
+    $options = array(
+      'query' => array(
+        'type' => 'studies'
+      ),
+      'attributes' => array('class' =>'highlight btn btn-primary')
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
+  static function coverage_studies($text)
+  {
+    $options = array(
+      'query' => array(
+        'group-by' => 'studyIds'
+      ),
+      'attributes' => array('class' =>'highlight btn btn-primary')
+    );
+
+    return l($text, MicaClientPathProvider::COVERAGE, $options);
+  }
+
+  static function search_study_datasets($text)
+  {
+    $options = array(
+      'query' => array(
+        'type' => 'variables',
+        'query' => '{"variables":{"terms":{"variableType":["study"]}}}'
+      ),
+      'attributes' => array('class' =>'highlight btn btn-primary')
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
+  static function coverage_study_datasets($text)
+  {
+    $options = array(
+      'query' => array(
+        'group-by' => 'datasetId',
+        'query' => '{"variables":{"terms":{"variableType":["study"]}}}'
+      ),
+      'attributes' => array('class' =>'highlight btn btn-primary')
+    );
+
+    return l($text, MicaClientPathProvider::COVERAGE, $options);
+  }
+
+  static function search_harmonization_datasets($text)
+  {
+    $options = array(
+      'query' => array(
+        'type' => 'variables',
+        'query' => '{"variables":{"terms":{"variableType":["dataschema"]}}}'
+      ),
+      'attributes' => array('class' =>'highlight btn btn-primary')
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
+  static function coverage_harmonization_datasets($text)
+  {
+    $options = array(
+      'query' => array(
+        'group-by' => 'datasetId',
+        'query' => '{"variables":{"terms":{"variableType":["dataschema"]}}}'
+      ),
+      'attributes' => array('class' =>'highlight btn btn-primary')
+    );
+
+    return l($text, MicaClientPathProvider::COVERAGE, $options);
+  }
+
 }

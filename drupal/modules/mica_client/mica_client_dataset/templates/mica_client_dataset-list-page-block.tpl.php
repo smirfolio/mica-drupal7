@@ -35,8 +35,8 @@
           $studies_caption = $studies < 2 ? t('study') : t('studies');
           ?>
           <span>
-            <?php print ($variables === 0 ? '' : t('Includes ') .  MicaClientAnchorHelper::search_dataset_variables($variables, $dataset->id) . ' ' . $vars_caption) ?>
-            <?php print ($studies === 0 ? '' : t(' used in ') .  MicaClientAnchorHelper::search_dataset_studies($studies, $dataset->id) . ' ' . $studies_caption) ?>
+            <?php print ($variables === 0 ? '' : t('Includes ') .  MicaClientAnchorHelper::dataset_variables($variables, $dataset->id) . ' ' . $vars_caption) ?>
+            <?php print ($studies === 0 ? '' : t(' used in ') .  MicaClientAnchorHelper::dataset_studies($studies, $dataset->id) . ' ' . $studies_caption) ?>
         </span>
         </li>
 
