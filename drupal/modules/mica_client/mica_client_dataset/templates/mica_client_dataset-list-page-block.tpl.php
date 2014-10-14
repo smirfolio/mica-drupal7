@@ -1,6 +1,3 @@
-<?php
-dpm($dataset);
-?>
 <?php if (!empty($dataset)): ?>
   <div class="row lg-bottom-margin">
     <div class="col-md-2 col-xs-2 text-center">
@@ -32,15 +29,14 @@ dpm($dataset);
         <li>
           <?php
           $counts = $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'};
-          $variabes = $counts->variables;
-          $vars_caption = $variabes < 2 ? t('variable') : t('variables');
+          $variables = $counts->variables;
+          $vars_caption = $variables < 2 ? t('variable') : t('variables');
           $studies = $counts->studies;
           $studies_caption = $studies < 2 ? t('study') : t('studies');
           ?>
           <span>
-          <?php print t('Includes') ?> <a class=""
-                                          href=''><?php print $variabes ?></a> <?php print $vars_caption . t(' used in ') ?>
-            <a href=''><?php print $studies ?></a> <?php print $studies_caption ?>
+            <?php print ($variables === 0 ? '' : t('Includes ') .  MicaClientAnchorHelper::search_dataset_variables($variables, $dataset->id) . ' ' . $vars_caption) ?>
+            <?php print ($studies === 0 ? '' : t(' used in ') .  MicaClientAnchorHelper::search_dataset_studies($studies, $dataset->id) . ' ' . $studies_caption) ?>
         </span>
         </li>
 

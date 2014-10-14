@@ -14,11 +14,11 @@
   <div class="col-md-10 col-xs-10">
     <div>
       <h4>
-          <?php
-          $acronym = mica_client_commons_get_localized_field($network, 'acronym');
-          $name = mica_client_commons_get_localized_field($network, 'name');
-          print l($acronym == $name ? $acronym : $acronym . ' - ' . $name,
-            'mica/network/' . $network->id); ?>
+        <?php
+        $acronym = mica_client_commons_get_localized_field($network, 'acronym');
+        $name = mica_client_commons_get_localized_field($network, 'name');
+        print l($acronym == $name ? $acronym : $acronym . ' - ' . $name,
+          MicaClientPathProvider::network($network->id)); ?>
       </h4>
       <hr class="no-margin">
       <p class="md-top-margin">
@@ -33,9 +33,10 @@
         $counts = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
         $studies = $counts->studies;
         $caption = $studies < 2 ? t('study') : t('studies');
+        $line = $studies < 1 ? '' : t('Includes ') . MicaClientAnchorHelper::search_network_studies($studies, $network->id) . ' ' . $caption;
         ?>
         <span>
-          <?php print t('Includes') ?> <a class="" href=''><?php print $studies ?></a> <?php print $caption ?>
+          <?php print $line ?>
         </span>
       </li>
 

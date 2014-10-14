@@ -57,8 +57,8 @@
         $dataset_caption = $datasets < 2 ? "dataset" : "datasets";
         ?>
         <span>
-          <a class="" href=''><?php print $datasets ?></a> <?php print $dataset_caption ?>,
-          <a class="" href=''><?php print $vars ?></a> <?php print $var_caption ?>
+          <?php print ($datasets === 0 ? '' : MicaClientAnchorHelper::search_study_datasets($datasets, $study->id) . ' ' . $dataset_caption) ?>
+          <?php print ($vars === 0 ? '' : ', ' . MicaClientAnchorHelper::search_study_variables($vars, $study->id) . ' ' . $var_caption) ?>
         </span>
       </li>
 

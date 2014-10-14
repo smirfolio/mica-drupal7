@@ -17,6 +17,7 @@ include_once($path_module_protos . '/protos/Mica.php');
 include_once($path_module_protos . '/protos/MicaSearch.php');
 include_once("mica_client_commons_query_dto_builders.inc");
 include_once("mica_client_commons_query_response_wrappers.inc");
+include_once("mica_client_commons_resource_paths.inc");
 
 /**
  * Class MicaClient
@@ -164,9 +165,9 @@ class MicaClient {
 
   /**
    * Add authorization by cookies header.
-   * @param array $headers
    * @param $obibaid
    * @param $micasid
+   * @internal param array $headers
    * @return string
    */
   private function cookieHeaderValue($obibaid, $micasid) {
@@ -288,8 +289,6 @@ class MicaClient {
         return mica_client_commons_get_localized_field($entity, 'name');
       }
     }
-//dpm($type);
-//dpm($id);
 
     return NULL;
   }
