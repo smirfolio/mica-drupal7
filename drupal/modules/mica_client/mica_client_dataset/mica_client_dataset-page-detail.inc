@@ -15,7 +15,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
       // TODO fix limit=-1
-      $dataset_harmonizations_dto =  $dataset_resource->get_variables_harmonizations($dataset_type, $dataset_id, 0, 10000, 'index');
+      $dataset_harmonizations_dto = $dataset_resource->get_variables_harmonizations($dataset_type, $dataset_id, 0, 10000, 'index');
     }
 
     drupal_set_title(mica_client_commons_get_localized_field($dataset_dto, 'name'));
@@ -30,7 +30,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       'dataset_dto' => $dataset_dto,
       'dataset_type_dto' => $dataset_type_dto,
       'dataset_harmonizations_dto' => $dataset_harmonizations_dto,
-      'dataset_variables_aggs' => NULL,//mica_client_dataset_get_variables($dataset_dto->id),
+      'dataset_variables_aggs' => NULL, //mica_client_dataset_get_variables($dataset_dto->id),
     ));
   }
   else {
@@ -91,8 +91,29 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
         $found = FALSE;
         foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
           if ($variable_summary->resolver->studyId == $study_id) {
-            $status = strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status'));
-            $row[] = empty($status) ? '-' : $status;
+            $status = strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
+              'maelstrom',
+              'Mlstr_harmo'
+            )));
+            $harmonized_variable_id = $variable_harmonization->resolver->datasetId . ':' . $variable_harmonization->resolver->name . ':Harmonized:' . $study_id;
+            if (empty($status)) {
+              $row[] = l('-', 'mica/variable/'. $harmonized_variable_id);
+            }
+            elseif ($status == 'complete') {
+              $row[] = l('<span class="glyphicon glyphicon-ok-sign alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/'. $harmonized_variable_id,
+                array('html' => TRUE));
+            }
+            elseif ($status == 'impossible') {
+              $row[] = l('<span class="glyphicon glyphicon-remove-sign alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/'. $harmonized_variable_id,
+                array('html' => TRUE));
+            }
+            elseif ($status == 'undetermined') {
+              $row[] = l('<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>', 'mica/variable/'. $harmonized_variable_id,
+                array('html' => TRUE));
+            }
+            else {
+              $row[] = l('-', 'mica/variable/'. $harmonized_variable_id);
+            }
             $found = TRUE;
             break;
           }

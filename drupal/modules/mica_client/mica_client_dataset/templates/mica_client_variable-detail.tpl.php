@@ -96,7 +96,6 @@
           <?php endif; ?>
 
 
-
           </tbody>
         </table>
       </div>
@@ -188,31 +187,49 @@
     <h3><?php print t('Harmonization') ?></h3>
     <?php if ($variable_dto->variableType == 'Dataschema'): ?>
       <?php print mica_client_variable_get_harmonizations($variable_dto); ?>
-    <?php endif; ?>
+    <?php else: ?>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-xs-6 lg-right-indent">
+            <table class="table table-striped">
+              <tbody>
+              <tr>
+                <td><h5><?php print t('Status'); ?></h5></td>
+                <td>
+                  <?php if (empty($variable_harmonization['status'])): ?>
+                    -
+                  <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
+                    <span class="glyphicon glyphicon-ok-sign alert-success" title="<?php print t('Complete')?>"></span>
+                  <?php elseif ($variable_harmonization['status'] == 'impossible'): ?>
+                    <span class="glyphicon glyphicon-remove-sign alert-danger" title="<?php print t('Impossible')?>"></span>
+                  <?php elseif ($variable_harmonization['status'] == 'undetermined'): ?>
+                    <span class="glyphicon glyphicon-question-sign alert-warning" title="<?php print t('Undetermined')?>"></span>
+                  <?php endif ?>
+                </td>
+              </tr>
+              <tr>
+                <td><h5><?php print t('Comment'); ?></h5></td>
+                <td>
+                  <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : $variable_harmonization['comment']; ?></p>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
-    <?php if (!empty($variable_harmonization)): ?>
-      <h5><?php print t('Status'); ?></h5>
-      <p><?php print t($variable_harmonization['status']); ?></p>
+      <?php if (!empty($variable_harmonization['algorithm'])): ?>
+        <?php print $variable_harmonization['algorithm']; ?>
+      <?php else: ?>
+        <h5><?php print t('Script'); ?></h5>
+        <pre class="prettyprint lang-js">
+        <?php print $variable_harmonization['script']; ?>
+        </pre>
+      <?php endif; ?>
 
-      <h5><?php print t('Comment'); ?></h5>
-      <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : $variable_harmonization['comment']; ?></p>
-
-      <h5><?php print t('Script'); ?></h5>
-
-      <?php print $variable_harmonization['script']; ?>
     <?php endif; ?>
   </section>
 <?php endif; ?>
-
-<!--  <section>-->
-<!--    <div class="container-fluid">-->
-<!--      <div class="row">-->
-<!--        <div class="col-xs-6 lg-right-indent">-->
-<!--        </div>-->
-<!--        <div class="col-xs-6">-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </section>-->
 
 </article>

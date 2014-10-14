@@ -209,11 +209,13 @@ function mica_client_dataset_attributes_tab($attributes = NULL, $namespace = NUL
   return FALSE;
 }
 
-function _mica_client_variable_attributes_detail($variable, $field) {
+function _mica_client_variable_attributes_detail($variable, $name, $namespaces = array()) {
   if (!empty($variable->attributes)) {
     foreach ($variable->attributes as $attribute) {
-      if (!empty($attribute->name) && $attribute->name == $field) {
-        return mica_client_commons_get_localized_field($attribute, 'values');
+      if ((empty($namespaces) && empty($attribute->namespace)) || (is_array($namespaces) && in_array($attribute->namespace, $namespaces))) {
+        if (!empty($attribute->name) && $attribute->name == $name) {
+          return mica_client_commons_get_localized_field($attribute, 'values');
+        }
       }
     }
   }
