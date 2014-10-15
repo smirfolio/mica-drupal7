@@ -114,53 +114,53 @@
 <?php if (!empty($variable_dto->termAttributes)): ?>
 
   <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
-    <section>
-      <h3>
-        <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
-      </h3>
+    <?php if ($termAttributes->taxonomy->name != 'Mlstr_harmo'): ?>
+      <section>
+        <h3>
+          <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
+        </h3>
 
-      <p class="help-block">
-        <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>
-      </p>
+        <p class="help-block">
+          <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>
+        </p>
 
-      <table class="table table-striped">
-        <tbody>
-        <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
-          <tr>
-            <td>
-              <h5>
-                <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
-              </h5>
+        <table class="table table-striped">
+          <tbody>
+          <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
+            <tr>
+              <td>
+                <h5>
+                  <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
+                </h5>
 
-              <p class="help-block">
-                <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>
-              </p>
-            </td>
-
-            <td>
-              <?php if (count($termAttribute->terms == 1)): ?>
-                <p data-toggle="tooltip"
-                   title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
-                  <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
+                <p class="help-block">
+                  <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>
                 </p>
-              <?php else: ?>
-                <ul>
-                  <?php foreach ($termAttribute->terms as $term) : ?>
-                    <li data-toggle="tooltip"
-                        title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
-                      <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              <?php endif; ?>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-        </tbody>
-      </table>
+              </td>
 
-
-    </section>
+              <td>
+                <?php if (count($termAttribute->terms == 1)): ?>
+                  <p data-toggle="tooltip"
+                     title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
+                    <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
+                  </p>
+                <?php else: ?>
+                  <ul>
+                    <?php foreach ($termAttribute->terms as $term) : ?>
+                      <li data-toggle="tooltip"
+                          title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
+                        <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
+                      </li>
+                    <?php endforeach; ?>
+                  </ul>
+                <?php endif; ?>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+          </tbody>
+        </table>
+      </section>
+    <?php endif; ?>
   <?php endforeach; ?>
 <?php endif; ?>
 
@@ -199,11 +199,15 @@
                   <?php if (empty($variable_harmonization['status'])): ?>
                     -
                   <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
-                    <span class="glyphicon glyphicon-ok-sign alert-success" title="<?php print t('Complete')?>"></span>
-                  <?php elseif ($variable_harmonization['status'] == 'impossible'): ?>
-                    <span class="glyphicon glyphicon-remove-sign alert-danger" title="<?php print t('Impossible')?>"></span>
-                  <?php elseif ($variable_harmonization['status'] == 'undetermined'): ?>
-                    <span class="glyphicon glyphicon-question-sign alert-warning" title="<?php print t('Undetermined')?>"></span>
+                    <span class="glyphicon glyphicon-ok-sign alert-success" title="<?php print t('Complete') ?>"></span>
+                  <?php
+                  elseif ($variable_harmonization['status'] == 'impossible'): ?>
+                    <span class="glyphicon glyphicon-remove-sign alert-danger"
+                          title="<?php print t('Impossible') ?>"></span>
+                  <?php
+                  elseif ($variable_harmonization['status'] == 'undetermined'): ?>
+                    <span class="glyphicon glyphicon-question-sign alert-warning"
+                          title="<?php print t('Undetermined') ?>"></span>
                   <?php endif ?>
                 </td>
               </tr>
