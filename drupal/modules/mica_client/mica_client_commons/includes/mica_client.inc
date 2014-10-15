@@ -231,9 +231,11 @@ class MicaClient {
             empty($study_result->summaries) //
               ? $study_result->digests //
               : $study_result->summaries; //
+          $dataset_result = $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'};
           $_SESSION['variables']['datasets'] =
-            !empty($aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->digests) ?
-              $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}->digests : NULL;
+            empty($dataset_result->datasets)
+              ? $dataset_result->digests
+              : $dataset_result->datasets;
           $_SESSION['variables']['aggregations'] = $aggregation->aggs;
           $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
           $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
