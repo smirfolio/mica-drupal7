@@ -41,20 +41,22 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
 
 
 function mica_client_dataset_study_tables_table($dataset_type_dto) {
-  $study_summaries = array();
+  $study_tables = array();
   if (!empty($dataset_type_dto->studyTables)) {
     foreach ($dataset_type_dto->studyTables as $study_table) {
-      array_push($study_summaries, $study_table->studySummary);
+      array_push($study_tables, $study_table);
     }
   }
 
   if (!empty($dataset_type_dto->studyTable)) {
-    $study_table = $dataset_type_dto->studyTable;
-    array_push($study_summaries, $study_table->studySummary);
+    array_push($study_tables, $dataset_type_dto->studyTable);
   }
 
-  $rows = mica_client_study_study_summaries_table_rows($study_summaries);
+  $rows = mica_client_dataset_study_tables_rows($study_tables);
   $headers = mica_client_study_study_summaries_table_headers();
+  array_splice($headers, 2, 0, array(t('Population'), t('Data collection Event')));
+
+  dpm($headers);
 
   return theme(
     'table',
@@ -65,6 +67,30 @@ function mica_client_dataset_study_tables_table($dataset_type_dto) {
       'sticky' => FALSE
     )
   );
+}
+
+function mica_client_dataset_study_tables_rows($study_tables) {
+  $rows = array();
+  if (!empty($study_tables)) {
+    foreach ($study_tables as $study_table) {
+      $row = mica_client_study_study_summaries_table_row($study_table->studySummary);
+      $population_name = $study_table->populationId;
+      $dce_name = $study_table->dataCollectionEventId;
+      foreach($study_table->studySummary->populationSummaries as $population_summary) {
+        if ($population_summary->id == $study_table->populationId) {
+          $population_name = mica_client_commons_get_localized_field($population_summary, 'name');
+          foreach($population_summary->dataCollectionEventSummaries as $dce_summary) {
+            if ($dce_summary->id == $study_table->dataCollectionEventId) {
+              $dce_name = mica_client_commons_get_localized_field($dce_summary,'name');
+            }
+          }
+        }
+      }
+      array_splice($row, 2, 0, array($population_name, $dce_name));
+      $rows[] = $row;
+    }
+  }
+  return $rows;
 }
 
 function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto) {
@@ -97,22 +123,22 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
             )));
             $harmonized_variable_id = $variable_harmonization->resolver->datasetId . ':' . $variable_harmonization->resolver->name . ':Harmonized:' . $study_id;
             if (empty($status)) {
-              $row[] = l('-', 'mica/variable/'. $harmonized_variable_id);
+              $row[] = l('-', 'mica/variable/' . $harmonized_variable_id);
             }
             elseif ($status == 'complete') {
-              $row[] = l('<span class="glyphicon glyphicon-ok-sign alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/'. $harmonized_variable_id,
+              $row[] = l('<span class="glyphicon glyphicon-ok-sign alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
                 array('html' => TRUE));
             }
             elseif ($status == 'impossible') {
-              $row[] = l('<span class="glyphicon glyphicon-remove-sign alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/'. $harmonized_variable_id,
+              $row[] = l('<span class="glyphicon glyphicon-remove-sign alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
                 array('html' => TRUE));
             }
             elseif ($status == 'undetermined') {
-              $row[] = l('<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>', 'mica/variable/'. $harmonized_variable_id,
+              $row[] = l('<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
                 array('html' => TRUE));
             }
             else {
-              $row[] = l('-', 'mica/variable/'. $harmonized_variable_id);
+              $row[] = l('-', 'mica/variable/' . $harmonized_variable_id);
             }
             $found = TRUE;
             break;

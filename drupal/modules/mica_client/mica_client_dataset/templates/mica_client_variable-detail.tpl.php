@@ -37,14 +37,17 @@
                 </h5>
               </td>
               <td>
-                <p>
-                  <?php
-                  foreach ($variable_dto->studySummaries as $studySummary) {
-                    print l(mica_client_commons_get_localized_field($studySummary, 'name'), 'mica/study/' . $studySummary->id .
-                      '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($studySummary, 'name')));
-                  }
-                  ?>
-                </p>
+                <?php if ($variable_dto->variableType == 'Dataschema'): ?>
+                <ul>
+                  <?php foreach ($variable_dto->studySummaries as $studySummary): ?>
+                    <li>
+                      <?php print l(mica_client_commons_get_localized_field($studySummary, 'name'), 'mica/study/' . $studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($studySummary, 'name'))); ?>
+                    </li>
+                  <?php endforeach ?>
+                </ul>
+                <?php elseif(!empty($variable_dto->studySummaries)): ?>
+                  <?php print l(mica_client_commons_get_localized_field($variable_dto->studySummaries[0], 'name'), 'mica/study/' . $variable_dto->studySummaries[0]->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($variable_dto->studySummaries[0], 'name'))); ?>
+                <?php endif ?>
               </td>
             </tr>
           <?php endif; ?>
@@ -77,7 +80,7 @@
             <td><h5><?php print t('Variable Type'); ?></h5></td>
             <td>
               <p>
-                <?php print t($variable_dto->variableType); ?>
+                <?php print t('@type variable', array('@type' => $variable_dto->variableType)); ?>
                 <?php if ($variable_dto->variableType == 'Harmonized'): ?>
                   <?php
                   print '(' . l($variable_dto->name, 'mica/variable/' . $variable_dto->datasetId . ':' . $variable_dto->name
@@ -172,7 +175,7 @@
       <div class="col-xs-6 lg-right-indent">
 
         <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
-          <div id="txtblnk"> <?php print t('Please wait loading Statistics table....'); ?> </div>
+          <div id="txtblnk"> <?php print t('Please wait while fetching statistics....'); ?> </div>
         </div>
       </div>
       <div class="col-xs-6">
