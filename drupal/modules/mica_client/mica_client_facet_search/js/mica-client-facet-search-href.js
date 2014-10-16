@@ -185,7 +185,7 @@
 
               $.checkthebox($(this));
               var copy_chekbox = $(this).parent().clone();
-              var divtofind = $(this).parents("section:first").find(".chekedterms:first");
+              var divtofind = $(this).parents("section:first").find(".checkedterms:first");
               $("input[id=" + getAggregationMoniker(this) + "]").val($(this).attr("value"));
 
               copy_chekbox.find('.terms_stat').width($current_width_percent);

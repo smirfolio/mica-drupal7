@@ -11,7 +11,7 @@
         class="terms_field <?php print $type_string . $aggregation_facet; ?> unchecked"
         aggregation="<?php print $type_string . $aggregation_facet . '[]'; ?>"
         value="<?php print  $term->key; ?>">
-    <i style="color:<?php print $color; ?>" class="glyphicon glyphicon-unchecked"></i>
+    <i class="glyphicon glyphicon-unchecked"></i>
     <?php print  !empty($term->name) ? truncate_utf8($term->name, 35, TRUE, TRUE) : $term->key; ?></span>
 
   <span class="terms_count"><?php print  $term->count; ?></span>

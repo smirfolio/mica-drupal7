@@ -8,7 +8,7 @@
   </ul>
 
   <!-- Tab panes -->
-  <div class="tab-content search-facets">
+  <div class="tab-content">
     <div class="tab-pane active" id="variable-facet"> <?php print render($mica_client_variable); ?></div>
     <div class="tab-pane" id="study-facet"> <?php print  render($mica_client_study); ?></div>
 
