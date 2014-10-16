@@ -119,23 +119,27 @@ function mica_client_study_study_summaries_table_rows($study_summaries) {
   $rows = array();
   if (!empty($study_summaries)) {
     foreach ($study_summaries as $study_summary) {
-      $name = mica_client_commons_get_localized_field($study_summary, 'name');
-      $rows[] = array(
-        mica_client_commons_get_localized_field($study_summary, 'acronym'),
-        l($name, 'mica/study/' . $study_summary->id . '/' . mica_client_commons_to_slug($name)),
-        implode(', ', t($study_summary->designs)),
-        isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
-          isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
-        implode($study_summary->countries),
-      );
+      $rows[] = mica_client_study_study_summaries_table_row($study_summary);
     }
   }
   return $rows;
 }
 
+function mica_client_study_study_summaries_table_row($study_summary) {
+  $name = mica_client_commons_get_localized_field($study_summary, 'name');
+  return array(
+    l(mica_client_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id . '/' . mica_client_commons_to_slug($name)),
+    $name,
+    implode(', ', $study_summary->designs),
+    isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
+      isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
+    implode(', ', $study_summary->countries),
+  );
+}
+
 function mica_client_study_study_summaries_table_headers() {
   return array(
-    t('Short Name'),
+    t('Acronym'),
     t('Name'),
     t('Study Designs'),
     t('Target Number'),

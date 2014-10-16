@@ -56,14 +56,14 @@
           ),
         )); ?>
       </li>
-      <li class="<?php if (!empty($group_by) && $group_by == 'studyTableIds') print 'active' ?>" data-toggle="tooltip"
+      <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
           data-placement="top" title="<?php print t('Group by data collection event') ?>">
         <?php
         print l(t('Data Collection Event'), 'mica/coverage', array(
           'query' => array(
             array(
               'query' => $query,
-              'group-by' => 'studyTableIds'
+              'group-by' => 'dceIds'
             )
           ),
         )); ?>
