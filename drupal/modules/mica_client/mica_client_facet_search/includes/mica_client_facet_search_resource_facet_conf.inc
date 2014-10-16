@@ -135,7 +135,7 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
       'aggregation_facet' => $aggregation_facet,
       'type_string' => $type_string,
       'term' => !empty($term) ? $term : '',
-      'color' => !empty($color[$key]) ? $color[$key] : '#ce8483',
+      //'color' => !empty($color[$key]) ? $color[$key] : '#ce8483',
       'totalHits' => $totalHits,
       'totalCount' => $totalCount
     ));

@@ -10,7 +10,7 @@
         <?php print $title; ?>
       </a>
     </h2>
-    <div class="chekedterms clearfix"></div>
+    <div class="checkedterms clearfix"></div>
   <?php endif; ?>
   <?php print render($title_suffix); ?>
 

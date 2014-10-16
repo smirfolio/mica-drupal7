@@ -3,12 +3,10 @@
   line-height: @facet_line_height;
   padding: 0;
   margin-right: 20px;
-  background-color: #FAFAFA;
 
   /* current search */
   .block-current-search {
     padding-bottom: 10px;
-    //    background-color: #F6FBF4;
 
     h2 {
       margin: 5px;
@@ -50,9 +48,7 @@
   .block-mica-client-facet-search {
 
     .selected_item {
-
       color: gray;
-
     }
 
     h2 {
@@ -61,6 +57,7 @@
       margin: 0;
       padding: 2px 5px;
       background-color: @block_title_background_color;
+      border-left: 4px solid @well-border;
 
       a {
         background: url('../img/expanded.png') no-repeat scroll left center transparent;
@@ -108,9 +105,7 @@
     }
 
     .regular-checkbox + label.terms_checkbox {
-
       background-color: #fafafa;
-
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
       padding: 6px;
       border-radius: 3px;
@@ -124,7 +119,6 @@
 
     .regular-checkbox:checked + label.terms_checkbox {
       background-color: #e9ecee;
-
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
       color: #99a1a7;
     }
@@ -160,6 +154,9 @@
         padding-top: 7px;
         font-weight: normal;
         cursor: pointer;
+        i {
+          color: @link-color;
+        }
       }
 
       div.stat-container {
@@ -187,65 +184,12 @@
         margin-bottom: 0;
         border-bottom: rgb(202, 188, 188) dashed 1px;
       }
-
     }
-
-    div.chekedterms {
-      li {
-        margin-bottom: 0px;
-        border-bottom: rgb(202, 188, 188) dashed 1px;
-      }
-      span.terms_count {
-        position: relative;
-        float: right;
-        padding-right: 10px;
-//        padding-top: 7px
-      }
-
-      span.terms_field {
-        position: relative;
-        display: inline-block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        color: #1693c0;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      span.terms_stat {
-        background-color: transparent;
-        position: absolute;
-        height: 25px;
-        transition: width 1s;
-        max-width: 200px;
-      }
-      div.stat-container {
-        height: 25px;
-        width: 200px;
-        position: absolute;
-        transition: width 1s;
-        right: 0;
-        background-color: transparent;
-      }
-
-      label.span-checkbox {
-        position: relative;
-        display: block;
-        min-height: 25px;
-        padding-left: 15px;
-        padding-top: 5px;
-
-      }
-
-    }
-
   }
 
   /* range facets */
   .facet_terms_range {
     font-weight: normal;
-    margin-left: -10px;
     input.form-submit,
     .yui3-g,
     .range-box {
@@ -288,6 +232,14 @@
 
 .region-facets {
   .facet-bar;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+
+  #search-facets .tab-content {
+    border-left: 1px solid @well-border;
+    border-right: 1px solid @well-border;
+  }
 }
 
 #block-mica-mica-search-filters {
