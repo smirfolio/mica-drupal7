@@ -114,6 +114,7 @@ function mica_client_study_get_populations_detail($study_detail) {
              </svg>
                 ' . mica_client_commons_get_localized_field($population, 'name') . '
             </h4>';
+      $dce_uids = array();
       if (!empty($population->dataCollectionEvents)) {
         $dce_rows = mica_client_study_get_dce_table($population->dataCollectionEvents);
         uasort($dce_rows, 'mica_client_study_sort_dce');
@@ -129,9 +130,16 @@ function mica_client_study_get_populations_detail($study_detail) {
             'attributes' => array('id' => 'variables_overview')
           )
         );
-        $population['dce-modal'] = mica_client_study_get_dce_detail($study_detail->id, $population->dataCollectionEvents);
+        $population['dce-modal'] = mica_client_study_get_dce_detail($study_detail->id, $population->id, $population->dataCollectionEvents);
+        foreach ($population->dataCollectionEvents as $dce) {
+          $dce_uids[] = $study_detail->id . ':' . $population->id . ':' . $dce->id;
+        }
       }
-      $page_render_populations .= theme('mica_population_detail', array("context_population_detail" => $population));
+      $page_render_populations .= theme('mica_population_detail', array(
+        'study_id' => $study_detail->id,
+        'dce_uids' => $dce_uids,
+        'population' => $population
+      ));
     }
   }
 
@@ -144,19 +152,21 @@ function mica_client_study_get_populations_detail($study_detail) {
  * @param $dataCollectionEvents
  * @return string
  */
-function mica_client_study_get_dce_detail($study_id, $dataCollectionEvents) {
+function mica_client_study_get_dce_detail($study_id, $population_id, $dataCollectionEvents) {
   $page_render_dces = '';
   $themed_attachment = '';
-  foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
-    if (!empty($dce_wrapper->attachments)) {
-      foreach ($dce_wrapper->attachments as $attachment) {
+  foreach ($dataCollectionEvents as $dce) {
+    if (!empty($dce->attachments)) {
+      foreach ($dce->attachments as $attachment) {
         // TODO this should be addressed from the server-side
 //        $themed_attachment .= mica_client_study_get_attachment_file($dce_wrapper->id, $attachment, 'study');
       }
     }
     $page_render_dces .= theme('mica_dce_detail', array(
       'study_id' => $study_id,
-      'dce' => $dce_wrapper,
+      'population_id' => $population_id,
+      'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
+      'dce' => $dce,
       'attachements' => $themed_attachment
     ));
   }
