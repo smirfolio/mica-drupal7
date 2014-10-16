@@ -6245,7 +6245,7 @@ div.charts {
   color: gray;
 }
 .facet-bar .block-mica-client-facet-search h2 {
-  font-size: 17px;
+  font-size: 14px;
   text-transform: uppercase;
   margin: 0;
   padding: 2px 5px;
@@ -6526,7 +6526,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   color: gray;
 }
 .region-facets .block-mica-client-facet-search h2 {
-  font-size: 17px;
+  font-size: 14px;
   text-transform: uppercase;
   margin: 0;
   padding: 2px 5px;

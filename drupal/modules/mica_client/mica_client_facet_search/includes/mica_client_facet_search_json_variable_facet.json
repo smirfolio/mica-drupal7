@@ -1,9 +1,4 @@
 {
-    "entityType": {
-        "title": "dataset-ENTITY TYPE",
-        "key": "entityType",
-        "aggs": "entityType"
-    },
     "socio_eco": {
         "title": "dataset-Socio Eco",
         "key": "socio_eco",
@@ -49,6 +44,46 @@
         "key": "reproduction",
         "aggs": "attributes-Mlstr_area__Reproduction-und"
     },
+    "infancy_childhood": {
+        "title": "dataset-Infancy_childhood",
+        "key": "infancy_childhood",
+        "aggs": "attributes-Mlstr_area__Infancy_childhood-und"
+    },
+    "end_of_life": {
+        "title": "dataset-End of life",
+        "key": "end_of_life",
+        "aggs": "attributes-Mlstr_area__End_of_life-und"
+    },
+    "physical_measures": {
+        "title": "dataset-Physical measures",
+        "key": "physical_measures",
+        "aggs": "attributes-Mlstr_area__Physical_measures-und"
+    },
+    "cognitive_psy": {
+        "title": "dataset-Cognitive psycho measures",
+        "key": "cognitive_psy",
+        "aggs": "attributes-Mlstr_area__Cognitive_psychological_measures-und"
+    },
+    "laboratory_measures": {
+        "title": "dataset-Laboratory measures",
+        "key": "laboratory_measures",
+        "aggs": "attributes-Mlstr_area__Laboratory_measures-und"
+    },
+    "social_environment": {
+        "title": "dataset-Social environment",
+        "key": "social_environment",
+        "aggs": "attributes-Mlstr_area__Social_environment-und"
+    },
+    "physical_environment": {
+        "title": "dataset-Physical environment",
+        "key": "physical_environment",
+        "aggs": "attributes-Mlstr_area__Physical_environment-und"
+    },
+    "administrative_info": {
+        "title": "dataset-Administrative information",
+        "key": "administrative_info",
+        "aggs": "attributes-Mlstr_area__Administrative_information-und"
+    },
     "harmo_status": {
         "title": "dataset-HARMO STATUS",
         "key": "harmo_status",
@@ -59,10 +94,10 @@
         "key": "variableType",
         "aggs": "variableType"
     },
-    "repeatable": {
-        "title": "dataset-REPEATABLE",
-        "key": "repeatable",
-        "aggs": "repeatable"
+    "entityType": {
+        "title": "dataset-ENTITY TYPE",
+        "key": "entityType",
+        "aggs": "entityType"
     },
     "valueType": {
         "title": "dataset-VALUE TYPE",
@@ -75,12 +110,17 @@
         "aggs": "occurrenceGroup"
     },
     "studyIds": {
-        "title": "Study-Studies",
+        "title": "Study-STUDY",
         "key": "studyIds",
         "aggs": "studyIds"
     },
+    "dceIds": {
+        "title": "Study-Data Collection Event",
+        "key": "dceIds",
+        "aggs": "dceIds"
+    },
     "datasetId": {
-        "title": "dataset-DATASETS",
+        "title": "dataset-DATASET",
         "key": "datasetId",
         "aggs": "datasetId"
     }
