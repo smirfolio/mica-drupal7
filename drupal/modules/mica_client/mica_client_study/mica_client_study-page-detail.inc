@@ -103,17 +103,10 @@ function mica_client_study_get_timeline_detail($study_detail) {
  * */
 
 function mica_client_study_get_populations_detail($study_detail) {
-  $page_render_populations = '';
+  $page_render_populations = array();
 
   if (!empty($study_detail->populations)) {
     foreach ($study_detail->populations as $population) {
-      $page_render_populations .= '
-            <h4>
-             <svg width="25" height="25" style="vertical-align: bottom;">
-                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" style="fill:#9a3034;"> </rect>
-             </svg>
-                ' . mica_client_commons_get_localized_field($population, 'name') . '
-            </h4>';
       $dce_uids = array();
       if (!empty($population->dataCollectionEvents)) {
         $dce_rows = mica_client_study_get_dce_table($population->dataCollectionEvents);
@@ -135,11 +128,14 @@ function mica_client_study_get_populations_detail($study_detail) {
           $dce_uids[] = $study_detail->id . ':' . $population->id . ':' . $dce->id;
         }
       }
-      $page_render_populations .= theme('mica_population_detail', array(
-        'study_id' => $study_detail->id,
-        'dce_uids' => $dce_uids,
-        'population' => $population
-      ));
+      $page_render_populations[$population->id] = array(
+        'data' => $population,
+        'html' => theme('mica_population_detail', array(
+          'study_id' => $study_detail->id,
+          'dce_uids' => $dce_uids,
+          'population' => $population
+        ))
+      );
     }
   }
 

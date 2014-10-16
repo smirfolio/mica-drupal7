@@ -7558,6 +7558,9 @@ img.imageThumb {
 .no-margin {
   margin: 0;
 }
+.no-top-margin {
+  margin-top: 0;
+}
 .list-no-style {
   list-style: none;
   padding: 0;

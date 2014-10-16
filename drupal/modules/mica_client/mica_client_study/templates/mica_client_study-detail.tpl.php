@@ -365,7 +365,34 @@
 <?php if (!empty($populations)): ?>
   <section>
     <h3><?php print t('Populations'); ?></h3>
-    <?php print $populations; ?>
+    <?php if (count($populations) == 1): ?>
+      <?php print array_pop($populations)['html']; ?>
+    <?php else: ?>
+
+      <div class="row">
+        <div class="col-xs-2">
+          <ul class="nav nav-pills nav-stacked" role="tablist">
+            <?php foreach ($populations as $key => $population): ?>
+              <li <?php if ($key == array_keys($populations)[0]) print 'class="active"'; ?>>
+                <a href="#<?php print $key; ?>" role="tab" data-toggle="pill">
+                  <?php print mica_client_commons_get_localized_field($population['data'], 'name'); ?>
+                </a>
+              </li>
+              </li>
+            <?php endforeach ?>
+          </ul>
+        </div>
+        <div class="col-xs-10">
+          <div class="tab-content indent">
+            <?php foreach ($populations as $key => $population): ?>
+              <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) print 'active'; ?>" id="<?php print $key; ?>">
+                <?php print $population['html']; ?>
+              </div>
+            <?php endforeach ?>
+          </div>
+        </div>
+      </div>
+    <?php endif ?>
   </section>
 <?php endif; ?>
 
