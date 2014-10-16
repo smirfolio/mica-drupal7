@@ -2,38 +2,47 @@
 //dpm($population);
 ?>
 
-  <div>
-    <?php if (!empty($population->description)): ?>
-      <p class="pull-left">
-        <?php print mica_client_commons_get_localized_field($population, 'description'); ?>
-      </p>
-    <?php endif; ?>
 
-    <div class="pull-right md-bottom-margin">
-      <?php
-      print l(t('Search Variables'), 'mica/search',
-        array(
-          'query' => array(
-            'type' => 'variables',
-            'query' => '{"variables":{"terms":{"dceIds":["' . implode('","', $dce_uids) . '"]}}}'
-          ),
-          'attributes' => array('class' => 'btn btn-primary')
-        ));
-      ?>
-      <?php
-      print l(t('Coverage'), 'mica/coverage',
-        array(
-          'query' => array(
-            'type' => 'variables',
-            'query' => '{"variables":{"terms":{"dceIds":["' . implode('","', $dce_uids) . '"]}}}'
-          ),
-          'attributes' => array('class' => 'btn btn-primary indent')
-        ));
-      ?>
-    </div>
+
+  <div>
+    <h4 class="pull-left no-top-margin">
+      <?php print  mica_client_commons_get_localized_field($population, 'name') ?>
+    </h4>
+
+    <?php if (!empty($dce_uids)): ?>
+      <div class="pull-right md-bottom-margin">
+        <?php
+        print l(t('Search Variables'), 'mica/search',
+          array(
+            'query' => array(
+              'type' => 'variables',
+              'query' => '{"variables":{"terms":{"dceIds":["' . implode('","', $dce_uids) . '"]}}}'
+            ),
+            'attributes' => array('class' => 'btn btn-primary')
+          ));
+        ?>
+        <?php
+        print l(t('Coverage'), 'mica/coverage',
+          array(
+            'query' => array(
+              'type' => 'variables',
+              'query' => '{"variables":{"terms":{"dceIds":["' . implode('","', $dce_uids) . '"]}}}'
+            ),
+            'attributes' => array('class' => 'btn btn-primary indent')
+          ));
+        ?>
+      </div>
+    <?php endif ?>
+
   </div>
 
   <div class="clearfix"></div>
+
+<?php if (!empty($population->description)): ?>
+  <p>
+    <?php print mica_client_commons_get_localized_field($population, 'description'); ?>
+  </p>
+<?php endif; ?>
 
   <div class="container-fluid">
     <div class="row">

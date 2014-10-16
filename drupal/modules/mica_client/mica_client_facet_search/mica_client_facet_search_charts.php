@@ -137,6 +137,7 @@ function mica_client_facet_search_pie_chart($labels, $data, $title, $width = 250
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
+    '#colors' => mica_client_facet_search_charts_colors(),
     '#width' => $width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,
@@ -160,6 +161,7 @@ function mica_client_facet_search_mini_column_chart($labels, $data, $title, $wid
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
+    '#colors' => mica_client_facet_search_charts_colors(),
     '#width' => $width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,
@@ -196,6 +198,7 @@ function mica_client_facet_search_stacked_column_chart($labels, $data, $title, $
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
+    '#colors' => mica_client_facet_search_charts_colors(),
     '#stacking' => TRUE,
     '#width' => $width,
     '#height' => $height,
@@ -217,4 +220,53 @@ function mica_client_facet_search_stacked_column_chart($labels, $data, $title, $
     //'#labels_rotation' => 90,
   );
   return $chart;
+}
+
+function mica_client_facet_search_charts_colors() {
+  // http://paletton.com/#uid=63G0A0kgXCa57FeaZFGlFCCqIHv
+  return array(
+    '#6285BC',
+    '#59BE9A',
+    '#7D66C1',
+    '#FFCE78',
+
+    '#88A0C5',
+    '#83C7AF',
+    '#9C8CCA',
+    '#FFDFA8',
+
+    '#4976BD',
+    '#3EBF92',
+    '#6B4EC2',
+    '#FFC052',
+
+    '#A8B3C4',
+    '#A6C6BB',
+    '#B3ACC9',
+    '#FFF0D6',
+
+    '#316CCA',
+    '#22CC90',
+    '#5B35CE',
+    '#FFB22A'
+  );
+}
+
+function mica_client_facet_search_charts_gray_colors() {
+  return array(
+    '#111',
+    '#333',
+    '#555',
+    '#777',
+    '#999',
+    '#bbb',
+    '#ddd',
+    '#222',
+    '#444',
+    '#666',
+    '#888',
+    '#aaa',
+    '#ccc',
+    '#eee',
+  );
 }
