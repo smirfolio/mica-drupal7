@@ -24,7 +24,7 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
     case 'search-datasetId' :
       $aggs = array();
 
-      $totalDataset = count($_SESSION[$type]['datasets']);
+      $totalDataset = empty($_SESSION[$type]['datasets']) ? 0 : count($_SESSION[$type]['datasets']);
       $i = 0;
       if (!empty($_SESSION[$type]['datasets'])) {
         foreach ($_SESSION[$type]['datasets'] as $dataset) {
@@ -40,7 +40,7 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
     case 'search-networkId' :
       $aggs = array();
 
-      $totalDataset = count($_SESSION[$type]['networks']);
+      $totalDataset = empty($_SESSION[$type]['networks']) ? 0 : count($_SESSION[$type]['networks']);
       $i = 0;
       if (!empty($_SESSION[$type]['networks'])) {
         foreach ($_SESSION[$type]['networks'] as $network) {
@@ -82,8 +82,12 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
   $aggregation_facet = NULL;
 
   $type_string = $type . ':';
-  $totalHits = !empty($type) ? $_SESSION[$type]['aggregations']['totalHits'] : NULL;
-  $totalCount = !empty($type) ? $_SESSION[$type]['aggregations']['totalCount'] : NULL;
+  $totalHits = NULL;
+  $totalCount = NULL;
+  if (!empty($type) && !empty($_SESSION[$type]['aggregations'])) {
+    $totalHits = $_SESSION[$type]['aggregations']['totalHits'];
+    $totalCount = $_SESSION[$type]['aggregations']['totalCount'];
+  }
 
   if (!empty($block_delta)) {
     //  dpm(mica_client_commons_get_dto_facet_aggs($block_delta, $type));
