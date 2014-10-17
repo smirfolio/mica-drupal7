@@ -6,7 +6,7 @@
 
 <?php if (!empty($vocabulary_coverage->hits)): ?>
   <?php $has_coverage = TRUE; ?>
-  <h4>
+  <h4 id="<?php print $taxonomy->name . '-' . $vocabulary_coverage->vocabulary->name; ?>">
     <?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'); ?>
   </h4>
 
