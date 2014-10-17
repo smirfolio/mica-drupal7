@@ -95,6 +95,8 @@ class MicaSearchResource extends MicaClient {
   }
 
   public function search_variables() {
+    unset($_SESSION['variables']);
+    unset($_SESSION['studies']);
     $data_response = $this->_search_resource();
     if (!empty($data_response->variableResultDto)) {
       $dto_data_response = $data_response->variableResultDto;
@@ -109,6 +111,8 @@ class MicaSearchResource extends MicaClient {
   }
 
   public function search_studies() {
+    unset($_SESSION['variables']);
+    unset($_SESSION['studies']);
     $data_response = $this->_search_resource();
     if (!empty($data_response->studyResultDto)) {
       $dto_data_response = $data_response->studyResultDto;
@@ -131,6 +135,8 @@ class MicaSearchResource extends MicaClient {
   }
 
   public function search_networks() {
+    unset($_SESSION['variables']);
+    unset($_SESSION['studies']);
     $data_response = $this->_search_resource();
     if (!empty($data_response->networkResultDto)) {
       $dto_data_response = $data_response->networkResultDto;
@@ -148,6 +154,8 @@ class MicaSearchResource extends MicaClient {
   }
 
   public function search_datasets() {
+    unset($_SESSION['variables']);
+    unset($_SESSION['studies']);
     $data_response = $this->_search_resource();
     if (!empty($data_response->datasetResultDto)) {
       $dto_data_response = $data_response->datasetResultDto;

@@ -22,36 +22,10 @@ function mica_client_facet_search_resource_return_facets($dto_type = NULL) {
 function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
   switch ($tab_block) {
     case 'search-datasetId' :
-      $aggs = array();
-
-      $totalDataset = count($_SESSION[$type]['datasets']);
-      $i = 0;
-      if (!empty($_SESSION[$type]['datasets'])) {
-        foreach ($_SESSION[$type]['datasets'] as $dataset) {
-          $values_obj = new stdClass();
-          $values_obj->key = $dataset->id;
-          $values_obj->count = $totalDataset;
-          $aggs[$i] = $values_obj;
-          $i++;
-        }
-      }
-      $facet_build[$tab_block]['datasetId']['term'] = $aggs;
+      $facet_build[$tab_block]['datasetId']['term'] = mica_client_facet_search_get_datasets();
       return $facet_build[$tab_block];
     case 'search-networkId' :
-      $aggs = array();
-
-      $totalDataset = count($_SESSION[$type]['networks']);
-      $i = 0;
-      if (!empty($_SESSION[$type]['networks'])) {
-        foreach ($_SESSION[$type]['networks'] as $network) {
-          $values_obj = new stdClass();
-          $values_obj->key = $network->id;
-          $values_obj->count = $totalDataset;
-          $aggs[$i] = $values_obj;
-          $i++;
-        }
-      }
-      $facet_build[$tab_block]['networkId']['term'] = $aggs;
+      $facet_build[$tab_block]['networkId']['term'] = mica_client_facet_search_get_networks();
       return $facet_build[$tab_block];
   }
 
@@ -82,8 +56,12 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
   $aggregation_facet = NULL;
 
   $type_string = $type . ':';
-  $totalHits = !empty($type) ? $_SESSION[$type]['aggregations']['totalHits'] : NULL;
-  $totalCount = !empty($type) ? $_SESSION[$type]['aggregations']['totalCount'] : NULL;
+  $totalHits = NULL;
+  $totalCount = NULL;
+  if (!empty($type) && !empty($_SESSION[$type]['aggregations'])) {
+    $totalHits = $_SESSION[$type]['aggregations']['totalHits'];
+    $totalCount = $_SESSION[$type]['aggregations']['totalCount'];
+  }
 
   if (!empty($block_delta)) {
     //  dpm(mica_client_commons_get_dto_facet_aggs($block_delta, $type));
@@ -135,7 +113,6 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
       'aggregation_facet' => $aggregation_facet,
       'type_string' => $type_string,
       'term' => !empty($term) ? $term : '',
-      //'color' => !empty($color[$key]) ? $color[$key] : '#ce8483',
       'totalHits' => $totalHits,
       'totalCount' => $totalCount
     ));
@@ -159,4 +136,41 @@ function mica_client_facet_search_get_range_field($fields_terms, $type_string, $
   return $items;
 }
 
+function mica_client_facet_search_get_datasets() {
+  $datasets = array();
+  if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
+    $aggs = $_SESSION['variables']['aggregations'];
+    array_filter($aggs, function($agg) use(&$datasets) {
+      if ($agg instanceof stdClass && $agg->aggregation === 'datasetId') {
+        $datasets = $agg->{'obiba.mica.TermsAggregationResultDto.terms'};
+        return true;
+      }
+    });
+  }
+
+  return $datasets;
+}
+
+function mica_client_facet_search_get_networks() {
+  $networks = array();
+  if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['networks'])) {
+    $studies_networks = $_SESSION['studies']['networks'];
+    array_filter($studies_networks, function(stdClass $studies_network) use(&$networks) {
+
+      if (empty($studies_network->{'obiba.mica.NetworkDigestDto.studies'})) {
+        $study_ids = $studies_network->studyIds;
+      } else {
+        $study_ids = $studies_network->{'obiba.mica.NetworkDigestDto.studies'}->ids;
+      }
+
+      $network = new stdClass();
+      $network->key = $studies_network->id;
+      $network->count = count($study_ids);
+      array_push($networks, $network);
+      return true;
+    });
+  }
+
+  return $networks;
+}
 

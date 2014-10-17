@@ -5,25 +5,16 @@
 
 <div id="search-result">
   <ul class="nav nav-tabs" role="tablist" id="result-search">
-    <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
+    <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
         <small>
-          <?php if (!empty($variable_totalHits)) : ?>
-            - <?php print $variable_totalHits; ?>
+          <?php if (!empty($network_totalHits)) : ?>
+            - <?php print $network_totalHits; ?>
           <?php else : ?>
             - <?php print 0; ?>
           <?php endif; ?>
         </small>
-      </a></li>
-
-    <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
-        <small>
-          <?php if (!empty($dataset_totalHits)) : ?>
-            - <?php print $dataset_totalHits; ?>
-          <?php else : ?>
-            - <?php print 0; ?>
-          <?php endif; ?>
-        </small>
-      </a></li>
+      </a>
+    </li>
 
     <li><a href="#studies" role="tab"> <?php print t('Studies') ?>
         <small>
@@ -33,17 +24,31 @@
             - <?php print 0; ?>
           <?php endif; ?>
         </small>
-      </a></li>
+      </a>
+    </li>
 
-    <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
+    <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
         <small>
-          <?php if (!empty($network_totalHits)) : ?>
-            - <?php print $network_totalHits; ?>
+          <?php if (!empty($dataset_totalHits)) : ?>
+            - <?php print $dataset_totalHits; ?>
           <?php else : ?>
             - <?php print 0; ?>
           <?php endif; ?>
         </small>
-      </a></li>
+      </a>
+    </li>
+
+    <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
+        <small>
+          <?php if (!empty($variable_totalHits)) : ?>
+            - <?php print $variable_totalHits; ?>
+          <?php else : ?>
+            - <?php print 0; ?>
+          <?php endif; ?>
+        </small>
+      </a>
+    </li>
+
   </ul>
 
   <!-- Tab panes -->
@@ -70,6 +75,7 @@
               ),
             )); ?>
           </p>
+
           <div class="clearfix"/>
           <?php print $variables_result['data']; ?>
         </section>
@@ -95,6 +101,7 @@
               ),
             )); ?>
           </p>
+
           <div class="clearfix"/>
           <?php print $datasets['data']; ?>
         </section>
@@ -123,6 +130,7 @@
               ),
             )); ?>
           </p>
+
           <div class="clearfix"/>
           <?php print $studies['data']; ?>
         </section>
@@ -148,6 +156,7 @@
               ),
             )); ?>
           </p>
+
           <div class="clearfix"/>
           <?php print $networks['data']; ?>
         </section>

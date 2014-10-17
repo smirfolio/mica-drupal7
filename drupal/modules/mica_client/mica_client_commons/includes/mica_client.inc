@@ -217,12 +217,8 @@ class MicaClient {
 
 
   protected function session_facets_builder($aggregations) {
-    if (!empty($aggregations->variableResultDto)) {
-      unset($_SESSION['variables']);
-    }
-    if (!empty($aggregations->studyResultDto)) {
-      unset($_SESSION['studies']);
-    }
+    unset($_SESSION['variables']);
+    unset($_SESSION['studies']);
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if (!empty($aggregation->totalHits)) {
         if ($type_aggregations == 'variableResultDto') {
@@ -241,9 +237,11 @@ class MicaClient {
           $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
         }
         if ($type_aggregations == 'studyResultDto') {
+          $network_result = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
           $_SESSION['studies']['networks'] =
-            !empty($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->digests) ?
-              $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->digests : NULL;
+            empty($network_result->digests)
+              ? $network_result->networks
+              : $network_result->digests;
 
           $variable_studies_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
@@ -296,25 +294,27 @@ class MicaClient {
   }
 
   static function has_entity_by_id_aggregation($facet) {
-    foreach ($_SESSION['studies']['aggregations'] as $entity) {
-      if (!empty($entity->aggregation) && $entity->aggregation == $facet) {
-        if (!empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'}) ||
-          !empty($entity->{'obiba.mica.StatsAggregationResultDto.stats'})
-        ) {
-          return TRUE;
-        }
-        else {
-          return FALSE;
+    if (!empty($_SESSION['studies']['aggregations'])) {
+      foreach ($_SESSION['studies']['aggregations'] as $entity) {
+        if (!empty($entity->aggregation) && $entity->aggregation == $facet) {
+          if (!empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'}) ||
+            !empty($entity->{'obiba.mica.StatsAggregationResultDto.stats'})
+          ) {
+            return TRUE;
+          } else {
+            return FALSE;
+          }
         }
       }
     }
-    foreach ($_SESSION['variables']['aggregations'] as $entity) {
-      if (!empty($entity->aggregation) && $entity->aggregation == $facet) {
-        if (!empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'})) {
-          return TRUE;
-        }
-        else {
-          return FALSE;
+    if (!empty($_SESSION['studies']['aggregations'])) {
+      foreach ($_SESSION['variables']['aggregations'] as $entity) {
+        if (!empty($entity->aggregation) && $entity->aggregation == $facet) {
+          if (!empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+            return TRUE;
+          } else {
+            return FALSE;
+          }
         }
       }
     }

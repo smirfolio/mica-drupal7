@@ -311,9 +311,11 @@ function mica_client_facet_search_variable_page_search() {
       case  'variables' :
         $variables = $search_resources->search_variables();
         extract(mica_client_get_hits_entities_variable($variables), EXTR_OVERWRITE);
-        $variable_charts = theme('mica_client_facet_search_charts', array(
-          'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
-        ));
+        if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
+          $variable_charts = theme('mica_client_facet_search_charts', array(
+            'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
+          ));
+        }
         break;
     }
 

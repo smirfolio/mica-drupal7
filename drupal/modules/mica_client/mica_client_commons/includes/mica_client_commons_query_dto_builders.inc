@@ -272,13 +272,52 @@ class FilteredQueryDtoBuilder extends AbstractDtoBuilder
   }
 }
 
+class SortDtoBuilder extends AbstractDtoBuilder {
+
+  private function __construct()
+  {
+    $this->dto = new \obiba\mica\QueryDto\SortDto();
+  }
+
+  static function newBuilder()
+  {
+    return new SortDtoBuilder();
+  }
+
+  function field($field)
+  {
+    $this->dto->setField($field);
+    return $this;
+  }
+
+  function orderAsc()
+  {
+    $this->dto->setOrder(\obiba\mica\QueryDto\SortDto\Order::ASC);
+    return $this;
+  }
+
+  function orderDesc()
+  {
+    $this->dto->setOrder(\obiba\mica\QueryDto\SortDto\Order::DESC);
+    return $this;
+  }
+
+  function build() {
+    return $this->dto;
+  }
+}
+
 class QueryDtoBuilder extends AbstractDtoBuilder
 {
-  private function __construct($from, $size, $group_by)
+  private function __construct($from, $size, $sort_field, $group_by)
   {
     $this->dto = new \obiba\mica\QueryDto();
     $this->dto->setFrom($from);
     $this->dto->setSize($size);
+    if (!empty($sort_field)) {
+      $this->dto->setSort(SortDtoBuilder::newBuilder()->field($sort_field)->build());
+    }
+
     if (!empty($group_by)) {
       if (is_array($group_by)) {
         $this->dto->setAggsBy($group_by);
@@ -289,9 +328,9 @@ class QueryDtoBuilder extends AbstractDtoBuilder
     }
   }
 
-  static function newBuilder($from, $size, $group_by)
+  static function newBuilder($from, $size, $sort_field, $group_by)
   {
-    return new QueryDtoBuilder($from, $size, $group_by);
+    return new QueryDtoBuilder($from, $size, $sort_field, $group_by);
   }
 
   function filteredQuery(\obiba\mica\FilteredQueryDto $dto)
@@ -320,12 +359,14 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
   const NETWORKS = 'networks';
 
   private $builderMap = NULL;
+  private $defaultSortMap = NULL;
 
   private function __construct($data, $defaultSize)
   {
     $this->dto = new \obiba\mica\JoinQueryDto();
     $this->builderMap = array();
     $this->defaultSize = $defaultSize;
+    $this->initializeDefaultSortMap();
     if (!empty($data)) $this->parseData($data);
   }
 
@@ -336,9 +377,10 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
 
   function documentQuery($type, $from, $size, $group_by = NULL)
   {
+    $defaultSortField = $this->defaultSortMap[$type];
     $this->setQuery($type, array_key_exists($type, $this->builderMap) //
-      ? $this->createQuery($this->builderMap[$type], $from, $size, $group_by) //
-      : QueryDtoBuilder::newBuilder($from, $size, $group_by)->build() //
+      ? $this->createQuery($this->builderMap[$type], $from, $size, $defaultSortField, $group_by) //
+      : QueryDtoBuilder::newBuilder($from, $size, $defaultSortField, $group_by)->build() //
     );
 
     foreach ($this->builderMap as $builderType => $builders) {
@@ -399,11 +441,24 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
   }
 
 
-  private function createQuery($builders, $from, $size, $group_by = NULL)
+  private function createQuery($builders, $from, $size, $sort_field, $group_by = NULL)
   {
-    return QueryDtoBuilder::newBuilder($from, $size, $group_by)->filteredQueryBuilder(
+    return QueryDtoBuilder::newBuilder($from, $size, $sort_field, $group_by)->filteredQueryBuilder(
       FilteredQueryDtoBuilder::newBuilder()->filterBuilder(
         BoolFilterQueryDtoBuilder::newBuilder()->mustBuilders($builders)))->build();
+  }
+
+  private function initializeDefaultSortMap()
+  {
+    global $language;
+    $lang = $language->language;
+
+    $this->defaultSortMap = array( //
+      self::VARIABLES => "name", //
+      self::DATASETS => "acronym.".$lang, //
+      self::STUDIES => "acronym.".$lang, //
+      self::NETWORKS => "acronym.".$lang //
+    );
   }
 
 
