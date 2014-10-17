@@ -24,6 +24,7 @@
       </div>
     </div>
   </div>
+
   <div id="refresh-list">
     <?php if (!empty($list_networks)): ?>
       <?php print render($list_networks); ?>
