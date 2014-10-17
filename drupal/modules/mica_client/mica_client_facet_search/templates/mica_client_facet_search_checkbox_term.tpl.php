@@ -10,7 +10,7 @@
   <span id="checkthebox"
         class="terms_field <?php print $type_string . $aggregation_facet; ?> unchecked"
         aggregation="<?php print $type_string . $aggregation_facet . '[]'; ?>"
-        value="<?php print  $term->key; ?>">
+        value="<?php print  $term->key; ?>"
         title="<?php print empty($term->name) || strlen($term->name) < 35 ? '' : $term->name ?>">
     <i class="glyphicon glyphicon-unchecked"></i>
     <?php print  !empty($term->name) ? truncate_utf8($term->name, 35, TRUE, TRUE) : $term->key; ?></span>

@@ -237,9 +237,11 @@ class MicaClient {
           $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
         }
         if ($type_aggregations == 'studyResultDto') {
+          $network_result = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
           $_SESSION['studies']['networks'] =
-            !empty($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->digests) ?
-              $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->digests : NULL;
+            empty($network_result->digests)
+              ? $network_result->networks
+              : $network_result->digests;
 
           $variable_studies_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
