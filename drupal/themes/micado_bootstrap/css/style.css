@@ -6944,6 +6944,28 @@ ul.facet-query-list li span:hover {
 .i-obiba-D-h:before {
   content: "\e602";
 }
+.affix-sidebar {
+  margin-right: -585px;
+  float: right !important;
+}
+.affix-sidebar a {
+  color: #737373;
+}
+.affix-sidebar .nav {
+  width: 200px;
+}
+.affix-sidebar .nav .nav > li > a {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.affix-sidebar .active > a {
+  color: #563d7c;
+  background-color: transparent;
+  border-left: 2px solid #563d7c;
+}
 html.overlay-open .navbar-fixed-top {
   z-index: 400;
 }

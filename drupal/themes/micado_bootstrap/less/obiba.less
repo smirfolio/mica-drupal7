@@ -1,33 +1,31 @@
 @font-face {
-	font-family: 'obiba';
-	src:url('../fonts/obiba.eot?vf05fh');
-	src:url('../fonts/obiba.eot?#iefixvf05fh') format('embedded-opentype'),
-		url('../fonts/obiba.woff?vf05fh') format('woff'),
-		url('../fonts/obiba.ttf?vf05fh') format('truetype'),
-		url('../fonts/obiba.svg?vf05fh#obiba') format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'obiba';
+  src: url('../fonts/obiba.eot?vf05fh');
+  src: url('../fonts/obiba.eot?#iefixvf05fh') format('embedded-opentype'), url('../fonts/obiba.woff?vf05fh') format('woff'), url('../fonts/obiba.ttf?vf05fh') format('truetype'), url('../fonts/obiba.svg?vf05fh#obiba') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 [class^="i-obiba-"], [class*=" i-obiba-"] {
-	font-family: 'obiba';
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
+  font-family: 'obiba';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-	/* Better Font Rendering =========== */
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .i-obiba-list-item:before {
-	content: "\e606";
+  content: "\e606";
 }
+
 .i-obiba-taxonomy:before {
-	content: "\e605";
+  content: "\e605";
 }
 
 .i-obiba-S:before {
@@ -49,4 +47,27 @@
 
 .i-obiba-D-h:before {
   content: "\e602";
+}
+
+.affix-sidebar {
+  margin-right: -(@container-lg/2);
+  float: right !important;
+  a {
+  color: lighten(@text-color, 25%);
+  }
+  .nav {
+    width: 200px;
+    .nav > li > a {
+      padding-top: 1px;
+      padding-bottom: 1px;
+      padding-left: 30px;
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+  .active > a {
+    color: #563d7c;
+    background-color: transparent;
+    border-left: 2px solid #563d7c;
+  }
 }

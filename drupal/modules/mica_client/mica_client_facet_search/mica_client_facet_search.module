@@ -386,6 +386,7 @@ function mica_client_facet_search_coverage_page() {
         }
 
         $vocabulary_coverage_output[$vocabulary_coverage->vocabulary->name] = theme('mica_client_facet_search_vocabulary_coverage', array(
+          'taxonomy' => $taxonomy_coverage->taxonomy,
           'vocabulary_coverage' => $vocabulary_coverage,
           'chart' => theme('mica_client_facet_search_vocabulary_charts', array(
             'vocabulary_coverage' => $vocabulary_coverage,
