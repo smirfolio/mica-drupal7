@@ -6945,7 +6945,6 @@ ul.facet-query-list li span:hover {
   content: "\e602";
 }
 .affix-sidebar {
-  margin-right: -585px;
   float: right !important;
 }
 .affix-sidebar a {
@@ -6965,6 +6964,15 @@ ul.facet-query-list li span:hover {
   color: #563d7c;
   background-color: transparent;
   border-left: 2px solid #563d7c;
+}
+.coverage-table {
+  overflow: auto;
+  border: 1px solid #dddddd;
+  margin-bottom: 20px;
+}
+.coverage-table table {
+  border: none !important;
+  margin-bottom: 0;
 }
 html.overlay-open .navbar-fixed-top {
   z-index: 400;

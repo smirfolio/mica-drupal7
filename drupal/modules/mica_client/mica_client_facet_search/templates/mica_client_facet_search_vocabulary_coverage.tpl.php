@@ -14,8 +14,8 @@
     <?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'descriptions'); ?>
   </p>
 
-  <div>
-    <table class="table table-striped">
+  <div class="coverage-table">
+    <table class="table table-striped ">
       <thead>
       <tr>
         <th><?php print t('Term'); ?></th>
