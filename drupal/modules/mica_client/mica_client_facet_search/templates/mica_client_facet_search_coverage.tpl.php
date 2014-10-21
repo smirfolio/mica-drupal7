@@ -87,8 +87,8 @@
 
 <?php if (!empty($coverages->taxonomies)): ?>
   <div class="affix-sidebar">
-    <nav id="scroll-menu">
-      <ul class="nav" data-spy="affix" >
+    <nav id="scroll-menu" data-spy="affix" >
+      <ul class="nav">
         <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
           <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
             <li>
