@@ -9,8 +9,10 @@
   <?php $has_coverage = TRUE; ?>
   <?php
   $term_names = array();
-  foreach($vocabulary_coverage->terms as $term_coverage) {
-    $term_names[] = $term_coverage->term->name;
+  foreach ($vocabulary_coverage->terms as $term_coverage) {
+    if (!empty($term_coverage->hits)) {
+      $term_names[] = $term_coverage->term->name;
+    }
   } ?>
   <h4 id="<?php print $taxonomy->name . '-' . $vocabulary_coverage->vocabulary->name; ?>">
     <?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'); ?>
