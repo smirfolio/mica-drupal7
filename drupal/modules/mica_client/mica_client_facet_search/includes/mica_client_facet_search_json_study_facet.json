@@ -81,7 +81,7 @@
   },
 
   "networkId": {
-    "title": "network-NETWORKS",
+    "title": "network-NETWORK",
     "key": "networkId",
     "aggs": "networkId"
   }

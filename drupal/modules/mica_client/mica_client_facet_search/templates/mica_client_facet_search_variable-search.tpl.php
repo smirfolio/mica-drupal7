@@ -6,46 +6,22 @@
 <div id="search-result">
   <ul class="nav nav-tabs" role="tablist" id="result-search">
     <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
-        <small>
-          <?php if (!empty($network_totalHits)) : ?>
-            - <?php print $network_totalHits; ?>
-          <?php else : ?>
-            - <?php print 0; ?>
-          <?php endif; ?>
-        </small>
+        (<?php print !empty($network_totalHits) ? $network_totalHits : 0; ?>)
       </a>
     </li>
 
     <li><a href="#studies" role="tab"> <?php print t('Studies') ?>
-        <small>
-          <?php if (!empty($study_totalHits)) : ?>
-            - <?php print $study_totalHits; ?>
-          <?php else : ?>
-            - <?php print 0; ?>
-          <?php endif; ?>
-        </small>
+        (<?php print !empty($study_totalHits) ? $study_totalHits : 0; ?>)
       </a>
     </li>
 
     <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
-        <small>
-          <?php if (!empty($dataset_totalHits)) : ?>
-            - <?php print $dataset_totalHits; ?>
-          <?php else : ?>
-            - <?php print 0; ?>
-          <?php endif; ?>
-        </small>
+        (<?php print !empty($dataset_totalHits) ? $dataset_totalHits : 0; ?>)
       </a>
     </li>
 
     <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
-        <small>
-          <?php if (!empty($variable_totalHits)) : ?>
-            - <?php print $variable_totalHits; ?>
-          <?php else : ?>
-            - <?php print 0; ?>
-          <?php endif; ?>
-        </small>
+        (<?php print !empty($variable_totalHits) ? $variable_totalHits : 0; ?>)
       </a>
     </li>
 

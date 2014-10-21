@@ -82,21 +82,9 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
 }
 
 function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_string, $aggregation_facet, $totalHits = NULL, $totalCount = NULL) {
-  $color = array(
-    1 => "#2a85a0",
-    2 => "#20E4E4",
-    3 => "#942a25",
-    4 => "#e45822",
-    5 => "#ffc40d",
-    6 => "#e4dd95",
-    7 => "#004000",
-    8 => "#008000",
-    9 => "#550000",
-    10 => "#ad6704",
-    11 => "#ce7656",
-    12 => "#ce8483",
-  );
   $key = 1;
+  //dpm($fields_terms);
+  uasort($fields_terms, 'mica_client_facet_search_sort_terms');
   foreach ($fields_terms as $term) {
     if ($aggregation_facet == 'studyIds') {
       $term->name = MicaClient::get_name_entity_by_id_aggregation('variables', 'studies', $term->key);
@@ -124,6 +112,10 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
 
   }
   return $items;
+}
+
+function mica_client_facet_search_sort_terms($x, $y) {
+  return $x->count < $y->count;
 }
 
 function mica_client_facet_search_get_range_field($fields_terms, $type_string, $aggregation_facet) {
