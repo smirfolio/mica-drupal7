@@ -91,7 +91,7 @@
       <ul class="nav" data-spy="affix" >
         <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
           <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
-            <li class="active">
+            <li>
               <a href="#<?php print $taxonomy_coverage->taxonomy->name; ?>">
                 <?php print mica_client_commons_get_localized_field($taxonomy_coverage->taxonomy, 'titles'); ?>
               </a>

@@ -6945,6 +6945,7 @@ ul.facet-query-list li span:hover {
   content: "\e602";
 }
 .affix-sidebar {
+  margin-right: -585px;
   float: right !important;
 }
 .affix-sidebar a {
@@ -6959,6 +6960,7 @@ ul.facet-query-list li span:hover {
   padding-left: 30px;
   font-size: 12px;
   font-weight: 400;
+  border-bottom: dashed 1px #ccc;
 }
 .affix-sidebar .active > a {
   color: #563d7c;
