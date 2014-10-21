@@ -6256,7 +6256,6 @@ div.charts {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
   padding-left: 12px;
   color: #333333;
-  font-weight: 300;
 }
 .facet-bar .block-mica-client-facet-search h2 a.collapsed {
   background: url('../img/collapsed.png') no-repeat scroll left center transparent;
@@ -6537,7 +6536,6 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
   padding-left: 12px;
   color: #333333;
-  font-weight: 300;
 }
 .region-facets .block-mica-client-facet-search h2 a.collapsed {
   background: url('../img/collapsed.png') no-repeat scroll left center transparent;
@@ -6990,9 +6988,6 @@ html.js input.form-autocomplete {
 html.js input.throbbing {
   background-position: 100% -13px;
   /* LTR */
-}
-a {
-  font-weight: 500;
 }
 body,
 body h1,

@@ -301,7 +301,8 @@ class MicaClient {
             !empty($entity->{'obiba.mica.StatsAggregationResultDto.stats'})
           ) {
             return TRUE;
-          } else {
+          }
+          else {
             return FALSE;
           }
         }
@@ -312,7 +313,8 @@ class MicaClient {
         if (!empty($entity->aggregation) && $entity->aggregation == $facet) {
           if (!empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'})) {
             return TRUE;
-          } else {
+          }
+          else {
             return FALSE;
           }
         }
@@ -374,12 +376,12 @@ class MicaClient {
     return $json_query_encoded;
   }
 
-  /*
-   * merge any associative array query parameters to current json parameter
-   * @ param_to_add : associative array of pram to add array('variables' =>array('terms'=>array('studyIds'=>'clsa-elcv-1')))
-   * */
+  /**
+   * Merge any associative array query parameters to current json parameter
+   * @param $param_to_add associative array of param to add array('variables' =>array('terms'=>array('studyIds'=>'clsa-elcv-1')))
+   * @return string
+   */
   static function add_parameter_dto_query_link($param_to_add) {
-
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     if (!empty($url_parm[1])) {
       parse_str($url_parm[1], $parts);
@@ -389,25 +391,29 @@ class MicaClient {
       else {
         $array_current_query = new stdClass();
       }
-      foreach ($param_to_add as $entity_name => $entity) {
-        foreach ($entity['terms'] as $term_name => $term_value) {
-          if (empty($array_current_query->{$entity_name}->terms->{$term_name}) || !in_array($term_value, $array_current_query->{$entity_name}->terms->{$term_name})) {
-            $array_current_query->{$entity_name}->terms->{$term_name}[] = $term_value;
-          }
-        }
-      }
+      MicaClient::add_parameter_terms($array_current_query, $param_to_add);
       return json_encode($array_current_query);
     }
     else {
       $array_current_query = new stdClass();
     }
+    MicaClient::add_parameter_terms($array_current_query, $param_to_add);
+    return json_encode($array_current_query);
+  }
+
+  private static function add_parameter_terms($array_current_query, $param_to_add) {
     foreach ($param_to_add as $entity_name => $entity) {
       foreach ($entity['terms'] as $term_name => $term_value) {
-        if (empty($array_current_query->{$entity_name}->terms->{$term_name}) || !in_array($term_value, $array_current_query->{$entity_name}->terms->{$term_name})) {
-          $array_current_query->{$entity_name}->terms->{$term_name}[] = $term_value;
+        $term_values = array($term_value);
+        if (is_array($term_value)) {
+          $term_values = $term_value;
+        }
+        foreach ($term_values as $value) {
+          if (empty($array_current_query->{$entity_name}->terms->{$term_name}) || !in_array($value, $array_current_query->{$entity_name}->terms->{$term_name})) {
+            $array_current_query->{$entity_name}->terms->{$term_name}[] = $value;
+          }
         }
       }
     }
-    return json_encode($array_current_query);
   }
 }

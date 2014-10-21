@@ -1,11 +1,17 @@
 <?php
 //dpm($vocabulary_coverage);
+//dpm($vocabulary_attribute);
 //dpm($chart);
 //dpm($bucket_names);
 ?>
 
 <?php if (!empty($vocabulary_coverage->hits)): ?>
   <?php $has_coverage = TRUE; ?>
+  <?php
+  $term_names = array();
+  foreach($vocabulary_coverage->terms as $term_coverage) {
+    $term_names[] = $term_coverage->term->name;
+  } ?>
   <h4 id="<?php print $taxonomy->name . '-' . $vocabulary_coverage->vocabulary->name; ?>">
     <?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'); ?>
   </h4>
@@ -13,6 +19,8 @@
   <p class="help-block">
     <?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'descriptions'); ?>
   </p>
+
+
 
   <div class="coverage-table">
     <table class="table table-striped ">
@@ -47,12 +55,39 @@
       <tr>
         <th><?php print t('Total'); ?></th>
         <th style="text-align: center;" title="100%">
-          <?php print !property_exists($vocabulary_coverage, 'count') ? '-' : $vocabulary_coverage->count; ?>
+          <?php
+          print l($vocabulary_coverage->hits, 'mica/search',
+            array(
+              'query' => array(
+                'type' => 'variables',
+                'query' => MicaClient::add_parameter_dto_query_link(array(
+                    'variables' => array(
+                      'terms' => array(
+                        $vocabulary_attribute => $term_names,
+                      )
+                    )
+                  ))
+              ),
+            )) ?>
         </th>
         <?php if (!empty($vocabulary_coverage->buckets)): ?>
           <?php foreach ($vocabulary_coverage->buckets as $bucket) : ?>
             <th style="text-align: center;">
-              <?php print $bucket->hits ?>
+              <?php
+              print l($bucket->hits, 'mica/search',
+                array(
+                  'query' => array(
+                    'type' => 'variables',
+                    'query' => MicaClient::add_parameter_dto_query_link(array(
+                        'variables' => array(
+                          'terms' => array(
+                            $bucket->field => $bucket->value,
+                            $vocabulary_attribute => $term_names,
+                          )
+                        )
+                      ))
+                  ),
+                )) ?>
             </th>
           <?php endforeach; ?>
         <?php endif ?>
@@ -71,7 +106,14 @@
                 array(
                   'query' => array(
                     'type' => 'variables',
-                    'query' => MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array($vocabulary_attribute => $term_coverage->term->name))))
+                    'query' => MicaClient::add_parameter_dto_query_link(array(
+                          'variables' => array(
+                            'terms' => array(
+                              $vocabulary_attribute => $term_coverage->term->name
+                            )
+                          )
+                        )
+                      )
                   ),
                 )) ?>
             <?php endif ?>
