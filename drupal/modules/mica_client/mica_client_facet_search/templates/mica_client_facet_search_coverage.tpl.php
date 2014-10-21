@@ -87,29 +87,31 @@
 
 <?php if (!empty($coverages->taxonomies)): ?>
   <div class="affix-sidebar">
-    <ul id="scroll-menu" class="nav" data-spy="affix" data-offset-top="60" data-offset-bottom="200">
-      <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
-        <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
-          <li class="active">
-            <a href="#<?php print $taxonomy_coverage->taxonomy->name; ?>">
-              <?php print mica_client_commons_get_localized_field($taxonomy_coverage->taxonomy, 'titles'); ?>
-            </a>
-            <ul class="nav" style="display: block;">
-              <?php foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) : ?>
-                <?php if (!empty($vocabulary_coverage->hits)): ?>
-                  <li>
-                    <a
-                      href="#<?php print $taxonomy_coverage->taxonomy->name . '-' . $vocabulary_coverage->vocabulary->name; ?>">
-                      <?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'); ?>
-                    </a>
-                  </li>
-                <?php endif ?>
-              <?php endforeach; ?>
-            </ul>
-          </li>
-        <?php endif ?>
-      <?php endforeach; ?>
-    </ul>
+    <nav id="scroll-menu">
+      <ul class="nav" data-spy="affix" >
+        <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
+          <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
+            <li class="active">
+              <a href="#<?php print $taxonomy_coverage->taxonomy->name; ?>">
+                <?php print mica_client_commons_get_localized_field($taxonomy_coverage->taxonomy, 'titles'); ?>
+              </a>
+              <ul class="nav" style="display: block;">
+                <?php foreach ($taxonomy_coverage->vocabularies as $index => $vocabulary_coverage) : ?>
+                  <?php if (!empty($vocabulary_coverage->hits)): ?>
+                    <li class="<?php $index === 0 ? 'active' : '' ?>">
+                      <a
+                        href="#<?php print $taxonomy_coverage->taxonomy->name . '-' . $vocabulary_coverage->vocabulary->name; ?>">
+                        <?php print mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'); ?>
+                      </a>
+                    </li>
+                  <?php endif ?>
+                <?php endforeach; ?>
+              </ul>
+            </li>
+          <?php endif ?>
+        <?php endforeach; ?>
+      </ul>
+    </nav>
   </div>
 <?php endif ?>
 
