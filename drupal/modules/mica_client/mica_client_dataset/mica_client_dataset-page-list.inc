@@ -40,10 +40,10 @@ function _mica_client_dataset_get_datasets_page($node_view, $dataset_resource) {
 
   $resource_dataset = mica_client_dataset_correct_resource_server($dataset_resource);
   $response = mica_client_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset);
-  $totalHits = $response->getTotalHits();
+  $totalHits = empty($response) ? 0 : $response->getTotalHits();
   pager_default_initialize($totalHits, 5);
   $pager_output = theme('pager', array('quantity' => 5));
-  $summaries = $response->getSummaries();
+  $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
     foreach ($summaries as $dataset) {
       $list_datasets .= theme('mica_client_dataset-list-page-block', array(
@@ -81,7 +81,10 @@ function mica_client_dataset_get_datasets($query, $sort, $sort_by, $dataset_reso
   }
 
   $response = $resource->get_datasets($dataset_resource, NULL, $query, $from, NULL, $sort, $sort_by);
-  $_SESSION['list-datasets']['aggregations']['totalHits'] = $response->getTotalHits();
+  if (!empty($response)) {
+    $_SESSION['list-datasets']['aggregations']['totalHits'] = $response->getTotalHits();
+  }
+
   return $response;
 }
 

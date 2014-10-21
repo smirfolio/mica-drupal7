@@ -22,10 +22,10 @@ function mica_client_study_page_list() {
   }
 
   $response = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
-  $total_studies = $response->getTotalHits();
+  $total_studies = empty($response) ? 0 : $response->getTotalHits();
   pager_default_initialize($total_studies, 5);
   $pager_output = theme('pager', array('quantity' => 5));
-  $summaries = $response->getSummaries();
+  $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
     foreach ($summaries as $study) {
       if (!empty($study->logo->id)) {
@@ -87,7 +87,9 @@ function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NUL
   }
 
   $response = $study_resource->get_studies($query, $from, NULL, $sort, $order);
-  $_SESSION['list-studies']['aggregations']['totalHits'] = $response->getTotalHits();
+  if(!empty($response)) {
+    $_SESSION['list-studies']['aggregations']['totalHits'] = $response->getTotalHits();
+  }
 
   return $response;
 }
