@@ -6250,7 +6250,7 @@ div.charts {
   margin: 0;
   padding: 2px 5px;
   background-color: #f2f2f2;
-  border-left: 4px solid #e3e3e3;
+  border-left: 2px solid #957bbe;
 }
 .facet-bar .block-mica-client-facet-search h2 a {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
@@ -6262,6 +6262,9 @@ div.charts {
 }
 .facet-bar .block-mica-client-facet-search .block-content {
   padding: 0;
+}
+.facet-bar .block-mica-client-facet-search .checkedterms {
+  position: relative;
 }
 .facet-bar .block-mica-client-facet-search a.facetapi-limit-link {
   margin-left: 10px;
@@ -6349,7 +6352,7 @@ div.charts {
   height: 25px;
   transition: width 1s;
   right: 0;
-  background-color: #e2e2e2;
+  background-color: #e1edf7;
 }
 .facet-bar .block-mica-client-facet-search div.block-content label.span-checkbox {
   position: relative;
@@ -6530,7 +6533,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   margin: 0;
   padding: 2px 5px;
   background-color: #f2f2f2;
-  border-left: 4px solid #e3e3e3;
+  border-left: 2px solid #957bbe;
 }
 .region-facets .block-mica-client-facet-search h2 a {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
@@ -6542,6 +6545,9 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 .region-facets .block-mica-client-facet-search .block-content {
   padding: 0;
+}
+.region-facets .block-mica-client-facet-search .checkedterms {
+  position: relative;
 }
 .region-facets .block-mica-client-facet-search a.facetapi-limit-link {
   margin-left: 10px;
@@ -6629,7 +6635,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   height: 25px;
   transition: width 1s;
   right: 0;
-  background-color: #e2e2e2;
+  background-color: #e1edf7;
 }
 .region-facets .block-mica-client-facet-search div.block-content label.span-checkbox {
   position: relative;

@@ -57,7 +57,7 @@
       margin: 0;
       padding: 2px 5px;
       background-color: @block_title_background_color;
-      border-left: 4px solid @well-border;
+      border-left: 2px solid lighten(#563d7c, 25%);
 
       a {
         background: url('../img/expanded.png') no-repeat scroll left center transparent;
@@ -71,6 +71,10 @@
 
     .block-content {
       padding: 0;
+    }
+
+    .checkedterms {
+      position: relative;
     }
 
     a.facetapi-limit-link {
@@ -173,7 +177,7 @@
         height: 25px;
         transition: width 1s;
         right: 0;
-        background-color: #e2e2e2;
+        background-color: lighten(@brand-primary, 40%);
       }
 
       label.span-checkbox {
