@@ -7,7 +7,6 @@
           url: Drupal.settings.context.url + '/' + $(this).val() + '/' + $("#edit-search-sort").val() + '/' + $("#edit-search-sort-order").val(),
           success: function (data) {
             if (data) {
-              console.log(data);
               $('#refresh-list').empty().append(data.list);
               $('#refrech-count').empty().append(data.total === null ? 0 : data.total);
             }

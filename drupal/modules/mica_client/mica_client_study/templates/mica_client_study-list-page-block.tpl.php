@@ -1,4 +1,4 @@
-<?php //dpm($list_studies->studySummaries); ?>
+<?php //dpm($study); ?>
 <?php //dpm($network_digests); ?>
 
 <div class="row sm-bottom-margin document-item-list flex-row">
@@ -63,6 +63,5 @@
       </li>
 
   </div>
-</div>
 </div>
 
