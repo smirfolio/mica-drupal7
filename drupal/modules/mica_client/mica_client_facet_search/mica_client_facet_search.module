@@ -41,7 +41,6 @@ function mica_client_facet_search_menu() {
 }
 
 
-
 /**
  * Implements hook_theme().
  *
@@ -303,10 +302,11 @@ function mica_client_facet_search_variable_page_search() {
       case  'studies':
         $studies = $search_resources->search_studies();
         extract(mica_client_get_hits_entities_variable($studies), EXTR_OVERWRITE);
-
-        $study_charts = theme('mica_client_facet_search_charts', array(
-          'charts' => mica_client_facet_search_get_facets_chart('facet_conf_study', $_SESSION['studies']['aggregations'])
-        ));
+        if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['aggregations'])) {
+          $study_charts = theme('mica_client_facet_search_charts', array(
+            'charts' => mica_client_facet_search_get_facets_chart('facet_conf_study', $_SESSION['studies']['aggregations'])
+          ));
+        }
         break;
       case  'variables' :
         $variables = $search_resources->search_variables();
@@ -322,9 +322,11 @@ function mica_client_facet_search_variable_page_search() {
   }
   else {
     $variables = $search_resources->search_variables();
-    $variable_charts = theme('mica_client_facet_search_charts', array(
-      'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
-    ));
+    if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
+      $variable_charts = theme('mica_client_facet_search_charts', array(
+        'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
+      ));
+    }
   }
 
   $url_parm = explode('?', $_SERVER['REQUEST_URI']);

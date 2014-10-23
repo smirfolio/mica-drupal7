@@ -31,9 +31,11 @@
   <div class="tab-content search-result">
     <div class="tab-pane active" id="variables">
       <article>
-        <section>
-          <?php print $variable_charts; ?>
-        </section>
+        <?php if (!empty($variable_charts)): ?>
+          <section>
+            <?php print $variable_charts; ?>
+          </section>
+        <?php endif ?>
         <section>
           <h3 class="pull-left"><?php print t('Variables') ?></h3>
 
@@ -86,9 +88,11 @@
 
     <div class="tab-pane" id="studies">
       <article>
-        <section>
-          <?php print $study_charts; ?>
-        </section>
+        <?php if (!empty($study_charts)): ?>
+          <section>
+            <?php print $study_charts; ?>
+          </section>
+        <?php endif ?>
         <section>
           <h3 class="pull-left"><?php print t('Studies') ?></h3>
 

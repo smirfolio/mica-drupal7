@@ -54,10 +54,10 @@ class MicaSearchResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_POST,
       'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-          'Content-Type' => array(parent::HEADER_JSON)
-        )
-      ),
+            'Accept' => array(parent::HEADER_JSON),
+            'Content-Type' => array(parent::HEADER_JSON)
+          )
+        ),
       'data' => !empty($dto_param) ? $dto_param : $this->dto_filter_construct($type, NULL, 0, NULL),
     ));
 
@@ -79,18 +79,18 @@ class MicaSearchResource extends MicaClient {
   public function get_stats_entities_count($dto, $dto_data_response) { //dpm($dto_data_response);
     return array(
       'data' => $dto['data'],
-      'study_totalHits' => $dto_data_response->studyResultDto->totalHits,
-      'study_totalCount' => $dto_data_response->studyResultDto->totalCount,
-      'variable_totalHits' => $dto_data_response->variableResultDto->totalHits,
-      'variable_totalCount' => $dto_data_response->variableResultDto->totalCount,
+      'study_totalHits' => empty($dto_data_response->studyResultDto) ? 0 : $dto_data_response->studyResultDto->totalHits,
+      'study_totalCount' => empty($dto_data_response->studyResultDto) ? 0 : $dto_data_response->studyResultDto->totalCount,
+      'variable_totalHits' => empty($dto_data_response->variableResultDto) ? 0 : $dto_data_response->variableResultDto->totalHits,
+      'variable_totalCount' => empty($dto_data_response->variableResultDto) ? 0 : $dto_data_response->variableResultDto->totalCount,
       'network_totalHits' => !empty($dto_data_response->networkResultDto->totalHits) ?
-        $dto_data_response->networkResultDto->totalHits : 0,
+          $dto_data_response->networkResultDto->totalHits : 0,
       'network_totalCount' => !empty($dto_data_response->networkResultDto->totalCount) ?
-        $dto_data_response->networkResultDto->totalCount : 0,
+          $dto_data_response->networkResultDto->totalCount : 0,
       'dataset_totalHits' => !empty($dto_data_response->datasetResultDto->totalHits) ?
-        $dto_data_response->datasetResultDto->totalHits : 0,
+          $dto_data_response->datasetResultDto->totalHits : 0,
       'dataset_totalCount' => !empty($dto_data_response->datasetResultDto->totalCount) ?
-        $dto_data_response->datasetResultDto->totalCount : 0
+          $dto_data_response->datasetResultDto->totalCount : 0
     );
   }
 
