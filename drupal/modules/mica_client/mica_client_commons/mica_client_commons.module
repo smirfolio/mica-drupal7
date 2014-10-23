@@ -96,7 +96,7 @@ function mica_client_commons_get_if_no_limit($limit) {
 
 /*
  * @param $iso_country
- * @return CamalCase Country name
+ * @return CamelCase Country name
  * */
 function mica_client_commons_iterate_field($fields, $callback = NULL, $parameters = NULL, $method = NULL) {
   $i = 0;

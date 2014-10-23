@@ -24,12 +24,12 @@ function mica_client_network_page_list() {
   }
 
   $response = mica_client_network_get_networks(NULL, $query, $sort, $sort_by);
-  $total_networks = $response->getTotalHits();
+  $total_networks = empty($response) ? 0 : $response->getTotalHits();
 
 
   pager_default_initialize($total_networks, 2);
   $pager_output = theme('pager', array('quantity' => $total_networks));
-  $summaries = $response->getSummaries();
+  $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
     foreach ($summaries as $network) {
       if (!empty($network->logo->id)) {
@@ -66,7 +66,9 @@ function mica_client_network_get_networks($study_id, $query, $sort, $sort_by) {
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-networks', 5);
   }
   $networks = $study_resource->get_networks($study_id, $query, $from, NULL, $sort, $sort_by);
-  $_SESSION['list-networks']['aggregations']['totalHits'] = $networks->getTotalHits();
+  if (!empty($networks)) {
+    $_SESSION['list-networks']['aggregations']['totalHits'] = $networks->getTotalHits();
+  }
   return $networks;
 }
 
@@ -89,7 +91,9 @@ function mica_client_network_networks_table($networks_result) {
   $headers = mica_client_network_networks_table_headers();
   $per_page = 20;
 
-  if (empty($total)) return NULL;
+  if (empty($total)) {
+    return NULL;
+  }
 
   $args = array('quantity' => $total, 'element' => MicaNetworkResource::PAGINATE_networks);
   $current_page = pager_default_initialize($total, $per_page, MicaNetworkResource::PAGINATE_networks);

@@ -237,32 +237,34 @@ class MicaClient {
           $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
         }
         if ($type_aggregations == 'studyResultDto') {
-          $network_result = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
-          $_SESSION['studies']['networks'] =
-            empty($network_result->digests)
-              ? $network_result->networks
-              : $network_result->digests;
+          if (!empty($aggregations->networkResultDto)) {
+            $network_result = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
+            $_SESSION['studies']['networks'] =
+              empty($network_result->digests)
+                ? $network_result->networks
+                : $network_result->digests;
+          }
 
-          $variable_studies_id_aggregations =
-            $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
-          $_SESSION['studies']['variables'] = !empty($variable_studies_id_aggregations) ?
-            $variable_studies_id_aggregations : NULL;
+          if (!empty($aggregations->variableResultDto)) {
+            $variable_studies_id_aggregations =
+              $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
+            $_SESSION['studies']['variables'] = !empty($variable_studies_id_aggregations) ?
+              $variable_studies_id_aggregations : NULL;
+          }
 
-          $networks_studies_id_aggregations =
-            $this->_get_aggregations_by_entity_dto($aggregations->networkResultDto->aggs, 'studyIds');
-          $_SESSION['studies']['networks-studyId'] = !empty($networks_studies_id_aggregations) ?
-            $networks_studies_id_aggregations : NULL;
+          if (!empty($aggregations->networkResultDto)) {
+            $networks_studies_id_aggregations =
+              $this->_get_aggregations_by_entity_dto($aggregations->networkResultDto->aggs, 'studyIds');
+            $_SESSION['studies']['networks-studyId'] = !empty($networks_studies_id_aggregations) ?
+              $networks_studies_id_aggregations : NULL;
+          }
 
-          $datasets_studyTableSstudyIdstudies_id_aggregations =
-            $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTable-studyId');
-          $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_studyTableSstudyIdstudies_id_aggregations) ?
-            $datasets_studyTableSstudyIdstudies_id_aggregations : NULL;
-
-          $datasets_studyTablesSstudyIdstudies_id_aggregations =
-            $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTables-studyId');
-
-          $_SESSION['studies']['studyTables-studyId'] = !empty($datasets_studyTablesSstudyIdstudies_id_aggregations) ?
-            $datasets_studyTablesSstudyIdstudies_id_aggregations : NULL;
+          if (!empty($aggregations->datasetResultDto)) {
+            $datasets_studyTableSstudyIdstudies_id_aggregations =
+              $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTable-studyId');
+            $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_studyTableSstudyIdstudies_id_aggregations) ?
+              $datasets_studyTableSstudyIdstudies_id_aggregations : NULL;
+          }
 
           $_SESSION['studies']['aggregations'] = $aggregation->aggs;
           $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
@@ -308,7 +310,7 @@ class MicaClient {
         }
       }
     }
-    if (!empty($_SESSION['studies']['aggregations'])) {
+    if (!empty($_SESSION['variables']['aggregations'])) {
       foreach ($_SESSION['variables']['aggregations'] as $entity) {
         if (!empty($entity->aggregation) && $entity->aggregation == $facet) {
           if (!empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'})) {
