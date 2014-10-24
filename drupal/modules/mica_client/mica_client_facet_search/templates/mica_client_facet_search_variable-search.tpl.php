@@ -1,5 +1,4 @@
 <?php //dvm('search var',$studies);
-//dpm($variables_result);
 ?>
 <div id="search-query"></div>
 
@@ -38,22 +37,22 @@
         <?php endif ?>
         <section>
           <h3 class="pull-left"><?php print t('Variables') ?></h3>
-
-          <p class="pull-right">
-            <?php print l(t('Coverage'), 'mica/coverage', array(
-              'attributes' => array(
-                'class' => array(
-                  'btn',
-                  'btn-primary',
-                  'lg-top-margin'
-                )
-              ),
-              'query' => array(
-                'query' => $query
-              ),
-            )); ?>
-          </p>
-
+          <div class="pull-right lg-top-margin facet-search-form">
+            <?php print render($variable_search_form) ?>
+            <p>
+              <?php print l(t('Coverage'), 'mica/coverage', array(
+                'attributes' => array(
+                  'class' => array(
+                    'btn',
+                    'btn-primary'
+                  )
+                ),
+                'query' => array(
+                  'query' => $query
+                ),
+              )); ?>
+            </p>
+          </div>
           <div class="clearfix"/>
           <?php print $variables_result['data']; ?>
         </section>
@@ -64,21 +63,22 @@
       <article>
         <section>
           <h3 class="pull-left"><?php print t('Datasets') ?></h3>
-
-          <p class="pull-right">
-            <?php print l(t('Coverage'), 'mica/coverage', array(
-              'attributes' => array(
-                'class' => array(
-                  'btn',
-                  'btn-primary',
-                  'lg-top-margin'
-                )
-              ),
-              'query' => array(
-                'query' => $query
-              ),
-            )); ?>
-          </p>
+          <div class="pull-right lg-top-margin facet-search-form">
+            <?php print render($dataset_search_form) ?>
+            <p>
+              <?php print l(t('Coverage'), 'mica/coverage', array(
+                'attributes' => array(
+                  'class' => array(
+                    'btn',
+                    'btn-primary'
+                  )
+                ),
+                'query' => array(
+                  'query' => $query
+                ),
+              )); ?>
+            </p>
+          </div>
 
           <div class="clearfix"/>
           <?php print $datasets['data']; ?>
@@ -95,22 +95,22 @@
         <?php endif ?>
         <section>
           <h3 class="pull-left"><?php print t('Studies') ?></h3>
-
-          <p class="pull-right">
-            <?php print l(t('Coverage'), 'mica/coverage', array(
-              'attributes' => array(
-                'class' => array(
-                  'btn',
-                  'btn-primary',
-                  'lg-top-margin'
-                )
-              ),
-              'query' => array(
-                'query' => $query
-              ),
-            )); ?>
-          </p>
-
+          <div class="pull-right lg-top-margin facet-search-form">
+            <?php print render($study_search_form) ?>
+            <p>
+              <?php print l(t('Coverage'), 'mica/coverage', array(
+                'attributes' => array(
+                  'class' => array(
+                    'btn',
+                    'btn-primary'
+                  )
+                ),
+                'query' => array(
+                  'query' => $query
+                ),
+              )); ?>
+            </p>
+          </div>
           <div class="clearfix"/>
           <?php print $studies['data']; ?>
         </section>
@@ -121,22 +121,22 @@
       <article>
         <section>
           <h3 class="pull-left"><?php print t('Networks') ?></h3>
-
-          <p class="pull-right">
-            <?php print l(t('Coverage'), 'mica/coverage', array(
-              'attributes' => array(
-                'class' => array(
-                  'btn',
-                  'btn-primary',
-                  'lg-top-margin'
-                )
-              ),
-              'query' => array(
-                'query' => $query
-              ),
-            )); ?>
-          </p>
-
+          <div class="pull-right lg-top-margin facet-search-form">
+            <?php print render($network_search_form) ?>
+            <p>
+              <?php print l(t('Coverage'), 'mica/coverage', array(
+                'attributes' => array(
+                  'class' => array(
+                    'btn',
+                    'btn-primary'
+                  )
+                ),
+                'query' => array(
+                  'query' => $query
+                ),
+              )); ?>
+            </p>
+          </div>
           <div class="clearfix"/>
           <?php print $networks['data']; ?>
         </section>

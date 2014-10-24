@@ -97,6 +97,40 @@ function mica_client_facet_search_theme($existing, $type, $theme, $path) {
   );
 }
 
+function mica_client_commons_create_facet_search_query_form($arg) {
+  $args = func_get_args();
+  $type = $args[2];
+  if (empty($type)) {
+    throw new InvalidArgumentException("drupal_get_form() form type is missing from argument list.");
+    return;
+  }
+
+  $form = array();
+  $form['#id'] = 'facet-search-query-form-'.$type;
+  $form['#method'] = 'get';
+  $form['#prefix'] = '<div class="inline-form">';
+  $form['#suffix'] = '</div>';
+
+  $input_id = "$type::matches:facet-search-query";
+  $form['facet-search-query'.$type] = array(
+    '#type' => 'textfield',
+    '#title' => '',
+    '#description' => 'Filter by',
+    '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
+    '#prefix' => '<div class="right-indent lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+    '#suffix' => '</div></div>',
+    '#attributes' => array('id' => $input_id, 'name' => $input_id)
+  );
+
+  $form['facet-search-submit'] = array(
+    '#type' => 'button',
+    '#value' => t('Search'),
+    '#attributes' => array('id' => 'facet-search-submit')
+  );
+
+  return $form;
+}
+
 /**
  * Implements hook_block_info().
  */
@@ -243,6 +277,7 @@ function mica_client_facet_search_load_libs() {
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-href.js');
   $facet_conf["studies"] = mica_client_facet_search_resource_return_facets('facet_conf_study');
   $facet_conf["variables"] = mica_client_facet_search_resource_return_facets('facet_conf_variable');
+  $facet_conf["general"] = array('matches' => t('Matches'));
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-query-renderer.js');
   drupal_add_js(array('mica_client_facet' => array('facet_conf' => $facet_conf)), 'setting');
 
@@ -346,29 +381,28 @@ function mica_client_facet_search_variable_page_search() {
   $output = theme('mica_client_facet_search_variable-search', array(
     'noval' => '',
     'query' => empty($parts['query']) ? '' : $parts['query'],
-    'variables_result' => array(
-      'data' => mica_client_facet_search_variables_table($variables)
-    ),
-    'variable_charts' => $variable_charts,
-    'studies' => array(
-      'data' => mica_client_facet_search_studies_table($studies)
 
-    ),
-    'study_charts' => $study_charts,
-    'datasets' => array(
-      'data' => mica_client_facet_search_datasets_table($datasets)
-    ),
-    'networks' => array(
-      'data' => mica_client_facet_search_networks_table($networks)
-    ),
-    'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
-    'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
+    'variables_result' => array('data' => mica_client_facet_search_variables_table($variables)),
+    'variable_charts' => $variable_charts,
     'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
     'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
+    'variable_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'variables'),
+
+    'datasets' => array('data' => mica_client_facet_search_datasets_table($datasets)),
     'dataset_totalHits' => !empty($dataset_totalHits) ? $dataset_totalHits : NULL,
     'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
+    'dataset_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'datasets'),
+
+    'studies' => array('data' => mica_client_facet_search_studies_table($studies)),
+    'study_charts' => $study_charts,
+    'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
+    'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
+    'study_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'studies'),
+
+    'networks' => array('data' => mica_client_facet_search_networks_table($networks)),
     'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
-    'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL
+    'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL,
+    'network_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'networks')
   ));
   return $output;
 }

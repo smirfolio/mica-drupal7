@@ -18,6 +18,13 @@
         $.each(json, function(type, typeValues){
           $.each(typeValues, function(aggType, aggs){
             $.each(aggs, function (name, values) {
+
+              if (aggType === 'matches') {
+                var key = type+"::matches:facet-search-query";
+                formData[key] = aggs;
+                return;
+              }
+
               $.each(values, function (i, value) {
                 var formattedName = name + "-" + aggType + "[]";
                 var key = type+":"+formattedName + (aggType === "terms" ? value : name);
@@ -38,8 +45,23 @@
          * @returns {{type: *, agg: *, aggType: *, aggValue: *}}
          */
         function extractFormEntry(value) {
-          var entry = /(\w+):(.*)-(terms|range)[\\[\\]]*=(.*)$/.exec(value);
-          return {type: entry[1], agg: entry[2], aggType: entry[3], aggValue: extractAggValue(entry[4])};
+          var entry = /^(\w+):(.*)-(terms|range)[\\[\\]]*=(.*)$/.exec(value);
+          return entry === null ? null : {
+            type: entry[1],
+            agg: entry[2],
+            aggType: entry[3],
+            aggValue: extractAggValue(entry[4])
+          };
+        }
+
+        /**
+         * Helper used to extract query string 'matches' value
+         * @param value
+         * @returns {{matches: *}}
+         */
+        function extractMatchesEntry(value) {
+          var entry = /^(\w+)::matches:[A-Za-z0-9-]+=(.*)$/.exec(value);
+          return entry === null ? null : {type: entry[1], matches: entry[2]};
         }
 
         /**
@@ -49,7 +71,7 @@
          */
         function extractAggValue(value) {
           var entry = /\[\+([+-]*\d+)\+to\+([+-]*\d+)\+\]/.exec(value);
-          if (entry != null) return {min: entry[1], max: entry[2]};
+          if (entry !== null) return {min: entry[1], max: entry[2]};
           return value;
         }
 
@@ -63,10 +85,16 @@
 
           $.each(decodeURIComponent(formData).split('&'), function(i, value) {
             if (value != null && value.length > 0) {
-              var entry = extractFormEntry(value);
+              var entry = extractFormEntry(value) || extractMatchesEntry(value);
+              if (entry === null) return;
 
               if (!jsonForm.hasOwnProperty(entry.type)) {
                 jsonForm[entry.type] = {};
+              }
+
+              if (entry.hasOwnProperty('matches')) {
+                jsonForm[entry.type]['matches'] = entry.matches;
+                return;
               }
 
               if (!jsonForm[entry.type].hasOwnProperty(entry.aggType)) {
@@ -117,19 +145,8 @@
         return desrializeFormJsonAsKeyValue(JSON.parse(decodeURIComponent($.urlParam(URL_PARAM_QUERY))));
       }
 
-      function sendCheckboxCheckedValues(idcheckbox) {
-        var serializedData = "";
-        $('form').each(function () {
-          $('input', 'form').each(function () {
-            $(this).val() == "" && $(this).remove();
-          });
-          var SerilizedForm = ($(this).serialize());
-          if (SerilizedForm && $(this).attr('id').match(/facet-search/g)) {
-            serializedData = serializedData.concat(SerilizedForm).concat('&');
-          }
-        });
-
-        return JSON.stringify(serializeFormAsJson(serializedData));
+      function sendCheckboxCheckedValues() {
+        return JSON.stringify(serializeFormAsJson($("form[id^='facet-search'] :input[value!='']").serialize()));
       }
 
       /*******************/
@@ -157,6 +174,16 @@
       /**********************/
       /*hide main search facet block*/
       $("section#block-mica-client-facet-search-facet-search").find("h2:first").css("display", "none");
+
+      function processMatchesInput(selectedVars) {
+        $.each(selectedVars, function(key, value){
+          if(/matches:facet-search-query$/.test(key)) {
+            console.log(key);
+            $("input[id='" + key+"']").val(value);
+
+          }
+        });
+      }
 
       /**
        * Iterates through each hidden input that has been selected/unselected
@@ -205,6 +232,7 @@
 
       var selectedVars = $.getUrlVars();
       if (selectedVars) {
+        processMatchesInput(selectedVars);
         processTermsAggregationInputs(selectedVars);
       }
 
@@ -254,10 +282,11 @@
       });
 
       /*send request search on checking the box or on click go button */
-      $("div#checkthebox").on("click", function () {
+      $("div#checkthebox, button#facet-search-submit").on("click", function () {
         //  $.sendCheckboxCheckedValues();
         updateWindowLocation($.sendCheckboxCheckedValues());
       });
+
 
       $("input[id='range-auto-fill']").on("blur", function () {
         var term = $(this).attr('termselect');

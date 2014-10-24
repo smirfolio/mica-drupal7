@@ -30,6 +30,13 @@
     container.append(renderRefresh());
     $.each(jsonQuery, function (type, typeValues) {
       $.each(typeValues, function (aggType, aggs) {
+
+        if (aggType === 'matches') {
+          container.append(renderAndOperation());
+          renderMatches(aggs);
+          return;
+        }
+
         $.each(aggs, function (name, values) {
           if (values.length > 0) {
             var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name);
@@ -89,6 +96,27 @@
       .on("click", function () {
         updateWindowLocation('');
       });
+  }
+
+  function renderMatches(value) {
+     var matches = renderMatchesElement('matches', translate('matches'));
+     var matchesValue = renderValuesContainer().append(renderMatchesElement('matches-value', value));
+    container.append(matches.append(matchesValue));
+  }
+
+  function renderMatchesElement(cssClass, text) {
+    var htmlMatchesElement = $("<li></li>").append($("<span class='"+cssClass+"'></span>").text(text));
+    htmlMatchesElement.click(function () {
+      delete jsonQuery['matches'];
+      update();
+      return false;
+    });
+
+    return htmlMatchesElement;
+  }
+
+  function renderMatchesValue(value) {
+    return $("<span class='aggregate-value'></span>").text(value);
   }
 
   function renderValuesContainer() {
@@ -152,6 +180,10 @@
     });
 
     return htmlValue;
+  }
+
+  function translate(key) {
+    return translation.general[key];
   }
 
   function translateAggregation(key) {
