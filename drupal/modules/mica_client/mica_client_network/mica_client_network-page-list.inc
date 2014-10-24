@@ -59,7 +59,7 @@ function mica_client_network_page_list() {
   ));
 }
 
-function mica_client_network_get_networks($study_id, $query, $sort, $sort_by) {
+function mica_client_network_get_networks($study_id, $query = NULL, $sort = NULL, $sort_by = NULL) {
   $from = 0;
   $study_resource = new MicaNetworkResource();
   if (!empty($_GET['page'])) {
@@ -113,11 +113,16 @@ function mica_client_network_networks_table_rows($networks) {
 
   if (!empty($networks)) {
     foreach ($networks as $network) {
+      $list_studies = '<ul>';
+      foreach ($network->studySummaries as $study) {
+        $list_studies .= '<li>' . l(mica_client_commons_get_localized_field($study, 'name'), 'mica/study/' . $study->id) . '</li>';
+      }
+      $list_studies .= '</ul>';
       $name = mica_client_commons_get_localized_field($network, 'name');
       $rows[] = array(
         mica_client_commons_get_localized_field($network, 'acronym'),
         l($name, 'mica/network/' . $network->id . '/' . mica_client_commons_to_slug($name)),
-        mica_client_commons_get_localized_field($network, 'description'),
+        $list_studies,
       );
     }
   }
@@ -142,7 +147,7 @@ function mica_client_network_networks_table_headers() {
   return array(
     t('Short Name'),
     t('Name'),
-    t('Description'),
+    t('Studies'),
   );
 }
 
