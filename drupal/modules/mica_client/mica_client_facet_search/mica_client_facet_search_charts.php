@@ -26,9 +26,11 @@ function mica_client_facet_search_get_facets_chart($type = NULL, $data, $library
         $terms_title[] = $term->key;
         $count_terms[] = $term->count;
       }
-      $title_chart = mica_client_facet_search_get_title_chart($type, $facet->aggregation);
-      if (!empty($title_chart)) {
-        $charts[] = mica_client_facet_search_pie_chart($terms_title, $count_terms, $title_chart);
+      if (count($terms_title) > 1) {
+        $title_chart = mica_client_facet_search_get_title_chart($type, $facet->aggregation);
+        if (!empty($title_chart)) {
+          $charts[] = mica_client_facet_search_pie_chart($terms_title, $count_terms, $title_chart);
+        }
       }
     }
   }
@@ -229,22 +231,18 @@ function mica_client_facet_search_charts_colors() {
     '#59BE9A',
     '#7D66C1',
     '#FFCE78',
-
     '#88A0C5',
     '#83C7AF',
     '#9C8CCA',
     '#FFDFA8',
-
     '#4976BD',
     '#3EBF92',
     '#6B4EC2',
     '#FFC052',
-
     '#A8B3C4',
     '#A6C6BB',
     '#B3ACC9',
     '#FFF0D6',
-
     '#316CCA',
     '#22CC90',
     '#5B35CE',

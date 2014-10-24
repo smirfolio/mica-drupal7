@@ -303,18 +303,24 @@ function mica_client_facet_search_variable_page_search() {
         $studies = $search_resources->search_studies();
         extract(mica_client_get_hits_entities_variable($studies), EXTR_OVERWRITE);
         if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['aggregations'])) {
-          $study_charts = theme('mica_client_facet_search_charts', array(
-            'charts' => mica_client_facet_search_get_facets_chart('facet_conf_study', $_SESSION['studies']['aggregations'])
-          ));
+          $charts = mica_client_facet_search_get_facets_chart('facet_conf_study', $_SESSION['studies']['aggregations']);
+          if (!empty($charts)) {
+            $study_charts = theme('mica_client_facet_search_charts', array(
+              'charts' => $charts
+            ));
+          }
         }
         break;
       case  'variables' :
         $variables = $search_resources->search_variables();
         extract(mica_client_get_hits_entities_variable($variables), EXTR_OVERWRITE);
         if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
-          $variable_charts = theme('mica_client_facet_search_charts', array(
-            'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
-          ));
+          $charts = mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations']);
+          if (!empty($charts)) {
+            $variable_charts = theme('mica_client_facet_search_charts', array(
+              'charts' => $charts
+            ));
+          }
         }
         break;
     }
@@ -323,9 +329,12 @@ function mica_client_facet_search_variable_page_search() {
   else {
     $variables = $search_resources->search_variables();
     if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
-      $variable_charts = theme('mica_client_facet_search_charts', array(
-        'charts' => mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations'])
-      ));
+      $charts = mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations']);
+      if (!empty($charts)) {
+        $variable_charts = theme('mica_client_facet_search_charts', array(
+          'charts' => $charts
+        ));
+      }
     }
   }
 
