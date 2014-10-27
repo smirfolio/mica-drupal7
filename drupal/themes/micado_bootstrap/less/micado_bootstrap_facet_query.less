@@ -3,6 +3,7 @@
 @matches-background-color: #CBB3EA;
 @matches-value-color: #B88BD1;
 @matches-value-background-color: rgba(203, 179, 234, 0.50);
+@match-operation-color: #8f6ca3;
 @aggregate-color: #5575A9;
 @aggregate-background-color: #C0E1F6;
 @aggregate-value-color: #3AC8F3;
@@ -62,6 +63,11 @@
 .operation {
   padding: 2px;
   border-radius: @background-radius
+}
+
+.match {
+  .operation;
+  color: @match-operation-color;
 }
 
 .is-a {

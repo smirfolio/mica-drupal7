@@ -406,6 +406,7 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
     $this->builderMap = array();
     $this->defaultSize = $defaultSize;
     $this->initializeDefaultSortMap();
+    $this->queryTypes = array(self::VARIABLES, self::DATASETS, self::STUDIES, self::NETWORKS);
     if (!empty($data)) $this->parseData($data);
   }
 
@@ -423,9 +424,21 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
       : QueryDtoBuilder::newBuilder($from, $size, $defaultSortField, $matches, $group_by)->build() //
     );
 
-    foreach ($this->builderMap as $builderType => $builders) {
-      if ($type !== $builderType && array_key_exists($builderType, $this->builderMap)) {
-        $this->setQuery($builderType, $this->createQuery($builders, 0, $this->defaultSize, $matches, $group_by));
+    $queryTypes = array_filter( //
+      $this->queryTypes, //
+      function ($queryType) use ($type) {
+        return $queryType !== $type;
+      });
+
+    foreach ($queryTypes as $queryType) {
+      $matches = empty($this->mactehsMap[$queryType]) ? NULL : $this->mactehsMap[$queryType];
+      $builders = empty($this->builderMap[$queryType]) ? NULL : $this->builderMap[$queryType];
+
+      if (!empty($matches) || !empty($builders)) {
+        $this->setQuery($queryType, empty($builders) //
+          ? QueryDtoBuilder::newBuilder(0, $this->defaultSize, $defaultSortField, $matches, $group_by)->build() //
+          : $this->createQuery($builders, 0, $this->defaultSize, $matches, $group_by) //
+        );
       }
     }
 
@@ -480,6 +493,7 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
           );
 
           $this->builderMap[$type] = $builders;
+          dpm($this->builderMap);
         }
       }
     }

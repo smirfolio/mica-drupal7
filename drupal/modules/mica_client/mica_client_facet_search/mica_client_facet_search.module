@@ -277,7 +277,18 @@ function mica_client_facet_search_load_libs() {
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-href.js');
   $facet_conf["studies"] = mica_client_facet_search_resource_return_facets('facet_conf_study');
   $facet_conf["variables"] = mica_client_facet_search_resource_return_facets('facet_conf_variable');
-  $facet_conf["general"] = array('matches' => t('Matches'));
+  $facet_conf["general"] = //
+    array( //
+      'matches' => t('Matches'), //
+      'match' => t('Match'), //
+      'is' => t('is'), //
+      'and' => t('and'), //
+      'or' => t('or'), //
+      'variables' => t('Variables'), //
+      'datasets' => t('Datasets'), //
+      'studies' => t('Studies'), //
+      'networks' => t('Networks') //
+    );
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-query-renderer.js');
   drupal_add_js(array('mica_client_facet' => array('facet_conf' => $facet_conf)), 'setting');
 
@@ -327,8 +338,9 @@ function mica_client_facet_search_variable_page_search() {
   if (!empty($resource)) {
     switch ($resource) {
       case  'networks':
-        $networks = $search_resources->search_networks();
-        extract(mica_client_get_hits_entities_variable($networks), EXTR_OVERWRITE);
+        $result = $search_resources->search_networks();
+        $networks = $result['data'];
+        extract(mica_client_get_hits_entities_variable($result['counts']), EXTR_OVERWRITE);
         break;
       case  'datasets':
         $datasets = $search_resources->search_datasets();

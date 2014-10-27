@@ -136,6 +136,8 @@ class MicaSearchResource extends MicaClient {
 
   public function search_networks() {
     $data_response = $this->_search_resource();
+    $dtos = array('data' => NULL, 'counts' => NULL);
+
     if (!empty($data_response->networkResultDto)) {
       $dto_data_response = $data_response->networkResultDto;
       /*ad to session aggregation from other dto entities*/
@@ -143,14 +145,15 @@ class MicaSearchResource extends MicaClient {
       $summaries_networks = !empty($dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks) ?
         $dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks : NULL;
       $dtos ['data'] = $summaries_networks;
-      $dtos = $this->get_stats_entities_count($dtos, $data_response);
-      return $dtos;
     }
     else {
       unset($_SESSION['variables']);
       unset($_SESSION['studies']);
-      return NULL;
     }
+
+    $dtos['counts'] = $this->get_stats_entities_count($dtos, $data_response);
+
+    return $dtos;
   }
 
   public function search_datasets() {
