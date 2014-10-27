@@ -67,6 +67,11 @@ function mica_client_facet_search_vocabulary_pie_chart($vocabulary_coverage) {
       $data[] = $term_coverage->hits;
     }
   }
+
+  if (count($data)<=1) {
+    return '';
+  }
+
   return mica_client_facet_search_pie_chart($labels, $data, mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'bottom');
 }
 
@@ -114,6 +119,7 @@ function mica_client_facet_search_vocabulary_bar_chart($vocabulary_coverage, $wi
     }
     $data = array(t('All') => $data);
   }
+
   return mica_client_facet_search_stacked_column_chart($labels, $data, mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'none');
 }
 
