@@ -221,11 +221,18 @@ function mica_client_commons_get_current_theme() {
   return $theme ? $theme : 'micado_bootstrap';
 }
 
-function mica_client_commons_create_search_form($context) {
+function mica_client_commons_create_search_form($context, $no_acronym = TRUE, $no_name = TRUE) {
   global $language;
-  $sort_name = 'name.' . $language->language;
-  $sort_acronym = 'acronym.' . $language->language;
-
+  if ($no_name) {
+    $sort_name = 'name.' . $language->language;
+  }
+  if ($no_acronym) {
+    $sort_acronym = 'acronym.' . $language->language;
+    $options = array_merge(array($sort_name => t('Name'), $sort_acronym => t('Acronym')), $context['options']);
+  }
+  else {
+    $options = array_merge(array($sort_name => t('Name')), $context['options']);
+  }
   $form = array();
   $form['#id'] = 'mica-client-search-form';
   $form['#method'] = 'get';
@@ -235,7 +242,7 @@ function mica_client_commons_create_search_form($context) {
     '#type' => 'select',
     '#title' => '',
     '#description' => t('Sort by'),
-    '#options' => array_merge(array($sort_name => t('Name'), $sort_acronym => t('Acronym')), $context['options']),
+    '#options' => $options,
     '#default_value' => !empty($_GET['search-sort']) ? $_GET['search-sort'] : NULL,
     '#prefix' => '<div class="right-indent lg-width">',
     '#suffix' => '</div>',

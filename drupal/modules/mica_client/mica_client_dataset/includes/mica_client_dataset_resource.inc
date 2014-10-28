@@ -147,13 +147,13 @@ class MicaDatasetResource extends MicaClient {
    * @param null $order "asc" or "desc"
    * @return array|Protobuf\Message|null
    */
-  public function get_variables_harmonizations($resource, $dataset_id, $from = 0, $limit = -1, $sort = NULL, $order = NULL) {
+  public function get_variables_harmonizations($resource, $dataset_id, $from = 0, $limit = -1, $sort = NULL, $order = NULL, $query = NULL) {
     $this->setLastResponse(NULL);
     $params = empty($from) ? 'from=0' : 'from=' . $from;
     $params .= empty($limit) ? '&limit=-1' : '&limit=' . $limit;
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
-
+    $params .= empty($query) ? '' : '&query=' . $query;
     $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id) . '/variables/harmonizations?' . $params;
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
