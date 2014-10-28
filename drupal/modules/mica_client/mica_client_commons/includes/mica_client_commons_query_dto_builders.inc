@@ -433,11 +433,12 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
     foreach ($queryTypes as $queryType) {
       $matches = empty($this->mactehsMap[$queryType]) ? NULL : $this->mactehsMap[$queryType];
       $builders = empty($this->builderMap[$queryType]) ? NULL : $this->builderMap[$queryType];
+      $defaultSortField = $this->defaultSortMap[$queryType];
 
       if (!empty($matches) || !empty($builders)) {
         $this->setQuery($queryType, empty($builders) //
           ? QueryDtoBuilder::newBuilder(0, $this->defaultSize, $defaultSortField, $matches, $group_by)->build() //
-          : $this->createQuery($builders, 0, $this->defaultSize, $matches, $group_by) //
+          : $this->createQuery($builders, 0, $this->defaultSize, $defaultSortField, $matches, $group_by) //
         );
       }
     }
@@ -493,7 +494,6 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
           );
 
           $this->builderMap[$type] = $builders;
-          dpm($this->builderMap);
         }
       }
     }

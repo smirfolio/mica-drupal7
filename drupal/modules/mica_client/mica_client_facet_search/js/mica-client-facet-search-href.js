@@ -287,7 +287,6 @@
         updateWindowLocation($.sendCheckboxCheckedValues());
       });
 
-
       $("input[id='range-auto-fill']").on("blur", function () {
         var term = $(this).attr('termselect');
         var minid = term + '-min';

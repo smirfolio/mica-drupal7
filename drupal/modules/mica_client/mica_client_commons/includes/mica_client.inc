@@ -380,10 +380,10 @@ class MicaClient {
 
   /**
    * Merge any associative array query parameters to current json parameter
-   * @param $param_to_add associative array of param to add array('variables' =>array('terms'=>array('studyIds'=>'clsa-elcv-1')))
+   * @param array|associative $param_to_add associative array of param to add array('variables' =>array('terms'=>array('studyIds'=>'clsa-elcv-1')))
    * @return string
    */
-  static function add_parameter_dto_query_link($param_to_add) {
+  static function add_parameter_dto_query_link(array $param_to_add) {
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     if (!empty($url_parm[1])) {
       parse_str($url_parm[1], $parts);

@@ -125,7 +125,7 @@
   }
 
   function renderIsA() {
-    return $("<span class='is-a'>"+translate(is)+"</span>");
+    return $("<span class='is-a'>"+translate('is')+"</span>");
   }
 
   function renderAggregationContainer(type, typeValues, aggType, name) {

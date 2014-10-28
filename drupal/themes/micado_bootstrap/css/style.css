@@ -6821,6 +6821,22 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 .aggregate-value-background {
   background-color: #daf2fb;
 }
+.matches {
+  padding: 5px !important;
+  margin: 2px !important;
+  cursor: pointer !important;
+  border-radius: 5px;
+  color: #79539c;
+  background-color: #cbb3ea;
+}
+.matches-value {
+  padding: 5px !important;
+  margin: 2px !important;
+  cursor: pointer !important;
+  border-radius: 5px;
+  color: #b88bd1;
+  background-color: rgba(203, 179, 234, 0.5);
+}
 .aggregate {
   padding: 5px !important;
   margin: 2px !important;
@@ -6849,6 +6865,11 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 .operation {
   padding: 2px;
   border-radius: 5px;
+}
+.match {
+  padding: 2px;
+  border-radius: 5px;
+  color: #8f6ca3;
 }
 .is-a {
   padding: 2px;
@@ -7570,4 +7591,11 @@ ul.search-item-list-no-style {
   text-align: center;
   display: table;
   width: 100%;
+}
+.facet-search-form div.inline-form {
+  display: inline-block;
+}
+.facet-search-form p {
+  display: inline-block;
+  vertical-align: top;
 }
