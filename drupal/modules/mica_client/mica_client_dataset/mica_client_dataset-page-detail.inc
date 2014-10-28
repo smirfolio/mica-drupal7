@@ -67,7 +67,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
     ));
 
     return theme('mica_client_dataset-detail', array(
-      "form_search" => drupal_get_form('mica_client_dataset_create_form'),
+      //TODO implement resources to perform queries in variables resources
+      //   "form_search" => drupal_get_form('mica_client_dataset_create_form'),
       'dataset_dto' => $dataset_dto,
       'dataset_type_dto' => $dataset_type_dto,
       'dataset_harmonizations_dto' => $dataset_harmonizations_dto,
