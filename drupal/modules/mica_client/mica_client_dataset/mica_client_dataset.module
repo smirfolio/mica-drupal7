@@ -289,3 +289,23 @@ function _mica_client_variable_attributes_detail($variable, $name, $namespaces =
   }
   return NULL;
 }
+
+function _mica_client_variable_domains_list($variable) {
+  $output_vocab_list = '';
+  if (!empty($variable->termAttributes)) {
+    foreach ($variable->termAttributes as $vocabulary) {
+      $output_vocab_list .= '<div>';
+      foreach ($vocabulary->vocabularyTerms as $taxonomy) {
+        $output_vocab_list .= '<b>' . mica_client_commons_get_localized_field($taxonomy->vocabulary, 'titles') . ' :</b>';
+        foreach ($taxonomy->terms as $term) {
+          $output_vocab_list .= mica_client_commons_get_localized_field($term, 'titles') . ',';
+        }
+
+      }
+
+      $output_vocab_list .= '</div>';
+    }
+    return $output_vocab_list;
+  }
+  return NULL;
+}

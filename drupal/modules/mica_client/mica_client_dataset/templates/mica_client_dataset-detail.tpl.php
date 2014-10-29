@@ -1,6 +1,6 @@
 <?php
 //dpm($dataset_dto);
-dpm($dataset_type_dto);
+//dpm($dataset_type_dto);
 //dpm($dataset_harmonizations_dto);
 //dpm($dataset_variables_aggs);
 ?>
@@ -124,7 +124,7 @@ dpm($dataset_type_dto);
               <td><h5><?php print t('Number of variables') ?></h5></td>
               <td>
                 <p>
-                  <?php print empty($dataset_variables_aggs['totalHits']) ? 0 : $dataset_variables_aggs['totalHits']; ?>
+                  <?php print empty($dataset_harmonizations_dto->total) ? 0 : $dataset_harmonizations_dto->total; ?>
                 </p>
               </td>
             </tr>
@@ -217,10 +217,28 @@ dpm($dataset_type_dto);
   </section>
 
   <!-- HARMONIZATION -->
-  <?php if (!empty($dataset_harmonizations_dto)): ?>
+  <?php if (!empty($dataset_harmonizations_dto->hamonization)): ?>
     <section>
       <h3><?php print t('Harmonization') ?></h3>
-      <?php print mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto) ?>
+
+      <div>
+        <?php print render($form_search); ?>
+      </div>
+      <?php print render($variables_harmonization); ?>
     </section>
   <?php endif; ?>
+</article>
+
+
+<!-- STUDY VARIABLES -->
+<?php if (!empty($dataset_harmonizations_dto->study)): ?>
+  <section>
+    <h3><?php print t('Study variables') ?></h3>
+
+    <div>
+      <?php print render($form_search); ?>
+    </div>
+    <?php print render($variables_harmonization); ?>
+  </section>
+<?php endif; ?>
 </article>
