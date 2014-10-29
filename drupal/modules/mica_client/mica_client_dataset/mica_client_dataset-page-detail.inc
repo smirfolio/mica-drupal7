@@ -10,29 +10,43 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
   $harmonization_variable_table_output = NULL;
   $dataset_dto = $dataset_resource->get_dataset($dataset_type, $dataset_id);
   if (!empty($dataset_dto)) {
+    $from = 0;
+    $dataset_sort = 'index';
+    $dataset_sort_by = NULL;
+    $dataset_query = NULL;
+    if (!empty($_GET['search-query'])) {
+      $dataset_query = $_GET['search-query'];
+    }
+    if (!empty($_GET['search-sort'])) {
+      $dataset_sort = $_GET['search-sort'];
+    }
+    if (!empty($_GET['search-sort-order'])) {
+      $dataset_sort_by = $_GET['search-sort-order'];
+    }
+    if (!empty($_GET['page'])) {
+      $from = $dataset_resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 10);
+    }
+
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+      $dataset_harmonizations_dto = $dataset_resource->get_variables($dataset_type,
+        $dataset_id,
+        $from, 10,
+        $dataset_sort,
+        $dataset_sort_by,
+        $dataset_query
+      );
+
+      if (!empty($dataset_harmonizations_dto)) {
+        $_SESSION['list-datasets']['aggregations']['totalHits'] = $dataset_harmonizations_dto->total;
+      }
+      $dataset_harmonizations_dto->hamonization = NULL;
+      $dataset_harmonizations_dto->study = TRUE;
+      $harmonization_variable_table_output = mica_client_dataset_study_variable_table($dataset_harmonizations_dto);
     }
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
 
-      $from = 0;
-      $dataset_sort = 'index';
-      $dataset_sort_by = NULL;
-      $dataset_query = NULL;
-      if (!empty($_GET['search-query'])) {
-        $dataset_query = $_GET['search-query'];
-      }
-      if (!empty($_GET['search-sort'])) {
-        $dataset_sort = $_GET['search-sort'];
-      }
-      if (!empty($_GET['search-sort-order'])) {
-        $dataset_sort_by = $_GET['search-sort-order'];
-      }
-      if (!empty($_GET['page'])) {
-        $from = $dataset_resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 10);
-      }
-
       $dataset_harmonizations_dto = $dataset_resource->get_variables_harmonizations($dataset_type,
         $dataset_id,
         $from, 10,
@@ -43,18 +57,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       if (!empty($dataset_harmonizations_dto)) {
         $_SESSION['list-datasets']['aggregations']['totalHits'] = $dataset_harmonizations_dto->total;
       }
-
-      $dataset_harmonizations_dto = $dataset_resource->get_variables_harmonizations($dataset_type,
-        $dataset_id,
-        $from, 10,
-        $dataset_sort,
-        $dataset_sort_by,
-        $dataset_query
-      );
-
-      if (!empty($dataset_harmonizations_dto)) {
-        $_SESSION['list-datasets']['aggregations']['totalHits'] = $dataset_harmonizations_dto->total;
-      }
+      $dataset_harmonizations_dto->hamonization = TRUE;
+      $dataset_harmonizations_dto->hamonization = TRUE;
       $harmonization_variable_table_output = mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto);
     }
 
@@ -146,6 +150,35 @@ function mica_client_dataset_study_tables_rows($study_tables) {
   return $rows;
 }
 
+
+function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
+  $rows = array();
+  $headers = array(t('Variable'), t('Domains'));
+  if (!empty($dataset_harmonizations_dto->variables)) {
+    $total = $dataset_harmonizations_dto->total;
+    $per_page = 10;
+    $args = array('quantity' => $total);
+    pager_default_initialize($total, $per_page);
+
+    foreach ($dataset_harmonizations_dto->variables as $variable) {
+      $var_row = l($variable->name, 'mica/variable/' . $variable->id);
+      $domains = _mica_client_variable_domains_list($variable);
+      $rows[] = array($var_row, $domains);
+    }
+
+    return theme(
+      'table',
+      array(
+        'header' => $headers,
+        'rows' => $rows,
+        'empty' => t('No harmonized variables found'),
+        'sticky' => FALSE
+      )
+    ) . theme('pager', $args);
+  }
+
+}
+
 function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto) {
 
   $rows = array();
@@ -180,13 +213,10 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
 //            'Mlstr_harmo'
 //          )));
 //
-//          $script_harmonization = (_mica_client_variable_attributes_detail($variable_summary, 'script', array(
-//            'maelstrom',
-//            'Mlstr_harmo'
-//          )));
+//          $script_harmonization = (_mica_client_variable_attributes_detail($variable_summary, 'script', array()));
 //
 //          dpm($variable_summary);
-//          dpm($script_harmonization);
+//        dpm($script_harmonization);
           if ($variable_summary->resolver->studyId == $study_id) {
             $status = strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
               'maelstrom',
