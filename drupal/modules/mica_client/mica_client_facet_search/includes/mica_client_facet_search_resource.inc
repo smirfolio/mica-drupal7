@@ -63,11 +63,8 @@ class MicaSearchResource extends MicaClient {
 
     $client = $this->client();
     try {
-//      dpm($request);
-//      dpm($url);
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-//       dpm(json_decode($data));
       return json_decode($data);
 
     } catch (HttpClientException $e) {
@@ -95,82 +92,33 @@ class MicaSearchResource extends MicaClient {
   }
 
   public function search_variables() {
-    $data_response = $this->_search_resource();
-    if (!empty($data_response->variableResultDto)) {
-      $dto_data_response = $data_response->variableResultDto;
-      /*ad to session aggregation from other dto entities*/
-      $this->session_facets_builder($data_response);
-      $summaries_variables = $dto_data_response->{'obiba.mica.DatasetVariableResultDto.result'}->summaries;
-      $dtos ['data'] = $summaries_variables;
-      $dtos = $this->get_stats_entities_count($dtos, $data_response);
-      return $dtos;
-    }
-    unset($_SESSION['variables']);
-    unset($_SESSION['studies']);
-    return NULL;
+    return $this->search_documents(JoinQueryResponseWrapper::VARIABLES);
   }
 
   public function search_studies() {
-    $data_response = $this->_search_resource();
-    if (!empty($data_response->studyResultDto)) {
-      $dto_data_response = $data_response->studyResultDto;
-      $this->session_facets_builder($data_response);
-      $summaries_studies = !empty($dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries) ?
-        $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
-      $dtos = array();
-      $dtos ['data'] = $summaries_studies;
-      if (!empty($dto_data_response)) {
-        $dtos = $this->get_stats_entities_count($dtos, $data_response);
-      }
-      else {
-        $dtos ['study-totalHits'] = 0;
-      }
-      return $dtos;
-    }
-    else {
-      unset($_SESSION['variables']);
-      unset($_SESSION['studies']);
-      return NULL;
-    }
+    return $this->search_documents(JoinQueryResponseWrapper::STUDIES);
   }
 
   public function search_networks() {
-    $data_response = $this->_search_resource();
-    if (!empty($data_response->networkResultDto)) {
-      $dto_data_response = $data_response->networkResultDto;
-      /*ad to session aggregation from other dto entities*/
-      $this->session_facets_builder($data_response);
-      $summaries_networks = !empty($dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks) ?
-        $dto_data_response->{'obiba.mica.NetworkResultDto.result'}->networks : NULL;
-      $dtos ['data'] = $summaries_networks;
-      $dtos = $this->get_stats_entities_count($dtos, $data_response);
-      return $dtos;
-    }
-    else {
-      unset($_SESSION['variables']);
-      unset($_SESSION['studies']);
-      return NULL;
-    }
+    return $this->search_documents(JoinQueryResponseWrapper::NETWORKS);
   }
 
   public function search_datasets() {
-    $data_response = $this->_search_resource();
-    if (!empty($data_response->datasetResultDto)) {
-      $dto_data_response = $data_response->datasetResultDto;
-      /*ad to session aggregation from other dto entities*/
-      $this->session_facets_builder($data_response);
-      $summaries_datasets = !empty($dto_data_response->{'obiba.mica.DatasetResultDto.result'}->datasets) ?
-        $dto_data_response->{'obiba.mica.DatasetResultDto.result'}->datasets : NULL;
-      $dtos ['data'] = $summaries_datasets;
-      $dtos = $this->get_stats_entities_count($dtos, $data_response);
-      return $dtos;
-    }
-    else {
-      unset($_SESSION['variables']);
-      unset($_SESSION['studies']);
-      return NULL;
-    }
+    return $this->search_documents(JoinQueryResponseWrapper::DATASETS);
   }
 
+  private function search_documents($type) {
+    $join_query_response = new JoinQueryResponseWrapper($this->_search_resource());
+    $response = $join_query_response->getResponseWrapper($type);
+
+    if (!$response->isEmpty()) {
+      $this->session_facets_builder($join_query_response->getResponseDto());
+    } else {
+      unset($_SESSION['variables']);
+      unset($_SESSION['studies']);
+    }
+
+    return $join_query_response;
+  }
 
 }

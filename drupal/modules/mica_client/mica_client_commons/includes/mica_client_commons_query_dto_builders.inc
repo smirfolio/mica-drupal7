@@ -307,13 +307,49 @@ class SortDtoBuilder extends AbstractDtoBuilder {
   }
 }
 
+
+class QueryStringDtoBuilder extends AbstractDtoBuilder {
+
+  private function __construct()
+  {
+    $this->dto = new \obiba\mica\QueryDto\QueryStringDto();
+  }
+
+  static function newBuilder()
+  {
+    return new QueryStringDtoBuilder();
+  }
+
+  function query($query) {
+    $this->dto->setQuery($query);
+    return $this;
+  }
+
+  function fields($fields)
+  {
+    foreach($fields as $field) {
+      $this->dto->addFields($field);
+    }
+    return $this;
+  }
+
+  function build() {
+    return $this->dto;
+  }
+}
+
 class QueryDtoBuilder extends AbstractDtoBuilder
 {
-  private function __construct($from, $size, $sort_field, $group_by)
+  private function __construct($from, $size, $sort_field, $matches, $group_by)
   {
     $this->dto = new \obiba\mica\QueryDto();
     $this->dto->setFrom($from);
     $this->dto->setSize($size);
+
+    if (!empty($matches)) {
+      $this->dto->setQueryString(QueryStringDtoBuilder::newBuilder()->query($matches)->build());
+    }
+
     if (!empty($sort_field)) {
       $this->dto->setSort(SortDtoBuilder::newBuilder()->field($sort_field)->build());
     }
@@ -328,9 +364,9 @@ class QueryDtoBuilder extends AbstractDtoBuilder
     }
   }
 
-  static function newBuilder($from, $size, $sort_field, $group_by)
+  static function newBuilder($from, $size, $sort_field, $matches, $group_by)
   {
-    return new QueryDtoBuilder($from, $size, $sort_field, $group_by);
+    return new QueryDtoBuilder($from, $size, $sort_field, $matches, $group_by);
   }
 
   function filteredQuery(\obiba\mica\FilteredQueryDto $dto)
@@ -357,35 +393,53 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
   const DATASETS = 'datasets';
   const STUDIES = 'studies';
   const NETWORKS = 'networks';
+  const MATCHES = 'matches';
 
+  private $mactehsMap = NULL;
   private $builderMap = NULL;
   private $defaultSortMap = NULL;
 
-  private function __construct($data, $defaultSize)
+  private function __construct($data, $defaultSize, $locale)
   {
     $this->dto = new \obiba\mica\JoinQueryDto();
+    $this->dto->setLocale($locale);
     $this->builderMap = array();
     $this->defaultSize = $defaultSize;
     $this->initializeDefaultSortMap();
+    $this->queryTypes = array(self::VARIABLES, self::DATASETS, self::STUDIES, self::NETWORKS);
     if (!empty($data)) $this->parseData($data);
   }
 
-  static function newBuilder($data, $defaultSize)
+  static function newBuilder($data, $defaultSize, $locale)
   {
-    return new JoinQueryDtoBuilder($data, $defaultSize);
+    return new JoinQueryDtoBuilder($data, $defaultSize, $locale);
   }
 
   function documentQuery($type, $from, $size, $group_by = NULL)
   {
+    $matches = empty($this->mactehsMap[$type]) ? NULL : $this->mactehsMap[$type];
     $defaultSortField = $this->defaultSortMap[$type];
     $this->setQuery($type, array_key_exists($type, $this->builderMap) //
-      ? $this->createQuery($this->builderMap[$type], $from, $size, $defaultSortField, $group_by) //
-      : QueryDtoBuilder::newBuilder($from, $size, $defaultSortField, $group_by)->build() //
+      ? $this->createQuery($this->builderMap[$type], $from, $size, $defaultSortField, $matches, $group_by) //
+      : QueryDtoBuilder::newBuilder($from, $size, $defaultSortField, $matches, $group_by)->build() //
     );
 
-    foreach ($this->builderMap as $builderType => $builders) {
-      if ($type !== $builderType && array_key_exists($builderType, $this->builderMap)) {
-        $this->setQuery($builderType, $this->createQuery($builders, 0, $this->defaultSize, $group_by));
+    $queryTypes = array_filter( //
+      $this->queryTypes, //
+      function ($queryType) use ($type) {
+        return $queryType !== $type;
+      });
+
+    foreach ($queryTypes as $queryType) {
+      $matches = empty($this->mactehsMap[$queryType]) ? NULL : $this->mactehsMap[$queryType];
+      $builders = empty($this->builderMap[$queryType]) ? NULL : $this->builderMap[$queryType];
+      $defaultSortField = $this->defaultSortMap[$queryType];
+
+      if (!empty($matches) || !empty($builders)) {
+        $this->setQuery($queryType, empty($builders) //
+          ? QueryDtoBuilder::newBuilder(0, $this->defaultSize, $defaultSortField, $matches, $group_by)->build() //
+          : $this->createQuery($builders, 0, $this->defaultSize, $defaultSortField, $matches, $group_by) //
+        );
       }
     }
 
@@ -420,14 +474,19 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
    */
   private function parseData($data)
   {
-    foreach ($data as $type => $aggTypeData) {
-      foreach ($aggTypeData as $aggType => $aggs) {
-        foreach ($aggs as $aggName => $values) {
-          $normalizedAggName = preg_replace('/-/', '.', $aggName);
+    foreach ($data as $type => $searchData) {
+      foreach ($searchData as $searchPartType => $parts) {
 
+        if ($searchPartType === self::MATCHES) {
+          $this->mactehsMap[$type] = $parts;
+          continue;
+        }
+
+        foreach ($parts as $part => $values) {
+          $normalizedAggName = preg_replace('/-/', '.', $part);
           $builders = array_key_exists($type, $this->builderMap) ? $this->builderMap[$type] : array();
           array_push(
-            $builders, $aggType == 'terms' //
+            $builders, $searchPartType == 'terms' //
               ? TermsFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)->values($values) //
               : RangeFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)
                 ->fromBuilder(RangeConditionDtoBuilder::newBuilder()->gte($values[0]->min))
@@ -441,9 +500,9 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
   }
 
 
-  private function createQuery($builders, $from, $size, $sort_field, $group_by = NULL)
+  private function createQuery($builders, $from, $size, $sort_field, $matches, $group_by = NULL)
   {
-    return QueryDtoBuilder::newBuilder($from, $size, $sort_field, $group_by)->filteredQueryBuilder(
+    return QueryDtoBuilder::newBuilder($from, $size, $sort_field, $matches, $group_by)->filteredQueryBuilder(
       FilteredQueryDtoBuilder::newBuilder()->filterBuilder(
         BoolFilterQueryDtoBuilder::newBuilder()->mustBuilders($builders)))->build();
   }

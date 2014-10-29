@@ -30,6 +30,13 @@
     container.append(renderRefresh());
     $.each(jsonQuery, function (type, typeValues) {
       $.each(typeValues, function (aggType, aggs) {
+
+        if (aggType === 'matches') {
+          if (container.children().length > 1) container.append(renderAndOperation());
+          renderMatches(type, aggs);
+          return;
+        }
+
         $.each(aggs, function (name, values) {
           if (values.length > 0) {
             var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name);
@@ -91,12 +98,34 @@
       });
   }
 
+  function renderMatches(type, value) {
+     var matches = renderMatchesElement('matches', type, translate(type));
+     var matchesValue = renderValuesContainer().append(renderMatchesElement('matches-value', type, value));
+    container.append(matches.append(renderMatch()).append(matchesValue));
+  }
+
+  function renderMatchesElement(cssClass, type, text) {
+    var htmlMatchesElement = $("<li></li>").append($("<span class='"+cssClass+"'></span>").text(text));
+    htmlMatchesElement.click(function () {
+      delete jsonQuery[type]['matches'];
+      update();
+      return false;
+    });
+
+    return htmlMatchesElement;
+  }
+
+  function renderMatch() {
+    return $("<span class='match'>"+translate('match')+"</span>");
+  }
+
+
   function renderValuesContainer() {
     return $("<ul class='facet-query-list'></ul>");
   }
 
   function renderIsA() {
-    return $("<span class='is-a'>is</span>");
+    return $("<span class='is-a'>"+translate('is')+"</span>");
   }
 
   function renderAggregationContainer(type, typeValues, aggType, name) {
@@ -113,11 +142,11 @@
   }
 
   function renderOrOperation() {
-    return $("<span class='or-operation'>OR</span>");
+    return $("<span class='or-operation'>"+translate('or').toUpperCase()+"</span>");
   }
 
   function renderAndOperation() {
-    return $("<span class='and-operation'>AND</span>");
+    return $("<span class='and-operation'>"+translate('and').toUpperCase()+"</span>");
   }
 
   function renderAggregate(type, typeValues, aggType, name) {
@@ -152,6 +181,10 @@
     });
 
     return htmlValue;
+  }
+
+  function translate(key) {
+    return translation.general[key];
   }
 
   function translateAggregation(key) {
