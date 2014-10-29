@@ -25,6 +25,8 @@ abstract class AbstractResponseWrapper {
     return empty($this->documentDto) ? 0 : $this->documentDto->totalCount;
   }
 
+  abstract function hasSummaries();
+
   abstract function getSummaries();
 }
 
@@ -105,10 +107,14 @@ class StudyJoinResponseWrapper extends AbstractResponseWrapper {
     }
   }
 
+  function hasSummaries() {
+    return !empty($this->documentDto)
+      && !empty($this->documentDto->{self::STUDY_RESULT_EXTENSION_ID}) //
+      && !empty($this->documentDto->{self::STUDY_RESULT_EXTENSION_ID}->summaries);
+  }
+
   function getSummaries() {
-    return empty($this->documentDto) || empty($this->documentDto->{self::STUDY_RESULT_EXTENSION_ID}) //
-      ? array() //
-      : $this->documentDto->{self::STUDY_RESULT_EXTENSION_ID}->summaries;
+    return $this->hasSummaries() ? $this->documentDto->{self::STUDY_RESULT_EXTENSION_ID}->summaries : array();
   }
 
   function getNetworkDigests($studyId) {
@@ -158,10 +164,14 @@ class NetworkJoinResponseWrapper extends AbstractResponseWrapper {
     }
   }
 
+  function hasSummaries() {
+    return !empty($this->documentDto) //
+      && !empty($this->documentDto->{self::NETWORK_RESULT_EXTENSION_ID}) //
+      && !empty($this->documentDto->{self::NETWORK_RESULT_EXTENSION_ID}->networks);
+  }
+
   function getSummaries() {
-    return empty($this->documentDto) || empty($this->documentDto->{self::NETWORK_RESULT_EXTENSION_ID}) //
-      ? array() //
-      : $this->documentDto->{self::NETWORK_RESULT_EXTENSION_ID}->networks;
+    return $this->hasSummaries() ? $this->documentDto->{self::NETWORK_RESULT_EXTENSION_ID}->networks : array();
   }
 }
 
@@ -174,16 +184,25 @@ class VariableJoinResponseWrapper extends AbstractResponseWrapper {
     }
   }
 
+  function hasDetails() {
+    return !empty($this->documentDto) //
+      && !empty($this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}) //
+      && !empty($this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}->variables);
+  }
+
   function getDetails() {
-    return empty($this->documentDto) || empty($this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}) //
-      ? array() //
-      : $this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}->variables;
+    return $this->hasDetails() ? $this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}->variables : array();
+  }
+
+  function hasSummaries()
+  {
+    return !empty($this->documentDto) //
+      && !empty($this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}) //
+      && !empty($this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}->summaries);
   }
 
   function getSummaries() {
-    return empty($this->documentDto) || empty($this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}) //
-      ? array() //
-      : $this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}->summaries;
+    return $this->hasSummaries() ? $this->documentDto->{self::VARIABLE_RESULT_EXTENSION_ID}->summaries : array();
   }
 
 }
@@ -197,10 +216,14 @@ class DatasetJoinResponseWrapper extends AbstractResponseWrapper {
     }
   }
 
+  function hasSummaries() {
+    return !empty($this->documentDto) //
+      && !empty($this->documentDto->{self::DATASET_RESULT_EXTENSION_ID}) //
+      && !empty($this->documentDto->{self::DATASET_RESULT_EXTENSION_ID}->datasets);
+  }
+
   function getSummaries() {
-    return empty($this->documentDto) || empty($this->documentDto->{self::DATASET_RESULT_EXTENSION_ID}) //
-      ? array() //
-      : $this->documentDto->{self::DATASET_RESULT_EXTENSION_ID}->datasets;
+    return $this->hasSummaries() ? $this->documentDto->{self::DATASET_RESULT_EXTENSION_ID}->datasets : array();
   }
 
 }

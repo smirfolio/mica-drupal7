@@ -399,10 +399,10 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
   private $builderMap = NULL;
   private $defaultSortMap = NULL;
 
-  private function __construct($data, $defaultSize)
+  private function __construct($data, $defaultSize, $locale)
   {
     $this->dto = new \obiba\mica\JoinQueryDto();
-    $this->mactehsMap = array();
+    $this->dto->setLocale($locale);
     $this->builderMap = array();
     $this->defaultSize = $defaultSize;
     $this->initializeDefaultSortMap();
@@ -410,9 +410,9 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
     if (!empty($data)) $this->parseData($data);
   }
 
-  static function newBuilder($data, $defaultSize)
+  static function newBuilder($data, $defaultSize, $locale)
   {
-    return new JoinQueryDtoBuilder($data, $defaultSize);
+    return new JoinQueryDtoBuilder($data, $defaultSize, $locale);
   }
 
   function documentQuery($type, $from, $size, $group_by = NULL)

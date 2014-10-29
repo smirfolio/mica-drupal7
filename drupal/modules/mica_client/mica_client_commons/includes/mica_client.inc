@@ -220,56 +220,61 @@ class MicaClient {
     unset($_SESSION['variables']);
     unset($_SESSION['studies']);
     foreach ($aggregations as $type_aggregations => $aggregation) {
-      if (!empty($aggregation->totalHits)) {
-        if ($type_aggregations == 'variableResultDto') {
-          $study_result = $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'};
+      if ($type_aggregations == 'variableResultDto') {
+        $_SESSION['variables']['studies'] = array();
+        $study_result = $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'};
+        if (!empty($study_result) && (!empty($study_result->summaries) || !empty($study_result->digests))) {
           $_SESSION['variables']['studies'] = //
             empty($study_result->summaries) //
               ? $study_result->digests //
-              : $study_result->summaries; //
-          $dataset_result = $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'};
+              : $study_result->summaries;
+        }
+
+        $dataset_result = $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'};
+        $_SESSION['variables']['datasets'] = array();
+        if (!empty($dataset_result) && (!empty($dataset_result->datasets) || !empty($dataset_result->digests))) {
           $_SESSION['variables']['datasets'] =
             empty($dataset_result->datasets)
               ? $dataset_result->digests
               : $dataset_result->datasets;
-          $_SESSION['variables']['aggregations'] = $aggregation->aggs;
-          $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
-          $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
         }
-        if ($type_aggregations == 'studyResultDto') {
-          if (!empty($aggregations->networkResultDto)) {
-            $network_result = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
-            $_SESSION['studies']['networks'] =
-              empty($network_result->digests)
-                ? $network_result->networks
-                : $network_result->digests;
-          }
-
-          if (!empty($aggregations->variableResultDto)) {
-            $variable_studies_id_aggregations =
-              $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
-            $_SESSION['studies']['variables'] = !empty($variable_studies_id_aggregations) ?
-              $variable_studies_id_aggregations : NULL;
-          }
-
-          if (!empty($aggregations->networkResultDto)) {
-            $networks_studies_id_aggregations =
-              $this->_get_aggregations_by_entity_dto($aggregations->networkResultDto->aggs, 'studyIds');
-            $_SESSION['studies']['networks-studyId'] = !empty($networks_studies_id_aggregations) ?
-              $networks_studies_id_aggregations : NULL;
-          }
-
-          if (!empty($aggregations->datasetResultDto)) {
-            $datasets_studyTableSstudyIdstudies_id_aggregations =
-              $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTable-studyId');
-            $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_studyTableSstudyIdstudies_id_aggregations) ?
-              $datasets_studyTableSstudyIdstudies_id_aggregations : NULL;
-          }
-
-          $_SESSION['studies']['aggregations'] = $aggregation->aggs;
-          $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
-          $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
+        $_SESSION['variables']['aggregations'] = $aggregation->aggs;
+        $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
+        $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
+      }
+      if ($type_aggregations == 'studyResultDto') {
+        if (!empty($aggregations->networkResultDto)) {
+          $network_result = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
+          $_SESSION['studies']['networks'] =
+            empty($network_result->digests)
+              ? $network_result->networks
+              : $network_result->digests;
         }
+
+        if (!empty($aggregations->variableResultDto)) {
+          $variable_studies_id_aggregations =
+            $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
+          $_SESSION['studies']['variables'] = !empty($variable_studies_id_aggregations) ?
+            $variable_studies_id_aggregations : NULL;
+        }
+
+        if (!empty($aggregations->networkResultDto)) {
+          $networks_studies_id_aggregations =
+            $this->_get_aggregations_by_entity_dto($aggregations->networkResultDto->aggs, 'studyIds');
+          $_SESSION['studies']['networks-studyId'] = !empty($networks_studies_id_aggregations) ?
+            $networks_studies_id_aggregations : NULL;
+        }
+
+        if (!empty($aggregations->datasetResultDto)) {
+          $datasets_studyTableSstudyIdstudies_id_aggregations =
+            $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTable-studyId');
+          $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_studyTableSstudyIdstudies_id_aggregations) ?
+            $datasets_studyTableSstudyIdstudies_id_aggregations : NULL;
+        }
+
+        $_SESSION['studies']['aggregations'] = $aggregation->aggs;
+        $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
+        $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
       }
     }
   }
@@ -371,7 +376,10 @@ class MicaClient {
     else {
       setcookie('page_' . $type, $_GET['page'], time() + 3600 * 24 * 180);
     }
-    $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $this::SIZE_RESPONSE);
+
+    global $language;
+    $lang = $language->language;
+    $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $this::SIZE_RESPONSE, $lang);
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
     $json_query_encoded = //
       Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE, $group_by)->build());
