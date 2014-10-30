@@ -157,7 +157,6 @@ function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
   if (!empty($dataset_harmonizations_dto->variables)) {
     $total = $dataset_harmonizations_dto->total;
     $per_page = 10;
-    $args = array('quantity' => $total);
     pager_default_initialize($total, $per_page);
 
     foreach ($dataset_harmonizations_dto->variables as $variable) {
@@ -174,13 +173,12 @@ function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
         'empty' => t('No harmonized variables found'),
         'sticky' => FALSE
       )
-    ) . theme('pager', $args);
+    ) . theme('pager');
   }
 
 }
 
 function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto) {
-
   $rows = array();
   $headers = array(t('Variable'));
   $study_ids = array();
@@ -197,7 +195,6 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
   if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
     $total = $dataset_harmonizations_dto->total;
     $per_page = 10;
-    $args = array('quantity' => $total);
     pager_default_initialize($total, $per_page);
 
     foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {
@@ -263,7 +260,7 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
       'empty' => t('No harmonized variables found'),
       'sticky' => FALSE
     )
-  ) . theme('pager', $args);
+  ) . theme('pager');
 
 
 }

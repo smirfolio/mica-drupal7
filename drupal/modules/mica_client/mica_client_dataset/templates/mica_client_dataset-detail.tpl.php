@@ -98,28 +98,6 @@
                 <?php endif ?>
               </td>
             </tr>
-
-            </tbody>
-          </table>
-        </div>
-        <div class="col-xs-6">
-          <?php if (!empty($dataset_dto->attributes)): ?>
-            <h5><?php print t('Attributes') ?></h5>
-            <p><?php print mica_client_dataset_attributes_tab($dataset_dto->attributes, 'maelstrom'); ?></p>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- VARIABLES -->
-  <section>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-xs-6 lg-right-indent">
-          <h3><?php print t('Variables') ?></h3>
-          <table class="table table-striped">
-            <tbody>
             <tr>
               <td><h5><?php print t('Number of variables') ?></h5></td>
               <td>
@@ -130,6 +108,12 @@
             </tr>
             </tbody>
           </table>
+        </div>
+        <div class="col-xs-6">
+          <?php if (!empty($dataset_dto->attributes)): ?>
+            <h5><?php print t('Attributes') ?></h5>
+            <p><?php print mica_client_dataset_attributes_tab($dataset_dto->attributes, 'maelstrom'); ?></p>
+          <?php endif; ?>
         </div>
       </div>
     </div>
