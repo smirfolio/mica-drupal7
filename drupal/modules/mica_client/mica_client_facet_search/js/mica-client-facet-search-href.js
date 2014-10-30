@@ -1,118 +1,11 @@
 (function ($) {
-  Drupal.behaviors.queries = {
+  Drupal.behaviors.query_href = {
     attach: function (context, settings) {
 
       var URL_PARAM_QUERY = 'query';
 
       function getSelectedtermsAggSearchKey(attrAgg, value) {
         return attrAgg.replace("[]", "-terms[]")+value;
-      }
-
-      /**
-       * Desrializes the form JSON into an array of aggregation values. Only range agg values are formatted
-       * @param json
-       * @returns {Array}
-       */
-      function desrializeFormJsonAsKeyValue(json) {
-        var formData = {};
-        $.each(json, function(type, typeValues){
-          $.each(typeValues, function(aggType, aggs){
-            $.each(aggs, function (name, values) {
-
-              if (aggType === 'matches') {
-                var key = type+"::matches:facet-search-query";
-                formData[key] = aggs;
-                return;
-              }
-
-              $.each(values, function (i, value) {
-                var formattedName = name + "-" + aggType + "[]";
-                var key = type+":"+formattedName + (aggType === "terms" ? value : name);
-                formData[key] = aggType === "terms" ? value : name + ".[+" + value.min + "+to+" + value.max + "+]";
-              });
-            })
-          });
-        });
-
-        return $.isEmptyObject(formData) ? null : formData;
-      }
-
-      function serializeFormAsJson(formData) {
-
-        /**
-         * Helper used to extract entry information needed to build the form JSON
-         * @param value
-         * @returns {{type: *, agg: *, aggType: *, aggValue: *}}
-         */
-        function extractFormEntry(value) {
-          var entry = /^(\w+):(.*)-(terms|range)[\\[\\]]*=(.*)$/.exec(value);
-          return entry === null ? null : {
-            type: entry[1],
-            agg: entry[2],
-            aggType: entry[3],
-            aggValue: extractAggValue(entry[4])
-          };
-        }
-
-        /**
-         * Helper used to extract query string 'matches' value
-         * @param value
-         * @returns {{matches: *}}
-         */
-        function extractMatchesEntry(value) {
-          var entry = /^(\w+)::matches:[A-Za-z0-9-]+=(.*)$/.exec(value);
-          return entry === null ? null : {type: entry[1], matches: entry[2]};
-        }
-
-        /**
-         * If the agg value has range info, return value as min-max
-         * @param value
-         * @returns {*}
-         */
-        function extractAggValue(value) {
-          var entry = /\[\+([+-]*\d+)\+to\+([+-]*\d+)\+\]/.exec(value);
-          if (entry !== null) return {min: entry[1], max: entry[2]};
-          return value;
-        }
-
-        /**
-         * Parses the formData serialized as a DOM object and returns it as JSON object
-         * @param formData
-         * @returns {{}}
-         */
-        function parse(formData) {
-          var jsonForm = {};
-
-          $.each(decodeURIComponent(formData).split('&'), function(i, value) {
-            if (value != null && value.length > 0) {
-              var entry = extractFormEntry(value) || extractMatchesEntry(value);
-              if (entry === null) return;
-
-              if (!jsonForm.hasOwnProperty(entry.type)) {
-                jsonForm[entry.type] = {};
-              }
-
-              if (entry.hasOwnProperty('matches')) {
-                jsonForm[entry.type]['matches'] = entry.matches;
-                return;
-              }
-
-              if (!jsonForm[entry.type].hasOwnProperty(entry.aggType)) {
-                jsonForm[entry.type][entry.aggType] = {};
-              }
-
-              if (!jsonForm[entry.type][entry.aggType].hasOwnProperty(entry.agg)) {
-                jsonForm[entry.type][entry.aggType][entry.agg] = [];
-              }
-
-              jsonForm[entry.type][entry.aggType][entry.agg].push(entry.aggValue);
-            }
-          });
-
-          return jsonForm;
-        }
-
-        return parse(formData);
       }
 
       function checkthebox(obj_span) {
@@ -142,22 +35,66 @@
       function getUrlVars() {
         var pos = window.location.href.indexOf(URL_PARAM_QUERY + "=");
         if (pos === -1) return [];
-        return desrializeFormJsonAsKeyValue(JSON.parse(decodeURIComponent($.urlParam(URL_PARAM_QUERY))));
+        return $.query_serializer.serializeJsonAsForm(JSON.parse(decodeURIComponent($.urlParam(URL_PARAM_QUERY))));
       }
 
       function sendCheckboxCheckedValues() {
-        return JSON.stringify(serializeFormAsJson($("form[id^='facet-search'] :input[value!='']").serialize()));
+        return JSON.stringify($.query_serializer.serializeFormAsJson($("form[id^='facet-search'] :input[value!='']").serialize()));
+      }
+
+      function getQueryFromUrl() {
+        return (window.location.search.replace(/(^\?)/, '').split("&").map(function (n) {
+          return n = n.split("="), this[n[0]] = n[1], this
+        }.bind({}))[0])['query'];
       }
 
       /*******************/
+
       $.extend({
-        checkthebox: checkthebox,
-        uncheckthebox: uncheckthebox,
-        rollover: rollover,
-        rollout: rollout,
-        getUrlVars: getUrlVars,
-        sendCheckboxCheckedValues: sendCheckboxCheckedValues
+        query_href: {
+          update: update,
+          getQueryFromUrl: getQueryFromUrl,
+          updateQueryOperation: updateQueryOperation
+        }
       });
+
+      function updateQueryOperation(operationMoniker, value) {
+        console.log("Moniker", operationMoniker, value);
+        var qParam = getQueryFromUrl();
+        if ($.isEmptyObject(qParam)) return;
+
+        var entry = /^(\w+):(\w+):(.*)$/.exec(operationMoniker);
+        console.log("Monikter parts:", entry);
+        var jsonQuery = JSON.parse(decodeURIComponent(qParam));
+
+        $.each(jsonQuery, function (type, typeValues) {
+          console
+          if (type === entry[1]) {
+            console.log("Found type:", type);
+            $.each(typeValues, function (aggType, aggs) {
+              if (aggType === entry[2]) {
+                console.log("Found aggType :", aggType);
+                $.each(aggs, function (name, agg) {
+                  if (name === entry[3]) {
+                    console.log("Found agg :", name);
+                    agg.op = value;
+                    updateWindowLocation(JSON.stringify(jsonQuery));
+                    return false;
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+
+      /**
+       * Helper used to extract query json from URL
+       * @returns {*}
+       */
+      function update() {
+        updateWindowLocation(sendCheckboxCheckedValues());
+      }
 
       /**************************/
       //deal with tabs
@@ -178,10 +115,11 @@
       function processMatchesInput(selectedVars) {
         $.each(selectedVars, function(key, value){
           if(/matches:facet-search-query$/.test(key)) {
-            console.log(key);
             $("input[id='" + key+"']").val(value);
-
+          } else {
+            $("input[id='" + key+"']").val(value);
           }
+
         });
       }
 
@@ -210,7 +148,7 @@
               $(this).parents("label.span-checkbox").css("display", "inline");
               $(this).parents("label.span-checkbox").removeClass();
 
-              $.checkthebox($(this));
+              checkthebox($(this));
               var copy_chekbox = $(this).parent().clone();
               var divtofind = $(this).parents("section:first").find(".checkedterms:first");
               $("input[id=" + getAggregationMoniker(this) + "]").val($(this).attr("value"));
@@ -223,14 +161,14 @@
           }
           else {
             if ($(this).hasClass("checked")) {
-              $.uncheckthebox($(this));
+              uncheckthebox($(this));
               $("input[id=" + aggregation_name + "]").val('');
             }
           }
         });
       }
 
-      var selectedVars = $.getUrlVars();
+      var selectedVars = getUrlVars();
       if (selectedVars) {
         processMatchesInput(selectedVars);
         processTermsAggregationInputs(selectedVars);
@@ -243,15 +181,15 @@
       function updateCheckboxes() {
         var aggregation_name = getAggregationMoniker(this);
         if ($(this).hasClass("unchecked")) {
-          $.checkthebox($(this));
+          checkthebox($(this));
           $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
-          updateWindowLocation($.sendCheckboxCheckedValues());
+          updateWindowLocation(sendCheckboxCheckedValues());
           return false;
         }
         if ($(this).hasClass("checked")) {
-          $.uncheckthebox($(this));
+          uncheckthebox($(this));
           $("input[id=" + aggregation_name + "]").val('');
-          updateWindowLocation($.sendCheckboxCheckedValues());
+          updateWindowLocation(sendCheckboxCheckedValues());
           return false;
         }
       }
@@ -269,22 +207,22 @@
 
       $("span#checkthebox").mouseover(function () {
         if ($(this).hasClass("checked")) {
-          $.rollover($(this));
+          rollover($(this));
           return false;
         }
       });
 
       $("span#checkthebox").mouseout(function () {
         if ($(this).hasClass("checked")) {
-          $.rollout($(this));
+          rollout($(this));
           return false;
         }
       });
 
       /*send request search on checking the box or on click go button */
       $("div#checkthebox, button#facet-search-submit").on("click", function () {
-        //  $.sendCheckboxCheckedValues();
-        updateWindowLocation($.sendCheckboxCheckedValues());
+        //  sendCheckboxCheckedValues();
+        updateWindowLocation(sendCheckboxCheckedValues());
       });
 
       $("input[id='range-auto-fill']").on("blur", function () {

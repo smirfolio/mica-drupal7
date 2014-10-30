@@ -40,7 +40,6 @@
 
 //when a group is shown, save it as the active accordion group
       $(".block").on('shown.bs.collapse', function () {
-        console.log('collapse');
         $(".block-content").each(function (id, state) {
           //var id_active = $(".panel-collapse .in").attr('id');
           var current_id = this.id;

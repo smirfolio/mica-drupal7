@@ -9,16 +9,21 @@
 @aggregate-value-color: #3AC8F3;
 @aggregate-value-background-color: #DAF2FB;
 @refresh-background-color: #E9931C;
+@agg-or-operation-color: #2a89f3;
 @or-operation-color: #CE6503;
 @and-operation-color: #15B562;
 
 .search-query {
 }
 
+.clickable {
+  cursor:pointer !important;
+}
+
 .query-item {
+  .clickable;
   padding: 5px !important;
   margin: 2px !important;
-  cursor:pointer !important;
   border-radius: @background-radius
 }
 
@@ -77,6 +82,11 @@
 .or-operation {
   .operation;
   color: @or-operation-color;
+}
+
+.agg-or-operation {
+  .operation;
+  color: @agg-or-operation-color;
 }
 
 .and-operation {

@@ -126,6 +126,8 @@ class StudyJoinResponseWrapper extends AbstractResponseWrapper {
   }
 
   private function mapNetworkDigests() {
+    if (!$this->hasSummaries()) return;
+
     foreach ($this->getSummaries() as $study) {
       $studyId = $study->id;
       $networks = $this->mapNetwork($studyId);
@@ -136,13 +138,9 @@ class StudyJoinResponseWrapper extends AbstractResponseWrapper {
   }
 
   private function mapNetwork($studyId) {
-    if (!empty($this->dto->networkResultDto)) {
-      $networkDto = $this->dto->networkResultDto;
-
-      return empty($networkDto) && empty($networkDto->{self::NETWORK_RESULT_EXTENSION_ID}) //
-        ? array() //
-        : array_filter( //
-          $networkDto->{self::NETWORK_RESULT_EXTENSION_ID}->digests, //
+    $networkDtoWrapper = new NetworkJoinResponseWrapper($this->dto);
+    if (!$networkDtoWrapper->isEmpty() && $networkDtoWrapper->hasDigsts()) {
+      return array_filter($networkDtoWrapper->getDigests(), //
           function ($network) use ($studyId) {
             $studies = $network->{'obiba.mica.NetworkDigestDto.studies'};
             return !empty($studies) && !empty($studies->ids) && in_array($studyId, $studies->ids);
@@ -162,6 +160,16 @@ class NetworkJoinResponseWrapper extends AbstractResponseWrapper {
     if (!empty($this->dto) && !empty($this->dto->networkResultDto)) {
       $this->documentDto = $this->dto->networkResultDto;
     }
+  }
+
+  function hasDigsts() {
+    return !empty($this->documentDto) //
+      && !empty($this->documentDto->{self::NETWORK_RESULT_EXTENSION_ID}) //
+      && !empty($this->documentDto->{self::NETWORK_RESULT_EXTENSION_ID}->digests);
+  }
+
+  function getDigests() {
+    return $this->hasDigsts() ? $this->documentDto->{self::NETWORK_RESULT_EXTENSION_ID}->digests : array();
   }
 
   function hasSummaries() {

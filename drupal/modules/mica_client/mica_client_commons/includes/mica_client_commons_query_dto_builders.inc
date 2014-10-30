@@ -395,6 +395,9 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
   const NETWORKS = 'networks';
   const MATCHES = 'matches';
 
+  const OR_OPERATOR = 'or';
+  const AND_OPERATOR = 'and';
+
   private $mactehsMap = NULL;
   private $builderMap = NULL;
   private $defaultSortMap = NULL;
@@ -482,19 +485,24 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
           continue;
         }
 
-        foreach ($parts as $part => $values) {
+        $ops = array_key_exists($type, $this->builderMap) ? $this->builderMap[$type] : array();
+        foreach ($parts as $part => $agg) {
           $normalizedAggName = preg_replace('/-/', '.', $part);
-          $builders = array_key_exists($type, $this->builderMap) ? $this->builderMap[$type] : array();
+          $op = array_key_exists($agg->op, $ops) ? $ops[$agg->op] : array();
+          $aggValues = $agg->values;
           array_push(
-            $builders, $searchPartType == 'terms' //
-              ? TermsFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)->values($values) //
+            $op, $searchPartType == 'terms' //
+              ? TermsFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)->values($aggValues) //
               : RangeFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)
-                ->fromBuilder(RangeConditionDtoBuilder::newBuilder()->gte($values[0]->min))
-                ->toBuilder(RangeConditionDtoBuilder::newBuilder()->lte($values[0]->max))
+                ->fromBuilder(RangeConditionDtoBuilder::newBuilder()->gte($aggValues[0]->min))
+                ->toBuilder(RangeConditionDtoBuilder::newBuilder()->lte($aggValues[0]->max))
           );
 
-          $this->builderMap[$type] = $builders;
+          $ops[$agg->op] = $op;
         }
+
+        $this->builderMap[$type] = $ops;
+
       }
     }
   }
@@ -502,9 +510,12 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
 
   private function createQuery($builders, $from, $size, $sort_field, $matches, $group_by = NULL)
   {
+    $boolFilterBuilder = BoolFilterQueryDtoBuilder::newBuilder();
+    if (!empty($builders[self::OR_OPERATOR])) $boolFilterBuilder->shouldBuilders($builders[self::OR_OPERATOR]);
+    if (!empty($builders[self::AND_OPERATOR])) $boolFilterBuilder->mustBuilders($builders[self::AND_OPERATOR]);
+
     return QueryDtoBuilder::newBuilder($from, $size, $sort_field, $matches, $group_by)->filteredQueryBuilder(
-      FilteredQueryDtoBuilder::newBuilder()->filterBuilder(
-        BoolFilterQueryDtoBuilder::newBuilder()->mustBuilders($builders)))->build();
+      FilteredQueryDtoBuilder::newBuilder()->filterBuilder($boolFilterBuilder))->build();
   }
 
   private function initializeDefaultSortMap()

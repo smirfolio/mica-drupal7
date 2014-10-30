@@ -6809,10 +6809,13 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 .facets {
   list-style-type: none;
 }
+.clickable {
+  cursor: pointer !important;
+}
 .query-item {
+  cursor: pointer !important;
   padding: 5px !important;
   margin: 2px !important;
-  cursor: pointer !important;
   border-radius: 5px;
 }
 .aggregate-background {
@@ -6822,41 +6825,41 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
   background-color: #daf2fb;
 }
 .matches {
+  cursor: pointer !important;
   padding: 5px !important;
   margin: 2px !important;
-  cursor: pointer !important;
   border-radius: 5px;
   color: #79539c;
   background-color: #cbb3ea;
 }
 .matches-value {
+  cursor: pointer !important;
   padding: 5px !important;
   margin: 2px !important;
-  cursor: pointer !important;
   border-radius: 5px;
   color: #b88bd1;
   background-color: rgba(203, 179, 234, 0.5);
 }
 .aggregate {
+  cursor: pointer !important;
   padding: 5px !important;
   margin: 2px !important;
-  cursor: pointer !important;
   border-radius: 5px;
   background-color: #c0e1f6;
   color: #5575a9;
 }
 .aggregate-value {
+  cursor: pointer !important;
   padding: 5px !important;
   margin: 2px !important;
-  cursor: pointer !important;
   border-radius: 5px;
   background-color: #daf2fb;
   color: #3ac8f3;
 }
 .refresh-button {
+  cursor: pointer !important;
   padding: 5px !important;
   margin: 2px !important;
-  cursor: pointer !important;
   border-radius: 5px;
   border: 0;
   color: #ffffff;
@@ -6879,6 +6882,11 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
   padding: 2px;
   border-radius: 5px;
   color: #ce6503;
+}
+.agg-or-operation {
+  padding: 2px;
+  border-radius: 5px;
+  color: #2a89f3;
 }
 .and-operation {
   padding: 2px;
