@@ -103,6 +103,14 @@
     return $("<ul class='facet-query-list'></ul>");
   }
 
+  function parenthesize(content) {
+    return $("<span style='display: inline-block'></span>").append("<span class='is-a'>(</span>").append(content).append("<span class='is-a'>)</span>");
+  }
+
+  function renderComma() {
+    return $("<span class='is-a'>,</span>");
+  }
+
   function renderIsA() {
     return $("<span class='is-a'>"+translate('is')+"</span>");
   }
@@ -113,12 +121,12 @@
 
   function renderAggregationContainer(type, typeValues, aggType, name, op) {
     var aggContainer = renderAggregate(type, typeValues, aggType, name);
-    var aggValueContainer = renderValuesContainer().append(renderIsA());
-    aggContainer.append(aggValueContainer);
+    var aggValueContainer = renderValuesContainer();
+    aggContainer.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name))).append(parenthesize(aggValueContainer));
 
-    if (container.children().length > 1) {
-      container.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)));
-    }
+    //if (container.children().length > 1) {
+    //  container.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)));
+    //}
     container.append(aggContainer);
 
     return aggValueContainer;
@@ -173,7 +181,7 @@
   function renderAggregateValue(aggType, values, i, value) {
     var id = aggType + i + value;
     var htmlValue = $("<li></li>");
-    if (i > 0) htmlValue.append(renderAggOrOperation());
+    if (i > 0) htmlValue.append(renderComma());
 
     htmlValue.append(aggType === "terms" ? renderTermsAggregationValue(value) : renderRangeAggregationValue(value));
     htmlValue.click(function () {
