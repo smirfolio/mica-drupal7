@@ -10,7 +10,7 @@
         var var_id = param.attr('var-id');
 
         $.ajax({
-          'url': '/drupal/variable-detail-statistics/' + var_id,
+          'url': 'variable-detail-statistics/' + var_id,
           'type': 'GET',
           'dataType': 'html',
           'data': '',
