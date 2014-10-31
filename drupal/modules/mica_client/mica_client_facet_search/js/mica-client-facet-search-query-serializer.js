@@ -57,7 +57,7 @@
          * @returns {{type: *, agg: *, aggType: *, aggValue: *}}
          */
         function extractOperator(value) {
-          var entry = /^(\w+):(\w+):([A-Za-z0-9-]+):op=(and|or)$/.exec(value);
+          var entry = /^(\w+):(\w+):(.*):op=(and|or)$/.exec(value);
           return entry === null ? null : {
             type: entry[1],
             aggType: entry[2],
@@ -72,7 +72,7 @@
          * @returns {{matches: *}}
          */
         function extractMatchesEntry(value) {
-          var entry = /^(\w+)::matches:[A-Za-z0-9-]+=(.*)$/.exec(value);
+          var entry = /^(\w+)::matches:(.*)=(.*)$/.exec(value);
           return entry === null ? null : {type: entry[1], matches: entry[2]};
         }
 

@@ -8,6 +8,7 @@
 
   var AND_OPERATOR = 'and';
   var OR_OPERATOR = 'or';
+  var MAX_VIISBLE_AGG_VALUE = 3;
 
   /**
    * Constructor
@@ -103,8 +104,16 @@
     return $("<ul class='facet-query-list'></ul>");
   }
 
-  function renderIsA() {
-    return $("<span class='is-a'>"+translate('is')+"</span>");
+  function leftParenthesis() {
+    return $("<span class='unclickable'>(</span>");
+  }
+
+  function rightParenthesis(content) {
+    return $("<span class='unclickable'>)</span>");
+  }
+
+  function renderComma() {
+    return $("<span class='comma'>,</span>");
   }
 
   function createOpMoniker(type, aggType, name) {
@@ -113,20 +122,15 @@
 
   function renderAggregationContainer(type, typeValues, aggType, name, op) {
     var aggContainer = renderAggregate(type, typeValues, aggType, name);
-    var aggValueContainer = renderValuesContainer().append(renderIsA());
-    aggContainer.append(aggValueContainer);
+    var aggValueContainer = renderValuesContainer();
+    aggContainer.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)))
+      .append(leftParenthesis()).append(aggValueContainer).append(rightParenthesis());
 
-    if (container.children().length > 1) {
-      container.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)));
-    }
     container.append(aggContainer);
 
     return aggValueContainer;
   }
 
-  function renderAggOrOperation() {
-    return $("<span class='agg-or-operation'>"+translate('or')+"</span>");
-  }
   function renderOrOperation(show, moniker) {
     return $("<span data-op='or' id='or-" + moniker + "' " + (show ? "" : "hidden") + "  class='or-operation'>"+translate('or').toUpperCase()+"</span>");
   }
@@ -152,42 +156,61 @@
   }
 
   function renderAggregate(type, typeValues, aggType, name) {
-    var htmlAggregate = $("<li></li>").append($("<span class='aggregate'></span>").text(translateAggregation(name)));
-    htmlAggregate.click(function () {
+    var aggregate = $("<span class='aggregate'></span>").text(translateAggregation(name)).click(function () {
       delete jsonQuery[type][aggType][name];
       update();
       return false;
     });
 
+    var htmlAggregate = $("<li></li>").append(aggregate);
+
     return htmlAggregate;
   }
 
-  function renderTermsAggregationValue(value) {
-    return $("<span class='aggregate-value'></span>").text(value);
+  function renderTermsAggregationValue(value, hiddenParent) {
+    var value = $("<span class='aggregate-value'></span>").text(value);
+    return hiddenParent === null ? value : hiddenParent.append(value);
   }
 
-  function renderRangeAggregationValue(value) {
-    return $("<span class='aggregate-value'></span>").text(value.min + " - " + value.max);
+  function renderRangeAggregationValue(value, hiddenParent) {
+    var value = $("<span class='aggregate-value'></span>").text(value.min + " - " + value.max);
+    return hiddenParent === null ? value : hiddenParent.append(value);
   }
 
-  function renderAggregateValue(aggType, values, i, value) {
-    var id = aggType + i + value;
-    var htmlValue = $("<li></li>");
-    if (i > 0) htmlValue.append(renderAggOrOperation());
+  function renderAggregateValue(aggType, agg, i, value, valuesContaier, hiddenValuesContainer) {
+    if (i > 0 && i < MAX_VIISBLE_AGG_VALUE) valuesContaier.append(renderComma());
 
-    htmlValue.append(aggType === "terms" ? renderTermsAggregationValue(value) : renderRangeAggregationValue(value));
-    htmlValue.click(function () {
-      values.splice(i, 1);
+    valuesContaier.append(aggType === "terms" //
+        ? renderTermsAggregationValue(value, hiddenValuesContainer) //
+        : renderRangeAggregationValue(value, hiddenValuesContainer)); //
+
+    valuesContaier.click(function () {
+      agg.values.splice(i, 1);
+      if (agg.values.length === 0) delete agg['op'];
       update();
       return false;
     });
-
-    return htmlValue;
   }
 
   function getOperation(op) {
     if ('and' === op || 'or' === op) return op;
     return AND_OPERATOR;
+  }
+
+  function renderPlusMinus(parent) {
+    var hiddens = $("<span hidden id='hidden-values'></span>");
+    var plusMinus = $("<span> + </span>").append(hiddens).click(function() {
+      $(this).text($(this).text() === ' + ' ? ' - ' : ' + ');
+      $('[id^=hidden-values]').toggle();
+      return false;
+    });
+
+    parent.append(plusMinus.append(hiddens));
+    return hiddens;
+  }
+
+  function getHiddenAttribute(hide) {
+    return hide ? "hidden" : "";
   }
 
   function translate(key) {
@@ -222,8 +245,23 @@
         $.each(aggs, function (name, agg) {
           if (agg.values.length > 0) {
             var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(agg.op));
+            var valuesContainer = $("<li></li>");
+            var hiddenValuesContainer = null;
+            $(aggValueContainer).append(valuesContainer);
+
+
             $.each(agg.values, function (i, value) {
-              $(aggValueContainer).append(renderAggregateValue(aggType, agg.values, i, value));
+              if (i >= MAX_VIISBLE_AGG_VALUE && hiddenValuesContainer === null) {
+                hiddenValuesContainer = renderPlusMinus(valuesContainer);
+                valuesContainer.append(hiddenValuesContainer);
+              }
+
+              renderAggregateValue(aggType, //
+                agg, //
+                i, //
+                value, //
+                valuesContainer, //
+                hiddenValuesContainer); //
             });
           }
         })

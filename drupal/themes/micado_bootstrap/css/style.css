@@ -6809,6 +6809,9 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 .facets {
   list-style-type: none;
 }
+.unclickable {
+  pointer-events: none;
+}
 .clickable {
   cursor: pointer !important;
 }
@@ -6874,9 +6877,13 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
   border-radius: 5px;
   color: #8f6ca3;
 }
-.is-a {
+.parenthesis {
+  display: inline-block;
+}
+.comma {
   padding: 2px;
   border-radius: 5px;
+  pointer-events: none;
 }
 .or-operation {
   padding: 2px;
