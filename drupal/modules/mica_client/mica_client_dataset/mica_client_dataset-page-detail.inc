@@ -224,11 +224,11 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
               $row[] = l('-', 'mica/variable/' . $harmonized_variable_id);
             }
             elseif ($status == 'complete') {
-              $row[] = l('<span data-toggle="tooltip" title="Completet" class="glyphicon glyphicon-ok-sign alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+              $row[] = l('<span data-toggle="tooltip" title="Completed" class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
                 array('html' => TRUE));
             }
             elseif ($status == 'impossible') {
-              $row[] = l('<span class="glyphicon glyphicon-remove-sign alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+              $row[] = l('<span class="glyphicon glyphicon-remove alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
                 array('html' => TRUE));
             }
             elseif ($status == 'undetermined') {

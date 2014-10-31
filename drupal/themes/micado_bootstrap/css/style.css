@@ -7184,6 +7184,7 @@ body.admin-menu .navbar-fixed-top {
 }
 .block-content .table td .glyphicon {
   font-size: 14px;
+  background-color: transparent;
 }
 .block-content .modal-body section {
   background-color: #ffffff;
