@@ -40,7 +40,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       if (!empty($dataset_harmonizations_dto)) {
         $_SESSION['list-datasets']['aggregations']['totalHits'] = $dataset_harmonizations_dto->total;
       }
-      $dataset_harmonizations_dto->hamonization = NULL;
+      $dataset_harmonizations_dto->harmonization = NULL;
       $dataset_harmonizations_dto->study = TRUE;
       $harmonization_variable_table_output = mica_client_dataset_study_variable_table($dataset_harmonizations_dto);
     }
@@ -57,8 +57,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       if (!empty($dataset_harmonizations_dto)) {
         $_SESSION['list-datasets']['aggregations']['totalHits'] = $dataset_harmonizations_dto->total;
       }
-      $dataset_harmonizations_dto->hamonization = TRUE;
-      $dataset_harmonizations_dto->hamonization = TRUE;
+      $dataset_harmonizations_dto->harmonization = TRUE;
+      $dataset_harmonizations_dto->harmonization = TRUE;
       $harmonization_variable_table_output = mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto);
     }
 

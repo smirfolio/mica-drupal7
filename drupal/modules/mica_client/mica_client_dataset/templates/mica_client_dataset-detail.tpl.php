@@ -201,7 +201,7 @@
   </section>
 
   <!-- HARMONIZATION -->
-  <?php if (!empty($dataset_harmonizations_dto->hamonization)): ?>
+  <?php if (!empty($dataset_harmonizations_dto->harmonization)): ?>
     <section>
       <h3><?php print t('Harmonization') ?></h3>
 
@@ -211,18 +211,16 @@
       <?php print render($variables_harmonization); ?>
     </section>
   <?php endif; ?>
-</article>
 
+  <!-- STUDY VARIABLES -->
+  <?php if (!empty($dataset_harmonizations_dto->study)): ?>
+    <section>
+      <h3><?php print t('Study variables') ?></h3>
 
-<!-- STUDY VARIABLES -->
-<?php if (!empty($dataset_harmonizations_dto->study)): ?>
-  <section>
-    <h3><?php print t('Study variables') ?></h3>
-
-    <div>
-      <?php print render($form_search); ?>
-    </div>
-    <?php print render($variables_harmonization); ?>
-  </section>
-<?php endif; ?>
+      <div>
+        <?php print render($form_search); ?>
+      </div>
+      <?php print render($variables_harmonization); ?>
+    </section>
+  <?php endif; ?>
 </article>

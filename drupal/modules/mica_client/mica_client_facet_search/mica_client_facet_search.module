@@ -593,25 +593,25 @@ function mica_client_facet_search_studies_table($studies) {
         implode(', ', t($study->designs)),
         /*Quest-DSA*/
         array(
-          'data' => mica_client_facet_search_has_datasource($study->dataSources, 'questionnaires') ?
+          'data' => !empty($study->dataSources) && mica_client_facet_search_has_datasource($study->dataSources, 'questionnaires') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*PM-DSA*/
         array(
-          'data' => mica_client_facet_search_has_datasource($study->dataSources, 'physical_measures') ?
+          'data' => !empty($study->dataSources) && mica_client_facet_search_has_datasource($study->dataSources, 'physical_measures') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*Bio-DSA*/
         array(
-          'data' => mica_client_facet_search_has_datasource($study->dataSources, 'biological_samples') ?
+          'data' => !empty($study->dataSources) && mica_client_facet_search_has_datasource($study->dataSources, 'biological_samples') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
         /*Others-DSA*/
         array(
-          'data' => mica_client_facet_search_has_datasource($study->dataSources, 'others') ?
+          'data' => !empty($study->dataSources) && mica_client_facet_search_has_datasource($study->dataSources, 'others') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
         ),
