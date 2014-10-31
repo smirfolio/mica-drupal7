@@ -23,8 +23,10 @@ function mica_client_facet_search_get_facets_chart($type = NULL, $data, $library
       $count_terms = array();
 
       foreach ($facet->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
-        $terms_title[] = $term->key;
-        $count_terms[] = $term->count;
+        if (!empty($term->count)) {
+          $terms_title[] = $term->key;
+          $count_terms[] = $term->count;
+        }
       }
       if (count($terms_title) > 1) {
         $title_chart = mica_client_facet_search_get_title_chart($type, $facet->aggregation);
@@ -34,6 +36,7 @@ function mica_client_facet_search_get_facets_chart($type = NULL, $data, $library
       }
     }
   }
+
   return $charts;
 }
 
