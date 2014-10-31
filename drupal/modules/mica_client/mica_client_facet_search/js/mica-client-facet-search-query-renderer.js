@@ -180,16 +180,19 @@
   function renderAggregateValue(aggType, agg, i, value, valuesContaier, hiddenValuesContainer) {
     if (i > 0 && i < MAX_VIISBLE_AGG_VALUE) valuesContaier.append(renderComma());
 
-    valuesContaier.append(aggType === "terms" //
-        ? renderTermsAggregationValue(value, hiddenValuesContainer) //
-        : renderRangeAggregationValue(value, hiddenValuesContainer)); //
+    var htmlValue =
+      aggType === "terms" //
+          ? renderTermsAggregationValue(value, hiddenValuesContainer) //
+          : renderRangeAggregationValue(value, hiddenValuesContainer); //
 
-    valuesContaier.click(function () {
+    htmlValue.click(function () {
       agg.values.splice(i, 1);
       if (agg.values.length === 0) delete agg['op'];
       update();
       return false;
     });
+
+    valuesContaier.append(htmlValue);
   }
 
   function getOperation(op) {
