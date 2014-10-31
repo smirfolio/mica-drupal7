@@ -169,10 +169,14 @@ class MicaClientAnchorHelper
 
   static function search_study_datasets($text)
   {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('variables' => array('terms' => array('variableType' => "study"))) //
+    );
+
     $options = array(
       'query' => array(
         'type' => 'variables',
-        'query' => '{"variables":{"terms":{"variableType":["study"]}}}'
+        'query' => $query
       ),
       'attributes' => array('class' =>'highlight btn btn-primary')
     );
@@ -182,10 +186,13 @@ class MicaClientAnchorHelper
 
   static function coverage_study_datasets($text)
   {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('variables' => array('terms' => array('variableType' => "study"))) //
+    );
     $options = array(
       'query' => array(
         'group-by' => 'datasetId',
-        'query' => '{"variables":{"terms":{"variableType":["study"]}}}'
+        'query' => $query
       ),
       'attributes' => array('class' =>'highlight btn btn-primary')
     );
@@ -195,10 +202,13 @@ class MicaClientAnchorHelper
 
   static function search_harmonization_datasets($text)
   {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('variables' => array('terms' => array('variableType' => "dataschema"))) //
+    );
     $options = array(
       'query' => array(
         'type' => 'variables',
-        'query' => '{"variables":{"terms":{"variableType":["dataschema"]}}}'
+        'query' => $query
       ),
       'attributes' => array('class' =>'highlight btn btn-primary')
     );
@@ -208,10 +218,13 @@ class MicaClientAnchorHelper
 
   static function coverage_harmonization_datasets($text)
   {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('variables' => array('terms' => array('variableType' => "dataschema"))) //
+    );
     $options = array(
       'query' => array(
         'group-by' => 'datasetId',
-        'query' => '{"variables":{"terms":{"variableType":["dataschema"]}}}'
+        'query' => $query
       ),
       'attributes' => array('class' =>'highlight btn btn-primary')
     );
