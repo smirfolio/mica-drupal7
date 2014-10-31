@@ -202,7 +202,7 @@
 
   function renderPlusMinus(parent) {
     var hiddens = $("<span hidden id='hidden-values'></span>");
-    var plusMinus = $("<span> + </span>").append(hiddens).click(function() {
+    var plusMinus = $("<span class='plus-minus'> + </span>").append(hiddens).click(function() {
       $(this).text($(this).text() === ' + ' ? ' - ' : ' + ');
       $('[id^=hidden-values]').toggle();
       return false;

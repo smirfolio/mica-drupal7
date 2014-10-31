@@ -6809,6 +6809,10 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 .facets {
   list-style-type: none;
 }
+span.plus-minus {
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
 .unclickable {
   pointer-events: none;
 }
