@@ -21,7 +21,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update cc chart-enable
+all: clean setup-drupal wwww import-sql settings bootstrap enable-mica enable-obiba-auth jquery devel less-css jquery_update cc chart-enable
 
 clean:
 	rm -rf target
@@ -58,6 +58,11 @@ enable-mica:
 enable-obiba-auth:
 	cd target/drupal && \
 	drush en -y obiba_auth
+
+jquery:
+	cd target/drupal && \
+    drush vset -y jquery_update_jquery_version 1.8 && \
+    drush vset -y jquery_update_jquery_admin_version 1.8
 
 bootstrap:
 	cd target/drupal && \
