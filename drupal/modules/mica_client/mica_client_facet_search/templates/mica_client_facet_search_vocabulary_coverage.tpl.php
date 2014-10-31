@@ -75,21 +75,25 @@
         <?php if (!empty($vocabulary_coverage->buckets)): ?>
           <?php foreach ($vocabulary_coverage->buckets as $bucket) : ?>
             <th style="text-align: center;">
-              <?php
-              print l($bucket->hits, 'mica/search',
-                array(
-                  'query' => array(
-                    'type' => 'variables',
-                    'query' => MicaClient::add_parameter_dto_query_link(array(
-                        'variables' => array(
-                          'terms' => array(
-                            $bucket->field => $bucket->value,
-                            $vocabulary_attribute => $term_names,
+              <?php if (empty($bucket->hits)): ?>
+                <?php print 0; ?>
+              <?php else: ?>
+                <?php
+                print l($bucket->hits, 'mica/search',
+                  array(
+                    'query' => array(
+                      'type' => 'variables',
+                      'query' => MicaClient::add_parameter_dto_query_link(array(
+                          'variables' => array(
+                            'terms' => array(
+                              $bucket->field => $bucket->value,
+                              $vocabulary_attribute => $term_names,
+                            )
                           )
-                        )
-                      ))
-                  ),
-                )) ?>
+                        ))
+                    ),
+                  )) ?>
+              <?php endif ?>
             </th>
           <?php endforeach; ?>
         <?php endif ?>
@@ -134,7 +138,10 @@
               <?php foreach ($term_coverage->buckets as $bucket) : ?>
                 <?php if ($bucket->value == $bucket_name): ?>
                   <td style="text-align: center; vertical-align: middle;">
-                    <span class="badge alert-info">
+                    <?php if (empty($bucket->hits)): ?>
+                      <?php print 0; ?>
+                    <?php else: ?>
+                      <span class="badge alert-info">
                     <?php print l($bucket->hits, 'mica/search',
                       array(
                         'query' => array(
@@ -150,6 +157,7 @@
                         ),
                       )) ?>
                     </span>
+                    <?php endif ?>
                   </td>
                   <?php $found = TRUE ?>
                 <?php endif ?>
