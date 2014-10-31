@@ -16,6 +16,10 @@
 .search-query {
 }
 
+.unclickable {
+  pointer-events: none;
+}
+
 .clickable {
   cursor:pointer !important;
 }
@@ -65,6 +69,7 @@
   color: #ffffff;
   background-color: @refresh-background-color;
 }
+
 .operation {
   padding: 2px;
   border-radius: @background-radius
@@ -75,8 +80,13 @@
   color: @match-operation-color;
 }
 
-.is-a {
+.parenthesis {
+  display: inline-block;
+}
+
+.comma {
   .operation;
+  .unclickable;
 }
 
 .or-operation {

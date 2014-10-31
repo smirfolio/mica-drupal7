@@ -422,10 +422,14 @@ class MicaClient {
           $term_values = $term_value;
         }
         foreach ($term_values as $value) {
-          if (empty($array_current_query->{$entity_name}->terms->{$term_name}) || !in_array($value, $array_current_query->{$entity_name}->terms->{$term_name})) {
-            $array_current_query->{$entity_name}->terms->{$term_name}[] = $value;
+          if (empty($array_current_query->{$entity_name}->terms->{$term_name}) //
+            || !in_array($value, $array_current_query->{$entity_name}->terms->{$term_name}->values)) { //
+
+            $array_current_query->{$entity_name}->terms->{$term_name}->values[] = $value;
           }
         }
+
+        $array_current_query->{$entity_name}->terms->{$term_name}->{'op'} = 'and';
       }
     }
   }

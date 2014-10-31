@@ -5,5 +5,5 @@
     <?php print render($term_count); ?>
     </label>
   <?php endforeach; ?>
-  <input type="" value="" name="<?php print $operatorId?>" id="<?php print $operatorId?>">
+  <input type="hidden" value="" name="<?php print $operatorId?>" id="<?php print $operatorId?>">
 </form>
