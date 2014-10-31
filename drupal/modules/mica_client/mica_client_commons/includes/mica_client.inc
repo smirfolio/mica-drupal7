@@ -414,7 +414,17 @@ class MicaClient {
     return json_encode($array_current_query);
   }
 
-  private static function add_parameter_terms($array_current_query, $param_to_add) {
+  public static function create_query_dto_as_string($param_to_add) {
+    return json_encode(MicaClient::create_query_dto($param_to_add));
+  }
+
+  public static function create_query_dto($param_to_add) {
+    $query = new stdClass();
+    MicaClient::add_parameter_terms($query, $param_to_add);
+    return $query;
+  }
+
+  public static function add_parameter_terms($array_current_query, $param_to_add) {
     foreach ($param_to_add as $entity_name => $entity) {
       foreach ($entity['terms'] as $term_name => $term_value) {
         $term_values = array($term_value);
@@ -429,7 +439,9 @@ class MicaClient {
           }
         }
 
-        $array_current_query->{$entity_name}->terms->{$term_name}->{'op'} = 'and';
+        if (empty($array_current_query->{$entity_name}->terms->{$term_name}->{'op'})) {
+          $array_current_query->{$entity_name}->terms->{$term_name}->{'op'} = 'and';
+        }
       }
     }
   }

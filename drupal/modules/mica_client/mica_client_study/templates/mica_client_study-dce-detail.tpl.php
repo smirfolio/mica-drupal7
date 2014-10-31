@@ -21,11 +21,14 @@
 
             <div class="pull-right md-bottom-margin">
               <?php
+              $query_array = array("variables" => array("terms" => array("dceIds" => $dce_uid)));
+              $query = MicaClient::create_query_dto_as_string($query_array);
+
               print l(t('Search Variables'), 'mica/search',
                 array(
                   'query' => array(
                     'type' => 'variables',
-                    'query' => '{"variables":{"terms":{"dceIds":["' . $dce_uid . '"]}}}'
+                    'query' => $query
                   ),
                   'attributes' => array('class' => 'btn btn-primary')
                 ));
@@ -35,7 +38,7 @@
                 array(
                   'query' => array(
                     'type' => 'variables',
-                    'query' => '{"variables":{"terms":{"dceIds":["' . $dce_uid . '"]}}}'
+                    'query' => $query
                   ),
                   'attributes' => array('class' => 'btn btn-primary indent')
                 ));
