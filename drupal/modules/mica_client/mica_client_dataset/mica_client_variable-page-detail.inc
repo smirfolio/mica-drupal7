@@ -297,7 +297,7 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
       }
     }
   }
-
+  
   foreach ($variable->categories as $category) {
     $category_name = $category->name;
     $category_label = _mica_client_variable_attributes_detail($category, 'label');;
@@ -357,7 +357,7 @@ function _mica_client_variable_rebuild_stat($variable_stat, $variable) {
       if ($key_stud == $key_study) {
         $stats[$study_id]['_all'] = $stat->totalHits;
         foreach ($stat->facets[0]->frequencies as $key_attrib => $frequency) {
-          $stats[$study_id][$key_attrib] = $frequency->count;
+          $stats[$study_id][$frequency->term] = $frequency->count;
         }
       }
     }
