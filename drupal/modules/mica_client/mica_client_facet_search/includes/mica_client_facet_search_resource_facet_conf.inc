@@ -66,16 +66,25 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
   if (!empty($block_delta)) {
     //  dpm(mica_client_commons_get_dto_facet_aggs($block_delta, $type));
     $facet_pars = mica_client_facet_search_get_dto_facet_aggs($block_delta, $type);
+    $agg_type = "";
     if (!empty($facet_pars)) {
       $aggregation_facet = key($facet_pars);
       $terms_aggregations = current($facet_pars);
       if (!empty($terms_aggregations) && !empty($terms_aggregations['term'])) {
+        $agg_type = "terms";
         $items = mica_client_facet_search_get_checkbox_term_field($terms_aggregations['term'], $type_string, $aggregation_facet, $totalHits, $totalCount);
       }
       if (!empty($terms_aggregations) && !empty($terms_aggregations['range'])) {
+        $agg_type = "range";
         $items = mica_client_facet_search_get_range_field($terms_aggregations['range'], $type_string, $aggregation_facet);
       }
-      return theme('mica_client_facet_search_block_search', array('items' => $items, 'formId' => $aggregation_facet));
+
+      return theme('mica_client_facet_search_block_search',
+        array('items' => $items,
+          'formId' => $aggregation_facet,
+          'operatorId' => sprintf("%s:%s:%s:op", $type, $agg_type, $aggregation_facet)
+        )
+      );
     }
   }
   return NULL;
@@ -133,7 +142,9 @@ function mica_client_facet_search_get_datasets() {
   if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
     $aggs = $_SESSION['variables']['aggregations'];
     array_filter($aggs, function($agg) use(&$datasets) {
-      if ($agg instanceof stdClass && $agg->aggregation === 'datasetId') {
+      if ($agg instanceof stdClass //
+            && $agg->aggregation === 'datasetId' //
+            && !empty($agg->{'obiba.mica.TermsAggregationResultDto.terms'})) {
         $datasets = $agg->{'obiba.mica.TermsAggregationResultDto.terms'};
         return true;
       }

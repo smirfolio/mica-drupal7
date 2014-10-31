@@ -6,6 +6,9 @@
   var jsonQuery;
   var translation;
 
+  var AND_OPERATOR = 'and';
+  var OR_OPERATOR = 'or';
+
   /**
    * Constructor
    * @constructor
@@ -26,30 +29,6 @@
     }
   };
 
-  function parseAndRender() {
-    container.append(renderRefresh());
-    $.each(jsonQuery, function (type, typeValues) {
-      $.each(typeValues, function (aggType, aggs) {
-
-        if (aggType === 'matches') {
-          if (container.children().length > 1) container.append(renderAndOperation());
-          renderMatches(type, aggs);
-          return;
-        }
-
-        $.each(aggs, function (name, values) {
-          if (values.length > 0) {
-            var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name);
-            $.each(values, function (i, value) {
-              $(aggValueContainer).append(renderAggregateValue(aggType, values, i, value));
-            });
-          }
-        })
-      });
-    });
-
-    return container;
-  }
 
   /**
    * Updates the query and url
@@ -128,25 +107,48 @@
     return $("<span class='is-a'>"+translate('is')+"</span>");
   }
 
-  function renderAggregationContainer(type, typeValues, aggType, name) {
+  function createOpMoniker(type, aggType, name) {
+    return type + ":" + aggType + ":" + name;
+  }
+
+  function renderAggregationContainer(type, typeValues, aggType, name, op) {
     var aggContainer = renderAggregate(type, typeValues, aggType, name);
     var aggValueContainer = renderValuesContainer().append(renderIsA());
     aggContainer.append(aggValueContainer);
 
     if (container.children().length > 1) {
-      container.append(renderAndOperation());
+      container.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)));
     }
     container.append(aggContainer);
 
     return aggValueContainer;
   }
 
-  function renderOrOperation() {
-    return $("<span class='or-operation'>"+translate('or').toUpperCase()+"</span>");
+  function renderAggOrOperation() {
+    return $("<span class='agg-or-operation'>"+translate('or')+"</span>");
+  }
+  function renderOrOperation(show, moniker) {
+    return $("<span data-op='or' id='or-" + moniker + "' " + (show ? "" : "hidden") + "  class='or-operation'>"+translate('or').toUpperCase()+"</span>");
   }
 
-  function renderAndOperation() {
-    return $("<span class='and-operation'>"+translate('and').toUpperCase()+"</span>");
+  function renderAndOperation(show, moniker) {
+    return $("<span data-op='and' id='and-" + moniker + "' " + (show ? "" : "hidden") + "  class='and-operation'>"+translate('and').toUpperCase()+"</span>");
+  }
+
+  function renderAndOrOperation(operator, moniker) {
+
+    var and = renderAndOperation(operator == AND_OPERATOR);
+    var or = renderOrOperation(operator == OR_OPERATOR, moniker);
+    return $("<span class='clickable'></span>").append(and).append(or).click(function() {
+      $('[id^=and-]', this).toggle();
+      $('[id^=or-]', this).toggle();
+      $.query_href.updateQueryOperation(moniker, toggleOperation(operator));
+      return false;
+    });
+  }
+
+  function toggleOperation(op) {
+    return OR_OPERATOR === op ? AND_OPERATOR : OR_OPERATOR;
   }
 
   function renderAggregate(type, typeValues, aggType, name) {
@@ -171,7 +173,7 @@
   function renderAggregateValue(aggType, values, i, value) {
     var id = aggType + i + value;
     var htmlValue = $("<li></li>");
-    if (i > 0) htmlValue.append(renderOrOperation());
+    if (i > 0) htmlValue.append(renderAggOrOperation());
 
     htmlValue.append(aggType === "terms" ? renderTermsAggregationValue(value) : renderRangeAggregationValue(value));
     htmlValue.click(function () {
@@ -181,6 +183,11 @@
     });
 
     return htmlValue;
+  }
+
+  function getOperation(op) {
+    if ('and' === op || 'or' === op) return op;
+    return AND_OPERATOR;
   }
 
   function translate(key) {
@@ -201,6 +208,31 @@
     return result;
   }
 
+  function parseAndRender() {
+    container.append(renderRefresh());
+    $.each(jsonQuery, function (type, typeValues) {
+      $.each(typeValues, function (aggType, aggs) {
+
+        if (aggType === 'matches') {
+          if (container.children().length > 1) container.append(renderAndOperation(true, ""));
+          renderMatches(type, aggs);
+          return;
+        }
+
+        $.each(aggs, function (name, agg) {
+          if (agg.values.length > 0) {
+            var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(agg.op));
+            $.each(agg.values, function (i, value) {
+              $(aggValueContainer).append(renderAggregateValue(aggType, agg.values, i, value));
+            });
+          }
+        })
+      });
+    });
+
+    return container;
+  }
+
 }(jQuery));
 
 /**
@@ -208,19 +240,9 @@
  */
 (function ($) {
 
-  /**
-   * Helper used to extract query json from URL
-   * @returns {*}
-   */
-  function getQueryParameter() {
-    return (window.location.search.replace(/(^\?)/, '').split("&").map(function (n) {
-      return n = n.split("="), this[n[0]] = n[1], this
-    }.bind({}))[0])['query'];
-  }
-
   Drupal.behaviors.query_builder = {
     attach: function (context, settings) {
-      var qParam = getQueryParameter();
+      var qParam = $.query_href.getQueryFromUrl();
       if ($.isEmptyObject(qParam)) return;
       var view = //
         new $.QueryViewRenderer(Drupal.settings.mica_client_facet.facet_conf) //

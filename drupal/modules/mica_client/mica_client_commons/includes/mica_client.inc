@@ -245,10 +245,13 @@ class MicaClient {
       if ($type_aggregations == 'studyResultDto') {
         if (!empty($aggregations->networkResultDto)) {
           $network_result = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
-          $_SESSION['studies']['networks'] =
-            empty($network_result->digests)
-              ? $network_result->networks
-              : $network_result->digests;
+          if (!empty($network_result) && (!empty($network_result->networks) || !empty($network_result->digests))) {
+            $_SESSION['studies']['networks'] = array();
+            $_SESSION['studies']['networks'] =
+              empty($network_result->digests)
+                ? $network_result->networks
+                : $network_result->digests;
+          }
         }
 
         if (!empty($aggregations->variableResultDto)) {

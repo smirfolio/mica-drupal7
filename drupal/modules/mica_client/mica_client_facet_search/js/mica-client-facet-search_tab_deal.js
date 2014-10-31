@@ -21,7 +21,6 @@
       else {
         //open active facet tab (retrived from cookies)
         $('#facet-search a[href$="' + activeTabCooki["active"] + '"]').tab('show');
-        console.log($(this).attr('class'));
       }
       //save current stat of facet tab in cookie
       $("div#search-facets").find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
