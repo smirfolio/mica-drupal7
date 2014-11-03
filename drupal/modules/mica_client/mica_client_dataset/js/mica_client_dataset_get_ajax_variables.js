@@ -5,10 +5,10 @@
       GetAjaxTable();
       /***********************************/
       function GetAjaxTable() {
-        var message_div_stat_tab = $('#txtblnk');
+        var message_div_stat_tab = $('#toempty');
         var param_stat_tab = $('#param-statistics');
 
-        var message_div_stat_chart = $('#txtblnkChart');
+        var message_div_stat_chart = $('#toemptychart');
         var param_stat_chart = $('#param-statistics-chart');
 
         var var_id = param_stat_tab.attr('var-id');
@@ -42,7 +42,7 @@
                 message_div_stat_chart.empty();
                 param_stat_chart.css({'padding-top': '0'});
                 $(data_decoded.chart).appendTo(param_stat_chart);
-             
+
                 if (Drupal.settings.mica_client_variable.library == 'google') {
                   Drupal.behaviors.chartsGoogle.attach();
                 }
@@ -59,6 +59,7 @@
           },
           beforeSend: function () {
             blinkeffect('#txtblnk');
+            blinkeffect('#txtblnkChart');
           },
           'error': function (data) {
 

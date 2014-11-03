@@ -173,11 +173,17 @@
   <div class="container-fluid">
 
     <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
-      <div id="txtblnk"> <?php print t('Please wait while fetching statistics....'); ?> </div>
+      <div id="toempty" class="text-center">
+        <div id="txtblnk"> <?php print t('Please wait while fetching statistics....'); ?> </div>
+        <img src="<?php print drupal_get_path('theme', 'micado_bootstrap') ?>/img/spin.gif">
+      </div>
     </div>
 
     <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
-      <div id="txtblnkChart"> <?php print t('Please wait while fetching statistics charts....'); ?> </div>
+      <div id="toemptychart" class="text-center">
+        <div id="txtblnkChart"> <?php print t('Please wait while fetching statistics charts....'); ?> </div>
+        <img src="<?php print drupal_get_path('theme', 'micado_bootstrap') ?>/img/spin.gif">
+      </div>
     </div>
 
   </div>
