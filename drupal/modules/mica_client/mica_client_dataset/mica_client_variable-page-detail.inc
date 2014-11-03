@@ -3,8 +3,19 @@ include_once('includes/mica_client_dataset_resource.inc');
 include_once(drupal_get_path('module', 'markdown') . '/markdown.php');
 
 function mica_client_variable_page_detail($variable_id) {
-  mica_client_variable_load_chart_libraries();
+  $library_chart = mica_client_variable_load_chart_libraries();
+  drupal_add_js(
+    drupal_get_path('module', 'charts') .
+    '/modules/charts_' . $library_chart .
+    '/charts_' . $library_chart . '.js', 'file');
+  if ($library_chart == 'google') {
+    drupal_add_js('http://www.google.com/jsapi', 'file');
+  }
+
   drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_get_ajax_variables.js', 'file');
+  drupal_add_js(array('mica_client_variable' => array('library' => $library_chart)), 'setting');
+
+
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
   if (empty($variable)) {
@@ -41,17 +52,21 @@ function mica_client_variable_page_detail($variable_id) {
 function mica_client_variable_load_chart_libraries() {
   if (module_exists('charts')) {
     $chart_param = variable_get('charts_default_settings');
+
     $charts_lib = libraries_load($chart_param['library']);
-    foreach ($charts_lib as $folder) {
-      if (!empty($folder['js'])) {
-        foreach ($folder as $key_file => $param_files) {
-          if ($key_file == 'js') {
-            drupal_add_js($charts_lib['library path'] . '/' . key($param_files));
+    if (!empty($charts_lib)) {
+      foreach ($charts_lib as $folder) {
+        if (!empty($folder['js'])) {
+          foreach ($folder as $key_file => $param_files) {
+            if ($key_file == 'js') {
+              drupal_add_js($charts_lib['library path'] . '/' . key($param_files));
+            }
           }
         }
       }
     }
   }
+  return $chart_param['library'];
 }
 
 function mica_client_variable_prepare_prettify() {
@@ -239,7 +254,9 @@ function mica_client_dataset_variable_get_ajax_statistics($variable_id = NULL) {
     $stat_tab['table'] = _mica_client_variable_table_stat($variable, $variable_stat);
     $stat_tab['chart'] = _mica_client_variable_chart_stat($variable, $variable_stat);
   }
-  dpm($stat_tab);
+  if (!$stat_tab['table'] && !$stat_tab['chart']) {
+    return FALSE;
+  }
   return drupal_json_output($stat_tab);
 }
 
@@ -275,7 +292,7 @@ function _mica_client_variable_table_stat($variable, $variable_stat) {
     case 'CATEGORICAL':
       return _mica_client_variable_table_stat_categorical($variable, $variable_stat);
   }
-  return t('No statistics available');
+  return FALSE;
 }
 
 function _mica_client_variable_table_stat_continuous($variable, $variable_stat) {

@@ -35,11 +35,11 @@ function mica_client_dataset_menu() {
     'weight' => 3
   );
 
-  $items['mica/variable/variable-detail-statistics/%'] = array(
+  $items['variable-detail-statistics/%'] = array(
     // 'title' => t('Datasets Opal variables'),
     'access callback' => TRUE,
     'page callback' => 'mica_client_dataset_variable_get_ajax_statistics',
-    'page arguments' => array(3),
+    'page arguments' => array(1),
     'weight' => 5,
     'file' => 'mica_client_variable-page-detail.inc',
   );

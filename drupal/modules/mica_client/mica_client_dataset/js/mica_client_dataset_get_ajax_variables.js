@@ -1,6 +1,6 @@
 (function ($) {
 
-  Drupal.behaviors.mica_datasets_variables_ajax_table = {
+  Drupal.behaviors.mica_client_variable = {
     attach: function (context, settings) {
       GetAjaxTable();
       /***********************************/
@@ -19,12 +19,12 @@
           'dataType': 'html',
           'data': '',
           'success': function (data) {
-            console.log(data);
             var data_decoded = jQuery.parseJSON(data);
+            if (typeof data_decoded == 'object') {
+              console.log(data_decoded);
 
-            console.log(data_decoded);
+            }
             if (!data_decoded) {
-              console.log('error');
               param_stat_tab.empty();
               param_stat_chart.empty();
               var $errorMessage = Drupal.t('Error!');
@@ -33,20 +33,27 @@
               $('<p>' + $errorMessage + '</p>').appendTo(param_stat_chart);
             }
             else {
-              message_div_stat_tab.empty();
-              param_stat_tab.css({'padding-top': '0'});
-              $(data_decoded.table).appendTo(param_stat_tab);
-              console.log(data_decoded.chart);
-              message_div_stat_chart.empty();
-              param_stat_chart.css({'padding-top': '0'});
-              $(data_decoded.chart).appendTo(param_stat_chart);
-
-              $('.charts-highchart').once('charts-highchart', function () {
-                if ($(this).attr('data-chart')) {
-                  var config = $.parseJSON($(this).attr('data-chart'));
-                  $(this).highcharts(config);
+              if (data_decoded.table) {
+                message_div_stat_tab.empty();
+                param_stat_tab.css({'padding-top': '0'});
+                $(data_decoded.table).appendTo(param_stat_tab);
+              }
+              if (data_decoded.chart) {
+                message_div_stat_chart.empty();
+                param_stat_chart.css({'padding-top': '0'});
+                $(data_decoded.chart).appendTo(param_stat_chart);
+             
+                if (Drupal.settings.mica_client_variable.library == 'google') {
+                  Drupal.behaviors.chartsGoogle.attach();
                 }
-              });
+                if (Drupal.settings.mica_client_variable.library == 'highcharts') {
+                  Drupal.behaviors.chartsHighcharts.attach();
+                }
+              }
+              else {
+                message_div_stat_chart.empty();
+              }
+
 
             }
           },
@@ -63,7 +70,6 @@
             $($errorMessage).appendTo(param_stat_chart);
           }
         });
-
       }
 
       function blinkeffect(selector) {
@@ -73,8 +79,6 @@
           });
         });
       }
-
-
     }
   };
 
