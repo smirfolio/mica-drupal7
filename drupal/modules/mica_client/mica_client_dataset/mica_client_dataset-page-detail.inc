@@ -74,6 +74,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       //TODO implement resources to perform queries in variables resources
       //   "form_search" => drupal_get_form('mica_client_dataset_create_form'),
       'dataset_dto' => $dataset_dto,
+      'coverage_dataset' => mica_client_dataset_coverage_variables($dataset_dto->id),
       'dataset_type_dto' => $dataset_type_dto,
       'dataset_harmonizations_dto' => $dataset_harmonizations_dto,
       'variables_harmonization' => $harmonization_variable_table_output,
@@ -84,6 +85,36 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
     drupal_set_title(t('Dataset not found'));
     return '';
   }
+}
+
+function mica_client_dataset_coverage_variables($dataset_id) {
+  $datas = array();
+  $labels = array();
+  $query_datasets_param =
+    MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id))));
+
+  $search_resources = new MicaSearchResource();
+  $coverages = $search_resources->taxonomies_coverage($query_datasets_param);
+
+  if (!empty($coverages->taxonomies)) {
+    foreach ($coverages->taxonomies as $taxonomy_coverage) {
+      if ($taxonomy_coverage->taxonomy->name == 'Mlstr_area') {
+        foreach ($taxonomy_coverage->vocabularies as $key => $vocabulary_coverage) {
+          if (!empty($vocabulary_coverage->count)) {
+            $labels[$key] = mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
+            $datas[$key] = $vocabulary_coverage->count;
+          }
+        }
+      }
+    }
+  }
+  if (!empty($datas)) {
+    $data[$dataset_id]['#type'] = 'chart_data';
+    $data[$dataset_id]['#title '] = $dataset_id;
+    $data[$dataset_id] = $datas;
+    return mica_client_facet_search_stacked_column_chart($labels, $data, '', 1000, 450, 'none');
+  }
+  return FALSE;
 }
 
 function mica_client_dataset_create_form() {
@@ -97,7 +128,6 @@ function mica_client_dataset_create_form() {
 
   return mica_client_commons_create_search_form($context, FALSE);
 }
-
 
 function mica_client_dataset_study_tables_table($dataset_type_dto) {
   $study_tables = array();
@@ -149,7 +179,6 @@ function mica_client_dataset_study_tables_rows($study_tables) {
   }
   return $rows;
 }
-
 
 function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
   $rows = array();
@@ -251,7 +280,6 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
     }
   }
 
-
   return theme(
     'table',
     array(
@@ -261,7 +289,6 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
       'sticky' => FALSE
     )
   ) . theme('pager');
-
 
 }
 
@@ -279,5 +306,3 @@ function mica_client_dataset_get_variables($dataset_id) {
     )
   ), 0);
 }
-
-

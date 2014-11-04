@@ -26,15 +26,18 @@ class MicaSearchResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
-  public function taxonomies_coverage() {
-    return $this->_aggregation_resource('coverage');
+  public function taxonomies_coverage($parameters = NULL) {
+    return $this->_aggregation_resource('coverage', $parameters);
   }
 
   private function _search_resource() {
     return $this->_aggregation_resource('search');
   }
 
-  private function  _aggregation_resource($aggregation_type = 'search') {
+  /*
+   * $parameters : json query hard coded
+   * */
+  private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL) {
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     $type = 'variables';
     $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
@@ -43,14 +46,14 @@ class MicaSearchResource extends MicaClient {
       if (!empty($parts['type'])) {
         $type = $parts['type'];
       }
-
-      $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
-      $q = empty($parts['query']) ? NULL : $parts['query'];
-      $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
-      $dto_param = $this->dto_filter_construct($type, $q, $from, $group_by);
-
-      $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
     }
+    $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
+    $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
+    $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
+    $dto_param = $this->dto_filter_construct($type, $q, $from, $group_by);
+
+    $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
+
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_POST,
       'headers' => $this->authorizationHeader(array(
@@ -113,7 +116,8 @@ class MicaSearchResource extends MicaClient {
 
     if (!$response->isEmpty()) {
       $this->session_facets_builder($join_query_response->getResponseDto());
-    } else {
+    }
+    else {
       unset($_SESSION['variables']);
       unset($_SESSION['studies']);
     }

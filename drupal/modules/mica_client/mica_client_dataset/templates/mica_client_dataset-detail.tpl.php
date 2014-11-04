@@ -16,7 +16,7 @@
 
     print l(t('Search Variables'), 'mica/search',
 
-    array(
+      array(
         'query' => array(
           'type' => 'variables',
           'query' => $query
@@ -138,71 +138,77 @@
       <?php print mica_client_dataset_study_tables_table($dataset_type_dto) ?>
     <?php else: ?>
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-xs-6 lg-right-indent">
-            <table class="table table-striped">
-              <tbody>
-              <tr>
-                <td><h5><?php print t('Name') ?></h5></td>
-                <td>
-                  <p>
-                    <?php print l(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym') . ' - ' . mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Population') ?></h5></td>
-                <td>
-                  <?php $population_summary = NULL; ?>
-                  <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
-                    if ($pop_summary->id == $dataset_type_dto->studyTable->populationId) {
-                      $population_summary = $pop_summary;
-                      break;
-                    }
+      <div class="row">
+        <div class="col-xs-6 lg-right-indent">
+          <table class="table table-striped">
+            <tbody>
+            <tr>
+              <td><h5><?php print t('Name') ?></h5></td>
+              <td>
+                <p>
+                  <?php print l(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym') . ' - ' . mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Population') ?></h5></td>
+              <td>
+                <?php $population_summary = NULL; ?>
+                <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
+                  if ($pop_summary->id == $dataset_type_dto->studyTable->populationId) {
+                    $population_summary = $pop_summary;
+                    break;
                   }
-                  ?>
-                  <?php print mica_client_commons_get_localized_field($population_summary, 'name'); ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Data Collection Event') ?></h5></td>
-                <td>
-                  <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
-                    if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId) {
-                      print mica_client_commons_get_localized_field($dce_summary, 'name');
-                      break;
-                    }
+                }
+                ?>
+                <?php print mica_client_commons_get_localized_field($population_summary, 'name'); ?>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Data Collection Event') ?></h5></td>
+              <td>
+                <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
+                  if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId) {
+                    print mica_client_commons_get_localized_field($dce_summary, 'name');
+                    break;
                   }
-                  ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Study Designs') ?></h5></td>
-                <td>
-                  <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->designs); ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Target Number') ?></h5></td>
-                <td>
-                  <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
-                    isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Countries') ?></h5></td>
-                <td>
-                  <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->countries); ?>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
+                }
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Study Designs') ?></h5></td>
+              <td>
+                <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->designs); ?>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Target Number') ?></h5></td>
+              <td>
+                <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
+                  isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Countries') ?></h5></td>
+              <td>
+                <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->countries); ?>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
       </div>
+    </div>
     <?php endif ?>
 
   </section>
+  <?php if (!empty($coverage_dataset)): ?>
+    <section>
+      <h3><?php print t('Vocabularies coverage') ?></h3>
+      <?php print render($coverage_dataset); ?>
+    </section>
+    <?php dpm($coverage_dataset); endif; ?>
 
   <!-- HARMONIZATION -->
   <?php if (!empty($dataset_harmonizations_dto->harmonization)): ?>
