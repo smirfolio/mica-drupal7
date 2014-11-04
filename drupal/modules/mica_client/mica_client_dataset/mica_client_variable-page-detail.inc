@@ -300,7 +300,7 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
           }
         }
       }
-      $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, 'Categorical Stats', 800, 300, 'none');
+      $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, '', 800, 300, 'none');
 
       return render($to_render);
   }
