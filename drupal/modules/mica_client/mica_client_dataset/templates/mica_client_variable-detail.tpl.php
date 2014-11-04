@@ -174,7 +174,8 @@
 
     <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
       <div id="toempty">
-        <img src="<?php print drupal_get_path('theme', mica_client_commons_get_current_theme()) ?>/img/spin.gif">
+        <img
+          src="<?php print base_path() . drupal_get_path('theme', mica_client_commons_get_current_theme()) ?>/img/spin.gif">
       </div>
     </div>
 
