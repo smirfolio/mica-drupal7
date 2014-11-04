@@ -36,7 +36,6 @@ function mica_client_dataset_menu() {
   );
 
   $items['variable-detail-statistics/%'] = array(
-    // 'title' => t('Datasets Opal variables'),
     'access callback' => TRUE,
     'page callback' => 'mica_client_dataset_variable_get_ajax_statistics',
     'page arguments' => array(1),
@@ -45,7 +44,6 @@ function mica_client_dataset_menu() {
   );
 
   $items['variable-detail-statistics-test/%'] = array(
-    // 'title' => t('Datasets Opal variables'),
     'access callback' => TRUE,
     'page callback' => 'mica_client_dataset_variable_get_ajax_statistics_test',
     'page arguments' => array(1),

@@ -52,27 +52,31 @@ function mica_client_variable_page_detail($variable_id) {
 function mica_client_variable_load_chart_libraries() {
   if (module_exists('charts')) {
     $chart_param = variable_get('charts_default_settings');
-
-    $charts_lib = libraries_load($chart_param['library']);
-    if (!empty($charts_lib)) {
-      foreach ($charts_lib as $folder) {
-        if (!empty($folder['js'])) {
-          foreach ($folder as $key_file => $param_files) {
-            if ($key_file == 'js') {
-              drupal_add_js($charts_lib['library path'] . '/' . key($param_files));
+    if (!empty($chart_param)) {
+      $charts_lib = libraries_load($chart_param['library']);
+      dpm($charts_lib);
+      if (!empty($charts_lib)) {
+        foreach ($charts_lib as $folder) {
+          if (!empty($folder['js'])) {
+            foreach ($folder as $key_file => $param_files) {
+              if ($key_file == 'js') {
+                drupal_add_js($charts_lib['library path'] . '/' . key($param_files));
+              }
             }
           }
         }
+        return $chart_param['library'];
       }
     }
+    return 'google';
   }
-  return $chart_param['library'];
+  return 'google';
 }
 
 function mica_client_variable_prepare_prettify() {
   static $paths = array();
   if (mica_client_commons_is_bootstrap_based_theme()) {
-    $dir = drupal_get_path('theme', 'micado_bootstrap');
+    $dir = drupal_get_path('theme', mica_client_commons_get_current_theme());
     $paths['css'] = $dir . '/css/prettify.css';
     $paths['js'] = $dir . '/js/prettify.js';
   }
