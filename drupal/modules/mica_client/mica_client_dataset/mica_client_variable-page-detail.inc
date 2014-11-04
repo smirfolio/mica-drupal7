@@ -3,7 +3,19 @@ include_once('includes/mica_client_dataset_resource.inc');
 include_once(drupal_get_path('module', 'markdown') . '/markdown.php');
 
 function mica_client_variable_page_detail($variable_id) {
+  $library_chart = mica_client_variable_load_chart_libraries();
+  drupal_add_js(
+    drupal_get_path('module', 'charts') .
+    '/modules/charts_' . $library_chart .
+    '/charts_' . $library_chart . '.js', 'file');
+  if ($library_chart == 'google') {
+    drupal_add_js('http://www.google.com/jsapi', 'file');
+  }
+
   drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_get_ajax_variables.js', 'file');
+  drupal_add_js(array('mica_client_variable' => array('library' => $library_chart)), 'setting');
+
+
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
   if (empty($variable)) {
@@ -35,6 +47,26 @@ function mica_client_variable_page_detail($variable_id) {
     'variable_dto' => $variable,
     'variable_harmonization' => mica_client_variable_get_harmonization($variable),
   ));
+}
+
+function mica_client_variable_load_chart_libraries() {
+  if (module_exists('charts')) {
+    $chart_param = variable_get('charts_default_settings');
+
+    $charts_lib = libraries_load($chart_param['library']);
+    if (!empty($charts_lib)) {
+      foreach ($charts_lib as $folder) {
+        if (!empty($folder['js'])) {
+          foreach ($folder as $key_file => $param_files) {
+            if ($key_file == 'js') {
+              drupal_add_js($charts_lib['library path'] . '/' . key($param_files));
+            }
+          }
+        }
+      }
+    }
+  }
+  return $chart_param['library'];
 }
 
 function mica_client_variable_prepare_prettify() {
@@ -211,17 +243,67 @@ function mica_client_variable_get_categories($categories = NULL) {
 
 
 function mica_client_dataset_variable_get_ajax_statistics($variable_id = NULL) {
+  $stat_tab = FALSE;
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
   $variable_stat = $variable_resource->get_variable_facet($variable_id);
+  if (empty($variable_stat)) {
+    return FALSE;
+  }
   if ($variable->variableType != 'Dataschema') {
     $variable_stat = array($variable_stat);
   }
   if (!empty($variable_stat)) {
-    $stat_tab = _mica_client_variable_table_stat($variable, $variable_stat);
+    $stat_tab['table'] = _mica_client_variable_table_stat($variable, $variable_stat);
+    $stat_tab['chart'] = _mica_client_variable_chart_stat($variable, $variable_stat);
+    return drupal_json_output($stat_tab);
   }
-  print $stat_tab;
+  return FALSE;
 }
+
+function mica_client_dataset_variable_get_ajax_statistics_test($variable_id = NULL) {
+  $stat_tab = '';
+  $variable_resource = new MicaDatasetResource();
+  $variable = $variable_resource->get_variable($variable_id);
+  $variable_stat = $variable_resource->get_variable_facet($variable_id);
+  dpm($variable_stat);
+  if ($variable->variableType != 'Dataschema') {
+    $variable_stat = array($variable_stat);
+  }
+
+  if (!empty($variable_stat)) {
+    $stat_tab .= _mica_client_variable_table_stat($variable, $variable_stat);
+    $stat_tab .= _mica_client_variable_chart_stat($variable, $variable_stat);
+  }
+
+  return $stat_tab;
+}
+
+
+function _mica_client_variable_chart_stat($variable, $variable_stat) {
+  $labels = array();
+  $stats = _mica_client_variable_rebuild_stat($variable_stat, $variable);
+  switch ($variable->nature) {
+    case 'CONTINUOUS':
+      break;
+    case 'CATEGORICAL':
+
+      foreach ($variable->categories as $key_categories => $category) {
+        foreach ($stats as $key_study => $study) {
+          if (!$category->missing && $key_study != '_all') {
+            $labels[$key_categories] = _mica_client_variable_attributes_detail($category, 'label');
+            $data[$key_study][$key_categories] = $study[$category->name];
+
+          }
+        }
+      }
+      $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, 'Categorical Stats', 800, 300, 'none');
+
+      return render($to_render);
+  }
+  return FALSE;
+}
+
 
 function _mica_client_variable_table_stat($variable, $variable_stat) {
   switch ($variable->nature) {
@@ -230,7 +312,7 @@ function _mica_client_variable_table_stat($variable, $variable_stat) {
     case 'CATEGORICAL':
       return _mica_client_variable_table_stat_categorical($variable, $variable_stat);
   }
-  return t('No statistics available');
+  return FALSE;
 }
 
 function _mica_client_variable_table_stat_continuous($variable, $variable_stat) {
@@ -297,10 +379,10 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
       }
     }
   }
-  
+
   foreach ($variable->categories as $category) {
     $category_name = $category->name;
-    $category_label = _mica_client_variable_attributes_detail($category, 'label');;
+    $category_label = _mica_client_variable_attributes_detail($category, 'label');
     $missing = $category->missing;
     $row = array($category_label);
     foreach ($stats as $study_id => $stat) {
@@ -356,7 +438,7 @@ function _mica_client_variable_rebuild_stat($variable_stat, $variable) {
     foreach ($variable_stat as $key_stud => $stat) {
       if ($key_stud == $key_study) {
         $stats[$study_id]['_all'] = $stat->totalHits;
-        foreach ($stat->facets[0]->frequencies as $key_attrib => $frequency) {
+        foreach ($stat->facets[0]->frequencies as $frequency) {
           $stats[$study_id][$frequency->term] = $frequency->count;
         }
       }

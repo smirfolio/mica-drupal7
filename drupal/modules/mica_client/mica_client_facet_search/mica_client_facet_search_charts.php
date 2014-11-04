@@ -71,7 +71,7 @@ function mica_client_facet_search_vocabulary_pie_chart($vocabulary_coverage) {
     }
   }
 
-  if (count($data)<=1) {
+  if (count($data) <= 1) {
     return '';
   }
 
@@ -145,6 +145,7 @@ function mica_client_facet_search_term_chart($term_coverage) {
 }
 
 function mica_client_facet_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+  $chart_param = variable_get('charts_default_settings');
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
@@ -152,7 +153,7 @@ function mica_client_facet_search_pie_chart($labels, $data, $title, $width = 250
     '#width' => $width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,
-    '#chart_library' => 'highcharts',
+    '#chart_library' => $chart_param['library'],
     '#legend_position' => $legend_position,
     '#data_labels' => FALSE,
     '#legend' => $legend_position != 'none',
@@ -169,6 +170,7 @@ function mica_client_facet_search_pie_chart($labels, $data, $title, $width = 250
 }
 
 function mica_client_facet_search_mini_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+  $chart_param = variable_get('charts_default_settings');
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
@@ -178,7 +180,7 @@ function mica_client_facet_search_mini_column_chart($labels, $data, $title, $wid
     '#title' => empty($title) ? ' ' : $title,
     '#legend_position' => $legend_position,
     '#legend' => $legend_position != 'none',
-    '#chart_library' => 'highcharts',
+    '#chart_library' => $chart_param['library'],
   );
   $chart['counts'] = array(
     '#type' => 'chart_data',
@@ -204,8 +206,7 @@ function mica_client_facet_search_mini_column_chart($labels, $data, $title, $wid
 }
 
 function mica_client_facet_search_stacked_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
-  //dpm($labels);
-  //dpm($data);
+  $chart_param = variable_get('charts_default_settings');
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
@@ -216,7 +217,7 @@ function mica_client_facet_search_stacked_column_chart($labels, $data, $title, $
     '#title' => empty($title) ? ' ' : $title,
     '#legend_position' => $legend_position,
     '#legend' => $legend_position != 'none',
-    '#chart_library' => 'highcharts',
+    '#chart_library' => $chart_param['library'],
   );
   foreach ($data as $key => $datum) {
     $chart[$key] = array(

@@ -38,14 +38,14 @@
               </td>
               <td>
                 <?php if ($variable_dto->variableType == 'Dataschema'): ?>
-                <ul>
-                  <?php foreach ($variable_dto->studySummaries as $studySummary): ?>
-                    <li>
-                      <?php print l(mica_client_commons_get_localized_field($studySummary, 'name'), 'mica/study/' . $studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($studySummary, 'name'))); ?>
-                    </li>
-                  <?php endforeach ?>
-                </ul>
-                <?php elseif(!empty($variable_dto->studySummaries)): ?>
+                  <ul>
+                    <?php foreach ($variable_dto->studySummaries as $studySummary): ?>
+                      <li>
+                        <?php print l(mica_client_commons_get_localized_field($studySummary, 'name'), 'mica/study/' . $studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($studySummary, 'name'))); ?>
+                      </li>
+                    <?php endforeach ?>
+                  </ul>
+                <?php elseif (!empty($variable_dto->studySummaries)): ?>
                   <?php print l(mica_client_commons_get_localized_field($variable_dto->studySummaries[0], 'name'), 'mica/study/' . $variable_dto->studySummaries[0]->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($variable_dto->studySummaries[0], 'name'))); ?>
                 <?php endif ?>
               </td>
@@ -170,18 +170,22 @@
 <section>
   <h3><?php print t('Statistics') ?></h3>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-6 lg-right-indent">
+  <div class="container-fluid text-center">
 
-        <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
-          <div id="txtblnk"> <?php print t('Please wait while fetching statistics....'); ?> </div>
-        </div>
-      </div>
-      <div class="col-xs-6">
-        <div class="alert alert-info" role="alert"><strong>TODO</strong> charts here</div>
+    <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
+      <div id="toempty">
+      <div id="txtblnk"> <?php print t('Please wait while fetching statistics....'); ?> </div>
+        <img src="<?php print drupal_get_path('theme', 'micado_bootstrap') ?>/img/spin.gif">
       </div>
     </div>
+
+    <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
+      <div id="toemptychart">
+      <div id="txtblnkChart"> <?php print t('Please wait while fetching statistics charts....'); ?> </div>
+        <img src="<?php print drupal_get_path('theme', 'micado_bootstrap') ?>/img/spin.gif">
+      </div>
+    </div>
+
   </div>
 </section>
 
