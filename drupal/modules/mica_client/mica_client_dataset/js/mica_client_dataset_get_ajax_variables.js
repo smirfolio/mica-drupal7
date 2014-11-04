@@ -20,8 +20,8 @@
                 var var_id = param_stat_tab.attr('var-id');
 
                 $.ajax({
-                    'url': 'variable-detail-statistics/' + var_id,
-                    'type': 'GET',
+                  'url': Drupal.settings.basePath + 'variable-detail-statistics/' + var_id,
+                  'type': 'GET',
                     'dataType': 'html',
                     'data': '',
                     'success': function (data) {
