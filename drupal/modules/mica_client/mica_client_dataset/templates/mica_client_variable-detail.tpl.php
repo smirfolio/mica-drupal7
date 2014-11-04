@@ -170,23 +170,19 @@
 <section>
   <h3><?php print t('Statistics') ?></h3>
 
-  <div class="container-fluid text-center">
+  <div>
 
     <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
       <div id="toempty">
-      <div id="txtblnk"> <?php print t('Please wait while fetching statistics....'); ?> </div>
-        <img src="<?php print drupal_get_path('theme', 'micado_bootstrap') ?>/img/spin.gif">
+        <img src="<?php print drupal_get_path('theme', mica_client_commons_get_current_theme()) ?>/img/spin.gif">
       </div>
     </div>
 
     <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
       <div id="toemptychart">
-      <div id="txtblnkChart"> <?php print t('Please wait while fetching statistics charts....'); ?> </div>
-        <img src="<?php print drupal_get_path('theme', 'micado_bootstrap') ?>/img/spin.gif">
       </div>
-    </div>
 
-  </div>
+    </div>
 </section>
 
 <?php if ($variable_dto->variableType != 'Study'): ?>

@@ -21,7 +21,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update cc chart-enable
+all: clean setup-drupal wwww import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update cc
 
 clean:
 	rm -rf target
