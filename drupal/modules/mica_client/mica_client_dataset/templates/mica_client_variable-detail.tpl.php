@@ -202,10 +202,10 @@
                   <?php if (empty($variable_harmonization['status'])): ?>
                     -
                   <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
-                    <span class="glyphicon glyphicon-ok-sign alert-success" title="<?php print t('Complete') ?>"></span>
+                    <span class="glyphicon glyphicon-ok alert-success" title="<?php print t('Complete') ?>"></span>
                   <?php
                   elseif ($variable_harmonization['status'] == 'impossible'): ?>
-                    <span class="glyphicon glyphicon-remove-sign alert-danger"
+                    <span class="glyphicon glyphicon-remove alert-danger"
                           title="<?php print t('Impossible') ?>"></span>
                   <?php
                   elseif ($variable_harmonization['status'] == 'undetermined'): ?>
