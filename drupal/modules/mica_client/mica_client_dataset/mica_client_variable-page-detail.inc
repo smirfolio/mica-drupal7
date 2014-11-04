@@ -54,7 +54,6 @@ function mica_client_variable_load_chart_libraries() {
     $chart_param = variable_get('charts_default_settings');
     if (!empty($chart_param)) {
       $charts_lib = libraries_load($chart_param['library']);
-      dpm($charts_lib);
       if (!empty($charts_lib)) {
         foreach ($charts_lib as $folder) {
           if (!empty($folder['js'])) {
