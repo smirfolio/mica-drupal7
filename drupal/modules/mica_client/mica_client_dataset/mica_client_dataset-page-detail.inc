@@ -101,8 +101,8 @@ function mica_client_dataset_coverage_variables($dataset_id) {
       if ($taxonomy_coverage->taxonomy->name == 'Mlstr_area') {
         foreach ($taxonomy_coverage->vocabularies as $key => $vocabulary_coverage) {
           if (!empty($vocabulary_coverage->count)) {
-            $labels[$key] = mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
-            $datas[$key] = $vocabulary_coverage->count;
+            $labels[] = mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
+            $datas[] = $vocabulary_coverage->count;
           }
         }
       }
