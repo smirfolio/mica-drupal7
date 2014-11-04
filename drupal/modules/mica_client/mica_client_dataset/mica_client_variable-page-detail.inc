@@ -247,18 +247,38 @@ function mica_client_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
   $variable_stat = $variable_resource->get_variable_facet($variable_id);
+  if (empty($variable_stat)) {
+    return FALSE;
+  }
   if ($variable->variableType != 'Dataschema') {
     $variable_stat = array($variable_stat);
   }
   if (!empty($variable_stat)) {
     $stat_tab['table'] = _mica_client_variable_table_stat($variable, $variable_stat);
     $stat_tab['chart'] = _mica_client_variable_chart_stat($variable, $variable_stat);
+    return drupal_json_output($stat_tab);
   }
-  if (!$stat_tab['table'] && !$stat_tab['chart']) {
-    return FALSE;
-  }
-  return drupal_json_output($stat_tab);
+  return FALSE;
 }
+
+function mica_client_dataset_variable_get_ajax_statistics_test($variable_id = NULL) {
+  $stat_tab = '';
+  $variable_resource = new MicaDatasetResource();
+  $variable = $variable_resource->get_variable($variable_id);
+  $variable_stat = $variable_resource->get_variable_facet($variable_id);
+  dpm($variable_stat);
+  if ($variable->variableType != 'Dataschema') {
+    $variable_stat = array($variable_stat);
+  }
+
+  if (!empty($variable_stat)) {
+    $stat_tab .= _mica_client_variable_table_stat($variable, $variable_stat);
+    $stat_tab .= _mica_client_variable_chart_stat($variable, $variable_stat);
+  }
+
+  return $stat_tab;
+}
+
 
 function _mica_client_variable_chart_stat($variable, $variable_stat) {
   $labels = array();

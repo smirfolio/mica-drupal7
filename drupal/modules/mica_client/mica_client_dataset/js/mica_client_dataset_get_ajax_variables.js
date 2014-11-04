@@ -3,6 +3,13 @@
   Drupal.behaviors.mica_client_variable = {
     attach: function (context, settings) {
       GetAjaxTable();
+      /************************************/
+      var alertMEssage = '<div class="alert alert-warning alert-dismissible text-center" role="alert">' +
+        '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>' +
+        '<span class="sr-only">Close</span></button> ' + Drupal.t('Error retrieving statistiques ...') +
+        '<div><button type="button" class="refresh-button"><i class="glyphicon glyphicon-refresh"></i></button></div> </div>';
+
+
       /***********************************/
       function GetAjaxTable() {
         var message_div_stat_tab = $('#toempty');
@@ -19,7 +26,12 @@
           'dataType': 'html',
           'data': '',
           'success': function (data) {
-            var data_decoded = jQuery.parseJSON(data);
+            try {
+              var data_decoded = jQuery.parseJSON(data);
+            } catch (e) {
+              console.log(e);
+            }
+
             if (typeof data_decoded == 'object') {
               console.log(data_decoded);
 
@@ -27,10 +39,15 @@
             if (!data_decoded) {
               param_stat_tab.empty();
               param_stat_chart.empty();
-              var $errorMessage = Drupal.t('Error!');
-              console.log($errorMessage);
-              $('<p>' + $errorMessage + '</p>').appendTo(param_stat_tab);
-              $('<p>' + $errorMessage + '</p>').appendTo(param_stat_chart);
+
+              $('<p>' + alertMEssage + '</p>').appendTo(param_stat_tab);
+              $('<p>' + alertMEssage + '</p>').appendTo(param_stat_chart);
+              $(".refresh-button").on("click", function () {
+                param_stat_tab.empty();
+                param_stat_chart.empty();
+                $('<img src="sites/all/themes/micado_bootstrap/img/spin.gif">').appendTo(param_stat_tab);
+                GetAjaxTable();
+              });
             }
             else {
               if (data_decoded.table) {
