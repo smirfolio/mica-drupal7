@@ -35,35 +35,8 @@
    * Updates the query and url
    */
   function update() {
-    updateQuery(jsonQuery);
+    $.trimJson(jsonQuery);
     updateWindowLocation($.isEmptyObject(jsonQuery) ? '' : JSON.stringify(jsonQuery));
-  }
-
-  /**
-   * Recursively scans the query and removes empty elements
-   * @param obj
-   * @param parent
-   * @param key
-   */
-  function updateQuery(obj, parent, key) {
-    if (obj instanceof Array) {
-      if (obj.length === 0) {
-        delete parent[key];
-      }
-    } else if (obj instanceof Object) {
-      if ($.isEmptyObject(obj)) {
-        delete parent[key];
-      }
-    } else {
-      return;
-    }
-
-    $.each(obj, function (k, v) {
-      updateQuery(v, obj, k);
-      if ($.isEmptyObject(obj) && parent) {
-        delete parent[key];
-      }
-    })
   }
 
   function updateWindowLocation(query) {
@@ -86,10 +59,10 @@
 
   function renderMatchesElement(cssClass, type, text) {
     var htmlMatchesElement = $("<li></li>").append($("<span class='"+cssClass+"'></span>").text(text));
-    htmlMatchesElement.click(function () {
+    htmlMatchesElement.click(function (e) {
       delete jsonQuery[type]['matches'];
       update();
-      return false;
+      e.stopPropagation();
     });
 
     return htmlMatchesElement;
@@ -143,11 +116,11 @@
 
     var and = renderAndOperation(operator == AND_OPERATOR);
     var or = renderOrOperation(operator == OR_OPERATOR, moniker);
-    return $("<span class='clickable'></span>").append(and).append(or).click(function() {
+    return $("<span class='clickable'></span>").append(and).append(or).click(function(e) {
       $('[id^=and-]', this).toggle();
       $('[id^=or-]', this).toggle();
       $.query_href.updateQueryOperation(moniker, toggleOperation(operator));
-      return false;
+      e.stopPropagation();
     });
   }
 
@@ -156,10 +129,10 @@
   }
 
   function renderAggregate(type, typeValues, aggType, name) {
-    var aggregate = $("<span class='aggregate'></span>").text(translateAggregation(name)).click(function () {
+    var aggregate = $("<span class='aggregate'></span>").text(translateAggregation(name)).click(function (e) {
       delete jsonQuery[type][aggType][name];
       update();
-      return false;
+      e.stopPropagation();
     });
 
     var htmlAggregate = $("<li></li>").append(aggregate);
@@ -167,14 +140,12 @@
     return htmlAggregate;
   }
 
-  function renderTermsAggregationValue(value, hiddenParent) {
-    var value = $("<span class='aggregate-value'></span>").text(value);
-    return hiddenParent === null ? value : hiddenParent.append(value);
+  function renderTermsAggregationValue(value) {
+    return $("<span class='aggregate-value'></span>").text(value);
   }
 
-  function renderRangeAggregationValue(value, hiddenParent) {
-    var value = $("<span class='aggregate-value'></span>").text(value.min + " - " + value.max);
-    return hiddenParent === null ? value : hiddenParent.append(value);
+  function renderRangeAggregationValue(value) {
+    return $("<span class='aggregate-value'></span>").text(value.min + " - " + value.max);
   }
 
   function renderAggregateValue(aggType, agg, i, value, valuesContaier, hiddenValuesContainer) {
@@ -182,17 +153,17 @@
 
     var htmlValue =
       aggType === "terms" //
-          ? renderTermsAggregationValue(value, hiddenValuesContainer) //
-          : renderRangeAggregationValue(value, hiddenValuesContainer); //
+          ? renderTermsAggregationValue(value) //
+          : renderRangeAggregationValue(value); //
 
-    htmlValue.click(function () {
+    htmlValue.click(function (e) {
       agg.values.splice(i, 1);
       if (agg.values.length === 0) delete agg['op'];
       update();
-      return false;
+      e.stopPropagation();
     });
 
-    valuesContaier.append(htmlValue);
+    valuesContaier.append(hiddenValuesContainer === null ? htmlValue : hiddenValuesContainer.append(htmlValue));
   }
 
   function getOperation(op) {
@@ -201,11 +172,17 @@
   }
 
   function renderPlusMinus(parent) {
-    var hiddens = $("<span hidden id='hidden-values'></span>");
-    var plusMinus = $("<span class='plus-minus'> + </span>").append(hiddens).click(function() {
-      $(this).text($(this).text() === ' + ' ? ' - ' : ' + ');
-      $('[id^=hidden-values]').toggle();
-      return false;
+    var hiddens = $("<span hidden class='no-text-decoration' id='hidden-values'></span>");
+    var plusMinus = $("<span class='plus-minus glyphicon glyphicon-plus'></span>").append(hiddens)
+      .click(function(e) {
+        if ($(this).hasClass('glyphicon-plus')) {
+          $(this).removeClass('glyphicon-plus').addClass('glyphicon-minus');
+        } else {
+          $(this).removeClass('glyphicon-minus').addClass('glyphicon-plus');
+        }
+
+        $('[id^=hidden-values]').toggle();
+        e.stopPropagation();
     });
 
     parent.append(plusMinus.append(hiddens));
@@ -246,7 +223,7 @@
         }
 
         $.each(aggs, function (name, agg) {
-          if (agg.values.length > 0) {
+          if (!$.isEmptyObject(agg.values) && agg.values.length > 0) {
             var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(agg.op));
             var valuesContainer = $("<li></li>");
             var hiddenValuesContainer = null;
@@ -283,11 +260,11 @@
 
   Drupal.behaviors.query_builder = {
     attach: function (context, settings) {
-      var qParam = $.query_href.getQueryFromUrl();
-      if ($.isEmptyObject(qParam)) return;
+      var jsonQuery = $.query_href.getQueryFromUrl();
+      if ($.isEmptyObject(jsonQuery)) return;
       var view = //
         new $.QueryViewRenderer(Drupal.settings.mica_client_facet.facet_conf) //
-          .render(JSON.parse(decodeURIComponent(qParam)));
+          .render(jsonQuery);
 
       $('#search-query').append(view);
     }

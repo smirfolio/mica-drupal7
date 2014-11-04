@@ -18,8 +18,8 @@
 
   <input type="hidden"
          id="<?php print $aggregation_facet; ?>"
-         name="<?php print $type_string . $aggregation_facet . '-range[]'; ?>"
+         name="<?php print $type_string . 'range:' . $aggregation_facet . '[]'; ?>"
          value="" maxlength="75" class="form-control form-item-range-from">
 
-  <div class="btn btn-primary btn-xs" id="checkthebox">Go</div>
+  <div class="btn btn-primary btn-xs" id="checkthebox" aggregation="<?php print $aggregation_facet?>">Go</div>
 </div>

@@ -69,13 +69,17 @@
 
 .operation {
   padding: 2px;
-  border-radius: @background-radius
+  border-radius: @background-radius;
+}
+
+.no-text-decoration {
+  text-decoration: none !important;
 }
 
 span.plus-minus {
-  .operation;
+  border-radius: @background-radius;
   .clickable;
-  text-decoration: none !important;
+  .no-text-decoration
 }
 
 .match {

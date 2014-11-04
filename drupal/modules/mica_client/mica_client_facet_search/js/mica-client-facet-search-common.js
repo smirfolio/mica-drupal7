@@ -81,6 +81,32 @@
           }
         }
       };
-    }}
+
+      function trimJson(obj, parent, key) {
+        if (obj instanceof Array) {
+          if (obj.length === 0) {
+            delete parent[key];
+          }
+        } else if (obj instanceof Object) {
+          if ($.isEmptyObject(obj)) {
+            delete parent[key];
+          }
+        } else {
+          return;
+        }
+
+        $.each(obj, function (k, v) {
+          trimJson(v, obj, k);
+          if ($.isEmptyObject(obj) && parent) {
+            delete parent[key];
+          }
+        })
+      }
+
+      $.trimJson = trimJson;
+
+    }
+
+  }
 
 }(jQuery));
