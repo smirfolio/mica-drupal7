@@ -16,7 +16,7 @@
 
     print l(t('Search Variables'), 'mica/search',
 
-    array(
+      array(
         'query' => array(
           'type' => 'variables',
           'query' => $query
@@ -203,6 +203,12 @@
     <?php endif ?>
 
   </section>
+  <?php if (!empty($coverage_dataset)): ?>
+    <section>
+      <h3><?php print t('Vocabularies coverage') ?></h3>
+      <?php print render($coverage_dataset); ?>
+    </section>
+  <?php endif; ?>
 
   <!-- HARMONIZATION -->
   <?php if (!empty($dataset_harmonizations_dto->harmonization)): ?>
