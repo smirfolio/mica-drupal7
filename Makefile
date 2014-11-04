@@ -2,7 +2,7 @@ mica_version=1.0-dev
 mica_branch=7.x-1.x
 drupal_org_mica=git.drupal.org:project/obiba_mica.git
 
-drupal_version = 7.31
+drupal_version = 7.32
 
 #
 # Mysql db access
@@ -21,7 +21,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal wwww import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update cc
+all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update cc
 
 clean:
 	rm -rf target
@@ -35,7 +35,7 @@ setup-drupal:
 	git clone https://github.com/obiba/drupal7-auth.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
 	git clone https://github.com/obiba/drupal7-protobuf.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
 
-wwww:
+www:
 	sudo rm -f /var/www/html/drupal && \
 	sudo ln -s $(CURDIR)/target/drupal /var/www/html/drupal && \
 	sudo chown -R www-data:www-data /var/www/html/drupal
@@ -43,8 +43,10 @@ wwww:
 dump-sql:
 	mysqldump -u $(db_user) --password=$(db_pass) --hex-blob $(db_name) --result-file="drupal/dev/drupal-$(drupal_version).sql"
 
-import-sql:
+create-sql:
 	mysql -u $(db_user) --password=$(db_pass) -e "drop database if exists $(db_name); create database $(db_name);"
+
+import-sql: create-sql
 	mysql -u $(db_user) --password=$(db_pass) $(db_name) < "drupal/dev/drupal-$(drupal_version).sql"
 
 settings:

@@ -7221,6 +7221,42 @@ body.admin-menu .navbar-fixed-top {
 .block-content .lg-top-padding {
   padding-top: 20px;
 }
+.region-navigation,
+.region-header {
+  float: right !important;
+}
+.region-navigation .block-title,
+.region-header .block-title {
+  display: none;
+}
+.region-navigation label,
+.region-header label {
+  font-weight: normal;
+  font-size: smaller;
+  margin-bottom: 2px;
+}
+.region-navigation input[type="text"],
+.region-header input[type="text"],
+.region-navigation input[type="password"],
+.region-header input[type="password"] {
+  width: 100px;
+  max-width: 100px;
+  height: 25px;
+  padding: 6px;
+  font-size: 12px;
+}
+.region-navigation .btn,
+.region-header .btn {
+  font-size: smaller;
+  height: 25px;
+  padding: 0 5px 0 5px;
+  margin-bottom: 2px;
+}
+.region-navigation .form-item,
+.region-header .form-item {
+  display: inline-block;
+  margin-bottom: 2px;
+}
 .region.region-sidebar-first.well {
   margin-right: 20px;
 }

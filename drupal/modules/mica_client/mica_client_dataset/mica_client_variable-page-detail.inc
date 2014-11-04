@@ -117,10 +117,10 @@ function mica_client_variable_get_harmonizations($variable) {
         $status = '-';
       }
       elseif ($status == 'complete') {
-        $status = '<span class="glyphicon glyphicon-ok-sign alert-success" title="' . t('Complete') . '"></span>';
+        $status = '<span class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>';
       }
       elseif ($status == 'impossible') {
-        $status = '<span class="glyphicon glyphicon-remove-sign alert-danger" title="' . t('Impossible') . '"></span>';
+        $status = '<span class="glyphicon glyphicon-remove alert-danger" title="' . t('Impossible') . '"></span>';
       }
       elseif ($status == 'undetermined') {
         $status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>';
@@ -300,7 +300,7 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
           }
         }
       }
-      $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, 'Categorical Stats', 800, 300, 'none');
+      $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, '', 800, 300, 'none');
 
       return render($to_render);
   }
