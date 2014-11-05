@@ -3,6 +3,20 @@
     attach: function (context, settings) {
 
       var URL_PARAM_QUERY = 'query';
+      var tabparam = '';
+
+      /**
+       * Expose these methods to other JS files
+       */
+      $.extend({
+        query_href: {
+          getQueryFromUrl: getQueryFromUrl,
+          updateQueryOperation: updateQueryOperation
+        }
+      });
+
+      initializeTabParam();
+      process();
 
       function getSelectedtermsAggSearchKey(attrAgg, value) {
         return attrAgg.replace("[]", "-terms[]")+value;
@@ -33,9 +47,8 @@
       }
 
       function getUrlVars() {
-        var pos = window.location.href.indexOf(URL_PARAM_QUERY + "=");
-        if (pos === -1) return [];
-        return $.query_serializer.serializeJsonAsForm(JSON.parse(decodeURIComponent($.urlParam(URL_PARAM_QUERY))));
+        var currJsonParam = getQueryFromUrl();
+        return $.isEmptyObject(currJsonParam) ? [] : $.query_serializer.serializeJsonAsForm(currJsonParam);
       }
 
       function sendCheckboxCheckedValues() {
@@ -43,40 +56,26 @@
       }
 
       function getQueryFromUrl() {
-        return (window.location.search.replace(/(^\?)/, '').split("&").map(function (n) {
+        var jsonParam = (window.location.search.replace(/(^\?)/, '').split("&").map(function (n) {
           return n = n.split("="), this[n[0]] = n[1], this
         }.bind({}))[0])['query'];
+
+        return jsonParam === undefined ? {} : JSON.parse(decodeURIComponent(jsonParam));
       }
-
-      /*******************/
-
-      $.extend({
-        query_href: {
-          update: update,
-          getQueryFromUrl: getQueryFromUrl,
-          updateQueryOperation: updateQueryOperation
-        }
-      });
 
       function updateQueryOperation(operationMoniker, value) {
         console.log("Moniker", operationMoniker, value);
-        var qParam = getQueryFromUrl();
-        if ($.isEmptyObject(qParam)) return;
+        var jsonQuery = getQueryFromUrl();
+        if ($.isEmptyObject(jsonQuery)) return;
 
         var entry = /^(\w+):(\w+):(.*)$/.exec(operationMoniker);
-        console.log("Monikter parts:", entry);
-        var jsonQuery = JSON.parse(decodeURIComponent(qParam));
 
         $.each(jsonQuery, function (type, typeValues) {
-          console
           if (type === entry[1]) {
-            console.log("Found type:", type);
             $.each(typeValues, function (aggType, aggs) {
               if (aggType === entry[2]) {
-                console.log("Found aggType :", aggType);
                 $.each(aggs, function (name, agg) {
                   if (name === entry[3]) {
-                    console.log("Found agg :", name);
                     agg.op = value;
                     updateWindowLocation(JSON.stringify(jsonQuery));
                     return false;
@@ -88,29 +87,6 @@
         });
       }
 
-      /**
-       * Helper used to extract query json from URL
-       * @returns {*}
-       */
-      function update() {
-        updateWindowLocation(sendCheckboxCheckedValues());
-      }
-
-      /**************************/
-      //deal with tabs
-      var tabparam = '';
-      var urlTabParam = $.urlParam('type');
-      if (urlTabParam) {
-        var div = $("div.search-result").find("div.tab-pane");
-        div.removeClass("active");
-        $("div#" + urlTabParam).addClass("active");
-        $('#result-search a[href$="#' + urlTabParam + '"]').tab('show');
-        tabparam = '&' + 'type=' + urlTabParam;
-      }
-
-      /**********************/
-      /*hide main search facet block*/
-      $("section#block-mica-client-facet-search-facet-search").find("h2:first").css("display", "none");
 
       function processMatchesInput(selectedVars) {
         $.each(selectedVars, function(key, value){
@@ -152,7 +128,6 @@
               var copy_chekbox = $(this).parent().clone();
               var divtofind = $(this).parents("section:first").find(".checkedterms:first");
               $("input[id=" + getAggregationMoniker(this) + "]").val($(this).attr("value"));
-
               copy_chekbox.find('.terms_stat').width($current_width_percent);
 
               divtofind.append(copy_chekbox);
@@ -168,10 +143,8 @@
         });
       }
 
-      var selectedVars = getUrlVars();
-      if (selectedVars) {
-        processMatchesInput(selectedVars);
-        processTermsAggregationInputs(selectedVars);
+      function processRangeAggregationInputs(selectedVars) {
+        // TODO may want to save the value in the hidden input, TBV
       }
 
       function getAggregationMoniker(aggElement) {
@@ -179,17 +152,21 @@
       }
 
       function updateCheckboxes() {
+        var json = getQueryFromUrl();
         var aggregation_name = getAggregationMoniker(this);
+        var input = $("input[id=" + aggregation_name + "]")
         if ($(this).hasClass("unchecked")) {
           checkthebox($(this));
-          $("input[id=" + aggregation_name + "]").val($(this).attr("value"));
-          updateWindowLocation(sendCheckboxCheckedValues());
+          input.val($(this).attr("value"));
+          $.query_serializer.addItem(json, decodeURIComponent(input.serialize()));
+          updateWindowLocation(JSON.stringify(json));
           return false;
         }
         if ($(this).hasClass("checked")) {
+          $.query_serializer.removeItem(json, decodeURIComponent(input.serialize()));
           uncheckthebox($(this));
-          $("input[id=" + aggregation_name + "]").val('');
-          updateWindowLocation(sendCheckboxCheckedValues());
+          input.val('');
+          updateWindowLocation(JSON.stringify(json));
           return false;
         }
       }
@@ -203,43 +180,75 @@
         }
       }
 
-      $("span#checkthebox").on("click", updateCheckboxes);
-
-      $("span#checkthebox").mouseover(function () {
-        if ($(this).hasClass("checked")) {
-          rollover($(this));
-          return false;
-        }
-      });
-
-      $("span#checkthebox").mouseout(function () {
-        if ($(this).hasClass("checked")) {
-          rollout($(this));
-          return false;
-        }
-      });
-
-      /*send request search on checking the box or on click go button */
-      $("div#checkthebox, button#facet-search-submit").on("click", function () {
-        //  sendCheckboxCheckedValues();
-        updateWindowLocation(sendCheckboxCheckedValues());
-      });
-
-      $("input[id='range-auto-fill']").on("blur", function () {
-        var term = $(this).attr('termselect');
-        var minid = term + '-min';
-        var maxid = term + '-max';
-        var minvalue = $("input[term='" + minid + "']").val();
-        var maxvalue = $("input[term='" + maxid + "']").val();
-
-        if (minvalue || maxvalue) {
-          $('#' + $(this).attr('termselect')).val(term + '.[ ' + minvalue + ' to ' + maxvalue + ' ]');
-        }
-        if (!maxvalue && !minvalue) {
-          $('#' + $(this).attr('termselect')).val('');
+      function initializeTabParam() {
+        /**************************/
+        //deal with tabs
+        tabparam = '';
+        var urlTabParam = $.urlParam('type');
+        if (urlTabParam) {
+          var div = $("div.search-result").find("div.tab-pane");
+          div.removeClass("active");
+          $("div#" + urlTabParam).addClass("active");
+          $('#result-search a[href$="#' + urlTabParam + '"]').tab('show');
+          tabparam = '&' + 'type=' + urlTabParam;
         }
 
-      });
+      }
+
+      function process() {
+        /**********************/
+        /*hide main search facet block*/
+        $("section#block-mica-client-facet-search-facet-search").find("h2:first").css("display", "none");
+
+        var selectedVars = getUrlVars();
+        if (selectedVars) {
+          processMatchesInput(selectedVars);
+          processTermsAggregationInputs(selectedVars);
+          processRangeAggregationInputs(selectedVars);
+        }
+
+        $("span#checkthebox").on("click", updateCheckboxes);
+
+        $("span#checkthebox").mouseover(function () {
+          if ($(this).hasClass("checked")) {
+            rollover($(this));
+            return false;
+          }
+        });
+
+        $("span#checkthebox").mouseout(function () {
+          if ($(this).hasClass("checked")) {
+            rollout($(this));
+            return false;
+          }
+        });
+
+        /*send request search on checking the box or on click go button */
+        $("div#checkthebox, button#facet-search-submit").on("click", function () {
+          var json = getQueryFromUrl();
+          $.query_serializer.addItem( //
+            json, //
+            decodeURIComponent($("input[id='"+$(this).attr('aggregation')+"']").serialize()) //
+          );
+          updateWindowLocation(JSON.stringify(json));
+        });
+
+        $("input[id='range-auto-fill']").on("blur", function () {
+          var term = $(this).attr('termselect');
+          var minid = term + '-min';
+          var maxid = term + '-max';
+          var minvalue = $("input[term='" + minid + "']").val();
+          var maxvalue = $("input[term='" + maxid + "']").val();
+
+          if (minvalue || maxvalue) {
+            $('#' + $(this).attr('termselect')).val(term + '.[ ' + minvalue + ' to ' + maxvalue + ' ]');
+          }
+          if (!maxvalue && !minvalue) {
+            $('#' + $(this).attr('termselect')).val('');
+          }
+
+        });
+      }
     }
   }
 })(jQuery);

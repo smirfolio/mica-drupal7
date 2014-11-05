@@ -13,9 +13,6 @@
 @or-operation-color: #CE6503;
 @and-operation-color: #15B562;
 
-.search-query {
-}
-
 .unclickable {
   pointer-events: none;
 }
@@ -72,7 +69,17 @@
 
 .operation {
   padding: 2px;
-  border-radius: @background-radius
+  border-radius: @background-radius;
+}
+
+.no-text-decoration {
+  text-decoration: none !important;
+}
+
+span.plus-minus {
+  border-radius: @background-radius;
+  .clickable;
+  .no-text-decoration
 }
 
 .match {

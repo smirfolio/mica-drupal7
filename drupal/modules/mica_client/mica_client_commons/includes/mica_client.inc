@@ -23,8 +23,6 @@ include_once("mica_client_commons_resource_paths.inc");
  * Class MicaClient
  */
 class MicaClient {
-  const child = \obiba\mica\ParentChildFilterDto\Relationship::CHILD;
-  const parent = \obiba\mica\ParentChildFilterDto\Relationship::PARENT;
   const AUTHORIZATION_HEADER = 'Authorization';
 
   const COOKIE_HEADER = 'Cookie';
@@ -386,6 +384,7 @@ class MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
     $json_query_encoded = //
       Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE, $group_by)->build());
+
     return $json_query_encoded;
   }
 

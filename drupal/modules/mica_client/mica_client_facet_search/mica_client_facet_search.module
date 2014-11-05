@@ -284,8 +284,8 @@ function mica_client_facet_search_load_libs() {
       'matches' => t('Matches'), //
       'match' => t('Match'), //
       'is' => t('be'), //
-      'and' => t('must'), //
-      'or' => t('should'), //
+      'and' => t('and'), //
+      'or' => t('or'), //
       'variables' => t('Variables'), //
       'datasets' => t('Datasets'), //
       'studies' => t('Studies'), //

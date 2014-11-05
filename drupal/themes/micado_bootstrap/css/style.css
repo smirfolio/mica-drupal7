@@ -6872,6 +6872,14 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
   padding: 2px;
   border-radius: 5px;
 }
+.no-text-decoration {
+  text-decoration: none !important;
+}
+span.plus-minus {
+  border-radius: 5px;
+  cursor: pointer !important;
+  text-decoration: none !important;
+}
 .match {
   padding: 2px;
   border-radius: 5px;

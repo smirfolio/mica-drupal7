@@ -20,5 +20,5 @@
 </li>
 <input
   id="<?php print $type_string . $aggregation_facet . '[]-' . $term->key; ?>"
-  name="<?php print $type_string . $aggregation_facet . '-terms[]'; ?>"
+  name="<?php print $type_string . 'terms:' . $aggregation_facet . '[]'; ?>"
   type="hidden" value="">
