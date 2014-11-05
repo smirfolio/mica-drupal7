@@ -1,7 +1,7 @@
 <?php
 //dpm($dataset_dto);
 //dpm($dataset_type_dto);
-//dpm($dataset_harmonizations_dto);
+//dpm($variables_dataset);
 //dpm($dataset_variables_aggs);
 ?>
 
@@ -106,7 +106,7 @@
               <td><h5><?php print t('Number of variables') ?></h5></td>
               <td>
                 <p>
-                  <?php print empty($dataset_harmonizations_dto->total) ? 0 : $dataset_harmonizations_dto->total; ?>
+                  <?php print empty($variables_dataset->total) ? 0 : $variables_dataset->total; ?>
                 </p>
               </td>
             </tr>
@@ -211,26 +211,26 @@
   <?php endif; ?>
 
   <!-- HARMONIZATION -->
-  <?php if (!empty($dataset_harmonizations_dto->harmonization)): ?>
+  <?php if (!empty($variables_dataset->harmonization)): ?>
     <section>
       <h3><?php print t('Harmonization') ?></h3>
 
       <div>
         <?php print render($form_search); ?>
       </div>
-      <?php print render($variables_harmonization); ?>
+      <?php print render($variables_table); ?>
     </section>
   <?php endif; ?>
 
   <!-- STUDY VARIABLES -->
-  <?php if (!empty($dataset_harmonizations_dto->study)): ?>
+  <?php if (!empty($variables_dataset->study)): ?>
     <section>
       <h3><?php print t('Study variables') ?></h3>
 
       <div>
         <?php print render($form_search); ?>
       </div>
-      <?php print render($variables_harmonization); ?>
+      <?php print render($variables_table); ?>
     </section>
   <?php endif; ?>
 </article>

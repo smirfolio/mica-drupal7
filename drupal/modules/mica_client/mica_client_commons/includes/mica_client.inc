@@ -343,18 +343,18 @@ class MicaClient {
   }
 
   public function pagination_list_search_parameters($current_page = 0, $type = NULL, $size = self::SIZE_RESPONSE) {
-    $nb_pages = ceil($_SESSION[strtolower($type)]['aggregations']['totalHits'] / $size);
-    if (!empty($current_page)) {
-      $pageActuelle = intval($current_page);
-      if ($pageActuelle > $nb_pages) {
-        $pageActuelle = $nb_pages;
+    $pageActuelle = 1;
+    if (!empty($_SESSION[strtolower($type)])) {
+      $nb_pages = ceil($_SESSION[strtolower($type)]['aggregations']['totalHits'] / $size);
+
+      if (!empty($current_page)) {
+        $pageActuelle = intval($current_page);
+        if ($pageActuelle > $nb_pages) {
+          $pageActuelle = $nb_pages;
+        }
       }
     }
-    else {
-      $pageActuelle = 1;
-    }
-    $from = ($pageActuelle) * $size;
-    return $from;
+    return ($pageActuelle) * $size;
   }
 
   /**
@@ -432,7 +432,8 @@ class MicaClient {
         }
         foreach ($term_values as $value) {
           if (empty($array_current_query->{$entity_name}->terms->{$term_name}) //
-            || !in_array($value, $array_current_query->{$entity_name}->terms->{$term_name}->values)) { //
+            || !in_array($value, $array_current_query->{$entity_name}->terms->{$term_name}->values)
+          ) { //
 
             $array_current_query->{$entity_name}->terms->{$term_name}->values[] = $value;
           }

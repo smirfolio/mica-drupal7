@@ -24,12 +24,12 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       $dataset_sort_by = $_GET['search-sort-order'];
     }
     if (!empty($_GET['page'])) {
-      $from = $dataset_resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 10);
+      $from = $dataset_resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 10, 'dataset var');
     }
 
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
-      $dataset_harmonizations_dto = $dataset_resource->get_variables($dataset_type,
+      $variables_dataset = $dataset_resource->get_variables($dataset_type,
         $dataset_id,
         $from, 10,
         $dataset_sort,
@@ -37,29 +37,29 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
         $dataset_query
       );
 
-      if (!empty($dataset_harmonizations_dto)) {
-        $_SESSION['list-datasets']['aggregations']['totalHits'] = $dataset_harmonizations_dto->total;
+      if (!empty($variables_dataset)) {
+        $_SESSION['list-datasets']['aggregations']['totalHits'] = $variables_dataset->total;
       }
-      $dataset_harmonizations_dto->harmonization = NULL;
-      $dataset_harmonizations_dto->study = TRUE;
-      $harmonization_variable_table_output = mica_client_dataset_study_variable_table($dataset_harmonizations_dto);
+      $variables_dataset->harmonization = NULL;
+      $variables_dataset->study = TRUE;
+      $variable_table_output = mica_client_dataset_study_variable_table($variables_dataset);
     }
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
 
-      $dataset_harmonizations_dto = $dataset_resource->get_variables_harmonizations($dataset_type,
+      $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
         $dataset_id,
         $from, 10,
         $dataset_sort,
         $dataset_sort_by,
         $dataset_query
       );
-      if (!empty($dataset_harmonizations_dto)) {
-        $_SESSION['list-datasets']['aggregations']['totalHits'] = $dataset_harmonizations_dto->total;
+      if (!empty($variables_dataset)) {
+        $_SESSION['list-datasets']['aggregations']['totalHits'] = $variables_dataset->total;
       }
-      $dataset_harmonizations_dto->harmonization = TRUE;
-      $dataset_harmonizations_dto->harmonization = TRUE;
-      $harmonization_variable_table_output = mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto);
+      $variables_dataset->harmonization = TRUE;
+      $variables_dataset->harmonization = TRUE;
+      $variable_table_output = mica_client_dataset_harmonizations_table($dataset_type_dto, $variables_dataset);
     }
 
     drupal_set_title(mica_client_commons_get_localized_field($dataset_dto, 'name'));
@@ -76,8 +76,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       'dataset_dto' => $dataset_dto,
       'coverage_dataset' => mica_client_dataset_coverage_variables($dataset_dto->id),
       'dataset_type_dto' => $dataset_type_dto,
-      'dataset_harmonizations_dto' => $dataset_harmonizations_dto,
-      'variables_harmonization' => $harmonization_variable_table_output,
+      'variables_dataset' => $variables_dataset,
+      'variables_table' => $variable_table_output,
       'dataset_variables_aggs' => NULL, //mica_client_dataset_get_variables($dataset_dto->id),
     ));
   }
