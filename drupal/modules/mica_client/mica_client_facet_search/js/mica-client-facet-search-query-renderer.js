@@ -78,11 +78,19 @@
   }
 
   function leftParenthesis() {
-    return $("<span class='unclickable'>(</span>");
+    return $("<span class='grouping-symbol'>(</span>");
   }
 
-  function rightParenthesis(content) {
-    return $("<span class='unclickable'>)</span>");
+  function rightParenthesis() {
+    return $("<span class='grouping-symbol'>)</span>");
+  }
+
+  function leftBracket() {
+    return $("<span class='grouping-symbol'>[</span>");
+  }
+
+  function rightBracket() {
+    return $("<span class='grouping-symbol'>]</span>");
   }
 
   function renderComma() {
@@ -94,14 +102,20 @@
   }
 
   function renderIn() {
-    return $("<span>in</span>")
+    return $("<span class='operation'>in</span>");
   }
 
-  function renderAggregationContainer(type, typeValues, aggType, name, op) {
+  function renderAggregationContainer(type, typeValues, aggType, name, op, showOp) {
     var aggContainer = renderAggregate(type, typeValues, aggType, name);
     var aggValueContainer = renderValuesContainer();
-    aggContainer.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)))
-      .append(leftParenthesis()).append(aggValueContainer).append(rightParenthesis());
+    var left = aggType === 'terms' ? leftParenthesis() : leftBracket(); 
+    var right = aggType === 'terms' ? rightParenthesis() : rightBracket(); 
+    
+    aggContainer
+      .append(renderIn())
+      .append(left).append(aggValueContainer).append(right);
+
+    if (!showOp) aggContainer.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)));
 
     container.append(aggContainer);
 
@@ -217,6 +231,16 @@
 
   function parseAndRender() {
     container.append(renderRefresh());
+
+    var total = 0;
+    $.each(jsonQuery, function (type, typeValues) {
+      $.each(typeValues, function (aggType, aggs) {
+        total += Object.keys(typeValues[aggType]).length;
+      });
+    });
+
+    var i = 0;
+    var last = total - 1;
     $.each(jsonQuery, function (type, typeValues) {
       $.each(typeValues, function (aggType, aggs) {
 
@@ -226,9 +250,10 @@
           return;
         }
 
+
         $.each(aggs, function (name, agg) {
           if (!$.isEmptyObject(agg.values) && agg.values.length > 0) {
-            var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(agg.op));
+            var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(agg.op), i === last);
             var valuesContainer = $("<li></li>");
             var hiddenValuesContainer = null;
             $(aggValueContainer).append(valuesContainer);
@@ -248,7 +273,9 @@
                 hiddenValuesContainer); //
             });
           }
-        })
+
+          i++;
+        });
       });
     });
 

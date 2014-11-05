@@ -6876,16 +6876,18 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
   text-decoration: none !important;
 }
 span.plus-minus {
-  border-radius: 5px;
   cursor: pointer !important;
   text-decoration: none !important;
+  border-radius: 5px;
+  color: rgba(40, 96, 181, 0.64);
 }
 .match {
   padding: 2px;
   border-radius: 5px;
   color: #8f6ca3;
 }
-.parenthesis {
+.grouping-symbol {
+  pointer-events: none;
   display: inline-block;
 }
 .comma {
