@@ -52,7 +52,7 @@ class MicaSearchResource extends MicaClient {
     $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
     $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
     $dto_param = $this->dto_filter_construct($type, $q, $from, $group_by);
-    dpm($dto_param);
+    //dpm($dto_param);
     $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
 
     $request = new HttpClientRequest($url, array(

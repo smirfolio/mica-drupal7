@@ -23,7 +23,7 @@ class MicaDatasetResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    // Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
+    Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
   /**
