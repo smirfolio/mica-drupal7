@@ -236,7 +236,7 @@ function mica_client_variable_get_categories($categories = NULL) {
         'rows' => $rows,
         'empty' => t('No category found'),
         'sticky' => FALSE,
-        'attributes' => array('id' => 'variable_categories')
+        'attributes' => array('id' => 'variable_categories', 'class' => 'header-fixed')
       )
     );
   }
