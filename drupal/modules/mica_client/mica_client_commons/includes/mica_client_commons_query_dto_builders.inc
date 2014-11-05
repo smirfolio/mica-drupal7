@@ -75,6 +75,10 @@ abstract class FieldFilterQueryDtoBuilder extends AbstractDtoBuilder
     return $this;
   }
 
+  function filter() {
+    return $this->filter;
+  }
+
 }
 
 class RangeFieldFilterQueryDtoBuilder extends FieldFilterQueryDtoBuilder
@@ -177,20 +181,97 @@ class BoolFilterQueryDtoBuilder extends AbstractDtoBuilder
   }
 
   function operator($value) {
-    $this->$filter->setOp($value);
+    $this->filter->setOp($value);
     return $this;
   }
 
   function filteredQueries(array $values) {
     foreach($values as $value) {
-      $this->$filter->addFilteredQuery($value);
+      $this->filter->addFilteredQuery($value);
     }
   }
 
   function filteredQueriesBuilders(array $values) {
     foreach($values as $value) {
-      $this->$filter->addFilteredQuery($value->build);
+      $this->filter->addFilteredQuery($value->build);
     }
+  }
+
+  function build()
+  {
+    return $this->dto;
+  }
+}
+
+class FieldStatementDtoBuilder extends AbstractDtoBuilder {
+
+  private function __construct()
+  {
+    $this->dto = new \obiba\mica\FieldStatementDto();
+  }
+
+  static function newBuilder() {
+    return new FieldStatementDtoBuilder();
+  }
+
+  static function mapOp($value) {
+    switch (strtolower($value)) {
+      case 'or':
+        return \obiba\mica\FieldStatementDto\Operator::_OR;
+      case 'and':
+        return \obiba\mica\FieldStatementDto\Operator::_AND;
+      case 'not':
+        return \obiba\mica\FieldStatementDto\Operator::_AND_NOT;
+    }
+
+    return NULL;
+  }
+
+  function field(\obiba\mica\FieldFilterQueryDto $value) {
+    $this->dto->setField($value);
+    return $this;
+  }
+
+  function fieldBuilder(FieldFilterQueryDtoBuilder $value) {
+    $this->dto->setField($value->build());
+    return $this;
+  }
+
+  function op($value) {
+    $this->dto->setOp(self::mapOp($value));
+    return $this;
+  }
+
+  function build() {
+    return $this->dto;
+  }
+}
+
+class LogicalFilterQueryDtoBuilder extends AbstractDtoBuilder
+{
+  private $filter = NULL;
+
+  private function __construct()
+  {
+    $this->dto = new \obiba\mica\FilteredQueryDto();
+    $this->filter = new \obiba\mica\LogicalFilterQueryDto();
+    $this->dto->setExtension('obiba.mica.LogicalFilterQueryDto.filter', $this->filter);
+  }
+
+  static function newBuilder() {
+    return new LogicalFilterQueryDtoBuilder();
+  }
+
+
+  function field(\obiba\mica\FieldFilterQueryDto $value, $op) {
+    $fieldStatementDto = FieldStatementDtoBuilder::newBuilder()->field($value)->op($op)->build();
+    $this->filter->addFields($fieldStatementDto);
+    return $this;
+  }
+
+  function fieldBuilder(FieldFilterQueryDtoBuilder $value, $op) {
+    $this->field($value->filter(), $op);
+    return $this;
   }
 
   function build()
@@ -321,12 +402,6 @@ class QueryDtoBuilder extends AbstractDtoBuilder
     return $this;
   }
 
-  function filteredQueryBuilder(FilteredQueryDtoBuilder $builder)
-  {
-    $this->dto->setFilteredQuery($builder->build());
-    return $this;
-  }
-
   function build()
   {
     return $this->dto;
@@ -423,6 +498,7 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
    */
   private function parseData($data)
   {
+
     foreach ($data as $type => $searchData) {
       foreach ($searchData as $searchPartType => $parts) {
 
@@ -431,52 +507,34 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
           continue;
         }
 
-        $builders = array_key_exists($type, $this->builderMap) ? $this->builderMap[$type] : array();
+        $logicalFilterBuilder = //
+          array_key_exists($type, $this->builderMap) //
+            ? $this->builderMap[$type] //
+            : LogicalFilterQueryDtoBuilder::newBuilder();
+
         foreach ($parts as $part => $agg) {
           $normalizedAggName = preg_replace('/-/', '.', $part);
           $aggValues = $agg->values;
-          array_push(
-           $builders,
-            array(
-            'op' => $agg->op,
-            'builder' => $builderData['builder'] = $searchPartType == 'terms' //
+          $builder = $searchPartType == 'terms' //
               ? TermsFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)->values($aggValues) //
               : RangeFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)
                 ->fromBuilder(RangeConditionDtoBuilder::newBuilder()->gte($aggValues[0]->min))
-                ->toBuilder(RangeConditionDtoBuilder::newBuilder()->lte($aggValues[0]->max))
-            )
-          );
-        }
+                ->toBuilder(RangeConditionDtoBuilder::newBuilder()->lte($aggValues[0]->max));
 
-        $this->builderMap[$type] = $builders;
+          $logicalFilterBuilder->fieldBuilder($builder, $agg->op);
+        }
       }
+
+      $this->builderMap[$type] = $logicalFilterBuilder;
     }
   }
 
-
-  private function createQuery($builders, $from, $size, $sort_field, $matches, $group_by = NULL)
+  private function createQuery(LogicalFilterQueryDtoBuilder $builder, $from, $size, $sort_field, $matches, $group_by = NULL)
   {
+    $dto = QueryDtoBuilder::newBuilder($from, $size, $sort_field, $matches, $group_by)
+      ->filteredQuery($builder->build())->build();
 
-    return QueryDtoBuilder::newBuilder($from, $size, $sort_field, $matches, $group_by)->filteredQuery($builders['builder']->build())->build();
-//    $shouldBuilders = empty($builders[self::OR_OPERATOR]) //
-//      ? NULL //
-//      : BoolFilterQueryDtoBuilder::newBuilder()->shouldBuilders($builders[self::OR_OPERATOR]); //
-//
-//    $mustBuilders = empty($builders[self::AND_OPERATOR]) //
-//      ? NULL //
-//      : BoolFilterQueryDtoBuilder::newBuilder()->mustBuilders($builders[self::AND_OPERATOR]);//
-//
-//    $boolFilterBuilder = NULL;
-//
-//    if (!empty($shouldBuilders)) {
-//      $boolFilterBuilder = $shouldBuilders;
-//      if (!empty($mustBuilders)) $shouldBuilders->innerMustBoolBuilder($mustBuilders);
-//    } else if (!empty($mustBuilders)) {
-//      $boolFilterBuilder = $mustBuilders;
-//    }
-
-//    return QueryDtoBuilder::newBuilder($from, $size, $sort_field, $matches, $group_by)->filteredQueryBuilder(
-//      FilteredQueryDtoBuilder::newBuilder()->filterBuilder($boolFilterBuilder))->build();
+    return $dto;
   }
 
   private function initializeDefaultSortMap()

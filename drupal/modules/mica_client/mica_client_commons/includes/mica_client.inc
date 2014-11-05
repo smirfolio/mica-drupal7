@@ -384,6 +384,7 @@ class MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
     $json_query_encoded = //
       Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE, $group_by)->build());
+
     return $json_query_encoded;
   }
 

@@ -93,6 +93,10 @@
     return type + ":" + aggType + ":" + name;
   }
 
+  function renderIn() {
+    return $("<span>in</span>")
+  }
+
   function renderAggregationContainer(type, typeValues, aggType, name, op) {
     var aggContainer = renderAggregate(type, typeValues, aggType, name);
     var aggValueContainer = renderValuesContainer();
