@@ -12,6 +12,7 @@
 @agg-or-operation-color: #2a89f3;
 @or-operation-color: #CE6503;
 @and-operation-color: #15B562;
+@plus-minus-operation-color: rgba(40, 96, 181, 0.64);
 
 .unclickable {
   pointer-events: none;
@@ -77,9 +78,10 @@
 }
 
 span.plus-minus {
-  border-radius: @background-radius;
   .clickable;
-  .no-text-decoration
+  .no-text-decoration;
+  border-radius: @background-radius;
+  color: @plus-minus-operation-color;
 }
 
 .match {
@@ -87,7 +89,8 @@ span.plus-minus {
   color: @match-operation-color;
 }
 
-.parenthesis {
+.grouping-symbol {
+  .unclickable;
   display: inline-block;
 }
 
