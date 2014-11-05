@@ -211,7 +211,8 @@
   <?php endif; ?>
 
   <!-- HARMONIZATION -->
-  <?php if (!empty($variables_dataset->harmonization)): ?>
+  <?php if (!empty($variables_dataset->variables) || !empty($variables_dataset->variableHarmonizations)): ?>
+    <?php if (!empty($variables_dataset->harmonization)): ?>
     <section>
       <h3><?php print t('Harmonization') ?></h3>
 
@@ -232,5 +233,6 @@
       </div>
       <?php print render($variables_table); ?>
     </section>
+  <?php endif; ?>
   <?php endif; ?>
 </article>
