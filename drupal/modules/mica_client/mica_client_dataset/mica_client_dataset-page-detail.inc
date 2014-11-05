@@ -24,7 +24,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       $dataset_sort_by = $_GET['search-sort-order'];
     }
     if (!empty($_GET['page'])) {
-      $from = $dataset_resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 10, 'dataset var');
+      $from = $dataset_resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 10);
     }
 
     if ($dataset_type == 'study-dataset') {
