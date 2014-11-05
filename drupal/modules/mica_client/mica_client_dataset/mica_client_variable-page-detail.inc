@@ -256,7 +256,7 @@ function mica_client_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   if ($variable->variableType != 'Dataschema') {
     $variable_stat = array($variable_stat);
   }
-  if (!empty($variable_stat)) {
+  if (!empty($variable_stat) && !empty(current($variable_stat)->totalHits)) {
     $stat_tab['table'] = _mica_client_variable_table_stat($variable, $variable_stat);
     $stat_tab['chart'] = _mica_client_variable_chart_stat($variable, $variable_stat);
     return drupal_json_output($stat_tab);
@@ -269,12 +269,11 @@ function mica_client_dataset_variable_get_ajax_statistics_test($variable_id = NU
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
   $variable_stat = $variable_resource->get_variable_facet($variable_id);
-  dpm($variable_stat);
   if ($variable->variableType != 'Dataschema') {
     $variable_stat = array($variable_stat);
   }
-
-  if (!empty($variable_stat)) {
+  dpm(current($variable_stat));
+  if (!empty($variable_stat) && !empty(current($variable_stat)->totalHits)) {
     $stat_tab .= _mica_client_variable_table_stat($variable, $variable_stat);
     $stat_tab .= _mica_client_variable_chart_stat($variable, $variable_stat);
   }

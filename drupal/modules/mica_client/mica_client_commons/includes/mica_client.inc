@@ -343,18 +343,19 @@ class MicaClient {
   }
 
   public function pagination_list_search_parameters($current_page = 0, $type = NULL, $size = self::SIZE_RESPONSE) {
-    $pageActuelle = 1;
     if (!empty($_SESSION[strtolower($type)])) {
       $nb_pages = ceil($_SESSION[strtolower($type)]['aggregations']['totalHits'] / $size);
-
       if (!empty($current_page)) {
-        $pageActuelle = intval($current_page);
-        if ($pageActuelle > $nb_pages) {
-          $pageActuelle = $nb_pages;
+        $calculated_current_page = intval($current_page);
+        if ($calculated_current_page > $nb_pages) {
+          $calculated_current_page = $nb_pages;
+        }
+        else {
+          $calculated_current_page = 1;
         }
       }
     }
-    return ($pageActuelle) * $size;
+    return ($calculated_current_page) * $size;
   }
 
   /**
