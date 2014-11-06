@@ -403,7 +403,36 @@
 <!-- COVERAGE -->
 <?php if (!empty($coverage)): ?>
   <section>
-    <h3><?php print t('Coverage') ?></h3>
+    <ul class="nav nav-pills pull-right">
+      <li class="<?php if (empty($group_by)) print 'active' ?>">
+        <?php
+        print l(t('All'), 'mica/study/' . $study_dto->id); ?>
+      </li>
+      <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
+          data-placement="top" title="<?php print t('Group by data collection event') ?>">
+        <?php
+        print l(t('Data Collection Event'), 'mica/study/' . $study_dto->id, array(
+          'query' => array(
+            array(
+              'group-by' => 'dceIds'
+            )
+          ),
+        )); ?>
+      </li>
+      <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
+          data-placement="top" title="<?php print t('Group by dataset') ?>">
+        <?php
+        print l(t('Dataset'), 'mica/study/' . $study_dto->id, array(
+          'query' => array(
+            array(
+              'group-by' => 'datasetId'
+            )
+          ),
+        )); ?>
+      </li>
+    </ul>
+
+    <h3 id="coverage"><?php print t('Coverage') ?></h3>
     <?php foreach ($coverage as $taxonomy_coverage): ?>
       <h4><?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
       <p class="help-block">

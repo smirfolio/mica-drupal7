@@ -147,23 +147,26 @@ function mica_client_facet_search_term_chart($term_coverage) {
 function mica_client_facet_search_query_charts($query) {
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query);
-
+  //dpm($coverages);
   $taxonomy_charts = array();
 
   if (!empty($coverages->taxonomies)) {
     foreach ($coverages->taxonomies as $taxonomy_coverage) {
       $labels = array();
-      $counts = array();
-      foreach ($taxonomy_coverage->vocabularies as $key => $vocabulary_coverage) {
+      $data = array();
+      foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
         if (!empty($vocabulary_coverage->count)) {
           $labels[] = mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
-          $counts[] = $vocabulary_coverage->count;
+          if (!empty($vocabulary_coverage->buckets)) {
+            foreach ($vocabulary_coverage->buckets as $bucket) {
+              $data[$bucket->value][] = $bucket->count;
+            }
+          } else {
+            $data[t('Variables')][] = $vocabulary_coverage->count;
+          }
         }
       }
-      if (!empty($counts)) {
-        $data[t('Variables')]['#type'] = 'chart_data';
-        $data[t('Variables')]['#title '] = t('Variables');
-        $data[t('Variables')] = $counts;
+      if (!empty($data)) {
         $taxonomy_charts[] = array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
           'chart' => mica_client_facet_search_stacked_column_chart($labels, $data, t('Number of variables'), 1000, 450, 'none')
