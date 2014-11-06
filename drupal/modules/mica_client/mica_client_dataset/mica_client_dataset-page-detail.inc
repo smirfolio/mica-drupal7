@@ -89,8 +89,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
 }
 
 function mica_client_dataset_coverage_variables($dataset_id) {
-  $datas = array();
   $labels = array();
+  $counts = array();
   $query_datasets_param =
     MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id))));
 
@@ -103,17 +103,17 @@ function mica_client_dataset_coverage_variables($dataset_id) {
         foreach ($taxonomy_coverage->vocabularies as $key => $vocabulary_coverage) {
           if (!empty($vocabulary_coverage->count)) {
             $labels[] = mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
-            $datas[] = $vocabulary_coverage->count;
+            $counts[] = $vocabulary_coverage->count;
           }
         }
       }
     }
   }
-  if (!empty($datas)) {
+  if (!empty($counts)) {
     $data[$dataset_id]['#type'] = 'chart_data';
     $data[$dataset_id]['#title '] = $dataset_id;
-    $data[$dataset_id] = $datas;
-    return mica_client_facet_search_stacked_column_chart($labels, $data, '', 1000, 450, 'none');
+    $data[$dataset_id] = $counts;
+    return mica_client_facet_search_stacked_column_chart($labels, $data, t('Number of variables'), 1000, 450, 'none');
   }
   return FALSE;
 }

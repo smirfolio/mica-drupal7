@@ -203,14 +203,16 @@
     <?php endif ?>
 
   </section>
+
+  <!-- COVERAGE -->
   <?php if (!empty($coverage_dataset)): ?>
     <section>
-      <h3><?php print t('Vocabularies coverage') ?></h3>
+      <h3><?php print t('Coverage') ?></h3>
       <?php print render($coverage_dataset); ?>
     </section>
   <?php endif; ?>
 
-  <!-- HARMONIZATION -->
+  <!-- HARMONIZATION VARIABLES -->
   <?php if (!empty($variables_dataset->variables) || !empty($variables_dataset->variableHarmonizations)): ?>
     <?php if (!empty($variables_dataset->harmonization)): ?>
     <section>
@@ -226,7 +228,7 @@
   <!-- STUDY VARIABLES -->
   <?php if (!empty($variables_dataset->study)): ?>
     <section>
-      <h3><?php print t('Study variables') ?></h3>
+      <h3><?php print t('Variables') ?></h3>
 
       <div>
         <?php print render($form_search); ?>
