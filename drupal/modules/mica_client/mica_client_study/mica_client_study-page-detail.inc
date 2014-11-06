@@ -10,6 +10,7 @@ if (module_exists('mica_client_dataset')) {
 }
 
 function mica_client_study_page_detail($study_id) {
+  mica_client_study_load_libs();
   $url_param = explode('?', $_SERVER['REQUEST_URI']);
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);

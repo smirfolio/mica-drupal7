@@ -40,6 +40,79 @@
 </div>
 
 <div class="clearfix"></div>
+
+<div class="affix-sidebar" style="margin-right: -220px;">
+  <nav id="scroll-menu" data-spy="affix">
+    <ul class="nav">
+      <li>
+        <a href="#overview">
+          <?php print t('Overview / Design'); ?>
+        </a>
+      </li>
+      <li>
+        <a href="#access">
+          <?php if (!empty($study_dto->markerPaper) || !empty($study_dto->pubmedId)): ?>
+            <?php print t('Access / Marker Paper'); ?>
+          <?php else: ?>
+            <?php print t('Access'); ?>
+          <?php endif; ?>
+        </a>
+      </li>
+      <?php if (!empty($study_dto->info)): ?>
+        <li>
+          <a href="#info"><?php print t('Supplementary Information'); ?>
+          </a>
+        </li>
+      <?php endif; ?>
+      <?php if (!empty($study_dto->attachments)): ?>
+        <li>
+          <a href="#documents">
+            <?php print t('Documents'); ?>
+          </a>
+        </li>
+      <?php endif; ?>
+      <li>
+        <a href="#timeline">
+          <?php print t('Timeline'); ?>
+        </a>
+      </li>
+      <li>
+        <a href="#populations">
+          <?php print t('Populations'); ?>
+        </a>
+      </li>
+      <?php if (!empty($coverage)): ?>
+        <li>
+          <a href="#coverage">
+            <?php print t('Coverage'); ?>
+          </a>
+        </li>
+      <?php endif; ?>
+      <?php if (!empty($networks)): ?>
+        <li>
+          <a href="#networks">
+            <?php print t('Networks'); ?>
+          </a>
+        </li>
+      <?php endif; ?>
+      <?php if (!empty($datasets)): ?>
+        <li>
+          <a href="#datasets">
+            <?php print t('Datasets'); ?>
+          </a>
+        </li>
+      <?php endif; ?>
+      <?php if (!empty($datasets) && !empty($study_variables_aggs)): ?>
+        <li>
+          <a href="#variables">
+            <?php print t('Variables'); ?>
+          </a>
+        </li>
+      <?php endif; ?>
+    </ul>
+  </nav>
+</div>
+
 <article>
 
 <section>
@@ -47,7 +120,7 @@
     <div class="row">
       <div class="col-xs-6 lg-right-indent">
         <!-- GENERAL INFORMATION -->
-        <h3><?php print t('Overview') ?></h3>
+        <h3 id="overview"><?php print t('Overview') ?></h3>
 
         <table class="table table-striped">
           <tbody>
@@ -144,7 +217,7 @@
       </div>
       <div class="col-xs-6">
         <!-- GENERAL DESIGN -->
-        <h3><?php print t('Design') ?></h3>
+        <h3 id="design"><?php print t('Design') ?></h3>
 
         <table class="table table-striped">
           <tbody>
@@ -249,7 +322,7 @@
     <div class="row">
       <div class="col-xs-6 right-indent">
         <!-- ACCESS -->
-        <h3><?php print t('Access') ?></h3>
+        <h3 id="access"><?php print t('Access') ?></h3>
 
         <?php if (!empty($study_dto->access) && (in_array('data', $study_dto->access) ||
             in_array('bio_samples', $study_dto->access) ||
@@ -312,7 +385,7 @@
       <div class="col-xs-6">
         <!-- MARKER PAPER -->
         <?php if (!empty($study_dto->markerPaper) || !empty($study_dto->pubmedId)): ?>
-          <h3><?php print t('Marker Paper') ?></h3>
+          <h3 id="marker"><?php print t('Marker Paper') ?></h3>
           <?php if (!empty($study_dto->markerPaper)): ?>
             <p><?php print $study_dto->markerPaper; ?></p>
           <?php endif; ?>
@@ -332,7 +405,7 @@
 <!-- SUPPLEMENTARY INFORMATION -->
 <?php if (!empty($study_dto->info)): ?>
   <section>
-    <h3><?php print t('Supplementary Information'); ?></h3>
+    <h3 id="info"><?php print t('Supplementary Information'); ?></h3>
 
     <p><?php print mica_client_commons_get_localized_field($study_dto, 'info'); ?></p>
   </section>
@@ -341,7 +414,7 @@
 <!-- DOCUMENTS -->
 <?php if (!empty($study_dto->attachments)): ?>
   <section>
-    <h3><?php print t('Documents'); ?></h3>
+    <h3 id="documents"><?php print t('Documents'); ?></h3>
 
     <div>
       <?php if (!empty($study_attachements)): ?>
@@ -356,7 +429,7 @@
 <!-- TIMELINE -->
 <?php if (!empty($timeline)): ?>
   <section>
-    <h3><?php print t('Timeline'); ?></h3>
+    <h3 id="timeline"><?php print t('Timeline'); ?></h3>
 
     <p>
       <?php print t('Each colour in the timeline graph below represents a separate Study Population, while each segment in the graph represents a separate Data Collection Event. Clicking on a segment gives more detailed information on a Data Collection Event.') ?>
@@ -368,7 +441,7 @@
 <!-- POPULATIONS -->
 <?php if (!empty($populations)): ?>
   <section>
-    <h3><?php print t('Populations'); ?></h3>
+    <h3 id="populations"><?php print t('Populations'); ?></h3>
     <?php if (count($populations) == 1): ?>
       <?php print array_pop($populations)['html']; ?>
     <?php else: ?>
@@ -377,7 +450,9 @@
         <div class="col-xs-2">
           <ul class="nav nav-pills nav-stacked" role="tablist">
             <?php foreach ($populations as $key => $population): ?>
-              <li <?php if ($key == array_keys($populations)[0]) print 'class="active"'; ?>>
+              <li <?php if ($key == array_keys($populations)[0]) {
+                print 'class="active"';
+              } ?>>
                 <a href="#<?php print $key; ?>" role="tab" data-toggle="pill">
                   <?php print mica_client_commons_get_localized_field($population['data'], 'name'); ?>
                 </a>
@@ -389,7 +464,10 @@
         <div class="col-xs-10">
           <div class="tab-content indent">
             <?php foreach ($populations as $key => $population): ?>
-              <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) print 'active'; ?>" id="<?php print $key; ?>">
+              <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) {
+                print 'active';
+              } ?>"
+                   id="<?php print $key; ?>">
                 <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
@@ -446,7 +524,7 @@
 <!-- NETWORKS -->
 <?php if (!empty($networks)): ?>
   <section>
-    <h3><?php print t('Networks'); ?></h3>
+    <h3 id="networks"><?php print t('Networks'); ?></h3>
     <?php print $networks; ?>
   </section>
 <?php endif; ?>
@@ -454,7 +532,7 @@
 <!-- DATASETS -->
 <?php if (!empty($datasets)): ?>
   <section>
-    <h3><?php print t('Datasets'); ?></h3>
+    <h3 id="datasets"><?php print t('Datasets'); ?></h3>
     <?php print render($datasets['dataset-tab']); ?>
   </section>
 <?php endif; ?>
@@ -465,7 +543,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-3 right-indent">
-          <h3><?php print t('Variables') ?></h3>
+          <h3 id="variables"><?php print t('Variables') ?></h3>
 
           <h5><?php print t('Number of variables') ?></h5>
 
@@ -483,11 +561,6 @@
               'attributes' => array('class' => 'btn btn-primary')
             ));
           ?>
-        </div>
-        <div class="col-xs-9">
-          <h3><?php print t('Domain Coverage') ?></h3>
-          <!-- Variable aggregations can be reported here -->
-          <div class="alert alert-info" role="alert"><strong>TODO</strong> charts here</div>
         </div>
       </div>
     </div>
