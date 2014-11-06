@@ -432,7 +432,8 @@ class MicaClient {
         }
         foreach ($term_values as $value) {
           if (empty($array_current_query->{$entity_name}->terms->{$term_name}) //
-            || !in_array($value, $array_current_query->{$entity_name}->terms->{$term_name}->values)) { //
+            || !in_array($value, $array_current_query->{$entity_name}->terms->{$term_name}->values)
+          ) { //
 
             $array_current_query->{$entity_name}->terms->{$term_name}->values[] = $value;
           }

@@ -302,17 +302,18 @@ function _mica_client_variable_domains_list($variable) {
   $output_vocab_list = '';
   if (!empty($variable->termAttributes)) {
     foreach ($variable->termAttributes as $vocabulary) {
-      $output_vocab_list .= '<div>';
+      $output_vocab_list .= '<div><ul>';
       foreach ($vocabulary->vocabularyTerms as $taxonomy) {
-        $output_vocab_list .= ' <b>' . mica_client_commons_get_localized_field($taxonomy->vocabulary, 'titles') . '</b>';
+        $output_vocab_list .= ' <li><b>' . mica_client_commons_get_localized_field($taxonomy->vocabulary, 'titles') . '</b> : ';
         $localized_terms = array();
         foreach ($taxonomy->terms as $term) {
           $localized_terms[] = mica_client_commons_get_localized_field($term, 'titles');
         }
         $output_vocab_list .= count($localized_terms) > 1 ? implode(', ', $localized_terms) : $localized_terms[0];
+        $output_vocab_list .= '</li>';
       }
 
-      $output_vocab_list .= '</div>';
+      $output_vocab_list .= '</ul></div>';
     }
     return $output_vocab_list;
   }
