@@ -30,11 +30,11 @@ class MicaSearchResource extends MicaClient {
     return $this->_aggregation_resource('coverage', $parameters);
   }
 
-  private function _search_resource() {
-    return $this->_aggregation_resource('search');
+  private function _search_resource($parameters = NULL) {
+    return $this->_aggregation_resource('search', $parameters);
   }
 
-  private function _get_dto_query_param_from_url($parts = NULL, $type, $parameters) {
+  private function _get_dto_query_param_from_url($parts = NULL, $type, $parameters = NULL) {
     $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
     $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
     $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
@@ -54,8 +54,9 @@ class MicaSearchResource extends MicaClient {
         $type = $parts['type'];
       }
     }
-
-    $dto_param = $this->_get_dto_query_param_from_url($parts, $type, $parameters);
+    if (empty($parameters) || $parameters != 'empty_request') {
+      $dto_param = $this->_get_dto_query_param_from_url($parts, $type, $parameters);
+    }
     //dpm($dto_param);
     $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
 
@@ -125,6 +126,12 @@ class MicaSearchResource extends MicaClient {
     else {
       unset($_SESSION['variables']);
       unset($_SESSION['studies']);
+      $join_query_response2 = new JoinQueryResponseWrapper($this->_search_resource('empty_request'));
+      $response = $join_query_response2->getResponseWrapper($type);
+      if (!$response->isEmpty()) {
+        $this->session_facets_builder($join_query_response2->getResponseDto());
+      }
+      dpm($_SESSION['variables']);
     }
 
     return $join_query_response;
