@@ -34,13 +34,20 @@ class MicaSearchResource extends MicaClient {
     return $this->_aggregation_resource('search');
   }
 
+  private function _get_dto_query_param_from_url($parts = NULL, $type, $parameters) {
+    $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
+    $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
+    $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
+    return $this->dto_filter_construct($type, $q, $from, $group_by);
+  }
+
   /*
    * $parameters : json query hard coded
    * */
   private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL) {
+    $parts = NULL;
     $url_parm = explode('?', $_SERVER['REQUEST_URI']);
     $type = 'variables';
-    $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
     if (!empty($url_parm[1])) {
       parse_str($url_parm[1], $parts);
       if (!empty($parts['type'])) {
@@ -48,10 +55,7 @@ class MicaSearchResource extends MicaClient {
       }
     }
 
-    $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
-    $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
-    $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
-    $dto_param = $this->dto_filter_construct($type, $q, $from, $group_by);
+    $dto_param = $this->_get_dto_query_param_from_url($parts, $type, $parameters);
     //dpm($dto_param);
     $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
 
