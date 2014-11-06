@@ -38,11 +38,10 @@ class MicaSearchResource extends MicaClient {
    * $parameters : json query hard coded
    * */
   private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL) {
-    $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+    $url_param = explode('?', $_SERVER['REQUEST_URI']);
     $type = 'variables';
-    $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
-    if (!empty($url_parm[1])) {
-      parse_str($url_parm[1], $parts);
+    if (!empty($url_param[1])) {
+      parse_str($url_param[1], $parts);
       if (!empty($parts['type'])) {
         $type = $parts['type'];
       }

@@ -123,7 +123,7 @@
             }
 
             if (!jsonForm[entry.type][entry.aggType].hasOwnProperty(entry.agg)) {
-              jsonForm[entry.type][entry.aggType][entry.agg] = {'values': [], 'op': 'and'};
+              jsonForm[entry.type][entry.aggType][entry.agg] = {'values': [], 'op': 'or'};
             }
 
             if (entry.hasOwnProperty('op')) {

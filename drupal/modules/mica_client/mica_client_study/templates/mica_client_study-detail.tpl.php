@@ -1,6 +1,7 @@
 <?php
 //dpm($study_dto);
 //dpm($study_variables_aggs);
+//dpm($coverage)
 ?>
 <div>
   <p>
@@ -396,6 +397,20 @@
         </div>
       </div>
     <?php endif ?>
+  </section>
+<?php endif; ?>
+
+<!-- COVERAGE -->
+<?php if (!empty($coverage)): ?>
+  <section>
+    <h3><?php print t('Coverage') ?></h3>
+    <?php foreach ($coverage as $taxonomy_coverage): ?>
+      <h4><?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
+      <p class="help-block">
+        <?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
+      </p>
+      <?php print render($taxonomy_coverage['chart']); ?>
+    <?php endforeach ?>
   </section>
 <?php endif; ?>
 

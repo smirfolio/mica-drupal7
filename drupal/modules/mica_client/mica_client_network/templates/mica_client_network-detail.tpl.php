@@ -115,6 +115,20 @@
     </div>
   </section>
 
+  <!-- COVERAGE -->
+  <?php if (!empty($coverage)): ?>
+    <section>
+      <h3><?php print t('Coverage') ?></h3>
+      <?php foreach ($coverage as $taxonomy_coverage): ?>
+        <h4><?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
+        <p class="help-block">
+          <?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
+        </p>
+        <?php print render($taxonomy_coverage['chart']); ?>
+      <?php endforeach ?>
+    </section>
+  <?php endif; ?>
+
   <section>
     <h3><?php print t('Studies') ?></h3>
     <?php print mica_client_network_study_table($network_dto) ?>

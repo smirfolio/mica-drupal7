@@ -44,6 +44,7 @@ function mica_client_study_page_detail($study_id) {
         'networks' => $network_output,
         'opal' => $opal_output,
         'study_variables_aggs' => NULL, //mica_client_study_get_variables($study_id),
+        'coverage' => mica_client_study_coverage($study_dto->id),
       ));
   }
   else {
@@ -219,4 +220,8 @@ function mica_client_study_get_variables($study_id) {
       'terms' => array($study_id)
     )
   ), 0);
+}
+
+function mica_client_study_coverage($study_id) {
+  return mica_client_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study_id)))));
 }
