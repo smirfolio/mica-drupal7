@@ -20,7 +20,7 @@
   $.QueryViewRenderer = function (translationMap) {
     container = $("<ul class='facet-query-list'></ul>");
     contentQuery = $('<div class="row center-row "></div>');
-    contentRefresh = $('<div class="col-md-1 center-div"></div>');
+    contentRefresh = $('<div class="col-md-1"></div>');
     contentQueryString = $('<div class="col-md-11 center-div"></div>');
     translation = translationMap;
   };
