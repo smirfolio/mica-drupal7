@@ -3,6 +3,9 @@
   "use strict";
 
   var container;
+  var contentQuery;
+  var contentRefresh;
+  var contentQueryString;
   var jsonQuery;
   var translation;
 
@@ -16,6 +19,9 @@
    */
   $.QueryViewRenderer = function (translationMap) {
     container = $("<ul class='facet-query-list'></ul>");
+    contentQuery = $('<div class="row center-row "></div>');
+    contentRefresh = $('<div class="col-md-1"></div>');
+    contentQueryString = $('<div class="col-md-11 center-div"></div>');
     translation = translationMap;
   };
 
@@ -54,7 +60,7 @@
   function renderMatches(type, value) {
     var matches = renderMatchesElement('matches', type, translate(type));
     var matchesValue = renderValuesContainer().append(renderMatchesElement('matches-value', type, value));
-    container.append(matches.append(renderMatch()).append(matchesValue));
+    contentQueryString.append(matches.append(renderMatch()).append(matchesValue));
   }
 
   function renderMatchesElement(cssClass, type, text) {
@@ -117,7 +123,7 @@
 
     if (!showOp) aggContainer.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)));
 
-    container.append(aggContainer);
+    contentQueryString.append(aggContainer);
 
     return aggValueContainer;
   }
@@ -230,14 +236,22 @@
   }
 
   function parseAndRender() {
-    container.append(renderRefresh());
+
+    contentQuery.append(contentRefresh);
+    contentQuery.append(contentQueryString);
+
+    container.append(contentQuery);
+    contentRefresh.append(renderRefresh());
+
     var prevType = null;
 
     $.each(jsonQuery, function (type, typeValues) {
       $.each(typeValues, function (aggType, aggs) {
 
         if (aggType === 'matches') {
-          if (container.children().length > 1) container.append(renderAndOperation(true, ""));
+          if (contentQueryString.children().length > 1) {
+            contentQueryString.append(renderAndOperation(true, ""));
+          }
           renderMatches(type, aggs);
           return;
         }
@@ -247,7 +261,7 @@
 
         if (prevType != null && prevType != type) {
           // separate queries by type
-          container.append($("<li><br/></li>"));
+          contentQueryString.append($("<li><br/></li>"));
         }
 
         $.each(aggs, function (name, agg) {
