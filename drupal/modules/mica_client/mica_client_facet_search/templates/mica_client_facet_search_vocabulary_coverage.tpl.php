@@ -178,7 +178,7 @@
     </table>
   </div>
   <div>
-    <?php print render($chart); ?>
+    <?php //print render($chart); ?>
   </div>
 
 <?php endif ?>

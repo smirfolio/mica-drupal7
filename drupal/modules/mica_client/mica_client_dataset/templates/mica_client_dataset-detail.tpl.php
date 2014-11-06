@@ -201,38 +201,45 @@
         </div>
       </div>
     <?php endif ?>
-
   </section>
+
+  <!-- COVERAGE -->
   <?php if (!empty($coverage_dataset)): ?>
-    <section>
-      <h3><?php print t('Vocabularies coverage') ?></h3>
-      <?php print render($coverage_dataset); ?>
-    </section>
+    <?php foreach ($coverage_dataset as $taxonomy_coverage): ?>
+      <section>
+        <h3><?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h3>
+
+        <p class="help-block">
+          <?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
+        </p>
+        <?php print render($taxonomy_coverage['chart']); ?>
+      </section>
+    <?php endforeach ?>
   <?php endif; ?>
 
-  <!-- HARMONIZATION -->
+  <!-- HARMONIZATION VARIABLES -->
   <?php if (!empty($variables_dataset->variables) || !empty($variables_dataset->variableHarmonizations)): ?>
     <?php if (!empty($variables_dataset->harmonization)): ?>
-    <section>
-      <h3><?php print t('Harmonization') ?></h3>
+      <section>
+        <h3><?php print t('Harmonization') ?></h3>
 
-      <div>
-        <?php print render($form_search); ?>
-      </div>
-      <?php print render($variables_table); ?>
-    </section>
-  <?php endif; ?>
+        <div>
+          <?php print render($form_search); ?>
+        </div>
+        <?php print render($variables_table); ?>
+      </section>
+    <?php endif; ?>
 
-  <!-- STUDY VARIABLES -->
-  <?php if (!empty($variables_dataset->study)): ?>
-    <section>
-      <h3><?php print t('Study variables') ?></h3>
+    <!-- STUDY VARIABLES -->
+    <?php if (!empty($variables_dataset->study)): ?>
+      <section>
+        <h3><?php print t('Study variables') ?></h3>
 
-      <div>
-        <?php print render($form_search); ?>
-      </div>
-      <?php print render($variables_table); ?>
-    </section>
-  <?php endif; ?>
+        <div>
+          <?php print render($form_search); ?>
+        </div>
+        <?php print render($variables_table); ?>
+      </section>
+    <?php endif; ?>
   <?php endif; ?>
 </article>

@@ -7125,6 +7125,10 @@ body.admin-menu .navbar-fixed-top {
   margin-top: 0;
   border: none;
 }
+.breadcrumb {
+  padding: 8px 0;
+  background-color: transparent;
+}
 .block-content article {
   border-top: 1px solid #cccccc;
   border-left: 1px solid #cccccc;
