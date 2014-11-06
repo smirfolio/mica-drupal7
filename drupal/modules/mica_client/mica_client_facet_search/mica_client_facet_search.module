@@ -429,9 +429,9 @@ function mica_client_facet_search_variable_page_search() {
 
 function mica_client_facet_search_coverage_page() {
   mica_client_facet_search_load_libs();
-  $url_parm = explode('?', $_SERVER['REQUEST_URI']);
-  if (!empty($url_parm[1])) {
-    parse_str($url_parm[1], $parts);
+  $url_param = explode('?', $_SERVER['REQUEST_URI']);
+  if (!empty($url_param[1])) {
+    parse_str($url_param[1], $parts);
   }
 
   $search_resources = new MicaSearchResource();

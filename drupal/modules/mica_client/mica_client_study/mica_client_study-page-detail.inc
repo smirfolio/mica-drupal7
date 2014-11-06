@@ -10,6 +10,11 @@ if (module_exists('mica_client_dataset')) {
 }
 
 function mica_client_study_page_detail($study_id) {
+  $url_param = explode('?', $_SERVER['REQUEST_URI']);
+  if (!empty($url_param[1])) {
+    parse_str($url_param[1], $parts);
+  }
+
   $page_render_study = NULL;
   $themed_attachment = '';
   $study_resource = new MicaStudyResource();
@@ -44,6 +49,8 @@ function mica_client_study_page_detail($study_id) {
         'networks' => $network_output,
         'opal' => $opal_output,
         'study_variables_aggs' => NULL, //mica_client_study_get_variables($study_id),
+        'coverage' => mica_client_study_coverage($study_dto->id),
+        'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
       ));
   }
   else {
@@ -219,4 +226,8 @@ function mica_client_study_get_variables($study_id) {
       'terms' => array($study_id)
     )
   ), 0);
+}
+
+function mica_client_study_coverage($study_id) {
+  return mica_client_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study_id)))));
 }

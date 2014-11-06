@@ -115,56 +115,57 @@
 
 <!-- Taxonomy terms -->
 <?php if (!empty($variable_dto->termAttributes)): ?>
+  <section>
+    <h3><?php print t('Coverage') ?></h3>
 
-  <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
-    <?php if ($termAttributes->taxonomy->name != 'Mlstr_harmo'): ?>
-      <section>
-        <h3>
-          <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
-        </h3>
+    <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
+      <!--    --><?php //if ($termAttributes->taxonomy->name != 'Mlstr_harmo'): ?>
+      <h4>
+        <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
+      </h4>
+      <p class="help-block">
+        <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>
+      </p>
 
-        <p class="help-block">
-          <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>
-        </p>
+      <table class="table table-striped">
+        <tbody>
+        <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
+          <tr>
+            <td>
+              <h5>
+                <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
+              </h5>
 
-        <table class="table table-striped">
-          <tbody>
-          <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
-            <tr>
-              <td>
-                <h5>
-                  <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
-                </h5>
+              <p class="help-block">
+                <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>
+              </p>
+            </td>
 
-                <p class="help-block">
-                  <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>
+            <td>
+              <?php if (count($termAttribute->terms == 1)): ?>
+                <p data-toggle="tooltip"
+                   title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
+                  <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
                 </p>
-              </td>
+              <?php else: ?>
+                <ul>
+                  <?php foreach ($termAttribute->terms as $term) : ?>
+                    <li data-toggle="tooltip"
+                        title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
+                      <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php endif; ?>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+        </tbody>
+      </table>
 
-              <td>
-                <?php if (count($termAttribute->terms == 1)): ?>
-                  <p data-toggle="tooltip"
-                     title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
-                    <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
-                  </p>
-                <?php else: ?>
-                  <ul>
-                    <?php foreach ($termAttribute->terms as $term) : ?>
-                      <li data-toggle="tooltip"
-                          title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
-                        <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
-                      </li>
-                    <?php endforeach; ?>
-                  </ul>
-                <?php endif; ?>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-          </tbody>
-        </table>
-      </section>
-    <?php endif; ?>
-  <?php endforeach; ?>
+      <!--    --><?php //endif; ?>
+    <?php endforeach; ?>
+  </section>
 <?php endif; ?>
 
 <section>

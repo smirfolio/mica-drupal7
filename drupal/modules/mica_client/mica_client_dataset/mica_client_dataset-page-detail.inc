@@ -75,7 +75,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       //TODO implement resources to perform queries in variables resources
       //   "form_search" => drupal_get_form('mica_client_dataset_create_form'),
       'dataset_dto' => $dataset_dto,
-      'coverage_dataset' => mica_client_dataset_coverage_variables($dataset_dto->id),
+      'coverage' => mica_client_dataset_coverage($dataset_dto->id),
       'dataset_type_dto' => $dataset_type_dto,
       'variables_dataset' => $variables_dataset,
       'variables_table' => $variables_table_output,
@@ -88,38 +88,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
   }
 }
 
-function mica_client_dataset_coverage_variables($dataset_id) {
-
-  $query_datasets_param =
-    MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id))));
-
-  $search_resources = new MicaSearchResource();
-  $coverages = $search_resources->taxonomies_coverage($query_datasets_param);
-
-  $taxonomy_charts = array();
-
-  if (!empty($coverages->taxonomies)) {
-    foreach ($coverages->taxonomies as $taxonomy_coverage) {
-      $labels = array();
-      $counts = array();
-      foreach ($taxonomy_coverage->vocabularies as $key => $vocabulary_coverage) {
-        if (!empty($vocabulary_coverage->count)) {
-          $labels[] = mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
-          $counts[] = $vocabulary_coverage->count;
-        }
-      }
-      if (!empty($counts)) {
-        $data[t('Variables')]['#type'] = 'chart_data';
-        $data[t('Variables')]['#title '] = t('Variables');
-        $data[t('Variables')] = $counts;
-        $taxonomy_charts[] = array(
-          'taxonomy' => $taxonomy_coverage->taxonomy,
-          'chart' => mica_client_facet_search_stacked_column_chart($labels, $data, t('Number of variables'), 1000, 450, 'none')
-        );
-      }
-    }
-  }
-  return $taxonomy_charts;
+function mica_client_dataset_coverage($dataset_id) {
+  return mica_client_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id)))));
 }
 
 function mica_client_dataset_create_form() {

@@ -2,6 +2,11 @@
 include_once('includes/mica_client_network_resource.inc');
 
 function mica_client_network_page_detail($network_id) {
+  $url_param = explode('?', $_SERVER['REQUEST_URI']);
+  if (!empty($url_param[1])) {
+    parse_str($url_param[1], $parts);
+  }
+
   $network_resource = new MicaNetworkResource();
   $network_dto = NULL;
 
@@ -16,6 +21,8 @@ function mica_client_network_page_detail($network_id) {
 
     return theme('mica_client_network-detail', array(
       'network_dto' => $network_dto,
+      'coverage' => mica_client_network_coverage($network_dto->studyIds),
+      'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
     ));
   }
   else {
@@ -65,6 +72,10 @@ function mica_client_network_study_table_headers() {
     t('Target Number'),
     t('Countries'),
   );
+}
+
+function mica_client_network_coverage($study_ids) {
+  return mica_client_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study_ids)))));
 }
 
 

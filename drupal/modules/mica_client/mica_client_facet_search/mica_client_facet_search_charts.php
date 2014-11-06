@@ -144,6 +144,39 @@ function mica_client_facet_search_term_chart($term_coverage) {
   return mica_client_facet_search_mini_column_chart($labels, $data, '', 200, 50, 'none');
 }
 
+function mica_client_facet_search_query_charts($query) {
+  $search_resources = new MicaSearchResource();
+  $coverages = $search_resources->taxonomies_coverage($query);
+  //dpm($coverages);
+  $taxonomy_charts = array();
+
+  if (!empty($coverages->taxonomies)) {
+    foreach ($coverages->taxonomies as $taxonomy_coverage) {
+      $labels = array();
+      $data = array();
+      foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
+        if (!empty($vocabulary_coverage->count)) {
+          $labels[] = mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
+          if (!empty($vocabulary_coverage->buckets)) {
+            foreach ($vocabulary_coverage->buckets as $bucket) {
+              $data[$bucket->value][] = $bucket->count;
+            }
+          } else {
+            $data[t('Variables')][] = $vocabulary_coverage->count;
+          }
+        }
+      }
+      if (!empty($data)) {
+        $taxonomy_charts[] = array(
+          'taxonomy' => $taxonomy_coverage->taxonomy,
+          'chart' => mica_client_facet_search_stacked_column_chart($labels, $data, t('Number of variables'), 1000, 450, 'none')
+        );
+      }
+    }
+  }
+  return $taxonomy_charts;
+}
+
 function mica_client_facet_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart_param = variable_get('charts_default_settings');
   $chart = array(
