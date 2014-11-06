@@ -6872,6 +6872,9 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
   padding: 2px;
   border-radius: 5px;
 }
+.logical-operation {
+  margin: 4px;
+}
 .no-text-decoration {
   text-decoration: none !important;
 }
@@ -6889,25 +6892,23 @@ span.plus-minus {
 .grouping-symbol {
   pointer-events: none;
   display: inline-block;
+  opacity: 0.2;
 }
 .comma {
+  pointer-events: none;
   padding: 2px;
   border-radius: 5px;
-  pointer-events: none;
 }
 .or-operation {
   padding: 2px;
   border-radius: 5px;
+  margin: 4px;
   color: #ce6503;
-}
-.agg-or-operation {
-  padding: 2px;
-  border-radius: 5px;
-  color: #2a89f3;
 }
 .and-operation {
   padding: 2px;
   border-radius: 5px;
+  margin: 4px;
   color: #15b562;
 }
 .no-style-list {
