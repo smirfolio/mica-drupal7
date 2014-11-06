@@ -52,13 +52,13 @@
   }
 
   function renderMatches(type, value) {
-     var matches = renderMatchesElement('matches', type, translate(type));
-     var matchesValue = renderValuesContainer().append(renderMatchesElement('matches-value', type, value));
+    var matches = renderMatchesElement('matches', type, translate(type));
+    var matchesValue = renderValuesContainer().append(renderMatchesElement('matches-value', type, value));
     container.append(matches.append(renderMatch()).append(matchesValue));
   }
 
   function renderMatchesElement(cssClass, type, text) {
-    var htmlMatchesElement = $("<li></li>").append($("<span class='"+cssClass+"'></span>").text(text));
+    var htmlMatchesElement = $("<li></li>").append($("<span class='" + cssClass + "'></span>").text(text));
     htmlMatchesElement.click(function (e) {
       delete jsonQuery[type]['matches'];
       update();
@@ -69,7 +69,7 @@
   }
 
   function renderMatch() {
-    return $("<span class='match'>"+translate('match')+"</span>");
+    return $("<span class='match'>" + translate('match') + "</span>");
   }
 
 
@@ -108,9 +108,9 @@
   function renderAggregationContainer(type, typeValues, aggType, name, op, showOp) {
     var aggContainer = renderAggregate(type, typeValues, aggType, name);
     var aggValueContainer = renderValuesContainer();
-    var left = aggType === 'terms' ? leftParenthesis() : leftBracket(); 
-    var right = aggType === 'terms' ? rightParenthesis() : rightBracket(); 
-    
+    var left = aggType === 'terms' ? leftParenthesis() : leftBracket();
+    var right = aggType === 'terms' ? rightParenthesis() : rightBracket();
+
     aggContainer
       .append(renderIn())
       .append(left).append(aggValueContainer).append(right);
@@ -123,18 +123,18 @@
   }
 
   function renderOrOperation(show, moniker) {
-    return $("<span data-op='or' id='or-" + moniker + "' " + (show ? "" : "hidden") + "  class='or-operation'>"+translate('or').toUpperCase()+"</span>");
+    return $("<span data-op='or' id='or-" + moniker + "' " + (show ? "" : "hidden") + "  class='or-operation'>" + translate('or').toUpperCase() + "</span>");
   }
 
   function renderAndOperation(show, moniker) {
-    return $("<span data-op='and' id='and-" + moniker + "' " + (show ? "" : "hidden") + "  class='and-operation'>"+translate('and').toUpperCase()+"</span>");
+    return $("<span data-op='and' id='and-" + moniker + "' " + (show ? "" : "hidden") + "  class='and-operation'>" + translate('and').toUpperCase() + "</span>");
   }
 
   function renderAndOrOperation(operator, moniker) {
 
     var and = renderAndOperation(operator == AND_OPERATOR);
     var or = renderOrOperation(operator == OR_OPERATOR, moniker);
-    return $("<span class='clickable'></span>").append(and).append(or).click(function(e) {
+    return $("<span class='clickable'></span>").append(and).append(or).click(function (e) {
       $('[id^=and-]', this).toggle();
       $('[id^=or-]', this).toggle();
       $.query_href.updateQueryOperation(moniker, toggleOperation(operator));
@@ -171,8 +171,8 @@
 
     var htmlValue =
       aggType === "terms" //
-          ? renderTermsAggregationValue(value) //
-          : renderRangeAggregationValue(value); //
+        ? renderTermsAggregationValue(value) //
+        : renderRangeAggregationValue(value); //
 
     htmlValue.click(function (e) {
       agg.values.splice(i, 1);
@@ -192,7 +192,7 @@
   function renderPlusMinus(parent) {
     var hiddens = $("<span hidden class='no-text-decoration' id='hidden-values'></span>");
     var plusMinus = $("<span class='plus-minus glyphicon glyphicon-plus'></span>").append(hiddens)
-      .click(function(e) {
+      .click(function (e) {
         if ($(this).hasClass('glyphicon-plus')) {
           $(this).removeClass('glyphicon-plus').addClass('glyphicon-minus');
         } else {
@@ -201,7 +201,7 @@
 
         $('[id^=hidden-values]').toggle();
         e.stopPropagation();
-    });
+      });
 
     parent.append(plusMinus.append(hiddens));
     return hiddens;
@@ -231,16 +231,8 @@
 
   function parseAndRender() {
     container.append(renderRefresh());
+    var prevType = null;
 
-    var total = 0;
-    $.each(jsonQuery, function (type, typeValues) {
-      $.each(typeValues, function (aggType, aggs) {
-        total += Object.keys(typeValues[aggType]).length;
-      });
-    });
-
-    var i = 0;
-    var last = total - 1;
     $.each(jsonQuery, function (type, typeValues) {
       $.each(typeValues, function (aggType, aggs) {
 
@@ -250,6 +242,13 @@
           return;
         }
 
+        var i = 0;
+        var last = Object.keys(typeValues[aggType]).length - 1;
+
+        if (prevType != null && prevType != type) {
+          // separate queries by type
+          container.append($("<li><br/></li>"));
+        }
 
         $.each(aggs, function (name, agg) {
           if (!$.isEmptyObject(agg.values) && agg.values.length > 0) {
@@ -276,7 +275,11 @@
 
           i++;
         });
+        // save for line break
+        prevType = type;
       });
+
+
     });
 
     return container;

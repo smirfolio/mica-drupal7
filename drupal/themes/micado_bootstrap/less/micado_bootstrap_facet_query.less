@@ -73,6 +73,10 @@
   border-radius: @background-radius;
 }
 
+.logical-operation {
+  margin: 4px;
+}
+
 .no-text-decoration {
   text-decoration: none !important;
 }
@@ -92,25 +96,24 @@ span.plus-minus {
 .grouping-symbol {
   .unclickable;
   display: inline-block;
+  opacity: 0.2;
 }
 
 .comma {
-  .operation;
   .unclickable;
+  padding: 2px;
+  border-radius: @background-radius;
 }
 
 .or-operation {
   .operation;
+  .logical-operation;
   color: @or-operation-color;
-}
-
-.agg-or-operation {
-  .operation;
-  color: @agg-or-operation-color;
 }
 
 .and-operation {
   .operation;
+  .logical-operation;
   color: @and-operation-color;
 }
 
