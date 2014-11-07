@@ -209,7 +209,7 @@ function mica_client_study_get_dce_table($dataCollectionEvents) {
   foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
     $dce_description = NULL;
     if (!empty($dce_wrapper->description)) {
-      $dce_description = truncate_utf8(mica_client_commons_get_localized_field($dce_wrapper, 'description'), 50, TRUE, TRUE);
+      $dce_description = truncate_utf8(strip_tags(mica_client_commons_get_localized_field($dce_wrapper, 'description')), 50, TRUE, TRUE);
     }
     // Hide DCE that are not published on study published page
 
