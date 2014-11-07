@@ -60,7 +60,8 @@ class MicaDatasetResource extends MicaClient {
       $this->setLastResponse($client->lastResponse);
       return new DatasetJoinResponseWrapper(json_decode($data));
     } catch (HttpClientException $e) {
-      dpm($e);
+      // dpm($e);
+      drupal_set_message(t('Error serve'), 'error');
       return array();
     }
   }

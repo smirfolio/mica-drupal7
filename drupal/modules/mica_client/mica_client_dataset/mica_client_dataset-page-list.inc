@@ -104,12 +104,12 @@ function mica_client_dataset_retrieve_datasets($query, $sort = NULL, $sort_order
 }
 
 function mica_client_dataset_retrieve_harmonizationDatasets($query, $sort = NULL, $sort_order = NULL) {
-  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'harmonization');
+  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'datasets/harmonization');
   drupal_json_output(mica_client_dataset_themed_list_dataset($list_datasets));
 }
 
 function mica_client_dataset_retrieve_studyDatasets($query, $sort = NULL, $sort_order = NULL) {
-  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'study');
+  $list_datasets = mica_client_dataset_get_datasets($query, $sort, $sort_order, 'datasets/study');
   drupal_json_output(mica_client_dataset_themed_list_dataset($list_datasets));
 }
 
