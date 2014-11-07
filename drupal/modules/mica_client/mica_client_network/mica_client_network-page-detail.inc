@@ -1,6 +1,9 @@
 <?php
 include_once('includes/mica_client_network_resource.inc');
 
+$path_module_study = drupal_get_path('module', 'mica_client_study');
+include_once($path_module_study . '/mica_client_study-page-detail.inc');
+
 function mica_client_network_page_detail($network_id) {
   $url_param = explode('?', $_SERVER['REQUEST_URI']);
   if (!empty($url_param[1])) {
@@ -20,6 +23,8 @@ function mica_client_network_page_detail($network_id) {
     ));
 
     return theme('mica_client_network-detail', array(
+      'investigators_modal' => mica_client_study_get_contact_detail('investigator', $network_dto->id, $network_dto->investigators),
+      'contacts_modal' => mica_client_study_get_contact_detail('contact', $network_dto->id, $network_dto->contacts),
       'network_dto' => $network_dto,
       'coverage' => mica_client_network_coverage($network_dto->studyIds),
       'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,

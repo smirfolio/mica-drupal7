@@ -4,9 +4,9 @@
 
 <div>
   <?php if (!empty($network_dto->description)): ?>
-  <p><?php print mica_client_commons_get_localized_field($network_dto, 'description'); ?></p>
+    <p><?php print mica_client_commons_get_localized_field($network_dto, 'description'); ?></p>
   <?php endif; ?>
-  
+
   <?php if (!empty($network_dto->studyIds)): ?>
     <div class="pull-right md-bottom-margin">
       <?php
@@ -60,10 +60,11 @@
                 <td><h5><?php print t('Investigators') ?></h5></td>
                 <td>
                   <ul>
-                    <?php foreach ($network_dto->investigators as $investigator) : ?>
+                    <?php foreach ($network_dto->investigators as $key_investigator => $investigator) : ?>
                       <li>
-                        <a href="">
-                          <?php print $investigator->title; ?>
+                        <a href="#" data-toggle="modal"
+                           data-target="#investigator_<?php print $network_dto->id ?>_<?php print $key_investigator ?>">
+                        <?php print $investigator->title; ?>
                           <?php print $investigator->firstName; ?>
                           <?php print $investigator->lastName; ?>
                           ( <?php print mica_client_commons_get_localized_field($investigator->institution, 'name'); ?>
@@ -81,10 +82,11 @@
                 <td><h5><?php print t('Contacts') ?></h5></td>
                 <td>
                   <ul>
-                    <?php foreach ($network_dto->contacts as $contact) : ?>
+                    <?php foreach ($network_dto->contacts as $key_contact => $contact) : ?>
                       <li>
-                        <a href="">
-                          <?php print $contact->title; ?>
+                        <a href="#" data-toggle="modal"
+                           data-target="#contact_<?php print $network_dto->id ?>_<?php print $key_contact ?>">
+                        <?php print $contact->title; ?>
                           <?php print $contact->firstName; ?>
                           <?php print $contact->lastName; ?>
                           ( <?php print mica_client_commons_get_localized_field($contact->institution, 'name'); ?>
@@ -176,3 +178,5 @@
   </section>
 
 </article>
+<div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
+<div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
