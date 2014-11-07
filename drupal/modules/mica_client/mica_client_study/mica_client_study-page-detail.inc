@@ -28,6 +28,8 @@ function mica_client_study_page_detail($study_id) {
       l(t('Studies'), 'mica/studies'),
     ));
 
+    // dpm(mica_client_study_get_contact_detail('investigator',$study_dto->id,$study_dto->investigators));
+
     $dataset_output = (module_exists('mica_client_dataset')) ?
       mica_client_dataset_get_all_datasets_studies($study_id) : NULL;
 
@@ -42,6 +44,8 @@ function mica_client_study_page_detail($study_id) {
     }
     return theme('mica_client_study_detail',
       array(
+        'investigators_modal' => mica_client_study_get_contact_detail('investigator', $study_dto->id, $study_dto->investigators),
+        'contacts_modal' => mica_client_study_get_contact_detail('contact', $study_dto->id, $study_dto->contacts),
         'study_dto' => $study_dto,
         'study_attachements' => $themed_attachment,
         'timeline' => mica_client_study_get_timeline_detail($study_dto),
@@ -148,6 +152,26 @@ function mica_client_study_get_populations_detail($study_detail) {
   }
 
   return $page_render_populations;
+}
+
+
+/**
+ * Create modal DOM for Contact/investigators
+ * @param $study_id
+ * @param $contacts
+ * @return string
+ */
+function mica_client_study_get_contact_detail($type_contact, $study_id, $contacts) {
+  $page_render_contacts = '';
+  foreach ($contacts as $key_contact => $contact) {
+    $id_contact = $type_contact . '_' . $study_id . '_' . $key_contact;
+    $page_render_contacts .= theme('mica_contact_detail', array(
+      'study_id' => $study_id,
+      'contact_uid' => $id_contact,
+      'contact' => $contact,
+    ));
+  }
+  return $page_render_contacts;
 }
 
 /**

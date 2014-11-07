@@ -56,6 +56,7 @@ function mica_client_study_theme($existing, $type, $theme, $path) {
     'mica_client_study_detail' => array('template' => 'mica_client_study-detail', 'path' => $path_theme),
     'mica_population_detail' => array('template' => 'mica_client_study-population-detail', 'path' => $path_theme),
     'mica_dce_detail' => array('template' => 'mica_client_study-dce-detail', 'path' => $path_theme),
+    'mica_contact_detail' => array('template' => 'mica_client_study-contact-detail', 'path' => $path_theme),
     'mica_client_study_attachments' => array('template' => 'mica_client_study_attachments', 'path' => $path_theme),
     'mica_client_study_opal' => array('template' => 'mica_client_study_opal', 'path' => $path_theme)
   );

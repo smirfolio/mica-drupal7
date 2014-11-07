@@ -55,10 +55,18 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_dce_detail.tpl.php');
+  $destination_path = file_exists($path . '/templates/mica_client_study-dce-detail.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['mica_dce_detail'] = array(
       'template' => 'mica_dce_detail',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_study-contact-detail.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_contact_detail'] = array(
+      'template' => 'mica_contact_detail',
       'path' => $path . '/templates'
     );
   }
