@@ -116,207 +116,207 @@
 <article>
 
 <section>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-6 lg-right-indent">
-        <!-- GENERAL INFORMATION -->
-        <h3 id="overview"><?php print t('Overview') ?></h3>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-6 lg-right-indent">
+      <!-- GENERAL INFORMATION -->
+      <h3 id="overview"><?php print t('Overview') ?></h3>
 
-        <table class="table table-striped">
-          <tbody>
+      <table class="table table-striped">
+        <tbody>
 
-          <?php if (!empty($study_dto->acronym)): ?>
-            <tr>
-              <td><h5><?php print t('Acronym') ?></h5></td>
-              <td><p><?php print mica_client_commons_get_localized_field($study_dto, 'acronym'); ?></p></td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->acronym)): ?>
+          <tr>
+            <td><h5><?php print t('Acronym') ?></h5></td>
+            <td><p><?php print mica_client_commons_get_localized_field($study_dto, 'acronym'); ?></p></td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->website)): ?>
-            <tr>
-              <td><h5><?php print t('Website') ?></h5></td>
-              <td>
-                <p><?php
-                  print l($study_dto->website,
-                    $study_dto->website,
-                    array('attributes' => array('target' => '_blank')));
-                  ?></p>
-              </td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->website)): ?>
+          <tr>
+            <td><h5><?php print t('Website') ?></h5></td>
+            <td>
+              <p><?php
+                print l($study_dto->website,
+                  $study_dto->website,
+                  array('attributes' => array('target' => '_blank')));
+                ?></p>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->investigators)): ?>
-            <tr>
-              <td><h5><?php print t('Investigators') ?></h5></td>
-              <td>
-                <ul>
-                  <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
-                    <li>
-                      <a href="#" data-toggle="modal"
-                         data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
+        <?php if (!empty($study_dto->investigators)): ?>
+          <tr>
+            <td><h5><?php print t('Investigators') ?></h5></td>
+            <td>
+              <ul>
+                <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
+                  <li>
+                    <a href="#" data-toggle="modal"
+                       data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
                       <?php print $investigator->title; ?>
-                        <?php print $investigator->firstName; ?>
-                        <?php print $investigator->lastName; ?>
-                        ( <?php print mica_client_commons_get_localized_field($investigator->institution, 'name'); ?>
-                        )
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </td>
-            </tr>
-          <?php endif; ?>
+                      <?php print $investigator->firstName; ?>
+                      <?php print $investigator->lastName; ?>
+                      ( <?php print mica_client_commons_get_localized_field($investigator->institution, 'name'); ?>
+                      )
+                    </a>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->contacts)): ?>
-            <tr>
-              <td><h5><?php print t('Contacts') ?></h5></td>
-              <td>
-                <ul>
-                  <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
-                    <li>
-                      <a href="#" data-toggle="modal"
-                         data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
+        <?php if (!empty($study_dto->contacts)): ?>
+          <tr>
+            <td><h5><?php print t('Contacts') ?></h5></td>
+            <td>
+              <ul>
+                <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
+                  <li>
+                    <a href="#" data-toggle="modal"
+                       data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
                       <?php print $contact->title; ?>
-                        <?php print $contact->firstName; ?>
-                        <?php print $contact->lastName; ?>
-                        ( <?php print mica_client_commons_get_localized_field($contact->institution, 'name'); ?>
-                        )
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </td>
-            </tr>
-          <?php endif; ?>
+                      <?php print $contact->firstName; ?>
+                      <?php print $contact->lastName; ?>
+                      ( <?php print mica_client_commons_get_localized_field($contact->institution, 'name'); ?>
+                      )
+                    </a>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->startYear)): ?>
-            <tr>
-              <td><h5><?php print t('Study Start Year') ?></h5></td>
-              <td><p><?php print $study_dto->startYear; ?></p></td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->startYear)): ?>
+          <tr>
+            <td><h5><?php print t('Study Start Year') ?></h5></td>
+            <td><p><?php print $study_dto->startYear; ?></p></td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->endYear)): ?>
-            <tr>
-              <td><h5><?php print t('Study End Year') ?></h5></td>
-              <td><p><?php print $study_dto->endYear; ?></p></td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->endYear)): ?>
+          <tr>
+            <td><h5><?php print t('Study End Year') ?></h5></td>
+            <td><p><?php print $study_dto->endYear; ?></p></td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->networks)): ?>
-            <tr>
-              <td><h5><?php print t('Networks') ?> :</h5></td>
-              <td>
-                <p>
-                  <a href=""><?php //print $study_dto->networks; ?></a>
-                </p>
-              </td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->networks)): ?>
+          <tr>
+            <td><h5><?php print t('Networks') ?> :</h5></td>
+            <td>
+              <p>
+                <a href=""><?php //print $study_dto->networks; ?></a>
+              </p>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          </tbody>
-        </table>
-      </div>
-      <div class="col-xs-6">
-        <!-- GENERAL DESIGN -->
-        <h3 id="design"><?php print t('Design') ?></h3>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-xs-6">
+      <!-- GENERAL DESIGN -->
+      <h3 id="design"><?php print t('Design') ?></h3>
 
-        <table class="table table-striped">
-          <tbody>
+      <table class="table table-striped">
+        <tbody>
 
-          <?php if (!empty($study_dto->methods->designs)): ?>
-            <tr>
-              <td><h5><?php print t('Study Designs') ?></h5></td>
-              <td>
-                <ul>
-                  <?php foreach ($study_dto->methods->designs as $design): ?>
-                    <li>
-                      <?php print t($design); ?>
-                      <?php if ($design == 'other'): ?>
-                        : <?php print mica_client_commons_get_localized_field($study_dto->methods, 'otherDesign'); ?>
-                      <?php endif; ?>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->methods->designs)): ?>
+          <tr>
+            <td><h5><?php print t('Study Designs') ?></h5></td>
+            <td>
+              <ul>
+                <?php foreach ($study_dto->methods->designs as $design): ?>
+                  <li>
+                    <?php print t($design); ?>
+                    <?php if ($design == 'other'): ?>
+                      : <?php print mica_client_commons_get_localized_field($study_dto->methods, 'otherDesign'); ?>
+                    <?php endif; ?>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->methods->followUpInfo)): ?>
-            <tr>
-              <td><h5><?php print t('General Information on Follow Up (profile and frequency)') ?></h5></td>
-              <td><p><?php print mica_client_commons_get_localized_field($study_dto->methods, 'followUpInfo'); ?></p>
-              </td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->methods->followUpInfo)): ?>
+          <tr>
+            <td><h5><?php print t('General Information on Follow Up (profile and frequency)') ?></h5></td>
+            <td><p><?php print mica_client_commons_get_localized_field($study_dto->methods, 'followUpInfo'); ?></p>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->methods->recruitments)): ?>
-            <tr>
-              <td><h5><?php print t('Recruitment Target') ?></h5></td>
-              <td>
-                <ul>
-                  <?php foreach ($study_dto->methods->recruitments as $recruitment): ?>
-                    <li>
-                      <?php print t($recruitment) ?>
-                      <?php if ($recruitment == 'other'): ?>
-                        : <?php print mica_client_commons_get_localized_field($study_dto->methods, 'otherRecruitment'); ?>
-                      <?php endif; ?>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->methods->recruitments)): ?>
+          <tr>
+            <td><h5><?php print t('Recruitment Target') ?></h5></td>
+            <td>
+              <ul>
+                <?php foreach ($study_dto->methods->recruitments as $recruitment): ?>
+                  <li>
+                    <?php print t($recruitment) ?>
+                    <?php if ($recruitment == 'other'): ?>
+                      : <?php print mica_client_commons_get_localized_field($study_dto->methods, 'otherRecruitment'); ?>
+                    <?php endif; ?>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->numberOfParticipants->participant->number)): ?>
-            <tr>
-              <td><h5><?php print t('Target number of participants') ?></h5></td>
-              <td>
-                <p>
-                  <?php print $study_dto->numberOfParticipants->participant->number; ?>
-                  <?php if (!empty($study_dto->numberOfParticipants->participant->noLimit)): ?>
-                    (<?php print t('No limit'); ?>)
-                  <?php endif; ?>
-                </p>
-              </td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->numberOfParticipants->participant->number)): ?>
+          <tr>
+            <td><h5><?php print t('Target number of participants') ?></h5></td>
+            <td>
+              <p>
+                <?php print $study_dto->numberOfParticipants->participant->number; ?>
+                <?php if (!empty($study_dto->numberOfParticipants->participant->noLimit)): ?>
+                  (<?php print t('No limit'); ?>)
+                <?php endif; ?>
+              </p>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->numberOfParticipants->sample->number)): ?>
-            <tr>
-              <td><h5><?php print t('Target number of participants with biological samples') ?></h5></td>
-              <td>
-                <p>
-                  <?php print $study_dto->numberOfParticipants->sample->number; ?>
-                  <?php if (!empty($study_dto->numberOfParticipants->sample->noLimit)): ?>
-                    (<?php print t('No limit'); ?>)
-                  <?php endif; ?>
-                </p>
-              </td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->numberOfParticipants->sample->number)): ?>
+          <tr>
+            <td><h5><?php print t('Target number of participants with biological samples') ?></h5></td>
+            <td>
+              <p>
+                <?php print $study_dto->numberOfParticipants->sample->number; ?>
+                <?php if (!empty($study_dto->numberOfParticipants->sample->noLimit)): ?>
+                  (<?php print t('No limit'); ?>)
+                <?php endif; ?>
+              </p>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->numberOfParticipants->info)): ?>
-            <tr>
-              <td><h5><?php print t('Supplementary information about target number of participants') ?></h5></td>
-              <td>
-                <p><?php print mica_client_commons_get_localized_field($study_dto->numberOfParticipants, 'info'); ?></p>
-              </td>
-            </tr>
-          <?php endif; ?>
+        <?php if (!empty($study_dto->numberOfParticipants->info)): ?>
+          <tr>
+            <td><h5><?php print t('Supplementary information about target number of participants') ?></h5></td>
+            <td>
+              <p><?php print mica_client_commons_get_localized_field($study_dto->numberOfParticipants, 'info'); ?></p>
+            </td>
+          </tr>
+        <?php endif; ?>
 
-          <?php if (!empty($study_dto->methods->info)): ?>
-            <tr>
-              <td><h5><?php print t('Supplementary information') ?></h5></td>
-              <td><p><?php print mica_client_commons_get_localized_field($study_dto->methods, 'info'); ?></p></td>
-            </tr>
-          <?php endif; ?>
-          </tbody>
-        </table>
+        <?php if (!empty($study_dto->methods->info)): ?>
+          <tr>
+            <td><h5><?php print t('Supplementary information') ?></h5></td>
+            <td><p><?php print mica_client_commons_get_localized_field($study_dto->methods, 'info'); ?></p></td>
+          </tr>
+        <?php endif; ?>
+        </tbody>
+      </table>
 
-      </div>
     </div>
   </div>
+</div>
 </section>
 
 <section>
@@ -570,5 +570,5 @@
 <?php endif; ?>
 
 </article>
-<div><?php print $investigators_modal; ?></div>
-<div><?php print $contacts_modal; ?></div>
+<div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
+<div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
