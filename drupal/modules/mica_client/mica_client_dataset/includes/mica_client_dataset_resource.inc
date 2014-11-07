@@ -46,7 +46,7 @@ class MicaDatasetResource extends MicaClient {
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $params .= empty($study_id) ? '' : '&study=' . $study_id;
-    $url_datasets = $this->micaUrl . (empty($resource) ? '' : '/'.$resource) . '/_search?' . $params;
+    $url_datasets = $this->micaUrl . (empty($resource) ? '' : '/' . $resource) . '/_search?' . $params;
     $request = new HttpClientRequest($url_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -60,8 +60,9 @@ class MicaDatasetResource extends MicaClient {
       $this->setLastResponse($client->lastResponse);
       return new DatasetJoinResponseWrapper(json_decode($data));
     } catch (HttpClientException $e) {
-      // dpm($e);
-      drupal_set_message(t('Error serve'), 'error');
+
+      drupal_set_message(t('Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage())), 'error');
       return array();
     }
   }
