@@ -246,6 +246,12 @@
     var prevType = null;
 
     $.each(jsonQuery, function (type, typeValues) {
+      var i = 0;
+      var total = 0;
+      $.each(typeValues, function (aggType, aggs) {
+        total += Object.keys(typeValues[aggType]).length;
+      })
+
       $.each(typeValues, function (aggType, aggs) {
 
         if (aggType === 'matches') {
@@ -256,8 +262,7 @@
           return;
         }
 
-        var i = 0;
-        var last = Object.keys(typeValues[aggType]).length - 1;
+        var last = total - 1;
 
         if (prevType != null && prevType != type) {
           // separate queries by type

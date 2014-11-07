@@ -157,13 +157,16 @@
 
       function processRangeAggregationInputs(selectedVars) {
         $.each(selectedVars, function (key, value) {
-          $("input[name='" + key + "']").val(value);
-          var values = getValuesRangeTerms(value);
-          if (key.match(/[\[\]']+/g)) {
-            var idTermMin = key.replace(/[\[\]']+/g, '').split(':')[2] + '-min';
-            var idTermMax = key.replace(/[\[\]']+/g, '').split(':')[2] + '-max';
-            $("input[term='" + idTermMin + "']").val(values[0]);
-            $("input[term='" + idTermMax + "']").val(values[1]);
+          var entry = /^\w+:(\w+)/.exec(key);
+          if (entry && entry[1] === 'range') {
+            $("input[name='" + key + "']").val(value);
+            var values = getValuesRangeTerms(value);
+            if (key.match(/[\[\]']+/g)) {
+              var idTermMin = key.replace(/[\[\]']+/g, '').split(':')[2] + '-min';
+              var idTermMax = key.replace(/[\[\]']+/g, '').split(':')[2] + '-max';
+              $("input[term='" + idTermMin + "']").val(values[0]);
+              $("input[term='" + idTermMax + "']").val(values[1]);
+            }
           }
         });
       }
