@@ -36,9 +36,12 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
           $facet_build[$tab_block][$facet->aggregation]['term'] = $facet->{'obiba.mica.TermsAggregationResultDto.terms'};
         }
         elseif (!empty($facet->{'obiba.mica.StatsAggregationResultDto.stats'})) {
-          $facet_build[$tab_block][$facet->aggregation]['range']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->count;
-          $facet_build[$tab_block][$facet->aggregation]['range']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->min;
-          $facet_build[$tab_block][$facet->aggregation]['range']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->max;
+          $facet_build[$tab_block][$facet->aggregation]['range']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->count;
+          $facet_build[$tab_block][$facet->aggregation]['range']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->min;
+          $facet_build[$tab_block][$facet->aggregation]['range']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->max;
+          $facet_build[$tab_block][$facet->aggregation]['range']['default']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->count;
+          $facet_build[$tab_block][$facet->aggregation]['range']['default']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->min;
+          $facet_build[$tab_block][$facet->aggregation]['range']['default']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->max;
         }
         else {
           $facet_build[$tab_block][$facet->aggregation] = NULL;
@@ -168,6 +171,7 @@ function mica_client_facet_search_get_networks() {
 
       $network = new stdClass();
       $network->key = $studies_network->id;
+      $network->default = $_SESSION['studies']['aggregations']['totalCount'];
       $network->count = count($study_ids);
       array_push($networks, $network);
       return true;
