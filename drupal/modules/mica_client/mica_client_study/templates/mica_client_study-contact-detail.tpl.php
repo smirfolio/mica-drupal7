@@ -45,11 +45,15 @@
                 <tr>
                   <td><h5><?php print t('Institution') ?></h5></td>
                   <td>
-                    <ul>
-                      <li><?php print t('Name') . ' : ' . mica_client_commons_get_localized_field($contact->institution, 'name') ?></li>
-                      <li><?php print t('Department') . ' : ' . mica_client_commons_get_localized_field($contact->institution, 'department') ?></li>
+                    <div>
+                      <?php !empty($contact->institution->name) ? //
+                        print t('Name') . ' : ' . mica_client_commons_get_localized_field($contact->institution, 'name') : ''; ?>
+                    </div>
+                    <div>
+                      <?php !empty($contact->institution->department) ?
+                        print t('Department') . ' : ' . mica_client_commons_get_localized_field($contact->institution, 'department') : ''; ?></li>
+                    </div>
 
-                    </ul>
                   </td>
                 </tr>
                 <?php
@@ -62,7 +66,7 @@
                     <td><h5><?php print t('Adresse') ?></h5></td>
                     <td>
                       <div>   <?php !empty($contact->institution->address->street) ? print t('Street') . ' : ' .
-                          $contact->institution->address->street : ''; ?> </div>
+                          mica_client_commons_get_localized_field($contact->institution->address, 'street') : ''; ?> </div>
                       <div>  <?php !empty($contact->institution->address->city) ?
                           print t('City') . ' : ' . mica_client_commons_get_localized_field($contact->institution->address, 'city') : ''; ?></div>
                       <div>  <?php !empty($contact->institution->address->zip) ?

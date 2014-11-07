@@ -22,7 +22,8 @@
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>
-          <?php print empty($dataset->description) ? '' : truncate_utf8(mica_client_commons_get_localized_field($dataset, 'description'), 250, TRUE, TRUE);; ?>
+          <?php print empty($dataset->description) ? '' :
+            truncate_utf8(strip_tags(mica_client_commons_get_localized_field($dataset, 'description')), 250, TRUE, TRUE);; ?>
         </small>
       </p>
       <ul class="search-item-list-no-style sm-top-margin help-block">

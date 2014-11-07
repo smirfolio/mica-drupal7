@@ -131,7 +131,8 @@ function _mica_client_dataset_get_datasets_table($datasets, $type) {
     $dce_description = NULL;
     //
     if (!empty($dataset_dto->description)) {
-      $dataset_description = theme('box', truncate_utf8(mica_client_commons_get_localized_field($dataset_dto, 'description'), 50, TRUE, TRUE));
+      $dataset_description = theme('box',
+        truncate_utf8(strip_tags(mica_client_commons_get_localized_field($dataset_dto, 'description')), 50, TRUE, TRUE));
     }
     $dataset_name = mica_client_commons_get_localized_field($dataset_dto, 'name');
 

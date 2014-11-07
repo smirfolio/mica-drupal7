@@ -24,7 +24,7 @@
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>
-          <?php print truncate_utf8(mica_client_commons_get_localized_field($study, 'objectives'), 250, TRUE, TRUE); ?>
+          <?php print truncate_utf8(strip_tags(mica_client_commons_get_localized_field($study, 'objectives')), 250, TRUE, TRUE); ?>
         </small>
       </p>
     </div>
