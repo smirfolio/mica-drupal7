@@ -19,7 +19,7 @@
       process();
 
       function getSelectedtermsAggSearchKey(attrAgg, value) {
-        return attrAgg.replace("[]", "-terms[]")+value;
+        return attrAgg.replace("[]", "-terms[]") + value;
       }
 
       function checkthebox(obj_span) {
@@ -66,7 +66,9 @@
       function updateQueryOperation(operationMoniker, value) {
         console.log("Moniker", operationMoniker, value);
         var jsonQuery = getQueryFromUrl();
-        if ($.isEmptyObject(jsonQuery)) return;
+        if ($.isEmptyObject(jsonQuery)) {
+          return;
+        }
 
         var entry = /^(\w+):(\w+):(.*)$/.exec(operationMoniker);
 
@@ -89,11 +91,12 @@
 
 
       function processMatchesInput(selectedVars) {
-        $.each(selectedVars, function(key, value){
-          if(/matches:facet-search-query$/.test(key)) {
-            $("input[id='" + key+"']").val(value);
-          } else {
-            $("input[id='" + key+"']").val(value);
+        $.each(selectedVars, function (key, value) {
+          if (/matches:facet-search-query$/.test(key)) {
+            $("input[id='" + key + "']").val(value);
+          }
+          else {
+            $("input[id='" + key + "']").val(value);
           }
 
         });
@@ -143,12 +146,30 @@
         });
       }
 
+      function getValuesRangeTerms(valueWrapper) {
+        var values = valueWrapper.match(/\[([^}]+)\]/);
+        if (values) {
+          var numbers = values[1].match(/\d+/g);
+          return numbers;
+        }
+        return null;
+      }
+
       function processRangeAggregationInputs(selectedVars) {
-        // TODO may want to save the value in the hidden input, TBV
+        $.each(selectedVars, function (key, value) {
+          $("input[name='" + key + "']").val(value);
+          var values = getValuesRangeTerms(value);
+          if (key.match(/[\[\]']+/g)) {
+            var idTermMin = key.replace(/[\[\]']+/g, '').split(':')[2] + '-min';
+            var idTermMax = key.replace(/[\[\]']+/g, '').split(':')[2] + '-max';
+            $("input[term='" + idTermMin + "']").val(values[0]);
+            $("input[term='" + idTermMax + "']").val(values[1]);
+          }
+        });
       }
 
       function getAggregationMoniker(aggElement) {
-        return "\""+$(aggElement).attr("aggregation")+"-"+$(aggElement).attr('value')+"\"";
+        return "\"" + $(aggElement).attr("aggregation") + "-" + $(aggElement).attr('value') + "\"";
       }
 
       function updateCheckboxes() {
@@ -182,7 +203,7 @@
 
       function initializeTabParam() {
         /**************************/
-        //deal with tabs
+          //deal with tabs
         tabparam = '';
         var urlTabParam = $.urlParam('type');
         if (urlTabParam) {
@@ -228,7 +249,7 @@
           var json = getQueryFromUrl();
           $.query_serializer.addItem( //
             json, //
-            decodeURIComponent($("input[id='"+$(this).attr('aggregation')+"']").serialize()) //
+            decodeURIComponent($("input[id='" + $(this).attr('aggregation') + "']").serialize()) //
           );
           updateWindowLocation(JSON.stringify(json));
         });
