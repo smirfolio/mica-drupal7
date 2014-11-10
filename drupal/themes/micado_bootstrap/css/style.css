@@ -7051,6 +7051,9 @@ ul.facet-query-list li span:hover {
   border: none !important;
   margin-bottom: 0;
 }
+.document-listing-search-bar {
+  display: inline-flex;
+}
 html.overlay-open .navbar-fixed-top {
   z-index: 400;
 }
@@ -7241,6 +7244,9 @@ body.admin-menu .navbar-fixed-top {
 }
 .block-content .sm-top-margin {
   margin-top: 5px;
+}
+.block-content .sm-bottom-margin {
+  margin-bottom: 5px;
 }
 .block-content .md-top-margin {
   margin-top: 10px;
@@ -7668,10 +7674,14 @@ ul.search-item-list-no-style {
   border-left-color: rgba(73, 73, 73, 0.1);
   color: rgba(73, 73, 73, 0.5);
 }
-.search-count {
-  font-size: 19px;
+div.search-count {
+  float: left;
+  margin-top: 15px;
+}
+div.search-count span {
+  font-size: 25px;
   font-weight: bold;
-  padding: 5px 10px;
+  margin-top: 5px;
   color: #777777;
 }
 .flex-row {
