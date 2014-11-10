@@ -19,6 +19,7 @@ const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
 include_once($path_module_protos . '/protos/Mica.php');
 
+include_once(drupal_get_path('module', 'markdown') . '/markdown.php');
 
 function mica_client_commons_to_slug($string) {
   $string = str_replace(array('/', ' '), '-', $string);
@@ -297,4 +298,13 @@ function _mica_client_commons_get_extention_file($file_resource) {
   $extension_file = count($file_array);
 
   return $file_array[$extension_file - 1];
+}
+
+/**
+ * Transform a markdown text into html and wrap it in a div with 'markdown' class.
+ * @param $text
+ * @return string
+ */
+function mica_client_commons_markdown($text) {
+  return '<div class="markdown">' . Markdown($text) . '</div>';
 }
