@@ -6321,15 +6321,16 @@ div.charts {
 .facet-bar .block-mica-client-facet-search div.block-content span.terms_count {
   position: relative;
   float: right;
-  padding-right: 30px;
+  padding-right: 20px;
   padding-top: 7px;
   font-weight: normal;
+  font-family: monospace;
 }
-.facet-bar .block-mica-client-facet-search div.block-content span.terms_count span.term_count {
+.facet-bar .block-mica-client-facet-search div.block-content span.terms_count span.term-count {
   color: #000000;
   font-size: 10px;
 }
-.facet-bar .block-mica-client-facet-search div.block-content span.terms_count span.term_default {
+.facet-bar .block-mica-client-facet-search div.block-content span.terms_count span.term-default {
   color: rgba(0, 0, 0, 0.3);
   font-size: 10px;
 }
@@ -6612,15 +6613,16 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 .region-facets .block-mica-client-facet-search div.block-content span.terms_count {
   position: relative;
   float: right;
-  padding-right: 30px;
+  padding-right: 20px;
   padding-top: 7px;
   font-weight: normal;
+  font-family: monospace;
 }
-.region-facets .block-mica-client-facet-search div.block-content span.terms_count span.term_count {
+.region-facets .block-mica-client-facet-search div.block-content span.terms_count span.term-count {
   color: #000000;
   font-size: 10px;
 }
-.region-facets .block-mica-client-facet-search div.block-content span.terms_count span.term_default {
+.region-facets .block-mica-client-facet-search div.block-content span.terms_count span.term-default {
   color: rgba(0, 0, 0, 0.3);
   font-size: 10px;
 }

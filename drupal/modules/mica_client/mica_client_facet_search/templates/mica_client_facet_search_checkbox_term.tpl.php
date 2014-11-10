@@ -18,10 +18,14 @@
   <span class="terms_count">
     <div class="row">
       <div class="col-xs-6">
-        <span class='term_count'><?php print $term->count?></span>
+        <span class='term-count'>
+          <?php $digits = strlen($term->count) ; print ($digits < 6 ? str_repeat('&nbsp;', 6 - $digits) : '') . ($term->count === 0 ? '&nbsp;' : $term->count);?>
+        </span>
       </div>
       <div class="col-xs-6">
-        <span class='term_default'><?php print '/' . $term->default; ?></span>
+        <span class='term-default'>
+          <?php $digits = strlen($term->default); print ($digits < 6 ? str_repeat('&nbsp;', 6 - $digits) : '') . $term->default;?>
+        </span>
       </div>
     </div>
   </span>
