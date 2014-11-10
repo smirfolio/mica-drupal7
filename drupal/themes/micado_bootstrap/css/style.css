@@ -7209,13 +7209,13 @@ body.admin-menu .navbar-fixed-top {
 .block-content .lg-right-indent {
   margin-right: 20px;
 }
-.block-content .table {
+.block-content table {
   border: 1px solid #dddddd;
 }
-.block-content .table td {
+.block-content table td {
   font-size: 12px;
 }
-.block-content .table td .glyphicon {
+.block-content table td .glyphicon {
   font-size: 14px;
   background-color: transparent;
 }
@@ -7719,4 +7719,43 @@ ul.search-item-list-no-style {
   display: table-cell;
   vertical-align: middle;
   float: none;
+}
+.markdown table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+  width: inherit;
+}
+.markdown table > thead > tr > th,
+.markdown table > tbody > tr > th,
+.markdown table > tfoot > tr > th,
+.markdown table > thead > tr > td,
+.markdown table > tbody > tr > td,
+.markdown table > tfoot > tr > td {
+  padding: 8px;
+  line-height: 1.42857143;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+.markdown table > thead > tr > th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dddddd;
+}
+.markdown table > caption + thead > tr:first-child > th,
+.markdown table > colgroup + thead > tr:first-child > th,
+.markdown table > thead:first-child > tr:first-child > th,
+.markdown table > caption + thead > tr:first-child > td,
+.markdown table > colgroup + thead > tr:first-child > td,
+.markdown table > thead:first-child > tr:first-child > td {
+  border-top: 0;
+}
+.markdown table > tbody + tbody {
+  border-top: 2px solid #dddddd;
+}
+.markdown table .table {
+  background-color: #ffffff;
+}
+.markdown table > tbody > tr:nth-child(odd) > td,
+.markdown table > tbody > tr:nth-child(odd) > th {
+  background-color: #f9f9f9;
 }

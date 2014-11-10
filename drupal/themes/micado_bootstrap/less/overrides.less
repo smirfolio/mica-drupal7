@@ -211,7 +211,7 @@ body {
   .lg-right-indent {
     margin-right: 20px;
   }
-  .table {
+  table {
     border: 1px solid #dddddd;
     td {
       font-size: @font-size-small;
@@ -772,4 +772,10 @@ ul.search-item-list-no-style {
   display: table-cell;
   vertical-align: middle;
   float: none;
+}
+
+.markdown table {
+  .table;
+  .table-striped;
+  width: inherit;
 }

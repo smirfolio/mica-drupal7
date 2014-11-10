@@ -1,6 +1,5 @@
 <?php
 include_once('includes/mica_client_dataset_resource.inc');
-include_once(drupal_get_path('module', 'markdown') . '/markdown.php');
 
 function mica_client_variable_page_detail($variable_id) {
   $library_chart = mica_client_variable_load_chart_libraries();
@@ -170,7 +169,7 @@ function mica_client_variable_get_harmonization($harmonized_variable) {
       'maelstrom',
       'Mlstr_harmo'
     )),
-    'algorithm' => Markdown(_mica_client_variable_attributes_detail($harmonized_variable, 'algorithm', array(
+    'algorithm' => mica_client_commons_markdown(_mica_client_variable_attributes_detail($harmonized_variable, 'algorithm', array(
       'maelstrom',
       'Mlstr_harmo'
     ))),
