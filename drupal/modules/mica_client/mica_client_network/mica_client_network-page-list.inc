@@ -113,16 +113,13 @@ function mica_client_network_networks_table_rows($networks) {
 
   if (!empty($networks)) {
     foreach ($networks as $network) {
-      $list_studies = '<ul>';
-      foreach ($network->studySummaries as $study) {
-        $list_studies .= '<li>' . l(mica_client_commons_get_localized_field($study, 'name'), 'mica/study/' . $study->id) . '</li>';
-      }
-      $list_studies .= '</ul>';
+      $stats = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
+      $study_count = MicaClientAnchorHelper::network_studies($stats->studies, $network->id);
       $name = mica_client_commons_get_localized_field($network, 'name');
       $rows[] = array(
         mica_client_commons_get_localized_field($network, 'acronym'),
         l($name, 'mica/network/' . $network->id . '/' . mica_client_commons_to_slug($name)),
-        $list_studies,
+        $study_count,
       );
     }
   }
