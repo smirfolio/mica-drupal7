@@ -176,6 +176,7 @@ function mica_client_facet_search_get_networks() {
 
       $network = new stdClass();
       $network->key = $studies_network->id;
+      $network->title = $network->key;
       $network->default = $_SESSION['studies']['aggregations']['totalCount'];
       $network->count = count($study_ids);
       array_push($networks, $network);
