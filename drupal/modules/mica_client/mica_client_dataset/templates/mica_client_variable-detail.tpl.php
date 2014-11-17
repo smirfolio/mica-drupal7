@@ -190,6 +190,7 @@
 <?php if ($variable_dto->variableType != 'Study'): ?>
   <section>
     <h3><?php print t('Harmonization') ?></h3>
+    <?php print render($harmonization_table_legend); ?>
     <?php if ($variable_dto->variableType == 'Dataschema'): ?>
       <?php print mica_client_variable_get_harmonizations($variable_dto); ?>
     <?php else: ?>
@@ -229,6 +230,7 @@
       </div>
 
       <?php if (!empty($variable_harmonization['algorithm'])): ?>
+        <h3><?php print t('Algorithm')?></h3>
         <?php print $variable_harmonization['algorithm']; ?>
       <?php else: ?>
         <h5><?php print t('Script'); ?></h5>
