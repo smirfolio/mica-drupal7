@@ -75,33 +75,6 @@
               </p>
             </td>
           </tr>
-
-          <tr>
-            <td>
-              <h5>
-                <?php
-                if (!empty($dataset_type_dto->project)):
-                  echo t('Studies');
-                else:
-                  echo t('Study');
-                endif;
-                ?>
-              </h5>
-            </td>
-            <td>
-              <?php if (!empty($dataset_type_dto->project)): ?>
-                <ul>
-                  <?php foreach ($dataset_type_dto->studyTables as $studyTable): ?>
-                    <li>
-                      <?php print l(mica_client_commons_get_localized_field($studyTable->studySummary, 'name'), 'mica/study/' . $studyTable->studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($studyTable->studySummary, 'name'))); ?>
-                    </li>
-                  <?php endforeach ?>
-                </ul>
-              <?php else: ?>
-                <?php print l(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
-              <?php endif ?>
-            </td>
-          </tr>
           <tr>
             <td><h5><?php print t('Number of variables') ?></h5></td>
             <td>
