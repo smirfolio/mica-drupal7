@@ -106,7 +106,7 @@ function mica_client_commons_create_facet_search_query_form($arg) {
   }
 
   $form = array();
-  $form['#id'] = 'facet-search-query-form-'.$type;
+  $form['#id'] = 'facet-search-query-form-' . $type;
   $form['#method'] = 'get';
   $form['#prefix'] = '<div class="inline-form">';
   $form['#suffix'] = '</div>';
@@ -399,31 +399,27 @@ function mica_client_facet_search_variable_page_search() {
 
   $output = theme('mica_client_facet_search_variable-search',
     array(
-    'noval' => '',
-    'query' => empty($parts['query']) ? '' : $parts['query'],
-
-    'variables_result' => array('data' => mica_client_facet_search_variables_table($variables)),
-    'variable_charts' => $variable_charts,
-    'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
-    'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
-    'variable_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'variables'),
-
-    'datasets' => array('data' => mica_client_facet_search_datasets_table($datasets)),
-    'dataset_totalHits' => !empty($dataset_totalHits) ? $dataset_totalHits : NULL,
-    'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
-    'dataset_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'datasets'),
-
-    'studies' => array('data' => mica_client_facet_search_studies_table($studies)),
-    'study_charts' => $study_charts,
-    'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
-    'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
-    'study_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'studies'),
-
-    'networks' => array('data' => mica_client_facet_search_networks_table($networks)),
-    'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
-    'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL,
-    'network_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'networks')
-  ));
+      'noval' => '',
+      'query' => empty($parts['query']) ? '' : $parts['query'],
+      'variables_result' => array('data' => mica_client_facet_search_variables_table($variables)),
+      'variable_charts' => $variable_charts,
+      'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
+      'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
+      'variable_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'variables'),
+      'datasets' => array('data' => mica_client_facet_search_datasets_table($datasets)),
+      'dataset_totalHits' => !empty($dataset_totalHits) ? $dataset_totalHits : NULL,
+      'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
+      'dataset_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'datasets'),
+      'studies' => array('data' => mica_client_facet_search_studies_table($studies)),
+      'study_charts' => $study_charts,
+      'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
+      'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
+      'study_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'studies'),
+      'networks' => array('data' => mica_client_facet_search_networks_table($networks)),
+      'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
+      'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL,
+      'network_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'networks')
+    ));
   return $output;
 }
 
@@ -436,19 +432,19 @@ function mica_client_facet_search_coverage_page() {
 
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage();
-
   $vocabulary_coverage_outputs = array();
   if (!empty($coverages->taxonomies)) {
     foreach ($coverages->taxonomies as $taxonomy_coverage) {
       $vocabulary_coverage_output = array();
       foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
-
         $bucket_names = array();
-
         if (!empty($vocabulary_coverage->buckets)) {
+          //Todo display all studies for each vocabulary 0
+          //   foreach($taxonomy_coverage->buckets as $allbaket){
           foreach ($vocabulary_coverage->buckets as $bucket) {
             $bucket_names[] = $bucket->value;
           }
+          //   }
         }
 
         $vocabulary_coverage_output[$vocabulary_coverage->vocabulary->name] = theme('mica_client_facet_search_vocabulary_coverage', array(

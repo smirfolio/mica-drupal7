@@ -28,9 +28,9 @@
     <table class="table table-striped ">
       <thead>
       <tr>
-        <th><?php print t('Term'); ?></th>
-        <th style="width:50px; text-align: center;">
-          <?php print t('All'); ?>
+        <th class="fix-width-550"><?php print t('Term'); ?></th>
+        <th style="text-align: center;">
+        <?php print t('All'); ?>
         </th>
         <?php if (!empty($vocabulary_coverage->buckets)): ?>
           <?php foreach ($vocabulary_coverage->buckets as $bucket) : ?>
