@@ -83,7 +83,8 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
       }
 
       return theme('mica_client_facet_search_block_search',
-        array('items' => $items,
+        array(
+          'items' => $items,
           'formId' => $aggregation_facet,
           'operatorId' => sprintf("%s:%s:%s:op", $type, $agg_type, $aggregation_facet)
         )
@@ -146,12 +147,13 @@ function mica_client_facet_search_get_datasets() {
   $datasets = array();
   if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
     $aggs = $_SESSION['variables']['aggregations'];
-    array_filter($aggs, function($agg) use(&$datasets) {
+    array_filter($aggs, function ($agg) use (&$datasets) {
       if ($agg instanceof stdClass //
-            && $agg->aggregation === 'datasetId' //
-            && !empty($agg->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+        && $agg->aggregation === 'datasetId' //
+        && !empty($agg->{'obiba.mica.TermsAggregationResultDto.terms'})
+      ) {
         $datasets = $agg->{'obiba.mica.TermsAggregationResultDto.terms'};
-        return true;
+        return TRUE;
       }
     });
   }
@@ -163,11 +165,12 @@ function mica_client_facet_search_get_networks() {
   $networks = array();
   if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['networks'])) {
     $studies_networks = $_SESSION['studies']['networks'];
-    array_filter($studies_networks, function(stdClass $studies_network) use(&$networks) {
+    array_filter($studies_networks, function (stdClass $studies_network) use (&$networks) {
 
       if (empty($studies_network->{'obiba.mica.NetworkDigestDto.studies'})) {
         $study_ids = $studies_network->studyIds;
-      } else {
+      }
+      else {
         $study_ids = $studies_network->{'obiba.mica.NetworkDigestDto.studies'}->ids;
       }
 
@@ -176,7 +179,7 @@ function mica_client_facet_search_get_networks() {
       $network->default = $_SESSION['studies']['aggregations']['totalCount'];
       $network->count = count($study_ids);
       array_push($networks, $network);
-      return true;
+      return TRUE;
     });
   }
 

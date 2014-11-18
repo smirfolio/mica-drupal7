@@ -13,11 +13,11 @@
 
     <?php if (!$query_request): ?>
       <div class="row">
-      <div class="col-xs-6">
+        <div class="col-xs-6">
         <span class='term-count'>
 
             </span>
-      </div>
+        </div>
         <div class="col-xs-6">
         <span class='term-count' data-toggle="tooltip" data-placement="top" title="All">
           <?php print $term->default; ?>
