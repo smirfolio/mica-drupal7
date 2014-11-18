@@ -55,7 +55,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
         $dataset_query
       );
       if (!empty($variables_dataset)) {
-        $_SESSION['list-datasets']['aggregations']['totalHits'] = $variables_dataset->total;
+        $_SESSION['variables']['aggregations']['totalHits'] = $variables_dataset->total;
 
         $variables_dataset->study = NULL;
         $variables_dataset->harmonization = TRUE;
