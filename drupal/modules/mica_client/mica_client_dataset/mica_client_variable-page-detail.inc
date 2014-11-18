@@ -43,6 +43,7 @@ function mica_client_variable_page_detail($variable_id) {
   ));
 
   return theme('mica_client_variable-detail', array(
+    'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array()),
     'variable_dto' => $variable,
     'variable_harmonization' => mica_client_variable_get_harmonization($variable),
   ));

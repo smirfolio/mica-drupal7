@@ -195,7 +195,7 @@
   <?php if (!empty($variables_dataset->harmonization)): ?>
     <section>
       <h3><?php print t('Harmonization') ?></h3>
-
+      <?php print render($harmonization_table_legend); ?>
       <div>
         <?php print render($form_search); ?>
       </div>

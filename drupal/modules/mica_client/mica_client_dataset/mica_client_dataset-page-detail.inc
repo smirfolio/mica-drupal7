@@ -79,6 +79,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       'dataset_type_dto' => $dataset_type_dto,
       'variables_dataset' => $variables_dataset,
       'variables_table' => $variables_table_output,
+      'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array()),
       'dataset_variables_aggs' => NULL, //mica_client_dataset_get_variables($dataset_dto->id),
     ));
   }
