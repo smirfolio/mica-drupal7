@@ -27,7 +27,7 @@ function mica_client_variable_page_detail($variable_id) {
 
   $title = $variable->name;
   if ($variable->variableType == 'Harmonized') {
-    $title .= ' -- ' . (mica_client_commons_get_localized_field($variable->studySummaries[0], 'acronym')) . '';
+    $title .= ' -- ' . (mica_client_commons_get_localized_field($variable->studySummaries[0], 'acronym'));
   }
 
   drupal_set_title($title);
@@ -120,8 +120,10 @@ function mica_client_variable_get_harmonizations($variable) {
       $harmonized_variable_id = $variable_resolver->id;
       $study_id = $variable_resolver->studyId;
       $study_acronym = _mica_client_variable_acronym_study($variable, $study_id);
-      $project = $variable_resolver->project;
-      $table = $variable_resolver->table;
+      $variable_title = $variable->name . ' -- ' . $study_acronym;
+      if (!empty($variable_harmonization->studyTable->name)) {
+        $variable_title = $variable_title . ' (' . mica_client_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
+      }
 
       $status = strtolower(_mica_client_variable_attributes_detail($variable_harmonization, 'status', array(
         'maelstrom',
@@ -145,7 +147,7 @@ function mica_client_variable_get_harmonizations($variable) {
       }
 
       $rows[] = array(
-        l($variable->name . ' -- ' . $study_acronym, 'mica/variable/' . $harmonized_variable_id),
+        l($variable_title, 'mica/variable/' . $harmonized_variable_id),
         l($study_acronym, 'mica/study/' . $study_id),
         l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
         _mica_client_variable_html_truncated(
