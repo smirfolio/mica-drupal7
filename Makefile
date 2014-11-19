@@ -61,6 +61,12 @@ enable-obiba-auth:
 	cd target/drupal && \
 	drush en -y obiba_auth
 
+cptp:
+	cd target/drupal && \
+	rm -rf sites/all/modules/cptp/ && \
+	cp -r ~/Dropbox/P3G-OBiBa-Share/mlstr-seed/drupal/cptp sites/all/modules && \
+	drush en -y cptp
+
 bootstrap:
 	cd target/drupal && \
 	drush dl -y bootstrap && \
