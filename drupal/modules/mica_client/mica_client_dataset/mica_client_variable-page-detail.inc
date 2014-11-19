@@ -14,6 +14,11 @@ function mica_client_variable_page_detail($variable_id) {
   drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_get_ajax_variables.js', 'file');
   drupal_add_js(array('mica_client_variable' => array('library' => $library_chart)), 'setting');
 
+  $url_param = explode('?', $_SERVER['REQUEST_URI']);
+  $url_query = NULL;
+  if (!empty($url_param[1])) {
+    parse_str($url_param[1], $url_query);
+  }
 
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
@@ -27,7 +32,11 @@ function mica_client_variable_page_detail($variable_id) {
 
   $title = $variable->name;
   if ($variable->variableType == 'Harmonized') {
-    $title .= ' -- ' . (mica_client_commons_get_localized_field($variable->studySummaries[0], 'acronym'));
+    if (!empty($url_query['title'])) {
+      $title = $url_query['title'];
+    } else {
+      $title .= ' -- ' . (mica_client_commons_get_localized_field($variable->studySummaries[0], 'acronym'));
+    }
   }
 
   drupal_set_title($title);
@@ -147,7 +156,11 @@ function mica_client_variable_get_harmonizations($variable) {
       }
 
       $rows[] = array(
-        l($variable_title, 'mica/variable/' . $harmonized_variable_id),
+        l($variable_title, 'mica/variable/' . $harmonized_variable_id, array(
+          'query' => array(
+            'title' => $variable_title
+          )
+        )),
         l($study_acronym, 'mica/study/' . $study_id),
         l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
         _mica_client_variable_html_truncated(
