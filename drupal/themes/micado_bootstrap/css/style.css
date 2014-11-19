@@ -7732,7 +7732,7 @@ div.search-count span {
 }
 .header-fixed > tbody {
   overflow-y: auto;
-  height: 173px;
+  max-height: 319px;
 }
 .header-fixed > tbody > tr > td,
 .header-fixed > thead > tr > th {
