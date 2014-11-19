@@ -42,11 +42,23 @@ function mica_client_variable_page_detail($variable_id) {
       . '/' . $variable->datasetId)
   ));
 
+  _mica_client_dataset_remove_harmonization_taxonomy($variable);
+
   return theme('mica_client_variable-detail', array(
     'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array()),
     'variable_dto' => $variable,
     'variable_harmonization' => mica_client_variable_get_harmonization($variable),
   ));
+}
+
+function _mica_client_dataset_remove_harmonization_taxonomy($variable) {
+
+  if (!empty($variable->termAttributes)) {
+    $variable->termAttributes = array_filter($variable->termAttributes, function($termAttribute) {
+      return $termAttribute->taxonomy->name !== 'Mlstr_harmo';
+    });
+  }
+
 }
 
 function mica_client_variable_load_chart_libraries() {

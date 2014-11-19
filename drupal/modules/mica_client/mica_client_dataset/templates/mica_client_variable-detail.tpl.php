@@ -119,7 +119,6 @@
     <h3><?php print t('Coverage') ?></h3>
 
     <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
-      <!--    --><?php //if ($termAttributes->taxonomy->name != 'Mlstr_harmo'): ?>
       <h4>
         <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
       </h4>
