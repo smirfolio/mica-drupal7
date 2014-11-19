@@ -105,8 +105,11 @@ function mica_client_variable_get_harmonizations($variable) {
   if (!empty($variable_harmonizations->datasetVariableSummaries)) {
     foreach ($variable_harmonizations->datasetVariableSummaries as $variable_harmonization) {
       $variable_resolver = $variable_harmonization->resolver;
+      $harmonized_variable_id = $variable_resolver->id;
       $study_id = $variable_resolver->studyId;
-      $harmonized_variable_id = $variable->datasetId . ':' . $variable->name . ':Harmonized:' . $study_id;
+      $study_acronym = _mica_client_variable_acronym_study($variable, $study_id);
+      $project = $variable_resolver->project;
+      $table = $variable_resolver->table;
 
       $status = strtolower(_mica_client_variable_attributes_detail($variable_harmonization, 'status', array(
         'maelstrom',
@@ -130,8 +133,8 @@ function mica_client_variable_get_harmonizations($variable) {
       }
 
       $rows[] = array(
-        l($variable->name, 'mica/variable/' . $harmonized_variable_id . '/' . mica_client_commons_to_slug($variable->name)),
-        l(_mica_client_variable_acronym_study($variable, $study_id), 'mica/study/' . $study_id),
+        l($variable->name . ' -- ' . $study_acronym, 'mica/variable/' . $harmonized_variable_id),
+        l($study_acronym, 'mica/study/' . $study_id),
         l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
         _mica_client_variable_html_truncated(
           _mica_client_variable_attributes_detail($variable_harmonization, 'comment', array(

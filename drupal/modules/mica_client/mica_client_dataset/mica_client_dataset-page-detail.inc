@@ -30,7 +30,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
       $variables_dataset = $dataset_resource->get_variables($dataset_type,
         $dataset_id,
-        $from, 10,
+        $from, 100,
         $dataset_sort,
         $dataset_sort_by,
         $dataset_query
@@ -49,7 +49,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
 
       $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
         $dataset_id,
-        $from, 10,
+        $from, 100,
         $dataset_sort,
         $dataset_sort_by,
         $dataset_query
@@ -134,23 +134,27 @@ function mica_client_dataset_study_tables_table($dataset_type_dto) {
 
 function mica_client_dataset_study_tables_rows($study_tables) {
   $rows = array();
+  $study_ids = array();
   if (!empty($study_tables)) {
     foreach ($study_tables as $study_table) {
-      $row = mica_client_study_study_summaries_table_row($study_table->studySummary);
-      $population_name = $study_table->populationId;
-      $dce_name = $study_table->dataCollectionEventId;
-      foreach ($study_table->studySummary->populationSummaries as $population_summary) {
-        if ($population_summary->id == $study_table->populationId) {
-          $population_name = mica_client_commons_get_localized_field($population_summary, 'name');
-          foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
-            if ($dce_summary->id == $study_table->dataCollectionEventId) {
-              $dce_name = mica_client_commons_get_localized_field($dce_summary, 'name');
+      if (!in_array($study_table->studyId, $study_ids)) {
+        $study_ids[] = $study_table->studyId;
+        $row = mica_client_study_study_summaries_table_row($study_table->studySummary);
+        $population_name = $study_table->populationId;
+        $dce_name = $study_table->dataCollectionEventId;
+        foreach ($study_table->studySummary->populationSummaries as $population_summary) {
+          if ($population_summary->id == $study_table->populationId) {
+            $population_name = mica_client_commons_get_localized_field($population_summary, 'name');
+            foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
+              if ($dce_summary->id == $study_table->dataCollectionEventId) {
+                $dce_name = mica_client_commons_get_localized_field($dce_summary, 'name');
+              }
             }
           }
         }
+        array_splice($row, 2, 0, array($population_name, $dce_name));
+        $rows[] = $row;
       }
-      array_splice($row, 2, 0, array($population_name, $dce_name));
-      $rows[] = $row;
     }
   }
   return $rows;
@@ -161,7 +165,7 @@ function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
   $headers = array(t('Variable'), t('Domains'));
   if (!empty($dataset_harmonizations_dto->variables)) {
     $total = $dataset_harmonizations_dto->total;
-    $per_page = 10;
+    $per_page = 100;
     pager_default_initialize($total, $per_page);
 
     foreach ($dataset_harmonizations_dto->variables as $variable) {
@@ -186,73 +190,70 @@ function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
 function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto) {
   $rows = array();
   $headers = array(t('Variable'));
-  $study_ids = array();
 
   if (!empty($dataset_type_dto->studyTables)) {
     foreach ($dataset_type_dto->studyTables as $study_table) {
       $study_summary = $study_table->studySummary;
-      $study_ids[] = $study_summary->id;
       $acronym = mica_client_commons_get_localized_field($study_summary, 'acronym');
-      array_push($headers, l($acronym, 'mica/study/' . $study_summary->id));
+      $header = l($acronym, 'mica/study/' . $study_summary->id);
+      if (!empty($study_table->name)) {
+        $name = ' <small title="' . mica_client_commons_get_localized_field($study_table, 'description') . '">' . mica_client_commons_get_localized_field($study_table, 'name') . '</small>';
+        $header = $header . $name;
+      }
+      array_push($headers, $header);
     }
-  }
 
-  if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
-    $total = $dataset_harmonizations_dto->total;
-    $per_page = 10;
-    pager_default_initialize($total, $per_page);
+    if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
+      $total = $dataset_harmonizations_dto->total;
+      $per_page = 100;
+      pager_default_initialize($total, $per_page);
 
-    foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {
-      $row = array(
-        l($variable_harmonization->resolver->name, 'mica/variable/' . $variable_harmonization->resolver->id)
-      );
+      foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {
+        $row = array(
+          l($variable_harmonization->resolver->name, 'mica/variable/' . $variable_harmonization->resolver->id)
+        );
 
-      foreach ($study_ids as $study_id) {
-        $found = FALSE;
-        foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
-//          $comments_harmonization = (_mica_client_variable_attributes_detail($variable_summary, 'comments', array(
-//            'maelstrom',
-//            'Mlstr_harmo'
-//          )));
-//
-//          $script_harmonization = (_mica_client_variable_attributes_detail($variable_summary, 'script', array()));
-//
-//          dpm($variable_summary);
-//        dpm($script_harmonization);
-          if ($variable_summary->resolver->studyId == $study_id) {
-            $status = strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
-              'maelstrom',
-              'Mlstr_harmo'
-            )));
-            $harmonized_variable_id = $variable_harmonization->resolver->datasetId . ':' . $variable_harmonization->resolver->name . ':Harmonized:' . $study_id;
-            if (empty($status)) {
-              $row[] = l('-', 'mica/variable/' . $harmonized_variable_id);
+        foreach ($dataset_type_dto->studyTables as $study_table) {
+          $found = FALSE;
+          foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
+            if ($variable_summary->resolver->studyId == $study_table->studyId
+              && $variable_summary->resolver->project == $study_table->project
+              && $variable_summary->resolver->table == $study_table->table
+            ) {
+              $status = strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
+                'maelstrom',
+                'Mlstr_harmo'
+              )));
+              $harmonized_variable_id = $variable_summary->resolver->id;
+              if (empty($status)) {
+                $row[] = l('-', 'mica/variable/' . $harmonized_variable_id);
+              }
+              elseif ($status == 'complete') {
+                $row[] = l('<span data-toggle="tooltip" title="Completed" class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+                  array('html' => TRUE));
+              }
+              elseif ($status == 'impossible') {
+                $row[] = l('<span class="glyphicon glyphicon-remove alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+                  array('html' => TRUE));
+              }
+              elseif ($status == 'undetermined') {
+                $row[] = l('<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+                  array('html' => TRUE));
+              }
+              else {
+                $row[] = l('-', 'mica/variable/' . $harmonized_variable_id);
+              }
+              $found = TRUE;
+              break;
             }
-            elseif ($status == 'complete') {
-              $row[] = l('<span data-toggle="tooltip" title="Completed" class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
-                array('html' => TRUE));
-            }
-            elseif ($status == 'impossible') {
-              $row[] = l('<span class="glyphicon glyphicon-remove alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
-                array('html' => TRUE));
-            }
-            elseif ($status == 'undetermined') {
-              $row[] = l('<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
-                array('html' => TRUE));
-            }
-            else {
-              $row[] = l('-', 'mica/variable/' . $harmonized_variable_id);
-            }
-            $found = TRUE;
-            break;
+          }
+          if (!$found) {
+            $row[] = '-';
           }
         }
-        if (!$found) {
-          $row[] = '-';
-        }
-      }
 
-      $rows[] = $row;
+        $rows[] = $row;
+      }
     }
   }
 
