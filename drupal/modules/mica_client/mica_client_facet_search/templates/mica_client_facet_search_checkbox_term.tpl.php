@@ -7,13 +7,14 @@
           style="width: <?php print  (((($term->count * 100) / $totalCount))) ?>%;">
           </span>
   </div>
+  <?php $title = empty($term->title) ? $term->key : $term->title; ?>
   <span id="checkthebox"
         class="terms_field <?php print $type_string . $aggregation_facet; ?> unchecked"
         aggregation="<?php print $type_string . $aggregation_facet . '[]'; ?>"
-        value="<?php print  $term->key; ?>"
-        title="<?php print empty($term->name) || strlen($term->name) < 25 ? '' : $term->name ?>">
+        value="<?php print  $title; ?>"
+        title="<?php print strlen($title) < 25 ? '' : $title ?>">
     <i class="glyphicon glyphicon-unchecked"></i>
-    <?php print  !empty($term->name) ? truncate_utf8($term->name, 25, TRUE, TRUE) : $term->key; ?></span>
+    <?php print  truncate_utf8($title, 25, TRUE, TRUE); ?></span>
 
   <span class="terms_count">
 
