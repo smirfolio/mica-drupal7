@@ -6321,7 +6321,7 @@ div.charts {
 .facet-bar .block-mica-client-facet-search div.block-content span.terms_count {
   position: relative;
   float: right;
-  padding-right: 20px;
+  padding-right: 25px;
   padding-top: 7px;
   font-weight: normal;
   font-family: monospace;
@@ -6613,7 +6613,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 .region-facets .block-mica-client-facet-search div.block-content span.terms_count {
   position: relative;
   float: right;
-  padding-right: 20px;
+  padding-right: 25px;
   padding-top: 7px;
   font-weight: normal;
   font-family: monospace;
