@@ -7,7 +7,7 @@
           style="width: <?php print  (((($term->count * 100) / $totalCount))) ?>%;">
           </span>
   </div>
-  <?php $title = empty($term->title) ? $term->key : $term->title; ?>
+  <?php $title = $term->key; /* TODO need to hide key for search mechanism // empty($term->title) ? $term->key : $term->title;*/ ?>
   <span id="checkthebox"
         class="terms_field <?php print $type_string . $aggregation_facet; ?> unchecked"
         aggregation="<?php print $type_string . $aggregation_facet . '[]'; ?>"
