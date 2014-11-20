@@ -162,12 +162,10 @@
 </section>
 
 <!-- Categories -->
-<?php if (!empty($variable_dto->termAttributes)): ?>
+<?php if (!empty($variable_dto->categories)): ?>
   <section>
-    <?php if (!empty($variable_dto->categories)): ?>
-      <h3><?php print t('Categories') ?></h3>
-      <?php print mica_client_variable_get_categories($variable_dto->categories); ?>
-    <?php endif; ?>
+    <h3><?php print t('Categories') ?></h3>
+    <?php print mica_client_variable_get_categories($variable_dto->categories); ?>
   </section>
 <?php endif; ?>
 
@@ -233,7 +231,7 @@
       </div>
 
       <?php if (!empty($variable_harmonization['algorithm'])): ?>
-        <h3><?php print t('Algorithm')?></h3>
+        <h3><?php print t('Algorithm') ?></h3>
         <?php print $variable_harmonization['algorithm']; ?>
       <?php else: ?>
         <h5><?php print t('Script'); ?></h5>
