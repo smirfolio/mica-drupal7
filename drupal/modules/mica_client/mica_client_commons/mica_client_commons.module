@@ -19,7 +19,7 @@ const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
 include_once($path_module_protos . '/protos/Mica.php');
 
-include_once(drupal_get_path('module', 'markdown') . '/markdown.php');
+//include_once(drupal_get_path('module', 'markdown') . '/markdown.php');
 
 function mica_client_commons_to_slug($string) {
   $string = str_replace(array('/', ' '), '-', $string);
@@ -306,5 +306,10 @@ function _mica_client_commons_get_extention_file($file_resource) {
  * @return string
  */
 function mica_client_commons_markdown($text) {
-  return '<div class="markdown">' . Markdown($text) . '</div>';
+  if (!empty($text)) {
+    module_load_include('php', 'mica_client_commons', 'includes/Parsedown');
+    $formatter = new Parsedown();
+    return '<div class="markdown">' . $formatter->text($text) . '</div>';
+  }
+  return $text;
 }

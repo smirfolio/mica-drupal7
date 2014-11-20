@@ -10,7 +10,6 @@ dependencies[] = devel
 dependencies[] = http_client
 dependencies[] = i18n
 dependencies[] = libraries
-dependencies[] = markdown
 dependencies[] = variable
 dependencies[] = mica_client_study
 dependencies[] = mica_client_facet_search
