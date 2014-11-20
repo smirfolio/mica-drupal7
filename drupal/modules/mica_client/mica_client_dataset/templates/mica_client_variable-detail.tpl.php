@@ -173,7 +173,6 @@
   <h3><?php print t('Statistics') ?></h3>
 
   <div>
-
     <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
       <div id="toempty">
         <img
@@ -184,7 +183,6 @@
     <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
       <div id="toemptychart">
       </div>
-
     </div>
 </section>
 

@@ -120,7 +120,7 @@ function mica_client_dataset_study_tables_table($dataset_type_dto) {
 
   $rows = mica_client_dataset_study_tables_rows($study_tables);
   $headers = mica_client_study_study_summaries_table_headers();
-  array_splice($headers, 2, 0, array(t('Population'), t('Data collection Event')));
+  array_splice($headers, 2, 0, array(t('Data Collection Events')));
 
   return theme(
     'table',
@@ -135,25 +135,43 @@ function mica_client_dataset_study_tables_table($dataset_type_dto) {
 
 function mica_client_dataset_study_tables_rows($study_tables) {
   $rows = array();
-  $study_ids = array();
   if (!empty($study_tables)) {
+    $study_dces = array();
+    foreach ($study_tables as $study_table) {
+      $population_name = $study_table->populationId;
+      $dce_name = $study_table->dataCollectionEventId;
+      foreach ($study_table->studySummary->populationSummaries as $population_summary) {
+        if ($population_summary->id == $study_table->populationId) {
+          $population_name = mica_client_commons_get_localized_field($population_summary, 'name');
+          foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
+            if ($dce_summary->id == $study_table->dataCollectionEventId) {
+              $dce_name = mica_client_commons_get_localized_field($dce_summary, 'name');
+            }
+          }
+        }
+      }
+      $dce_full_name = $population_name . ' -- ' . $dce_name;
+      if (!in_array($study_table->studyId, array_keys($study_dces))) {
+        $study_dces[$study_table->studyId] = array();
+      }
+      if (!in_array($dce_full_name, $study_dces[$study_table->studyId])) {
+        $study_dces[$study_table->studyId][] = $dce_full_name;
+      }
+    }
+    $study_ids = array();
     foreach ($study_tables as $study_table) {
       if (!in_array($study_table->studyId, $study_ids)) {
         $study_ids[] = $study_table->studyId;
         $row = mica_client_study_study_summaries_table_row($study_table->studySummary);
-        $population_name = $study_table->populationId;
-        $dce_name = $study_table->dataCollectionEventId;
-        foreach ($study_table->studySummary->populationSummaries as $population_summary) {
-          if ($population_summary->id == $study_table->populationId) {
-            $population_name = mica_client_commons_get_localized_field($population_summary, 'name');
-            foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
-              if ($dce_summary->id == $study_table->dataCollectionEventId) {
-                $dce_name = mica_client_commons_get_localized_field($dce_summary, 'name');
-              }
-            }
+        $dec_list = '<ul>';
+        if (!empty($study_dces[$study_table->studyId])) {
+
+          foreach ($study_dces[$study_table->studyId] as $dce_full_name) {
+            $dec_list = $dec_list . '<li>' . $dce_full_name . '</li>';
           }
         }
-        array_splice($row, 2, 0, array($population_name, $dce_name));
+        $dec_list = $dec_list . '</ul>';
+        array_splice($row, 2, 0, array($dec_list));
         $rows[] = $row;
       }
     }

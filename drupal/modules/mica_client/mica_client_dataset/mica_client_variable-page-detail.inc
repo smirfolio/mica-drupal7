@@ -128,7 +128,8 @@ function mica_client_variable_get_harmonizations($variable) {
       $variable_resolver = $variable_harmonization->resolver;
       $harmonized_variable_id = $variable_resolver->id;
       $study_id = $variable_resolver->studyId;
-      $study_acronym = _mica_client_variable_acronym_study($variable, $study_id);
+      $study_summary = _mica_client_variable_study_summary($variable, $study_id);
+      $study_acronym =mica_client_commons_get_localized_field($study_summary, 'acronym');
       $variable_title = $variable->name . ' -- ' . $study_acronym;
       if (!empty($variable_harmonization->studyTable->name)) {
         $variable_title = $variable_title . ' (' . mica_client_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
@@ -156,12 +157,14 @@ function mica_client_variable_get_harmonizations($variable) {
       }
 
       $rows[] = array(
+        '<p>' .
         l($variable_title, 'mica/variable/' . $harmonized_variable_id, array(
           'query' => array(
             'title' => $variable_title
           )
-        )),
+        )) . '</p><p class="help-block">' . mica_client_commons_get_localized_field($variable_harmonization->studyTable, 'description') . '</p>',
         l($study_acronym, 'mica/study/' . $study_id),
+        mica_client_dataset_get_dce_name_from_dataset($variable_harmonization->studyTable, $study_summary),//$variable_harmonization->studyTable->populationId . ':' . $variable_harmonization->studyTable->dataCollectionEventId,
         l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
         _mica_client_variable_html_truncated(
           _mica_client_variable_attributes_detail($variable_harmonization, 'comment', array(
@@ -173,7 +176,7 @@ function mica_client_variable_get_harmonizations($variable) {
   }
 
   if (!empty($rows)) {
-    $headers = array(t('Harmonized Variable'), t('Study'), t('Status'), t('Comment'));
+    $headers = array(t('Harmonized Variable'), t('Study'), t('Data Collection Event'),t('Status'), t('Comment'));
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,
@@ -355,7 +358,7 @@ function _mica_client_variable_table_stat_continuous($variable, $variable_stat) 
   foreach ($variable->studyIds as $key => $study_id) {
     $row = array();
     if ($variable->variableType == 'Dataschema') {
-      $row = array(l(_mica_client_variable_acronym_study($variable, $study_id), 'mica/study/' . $study_id));
+      $row = array(l(_mica_client_variable_study_acronym($variable, $study_id), 'mica/study/' . $study_id));
     }
     if (!empty($variable_stat[$key]->facets)) {
       $statistics = $variable_stat[$key]->facets[0]->statistics;
@@ -393,7 +396,7 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
   $headers = array('Value');
   if ($variable->variableType == 'Dataschema') {
     foreach ($stats as $study_id => $stat) {
-      $headers[] = l(_mica_client_variable_acronym_study($variable, $study_id), 'mica/study/' . $study_id);
+      $headers[] = l(_mica_client_variable_study_acronym($variable, $study_id), 'mica/study/' . $study_id);
     }
   }
   else {
@@ -446,22 +449,31 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
 }
 
 /**
- * Get the study acronym from the study summary found in the variable. If not found, fetch the
- * study summary directly.
+ * Get the study summary found in the variable. If not found, fetch the study summary directly.
  * @param $variable
  * @param $study_id
- * @return the
+ * @return mixed
  */
-function _mica_client_variable_acronym_study($variable, $study_id) {
+function _mica_client_variable_study_summary($variable, $study_id) {
   foreach ($variable->studySummaries as $study) {
     if ($study->id == $study_id) {
-      return mica_client_commons_get_localized_field($study, 'acronym');
+      return $study;
     }
   }
   // not found in the dto, then fetch it
   $study_resource = new MicaStudyResource();
-  $study = $study_resource->study($study_id);
-  return mica_client_commons_get_localized_field($study, 'acronym');
+  return $study_resource->study($study_id);
+}
+
+/**
+ * Get the study acronym from the study summary found in the variable. If not found, fetch the
+ * study summary directly.
+ * @param $variable
+ * @param $study_id
+ * @return mixed
+ */
+function _mica_client_variable_study_acronym($variable, $study_id) {
+  return mica_client_commons_get_localized_field(_mica_client_variable_study_summary($variable, $study_id), 'acronym');
 }
 
 function _mica_client_variable_rebuild_stat($variable_stat, $variable) {

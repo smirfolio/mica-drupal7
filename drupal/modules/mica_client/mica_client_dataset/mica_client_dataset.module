@@ -127,7 +127,6 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
       'template' => 'mica_client_dataset-list-page-block',
       'path' => $path_theme
     ),
-
     'mica_client_dataset-harmonization-table-legend' => //
       array('template' => 'mica_client_dataset-harmonization-table-legend', 'path' => $path_theme), //
 
@@ -149,38 +148,50 @@ function mica_client_dataset_get_all_datasets_studies($study_id) {
   return $output;
 }
 
-function mica_client_dataset_get_dce_name_from_dataset($study_table, $dce_id) {
-  foreach ($study_table->studySummary->populationSummaries as $population) {
-    foreach ($population->dataCollectionEventSummaries as $dce) {
-      if ($dce->id == $dce_id) {
-        return mica_client_commons_get_localized_field($dce, 'name');
+function mica_client_dataset_get_dce_name_from_dataset($study_table, $study_summary = NULL) {
+  if (empty($study_summary)) {
+    $study_summary = $study_table->studySummary;
+  }
+  if (!empty($study_summary)) {
+    foreach ($study_summary->populationSummaries as $population) {
+      if ($study_table->populationId == $population->id) {
+        foreach ($population->dataCollectionEventSummaries as $dce) {
+          if ($dce->id == $study_table->dataCollectionEventId) {
+            return mica_client_commons_get_localized_field($population, 'name') . ' -- ' . mica_client_commons_get_localized_field($dce, 'name');
+          }
+        }
       }
     }
   }
+  return $study_table->populationId . ':' . $study_table->dataCollectionEventId;
 }
 
-function mica_client_dataset_get_dce_drom_dataset($summary) {
+function mica_client_dataset_get_dce_from_dataset($dataset_summary, $study_id = NULL) {
   $dce_list = '-';
-  if (!empty($summary->{'obiba.mica.HarmonizationDatasetDto.type'})) {
+  if (!empty($dataset_summary->{'obiba.mica.HarmonizationDatasetDto.type'})) {
     $dce_list = '<ul>';
-    foreach ($summary->{'obiba.mica.HarmonizationDatasetDto.type'}->studyTables as $study_table) {
-
-      $dce_name = mica_client_dataset_get_dce_name_from_dataset($study_table, $study_table->dataCollectionEventId);
-      $dce_list .= '<li>' . l($dce_name, '#', array(
-          'external' => TRUE,
-          'attributes' => array(
-            'data-toggle' => 'modal',
-            'data-target' => '#' . $study_table->dataCollectionEventId
-          )
-        )) . '</li>';
+    $dce_names = array();
+    foreach ($dataset_summary->{'obiba.mica.HarmonizationDatasetDto.type'}->studyTables as $study_table) {
+      if (empty($study_id) || $study_table->studyId == $study_id) {
+        $dce_name = mica_client_dataset_get_dce_name_from_dataset($study_table);
+        if (!in_array($dce_name, $dce_names)) {
+          $dce_list .= '<li>' . l($dce_name, '#', array(
+              'external' => TRUE,
+              'attributes' => array(
+                'data-toggle' => 'modal',
+                'data-target' => '#' . $study_table->dataCollectionEventId
+              )
+            )) . '</li>';
+          $dce_names[] = $dce_name;
+        }
+      }
     }
     $dce_list .= '</ul>';
-
   }
 
-  if (!empty($summary->{'obiba.mica.StudyDatasetDto.type'})) {
-    $study_table = $summary->{'obiba.mica.StudyDatasetDto.type'}->studyTable;
-    $dce_name = mica_client_dataset_get_dce_name_from_dataset($study_table, $study_table->dataCollectionEventId);
+  if (!empty($dataset_summary->{'obiba.mica.StudyDatasetDto.type'})) {
+    $study_table = $dataset_summary->{'obiba.mica.StudyDatasetDto.type'}->studyTable;
+    $dce_name = mica_client_dataset_get_dce_name_from_dataset($study_table);
     $dce_list = l($dce_name, '#', array(
       'external' => TRUE,
       'attributes' => array(
@@ -236,7 +247,7 @@ function mica_client_dataset_get_datasets_list_tab($datasets, $study_id) {
         'data' => array(
           'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id . '/' . mica_client_commons_to_slug($dataset_name)),
           'type' => t($dataset_type_name),
-          'dce' => mica_client_dataset_get_dce_drom_dataset($summary),
+          'dce' => mica_client_dataset_get_dce_from_dataset($summary, $study_id),
           'desc' => !empty($nb_variables) ? $nb_variables : '-'
         )
       );
@@ -246,7 +257,7 @@ function mica_client_dataset_get_datasets_list_tab($datasets, $study_id) {
   $dataset['dataset-tab'] = theme(
     'table',
     array(
-      'header' => array(t('Name'), t('Type'), t('DCE'), t('Variables')),
+      'header' => array(t('Name'), t('Type'), t('Data Collection Events'), t('Variables')),
       'rows' => $dataset_rows,
       'empty' => t('No dataset found'),
       'sticky' => FALSE

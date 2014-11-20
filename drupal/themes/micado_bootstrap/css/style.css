@@ -7192,7 +7192,8 @@ body.admin-menu .navbar-fixed-top {
 }
 .block-content article section h3 + p.help-block,
 .block-content article section h4 + p.help-block,
-.block-content article section h5 + p.help-block {
+.block-content article section h5 + p.help-block,
+.block-content article section p + p.help-block {
   padding: 0;
 }
 .block-content article section h5 + p.help-block {
