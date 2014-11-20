@@ -19,8 +19,6 @@ const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
 include_once($path_module_protos . '/protos/Mica.php');
 
-//include_once(drupal_get_path('module', 'markdown') . '/markdown.php');
-
 function mica_client_commons_to_slug($string) {
   $string = str_replace(array('/', ' '), '-', $string);
   $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
