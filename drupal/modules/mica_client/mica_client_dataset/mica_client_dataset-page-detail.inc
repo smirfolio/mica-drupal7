@@ -211,8 +211,7 @@ function mica_client_dataset_harmonizations_for_csv($dataset_type_dto, $dataset_
       $study_summary = $study_table->studySummary;
       $header = $study_summary->id;
       if (!empty($study_table->name)) {
-        $name = mica_client_commons_get_localized_field($study_table, 'description') . mica_client_commons_get_localized_field($study_table, 'name');
-        $header = $header . $name;
+        $header = $header . ' (' . mica_client_commons_get_localized_field($study_table, 'name') . ')';
       }
       array_push($headers, $header);
     }
