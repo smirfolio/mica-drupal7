@@ -119,7 +119,7 @@ class MicaClientAnchorHelper
 
     $options = array(
       'query' => array(
-        'type' => 'datasets',
+        'type' => 'variables',
         'query' => $query
       )
     );
