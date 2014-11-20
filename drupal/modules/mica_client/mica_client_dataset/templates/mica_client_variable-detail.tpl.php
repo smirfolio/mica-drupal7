@@ -106,67 +106,68 @@
         </table>
       </div>
       <div class="col-xs-6">
-        <!-- Categories -->
-        <?php if (!empty($variable_dto->categories)): ?>
-          <h3><?php print t('Categories') ?></h3>
-          <?php print mica_client_variable_get_categories($variable_dto->categories); ?>
+        <!-- Taxonomy terms -->
+        <?php if (!empty($variable_dto->termAttributes)): ?>
+          <h3><?php print t('Coverage') ?></h3>
+          <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
+            <h4>
+              <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
+            </h4>
+            <p class="help-block">
+              <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>
+            </p>
+
+            <table class="table table-striped">
+              <tbody>
+              <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
+                <tr>
+                  <td>
+                    <h5>
+                      <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
+                    </h5>
+
+                    <p class="help-block">
+                      <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>
+                    </p>
+                  </td>
+
+                  <td>
+                    <?php if (count($termAttribute->terms == 1)): ?>
+                      <p data-toggle="tooltip"
+                         title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
+                        <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
+                      </p>
+                    <?php else: ?>
+                      <ul>
+                        <?php foreach ($termAttribute->terms as $term) : ?>
+                          <li data-toggle="tooltip"
+                              title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
+                            <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
+                          </li>
+                        <?php endforeach; ?>
+                      </ul>
+                    <?php endif; ?>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+              </tbody>
+            </table>
+            <!--    --><?php //endif; ?>
+          <?php endforeach; ?>
         <?php endif; ?>
+
       </div>
     </div>
   </div>
 </section>
 
-<!-- Taxonomy terms -->
+<!-- Categories -->
 <?php if (!empty($variable_dto->termAttributes)): ?>
   <section>
-    <h3><?php print t('Coverage') ?></h3>
-
-    <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
-      <h4>
-        <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
-      </h4>
-      <p class="help-block">
-        <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>
-      </p>
-
-      <table class="table table-striped">
-        <tbody>
-        <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
-          <tr>
-            <td>
-              <h5>
-                <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
-              </h5>
-
-              <p class="help-block">
-                <?php print mica_client_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>
-              </p>
-            </td>
-
-            <td>
-              <?php if (count($termAttribute->terms == 1)): ?>
-                <p data-toggle="tooltip"
-                   title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
-                  <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
-                </p>
-              <?php else: ?>
-                <ul>
-                  <?php foreach ($termAttribute->terms as $term) : ?>
-                    <li data-toggle="tooltip"
-                        title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
-                      <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              <?php endif; ?>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-        </tbody>
-      </table>
-
-      <!--    --><?php //endif; ?>
-    <?php endforeach; ?>
+    <?php if (!empty($variable_dto->categories)): ?>
+      <h3><?php print t('Categories') ?></h3>
+      <?php print mica_client_variable_get_categories($variable_dto->categories); ?>
+    <?php endif; ?>
   </section>
 <?php endif; ?>
 
