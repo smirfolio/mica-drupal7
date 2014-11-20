@@ -82,7 +82,7 @@
             <td><h5><?php print t('Number of variables') ?></h5></td>
             <td>
               <p>
-                <?php print empty($variables_dataset->total) ? 0 : $variables_dataset->total; ?>
+                <?php print MicaClientAnchorHelper::dataset_variables(empty($variables_dataset->total) ? 0 : $variables_dataset->total, $dataset_dto->id) ; ?>
               </p>
             </td>
           </tr>
