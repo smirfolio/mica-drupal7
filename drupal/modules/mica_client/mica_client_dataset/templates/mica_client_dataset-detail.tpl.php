@@ -6,9 +6,6 @@
 ?>
 
 <div>
-  <?php if (!empty($dataset_dto->description)): ?>
-    <p><?php print mica_client_commons_get_localized_field($dataset_dto, 'description'); ?></p>
-  <?php endif; ?>
   <div class="pull-right md-bottom-margin">
     <?php
     $query_array = array("variables" => array("terms" => array("datasetId" => $dataset_dto->id)));
@@ -49,6 +46,12 @@
       <div class="col-xs-6 lg-right-indent">
         <table class="table table-striped">
           <tbody>
+          <?php if (!empty($dataset_dto->description)): ?>
+            <tr>
+              <td><h5><?php print t('Description') ?></h5></td>
+              <td><p><?php print mica_client_commons_get_localized_field($dataset_dto, 'description'); ?></p></td>
+            </tr>
+          <?php endif; ?>
           <?php if (!empty($dataset_dto->acronym)): ?>
             <tr>
               <td><h5><?php print t('Acronym') ?></h5></td>

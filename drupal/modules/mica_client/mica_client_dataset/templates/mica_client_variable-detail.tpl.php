@@ -3,10 +3,6 @@
 //dpm($variable_harmonization);
 ?>
 
-<?php if (!empty($variable_dto->description)): ?>
-  <p><?php print $variable_dto->description; ?></p>
-<?php endif; ?>
-
 <article>
 <section>
   <div class="container-fluid">
@@ -21,6 +17,13 @@
             <tr>
               <td><h5><?php print t('Label') ?></h5></td>
               <td><?php print $variable_dto->label; ?></td>
+            </tr>
+          <?php endif; ?>
+
+          <?php if (!empty($variable_dto->description)): ?>
+            <tr>
+              <td><h5><?php print t('Description') ?></h5></td>
+              <td><p><?php print $variable_dto->description; ?></p></td>
             </tr>
           <?php endif; ?>
 
