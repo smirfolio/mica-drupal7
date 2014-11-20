@@ -156,11 +156,12 @@ function mica_client_variable_get_harmonizations($variable) {
       }
 
       $rows[] = array(
+        '<p>' .
         l($variable_title, 'mica/variable/' . $harmonized_variable_id, array(
           'query' => array(
             'title' => $variable_title
           )
-        )),
+        )) . '</p><p class="help-block">' . mica_client_commons_get_localized_field($variable_harmonization->studyTable, 'description') . '</p>',
         l($study_acronym, 'mica/study/' . $study_id),
         l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
         _mica_client_variable_html_truncated(
