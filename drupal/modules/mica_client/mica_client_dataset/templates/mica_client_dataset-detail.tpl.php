@@ -198,8 +198,8 @@
   <?php if (!empty($variables_dataset->harmonization)): ?>
     <section>
       <h3><?php print t('Harmonization') ?></h3>
+      <a id="download-harmo-table" href="" class="btn btn-success pull-right sm-bottom-margin"><i class='glyphicon glyphicon-download'></i> <?php print t('Download')?></a>
       <?php print render($harmonization_table_legend); ?>
-      <a id="download-harmo-table" href="" class="btn btn-primary sm-bottom-margin"><i class='glyphicon glyphicon-download'></i> <?php print t('Download')?></a>
       <div>
         <?php print render($form_search); ?>
       </div>
