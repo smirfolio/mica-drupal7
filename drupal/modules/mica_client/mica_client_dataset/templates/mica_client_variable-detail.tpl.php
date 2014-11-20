@@ -228,14 +228,16 @@
         </div>
       </div>
 
-      <?php if (!empty($variable_harmonization['algorithm'])): ?>
-        <h3><?php print t('Algorithm') ?></h3>
-        <?php print $variable_harmonization['algorithm']; ?>
-      <?php else: ?>
-        <h5><?php print t('Script'); ?></h5>
-        <pre class="prettyprint lang-js">
-        <?php print $variable_harmonization['script']; ?>
-        </pre>
+      <?php if ($variable_harmonization['status'] == 'complete'): ?>
+        <?php if (!empty($variable_harmonization['algorithm'])): ?>
+          <h3><?php print t('Algorithm') ?></h3>
+          <?php print $variable_harmonization['algorithm']; ?>
+        <?php else: ?>
+          <h5><?php print t('Script'); ?></h5>
+          <pre class="prettyprint lang-js">
+            <?php print $variable_harmonization['script']; ?>
+          </pre>
+        <?php endif; ?>
       <?php endif; ?>
 
     <?php endif; ?>
