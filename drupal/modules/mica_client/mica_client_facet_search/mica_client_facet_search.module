@@ -423,7 +423,98 @@ function mica_client_facet_search_variable_page_search() {
   return $output;
 }
 
+Function mica_client_facet_search_get_buckets($vocabulary_coverage, $all_bucket) {
+  foreach ($vocabulary_coverage->buckets as $bucket) {
+    if ((string) $bucket->value == (string) $all_bucket->value) {
+      return $bucket;
+    }
+  }
+  return FALSE;
+}
+
+
+Function mica_client_facet_search_get_terms($terms_buckets, $all_bucket) {
+  foreach ($terms_buckets->buckets as $bucket) {
+    if ((string) $bucket->value == (string) $all_bucket->value) {
+      return $bucket;
+    }
+  }
+  return FALSE;
+}
+
 function mica_client_facet_search_coverage_page() {
+  mica_client_facet_search_load_libs();
+  $url_param = explode('?', $_SERVER['REQUEST_URI']);
+  if (!empty($url_param[1])) {
+    parse_str($url_param[1], $parts);
+  }
+  $bucket_names = array();
+  $vocabulary_coverage_output = array();
+  $search_resources = new MicaSearchResource();
+  $coverages = $search_resources->taxonomies_coverage();
+  if (!empty($coverages->taxonomies)) {
+    foreach ($coverages->taxonomies as $taxonomy_coverage) {
+      $formatted_vocabulary_coverage = new stdClass();
+      foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
+        if (!empty($taxonomy_coverage->buckets)) {
+          //  dpm($taxonomy_coverage->buckets);
+          foreach ($taxonomy_coverage->buckets as $key_bucket => $all_bucket) {
+            $formatted_bucket = new stdClass();
+            $formatted_bucket->field = $all_bucket->field;
+            $formatted_bucket->value = $all_bucket->value . '-nolink';
+            $formatted_bucket->hits = 0;
+            $formatted_bucket->count = 0;
+
+            $bucket_returned = mica_client_facet_search_get_buckets($vocabulary_coverage, $all_bucket);
+            if (!empty($bucket_returned)) {
+              $formatted_vocabulary_coverage->buckets[$key_bucket] = $bucket_returned;
+              $bucket_names[$key_bucket] = $bucket_returned->value;
+            }
+            else {
+              $formatted_vocabulary_coverage->buckets[$key_bucket] = $formatted_bucket;
+              $bucket_names[$key_bucket] = $formatted_bucket->value;
+            }
+
+
+            foreach ($vocabulary_coverage->terms as $key_term => $term) {
+              $returned_term_bucket = mica_client_facet_search_get_terms($vocabulary_coverage, $all_bucket);
+              if (!empty($returned_term_bucket)) {
+                $formatted_vocabulary_coverage->terms[$key_term]->buckets[$key_bucket] = $returned_term_bucket;
+              }
+              else {
+                $formatted_vocabulary_coverage->terms[$key_term]->buckets[$key_bucket] = $formatted_bucket;
+              }
+            }
+
+          }
+        }
+        unset($vocabulary_coverage->buckets);
+        $vocabulary_coverage_merged = (object) array_merge((array) $formatted_vocabulary_coverage, (array) $vocabulary_coverage);
+        $vocabulary_coverage_output[$vocabulary_coverage_merged->vocabulary->name] = theme('mica_client_facet_search_vocabulary_coverage', array(
+          'taxonomy' => $taxonomy_coverage->taxonomy,
+          'vocabulary_coverage' => $vocabulary_coverage_merged,
+          'chart' => theme('mica_client_facet_search_vocabulary_charts', array(
+            'vocabulary_coverage' => $vocabulary_coverage_merged,
+            'chart' => mica_client_facet_search_vocabulary_chart($vocabulary_coverage_merged),
+          )),
+          'bucket_names' => $bucket_names,
+          'vocabulary_attribute' => 'attributes-' . $taxonomy_coverage->taxonomy->name . '__' . $vocabulary_coverage_merged->vocabulary->name . '-und'
+        ));
+      }
+      $vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name] = $vocabulary_coverage_output;
+    }
+  }
+
+  $output = theme('mica_client_facet_search_coverage', array(
+    'coverages' => $coverages,
+    'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,
+    'query' => !empty($parts['query']) ? $parts['query'] : NULL,
+    'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
+  ));
+  return $output;
+}
+
+function mica_client_facet_search_coverage_page1() {
   mica_client_facet_search_load_libs();
   $url_param = explode('?', $_SERVER['REQUEST_URI']);
   if (!empty($url_param[1])) {
