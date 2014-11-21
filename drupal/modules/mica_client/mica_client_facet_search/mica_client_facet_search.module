@@ -449,6 +449,7 @@ function mica_client_facet_search_coverage_page() {
     parse_str($url_param[1], $parts);
   }
   $bucket_names = array();
+  $vocabulary_coverage_outputs = array();
   $vocabulary_coverage_output = array();
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage();
@@ -513,55 +514,6 @@ function mica_client_facet_search_coverage_page() {
   ));
   return $output;
 }
-
-function mica_client_facet_search_coverage_page1() {
-  mica_client_facet_search_load_libs();
-  $url_param = explode('?', $_SERVER['REQUEST_URI']);
-  if (!empty($url_param[1])) {
-    parse_str($url_param[1], $parts);
-  }
-
-  $search_resources = new MicaSearchResource();
-  $coverages = $search_resources->taxonomies_coverage();
-  $vocabulary_coverage_outputs = array();
-  if (!empty($coverages->taxonomies)) {
-    foreach ($coverages->taxonomies as $taxonomy_coverage) {
-      $vocabulary_coverage_output = array();
-      foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
-        $bucket_names = array();
-        if (!empty($vocabulary_coverage->buckets)) {
-          //Todo display all studies for each vocabulary 0
-          //   foreach($taxonomy_coverage->buckets as $allbaket){
-          foreach ($vocabulary_coverage->buckets as $bucket) {
-            $bucket_names[] = $bucket->value;
-          }
-          //   }
-        }
-
-        $vocabulary_coverage_output[$vocabulary_coverage->vocabulary->name] = theme('mica_client_facet_search_vocabulary_coverage', array(
-          'taxonomy' => $taxonomy_coverage->taxonomy,
-          'vocabulary_coverage' => $vocabulary_coverage,
-          'chart' => theme('mica_client_facet_search_vocabulary_charts', array(
-            'vocabulary_coverage' => $vocabulary_coverage,
-            'chart' => mica_client_facet_search_vocabulary_chart($vocabulary_coverage),
-          )),
-          'bucket_names' => $bucket_names,
-          'vocabulary_attribute' => 'attributes-' . $taxonomy_coverage->taxonomy->name . '__' . $vocabulary_coverage->vocabulary->name . '-und'
-        ));
-      }
-      $vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name] = $vocabulary_coverage_output;
-    }
-  }
-
-  $output = theme('mica_client_facet_search_coverage', array(
-    'coverages' => $coverages,
-    'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,
-    'query' => !empty($parts['query']) ? $parts['query'] : NULL,
-    'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
-  ));
-  return $output;
-}
-
 
 function mica_client_facet_search_study_page_search() {
   $output['title'] = t('Study search page');
