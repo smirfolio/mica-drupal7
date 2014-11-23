@@ -37,6 +37,8 @@ class MicaClient {
 
   const HEADER_JSON = 'application/json';
 
+  const HEADER_CSV = 'text/csv';
+
   const SIZE_RESPONSE = 20;
 
   const PAGINATE_studies = 0;
@@ -79,7 +81,7 @@ class MicaClient {
    * Get the last response headers (if any).
    * @return array
    */
-  protected function getLastResponseHeaders() {
+  public function getLastResponseHeaders() {
     if ($this->lastResponse != NULL) {
       $result = array();
       foreach (explode("\r\n", $this->lastResponse->headers) as $header) {
@@ -293,7 +295,6 @@ class MicaClient {
   static function get_name_entity_by_id_aggregation($type, $aggregation_facet, $id) {
     foreach ($_SESSION[$type][$aggregation_facet] as $entity) {
       if ($entity->id == $id) {
-        // dpm(mica_client_commons_get_localized_field($dataset,'name'));
         return mica_client_commons_get_localized_field($entity, 'name');
       }
     }
