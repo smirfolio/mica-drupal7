@@ -1,6 +1,6 @@
 {
     "socio_eco": {
-        "title": "dataset-Socio Eco",
+        "title": "dataset-Socio demographic and economic",
         "key": "socio_eco",
         "aggs": "attributes-Mlstr_area__Sociodemographic_economic_characteristics-und"
     },
@@ -30,7 +30,7 @@
         "aggs": "attributes-Mlstr_area__Medication_supplements-und"
     },
     "non_pharma": {
-        "title": "dataset-Non Pharma",
+        "title": "dataset-Non Pharmacological Interventions",
         "key": "non_pharma",
         "aggs": "attributes-Mlstr_area__Non_pharmacological_interventions-und"
     },
@@ -60,7 +60,7 @@
         "aggs": "attributes-Mlstr_area__Physical_measures-und"
     },
     "cognitive_psy": {
-        "title": "dataset-Cognitive psycho measures",
+        "title": "dataset-Cognitive psychological measures",
         "key": "cognitive_psy",
         "aggs": "attributes-Mlstr_area__Cognitive_psychological_measures-und"
     },

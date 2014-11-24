@@ -136,10 +136,10 @@ function mica_client_variable_get_harmonizations($variable) {
         $variable_title = $variable_title . ' (' . mica_client_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
       }
 
-      $status = strtolower(_mica_client_variable_attributes_detail($variable_harmonization, 'status', array(
+      $status = trim(strtolower(_mica_client_variable_attributes_detail($variable_harmonization, 'status', array(
         'maelstrom',
         'Mlstr_harmo'
-      )));
+      ))));
 
       if (empty($status)) {
         $status = '-';
@@ -271,7 +271,6 @@ function mica_client_variable_get_categories($categories = NULL) {
         'rows' => $rows,
         'empty' => t('No category found'),
         'sticky' => FALSE,
-        'attributes' => array('id' => 'variable_categories', 'class' => 'header-fixed')
       )
     );
   }

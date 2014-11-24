@@ -108,7 +108,7 @@
       <div class="col-xs-6">
         <!-- Taxonomy terms -->
         <?php if (!empty($variable_dto->termAttributes)): ?>
-          <h3><?php print t('Coverage') ?></h3>
+          <h3><?php print t('Classification') ?></h3>
           <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
             <h4>
               <?php print mica_client_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>

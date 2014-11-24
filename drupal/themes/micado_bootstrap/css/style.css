@@ -6245,7 +6245,7 @@ div.charts {
   color: gray;
 }
 .facet-bar .block-mica-client-facet-search h2 {
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
   margin: 0;
   padding: 2px 5px;
@@ -6537,7 +6537,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   color: gray;
 }
 .region-facets .block-mica-client-facet-search h2 {
-  font-size: 14px;
+  font-size: 12px;
   text-transform: uppercase;
   margin: 0;
   padding: 2px 5px;
@@ -7787,6 +7787,11 @@ div.search-count span {
 .markdown table > tbody > tr:nth-child(odd) > td,
 .markdown table > tbody > tr:nth-child(odd) > th {
   background-color: #f9f9f9;
+}
+.markdown h4 {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
 }
 .fix-width-550 {
   width: 550px;

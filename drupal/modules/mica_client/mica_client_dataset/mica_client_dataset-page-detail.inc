@@ -121,7 +121,7 @@ function mica_client_dataset_study_tables_table($dataset_type_dto) {
 
   $rows = mica_client_dataset_study_tables_rows($study_tables);
   $headers = mica_client_study_study_summaries_table_headers();
-  array_splice($headers, 2, 0, array(t('Data Collection Events')));
+  //array_splice($headers, 2, 0, array(t('Data Collection Events')));
 
   return theme(
     'table',
@@ -172,7 +172,7 @@ function mica_client_dataset_study_tables_rows($study_tables) {
           }
         }
         $dec_list = $dec_list . '</ul>';
-        array_splice($row, 2, 0, array($dec_list));
+        //array_splice($row, 2, 0, array($dec_list));
         $rows[] = $row;
       }
     }
