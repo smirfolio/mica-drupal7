@@ -34,7 +34,8 @@ function mica_client_variable_page_detail($variable_id) {
   if ($variable->variableType == 'Harmonized') {
     if (!empty($url_query['title'])) {
       $title = $url_query['title'];
-    } else {
+    }
+    else {
       $title .= ' -- ' . (mica_client_commons_get_localized_field($variable->studySummaries[0], 'acronym'));
     }
   }
@@ -63,7 +64,7 @@ function mica_client_variable_page_detail($variable_id) {
 function _mica_client_dataset_remove_harmonization_taxonomy($variable) {
 
   if (!empty($variable->termAttributes)) {
-    $variable->termAttributes = array_filter($variable->termAttributes, function($termAttribute) {
+    $variable->termAttributes = array_filter($variable->termAttributes, function ($termAttribute) {
       return $termAttribute->taxonomy->name !== 'Mlstr_harmo';
     });
   }
@@ -129,7 +130,7 @@ function mica_client_variable_get_harmonizations($variable) {
       $harmonized_variable_id = $variable_resolver->id;
       $study_id = $variable_resolver->studyId;
       $study_summary = _mica_client_variable_study_summary($variable, $study_id);
-      $study_acronym =mica_client_commons_get_localized_field($study_summary, 'acronym');
+      $study_acronym = mica_client_commons_get_localized_field($study_summary, 'acronym');
       $variable_title = $variable->name . ' -- ' . $study_acronym;
       if (!empty($variable_harmonization->studyTable->name)) {
         $variable_title = $variable_title . ' (' . mica_client_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
@@ -164,7 +165,8 @@ function mica_client_variable_get_harmonizations($variable) {
           )
         )) . '</p><p class="help-block">' . mica_client_commons_get_localized_field($variable_harmonization->studyTable, 'description') . '</p>',
         l($study_acronym, 'mica/study/' . $study_id),
-        mica_client_dataset_get_dce_name_from_dataset($variable_harmonization->studyTable, $study_summary),//$variable_harmonization->studyTable->populationId . ':' . $variable_harmonization->studyTable->dataCollectionEventId,
+        mica_client_dataset_get_dce_name_from_dataset($variable_harmonization->studyTable, $study_summary),
+        //$variable_harmonization->studyTable->populationId . ':' . $variable_harmonization->studyTable->dataCollectionEventId,
         l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
         _mica_client_variable_html_truncated(
           _mica_client_variable_attributes_detail($variable_harmonization, 'comment', array(
@@ -176,7 +178,7 @@ function mica_client_variable_get_harmonizations($variable) {
   }
 
   if (!empty($rows)) {
-    $headers = array(t('Harmonized Variable'), t('Study'), t('Data Collection Event'),t('Status'), t('Comment'));
+    $headers = array(t('Harmonized Variable'), t('Study'), t('Data Collection Event'), t('Status'), t('Comment'));
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,
@@ -282,14 +284,8 @@ function mica_client_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   $stat_tab = FALSE;
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
-  $variable_stat = $variable_resource->get_variable_facet($variable_id);
-  if (empty($variable_stat)) {
-    return FALSE;
-  }
-  if ($variable->variableType != 'Dataschema') {
-    $variable_stat = array($variable_stat);
-  }
-  if (!empty($variable_stat) && !empty(current($variable_stat)->totalHits)) {
+  $variable_stat = $variable_resource->get_variable_aggregation($variable_id);
+  if (!empty($variable_stat)) {
     $stat_tab['table'] = _mica_client_variable_table_stat($variable, $variable_stat);
     $stat_tab['chart'] = _mica_client_variable_chart_stat($variable, $variable_stat);
     return drupal_json_output($stat_tab);
@@ -301,12 +297,9 @@ function mica_client_dataset_variable_get_ajax_statistics_test($variable_id = NU
   $stat_tab = '';
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
-  $variable_stat = $variable_resource->get_variable_facet($variable_id);
-  if ($variable->variableType != 'Dataschema') {
-    $variable_stat = array($variable_stat);
-  }
-  dpm(current($variable_stat));
-  if (!empty($variable_stat) && !empty(current($variable_stat)->totalHits)) {
+  $variable_stat = $variable_resource->get_variable_aggregation($variable_id);
+  dpm($variable_stat);
+  if (!empty($variable_stat)) {
     $stat_tab .= _mica_client_variable_table_stat($variable, $variable_stat);
     $stat_tab .= _mica_client_variable_chart_stat($variable, $variable_stat);
   }
@@ -316,29 +309,52 @@ function mica_client_dataset_variable_get_ajax_statistics_test($variable_id = NU
 
 
 function _mica_client_variable_chart_stat($variable, $variable_stat) {
-  $labels = array();
-  $stats = _mica_client_variable_rebuild_stat($variable_stat, $variable);
   switch ($variable->nature) {
     case 'CONTINUOUS':
       break;
     case 'CATEGORICAL':
+      $aggregations = array();
+      if (!empty($variable_stat->aggregations)) {
+        $aggregations = $variable_stat->aggregations;
+      } else {
+        array_push($aggregations, $variable_stat);
+      }
 
-      foreach ($variable->categories as $key_categories => $category) {
-        foreach ($stats as $key_study => $study) {
-          if (!$category->missing && $key_study != '_all') {
-            $labels[$key_categories] = _mica_client_variable_attributes_detail($category, 'label');
-            $data[$key_study][$key_categories] = $study[$category->name];
-
+      $labels = array();
+      $data = array();
+      foreach ($variable->categories as $category) {
+        $label = _mica_client_variable_attributes_detail($category, 'label');
+        if (empty($label)) {
+          $label = $category->name;
+        } else {
+          $label = $category->name . ' (' . $label . ')';
+        }
+        $labels[] = $label;
+        foreach ($aggregations as $aggregation) {
+          if (!empty($aggregation->frequencies)) {
+            $study_id = $aggregation->studyTable->studyId;
+            $header = _mica_client_variable_study_acronym($variable, $study_id);
+            if (!empty($aggregation->studyTable->name)) {
+              $header = $header . '(' . mica_client_commons_get_localized_field($aggregation->studyTable, 'name') . ')';
+            }
+            foreach ($aggregation->frequencies as $frequency) {
+              if ($frequency->term == $category->name) {
+                $data[$header][] = $frequency->count;
+                break;
+              }
+            }
           }
         }
       }
-      $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, '', 800, 300, 'none');
-
-      return render($to_render);
+      if (!empty($data)) {
+        $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, NULL, NULL, 400, 'none');
+        return render($to_render);
+      } else {
+        return FALSE;
+      }
   }
   return FALSE;
 }
-
 
 function _mica_client_variable_table_stat($variable, $variable_stat) {
   switch ($variable->nature) {
@@ -347,42 +363,43 @@ function _mica_client_variable_table_stat($variable, $variable_stat) {
     case 'CATEGORICAL':
       return _mica_client_variable_table_stat_categorical($variable, $variable_stat);
   }
-  return FALSE;
+  return 'Statistics not supported (yet) for this variable nature: ' . $variable->nature;
 }
 
 function _mica_client_variable_table_stat_continuous($variable, $variable_stat) {
   $rows = array();
-  if ($variable->variableType == 'Dataschema') {
+  $aggregations = array();
 
+  if ($variable->variableType == 'Dataschema') {
+    if (!empty($variable_stat->aggregations)) {
+      $aggregations = $variable_stat->aggregations;
+    }
+  } else {
+    array_push($aggregations, $variable_stat);
   }
-  foreach ($variable->studyIds as $key => $study_id) {
+
+  foreach ($aggregations as $aggregation) {
     $row = array();
-    if ($variable->variableType == 'Dataschema') {
-      $row = array(l(_mica_client_variable_study_acronym($variable, $study_id), 'mica/study/' . $study_id));
+    $study_id = $aggregation->studyTable->studyId;
+    $header = l(_mica_client_variable_study_acronym($variable, $study_id), 'mica/study/' . $study_id);
+    if (!empty($aggregation->studyTable->name)) {
+      $header = $header . ' ' . mica_client_commons_get_localized_field($aggregation->studyTable, 'name');
     }
-    if (!empty($variable_stat[$key]->facets)) {
-      $statistics = $variable_stat[$key]->facets[0]->statistics;
-      array_push(
-        $row,
-        !empty($statistics->min) ? round($statistics->min, 3) : 'NaN',
-        !empty($statistics->max) ? round($statistics->max, 3) : 'NaN',
-        !empty($statistics->mean) ? round($statistics->mean, 3) : 'NaN',
-        !empty($statistics->stdDeviation) ? round($statistics->stdDeviation, 3) : 'NaN',
-        $statistics->count
-      );
-    }
-    else {
-      array_push(
-        $row,
-        'NaN',
-        'NaN',
-        'NaN',
-        'NaN',
-        $variable_stat[$key]->totalHits
-      );
-    }
-    $rows[] = $row;
+    $row[] = $header;
+    $rows[] = array_merge($row, _mica_client_variable_table_stat_continuous_statistics_to_row($aggregation));
   }
+
+  // combined statistics
+  if ($variable->variableType == 'Dataschema') {
+    $row = array(
+      array(
+        'data' => '<strong>' . t('All') . '</strong>',
+        'class' => array('active')
+      )
+    );
+    $rows[] = array_merge($row, _mica_client_variable_table_stat_continuous_statistics_to_row($variable_stat));
+  }
+
   $headers = array();
   if ($variable->variableType == 'Dataschema') {
     $headers = array(t('Study'));
@@ -391,61 +408,163 @@ function _mica_client_variable_table_stat_continuous($variable, $variable_stat) 
   return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No statistics available')));
 }
 
+function _mica_client_variable_table_stat_continuous_statistics_to_row($aggregation) {
+  if (!empty($aggregation->statistics)) {
+    $statistics = $aggregation->statistics;
+    return array(
+      !empty($statistics->min) ? round($statistics->min, 3) : '-',
+      !empty($statistics->max) ? round($statistics->max, 3) : '-',
+      !empty($statistics->mean) ? round($statistics->mean, 3) : '-',
+      !empty($statistics->stdDeviation) ? round($statistics->stdDeviation, 3) : '-',
+      $statistics->count
+    );
+  } else {
+    return array(
+      '-',
+      '-',
+      '-',
+      '-',
+      0
+    );
+  }
+}
+
 function _mica_client_variable_table_stat_categorical($variable, $variable_stat) {
-  $stats = _mica_client_variable_rebuild_stat($variable_stat, $variable);
   $headers = array('Value');
+  $rows = array();
+  $aggregations = array();
+
+  // headers
   if ($variable->variableType == 'Dataschema') {
-    foreach ($stats as $study_id => $stat) {
-      $headers[] = l(_mica_client_variable_study_acronym($variable, $study_id), 'mica/study/' . $study_id);
+    if (!empty($variable_stat->aggregations)) {
+      $aggregations = $variable_stat->aggregations;
+      foreach ($aggregations as $aggregation) {
+        $study_id = $aggregation->studyTable->studyId;
+        $header = l(_mica_client_variable_study_acronym($variable, $study_id), 'mica/study/' . $study_id);
+        if (!empty($aggregation->studyTable->name)) {
+          $header = $header . ' ' . mica_client_commons_get_localized_field($aggregation->studyTable, 'name');
+        }
+        $headers[] = $header;
+      }
+      if (count($aggregations)>1) {
+        $headers[] = t('All');
+      }
     }
   }
   else {
     array_push($headers, t('Frequency'));
-  }
-  $rows = array();
-  // Get total of non-missing categories
-  $totals = array();
-  foreach ($variable->categories as $category) {
-    if (!$category->missing) {
-      $category_name = $category->name;
-      foreach ($stats as $study_id => $stat) {
-        $s = isset($stat[$category_name]) ? $stat[$category_name] : 0;
-        $totals[$study_id] = isset($totals[$study_id]) ? $totals[$study_id] + $s : $s;
-      }
-    }
+    array_push($aggregations, $variable_stat);
   }
 
+  // total of non-missing categories (should be done server side!)
+  $total_non_missings = array();
+  foreach ($aggregations as $aggregation) {
+    $total_non_missing = 0;
+    if (!empty($aggregation->frequencies)) {
+      foreach ($aggregation->frequencies as $frequency) {
+        foreach ($variable->categories as $category) {
+          if (!$category->missing) {
+            $category_name = $category->name;
+            if ($frequency->term == $category_name) {
+              $total_non_missing += $frequency->count;
+              break;
+            }
+          }
+        }
+      }
+    }
+    $total_non_missings[] = $total_non_missing;
+  }
+
+  // counts per category
   foreach ($variable->categories as $category) {
     $category_name = $category->name;
     $category_label = _mica_client_variable_attributes_detail($category, 'label');
     $missing = $category->missing;
-    $row = array($category_label);
-    foreach ($stats as $study_id => $stat) {
-      if (!$missing && isset($stat[$category_name]) && $totals[$study_id] > 0) {
-        $percent = round(($stat[$category_name] / $totals[$study_id]) * 100, 1);
-        $row[] = isset($stat[$category_name]) ? $stat[$category_name] . '<p class="help-inline">(' . $percent . '%)</p>' : 0;
+    $row = array(array(
+      'data' => $category->name,
+      'title' => $category_label,
+    ));
+    $count_all = 0;
+    $total_non_missing_all = 0;
+    for ($i = 0; $i < count($aggregations); $i++) {
+      $aggregation = $aggregations[$i];
+      $total_non_missing = $total_non_missings[$i];
+      $count = 0;
+      if (!empty($aggregation->frequencies)) {
+        foreach ($aggregation->frequencies as $frequency) {
+          if ($frequency->term == $category_name) {
+            $count = $frequency->count;
+            $count_all += $count;
+            $total_non_missing_all += $total_non_missing;
+            if (!$missing && $total_non_missing > 0) {
+              $percent = round(($count / $total_non_missing) * 100, 1);
+              $count .= '<p class="help-inline">(' . $percent . '%)</p>';
+            }
+            break;
+          }
+        }
       }
-      else {
-        $row[] = isset($stat[$category_name]) ? $stat[$category_name] : 0;
+      $row[] = $count;
+    }
+    if (count($aggregations) > 1) {
+      if ($total_non_missing_all > 0) {
+        $percent = round(($count_all / $total_non_missing_all) * 100, 1);
+        $count_all .= '<p class="help-inline">(' . $percent . '%)</p>';
       }
+      $row[] = $count_all;
     }
     $rows[] = $row;
   }
+
+  // total non missing
+  $row = array('<strong>' . t('Total non missings') . '</strong>');
+  $total_non_missing_all = 0;
+  $total_all = 0;
+  for ($i = 0; $i < count($aggregations); $i++) {
+    $aggregation = $aggregations[$i];
+    $total_non_missing = $total_non_missings[$i];
+    $total_non_missing_all += $total_non_missing;
+    $total_all += $aggregation->total;
+    if ($total_non_missing > 0) {
+      $percent = round(($aggregation->total / $total_non_missing) * 100, 1);
+      $total_non_missing .= '<p class="help-inline">(' . $percent . '%)</p>';
+    }
+    $row[] = $total_non_missing;
+  }
+  if (count($aggregations) > 1) {
+    if ($total_all > 0) {
+      $percent = round(($total_all / $total_non_missing_all) * 100, 1);
+      $total_non_missing_all .= '<p class="help-inline">(' . $percent . '%)</p>';
+    }
+    $row[] = $total_non_missing_all;
+  }
+  $rows[] = $row;
+
+  // grand total
   $row = array(
     array(
-      'data' => t('All'),
+      'data' => '<strong>' . t('Total') . '</strong>',
       'class' => array('active')
     )
   );
-  foreach ($stats as $study_id => $stat) {
+  $total_all = 0;
+  foreach ($aggregations as $aggregation) {
     $row[] = array(
-      'data' => isset($stat['_all']) ? $stat['_all'] : 0,
+      'data' => $aggregation->total,
+      'class' => array('active')
+    );
+    $total_all += $aggregation->total;
+  }
+  if (count($aggregations) > 1) {
+    $row[] = array(
+      'data' => $total_all,
       'class' => array('active')
     );
   }
   $rows[] = $row;
-  return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No statistics available')));
 
+  return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No statistics available')));
 }
 
 /**
