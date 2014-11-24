@@ -151,3 +151,4 @@
     <i><?php print t('No coverage'); ?></i>
   </p>
 <?php endif ?>
+<div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i></div>

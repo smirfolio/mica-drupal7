@@ -797,17 +797,15 @@ div.search-count {
 }
 
 table.fix-first-column {
-  //table-layout:fixed;
-  //
+
   td {
     margin: 0;
   }
   div.inner {
-    width: 800px;
+    width: 100%;
     overflow-x: scroll;
-    margin-left: -350px;
+    margin-left: -347px;
     overflow-y: visible;
-    // padding-bottom:1px;
   }
 
 }
@@ -815,22 +813,30 @@ table.fix-first-column {
 .headcol {
   border-right: 1px solid #dddddd;
   border-left: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
   position: absolute;
   width: 347px !important;
   min-width: 347px !important;
   left: 25px;
-  margin-top: -0px; /*compensate for top border*/
+  margin-top: -1px; /*compensate for top border*/
 }
 
-//.headcol-footer {
-//  border-right:0px;
-//  border-left:1px solid #dddddd;
-//  border-bottom:1px solid #dddddd;
-//}
-//
-//.headcol-header {
-//  border-right: 1px solid #dddddd;
-//}
+.back-to-top {
+  cursor: pointer;
+  position: fixed;
+  bottom: 2em;
+  right: 35px;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: #000;
+  font-size: 30px;
+  padding-right: 3px;
+  padding-top: 10px;
+  display: none;
+  opacity: 0.6;
+  filter: alpha(opacity=60); /* For IE8 and earlier */
+}
 
-
+.back-to-top:hover {
+  opacity: 0.8;
+  filter: alpha(opacity=80); /* For IE8 and earlier */
+}

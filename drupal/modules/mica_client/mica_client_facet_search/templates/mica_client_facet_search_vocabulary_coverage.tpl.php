@@ -31,7 +31,9 @@
         <thead>
         <tr>
           <th class="headcol" style="border-top: 1px solid #dddddd;"><?php print t('Term'); ?></th>
-          <th style="text-align: center;">
+          <th style="text-align: center; <?php if (empty($vocabulary_coverage->buckets)) {
+            print "width:100%;";
+          } ?>">
             <?php print t('All'); ?>
           </th>
           <?php if (!empty($vocabulary_coverage->buckets)): ?>
@@ -65,7 +67,8 @@
         </thead>
         <tfoot>
         <tr>
-          <th class="headcol" style="width: 347px;"><?php print t('Total'); ?></th>
+          <th class="headcol" style="border-bottom: 1px solid #dddddd;
+          margin-top: -0px;"><?php print t('Total'); ?></th>
           <th style="text-align: center;" title="100%">
             <?php
             print l($vocabulary_coverage->hits, 'mica/search',

@@ -271,6 +271,9 @@ function _mica_client_facet_search_get_facets_block_by_dto_type($dto_type, $type
 }
 
 function mica_client_facet_search_load_libs() {
+  $module_path_commons = drupal_get_path('module', 'mica_client_commons');
+  drupal_add_js($module_path_commons . '/js/mica-client-commons-got-top.js');
+  dpm($module_path_commons);
   $module_path_ = drupal_get_path('module', 'mica_client_facet_search');
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-common.js');
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-query-serializer.js');

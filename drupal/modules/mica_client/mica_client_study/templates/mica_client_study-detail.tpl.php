@@ -572,3 +572,4 @@
 </article>
 <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
 <div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
+<div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i></div>
