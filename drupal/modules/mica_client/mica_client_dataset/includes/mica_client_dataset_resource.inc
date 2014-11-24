@@ -254,6 +254,32 @@ class MicaDatasetResource extends MicaClient {
   }
 
   /**
+   * Get the aggregation (=summary from ES) of the variable.
+   *
+   * @param $variable_id
+   * @return array|mixed
+   */
+  public function get_variable_aggregation($variable_id) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/variable/' . rawurlencode($variable_id) . '/aggregation';
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return json_decode($data);
+    } catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
+  /**
    * Get the harmonizations of a dataschema variable.
    *
    * @param $variable_id
