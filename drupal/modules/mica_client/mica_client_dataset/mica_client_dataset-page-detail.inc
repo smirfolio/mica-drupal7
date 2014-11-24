@@ -56,7 +56,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       );
       if (!empty($variables_dataset)) {
         $_SESSION['variables']['aggregations']['totalHits'] = $variables_dataset->total;
-        mica_client_dataset_prepare_harmonizations_download($dataset_id, $dataset_type_dto, $variables_dataset);
+        drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_download_harmonizations.js', 'file');
+        drupal_add_js(array('resource_url' => $dataset_id.'/download', 'resource_id' => $dataset_id), 'setting');
 
         $variables_dataset->study = NULL;
         $variables_dataset->harmonization = TRUE;
@@ -208,78 +209,20 @@ function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
 
 /**
  * @param $dataset_id
- * @param $dataset_type_dto
- * @param $variables_dataset
+ * @return array
  */
-function mica_client_dataset_prepare_harmonizations_download($dataset_id, $dataset_type_dto, $variables_dataset) {
-  drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_download_harmonizations.js', 'file');
-  $csv_data = array( //
-    'rawData' => mica_client_dataset_harmonizations_for_csv($dataset_type_dto, $variables_dataset), //
-    'dataset' => $dataset_id //
-  );
-  drupal_add_js($csv_data, 'setting');
-}
-
-function mica_client_dataset_harmonizations_for_csv($dataset_type_dto, $dataset_harmonizations_dto) {
-  $rows = array();
-  $headers = array(t('Variable'));
-
-  if (!empty($dataset_type_dto->studyTables)) {
-    foreach ($dataset_type_dto->studyTables as $study_table) {
-      $study_summary = $study_table->studySummary;
-      $header = $study_summary->id;
-      if (!empty($study_table->name)) {
-        $header = $header . ' (' . mica_client_commons_get_localized_field($study_table, 'name') . ')';
-      }
-      array_push($headers, $header);
-    }
-
-    if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
-
-      foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {
-        $row = array($variable_harmonization->resolver->name);
-
-        foreach ($dataset_type_dto->studyTables as $study_table) {
-          $found = FALSE;
-          foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
-            if ($variable_summary->resolver->studyId == $study_table->studyId
-              && $variable_summary->resolver->project == $study_table->project
-              && $variable_summary->resolver->table == $study_table->table
-            ) {
-              $status = strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
-                'maelstrom',
-                'Mlstr_harmo'
-              )));
-              if (empty($status)) {
-                $row[] = '-';
-              }
-              elseif ($status == 'complete') {
-                $row[] = t('Complete');
-              }
-              elseif ($status == 'impossible') {
-                $row[] = t('Impossible');
-              }
-              elseif ($status == 'undetermined') {
-                $row[] = t('Undetermined');
-              }
-              else {
-                $row[] = '-';
-              }
-              $found = TRUE;
-              break;
-            }
-          }
-          if (!$found) {
-            $row[] = '-';
-          }
-        }
-
-        $rows[] = $row;
-      }
-    }
+function mica_client_dataset_page_detail_download($dataset_id) {
+  global $language;
+  $dataset_resource = new MicaDatasetResource();
+  $response = $dataset_resource->download_variables_harmonizations($dataset_id, $language->language);
+  if (!empty($response)) {
+    $headers = $dataset_resource->getLastResponseHeaders();
+    drupal_add_http_header('Content-Type', $headers['Content-Type'][0] .'; utf-8');
+    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+    ob_clean();
+    print $response->body;
+    exit;
   }
-
-  return array('headers' => $headers, 'rows' => $rows);
 }
 
 function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto) {
