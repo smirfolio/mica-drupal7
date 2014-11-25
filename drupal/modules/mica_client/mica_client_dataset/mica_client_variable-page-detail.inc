@@ -379,12 +379,14 @@ function _mica_client_variable_table_stat_continuous($variable, $variable_stat) 
 
   foreach ($aggregations as $aggregation) {
     $row = array();
-    $study_id = $aggregation->studyTable->studyId;
-    $header = l(_mica_client_variable_study_acronym($variable, $study_id), 'mica/study/' . $study_id);
-    if (!empty($aggregation->studyTable->name)) {
-      $header = $header . ' ' . mica_client_commons_get_localized_field($aggregation->studyTable, 'name');
+    if ($variable->variableType == 'Dataschema') {
+      $study_id = $aggregation->studyTable->studyId;
+      $header = l(_mica_client_variable_study_acronym($variable, $study_id), 'mica/study/' . $study_id);
+      if (!empty($aggregation->studyTable->name)) {
+        $header = $header . ' ' . mica_client_commons_get_localized_field($aggregation->studyTable, 'name');
+      }
+      $row[] = $header;
     }
-    $row[] = $header;
     $rows[] = array_merge($row, _mica_client_variable_table_stat_continuous_statistics_to_row($aggregation));
   }
 
@@ -423,7 +425,7 @@ function _mica_client_variable_table_stat_continuous_statistics_to_row($aggregat
       '-',
       '-',
       '-',
-      0
+      '-'
     );
   }
 }

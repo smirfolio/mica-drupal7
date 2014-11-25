@@ -23,8 +23,8 @@ function mica_client_facet_search_menu() {
   );
 
   $items['mica/coverage'] = array(
-    'title' => 'Coverage',
-    'description' => t('Coverage'),
+    'title' => 'Classifications Coverage',
+    'description' => t('Classifications Coverage'),
     'page callback' => 'mica_client_facet_search_coverage_page',
     'access callback' => TRUE
   );

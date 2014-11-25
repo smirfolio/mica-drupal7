@@ -49,7 +49,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
 
       $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
         $dataset_id,
-        $from, 100,
+        $from, MicaClient::SIZE_RESPONSE,
         $dataset_sort,
         $dataset_sort_by,
         $dataset_query
@@ -185,7 +185,7 @@ function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
   $headers = array(t('Variable'), t('Domains'));
   if (!empty($dataset_harmonizations_dto->variables)) {
     $total = $dataset_harmonizations_dto->total;
-    $per_page = 100;
+    $per_page = MicaClient::SIZE_RESPONSE;
     pager_default_initialize($total, $per_page);
 
     foreach ($dataset_harmonizations_dto->variables as $variable) {
@@ -243,7 +243,7 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
 
     if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
       $total = $dataset_harmonizations_dto->total;
-      $per_page = 100;
+      $per_page = MicaClient::SIZE_RESPONSE;
       pager_default_initialize($total, $per_page);
 
       foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {

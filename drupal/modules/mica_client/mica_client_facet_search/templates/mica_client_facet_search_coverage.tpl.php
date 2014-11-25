@@ -122,7 +122,7 @@
       <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
 
         <section>
-          <a href="#" class="btn btn-success md-top-margin pull-right"><i class="glyphicon glyphicon-download right-indent"></i>Download</a>
+<!--          <a href="#" class="btn btn-success md-top-margin pull-right"><i class="glyphicon glyphicon-download right-indent"></i>Download</a>-->
 
           <div>
             <h3 id="<?php print $taxonomy_coverage->taxonomy->name; ?>">
