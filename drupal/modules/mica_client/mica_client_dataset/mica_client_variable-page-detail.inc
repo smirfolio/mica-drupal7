@@ -167,7 +167,12 @@ function mica_client_variable_get_harmonizations($variable) {
         l($study_acronym, 'mica/study/' . $study_id),
         mica_client_dataset_get_dce_name_from_dataset($variable_harmonization->studyTable, $study_summary),
         //$variable_harmonization->studyTable->populationId . ':' . $variable_harmonization->studyTable->dataCollectionEventId,
-        l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
+        l($status, 'mica/variable/' . $harmonized_variable_id, array(
+          'html' => TRUE,
+          'query' => array(
+            'title' => $variable_title
+          )
+        )),
         _mica_client_variable_html_truncated(
           _mica_client_variable_attributes_detail($variable_harmonization, 'comment', array(
             'maelstrom',
@@ -191,12 +196,7 @@ function mica_client_variable_get_harmonizations($variable) {
 }
 
 function mica_client_variable_get_harmonization($harmonized_variable) {
-  $rows = array();
-  if ($harmonized_variable->variableType != 'Harmonized') {
-    ;
-  }
-
-  $rows = array(
+  return array(
     'status' => _mica_client_variable_attributes_detail($harmonized_variable, 'status', array(
       'maelstrom',
       'Mlstr_harmo'
@@ -211,8 +211,6 @@ function mica_client_variable_get_harmonization($harmonized_variable) {
     ))),
     'script' => _mica_client_variable_attributes_detail($harmonized_variable, 'script'),
   );
-
-  return $rows;
 }
 
 function _mica_client_variable_html_truncated($text, $label, $size = 200, $is_code = FALSE, $pre_class = '') {
@@ -315,7 +313,8 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
       $aggregations = array();
       if (!empty($variable_stat->aggregations)) {
         $aggregations = $variable_stat->aggregations;
-      } else {
+      }
+      else {
         array_push($aggregations, $variable_stat);
       }
 
@@ -325,7 +324,8 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
         $label = _mica_client_variable_attributes_detail($category, 'label');
         if (empty($label)) {
           $label = $category->name;
-        } else {
+        }
+        else {
           $label = $category->name . ' (' . $label . ')';
         }
         $labels[] = $label;
@@ -348,7 +348,8 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
       if (!empty($data)) {
         $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, NULL, NULL, 400, 'none');
         return render($to_render);
-      } else {
+      }
+      else {
         return FALSE;
       }
   }
@@ -373,7 +374,8 @@ function _mica_client_variable_table_stat_continuous($variable, $variable_stat) 
     if (!empty($variable_stat->aggregations)) {
       $aggregations = $variable_stat->aggregations;
     }
-  } else {
+  }
+  else {
     array_push($aggregations, $variable_stat);
   }
 
@@ -413,13 +415,14 @@ function _mica_client_variable_table_stat_continuous_statistics_to_row($aggregat
   if (!empty($aggregation->statistics)) {
     $statistics = $aggregation->statistics;
     return array(
-      !empty($statistics->min) ? round($statistics->min, 3) : '-',
-      !empty($statistics->max) ? round($statistics->max, 3) : '-',
-      !empty($statistics->mean) ? round($statistics->mean, 3) : '-',
-      !empty($statistics->stdDeviation) ? round($statistics->stdDeviation, 3) : '-',
+      property_exists($statistics, 'min') ? round($statistics->min, 3) : '-',
+      property_exists($statistics, 'max') ? round($statistics->max, 3) : '-',
+      property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ? round($statistics->mean, 3) : '-',
+      property_exists($statistics, 'stdDeviation') ? round($statistics->stdDeviation, 3) : '-',
       $statistics->count
     );
-  } else {
+  }
+  else {
     return array(
       '-',
       '-',
@@ -447,7 +450,7 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
         }
         $headers[] = $header;
       }
-      if (count($aggregations)>1) {
+      if (count($aggregations) > 1) {
         $headers[] = t('All');
       }
     }
@@ -482,10 +485,12 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
     $category_name = $category->name;
     $category_label = _mica_client_variable_attributes_detail($category, 'label');
     $missing = $category->missing;
-    $row = array(array(
-      'data' => $category->name,
-      'title' => $category_label,
-    ));
+    $row = array(
+      array(
+        'data' => $category->name,
+        'title' => $category_label,
+      )
+    );
     $count_all = 0;
     $total_non_missing_all = 0;
     for ($i = 0; $i < count($aggregations); $i++) {
