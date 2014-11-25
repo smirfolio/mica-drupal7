@@ -24,17 +24,14 @@
 
 
 
-  <div class="coverage-table outer">
-    <div class="inner">
+  <div class="coverage-table">
 
-      <table class="table table-striped fix-first-column ">
+    <table class="table table-striped fix-first-column ">
         <thead>
         <tr>
-          <th class="headcol" style="border-top: 1px solid #dddddd;"><?php print t('Term'); ?></th>
-          <th style="text-align: center; <?php if (empty($vocabulary_coverage->buckets)) {
-            print "width:100%;";
-          } ?>">
-            <?php print t('All'); ?>
+          <th class="fix-width-550"><?php print t('Term'); ?></th>
+          <th>
+          <?php print t('All'); ?>
           </th>
           <?php if (!empty($vocabulary_coverage->buckets)): ?>
             <?php foreach ($vocabulary_coverage->buckets as $bucket) : ?>
@@ -67,8 +64,7 @@
         </thead>
         <tfoot>
         <tr>
-          <th class="headcol" style="border-bottom: 1px solid #dddddd;
-          margin-top: -0px;"><?php print t('Total'); ?></th>
+          <th><?php print t('Total'); ?></th>
           <th style="text-align: center;" title="100%">
             <?php
             print l($vocabulary_coverage->hits, 'mica/search',
@@ -191,7 +187,7 @@
         </tbody>
       </table>
 
-    </div>
+
   </div>
 
   <div>

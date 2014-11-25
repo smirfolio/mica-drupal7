@@ -8550,7 +8550,6 @@ div.coverage-table-legend i {
 }
 
 .coverage-table {
-    margin-left: 350px;
     overflow: auto;
     border: 1px solid #dddddd;
     margin-bottom: 20px;
@@ -9462,26 +9461,9 @@ div.search-count span {
     background-color: #f9f9f9;
 }
 
-table.fix-first-column td {
-    margin: 0;
-}
-
-table.fix-first-column div.inner {
-    width: 100%;
-    overflow-x: scroll;
-    margin-left: -347px;
-    overflow-y: visible;
-}
-
-.headcol {
-    border-right: 1px solid #dddddd;
-    border-left: 1px solid #dddddd;
-    position: absolute;
-    width: 347px !important;
-    min-width: 347px !important;
-    left: 25px;
-    margin-top: -1px;
-    /*compensate for top border*/
+.fix-width-550 {
+    width: 350px !important;
+    min-width: 350px !important;
 }
 
 .back-to-top {
