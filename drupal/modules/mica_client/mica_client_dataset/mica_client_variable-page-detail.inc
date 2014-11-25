@@ -167,7 +167,12 @@ function mica_client_variable_get_harmonizations($variable) {
         l($study_acronym, 'mica/study/' . $study_id),
         mica_client_dataset_get_dce_name_from_dataset($variable_harmonization->studyTable, $study_summary),
         //$variable_harmonization->studyTable->populationId . ':' . $variable_harmonization->studyTable->dataCollectionEventId,
-        l($status, 'mica/variable/' . $harmonized_variable_id, array('html' => TRUE)),
+        l($status, 'mica/variable/' . $harmonized_variable_id, array(
+          'html' => TRUE,
+          'query' => array(
+            'title' => $variable_title
+          )
+        )),
         _mica_client_variable_html_truncated(
           _mica_client_variable_attributes_detail($variable_harmonization, 'comment', array(
             'maelstrom',
