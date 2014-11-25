@@ -406,10 +406,10 @@ function _mica_client_variable_table_stat_continuous_statistics_to_row($aggregat
   if (!empty($aggregation->statistics)) {
     $statistics = $aggregation->statistics;
     return array(
-      !empty($statistics->min) ? round($statistics->min, 3) : '-',
-      !empty($statistics->max) ? round($statistics->max, 3) : '-',
-      !empty($statistics->mean) ? round($statistics->mean, 3) : '-',
-      !empty($statistics->stdDeviation) ? round($statistics->stdDeviation, 3) : '-',
+      property_exists($statistics,'min') ? round($statistics->min, 3) : '-',
+      property_exists($statistics,'max') ? round($statistics->max, 3) : '-',
+      property_exists($statistics,'mean') ? round($statistics->mean, 3) : '-',
+      property_exists($statistics,'stdDeviation') ? round($statistics->stdDeviation, 3) : '-',
       $statistics->count
     );
   } else {
