@@ -425,7 +425,7 @@ function _mica_client_variable_table_stat_continuous_statistics_to_row($aggregat
       '-',
       '-',
       '-',
-      0
+      '-'
     );
   }
 }
