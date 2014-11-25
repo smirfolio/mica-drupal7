@@ -191,12 +191,7 @@ function mica_client_variable_get_harmonizations($variable) {
 }
 
 function mica_client_variable_get_harmonization($harmonized_variable) {
-  $rows = array();
-  if ($harmonized_variable->variableType != 'Harmonized') {
-    ;
-  }
-
-  $rows = array(
+  return array(
     'status' => _mica_client_variable_attributes_detail($harmonized_variable, 'status', array(
       'maelstrom',
       'Mlstr_harmo'
@@ -211,8 +206,6 @@ function mica_client_variable_get_harmonization($harmonized_variable) {
     ))),
     'script' => _mica_client_variable_attributes_detail($harmonized_variable, 'script'),
   );
-
-  return $rows;
 }
 
 function _mica_client_variable_html_truncated($text, $label, $size = 200, $is_code = FALSE, $pre_class = '') {
