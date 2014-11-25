@@ -1,7 +1,6 @@
 (function ($) {
   Drupal.behaviors.mica_client_commons = {
     attach: function (context, settings) {
-      console.log('hihaaaaaaa');
       /*deal with back to top button*/
       var offset = 220;
       var duration = 500;
