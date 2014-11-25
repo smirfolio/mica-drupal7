@@ -308,7 +308,8 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
       $aggregations = array();
       if (!empty($variable_stat->aggregations)) {
         $aggregations = $variable_stat->aggregations;
-      } else {
+      }
+      else {
         array_push($aggregations, $variable_stat);
       }
 
@@ -318,7 +319,8 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
         $label = _mica_client_variable_attributes_detail($category, 'label');
         if (empty($label)) {
           $label = $category->name;
-        } else {
+        }
+        else {
           $label = $category->name . ' (' . $label . ')';
         }
         $labels[] = $label;
@@ -341,7 +343,8 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
       if (!empty($data)) {
         $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, NULL, NULL, 400, 'none');
         return render($to_render);
-      } else {
+      }
+      else {
         return FALSE;
       }
   }
@@ -366,7 +369,8 @@ function _mica_client_variable_table_stat_continuous($variable, $variable_stat) 
     if (!empty($variable_stat->aggregations)) {
       $aggregations = $variable_stat->aggregations;
     }
-  } else {
+  }
+  else {
     array_push($aggregations, $variable_stat);
   }
 
@@ -406,13 +410,14 @@ function _mica_client_variable_table_stat_continuous_statistics_to_row($aggregat
   if (!empty($aggregation->statistics)) {
     $statistics = $aggregation->statistics;
     return array(
-      property_exists($statistics,'min') ? round($statistics->min, 3) : '-',
-      property_exists($statistics,'max') ? round($statistics->max, 3) : '-',
-      property_exists($statistics,'mean') ? round($statistics->mean, 3) : '-',
-      property_exists($statistics,'stdDeviation') ? round($statistics->stdDeviation, 3) : '-',
+      property_exists($statistics, 'min') ? round($statistics->min, 3) : '-',
+      property_exists($statistics, 'max') ? round($statistics->max, 3) : '-',
+      property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ? round($statistics->mean, 3) : '-',
+      property_exists($statistics, 'stdDeviation') ? round($statistics->stdDeviation, 3) : '-',
       $statistics->count
     );
-  } else {
+  }
+  else {
     return array(
       '-',
       '-',
@@ -440,7 +445,7 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
         }
         $headers[] = $header;
       }
-      if (count($aggregations)>1) {
+      if (count($aggregations) > 1) {
         $headers[] = t('All');
       }
     }
@@ -475,10 +480,12 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
     $category_name = $category->name;
     $category_label = _mica_client_variable_attributes_detail($category, 'label');
     $missing = $category->missing;
-    $row = array(array(
-      'data' => $category->name,
-      'title' => $category_label,
-    ));
+    $row = array(
+      array(
+        'data' => $category->name,
+        'title' => $category_label,
+      )
+    );
     $count_all = 0;
     $total_non_missing_all = 0;
     for ($i = 0; $i < count($aggregations); $i++) {
