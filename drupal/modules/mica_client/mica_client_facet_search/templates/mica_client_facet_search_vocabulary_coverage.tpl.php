@@ -30,7 +30,7 @@
         <thead>
         <tr>
           <th class="fix-width-550"><?php print t('Term'); ?></th>
-          <th>
+          <th style="text-align: center;">
           <?php print t('All'); ?>
           </th>
           <?php if (!empty($vocabulary_coverage->buckets)): ?>
@@ -116,9 +116,9 @@
                 title="<?php print mica_client_commons_get_localized_field($term_coverage->term, 'descriptions'); ?>"
                 style="vertical-align: middle;   word-wrap:break-word;" class="headcol">
               <?php if (empty($term_coverage->hits)): ?>
-                <?php print truncate_utf8(mica_client_commons_get_localized_field($term_coverage->term, 'titles'), 55, TRUE, TRUE); ?>
+                <?php print mica_client_commons_get_localized_field($term_coverage->term, 'titles'); ?>
               <?php else: ?>
-                <?php print l(truncate_utf8(mica_client_commons_get_localized_field($term_coverage->term, 'titles'), 55, TRUE, TRUE), 'mica/search',
+                <?php print l(mica_client_commons_get_localized_field($term_coverage->term, 'titles'), 'mica/search',
                   array(
                     'query' => array(
                       'type' => 'variables',

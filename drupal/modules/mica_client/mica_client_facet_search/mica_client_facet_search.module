@@ -426,9 +426,11 @@ function mica_client_facet_search_variable_page_search() {
 }
 
 Function mica_client_facet_search_get_buckets($vocabulary_coverage, $all_bucket) {
-  foreach ($vocabulary_coverage->buckets as $bucket) {
-    if ((string) $bucket->value == (string) $all_bucket->value) {
-      return $bucket;
+  if (!empty($vocabulary_coverage->buckets)) {
+    foreach ($vocabulary_coverage->buckets as $bucket) {
+      if ((string) $bucket->value == (string) $all_bucket->value) {
+        return $bucket;
+      }
     }
   }
   return FALSE;
@@ -436,9 +438,11 @@ Function mica_client_facet_search_get_buckets($vocabulary_coverage, $all_bucket)
 
 
 Function mica_client_facet_search_get_terms($terms_buckets, $all_bucket) {
-  foreach ($terms_buckets->buckets as $bucket) {
-    if ((string) $bucket->value == (string) $all_bucket->value) {
-      return $bucket;
+  if (!empty($terms_buckets->buckets)) {
+    foreach ($terms_buckets->buckets as $bucket) {
+      if ((string) $bucket->value == (string) $all_bucket->value) {
+        return $bucket;
+      }
     }
   }
   return FALSE;
