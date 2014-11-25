@@ -79,6 +79,13 @@
             <td><p><?php print t($variable_dto->valueType); ?></p></td>
           </tr>
 
+          <?php if (!empty($variable_dto->unit)): ?>
+            <tr>
+              <td><h5><?php print t('Unit'); ?></h5></td>
+              <td><p><?php print t($variable_dto->unit); ?></p></td>
+            </tr>
+          <?php endif; ?>
+
           <tr>
             <td><h5><?php print t('Variable Type'); ?></h5></td>
             <td>
