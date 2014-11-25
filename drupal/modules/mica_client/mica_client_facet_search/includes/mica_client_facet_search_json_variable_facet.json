@@ -84,11 +84,6 @@
         "key": "administrative_info",
         "aggs": "attributes-Mlstr_area__Administrative_information-und"
     },
-    "harmo_status": {
-        "title": "dataset-HARMO STATUS",
-        "key": "harmo_status",
-        "aggs": "attributes-Mlstr_harmo__status-und"
-    },
     "variableType": {
         "title": "dataset-VARIABLE TYPE",
         "key": "variableType",
