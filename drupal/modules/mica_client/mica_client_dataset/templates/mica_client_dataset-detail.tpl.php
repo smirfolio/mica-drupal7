@@ -182,7 +182,7 @@
 <!-- COVERAGE -->
 <?php if (!empty($coverage)): ?>
   <section>
-    <h3><?php print t('Coverage') ?></h3>
+    <h3><?php print t('Classifications Coverage') ?></h3>
     <?php foreach ($coverage as $taxonomy_coverage): ?>
       <h4><?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
       <p class="help-block">
