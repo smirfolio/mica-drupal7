@@ -84,6 +84,16 @@
         "key": "administrative_info",
         "aggs": "attributes-Mlstr_area__Administrative_information-und"
     },
+    "target": {
+        "title": "dataset-Target",
+        "key": "target",
+        "aggs": "attributes-Mlstr_area__Target-und"
+    },
+    "source": {
+        "title": "dataset-Source",
+        "key": "source",
+        "aggs": "attributes-Mlstr_area__Source-und"
+    },
     "variableType": {
         "title": "dataset-VARIABLE TYPE",
         "key": "variableType",
