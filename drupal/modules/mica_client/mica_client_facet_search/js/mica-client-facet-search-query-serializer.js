@@ -78,7 +78,7 @@
        * @returns {{matches: *}}
        */
       function extractMatchesEntry(value) {
-        var entry = /^(\w+)::matches:(.*)=(.*)$/.exec(value);
+        var entry = /^(\w+)::matches:.*=(.*)$/.exec(value);
         return entry === null ? null : {type: entry[1], matches: entry[2]};
       }
 
@@ -149,6 +149,13 @@
         $.each(jsonForm, function (type, typeValues) {
           if (type === entry.type) {
             $.each(typeValues, function (aggType, aggs) {
+              if (aggType === 'matches') {
+                delete typeValues[aggType];
+
+                $.trimJson(jsonForm);
+                return false;
+              }
+
               if (aggType === entry.aggType) {
                 $.each(aggs, function (name, agg) {
                   if (name === entry.agg) {

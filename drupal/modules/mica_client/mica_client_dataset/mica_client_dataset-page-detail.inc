@@ -46,16 +46,18 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
     }
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
-
+      $total = empty($_SESSION['variables']['aggregations']['totalHits']) ? 0 : $_SESSION['variables']['aggregations']['totalHits'];
+      $from = MicaClient::next_page_offset(empty($_GET['page']) ? 0 : $_GET['page'], MicaClient::SIZE_RESPONSE, $total);
       $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
         $dataset_id,
-        $from, MicaClient::SIZE_RESPONSE,
+        $from,
+        MicaClient::SIZE_RESPONSE,
         $dataset_sort,
         $dataset_sort_by,
         $dataset_query
       );
       if (!empty($variables_dataset)) {
-        $_SESSION['variables']['aggregations']['totalHits'] = $variables_dataset->total;
+        $_SESSION['variables']['aggregations']['totalHits'] = $total;
         drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_download_harmonizations.js', 'file');
         drupal_add_js(array('resource_url' => $dataset_id.'/download', 'resource_id' => $dataset_id), 'setting');
 
@@ -229,6 +231,12 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
   $rows = array();
   $headers = array(t('Variable'));
 
+  if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
+    $total = $dataset_harmonizations_dto->total;
+    $per_page = MicaClient::SIZE_RESPONSE;
+    pager_default_initialize($total, $per_page);
+  }
+
   if (!empty($dataset_type_dto->studyTables)) {
     foreach ($dataset_type_dto->studyTables as $study_table) {
       $study_summary = $study_table->studySummary;
@@ -242,9 +250,6 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
     }
 
     if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
-      $total = $dataset_harmonizations_dto->total;
-      $per_page = MicaClient::SIZE_RESPONSE;
-      pager_default_initialize($total, $per_page);
 
       foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {
         $row = array(

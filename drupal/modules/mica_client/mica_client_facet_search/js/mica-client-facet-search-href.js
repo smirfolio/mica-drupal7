@@ -219,6 +219,24 @@
 
       }
 
+      function form_click_handler(aggregation) {
+        var json = getQueryFromUrl();
+        var input = $("input[id='" + aggregation + "']");
+        if (input.val()) {
+          $.query_serializer.addItem( //
+            json, //
+            decodeURIComponent(input.serialize()) //
+          );
+        } else {
+          $.query_serializer.removeItem( //
+            json, //
+            decodeURIComponent(input.serialize()) //
+          );
+        }
+
+        updateWindowLocation(JSON.stringify(json));
+      }
+
       function process() {
         /**********************/
         /*hide main search facet block*/
@@ -247,14 +265,19 @@
           }
         });
 
+        $("body").keypress(function (event) {
+          if (event.which == 13) {
+            if ($("input[id*='matches:facet-search-query']").is(":focus")) {
+              var element = $(document.activeElement)[0];
+              event.preventDefault();
+              form_click_handler($(element).attr('id'));
+            }
+          }
+        });
+
         /*send request search on checking the box or on click go button */
         $("div#checkthebox, button#facet-search-submit").on("click", function () {
-          var json = getQueryFromUrl();
-          $.query_serializer.addItem( //
-            json, //
-            decodeURIComponent($("input[id='" + $(this).attr('aggregation') + "']").serialize()) //
-          );
-          updateWindowLocation(JSON.stringify(json));
+          form_click_handler($(this).attr('aggregation'));
         });
 
         $("input[id='range-auto-fill']").on("blur", function () {

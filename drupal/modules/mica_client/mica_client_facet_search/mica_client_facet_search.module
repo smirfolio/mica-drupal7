@@ -111,23 +111,17 @@ function mica_client_commons_create_facet_search_query_form($arg) {
   $form['#prefix'] = '<div class="inline-form">';
   $form['#suffix'] = '</div>';
 
-  // TODO remove this once the OR-Operation is completed
-//  $input_id = "$type::matches:facet-search-query";
-//  $form['facet-search-query'.$type] = array(
-//    '#type' => 'textfield',
-//    '#title' => '',
-//    '#description' => 'Filter by',
-//    '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
-//    '#prefix' => '<div class="right-indent lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
-//    '#suffix' => '</div></div>',
-//    '#attributes' => array('id' => $input_id, 'name' => $input_id)
-//  );
-//
-//  $form['facet-search-submit'] = array(
-//    '#type' => 'button',
-//    '#value' => t('Search'),
-//    '#attributes' => array('id' => 'facet-search-submit')
-//  );
+  $input_id = "$type::matches:facet-search-query";
+  $filter_button = "<button type='button' class='btn btn-primary' id='facet-search-submit' aggregation='" . $input_id ."''>".t('Go')."</span></button>";
+  $form['facet-search-query'.$type] = array(
+    '#type' => 'textfield',
+    '#title' => '',
+    '#description' => 'Filter by',
+    '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
+    '#prefix' => '<div class="right-indent lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>',
+    '#suffix' => "<div class='input-group-btn'>".$filter_button."</div></div></div>",
+    '#attributes' => array('id' => $input_id, 'name' => $input_id)
+  );
 
   return $form;
 }
