@@ -112,14 +112,13 @@ function mica_client_commons_create_facet_search_query_form($arg) {
   $form['#suffix'] = '</div>';
 
   $input_id = "$type::matches:facet-search-query";
-  $filter_button = "<button type='button' class='btn btn-primary' id='facet-search-submit' aggregation='" . $input_id ."''>".t('Go')."</span></button>";
   $form['facet-search-query'.$type] = array(
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Filter by',
     '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
     '#prefix' => '<div class="right-indent lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>',
-    '#suffix' => "<div class='input-group-btn'>".$filter_button."</div></div></div>",
+    '#suffix' => "</div></div>",
     '#attributes' => array('id' => $input_id, 'name' => $input_id)
   );
 
