@@ -60,7 +60,7 @@
   function renderMatches(type, value) {
     var matches = renderMatchesElement('matches', type, translate(type));
     var matchesValue = renderValuesContainer().append(renderMatchesElement('matches-value', type, value));
-    contentRefresh.append(matches.append(renderMatch()).append(matchesValue));
+    contentQuery.append(matches.append(renderMatch()).append(matchesValue));
   }
 
   function renderMatchesElement(cssClass, type, text) {
@@ -243,7 +243,9 @@
       var i = 0;
       var total = 0;
       $.each(typeValues, function (aggType, aggs) {
-        total += Object.keys(typeValues[aggType]).length;
+        if (aggType !== 'matches') {
+          total += Object.keys(typeValues[aggType]).length;
+        }
       })
 
       $.each(typeValues, function (aggType, aggs) {
