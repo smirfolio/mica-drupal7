@@ -363,7 +363,7 @@ function _mica_client_variable_table_stat($variable, $variable_stat) {
     case 'CATEGORICAL':
       return _mica_client_variable_table_stat_categorical($variable, $variable_stat);
   }
-  return '<div class="alert alert-info">Statistics are currently only supported for categorical variables and continuous numerical variables.</div>';
+  return '<div class="alert alert-info">Statistics are currently supported only for categorical variables and continuous numerical variables.</div>';
 }
 
 function _mica_client_variable_table_stat_continuous($variable, $variable_stat) {
