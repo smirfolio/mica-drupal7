@@ -29,19 +29,22 @@
     <table class="table table-striped fix-first-column ">
       <thead>
       <tr>
-        <th
-          style="<?php if (!empty($vocabulary_coverage->buckets)) {
-            print 'width: 350px; min-width: 350px;';
-          } ?>"><?php print t('Term'); ?></th>
-        <th style="text-align: center; <?php if (empty($vocabulary_coverage->buckets)) {
-          print 'width: 150px;';
-        } ?>">
-          <?php print t('All'); ?>
+        <th class="fix-width-column right-border">
+          <?php print t('Term'); ?>
+        </th>
+        <th style="text-align: center;
+          min-width: 100%;
+        <?php !empty($vocabulary_coverage->buckets) ?
+          print 'width: ' . (100 / (count($vocabulary_coverage->buckets) + 1)) . '%;' : ''; ?>
+          ">
+        <?php print t('All'); ?>
         </th>
         <?php if (!empty($vocabulary_coverage->buckets)): ?>
           <?php foreach ($vocabulary_coverage->buckets as $bucket) : ?>
-            <th style="text-align: center;">
-              <?php $is_link = explode('-', $bucket->value);
+            <th style="text-align: center;
+              min-width: 100%;
+              width: <?php print 100 / (count($vocabulary_coverage->buckets) + 1) ?>%;">
+            <?php $is_link = explode('-', $bucket->value);
               if (empty($is_link[1])) {
                 print l($is_link[0], 'mica/search',
                   array(
@@ -69,7 +72,7 @@
       </thead>
       <tfoot>
       <tr>
-        <th><?php print t('Total'); ?></th>
+        <th class="right-border"><?php print t('Total'); ?></th>
         <th style="text-align: center;" title="100%">
           <?php
           print l($vocabulary_coverage->hits, 'mica/search',
@@ -118,8 +121,8 @@
       <?php foreach ($vocabulary_coverage->terms as $key_term => $term_coverage) : ?>
         <tr data-toggle="tooltip"
             title="<?php print mica_client_commons_get_localized_field($term_coverage->term, 'descriptions'); ?>">
-          <td style="vertical-align: middle; word-wrap:break-word;" class="headcol">
-            <?php if (empty($term_coverage->hits)): ?>
+          <td style="vertical-align: middle; word-wrap:break-word;" class="right-border">
+          <?php if (empty($term_coverage->hits)): ?>
               <?php print mica_client_commons_get_localized_field($term_coverage->term, 'titles'); ?>
             <?php else: ?>
               <?php print l(mica_client_commons_get_localized_field($term_coverage->term, 'titles'), 'mica/search',
