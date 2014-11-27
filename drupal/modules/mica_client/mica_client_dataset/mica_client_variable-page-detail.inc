@@ -532,8 +532,8 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
     $total_non_missing = $total_non_missings[$i];
     $total_non_missing_all += $total_non_missing;
     $total_all += $aggregation->total;
-    if ($total_non_missing > 0) {
-      $percent = round(($aggregation->total / $total_non_missing) * 100, 1);
+    if ($aggregation->total > 0) {
+      $percent = round(($total_non_missing / $aggregation->total) * 100, 1);
       $total_non_missing .= '<p class="help-inline">(' . $percent . '%)</p>';
     }
     $row[] = $total_non_missing;
