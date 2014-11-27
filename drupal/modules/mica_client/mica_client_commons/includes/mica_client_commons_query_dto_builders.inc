@@ -527,6 +527,7 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
 
       if (!empty($logicalFilterBuilder)) {
         $this->builderMap[$type] = $logicalFilterBuilder;
+        $logicalFilterBuilder = NULL;
       }
     }
   }

@@ -5,6 +5,7 @@
   var container;
   var contentQuery;
   var contentRefresh;
+  var jsonData;
   var jsonQuery;
   var translation;
 
@@ -30,8 +31,9 @@
    * @type {{render: render}}
    */
   $.QueryViewRenderer.prototype = {
-    render: function (json) {
-      jsonQuery = json;
+    render: function (jsonQueries) {
+      jsonQuery = jsonQueries.localized;
+      jsonData = jsonQueries.data;
       return parseAndRender();
     }
   };
@@ -41,8 +43,8 @@
    * Updates the query and url
    */
   function update() {
-    $.trimJson(jsonQuery);
-    updateWindowLocation($.isEmptyObject(jsonQuery) ? '' : JSON.stringify(jsonQuery));
+    $.trimJson(jsonData);
+    updateWindowLocation($.isEmptyObject(jsonData) ? '' : JSON.stringify(jsonData));
   }
 
   function updateWindowLocation(query) {
@@ -66,7 +68,7 @@
   function renderMatchesElement(cssClass, type, text) {
     var htmlMatchesElement = $("<li></li>").append($("<span class='" + cssClass + "'></span>").text(text));
     htmlMatchesElement.click(function (e) {
-      delete jsonQuery[type]['matches'];
+      delete jsonData[type]['matches'];
       update();
       e.stopPropagation();
     });
@@ -154,7 +156,7 @@
 
   function renderAggregate(type, typeValues, aggType, name) {
     var aggregate = $("<span class='aggregate'></span>").text(translateAggregation(name)).click(function (e) {
-      delete jsonQuery[type][aggType][name];
+      delete jsonData[type][aggType][name];
       update();
       e.stopPropagation();
     });
@@ -172,7 +174,7 @@
     return $("<span class='aggregate-value'></span>").text(value.min + " - " + value.max);
   }
 
-  function renderAggregateValue(aggType, agg, i, value, valuesContaier, hiddenValuesContainer) {
+  function renderAggregateValue(aggType, dataAgg, agg, i, value, valuesContaier, hiddenValuesContainer) {
     if (i > 0 && i < MAX_VIISBLE_AGG_VALUE) valuesContaier.append(renderComma());
 
     var htmlValue =
@@ -181,8 +183,8 @@
         : renderRangeAggregationValue(value); //
 
     htmlValue.click(function (e) {
-      agg.values.splice(i, 1);
-      if (agg.values.length === 0) delete agg['op'];
+      dataAgg.values.splice(i, 1);
+      if (dataAgg.values.length === 0) delete dataAgg['op'];
       update();
       e.stopPropagation();
     });
@@ -254,7 +256,7 @@
           if (contentQuery.children().length > 1) {
             contentQuery.append(renderAndOperation(true, ""));
           }
-          renderMatches(type, aggs);
+          renderMatches(type, aggs.replace(/\+/g, ' '));
           return;
         }
 
@@ -267,7 +269,8 @@
 
         $.each(aggs, function (name, agg) {
           if (!$.isEmptyObject(agg.values) && agg.values.length > 0) {
-            var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(agg.op), i === last);
+            var dataAgg = jsonData[type][aggType][name];
+            var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(dataAgg.op), i === last);
             var valuesContainer = $("<li></li>");
             var hiddenValuesContainer = null;
             $(aggValueContainer).append(valuesContainer);
@@ -280,9 +283,10 @@
               }
 
               renderAggregateValue(aggType, //
+                dataAgg, //
                 agg, //
                 i, //
-                value, //
+                $.type(value) ==="string" ? value.replace(/\+/g, ' ') : value, //
                 valuesContainer, //
                 hiddenValuesContainer); //
             });
@@ -309,11 +313,11 @@
 
   Drupal.behaviors.query_builder = {
     attach: function (context, settings) {
-      var jsonQuery = $.query_href.getQueryFromUrl();
-      if ($.isEmptyObject(jsonQuery)) return;
+      var jsonQueries = $.query_href.getQueryForm();
+      if ($.isEmptyObject(jsonQueries.data)) return;
       var view = //
         new $.QueryViewRenderer(Drupal.settings.mica_client_facet.facet_conf) //
-          .render(jsonQuery);
+          .render(jsonQueries);
 
       $('#search-query').append(view);
     }

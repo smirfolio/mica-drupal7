@@ -2,14 +2,15 @@
 <?php // dpm((((($term->count*200)/$totalhits))*100)/200);?>
 <li class="facets">
 
-<?php $title = $term->key; /* TODO need to hide key for search mechanism // empty($term->title) ? $term->key : $term->title;*/ ?>
+<?php $title = $term->title;?>
   <span id="checkthebox"
         class="terms_field <?php print $type_string . $aggregation_facet; ?> unchecked"
         aggregation="<?php print $type_string . $aggregation_facet . '[]'; ?>"
         value="<?php print  $title; ?>"
-        title="<?php print strlen($title) < 25 ? '' : $title ?>">
+        data-value="<?php print  $term->key; ?>"
+        title="<?php print strlen($title) < 30 ? '' : $title ?>">
     <i class="glyphicon glyphicon-unchecked"></i>
-    <?php print  truncate_utf8($title, 25, TRUE, TRUE); ?></span>
+    <?php print  truncate_utf8($title, 30, TRUE, TRUE); ?></span>
 
   <span class="terms_count">
 
