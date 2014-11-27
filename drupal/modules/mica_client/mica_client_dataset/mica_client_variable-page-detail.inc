@@ -337,7 +337,7 @@ function _mica_client_variable_chart_stat($variable, $variable_stat) {
               $header = $header . '(' . mica_client_commons_get_localized_field($aggregation->studyTable, 'name') . ')';
             }
             foreach ($aggregation->frequencies as $frequency) {
-              if ($frequency->term == $category->name) {
+              if ($frequency->value == $category->name) {
                 $data[$header][] = $frequency->count;
                 break;
               }
@@ -397,7 +397,6 @@ function _mica_client_variable_table_stat_continuous($variable, $variable_stat) 
     $row = array(
       array(
         'data' => '<strong>' . t('All') . '</strong>',
-        'class' => array('active')
       )
     );
     $rows[] = array_merge($row, _mica_client_variable_table_stat_continuous_statistics_to_row($variable_stat));
@@ -407,7 +406,7 @@ function _mica_client_variable_table_stat_continuous($variable, $variable_stat) 
   if ($variable->variableType == 'Dataschema') {
     $headers = array(t('Study'));
   }
-  array_push($headers, t('Min'), t('Max'), t('Mean'), t('Std. Dev'), t('Count'));
+  array_push($headers, t('Min'), t('Max'), t('Mean'), t('Std. Dev'), t('N'));
   return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No statistics available')));
 }
 
@@ -419,7 +418,7 @@ function _mica_client_variable_table_stat_continuous_statistics_to_row($aggregat
       property_exists($statistics, 'max') ? round($statistics->max, 3) : '-',
       property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ? round($statistics->mean, 3) : '-',
       property_exists($statistics, 'stdDeviation') ? round($statistics->stdDeviation, 3) : '-',
-      $statistics->count
+      $aggregation->n
     );
   }
   else {
@@ -460,27 +459,42 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
     array_push($aggregations, $variable_stat);
   }
 
+  $colspan = count($aggregations) + 1 + (count($aggregations) > 1 ? 1 : 0);
+
   // total of non-missing categories (should be done server side!)
   $total_non_missings = array();
+  $total_missings = array();
   foreach ($aggregations as $aggregation) {
     $total_non_missing = 0;
+    $total_missing = 0;
     if (!empty($aggregation->frequencies)) {
       foreach ($aggregation->frequencies as $frequency) {
-        foreach ($variable->categories as $category) {
-          if (!$category->missing) {
-            $category_name = $category->name;
-            if ($frequency->term == $category_name) {
-              $total_non_missing += $frequency->count;
-              break;
-            }
-          }
+        if ($frequency->missing) {
+          $total_missing += $frequency->count;
+        } else {
+          $total_non_missing += $frequency->count;
         }
       }
     }
     $total_non_missings[] = $total_non_missing;
+    $total_missings[] = $total_missing;
   }
 
   // counts per category
+  $rows[] = array(
+    array(
+      'data' => '<strong>' . t('Valid Values') . '</strong>',
+      'colspan' => $colspan
+    )
+  );
+  $missing_rows = array();
+  $missing_rows[] = array(
+    array(
+      'data' => '<strong>' . t('Missing Values') . '</strong>',
+      'colspan' => $colspan
+    )
+  );
+
   foreach ($variable->categories as $category) {
     $category_name = $category->name;
     $category_label = _mica_client_variable_attributes_detail($category, 'label');
@@ -493,19 +507,29 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
     );
     $count_all = 0;
     $total_non_missing_all = 0;
+    $total_missing_all = 0;
     for ($i = 0; $i < count($aggregations); $i++) {
       $aggregation = $aggregations[$i];
       $total_non_missing = $total_non_missings[$i];
+      $total_missing = $total_missings[$i];
       $count = 0;
       if (!empty($aggregation->frequencies)) {
         foreach ($aggregation->frequencies as $frequency) {
-          if ($frequency->term == $category_name) {
+          if ($frequency->value == $category_name) {
             $count = $frequency->count;
             $count_all += $count;
-            $total_non_missing_all += $total_non_missing;
-            if (!$missing && $total_non_missing > 0) {
-              $percent = round(($count / $total_non_missing) * 100, 1);
-              $count .= '<p class="help-inline">(' . $percent . '%)</p>';
+            if ($missing) {
+              $total_missing_all += $total_missing;
+              if ($total_missing > 0) {
+                $percent = round(($count / $total_missing) * 100, 1);
+                $count .= '<p class="help-inline">(' . $percent . '%)</p>';
+              }
+            } else {
+              $total_non_missing_all += $total_non_missing;
+              if ($total_non_missing > 0) {
+                $percent = round(($count / $total_non_missing) * 100, 1);
+                $count .= '<p class="help-inline">(' . $percent . '%)</p>';
+              }
             }
             break;
           }
@@ -520,11 +544,15 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
       }
       $row[] = $count_all;
     }
-    $rows[] = $row;
+    if (!$missing) {
+      $rows[] = $row;
+    } else {
+      $missing_rows[] = $row;
+    }
   }
 
   // total non missing
-  $row = array('<strong>' . t('Total non missings') . '</strong>');
+  $row = array('<i>' . t('Subtotal') . '</i>');
   $total_non_missing_all = 0;
   $total_all = 0;
   for ($i = 0; $i < count($aggregations); $i++) {
@@ -546,6 +574,35 @@ function _mica_client_variable_table_stat_categorical($variable, $variable_stat)
     $row[] = $total_non_missing_all;
   }
   $rows[] = $row;
+
+  // missing values
+  if (count($missing_rows)>1) {
+    // total missing
+    $row = array('<i>' . t('Subtotal') . '</i>');
+    $total_missing_all = 0;
+    $total_all = 0;
+    for ($i = 0; $i < count($aggregations); $i++) {
+      $aggregation = $aggregations[$i];
+      $total_missing = $total_missings[$i];
+      $total_missing_all += $total_missing;
+      $total_all += $aggregation->total;
+      if ($aggregation->total > 0) {
+        $percent = round(($total_missing / $aggregation->total) * 100, 1);
+        $total_missing .= '<p class="help-inline">(' . $percent . '%)</p>';
+      }
+      $row[] = $total_missing;
+    }
+    if (count($aggregations) > 1) {
+      if ($total_all > 0) {
+        $percent = round(($total_non_missing_all / $total_all) * 100, 1);
+        $total_missing_all .= '<p class="help-inline">(' . $percent . '%)</p>';
+      }
+      $missing_rows[] = $total_missing_all;
+    }
+    $missing_rows[] = $row;
+
+    $rows = array_merge($rows, $missing_rows);
+  }
 
   // grand total
   $row = array(
@@ -599,21 +656,6 @@ function _mica_client_variable_study_summary($variable, $study_id) {
  */
 function _mica_client_variable_study_acronym($variable, $study_id) {
   return mica_client_commons_get_localized_field(_mica_client_variable_study_summary($variable, $study_id), 'acronym');
-}
-
-function _mica_client_variable_rebuild_stat($variable_stat, $variable) {
-  $stats = array();
-  foreach ($variable->studyIds as $key_study => $study_id) {
-    foreach ($variable_stat as $key_stud => $stat) {
-      if ($key_stud == $key_study) {
-        $stats[$study_id]['_all'] = $stat->totalHits;
-        foreach ($stat->facets[0]->frequencies as $frequency) {
-          $stats[$study_id][$frequency->term] = $frequency->count;
-        }
-      }
-    }
-  }
-  return $stats;
 }
 
 function mica_client_variable_dataset_type($variable) {
