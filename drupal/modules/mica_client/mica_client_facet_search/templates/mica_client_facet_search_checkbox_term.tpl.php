@@ -2,13 +2,17 @@
 <?php // dpm((((($term->count*200)/$totalhits))*100)/200);?>
 <li class="facets">
 
-<?php $title = $term->title;?>
+  <?php
+    $title = $term->title;
+    $tooltip = empty($term->description) ?  (strlen($title) < 30 ? '' : $title) : $term->description
+  ?>
   <span id="checkthebox"
         class="terms_field <?php print $type_string . $aggregation_facet; ?> unchecked"
         aggregation="<?php print $type_string . $aggregation_facet . '[]'; ?>"
         value="<?php print  $title; ?>"
         data-value="<?php print  $term->key; ?>"
-        title="<?php print strlen($title) < 30 ? '' : $title ?>">
+        data-toggle="tooltip"
+        title="<?php print $tooltip ?>">
     <i class="glyphicon glyphicon-unchecked"></i>
     <?php print  truncate_utf8($title, 30, TRUE, TRUE); ?></span>
 
