@@ -263,10 +263,10 @@ function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_ha
               && $variable_summary->resolver->project == $study_table->project
               && $variable_summary->resolver->table == $study_table->table
             ) {
-              $status = strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
+              $status = trim(strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
                 'maelstrom',
                 'Mlstr_harmo'
-              )));
+              ))));
               $harmonized_variable_id = $variable_summary->resolver->id;
               $variable_title = $variable_summary->resolver->name . ' -- ' . mica_client_commons_get_localized_field($study_table->studySummary, 'acronym');
               if (!empty($study_table->name)) {
