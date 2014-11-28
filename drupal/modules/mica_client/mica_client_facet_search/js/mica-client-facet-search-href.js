@@ -11,7 +11,8 @@
       $.extend({
         query_href: {
           getQueryFromUrl: getQueryFromUrl,
-          updateQueryOperation: updateQueryOperation
+          updateQueryOperation: updateQueryOperation,
+          getQueryForm: getQueryForm
         }
       });
 
@@ -51,8 +52,14 @@
         return $.isEmptyObject(currJsonParam) ? [] : $.query_serializer.serializeJsonAsForm(currJsonParam);
       }
 
-      function sendCheckboxCheckedValues() {
-        return JSON.stringify($.query_serializer.serializeFormAsJson($("form[id^='facet-search'] :input[value!='']").serialize()));
+      function getQueryForm() {
+        var items = new Array();
+
+        $.each($("form[id^='facet-search'] :input[value!='']"), function(i, input){
+          items.push(decodeURIComponent(serializeElement($(input))));
+        });
+
+        return {'localized': $.query_serializer.serializeFormAsLocalizedJson(items), 'data': getQueryFromUrl()};
       }
 
       function getQueryFromUrl() {
@@ -89,6 +96,14 @@
         });
       }
 
+      function serializeElement(element) {
+        var dataArr = new Array();
+        $.each(element.data(), function(att, value) {
+          dataArr.push({'name': att, 'value': value});
+        })
+
+        return $.param(element.serializeArray().concat(dataArr));
+      }
 
       function processMatchesInput(selectedVars) {
         $.each(selectedVars, function (key, value) {
@@ -118,7 +133,7 @@
         });
 
         $('span#checkthebox').each(function () {
-          var aggregation_name = $(this).attr('value');
+          var aggregation_name = $(this).attr('data-value');
           var selectedVar = selectedVars[getSelectedtermsAggSearchKey($(this).attr('aggregation'), aggregation_name)];
           if (selectedVar) {
             var $current_width_percent = $(this).parent().find('.terms_stat:first').attr('witdh-val');
@@ -130,7 +145,7 @@
               checkthebox($(this));
               var copy_chekbox = $(this).parent().clone();
               var divtofind = $(this).parents("section:first").find(".checkedterms:first");
-              $("input[id=" + getAggregationMoniker(this) + "]").val($(this).attr("value"));
+              $("input[id=" + getAggregationMoniker(this) + "]").val($(this).attr('value')).attr('data-value', $(this).attr("data-value"));
               copy_chekbox.find('.terms_stat').width($current_width_percent);
 
               divtofind.append(copy_chekbox);
@@ -140,7 +155,7 @@
           else {
             if ($(this).hasClass("checked")) {
               uncheckthebox($(this));
-              $("input[id=" + aggregation_name + "]").val('');
+              $("input[id=" + aggregation_name + "]").val('').attr('data-value', '');
             }
           }
         });
@@ -172,7 +187,7 @@
       }
 
       function getAggregationMoniker(aggElement) {
-        return "\"" + $(aggElement).attr("aggregation") + "-" + $(aggElement).attr('value') + "\"";
+        return "\"" + $(aggElement).attr("aggregation") + "-" + $(aggElement).attr('data-value') + "\"";
       }
 
       function updateCheckboxes() {
@@ -181,15 +196,17 @@
         var input = $("input[id=" + aggregation_name + "]")
         if ($(this).hasClass("unchecked")) {
           checkthebox($(this));
-          input.val($(this).attr("value"));
-          $.query_serializer.addItem(json, decodeURIComponent(input.serialize()));
+          input.val($(this).attr('value'));
+          input.attr('data-value', $(this).attr("data-value"));
+          $.query_serializer.addItem(json, decodeURIComponent(serializeElement(input)));
           updateWindowLocation(JSON.stringify(json));
           return false;
         }
         if ($(this).hasClass("checked")) {
-          $.query_serializer.removeItem(json, decodeURIComponent(input.serialize()));
+          $.query_serializer.removeItem(json, decodeURIComponent(serializeElement(input)));
           uncheckthebox($(this));
           input.val('');
+          input.attr('data-value', '');
           updateWindowLocation(JSON.stringify(json));
           return false;
         }
@@ -219,18 +236,18 @@
 
       }
 
-      function form_click_handler(aggregation) {
+      function formClickHandler(aggregation) {
         var json = getQueryFromUrl();
         var input = $("input[id='" + aggregation + "']");
         if (input.val()) {
           $.query_serializer.addItem( //
             json, //
-            decodeURIComponent(input.serialize()) //
+            decodeURIComponent(serializeElement(input)) //
           );
         } else {
           $.query_serializer.removeItem( //
             json, //
-            decodeURIComponent(input.serialize()) //
+            decodeURIComponent(serializeElement(input)) //
           );
         }
 
@@ -270,14 +287,14 @@
             if ($("input[id*='matches:facet-search-query']").is(":focus")) {
               var element = $(document.activeElement)[0];
               event.preventDefault();
-              form_click_handler($(element).attr('id'));
+              formClickHandler($(element).attr('id'));
             }
           }
         });
 
         /*send request search on checking the box or on click go button */
         $("div#checkthebox, button#facet-search-submit").on("click", function () {
-          form_click_handler($(this).attr('aggregation'));
+          formClickHandler($(this).attr('aggregation'));
         });
 
         $("input[id='range-auto-fill']").on("blur", function () {
