@@ -158,6 +158,7 @@ class MicaDatasetResource extends MicaClient {
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id) . '/variables/harmonizations?' . $params;
+    dpm($url);
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(

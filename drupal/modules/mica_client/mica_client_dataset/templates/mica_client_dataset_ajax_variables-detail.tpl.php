@@ -194,6 +194,14 @@
   <?php endif; ?>
 
   <!-- HARMONIZATION VARIABLES -->
+  <section>
+    <div id="variables-table"
+         type-dataset="harmonization-dataset"
+         id-dataset="<?php print $dataset_dto->id; ?>">
+      <table class="table table-striped" id="table-variables" width="100%"></table>
+
+    </div>
+  </section>
   <?php if (!empty($variables_dataset->variables) || !empty($variables_dataset->variableHarmonizations)): ?>
     <?php if (!empty($variables_dataset->harmonization)): ?>
       <section>
@@ -204,11 +212,8 @@
         <div>
           <?php print render($form_search); ?>
         </div>
-        <div id="variables-table"
-             type-dataset="harmonization-dataset"
-             id-dataset="<?php print $dataset_dto->id; ?>">
 
-        </div>
+        <?php print render($variables_table); ?>
       </section>
     <?php endif; ?>
 
@@ -224,6 +229,7 @@
       </section>
     <?php endif; ?>
   <?php endif; ?>
+
 </article>
 
 
