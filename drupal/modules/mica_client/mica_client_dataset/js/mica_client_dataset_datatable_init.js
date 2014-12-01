@@ -33,7 +33,15 @@
           if (json.iTotalRecords === 0) {
             $(".table-variables").hide();
           }
-          // Note no return - manipulate the data directly in the JSON object.
+          else {
+            $("#download-harmo-table").on('click', function (event) {
+              // create a form for the file upload
+              var form = $("<form action='" + idDataset + '/download' + "' method='post'>");
+              $(this).after(form);
+              form.submit().remove();
+              return false;
+            });
+          }
         })
           .dataTable({
             "processing": true,
