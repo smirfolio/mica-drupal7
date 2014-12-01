@@ -15,52 +15,20 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
   $dataset_dto = $dataset_resource->get_dataset($dataset_type, $dataset_id);
   $_SESSION['ajax']['variable'] = serialize($dataset_dto);
   if (!empty($dataset_dto)) {
-    $from = 0;
-    $dataset_sort = 'index';
-    $dataset_sort_by = NULL;
-    $dataset_query = NULL;
-    if (!empty($_GET['search-query'])) {
-      $dataset_query = $_GET['search-query'];
-    }
-    if (!empty($_GET['search-sort'])) {
-      $dataset_sort = $_GET['search-sort'];
-    }
-    if (!empty($_GET['search-sort-order'])) {
-      $dataset_sort_by = $_GET['search-sort-order'];
-    }
-    if (!empty($_GET['page'])) {
-      $from = $dataset_resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 10);
-    }
+
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
-      $variables_dataset = $dataset_resource->get_variables($dataset_type,
-        $dataset_id,
-        $from, 100,
-        $dataset_sort,
-        $dataset_sort_by,
-        $dataset_query
-      );
 
       if (!empty($variables_dataset)) {
-        $_SESSION['list-datasets']['aggregations']['totalHits'] = $variables_dataset->total;
         $variables_dataset->harmonization = NULL;
         $variables_dataset->study = TRUE;
-        $variables_table_output = mica_client_dataset_study_variable_table($variables_dataset);
       }
 
     }
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
       $total = empty($_SESSION['variables']['aggregations']['totalHits']) ? 0 : $_SESSION['variables']['aggregations']['totalHits'];
-//      $from = MicaClient::next_page_offset(empty($_GET['page']) ? 0 : $_GET['page'], MicaClient::SIZE_RESPONSE, $total);
-//      $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
-//        $dataset_id,
-//        $from,
-//        MicaClient::SIZE_RESPONSE,
-//        $dataset_sort,
-//        $dataset_sort_by,
-//        $dataset_query
-//      );
+
       if (!empty($variables_dataset)) {
         $_SESSION['variables']['aggregations']['totalHits'] = $total;
         drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_download_harmonizations.js', 'file');
@@ -68,7 +36,6 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
 
         $variables_dataset->study = NULL;
         $variables_dataset->harmonization = TRUE;
-        //  $variables_table_output = mica_client_dataset_harmonizations_Variables_table_ajax($dataset_type_dto);
       }
     }
     drupal_set_title(mica_client_commons_get_localized_field($dataset_dto, 'name'));
@@ -85,6 +52,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       'dataset_dto' => $dataset_dto,
       'coverage' => mica_client_dataset_coverage($dataset_dto->id),
       'dataset_type_dto' => $dataset_type_dto,
+      'dataset_type' => $dataset_type,
       // 'variables_dataset' => $variables_dataset,
       // 'variables_table' => $variables_table_output,
       'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array()),
@@ -97,14 +65,101 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
   }
 }
 
-function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset_type) {
+/*
+ * Ajax Variable table Call header
+ * */
+function mica_client_dataset_Variables_table_ajax_header($dataset_type) {
   $dataset_dto = unserialize($_SESSION['ajax']['variable']);
   if ($dataset_type == 'study-dataset') {
-    $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+    // $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+    $header = mica_client_dataset_studies_Variables_table_ajax_header();
   }
   else {
     $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
+    $header = mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto);
   }
+
+  $data['header'] = $header;
+  return drupal_json_output($data);
+}
+
+
+/*
+ * Ajax Variable table Call data
+ * */
+
+function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_dataset) {
+  $dataset_resource = new MicaDatasetResource();
+  $from = 0;
+  $size = 10;
+  $dataset_sort_by = NULL;
+  $dataset_query = NULL;
+
+  if (!empty($_GET['iDisplayStart'])) {
+    $from = $_GET['iDisplayStart'];
+  }
+  if (!empty($_GET['iDisplayLength'])) {
+    $size = $_GET['iDisplayLength'];
+  }
+
+  $dataset_dto = unserialize($_SESSION['ajax']['variable']);
+
+  if ($dataset_type == 'study-dataset') {
+    //$dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+    $variables_dataset = $dataset_resource->get_variables($dataset_type,
+      $id_dataset,
+      $from,
+      $size
+    );
+
+    $data_variable = mica_client_dataset_studies_table_data($variables_dataset);
+
+  }
+  else {
+    $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
+    $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
+      $id_dataset,
+      $from,
+      $size
+    );
+    $data_variable = mica_client_dataset_harmonizations_table_data($dataset_type_dto, $variables_dataset);
+  }
+
+
+  $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
+  $data['iTotalRecords'] = $variables_dataset->total;
+  $data['iTotalDisplayRecords'] = $variables_dataset->total;
+  $data['aaData'] = $data_variable;
+  //dpm($data);
+  return drupal_json_output($data);
+}
+
+/*
+ * studies dataset ajax variable table
+ *
+ * */
+function mica_client_dataset_studies_Variables_table_ajax_header() {
+  return array(array("sTitle" => t('Variable')), array("sTitle" => t('Domains')));
+}
+
+function mica_client_dataset_studies_table_data($variables_dataset) {
+  $rows = array();
+  if (!empty($variables_dataset->variables)) {
+    foreach ($variables_dataset->variables as $variable) {
+      $var_row = l($variable->name, 'mica/variable/' . $variable->id);
+      $domains = _mica_client_variable_domains_list($variable);
+      $rows[] = array($var_row, $domains);
+    }
+  }
+  return $rows;
+}
+
+/*********End Studies ajax header *************/
+
+/*
+ * Harmonization ajax variable table
+ * */
+function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto) {
   if (!empty($dataset_type_dto->studyTables)) {
     $header[] = array("sTitle" => t('Variable'), "data" => "variable", "name" => "variable");
     foreach ($dataset_type_dto->studyTables as $study_table) {
@@ -126,49 +181,8 @@ function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset
       }
     }
   }
-  $data['header'] = $header;
-  return drupal_json_output($data);
+  return $header;
 }
-
-function mica_client_dataset_harmonizations_Variables_table_ajax_data($dataset_type, $id_dataset) {
-  $dataset_resource = new MicaDatasetResource();
-  $from = 0;
-  $size = 10;
-  $dataset_sort_by = NULL;
-  $dataset_query = NULL;
-
-  if (!empty($_GET['iDisplayStart'])) {
-    $from = $_GET['iDisplayStart'];
-  }
-  if (!empty($_GET['iDisplayLength'])) {
-    $size = $_GET['iDisplayLength'];
-  }
-
-  $dataset_dto = unserialize($_SESSION['ajax']['variable']);
-  $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
-    $id_dataset,
-    $from,
-    $size
-  );
-  if ($dataset_type == 'study-dataset') {
-    $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
-
-  }
-  else {
-    $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
-  }
-
-
-  $data_variable = mica_client_dataset_harmonizations_table_data($dataset_type_dto, $variables_dataset);
-
-  $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
-  $data['iTotalRecords'] = $variables_dataset->total;
-  $data['iTotalDisplayRecords'] = $variables_dataset->total;
-  $data['aaData'] = $data_variable;
-  //dpm($data);
-  return drupal_json_output($data);
-}
-
 
 function mica_client_dataset_harmonizations_table_data($dataset_type_dto, $dataset_harmonizations_dto) {
   $rows = array();
@@ -263,6 +277,7 @@ function mica_client_dataset_harmonizations_table_data($dataset_type_dto, $datas
   return $rows;
 }
 
+/*End harmonization variable ajax table */
 
 function mica_client_dataset_coverage($dataset_id) {
   return mica_client_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id)))));

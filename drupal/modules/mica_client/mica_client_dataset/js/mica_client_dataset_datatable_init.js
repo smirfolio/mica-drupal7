@@ -27,17 +27,26 @@
       }
 
       /**********************/
-      console.log(headerTable["header"]);
-      $('#table-variables').dataTable({
-        "processing": true,
-        "sDom": '<"pull-left" l><"pull-right" p>tp',
-        "bServerSide": true,
-        "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
-        "aoColumns": headerTable["header"],
-        "searching": false,
-        "ordering": false
-      });
+      if (headerTable) {
+        $(".download-table").show();
+        $('#table-variables').on('xhr.dt', function (e, settings, json) {
+          if (json.iTotalRecords === 0) {
+            $(".table-variables").hide();
+          }
+          // Note no return - manipulate the data directly in the JSON object.
+        })
+          .dataTable({
+            "processing": true,
+            "sDom": '<"pull-left" l><"pull-right" p>tp',
+            "bServerSide": true,
+            "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
+            "aoColumns": headerTable["header"],
+            "searching": false,
+            "ordering": false
+          });
 
+        //console.log(tableData.sAjaxSource);
+      }
       /*******************************/
     }
   }

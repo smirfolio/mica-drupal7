@@ -193,42 +193,26 @@
     </section>
   <?php endif; ?>
 
-  <!-- HARMONIZATION VARIABLES -->
-  <section>
+  <!-- Table VARIABLES -->
+  <section class="table-variables">
+
+    <?php if (!empty($dataset_type != "study-dataset")): ?>
+      <div class="download-table">
+        <a id="download-harmo-table" href="" class="btn btn-success pull-right sm-bottom-margin"><i
+            class='glyphicon glyphicon-download'></i> <?php print t('Download') ?></a>
+      </div>
+      <div class="clearfix">
+      </div>
+    <?php endif; ?>
+
+
     <div id="variables-table"
-         type-dataset="harmonization-dataset"
+         type-dataset="<?php print $dataset_type; ?>"
          id-dataset="<?php print $dataset_dto->id; ?>">
       <table class="table table-striped" id="table-variables" width="100%"></table>
 
     </div>
   </section>
-  <?php if (!empty($variables_dataset->variables) || !empty($variables_dataset->variableHarmonizations)): ?>
-    <?php if (!empty($variables_dataset->harmonization)): ?>
-      <section>
-        <h3><?php print t('Harmonization') ?></h3>
-        <a id="download-harmo-table" href="" class="btn btn-success pull-right sm-bottom-margin"><i
-            class='glyphicon glyphicon-download'></i> <?php print t('Download') ?></a>
-        <?php print render($harmonization_table_legend); ?>
-        <div>
-          <?php print render($form_search); ?>
-        </div>
-
-        <?php print render($variables_table); ?>
-      </section>
-    <?php endif; ?>
-
-    <!-- STUDY VARIABLES -->
-    <?php if (!empty($variables_dataset->study)): ?>
-      <section>
-        <h3><?php print t('Study variables') ?></h3>
-
-        <div>
-          <?php print render($form_search); ?>
-        </div>
-        <?php print render($variables_table); ?>
-      </section>
-    <?php endif; ?>
-  <?php endif; ?>
 
 </article>
 

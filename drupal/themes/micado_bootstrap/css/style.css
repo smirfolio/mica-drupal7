@@ -9499,3 +9499,8 @@ div.search-count span {
 .right-border {
     border-right: 1px solid #dddddd;
 }
+
+/*Dataset details*/
+.download-table {
+    display: none;
+}
