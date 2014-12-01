@@ -45,11 +45,12 @@
         })
           .dataTable({
             "processing": true,
-            "sDom": '<"pull-left" l><"pull-right" p>tp',
+            //  "sDom": '<"pull-left" i><"pull-right" f>t<"pull-left" l><"pull-right" p>',
+            "sDom": '<"pull-left" i>t<"pull-left" l><"pull-right" p>',
             "bServerSide": true,
             "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
             "aoColumns": headerTable,
-            "searching": false,
+            "searching": true,
             "ordering": false
 
           });

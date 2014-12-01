@@ -196,22 +196,25 @@
   <!-- Table VARIABLES -->
   <section class="table-variables">
 
-    <?php if (!empty($dataset_type != "study-dataset")): ?>
+    <?php if ($dataset_type != "study-dataset"): ?>
+      <h3><?php print t('Harmonization') ?></h3>
+      <?php print render($harmonization_table_legend); ?>
       <div class="download-table">
         <a id="download-harmo-table" href="" class="btn btn-success pull-right sm-bottom-margin"><i
             class='glyphicon glyphicon-download'></i> <?php print t('Download') ?></a>
       </div>
       <div class="clearfix">
       </div>
+    <?php else: ?>
+      <h3><?php print t('Study variables') ?></h3>
     <?php endif; ?>
-
-
     <div id="variables-table"
          type-dataset="<?php print $dataset_type; ?>"
          id-dataset="<?php print $dataset_dto->id; ?>">
       <table class="table table-striped" id="table-variables" width="100%"></table>
 
     </div>
+    <div class="clearfix"></div>
   </section>
 
 </article>

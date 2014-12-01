@@ -55,7 +55,7 @@ function mica_client_dataset_menu() {
   $items['mica/study-dataset/%'] = array(
     'title' => 'Dataset',
     'page callback' => 'mica_client_dataset_page_detail',
-    'file' => 'mica_client_dataset_ajax-page-detail.inc',
+    'file' => 'mica_client_dataset-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(1, 2),
   );
@@ -63,7 +63,7 @@ function mica_client_dataset_menu() {
   $items['mica/harmonization-dataset/%'] = array(
     'title' => 'Dataset',
     'page callback' => 'mica_client_dataset_page_detail',
-    'file' => 'mica_client_dataset_ajax-page-detail.inc',
+    'file' => 'mica_client_dataset-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(1, 2),
   );
@@ -71,7 +71,7 @@ function mica_client_dataset_menu() {
   $items['mica/variables-tab/%/%'] = array(
     'title' => 'Dataset',
     'page callback' => 'mica_client_dataset_harmonizations_Variables_table_ajax',
-    'file' => 'mica_client_dataset_ajax-page-detail.inc',
+    'file' => 'mica_client_dataset-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2, 3),
   );
@@ -79,7 +79,7 @@ function mica_client_dataset_menu() {
   $items['mica/variables-tab-data/%/%'] = array(
     'title' => 'Dataset',
     'page callback' => 'mica_client_dataset_Variables_table_ajax_data',
-    'file' => 'mica_client_dataset_ajax-page-detail.inc',
+    'file' => 'mica_client_dataset-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2, 3),
   );
@@ -87,7 +87,7 @@ function mica_client_dataset_menu() {
   $items['mica/variables-tab-header/%'] = array(
     'title' => 'Dataset',
     'page callback' => 'mica_client_dataset_Variables_table_ajax_header',
-    'file' => 'mica_client_dataset_ajax-page-detail.inc',
+    'file' => 'mica_client_dataset-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2),
   );
