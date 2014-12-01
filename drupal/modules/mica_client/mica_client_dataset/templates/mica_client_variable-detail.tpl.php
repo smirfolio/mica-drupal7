@@ -90,7 +90,7 @@
             <td><h5><?php print t('Variable Type'); ?></h5></td>
             <td>
               <p>
-                <?php print t('@type variable', array('@type' => t('$variable_dto->variableType'))); ?>
+                <?php print t('@type variable', array('@type' => t($variable_dto->variableType))); ?>
                 <?php if ($variable_dto->variableType == 'Harmonized'): ?>
                   <?php
                   print '(' . l($variable_dto->name, 'mica/variable/' . $variable_dto->datasetId . ':' . $variable_dto->name
