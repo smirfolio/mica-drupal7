@@ -382,12 +382,12 @@ class VariableStatistics {
                 if ($frequency->missing) {
                   $total_missing_all += $total_missing;
                   $percent = $total_missing > 0 ? round(($count / $total_missing) * 100, 1) : 0;
-                  $count .= '<p class="help-inline" title="Percentage over missing values count">(' . $percent . '%)</p>';
+                  $count .= '<p class="help-inline" title="Percentage over missing values count"><i>(' . $percent . '%)</i></p>';
                 }
                 else {
                   $total_non_missing_all += $total_non_missing;
                   $percent = $total_non_missing > 0 ? round(($count / $total_non_missing) * 100, 1) : 0;
-                  $count .= '<p class="help-inline" title="Percentage over valid values count">(' . $percent . '%)</p>';
+                  $count .= '<p class="help-inline" title="Percentage over valid values count"><i>(' . $percent . '%)</i></p>';
                 }
                 break;
               }
@@ -398,7 +398,7 @@ class VariableStatistics {
         if (!$missing) {
           if (count($aggregations) > 1) {
             $percent = $total_non_missing_all > 0 ? round(($count_all / $total_non_missing_all) * 100, 1) : 0;
-            $count_all .= '<p class="help-inline" title="Percentage over valid values count">(' . $percent . '%)</p>';
+            $count_all .= '<p class="help-inline" title="Percentage over valid values count"><i>(' . $percent . '%)</i></p>';
             $row[] = $count_all;
           }
           $rows[] = $row;
@@ -406,7 +406,7 @@ class VariableStatistics {
         else {
           if (count($aggregations) > 1) {
             $percent = $total_missing_all > 0 ? round(($count_all / $total_missing_all) * 100, 1) : 0;
-            $count_all .= '<p class="help-inline" title="Percentage over missing values count">(' . $percent . '%)</p>';
+            $count_all .= '<p class="help-inline" title="Percentage over missing values count"><i>(' . $percent . '%)</i></p>';
             $row[] = $count_all;
           }
           $missing_rows[] = $row;
@@ -437,12 +437,12 @@ class VariableStatistics {
               if ($frequency->missing) {
                 $total_missing_all += $total_missing;
                 $percent = $total_missing > 0 ? round(($count / $total_missing) * 100, 1) : 0;
-                $count .= '<p class="help-inline" title="Percentage over missing values count">(' . $percent . '%)</p>';
+                $count .= '<p class="help-inline" title="Percentage over missing values count"><i>(' . $percent . '%)</i></p>';
               }
               else {
                 $total_non_missing_all += $total_non_missing;
                 $percent = $total_non_missing > 0 ? round(($count / $total_non_missing) * 100, 1) : 0;
-                $count .= '<p class="help-inline" title="Percentage over valid values count">(' . $percent . '%)</p>';
+                $count .= '<p class="help-inline" title="Percentage over valid values count"><i>(' . $percent . '%)</i></p>';
               }
               break;
             }
@@ -452,7 +452,7 @@ class VariableStatistics {
       }
       if (count($aggregations) > 1) {
         $percent = $total_missing_all > 0 ? round(($count_all / $total_missing_all) * 100, 1) : 0;
-        $count_all .= '<p class="help-inline" title="Percentage over missing values count">(' . $percent . '%)</p>';
+        $count_all .= '<p class="help-inline" title="Percentage over missing values count"><i>(' . $percent . '%)</i></p>';
         $row[] = $count_all;
       }
       if (!$missing) {
