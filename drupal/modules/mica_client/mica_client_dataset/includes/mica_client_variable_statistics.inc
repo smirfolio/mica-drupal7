@@ -334,7 +334,7 @@ class VariableStatistics {
     $total_non_missings = array();
     $total_missings = array();
     foreach ($aggregations as $aggregation) {
-      $total_non_missings[] = empty($aggregation->n) ? : $aggregation->n;
+      $total_non_missings[] = empty($aggregation->n) ? 0 : $aggregation->n;
       $total_missings[] = empty($aggregation->total) ? 0 : empty($aggregation->n) ? $aggregation->total : $aggregation->total - $aggregation->n;
     }
 
