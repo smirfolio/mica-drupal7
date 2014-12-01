@@ -7,8 +7,6 @@
       var idDataset = divDataTableVar.attr('id-dataset');
       var typeDataset = divDataTableVar.attr('type-dataset');
       var headerTable = null;
-      console.log(idDataset);
-      console.log(typeDataset);
       /*****************/
 
       $.ajax({
@@ -28,12 +26,11 @@
         headerTable = data;
       }
 
-
       /**********************/
       console.log(headerTable["header"]);
-
-      var table_data = $('#table-variables').dataTable({
+      $('#table-variables').dataTable({
         "processing": true,
+        "sDom": '<"pull-left" l><"pull-right" p>tp',
         "bServerSide": true,
         "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
         "aoColumns": headerTable["header"],
@@ -43,8 +40,6 @@
 
       /*******************************/
     }
-
-
   }
 }(jQuery));
 

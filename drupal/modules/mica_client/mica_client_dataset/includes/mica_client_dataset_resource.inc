@@ -158,7 +158,6 @@ class MicaDatasetResource extends MicaClient {
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id) . '/variables/harmonizations?' . $params;
-    dpm($url);
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -179,17 +178,17 @@ class MicaDatasetResource extends MicaClient {
 
   public function download_variables_harmonizations($dataset_id, $locale) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/harmonization-dataset/'. $dataset_id . '/variables/harmonizations/_export';
+    $url = $this->micaUrl . '/harmonization-dataset/' . $dataset_id . '/variables/harmonizations/_export';
     if (!empty($locale)) {
-      $url .= '?locale='.$locale;
+      $url .= '?locale=' . $locale;
     }
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_CSV),
-        )
-      ),
+            'Accept' => array(parent::HEADER_CSV),
+          )
+        ),
     ));
     $client = $this->client();
     try {

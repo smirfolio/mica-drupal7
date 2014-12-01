@@ -7,6 +7,16 @@
 function mica_client_drush_command() {
   $items['highcharts-download'] = array(
     'callback' => 'mica_client_drush_highcharts_download',
+    'aliases' => 'dataplg',
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Downloads the Optional DataTables Plugins library from Datatables repositories.'),
+    'arguments' => array(
+      'path' => dt('Optional. The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries/datatables</code>).'),
+    ),
+  );
+
+  $items['datatables-plugins-download'] = array(
+    'callback' => 'mica_client_drush_datatable_bootstrap_plugins_download',
     'aliases' => 'dhi',
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Downloads the Optional highcharts library from highcharts.com.'),
@@ -61,6 +71,39 @@ function mica_client_drush_highcharts_download() {
   }
   else {
     drush_log(dt('Drush was unable to download Highcharts-more.js to !path.', array('!path' => ' ' . $path)) . '<br/>' . dt('Attempted command: !wget.', array('!wget' => '<code>' . $svn_cmd . '</code>')), 'error');
+  }
+
+}
+
+function mica_client_drush_datatable_bootstrap_plugins_download() {
+  $args = func_get_args();
+  if ($args[0]) {
+    $path = $args[0];
+  }
+  else {
+    // $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries';
+    $path = drush_get_context('DRUSH_DRUPAL_ROOT');
+  }
+
+  // Create the libraries path if it does not exist.
+  if (!is_dir($path . '/sites/all/libraries')) {
+    drush_op('mkdir', $path . '/sites/all/libraries');
+  }
+
+  if (!is_dir($path . '/sites/all/libraries/datatables')) {
+    drush_log(dt('Drush was unable to find DataTables plugin ', array()), 'error');
+  }
+  else {
+    $path = $path . '/sites/all/libraries/datatables/extensions';
+    chdir($path);
+  }
+  $get_cmd = 'git clone https://github.com/DataTables/Plugins.git';
+
+  if (drush_shell_exec($get_cmd)) {
+    drush_log(dt('DataTables Plugins was downloaded to !path.', array('!path' => ' ' . $path)), 'success');
+  }
+  else {
+    drush_log(dt('Drush was unable to download DataTables Plugins to !path.', array('!path' => ' ' . $path)) . '<br/>' . dt('Attempted command: !git.', array('!git' => '<code>' . $get_cmd . '</code>')), 'error');
   }
 
 }

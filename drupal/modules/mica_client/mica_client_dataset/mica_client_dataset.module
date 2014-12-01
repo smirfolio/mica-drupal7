@@ -156,9 +156,11 @@ function mica_client_dataset_library() {
       'js' => array(
         $lib_path . '/media/js/jquery.dataTables.js' => array(),
         $lib_path . '/extensions/FixedColumns/js/dataTables.fixedColumns.js' => array(),
-        $lib_path . '/extensions/TableTools/js/dataTables.tableTools.js' => array()
+        $lib_path . '/extensions/TableTools/js/dataTables.tableTools.js' => array(),
+        $lib_path . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.js' => array(),
       ),
-      'css' => array( //   $lib_path . '/extras/TableTools/media/css/TableTools.css' => array()
+      'css' => array(
+        $lib_path . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.css' => array()
       )
     );
   }
