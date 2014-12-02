@@ -7042,16 +7042,15 @@ ul.facet-query-list li span:hover {
   background-color: transparent;
   border-left: 2px solid #563d7c;
 }
-div.coverage-table-legend {
+div.legend {
   font-size: 12px;
 }
-div.coverage-table-legend span.coverage-table-legend-title {
+div.legend h6 {
+  display: inline-block;
   font-weight: bold;
+  margin: 5px 0 0 0;
 }
-div.coverage-table-legend span.coverage-table-legend-description {
-  font-style: italic;
-}
-div.coverage-table-legend i {
+div.legend i {
   background: transparent !important;
 }
 .coverage-table {
