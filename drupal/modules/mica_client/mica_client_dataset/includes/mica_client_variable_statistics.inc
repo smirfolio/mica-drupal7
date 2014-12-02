@@ -33,6 +33,13 @@ class VariableStatistics {
    * @return bool|string
    */
   public function as_chart() {
+    if (!empty($this->variable_stat->statistics)) {
+      return $this->as_stacked_bar_chart();
+    }
+    return $this->as_pie_chart();
+  }
+
+  private function as_stacked_bar_chart() {
     if (!empty($this->variable_stat->frequencies)) {
       $aggregations = $this->get_aggregations();
 
@@ -75,14 +82,16 @@ class VariableStatistics {
         }
       }
       // observed that are valid, merged into one
-      $labels[] = 'N (' . t('Valid values') . ')';
-      foreach ($aggregations as $aggregation) {
-        $header = $this->get_study_table_label($aggregation);
-        $data[$header][] = empty($aggregation->n) ? 0 : $aggregation->n;
+      if (!empty($this->variable_stat->statistics)) {
+        $labels[] = 'N (' . t('Valid values') . ')';
+        foreach ($aggregations as $aggregation) {
+          $header = $this->get_study_table_label($aggregation);
+          $data[$header][] = empty($aggregation->n) ? 0 : $aggregation->n;
+        }
       }
 
       if (!empty($data)) {
-        $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, NULL, NULL, 400, 'none');
+        $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, t('Valid and missing values frequencies'), NULL, 400, 'none');
         return render($to_render);
       }
       else {
@@ -90,6 +99,33 @@ class VariableStatistics {
       }
     }
     return FALSE;
+  }
+
+  /**
+   * Combined pie chart.
+   * @return bool
+   */
+  private function as_pie_chart() {
+    $aggregation = $this->variable_stat;
+    if (empty($aggregation->frequencies)) return FALSE;
+    if (empty($aggregation->n)) return FALSE;
+
+    $labels = array();
+    $data = array();
+    foreach ($aggregation->frequencies as $frequency) {
+      if (!$frequency->missing) {
+        $labels[] = $this->get_label_from_category_name($frequency->value, FALSE);
+        $data[] = $frequency->count;
+      }
+    }
+
+    if (!empty($data)) {
+      $to_render = mica_client_facet_search_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right');
+      return render($to_render);
+    }
+    else {
+      return FALSE;
+    }
   }
 
   /**
@@ -113,7 +149,7 @@ class VariableStatistics {
    * @param $value
    * @return null|string|the
    */
-  private function get_label_from_category_name($value) {
+  private function get_label_from_category_name($value, $html = TRUE) {
     if ($value == NULL || $value == '' || empty($this->variable->categories)) {
       return $value;
     }
@@ -121,7 +157,7 @@ class VariableStatistics {
     foreach ($this->variable->categories as $category) {
       if ($value == $category->name) {
         $label = _mica_client_variable_attributes_detail($category, 'label');
-        return '<span title="' . $label . '">' . $value . '</span>';
+        return $html ? '<span title="' . $label . '">' . $value . '</span>' : $value . ' (' . $label . ')';
       }
     }
     return $value;
