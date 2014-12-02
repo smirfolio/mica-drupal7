@@ -196,10 +196,10 @@ function mica_client_dataset_datatables_multi_Lang() {
       "@total" => "_TOTAL_"
     )),
     "sInfoEmpty" => t("Showing 0 to 0 of 0 entries"),
-    "sInfoFiltered" => t("(filtered from _MAX_ total entries)"),
+    "sInfoFiltered" => t("(filtered from @max total entries)", array("@max" => "_MAX_")),
     "sInfoPostFix" => t(""),
     "sInfoThousands" => t(","),
-    "sLengthMenu" => t("Show _MENU_ entries"),
+    "sLengthMenu" => t("Show @menu entries", array("@menu" => "_MENU_")),
     "sLoadingRecords" => t("Loading..."),
     "sProcessing" => t("Processing..."),
     "sSearch" => t("Search:"),
