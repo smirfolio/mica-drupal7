@@ -20,7 +20,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
   $dataset_dto = $dataset_resource->get_dataset($dataset_type, $dataset_id);
   $_SESSION['ajax']['variable'] = serialize($dataset_dto);
   if (!empty($dataset_dto)) {
-
+    $variables_dataset = $dataset_resource->get_variables($dataset_type, $dataset_id, 0, 1);
+    dpm($variables_dataset);
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
     }
@@ -43,6 +44,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       'dataset_type_dto' => $dataset_type_dto,
       'dataset_type' => $dataset_type,
       'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array()),
+      'variables_dataset' => $variables_dataset,
     ));
   }
   else {
