@@ -235,6 +235,10 @@ function micado_bootstrap_preprocess_html(&$variables) {
 function micado_bootstrap_letters_badge_title() {
   $current_item = explode('/', current_path());
 
+  if (!empty($current_item[0]) && $current_item[0] != 'mica') {
+    return NULL;
+  }
+
   if (!empty($current_item[1])) {
     if ((!empty($current_item[2]) && strstr($current_item[2], 'study-')) || strstr($current_item[1], 'study-')) {
       return 'D';
@@ -273,7 +277,7 @@ function micado_bootstrap_letters_badge_title() {
  * @see page.tpl.php
  */
 function micado_bootstrap_preprocess_page(&$variables) {
-//add badge letter
+  //add badge letter
   $first_letter_title = micado_bootstrap_letters_badge_title();
   if (!empty($first_letter_title)) {
     $variables['classes_array']['title_page'] = micado_bootstrap_letters_badge_title();
