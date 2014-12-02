@@ -74,6 +74,7 @@ function mica_client_study_get_opal_url($opal_url) {
  */
 function mica_client_study_library() {
   $libraries = array();
+  dpm('study lib');
   $lib_path = libraries_get_path('micatimelines');
   // Make sure we have a valid library path before returning library load info.
   if (!empty($lib_path)) {

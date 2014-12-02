@@ -67,7 +67,32 @@ function mica_client_dataset_menu() {
     'access callback' => TRUE,
     'page arguments' => array(1, 2),
   );
+  /*********Ajax table routes**************/
+  $items['mica/variables-tab/%/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'mica_client_dataset_harmonizations_Variables_table_ajax',
+    'file' => 'mica_client_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2, 3),
+  );
 
+  $items['mica/variables-tab-data/%/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'mica_client_dataset_Variables_table_ajax_data',
+    'file' => 'mica_client_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2, 3),
+  );
+
+  $items['mica/variables-tab-header/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'mica_client_dataset_Variables_table_ajax_header',
+    'file' => 'mica_client_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  /***************************/
   $items['mica/harmonization-dataset/%/download'] = array(
     'page callback' => 'mica_client_dataset_page_detail_download',
     'file' => 'mica_client_dataset-page-detail.inc',
@@ -117,6 +142,32 @@ function mica_client_dataset_menu_link_alter(&$items) {
 
 
 /**
+ * Implements hook_library().
+ */
+function mica_client_dataset_library() {
+  $libraries = array();
+  $lib_path = libraries_get_path('datatables');
+  // Make sure we have a valid library path before returning library load info.
+  if (!empty($lib_path)) {
+    $libraries['datatables'] = array(
+      'title' => 'DataTables',
+      'website' => 'http://datatables.net/',
+      'version' => '1.10.1',
+      'js' => array(
+        $lib_path . '/media/js/jquery.dataTables.js' => array(),
+        $lib_path . '/extensions/FixedColumns/js/dataTables.fixedColumns.js' => array(),
+        $lib_path . '/extensions/TableTools/js/dataTables.tableTools.js' => array(),
+        $lib_path . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.js' => array(),
+      ),
+      'css' => array(
+        $lib_path . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.css' => array()
+      )
+    );
+  }
+  return $libraries;
+}
+
+/**
  * Implements hook_theme().
  *
  * copy '<modules>/mica_client_dataset/templates/'   files in  your customized theme  '<YOUR_THEME>/templates/' path
@@ -130,6 +181,12 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
   return array(
     'mica_client_dataset-list' => array('template' => 'mica_client_dataset-list', 'path' => $path_theme),
     'mica_client_dataset-detail' => array('template' => 'mica_client_dataset-detail', 'path' => $path_theme),
+    'mica_client_dataset_ajax_variables-detail' => array(
+      'template' => 'mica_client_dataset_ajax_variables-detail',
+      'path' => $path_theme
+    ),
+    'mica_client_dataset_harmonizations_Variables_table_ajax_header' =>
+      array('template' => 'mica_client_dataset_harmonizations_Variables_table_ajax_header', 'path' => $path_theme),
     'mica_client_dataset-list-page-block' => array(
       'template' => 'mica_client_dataset-list-page-block',
       'path' => $path_theme

@@ -2,71 +2,27 @@
 include_once('includes/mica_client_dataset_resource.inc');
 
 function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
+
+  drupal_add_library('mica_client_dataset', 'datatables');
   drupal_add_js(drupal_get_path('module', 'mica_client_commons') . '/js/ajax_getlist_items.js', 'file');
+  drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_datatable_init.js', 'file');
+  // drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_download_harmonizations.js', 'file');
   $dataset_resource = new MicaDatasetResource();
   $dataset_dto = NULL;
   $dataset_type_dto = NULL;
   $variables_dataset = NULL;
   $variables_table_output = NULL;
+  unset($_SESSION['ajax']);
   $dataset_dto = $dataset_resource->get_dataset($dataset_type, $dataset_id);
+  $_SESSION['ajax']['variable'] = serialize($dataset_dto);
   if (!empty($dataset_dto)) {
-    $from = 0;
-    $dataset_sort = 'index';
-    $dataset_sort_by = NULL;
-    $dataset_query = NULL;
-    if (!empty($_GET['search-query'])) {
-      $dataset_query = $_GET['search-query'];
-    }
-    if (!empty($_GET['search-sort'])) {
-      $dataset_sort = $_GET['search-sort'];
-    }
-    if (!empty($_GET['search-sort-order'])) {
-      $dataset_sort_by = $_GET['search-sort-order'];
-    }
-    if (!empty($_GET['page'])) {
-      $from = $dataset_resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', 10);
-    }
+
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
-      $variables_dataset = $dataset_resource->get_variables($dataset_type,
-        $dataset_id,
-        $from, 100,
-        $dataset_sort,
-        $dataset_sort_by,
-        $dataset_query
-      );
-
-      if (!empty($variables_dataset)) {
-        $_SESSION['list-datasets']['aggregations']['totalHits'] = $variables_dataset->total;
-        $variables_dataset->harmonization = NULL;
-        $variables_dataset->study = TRUE;
-        $variables_table_output = mica_client_dataset_study_variable_table($variables_dataset);
-      }
-
     }
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
-      $total = empty($_SESSION['variables']['aggregations']['totalHits']) ? 0 : $_SESSION['variables']['aggregations']['totalHits'];
-      $from = MicaClient::next_page_offset(empty($_GET['page']) ? 0 : $_GET['page'], MicaClient::SIZE_RESPONSE, $total);
-      $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
-        $dataset_id,
-        $from,
-        MicaClient::SIZE_RESPONSE,
-        $dataset_sort,
-        $dataset_sort_by,
-        $dataset_query
-      );
-      if (!empty($variables_dataset)) {
-        $_SESSION['variables']['aggregations']['totalHits'] = $total;
-        drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_download_harmonizations.js', 'file');
-        drupal_add_js(array('resource_url' => $dataset_id.'/download', 'resource_id' => $dataset_id), 'setting');
-
-        $variables_dataset->study = NULL;
-        $variables_dataset->harmonization = TRUE;
-        $variables_table_output = mica_client_dataset_harmonizations_table($dataset_type_dto, $variables_dataset);
-      }
     }
-
     drupal_set_title(mica_client_commons_get_localized_field($dataset_dto, 'name'));
 
     drupal_set_breadcrumb(array(
@@ -81,10 +37,8 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       'dataset_dto' => $dataset_dto,
       'coverage' => mica_client_dataset_coverage($dataset_dto->id),
       'dataset_type_dto' => $dataset_type_dto,
-      'variables_dataset' => $variables_dataset,
-      'variables_table' => $variables_table_output,
+      'dataset_type' => $dataset_type,
       'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array()),
-      'dataset_variables_aggs' => NULL, //mica_client_dataset_get_variables($dataset_dto->id),
     ));
   }
   else {
@@ -92,6 +46,220 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
     return '';
   }
 }
+
+/*
+ * Ajax Variable table Call header
+ * */
+function mica_client_dataset_Variables_table_ajax_header($dataset_type) {
+  $dataset_dto = unserialize($_SESSION['ajax']['variable']);
+  if ($dataset_type == 'study-dataset') {
+    // $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+    $header = mica_client_dataset_studies_Variables_table_ajax_header();
+  }
+  else {
+    $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
+    $header = mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto);
+  }
+
+  $data['header'] = $header;
+  return drupal_json_output($data);
+}
+
+
+/*
+ * Ajax Variable table Call data
+ * */
+
+function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_dataset) {
+  $dataset_resource = new MicaDatasetResource();
+  $from = 0;
+  $size = 10;
+  $dataset_sort_by = NULL;
+  $dataset_query = NULL;
+
+  if (!empty($_GET['iDisplayStart'])) {
+    $from = $_GET['iDisplayStart'];
+  }
+  if (!empty($_GET['iDisplayLength'])) {
+    $size = $_GET['iDisplayLength'];
+  }
+
+  $dataset_dto = unserialize($_SESSION['ajax']['variable']);
+
+  if ($dataset_type == 'study-dataset') {
+    //$dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+    $variables_dataset = $dataset_resource->get_variables($dataset_type,
+      $id_dataset,
+      $from,
+      $size
+    );
+
+    $data_variable = mica_client_dataset_studies_table_data($variables_dataset);
+
+  }
+  else {
+    $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
+    $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
+      $id_dataset,
+      $from,
+      $size
+    );
+    $data_variable = mica_client_dataset_harmonizations_table_data($dataset_type_dto, $variables_dataset);
+  }
+
+
+  $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
+  $data['iTotalRecords'] = $variables_dataset->total;
+  $data['iTotalDisplayRecords'] = $variables_dataset->total;
+  $data['aaData'] = $data_variable;
+  //dpm($data);
+  return drupal_json_output($data);
+}
+
+/*
+ * studies dataset ajax variable table
+ *
+ * */
+function mica_client_dataset_studies_Variables_table_ajax_header() {
+  return array(array("sTitle" => t('Variable')), array("sTitle" => t('Label')), array("sTitle" => t('Domains')));
+}
+
+function mica_client_dataset_studies_table_data($variables_dataset) {
+  $rows = array();
+  if (!empty($variables_dataset->variables)) {
+    foreach ($variables_dataset->variables as $variable) {
+      $var_row = l($variable->name, 'mica/variable/' . $variable->id);
+      $domains = _mica_client_variable_domains_list($variable);
+      $rows[] = array($var_row, mica_client_commons_get_localized_field($variable, 'name'), $domains);
+    }
+  }
+  return $rows;
+}
+
+/*********End Studies ajax header *************/
+
+/*
+ * Harmonization ajax variable table
+ * */
+function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto) {
+  if (!empty($dataset_type_dto->studyTables)) {
+    $header[] = array("sTitle" => t('Variable'), "data" => "variable", "name" => "variable");
+    foreach ($dataset_type_dto->studyTables as $study_table) {
+      $study_summary = $study_table->studySummary;
+      $acronym = mica_client_commons_get_localized_field($study_summary, 'acronym');
+      $title_header = l($acronym, 'mica/study/' . $study_summary->id);
+      $title_header = str_replace('"', '\'', $title_header);
+      if (!empty($study_table->name)) {
+        $name = ' <small title="' . mica_client_commons_get_localized_field($study_table, 'description') . '">' . mica_client_commons_get_localized_field($study_table, 'name') . '</small>';
+        $name = str_replace('"', '\'', $name);
+        $header[] = array(
+          "data" => str_replace(' ', '_', $acronym . mica_client_commons_get_localized_field($study_table, 'name')),
+          "sTitle" => $title_header . $name,
+          "name" => str_replace(' ', '_', $acronym . mica_client_commons_get_localized_field($study_table, 'name'))
+        );
+      }
+      else {
+        $header[] = array("data" => $acronym, "sTitle" => $title_header, "name" => $acronym);
+      }
+    }
+  }
+  return $header;
+}
+
+function mica_client_dataset_harmonizations_table_data($dataset_type_dto, $dataset_harmonizations_dto) {
+  $rows = array();
+  if (!empty($dataset_type_dto->studyTables)) {
+
+    if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
+
+      foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {
+        $row = array(
+          "variable" =>
+            l($variable_harmonization->resolver->name, 'mica/variable/' . $variable_harmonization->resolver->id)
+        );
+
+        foreach ($dataset_type_dto->studyTables as $study_table) {
+          $found = FALSE;
+          /*********************/
+          $study_summary = $study_table->studySummary;
+          $acronym = mica_client_commons_get_localized_field($study_summary, 'acronym');
+          if (!empty($study_table->name)) {
+            $Key_row = $acronym . mica_client_commons_get_localized_field($study_table, 'name');
+          }
+          else {
+            $Key_row = $acronym;
+          }
+          $Key_row = str_replace(' ', '_', $Key_row);
+          /*********************/
+          foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
+            if ($variable_summary->resolver->studyId == $study_table->studyId
+              && $variable_summary->resolver->project == $study_table->project
+              && $variable_summary->resolver->table == $study_table->table
+            ) {
+              $status = trim(strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
+                'maelstrom',
+                'Mlstr_harmo'
+              ))));
+              $harmonized_variable_id = $variable_summary->resolver->id;
+              $variable_title = $variable_summary->resolver->name . ' -- ' . mica_client_commons_get_localized_field($study_table->studySummary, 'acronym');
+              if (!empty($study_table->name)) {
+                $variable_title = $variable_title . ' (' . mica_client_commons_get_localized_field($study_table, 'name') . ')';
+              }
+              if (empty($status)) {
+                $row['variable'] = l('-', 'mica/variable/' . $harmonized_variable_id, array(
+                  'query' => array(
+                    'title' => $variable_title
+                  )
+                ));
+              }
+              elseif ($status == 'complete') {
+                $row[$Key_row] = l('<span data-toggle="tooltip" title="Completed" class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+                  array(
+                    'html' => TRUE,
+                    'query' => array(
+                      'title' => $variable_title
+                    )
+                  ));
+              }
+              elseif ($status == 'impossible') {
+                $row[$Key_row] = l('<span class="glyphicon glyphicon-remove alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+                  array(
+                    'html' => TRUE,
+                    'query' => array(
+                      'title' => $variable_title
+                    )
+                  ));
+              }
+              elseif ($status == 'undetermined') {
+                $row[$Key_row] = l('<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+                  array(
+                    'html' => TRUE,
+                    'query' => array(
+                      'title' => $variable_title
+                    )
+                  ));
+              }
+              else {
+                $row[$Key_row] = l('-', 'mica/variable/' . $harmonized_variable_id);
+              }
+              $found = TRUE;
+              break;
+            }
+          }
+          if (!$found) {
+            $row[$Key_row] = '-';
+          }
+        }
+
+        $rows[] = $row;
+      }
+    }
+  }
+
+  return $rows;
+}
+
+/*End harmonization variable ajax table */
 
 function mica_client_dataset_coverage($dataset_id) {
   return mica_client_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id)))));
@@ -182,33 +350,6 @@ function mica_client_dataset_study_tables_rows($study_tables) {
   return $rows;
 }
 
-function mica_client_dataset_study_variable_table($dataset_harmonizations_dto) {
-  $rows = array();
-  $headers = array(t('Variable'), t('Domains'));
-  if (!empty($dataset_harmonizations_dto->variables)) {
-    $total = $dataset_harmonizations_dto->total;
-    $per_page = MicaClient::SIZE_RESPONSE;
-    pager_default_initialize($total, $per_page);
-
-    foreach ($dataset_harmonizations_dto->variables as $variable) {
-      $var_row = l($variable->name, 'mica/variable/' . $variable->id);
-      $domains = _mica_client_variable_domains_list($variable);
-      $rows[] = array($var_row, $domains);
-    }
-
-    return theme(
-      'table',
-      array(
-        'header' => $headers,
-        'rows' => $rows,
-        'empty' => t('No harmonized variables found'),
-        'sticky' => FALSE
-      )
-    ) . theme('pager');
-  }
-
-}
-
 /**
  * @param $dataset_id
  * @return array
@@ -219,120 +360,12 @@ function mica_client_dataset_page_detail_download($dataset_id) {
   $response = $dataset_resource->download_variables_harmonizations($dataset_id, $language->language);
   if (!empty($response)) {
     $headers = $dataset_resource->getLastResponseHeaders();
-    drupal_add_http_header('Content-Type', $headers['Content-Type'][0] .'; utf-8');
+    drupal_add_http_header('Content-Type', $headers['Content-Type'][0] . '; utf-8');
     drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
     ob_clean();
     print $response->body;
     exit;
   }
-}
-
-function mica_client_dataset_harmonizations_table($dataset_type_dto, $dataset_harmonizations_dto) {
-  $rows = array();
-  $headers = array(t('Variable'));
-
-  if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
-    $total = $dataset_harmonizations_dto->total;
-    $per_page = MicaClient::SIZE_RESPONSE;
-    pager_default_initialize($total, $per_page);
-  }
-
-  if (!empty($dataset_type_dto->studyTables)) {
-    foreach ($dataset_type_dto->studyTables as $study_table) {
-      $study_summary = $study_table->studySummary;
-      $acronym = mica_client_commons_get_localized_field($study_summary, 'acronym');
-      $header = l($acronym, 'mica/study/' . $study_summary->id);
-      if (!empty($study_table->name)) {
-        $name = ' <small title="' . mica_client_commons_get_localized_field($study_table, 'description') . '">' . mica_client_commons_get_localized_field($study_table, 'name') . '</small>';
-        $header = $header . $name;
-      }
-      array_push($headers, $header);
-    }
-
-    if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
-
-      foreach ($dataset_harmonizations_dto->variableHarmonizations as $variable_harmonization) {
-        $row = array(
-          l($variable_harmonization->resolver->name, 'mica/variable/' . $variable_harmonization->resolver->id)
-        );
-
-        foreach ($dataset_type_dto->studyTables as $study_table) {
-          $found = FALSE;
-          foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
-            if ($variable_summary->resolver->studyId == $study_table->studyId
-              && $variable_summary->resolver->project == $study_table->project
-              && $variable_summary->resolver->table == $study_table->table
-            ) {
-              $status = trim(strtolower(_mica_client_variable_attributes_detail($variable_summary, 'status', array(
-                'maelstrom',
-                'Mlstr_harmo'
-              ))));
-              $harmonized_variable_id = $variable_summary->resolver->id;
-              $variable_title = $variable_summary->resolver->name . ' -- ' . mica_client_commons_get_localized_field($study_table->studySummary, 'acronym');
-              if (!empty($study_table->name)) {
-                $variable_title = $variable_title . ' (' . mica_client_commons_get_localized_field($study_table, 'name') . ')';
-              }
-              if (empty($status)) {
-                $row[] = l('-', 'mica/variable/' . $harmonized_variable_id, array(
-                  'query' => array(
-                    'title' => $variable_title
-                  )
-                ));
-              }
-              elseif ($status == 'complete') {
-                $row[] = l('<span data-toggle="tooltip" title="Completed" class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title
-                    )
-                  ));
-              }
-              elseif ($status == 'impossible') {
-                $row[] = l('<span class="glyphicon glyphicon-remove alert-danger" title="' . t('Impossible') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title
-                    )
-                  ));
-              }
-              elseif ($status == 'undetermined') {
-                $row[] = l('<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title
-                    )
-                  ));
-              }
-              else {
-                $row[] = l('-', 'mica/variable/' . $harmonized_variable_id);
-              }
-              $found = TRUE;
-              break;
-            }
-          }
-          if (!$found) {
-            $row[] = '-';
-          }
-        }
-
-        $rows[] = $row;
-      }
-    }
-  }
-
-  return theme(
-    'table',
-    array(
-      'header' => $headers,
-      'rows' => $rows,
-      'empty' => t('No harmonized variables found'),
-      'sticky' => FALSE
-    )
-  ) . theme('pager');
-
 }
 
 /**
