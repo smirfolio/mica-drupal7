@@ -43,7 +43,7 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
       'coverage' => mica_client_dataset_coverage($dataset_dto->id),
       'dataset_type_dto' => $dataset_type_dto,
       'dataset_type' => $dataset_type,
-      'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array()),
+      'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array('clickable' => TRUE)),
       'variables_dataset' => $variables_dataset,
     ));
   }
