@@ -34,7 +34,8 @@ class VariableStatistics {
    */
   public function as_chart() {
     if (!empty($this->variable_stat->statistics)) {
-      return $this->as_stacked_bar_chart();
+      return FALSE;
+      //return $this->as_stacked_bar_chart();
     }
     return $this->as_pie_chart();
   }
@@ -91,7 +92,7 @@ class VariableStatistics {
       }
 
       if (!empty($data)) {
-        $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, t('Valid and missing values frequencies'), NULL, 400, 'none');
+        $to_render = mica_client_facet_search_stacked_column_chart($labels, $data, t('Valid and other values frequencies'), NULL, 400, 'none');
         return render($to_render);
       }
       else {
@@ -257,7 +258,6 @@ class VariableStatistics {
     if (!empty($this->variable_stat->frequencies)) {
       foreach ($this->variable_stat->frequencies as $frequency) {
         if ($frequency->value != 'NOT_NULL') {
-
           array_push($missings, $frequency->value);
         }
       }
@@ -328,6 +328,7 @@ class VariableStatistics {
     array_push($headers, t('Min'), t('Max'), t('Mean'), t('Std. Dev'), t('N'));
     foreach ($missings as $missing) {
       $label = $this->get_label_from_category_name($missing);
+      $label = $label == 'N/A' ? t('Missing') : $label;
       array_push($headers, $label);
     }
     array_push($headers, t('Total'));
@@ -386,7 +387,7 @@ class VariableStatistics {
     $missing_rows = array();
     $missing_rows[] = array(
       array(
-        'data' => '<strong>' . t('Missing Values') . '</strong>',
+        'data' => '<strong>' . t('Other Values') . '</strong>',
         'colspan' => $colspan
       )
     );
@@ -420,7 +421,7 @@ class VariableStatistics {
                 if ($frequency->missing) {
                   $total_missing_all += $total_missing;
                   $percent = $total_missing > 0 ? round(($count / $total_missing) * 100, 1) : 0;
-                  $count .= '<p class="help-inline" title="Percentage over missing values count"><i>(' . $percent . '%)</i></p>';
+                  $count .= '<p class="help-inline" title="Percentage over other values count"><i>(' . $percent . '%)</i></p>';
                 }
                 else {
                   $total_non_missing_all += $total_non_missing;
@@ -444,7 +445,7 @@ class VariableStatistics {
         else {
           if (count($aggregations) > 1) {
             $percent = $total_missing_all > 0 ? round(($count_all / $total_missing_all) * 100, 1) : 0;
-            $count_all .= '<p class="help-inline" title="Percentage over missing values count"><i>(' . $percent . '%)</i></p>';
+            $count_all .= '<p class="help-inline" title="Percentage over other values count"><i>(' . $percent . '%)</i></p>';
             $row[] = $count_all;
           }
           $missing_rows[] = $row;
@@ -456,6 +457,7 @@ class VariableStatistics {
     $observed_values = $this->get_observed_values($aggregations);
     foreach ($observed_values as $observed_value) {
       $label = $observed_value == 'NOT_NULL' ? t('Valid values') : $observed_value;
+      $label = $observed_value == 'N/A' ? t('Missing') : $label;
       $row = array($label);
       $count_all = 0;
       $total_non_missing_all = 0;
@@ -475,7 +477,7 @@ class VariableStatistics {
               if ($frequency->missing) {
                 $total_missing_all += $total_missing;
                 $percent = $total_missing > 0 ? round(($count / $total_missing) * 100, 1) : 0;
-                $count .= '<p class="help-inline" title="Percentage over missing values count"><i>(' . $percent . '%)</i></p>';
+                $count .= '<p class="help-inline" title="Percentage over other values count"><i>(' . $percent . '%)</i></p>';
               }
               else {
                 $total_non_missing_all += $total_non_missing;
@@ -490,7 +492,7 @@ class VariableStatistics {
       }
       if (count($aggregations) > 1) {
         $percent = $total_missing_all > 0 ? round(($count_all / $total_missing_all) * 100, 1) : 0;
-        $count_all .= '<p class="help-inline" title="Percentage over missing values count"><i>(' . $percent . '%)</i></p>';
+        $count_all .= '<p class="help-inline" title="Percentage over other values count"><i>(' . $percent . '%)</i></p>';
         $row[] = $count_all;
       }
       if (!$missing) {
