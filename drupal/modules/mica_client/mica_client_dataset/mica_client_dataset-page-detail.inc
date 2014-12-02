@@ -2,8 +2,12 @@
 include_once('includes/mica_client_dataset_resource.inc');
 
 function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
-
-  drupal_add_library('mica_client_dataset', 'datatables');
+  if (drupal_get_library('mica_client_dataset', 'datatables')) {
+    drupal_add_library('mica_client_dataset', 'datatables');
+  }
+  else {
+    mica_client_dataset_datatables_external_source();
+  }
   drupal_add_js(drupal_get_path('module', 'mica_client_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_datatable_init.js', 'file');
   // drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_download_harmonizations.js', 'file');

@@ -146,25 +146,35 @@ function mica_client_dataset_menu_link_alter(&$items) {
  */
 function mica_client_dataset_library() {
   $libraries = array();
-  $lib_path = libraries_get_path('datatables');
+  $lib_path_datatables = libraries_get_path('datatables');
   // Make sure we have a valid library path before returning library load info.
-  if (!empty($lib_path)) {
+  if (!empty($lib_path_datatables)) {
     $libraries['datatables'] = array(
       'title' => 'DataTables',
       'website' => 'http://datatables.net/',
       'version' => '1.10.1',
       'js' => array(
-        $lib_path . '/media/js/jquery.dataTables.js' => array(),
-        $lib_path . '/extensions/FixedColumns/js/dataTables.fixedColumns.js' => array(),
-        $lib_path . '/extensions/TableTools/js/dataTables.tableTools.js' => array(),
-        $lib_path . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.js' => array(),
+        $lib_path_datatables . '/media/js/jquery.dataTables.js' => array(),
+        $lib_path_datatables . '/extensions/FixedColumns/js/dataTables.fixedColumns.js' => array(),
+        $lib_path_datatables . '/extensions/TableTools/js/dataTables.tableTools.js' => array(),
+        $lib_path_datatables . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.js' => array(),
       ),
       'css' => array(
-        $lib_path . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.css' => array()
+        $lib_path_datatables . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.css' => array()
       )
     );
   }
   return $libraries;
+}
+
+/*
+ * Add external js dataTables
+ * */
+function mica_client_dataset_datatables_external_source() {
+  drupal_add_js('http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js', 'external');
+  drupal_add_js('http://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', 'external');
+  drupal_add_js('http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', 'external');
+  drupal_add_css('http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', 'external');
 }
 
 /**
