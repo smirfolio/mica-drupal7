@@ -21,7 +21,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update plugData-enable cc
+all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update datatables cc
 
 clean:
 	rm -rf target
@@ -100,7 +100,14 @@ chart-enable:
 	drush highcharts-download && \
 	drush en -y charts_highcharts
 
-plugData-enable:
+datatables: datatables-download datatables-plugins-download
+
+datatables-download:
+	cd target/drupal && \
+	drush datatables-download
+
+
+datatables-plugins-download:
 	cd target/drupal && \
 	drush datatables-plugins-download
 
