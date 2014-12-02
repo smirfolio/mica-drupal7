@@ -51,7 +51,7 @@
             "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
             "aoColumns": headerTable,
             "searching": true,
-            "ordering": false,
+            "ordering": true,
             "language": {
               "url": Drupal.settings.basePath + 'mica/datatable-international'
             }

@@ -72,6 +72,21 @@ function mica_client_dataset_Variables_table_ajax_header($dataset_type) {
 }
 
 
+function mica_client_dataset_get_sorted_by_column() {
+  if (!empty($_GET['sColumns'])) {
+    $_columns = explode(',', $_GET['sColumns']);
+    foreach ($_columns as $key => $_column) {
+      if (!empty($_GET['bSortable_' . $key])) {
+        if ($_GET['iSortCol_0'] == $key) {
+          $sorting['sort'] = $_column;
+          $sorting['order'] = $_GET['sSortDir_0'];
+          return $sorting;
+        }
+      }
+    }
+  }
+}
+
 /*
  * Ajax Variable table Call data
  * */
@@ -90,6 +105,8 @@ function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_datase
     $size = $_GET['iDisplayLength'];
   }
 
+  $sort = mica_client_dataset_get_sorted_by_column($dataset_type);
+
   $dataset_dto = unserialize($_SESSION['ajax']['variable']);
 
   if ($dataset_type == 'study-dataset') {
@@ -97,7 +114,9 @@ function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_datase
     $variables_dataset = $dataset_resource->get_variables($dataset_type,
       $id_dataset,
       $from,
-      $size
+      $size,
+      !empty($sort['sort']) ? $sort['sort'] : NULL,
+      !empty($sort['order']) ? $sort['order'] : NULL
     );
 
     $data_variable = mica_client_dataset_studies_table_data($variables_dataset);
@@ -108,12 +127,14 @@ function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_datase
     $variables_dataset = $dataset_resource->get_variables_harmonizations($dataset_type,
       $id_dataset,
       $from,
-      $size
+      $size,
+      !empty($sort['sort']) ? $sort['sort'] : NULL,
+      !empty($sort['order']) ? $sort['order'] : NULL
     );
     $data_variable = mica_client_dataset_harmonizations_table_data($dataset_type_dto, $variables_dataset);
   }
 
-
+  dpm($variables_dataset);
   $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
   $data['iTotalRecords'] = $variables_dataset->total;
   $data['iTotalDisplayRecords'] = $variables_dataset->total;
@@ -128,9 +149,21 @@ function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_datase
  * */
 function mica_client_dataset_studies_Variables_table_ajax_header() {
   return array(
-    array("sTitle" => t('Variable')),
-    array("sTitle" => t('Label')),
-    array("sTitle" => t('Classifications'))
+    array("sTitle" => t('Variable'), "data" => "name", "mDataProp" => "name", "name" => "name"),
+    array(
+      "sTitle" => t('Label'),
+      "data" => "label",
+      "mDataProp" => "label",
+      "name" => "label",
+      "orderable" => FALSE
+    ),
+    array(
+      "sTitle" => t('Classifications'),
+      "data" => "classifications",
+      "mDataProp" => "classifications",
+      "name" => "classifications",
+      "orderable" => FALSE
+    )
   );
 }
 
@@ -140,7 +173,11 @@ function mica_client_dataset_studies_table_data($variables_dataset) {
     foreach ($variables_dataset->variables as $variable) {
       $var_row = l($variable->name, 'mica/variable/' . $variable->id);
       $domains = _mica_client_variable_domains_list($variable);
-      $rows[] = array($var_row, mica_client_commons_get_localized_field($variable, 'name'), $domains);
+      $rows[] = array(
+        "name" => $var_row,
+        "label" => mica_client_commons_get_localized_field($variable, 'name'),
+        "classifications" => $domains
+      );
     }
   }
   return $rows;
@@ -153,7 +190,7 @@ function mica_client_dataset_studies_table_data($variables_dataset) {
  * */
 function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto) {
   if (!empty($dataset_type_dto->studyTables)) {
-    $header[] = array("sTitle" => t('Variable'), "data" => "variable", "name" => "variable");
+    $header[] = array("sTitle" => t('Variable'), "data" => "variable", "name" => "name", "mDataProp" => "name");
     foreach ($dataset_type_dto->studyTables as $study_table) {
       $study_summary = $study_table->studySummary;
       $acronym = mica_client_commons_get_localized_field($study_summary, 'acronym');
@@ -165,11 +202,17 @@ function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset
         $header[] = array(
           "data" => str_replace(' ', '_', $acronym . mica_client_commons_get_localized_field($study_table, 'name')),
           "sTitle" => $title_header . $name,
-          "name" => str_replace(' ', '_', $acronym . mica_client_commons_get_localized_field($study_table, 'name'))
+          "name" => str_replace(' ', '_', $acronym . mica_client_commons_get_localized_field($study_table, 'name')),
+          "orderable" => FALSE
         );
       }
       else {
-        $header[] = array("data" => $acronym, "sTitle" => $title_header, "name" => $acronym);
+        $header[] = array(
+          "data" => $acronym,
+          "sTitle" => $title_header,
+          "name" => $acronym,
+          "orderable" => FALSE
+        );
       }
     }
   }
