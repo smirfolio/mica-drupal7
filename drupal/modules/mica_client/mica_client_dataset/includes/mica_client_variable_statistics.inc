@@ -63,12 +63,14 @@ class VariableStatistics {
         foreach ($aggregations as $aggregation) {
           if (!empty($aggregation->frequencies)) {
             $header = $this->get_study_table_label($aggregation);
+            $count = 0;
             foreach ($aggregation->frequencies as $frequency) {
               if ($frequency->value == $observed) {
-                $data[$header][] = $frequency->count;
+                $count = $frequency->count;
                 break;
               }
             }
+            $data[$header][] = $count;
           }
         }
       }
