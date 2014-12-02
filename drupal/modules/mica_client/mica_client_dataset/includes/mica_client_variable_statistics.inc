@@ -542,10 +542,10 @@ class VariableStatistics {
       $pct = empty($aggregation->total) ? NULL : round(($aggregation->n / $aggregation->total) * 100, 1);
       $n = empty($pct) ? '0' : $aggregation->n . '<p class="help-inline" title="Percentage over total count">(' . $pct . '%)</p>';
       return array(
-        property_exists($statistics, 'min') ? round($statistics->min, 3) : '-',
-        property_exists($statistics, 'max') ? round($statistics->max, 3) : '-',
-        property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ? round($statistics->mean, 3) : '-',
-        property_exists($statistics, 'stdDeviation') ? round($statistics->stdDeviation, 3) : '-',
+        property_exists($statistics, 'min') ? round($statistics->min, 1) : '-',
+        property_exists($statistics, 'max') ? round($statistics->max, 1) : '-',
+        property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ? round($statistics->mean, 1) : '-',
+        property_exists($statistics, 'stdDeviation') ? round($statistics->stdDeviation, 1) : '-',
         $n
       );
     }
