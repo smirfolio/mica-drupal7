@@ -92,6 +92,13 @@ function mica_client_dataset_menu() {
     'page arguments' => array(2),
   );
 
+  $items['mica/datatable-international'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'mica_client_dataset_datatables_multi_Lang',
+    'access callback' => TRUE,
+    'page arguments' => array(),
+  );
+
   /***************************/
   $items['mica/harmonization-dataset/%/download'] = array(
     'page callback' => 'mica_client_dataset_page_detail_download',
@@ -175,6 +182,41 @@ function mica_client_dataset_datatables_external_source() {
   drupal_add_js('http://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', 'external');
   drupal_add_js('http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', 'external');
   drupal_add_css('http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', 'external');
+}
+
+/*
+ * Multi language Datatables  support
+ * */
+function mica_client_dataset_datatables_multi_Lang() {
+  $_lang_translation = array(
+    "sEmptyTable" => t("No data available in table"),
+    "sInfo" => t("Showing @start to @end of @total entries", array(
+      "@start" => "_START_",
+      "@end" => "_END_",
+      "@total" => "_TOTAL_"
+    )),
+    "sInfoEmpty" => t("Showing 0 to 0 of 0 entries"),
+    "sInfoFiltered" => t("(filtered from @max total entries)", array("@max" => "_MAX_")),
+    "sInfoPostFix" => t(""),
+    "sInfoThousands" => t(","),
+    "sLengthMenu" => t("Show @menu entries", array("@menu" => "_MENU_")),
+    "sLoadingRecords" => t("Loading..."),
+    "sProcessing" => t("Processing..."),
+    "sSearch" => t("Search:"),
+    "sZeroRecords" => t("No matching records found"),
+    "oPaginate" => array(
+      "sFirst" => t("First"),
+      "sLast" => t("Last"),
+      "sNext" => t("Next"),
+      "sPrevious" => t("Previous")
+    ),
+    "oAria" => array(
+      "sSortAscending" => t(": activate to sort column ascending"),
+      "sSortDescending" => t(": activate to sort column descending")
+    )
+  );
+
+  return drupal_json_output($_lang_translation);
 }
 
 /**

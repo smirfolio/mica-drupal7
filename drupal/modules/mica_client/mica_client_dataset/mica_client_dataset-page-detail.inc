@@ -127,7 +127,11 @@ function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_datase
  *
  * */
 function mica_client_dataset_studies_Variables_table_ajax_header() {
-  return array(array("sTitle" => t('Variable')), array("sTitle" => t('Label')), array("sTitle" => t('Domains')));
+  return array(
+    array("sTitle" => t('Variable')),
+    array("sTitle" => t('Label')),
+    array("sTitle" => t('Classifications'))
+  );
 }
 
 function mica_client_dataset_studies_table_data($variables_dataset) {
