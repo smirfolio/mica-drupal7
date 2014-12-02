@@ -7150,7 +7150,7 @@ body.admin-menu .navbar-fixed-top {
   width: 1px;
 }
 .navbar .logo {
-  margin-top: 5px;
+  margin-top: 10px;
   margin-right: 10px;
 }
 .navbar .logo img {
@@ -7824,8 +7824,7 @@ div.search-count span {
 .right-border {
   border-right: 1px solid #dddddd;
 }
-
 /*Dataset details*/
 .download-table {
-    display: none;
+  display: none;
 }
