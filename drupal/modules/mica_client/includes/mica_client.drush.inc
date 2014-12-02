@@ -141,11 +141,6 @@ function mica_client_drush_datatable_bootstrap_plugins_download() {
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
   }
 
-  // Create the libraries path if it does not exist.
-  if (!is_dir($path . '/sites/all/libraries')) {
-    drush_op('mkdir', $path . '/sites/all/libraries');
-  }
-
   if (!is_dir($path . '/sites/all/libraries/datatables')) {
     drush_log(dt('Drush was unable to find DataTables plugin ', array()), 'error');
   }
