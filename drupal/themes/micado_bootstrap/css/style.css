@@ -9511,6 +9511,7 @@ div.search-count span {
 }
 
 .expend-control .link-expend {
+    cursor: pointer;
     font-size: 0.8em;
     margin-right: 10px;
 }
