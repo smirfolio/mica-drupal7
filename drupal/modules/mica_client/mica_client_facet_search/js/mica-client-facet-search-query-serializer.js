@@ -21,7 +21,7 @@
             $.each(aggs, function (name, agg) {
 
               if (aggType === 'matches') {
-                var key = type + "::matches:facet-search-query";
+                var key = type + ":matches:facet-search-query";
                 formData[key] = aggs;
                 return;
               }
@@ -100,7 +100,7 @@
        * @returns {{matches: *}}
        */
       function extractMatchesEntry(value) {
-        var entry = /^(\w+)::matches:.*=(.*)$/.exec(value);
+        var entry = /^(\w+):matches:.*=(.*)$/.exec(value);
         return entry === null ? null : {type: entry[1], matches: entry[2]};
       }
 
@@ -113,62 +113,6 @@
         var entry = /\[\+([+-]*\d+)\+to\+([+-]*\d+)\+\]/.exec(value);
         if (entry !== null) return {min: entry[1], max: entry[2]};
         return value;
-      }
-
-      function addItemWithData(jsonForm, entry) {
-
-        /**
-         * Parses the formData serialized as a DOM object and returns it as JSON object
-         * @param formData
-         * @returns {{}}
-         */
-        function parse(jsonForm, item) {
-          if (!jsonForm) jsonForm = {};
-
-          if (item != null && item.length > 0) {
-            var entry = extractOperator(item) || extractFormEntry(item) || extractMatchesEntry(item);
-            if (entry === null) return;
-
-            if (!jsonForm.hasOwnProperty(entry.type)) {
-              jsonForm[entry.type] = {};
-            }
-
-            if (entry.hasOwnProperty('matches')) {
-              jsonForm[entry.type]['matches'] = entry.matches;
-              return;
-            }
-
-            if (!jsonForm[entry.type].hasOwnProperty(entry.aggType)) {
-              jsonForm[entry.type][entry.aggType] = {};
-            }
-
-            if (!jsonForm[entry.type][entry.aggType].hasOwnProperty(entry.agg)) {
-              jsonForm[entry.type][entry.aggType][entry.agg] = {'values': [], 'data': [], 'op': 'and'};
-            }
-
-            if (entry.hasOwnProperty('op')) {
-              jsonForm[entry.type][entry.aggType][entry.agg].op = entry.op;
-            } else {
-              if (entry.aggType == 'range' && jsonForm[entry.type][entry.aggType][entry.agg].values.length > 0) {
-                jsonForm[entry.type][entry.aggType][entry.agg].values.splice(0, 1);
-                jsonForm[entry.type][entry.aggType][entry.agg].data.splice(0, 1);
-              }
-              jsonForm[entry.type][entry.aggType][entry.agg].values.push(entry.aggValue);
-              jsonForm[entry.type][entry.aggType][entry.agg].data.push(entry.aggDataValue);
-            }
-          }
-        }
-
-        return parse(jsonForm, entry);
-      }
-
-      function serializeFormAsLocalizedJson(form) {
-        var json = {};
-        $.each(form, function(i, item){
-          addItemWithData(json, item);
-        });
-
-        return json;
       }
 
       function addItem(jsonForm, entry) {
@@ -224,7 +168,7 @@
         $.each(jsonForm, function (type, typeValues) {
           if (type === entry.type) {
             $.each(typeValues, function (aggType, aggs) {
-              if (aggType === 'matches') {
+              if (aggType === 'matches' && entry.hasOwnProperty('matches')) {
                 delete typeValues[aggType];
 
                 $.trimJson(jsonForm);
@@ -253,7 +197,6 @@
 
       $.extend({
         query_serializer: {
-          serializeFormAsLocalizedJson: serializeFormAsLocalizedJson,
           serializeJsonAsForm: serializeJsonAsForm,
           addItem: addItem,
           removeItem: removeItem
