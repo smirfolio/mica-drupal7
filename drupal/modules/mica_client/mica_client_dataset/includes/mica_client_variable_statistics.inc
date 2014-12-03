@@ -435,8 +435,7 @@ class VariableStatistics {
       $label = $observed_value == 'N/A' ? t('Missing') : $label;
       $row = array($label);
       $missing = TRUE;
-      for ($i = 0; $i < count($aggregations); $i++) {
-        $aggregation = $aggregations[$i];
+      foreach ($aggregations as $aggregation) {
         $count = 0;
         if (!empty($aggregation->frequencies)) {
           foreach ($aggregation->frequencies as $frequency) {
