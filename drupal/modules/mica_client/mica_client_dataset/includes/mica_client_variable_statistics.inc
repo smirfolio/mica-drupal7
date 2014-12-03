@@ -108,8 +108,12 @@ class VariableStatistics {
    */
   private function as_pie_chart() {
     $aggregation = $this->variable_stat;
-    if (empty($aggregation->frequencies)) return FALSE;
-    if (empty($aggregation->n)) return FALSE;
+    if (empty($aggregation->frequencies)) {
+      return FALSE;
+    }
+    if (empty($aggregation->n)) {
+      return FALSE;
+    }
 
     $labels = array();
     $data = array();
@@ -282,7 +286,7 @@ class VariableStatistics {
             if ($frequency->value == $missing) {
               $count = $frequency->count;
               $pct = empty($aggregation->total) ? NULL : round(($count / $aggregation->total) * 100, 1);
-              $count = empty($pct) ? '0' : $count . '<p class="help-inline" title="Percentage over total count">(' . $pct . '%)</p>';
+              $count = empty($pct) ? '0' : $count . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
               break;
             }
           }
@@ -309,7 +313,7 @@ class VariableStatistics {
             if ($frequency->value == $missing) {
               $count = $frequency->count;
               $pct = empty($aggregation->total) ? NULL : round(($count / $aggregation->total) * 100, 1);
-              $count = empty($pct) ? '0' : $count . '<p class="help-inline" title="Percentage over total count">(' . $pct . '%)</p>';
+              $count = empty($pct) ? '0' : $count . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
               break;
             }
           }
@@ -343,6 +347,7 @@ class VariableStatistics {
   private function as_frequencies_table() {
     $headers = array('Value');
     $rows = array();
+    $missing_rows = array();
     $aggregations = array();
 
     // headers
@@ -359,6 +364,7 @@ class VariableStatistics {
         }
         if (count($aggregations) > 1) {
           $headers[] = t('All');
+          array_push($aggregations, $this->variable_stat);
         }
       }
     }
@@ -367,24 +373,14 @@ class VariableStatistics {
       array_push($aggregations, $this->variable_stat);
     }
 
-    $colspan = count($aggregations) + 1 + (count($aggregations) > 1 ? 1 : 0);
-
-    // count of missing and non-missing values
-    $total_non_missings = array();
-    $total_missings = array();
-    foreach ($aggregations as $aggregation) {
-      $total_non_missings[] = empty($aggregation->n) ? 0 : $aggregation->n;
-      $total_missings[] = empty($aggregation->total) ? 0 : empty($aggregation->n) ? $aggregation->total : $aggregation->total - $aggregation->n;
-    }
-
-    // counts per category
+    // counts per valid/missing values
+    $colspan = count($aggregations) + 1;
     $rows[] = array(
       array(
         'data' => '<strong>' . t('Valid Values') . '</strong>',
         'colspan' => $colspan
       )
     );
-    $missing_rows = array();
     $missing_rows[] = array(
       array(
         'data' => '<strong>' . t('Other Values') . '</strong>',
@@ -405,28 +401,17 @@ class VariableStatistics {
           )
         );
         $value = $category_name;
-        $count_all = 0;
-        $total_non_missing_all = 0;
-        $total_missing_all = 0;
-        for ($i = 0; $i < count($aggregations); $i++) {
-          $aggregation = $aggregations[$i];
-          $total_non_missing = $total_non_missings[$i];
-          $total_missing = $total_missings[$i];
+        foreach ($aggregations as $aggregation) {
           $count = 0;
           if (!empty($aggregation->frequencies)) {
             foreach ($aggregation->frequencies as $frequency) {
               if ($frequency->value == $value) {
                 $count = $frequency->count;
-                $count_all += $count;
                 if ($frequency->missing) {
-                  $total_missing_all += $total_missing;
-                  $percent = $total_missing > 0 ? round(($count / $total_missing) * 100, 1) : 0;
-                  $count .= '<p class="help-inline" title="Percentage over other values count"><i>(' . $percent . '%)</i></p>';
+                  $count = $this->count_markup($count, $aggregation->total, $aggregation->total - $aggregation->n, 'Percentage over other values count');
                 }
                 else {
-                  $total_non_missing_all += $total_non_missing;
-                  $percent = $total_non_missing > 0 ? round(($count / $total_non_missing) * 100, 1) : 0;
-                  $count .= '<p class="help-inline" title="Percentage over valid values count"><i>(' . $percent . '%)</i></p>';
+                  $count = $this->count_markup($count, $aggregation->total, $aggregation->n, 'Percentage over valid values count');
                 }
                 break;
               }
@@ -435,19 +420,9 @@ class VariableStatistics {
           $row[] = $count;
         }
         if (!$missing) {
-          if (count($aggregations) > 1) {
-            $percent = $total_non_missing_all > 0 ? round(($count_all / $total_non_missing_all) * 100, 1) : 0;
-            $count_all .= '<p class="help-inline" title="Percentage over valid values count"><i>(' . $percent . '%)</i></p>';
-            $row[] = $count_all;
-          }
           $rows[] = $row;
         }
         else {
-          if (count($aggregations) > 1) {
-            $percent = $total_missing_all > 0 ? round(($count_all / $total_missing_all) * 100, 1) : 0;
-            $count_all .= '<p class="help-inline" title="Percentage over other values count"><i>(' . $percent . '%)</i></p>';
-            $row[] = $count_all;
-          }
           $missing_rows[] = $row;
         }
       }
@@ -459,30 +434,20 @@ class VariableStatistics {
       $label = $observed_value == 'NOT_NULL' ? t('Valid values') : $observed_value;
       $label = $observed_value == 'N/A' ? t('Missing') : $label;
       $row = array($label);
-      $count_all = 0;
-      $total_non_missing_all = 0;
-      $total_missing_all = 0;
       $missing = TRUE;
       for ($i = 0; $i < count($aggregations); $i++) {
         $aggregation = $aggregations[$i];
-        $total_non_missing = $total_non_missings[$i];
-        $total_missing = $total_missings[$i];
         $count = 0;
         if (!empty($aggregation->frequencies)) {
           foreach ($aggregation->frequencies as $frequency) {
             if ($frequency->value == $observed_value) {
               $missing = $frequency->missing; # expected to be the same through the aggregations
               $count = $frequency->count;
-              $count_all += $count;
               if ($frequency->missing) {
-                $total_missing_all += $total_missing;
-                $percent = $total_missing > 0 ? round(($count / $total_missing) * 100, 1) : 0;
-                $count .= '<p class="help-inline" title="Percentage over other values count"><i>(' . $percent . '%)</i></p>';
+                $count = $this->count_markup($count, $aggregation->total, $aggregation->total - $aggregation->n, 'Percentage over other values count');
               }
               else {
-                $total_non_missing_all += $total_non_missing;
-                $percent = $total_non_missing > 0 ? round(($count / $total_non_missing) * 100, 1) : 0;
-                $count .= '<p class="help-inline" title="Percentage over valid values count"><i>(' . $percent . '%)</i></p>';
+                $count = $this->count_markup($count, $aggregation->total, $aggregation->n, 'Percentage over valid values count');
               }
               break;
             }
@@ -490,58 +455,27 @@ class VariableStatistics {
         }
         $row[] = $count;
       }
-      if (count($aggregations) > 1) {
-        $percent = $total_missing_all > 0 ? round(($count_all / $total_missing_all) * 100, 1) : 0;
-        $count_all .= '<p class="help-inline" title="Percentage over other values count"><i>(' . $percent . '%)</i></p>';
-        $row[] = $count_all;
-      }
       if (!$missing) {
-        #$rows[] = $row;
+        $rows[] = $row;
       }
       else {
         $missing_rows[] = $row;
       }
     }
 
-    // total non missing
+    // subtotal valid values
     $row = array('<i>' . t('Subtotal') . '</i>');
-    $total_non_missing_all = 0;
-    $total_all = 0;
-    for ($i = 0; $i < count($aggregations); $i++) {
-      $aggregation = $aggregations[$i];
-      $total_non_missing = $total_non_missings[$i];
-      $total_non_missing_all += $total_non_missing;
-      $total_all += $aggregation->total;
-      $percent = $aggregation->total > 0 ? round(($total_non_missing / $aggregation->total) * 100, 1) : 0;
-      $total_non_missing .= '<p class="help-inline" title="Percentage over total count">(' . $percent . '%)</p>';
-      $row[] = $total_non_missing;
-    }
-    if (count($aggregations) > 1) {
-      $percent = $total_all > 0 ? round(($total_non_missing_all / $total_all) * 100, 1) : 0;
-      $total_non_missing_all .= '<p class="help-inline" title="Percentage over total count">(' . $percent . '%)</p>';
-      $row[] = $total_non_missing_all;
+    foreach ($aggregations as $aggregation) {
+      $row[] = $this->count_markup($aggregation->n, $aggregation->total);
     }
     $rows[] = $row;
 
-    // missing values
+    // subtotal missing values
     if (count($missing_rows) > 1) {
       // total missing
       $row = array('<i>' . t('Subtotal') . '</i>');
-      $total_missing_all = 0;
-      $total_all = 0;
-      for ($i = 0; $i < count($aggregations); $i++) {
-        $aggregation = $aggregations[$i];
-        $total_missing = $total_missings[$i];
-        $total_missing_all += $total_missing;
-        $total_all += $aggregation->total;
-        $percent = $aggregation->total > 0 ? round(($total_missing / $aggregation->total) * 100, 1) : 0;
-        $total_missing .= '<p class="help-inline" title="Percentage over total count">(' . $percent . '%)</p>';
-        $row[] = $total_missing;
-      }
-      if (count($aggregations) > 1) {
-        $percent = $total_all > 0 ? round(($total_missing_all / $total_all) * 100, 1) : 0;
-        $total_missing_all .= '<p class="help-inline" title="Percentage over total count">(' . $percent . '%)</p>';
-        $row[] = $total_missing_all;
+      foreach ($aggregations as $aggregation) {
+        $row[] = $this->count_markup($aggregation->total - $aggregation->n, $aggregation->total);
       }
       $missing_rows[] = $row;
 
@@ -555,17 +489,10 @@ class VariableStatistics {
         'class' => array('active')
       )
     );
-    $total_all = 0;
+
     foreach ($aggregations as $aggregation) {
       $row[] = array(
         'data' => $aggregation->total,
-        'class' => array('active')
-      );
-      $total_all += $aggregation->total;
-    }
-    if (count($aggregations) > 1) {
-      $row[] = array(
-        'data' => $total_all,
         'class' => array('active')
       );
     }
@@ -574,11 +501,21 @@ class VariableStatistics {
     return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No statistics available')));
   }
 
+  private function count_markup($count, $total = 0, $subtotal = 0, $title = NULL) {
+    $percent_total = $total > 0 ? round(($count / ($total)) * 100, 1) : 0;
+    $percent = $subtotal > 0 ? round(($count / $subtotal) * 100, 1) : 0;
+    $total_title = t('Percentage over total count');
+    if (!empty($title)) {
+      return $count . '<p class="help-inline" title="' . $total_title . '">' . $percent_total . '% <i title="' . t($title) . '">(' . $percent . '%)</i></p>';
+    }
+    return $count . '<p class="help-inline" title="' . $total_title . '">' . $percent_total . '%</p>';
+  }
+
   private function statistics_to_row($aggregation) {
     if (!empty($aggregation->statistics)) {
       $statistics = $aggregation->statistics;
       $pct = empty($aggregation->total) ? NULL : round(($aggregation->n / $aggregation->total) * 100, 1);
-      $n = empty($pct) ? '0' : $aggregation->n . '<p class="help-inline" title="Percentage over total count">(' . $pct . '%)</p>';
+      $n = empty($pct) ? '0' : $aggregation->n . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
       return array(
         property_exists($statistics, 'min') ? round($statistics->min, 1) : '-',
         property_exists($statistics, 'max') ? round($statistics->max, 1) : '-',
