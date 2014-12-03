@@ -21,7 +21,6 @@ function mica_client_dataset_page_detail($dataset_type, $dataset_id) {
   $_SESSION['ajax']['variable'] = serialize($dataset_dto);
   if (!empty($dataset_dto)) {
     $variables_dataset = $dataset_resource->get_variables($dataset_type, $dataset_id, 0, 1);
-    dpm($variables_dataset);
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
     }
@@ -134,7 +133,6 @@ function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_datase
     $data_variable = mica_client_dataset_harmonizations_table_data($dataset_type_dto, $variables_dataset);
   }
 
-  dpm($variables_dataset);
   $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
   $data['iTotalRecords'] = $variables_dataset->total;
   $data['iTotalDisplayRecords'] = $variables_dataset->total;

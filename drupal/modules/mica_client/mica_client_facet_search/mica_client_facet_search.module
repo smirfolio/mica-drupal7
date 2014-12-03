@@ -529,6 +529,7 @@ function mica_client_facet_search_study_page_search() {
 function mica_client_facet_search_variables_table($variables) {
   $rows = array();
   $totalHits = 0;
+  $has_study = FALSE;
 
   if (!empty($variables)) {
     $totalHits = $variables->getTotalHits();
@@ -542,12 +543,27 @@ function mica_client_facet_search_variables_table($variables) {
       $study_name = !empty($variable->studyAcronym) ? mica_client_commons_get_localized_field($variable, 'studyAcronym') : NULL;
       $variable_label = !empty($variable->variableLabel) ? mica_client_commons_get_localized_field($variable, 'variableLabel') : NULL;
 
-      $rows[] = array(
+      $row = array(
         l($name, 'mica/variable/' . $variable->id),
         !empty($variable_label) ? $variable_label : '-',
         l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId),
-        empty($variable->studyId) ? '-' : l($study_name, 'mica/study/' . $variable->studyId),
       );
+
+      if(!empty($variable->studyId)) {
+        $row[] = l($study_name, 'mica/study/' . $variable->studyId);
+        $has_study = TRUE;
+      }
+      $rows[] = $row;
+    }
+  }
+
+  // this is just a temporary trick to hide an empty column
+  // study count with search link is expected instead
+  if ($has_study) {
+    for ($i = 0; $i<count($rows); $i++) {
+      if (count($rows[$i]) == 3) {
+        $rows[$i][] = '-';
+      }
     }
   }
 
@@ -555,8 +571,10 @@ function mica_client_facet_search_variables_table($variables) {
     t('Variable'),
     t('Label'),
     t('Dataset'),
-    t('Study')
   );
+  if ($has_study) {
+    $headers[] = t('Study');
+  }
   pager_default_initialize($totalHits, MicaSearchResource::SIZE_RESPONSE);
   return theme(
     'table',
