@@ -10,7 +10,7 @@
     <?php $nbr++ ?>
   <?php endforeach; ?>
 
-  <div class="expend-see-more expand-control-div<?php print $formId; ?> collapse"
+  <div class="expand-see-more expand-control-div<?php print $formId; ?> collapse"
        id="block-search<?php print $formId; ?>">
     <?php $nch = 0; ?>
     <?php foreach ($items as $term => $term_count): ?>
@@ -26,7 +26,7 @@
   <?php if ($nch > 5) : ?>
     <div class="expand-control" id="<?php print $formId; ?>">
       <a id="<?php print $formId; ?>"
-         class="link-expend expand-control-linkblock-search<?php print $formId; ?>"
+         class="link-expand expand-control-linkblock-search<?php print $formId; ?>"
          data-toggle="collapse"
          data-target="#block-search<?php print $formId; ?>"
          aria-expanded="true"
