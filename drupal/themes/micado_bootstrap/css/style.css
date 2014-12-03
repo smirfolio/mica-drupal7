@@ -9506,11 +9506,11 @@ div.search-count span {
 }
 
 /*search page see mor/less controle**/
-.expend-control {
+.expand-control {
     text-align: right;
 }
 
-.expend-control .link-expend {
+.expand-control .link-expend {
     cursor: pointer;
     font-size: 0.8em;
     margin-right: 10px;

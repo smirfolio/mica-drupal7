@@ -74,22 +74,22 @@
       /********** Show more show less on search page********/
 
       $('.charts').on('shown.bs.collapse', function () {
-        $('.text-button-field').html('Show less');
+        $('.text-button-field').html(Drupal.t('Show less'));
       });
 
       $('.charts').on('hidden.bs.collapse', function () {
-        $('.text-button-field').html('Show all');
+        $('.text-button-field').html(Drupal.t('Show all'));
       });
 
       /*********more less in search block ********/
-      $(".expend-control").each(function () {
-        $('.expend-control-div' + $(this).attr('id')).on('shown.bs.collapse', function () {
+      $(".expand-control").each(function () {
+        $('.expand-control-div' + $(this).attr('id')).on('shown.bs.collapse', function () {
           console.log($(this).attr('id'));
-          $('.expend-control-link' + $(this).attr('id')).html('Less');
+          $('.expand-control-link' + $(this).attr('id')).html(Drupal.t('Less'));
         });
 
-        $('.expend-control-div' + $(this).attr('id')).on('hidden.bs.collapse', function () {
-          $('.expend-control-link' + $(this).attr('id')).html('More');
+        $('.expand-control-div' + $(this).attr('id')).on('hidden.bs.collapse', function () {
+          $('.expand-control-link' + $(this).attr('id')).html(Drupal.t('More'));
         });
       });
 
