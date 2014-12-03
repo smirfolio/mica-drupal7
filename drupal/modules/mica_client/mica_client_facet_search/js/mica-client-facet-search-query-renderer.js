@@ -5,9 +5,9 @@
   var container;
   var contentQuery;
   var contentRefresh;
-  var jsonData;
   var jsonQuery;
   var translation;
+  var termsDictionary;
 
   var AND_OPERATOR = 'and';
   var OR_OPERATOR = 'or';
@@ -17,13 +17,14 @@
    * Constructor
    * @constructor
    */
-  $.QueryViewRenderer = function (translationMap) {
+  $.QueryViewRenderer = function (translationMap, dictionary) {
     container = $("<div class='row'>");
     contentRefresh = $("<ul class='facet-query-list'></ul>");
     contentQuery = $("<ul class='facet-query-list'></ul>");
     container.append($("<div class='col-xs-1'>").append(contentRefresh)) //
-      .append($("<div class='col-xs-11 col-pull-left-40'>").append(contentQuery));
+      .append($("<div class='col-xs-11 col-pull-left-30'>").append(contentQuery));
     translation = translationMap;
+    termsDictionary = dictionary;
   };
 
   /**
@@ -31,9 +32,8 @@
    * @type {{render: render}}
    */
   $.QueryViewRenderer.prototype = {
-    render: function (jsonQueries) {
-      jsonQuery = jsonQueries.localized;
-      jsonData = jsonQueries.data;
+    render: function (json) {
+      jsonQuery = json;
       return parseAndRender();
     }
   };
@@ -43,19 +43,13 @@
    * Updates the query and url
    */
   function update() {
-    $.trimJson(jsonData);
-    updateWindowLocation($.isEmptyObject(jsonData) ? '' : JSON.stringify(jsonData));
-  }
-
-  function updateWindowLocation(query) {
-    window.location.search = //
-      window.location.search.replace(/([&]*query=)[^&]*([&]*)/g, query.length === 0 ? '' : "$1" + query + "$2");
+    $.query_href.updateJsonQuery(jsonQuery);
   }
 
   function renderRefresh() {
     return $("<li><button type='button' class='refresh-button'><i class='flaticon-undo9'></i></button></li>")
       .on("click", function () {
-        updateWindowLocation('');
+        $.query_href.updateWindowLocation(null);
       });
   }
 
@@ -68,7 +62,7 @@
   function renderMatchesElement(cssClass, type, text) {
     var htmlMatchesElement = $("<li></li>").append($("<span class='" + cssClass + "'></span>").text(text));
     htmlMatchesElement.click(function (e) {
-      delete jsonData[type]['matches'];
+      delete jsonQuery[type]['matches'];
       update();
       e.stopPropagation();
     });
@@ -103,6 +97,10 @@
 
   function renderComma() {
     return $("<span class='comma'>,</span>");
+  }
+
+  function createTermsMoniker(type, name, value) {
+    return type + ":" + name + ":" + value;
   }
 
   function createOpMoniker(type, aggType, name) {
@@ -156,7 +154,7 @@
 
   function renderAggregate(type, typeValues, aggType, name) {
     var aggregate = $("<span class='aggregate'></span>").text(translateAggregation(name)).click(function (e) {
-      delete jsonData[type][aggType][name];
+      delete jsonQuery[type][aggType][name];
       update();
       e.stopPropagation();
     });
@@ -174,7 +172,7 @@
     return $("<span class='aggregate-value'></span>").text(value.min + " - " + value.max);
   }
 
-  function renderAggregateValue(aggType, dataAgg, agg, i, value, valuesContaier, hiddenValuesContainer) {
+  function renderAggregateValue(aggType, agg, i, value, valuesContaier, hiddenValuesContainer) {
     if (i > 0 && i < MAX_VIISBLE_AGG_VALUE) valuesContaier.append(renderComma());
 
     var htmlValue =
@@ -183,8 +181,8 @@
         : renderRangeAggregationValue(value); //
 
     htmlValue.click(function (e) {
-      dataAgg.values.splice(i, 1);
-      if (dataAgg.values.length === 0) delete dataAgg['op'];
+      agg.values.splice(i, 1);
+      if (agg.values.length === 0) delete agg['op'];
       update();
       e.stopPropagation();
     });
@@ -253,10 +251,16 @@
       $.each(typeValues, function (aggType, aggs) {
 
         if (aggType === 'matches') {
-          if (contentQuery.children().length > 1) {
+          var opAdded = false;
+          if (contentQuery.children().length > 0) {
             contentQuery.append(renderAndOperation(true, ""));
+            opAdded = true;
           }
           renderMatches(type, aggs.replace(/\+/g, ' '));
+          if (!opAdded && total > 0) {
+            contentQuery.append(renderAndOperation(true, ""));
+          }
+
           return;
         }
 
@@ -269,24 +273,23 @@
 
         $.each(aggs, function (name, agg) {
           if (!$.isEmptyObject(agg.values) && agg.values.length > 0) {
-            var dataAgg = jsonData[type][aggType][name];
-            var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(dataAgg.op), i === last);
+            var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(agg.op), i === last);
             var valuesContainer = $("<li></li>");
             var hiddenValuesContainer = null;
             $(aggValueContainer).append(valuesContainer);
 
 
             $.each(agg.values, function (i, value) {
+              var caption = termsDictionary[createTermsMoniker(type, name, value)] || value;
               if (i >= MAX_VIISBLE_AGG_VALUE && hiddenValuesContainer === null) {
                 hiddenValuesContainer = renderPlusMinus(valuesContainer);
                 valuesContainer.append(hiddenValuesContainer);
               }
 
               renderAggregateValue(aggType, //
-                dataAgg, //
                 agg, //
                 i, //
-                $.type(value) ==="string" ? value.replace(/\+/g, ' ') : value, //
+                $.type(caption) ==="string" ? caption.replace(/\+/g, ' ') : caption, //
                 valuesContainer, //
                 hiddenValuesContainer); //
             });
@@ -313,11 +316,12 @@
 
   Drupal.behaviors.query_builder = {
     attach: function (context, settings) {
-      var jsonQueries = $.query_href.getQueryForm();
-      if ($.isEmptyObject(jsonQueries.data)) return;
+      var jsonQuery = $.query_href.getQueryFromUrl();
+      if ($.isEmptyObject(jsonQuery)) return;
+
       var view = //
-        new $.QueryViewRenderer(Drupal.settings.mica_client_facet.facet_conf) //
-          .render(jsonQueries);
+        new $.QueryViewRenderer(Drupal.settings.mica_client_facet.facet_conf, Drupal.settings.terms_dictionary) //
+          .render(jsonQuery);
 
       $('#search-query').append(view);
     }

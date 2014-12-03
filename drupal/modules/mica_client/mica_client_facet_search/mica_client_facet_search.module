@@ -111,7 +111,7 @@ function mica_client_commons_create_facet_search_query_form($arg) {
   $form['#prefix'] = '<div class="inline-form">';
   $form['#suffix'] = '</div>';
 
-  $input_id = "$type::matches:facet-search-query";
+  $input_id = "$type:matches:facet-search-query";
   $form['facet-search-query'.$type] = array(
     '#type' => 'textfield',
     '#title' => '',
@@ -287,8 +287,29 @@ function mica_client_facet_search_load_libs() {
       'networks' => t('Networks') //
     );
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-query-renderer.js');
-  drupal_add_js(array('mica_client_facet' => array('facet_conf' => $facet_conf)), 'setting');
+  drupal_add_js(array('mica_client_facet' => array('facet_conf' => $facet_conf), 'terms_dictionary' => createTermsDictionary()), 'setting');
 
+}
+
+function createTermsDictionary() {
+  $dictionary = array();
+  foreach($_SESSION['variables']['aggregations'] as $aggregtaion) {
+    if (!empty($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+      foreach($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+        $dictionary[sprintf("variables:%s:%s", $aggregtaion->aggregation,$term->key)] = $term->title;
+      }
+    }
+  }
+
+  foreach($_SESSION['variables']['aggregations'] as $aggregtaion) {
+    if (!empty($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+      foreach($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+        $dictionary[sprintf("studies:%s:%s", $aggregtaion->aggregation,$term->key)] = $term->title;
+      }
+    }
+  }
+
+  return $dictionary;
 }
 
 /*

@@ -2,7 +2,6 @@
   Drupal.behaviors.query_href = {
     attach: function (context, settings) {
 
-      var URL_PARAM_QUERY = 'query';
       var tabparam = '';
 
       /**
@@ -10,9 +9,10 @@
        */
       $.extend({
         query_href: {
-          getQueryFromUrl: getQueryFromUrl,
+          updateJsonQuery: updateJsonQuery,
+          updateWindowLocation: updateWindowLocation,
           updateQueryOperation: updateQueryOperation,
-          getQueryForm: getQueryForm
+          getQueryFromUrl: getQueryFromUrl
         }
       });
 
@@ -50,16 +50,6 @@
       function getUrlVars() {
         var currJsonParam = getQueryFromUrl();
         return $.isEmptyObject(currJsonParam) ? [] : $.query_serializer.serializeJsonAsForm(currJsonParam);
-      }
-
-      function getQueryForm() {
-        var items = new Array();
-
-        $.each($("form[id^='facet-search'] :input[value!='']"), function(i, input){
-          items.push(decodeURIComponent(serializeElement($(input))));
-        });
-
-        return {'localized': $.query_serializer.serializeFormAsLocalizedJson(items), 'data': getQueryFromUrl()};
       }
 
       function getQueryFromUrl() {
@@ -212,13 +202,19 @@
         }
       }
 
-      function updateWindowLocation(checkboxValues) {
-        if (!checkboxValues || "{}" === checkboxValues) {
-          window.location = '?' + (tabparam ? tabparam : '');
+      function updateJsonQuery(jsonQuery) {
+        $.trimJson(jsonQuery);
+        $.query_href.updateWindowLocation(JSON.stringify(jsonQuery));
+      }
+
+      function updateWindowLocation(jsonQuery) {
+        var params = {};
+        if (tabparam) params.type = tabparam;
+
+        if (jsonQuery && "{}" !== jsonQuery) {
+          params.query = jsonQuery;
         }
-        else {
-          window.location = '?' + (tabparam ? tabparam + '&' : '') + URL_PARAM_QUERY + '=' + checkboxValues;
-        }
+        window.location.search = '?' + decodeURIComponent($.param(params));
       }
 
       function initializeTabParam() {
@@ -231,7 +227,7 @@
           div.removeClass("active");
           $("div#" + urlTabParam).addClass("active");
           $('#result-search a[href$="#' + urlTabParam + '"]').tab('show');
-          tabparam = '&' + 'type=' + urlTabParam;
+          tabparam = urlTabParam;
         }
 
       }
