@@ -44,7 +44,8 @@
                 'attributes' => array(
                   'class' => array(
                     'btn',
-                    'btn-primary'
+                    'btn-primary',
+                    'indent'
                   )
                 ),
                 'query' => array(
@@ -70,7 +71,8 @@
                 'attributes' => array(
                   'class' => array(
                     'btn',
-                    'btn-primary'
+                    'btn-primary',
+                    'indent'
                   )
                 ),
                 'query' => array(
@@ -102,7 +104,8 @@
                 'attributes' => array(
                   'class' => array(
                     'btn',
-                    'btn-primary'
+                    'btn-primary',
+                    'indent'
                   )
                 ),
                 'query' => array(
@@ -128,7 +131,8 @@
                 'attributes' => array(
                   'class' => array(
                     'btn',
-                    'btn-primary'
+                    'btn-primary',
+                    'indent'
                   )
                 ),
                 'query' => array(
