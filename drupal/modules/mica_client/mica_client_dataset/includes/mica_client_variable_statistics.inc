@@ -118,7 +118,8 @@ class VariableStatistics {
     $labels = array();
     $data = array();
     foreach ($aggregation->frequencies as $frequency) {
-      if (!$frequency->missing) {
+      // do not include missings and observed (non-categorical) values
+      if (!$frequency->missing && $this->is_category($frequency->value)) {
         $labels[] = $this->get_label_from_category_name($frequency->value, FALSE);
         $data[] = $frequency->count;
       }
