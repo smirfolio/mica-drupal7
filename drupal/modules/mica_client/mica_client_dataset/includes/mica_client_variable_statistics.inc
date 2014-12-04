@@ -455,7 +455,8 @@ class VariableStatistics {
         $row[] = $count;
       }
       if (!$missing) {
-        $rows[] = $row;
+        // do not include those non-categorical details
+        //$rows[] = $row;
       }
       else {
         $missing_rows[] = $row;
