@@ -14,7 +14,7 @@
        id="block-search<?php print $formId; ?>">
     <?php $nch = 0; ?>
     <?php foreach ($items as $term => $term_count): ?>
-      <?php if ($nch > 4) : ?>
+      <?php if ($nch >= 4) : ?>
         <label class="span-checkbox">
           <?php print render($term_count); ?>
         </label>
