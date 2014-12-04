@@ -144,7 +144,14 @@ function mica_client_facet_search_term_chart($term_coverage) {
   return mica_client_facet_search_mini_column_chart($labels, $data, '', 200, 50, 'none');
 }
 
-function mica_client_facet_search_query_charts($query) {
+/**
+ * Make a chart from taxonomy coverage.
+ * @param $query
+ * @param $bucket_filter bucket filter closure with 2 arguments: the bucket and the $bucket_filter_arg
+ * @param null $bucket_filter_arg argument to be passed to the bucket filter closure
+ * @return array
+ */
+function mica_client_facet_search_query_charts($query, $bucket_filter = NULL, $bucket_filter_arg = NULL) {
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query);
   //dpm($coverages);
@@ -159,9 +166,12 @@ function mica_client_facet_search_query_charts($query) {
           $labels[] = mica_client_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
           if (!empty($vocabulary_coverage->buckets)) {
             foreach ($vocabulary_coverage->buckets as $bucket) {
-              $data[$bucket->value][] = $bucket->count;
+              if (empty($bucket_filter) || $bucket_filter($bucket, $bucket_filter_arg)) {
+                $data[$bucket->value][] = $bucket->count;
+              }
             }
-          } else {
+          }
+          else {
             $data[t('Variables')][] = $vocabulary_coverage->count;
           }
         }
