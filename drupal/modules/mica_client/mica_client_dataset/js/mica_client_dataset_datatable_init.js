@@ -52,14 +52,15 @@
             "aoColumns": headerTable,
             "searching": true,
             "ordering": true,
+            "iDisplayLength": 25,
             "language": {
               "url": Drupal.settings.basePath + 'mica/datatable-international'
             }
 
           });
-
-        //console.log(tableData.sAjaxSource);
+        dataTable.fnSetColumnVis(0, false);
       }
+
       /*******************************/
     }
   }
