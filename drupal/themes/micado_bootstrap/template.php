@@ -214,6 +214,25 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
       'path' => $path . '/templates'
     );
   }
+
+  $destination_path = file_exists($path . '/templates/mica_client_facet_search_fixed_sidebar.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_facet_search_fixed_sidebar.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_facet_search_fixed_sidebar',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/mica_client_study_fixed_sidebar.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['mica_client_study_fixed_sidebar.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'mica_client_study_fixed_sidebar',
+      'path' => $path . '/templates'
+    );
+  }
+
   return $theme_array;
 
 }

@@ -19,6 +19,24 @@ const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
 include_once($path_module_protos . '/protos/Mica.php');
 
+
+function mica_client_commons_menu() {
+  $items = array();
+
+  $items['mica/get_fixed_sidebar/%'] = array(
+    'page callback' => 'mica_client_commons_fixed_sidebar',
+    'access callback' => TRUE,
+    'page arguments' => array(2)
+  );
+
+  return $items;
+}
+
+function mica_client_commons_fixed_sidebar($template) {
+  $output['fixed_menu'] = theme($template, $_SESSION['fixed_menu']);
+  drupal_json_output($output);
+}
+
 function mica_client_commons_to_slug($string) {
   $string = str_replace(array('/', ' '), '-', $string);
   $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';

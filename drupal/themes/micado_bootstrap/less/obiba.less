@@ -49,18 +49,24 @@
   content: "\e602";
 }
 
-.affix-sidebar {
-  margin-right: -(@container-lg/2);
+/***Fixed side bar ****/
+
+#sidebar-wrapper {
+  .affix {
+    margin-left: 50px;
+  }
+  /*    margin-right: -(@container-lg/2); */
   float: right !important;
   a {
     color: lighten(@text-color, 25%);
   }
   .nav {
-    width: 200px;
+    background-color: #fff;
+    width: 250px;
     .nav > li > a {
       padding-top: 1px;
       padding-bottom: 1px;
-      padding-left: 30px;
+      padding-left: 20px;
       font-size: 12px;
       font-weight: 400;
       border-bottom: dashed 1px #ccc;
@@ -71,8 +77,47 @@
     background-color: transparent;
     border-left: 2px solid #563d7c;
   }
+
+  z-index: 1000;
+  position: fixed;
+  right: 250px;
+  height: 100%;
+  margin-right: -240px;
+  overflow-y: auto;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
+.sidebar-untoggled {
+  width: 300px;
+}
+
+.sidebar-toggled {
+  width: 50px;
+}
+
+/*Boutton*/
+.menu-toggle {
+  position: absolute;
+
+}
+
+/* Sidebar Styles */
+
+@media (min-width: 1600px) {
+  .menu-toggle {
+    display: none;
+  }
+
+  #sidebar-wrapper {
+    width: 285px;
+    z-index: 1000;
+  }
+}
+
+/***************fixed side bar********/
 div.legend {
   font-size: 12px;
 
