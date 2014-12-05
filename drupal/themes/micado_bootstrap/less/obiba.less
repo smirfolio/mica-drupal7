@@ -52,17 +52,21 @@
 /***Fixed side bar ****/
 
 #sidebar-wrapper {
+  .affix {
+    margin-left: 50px;
+  }
   /*    margin-right: -(@container-lg/2); */
   float: right !important;
   a {
     color: lighten(@text-color, 25%);
   }
   .nav {
-    width: 200px;
+    background-color: #fff;
+    width: 250px;
     .nav > li > a {
       padding-top: 1px;
       padding-bottom: 1px;
-      padding-left: 30px;
+      padding-left: 20px;
       font-size: 12px;
       font-weight: 400;
       border-bottom: dashed 1px #ccc;
@@ -76,11 +80,10 @@
 
   z-index: 1000;
   position: fixed;
-  right: 200px;
+  right: 250px;
   height: 100%;
-  margin-right: -200px;
+  margin-right: -240px;
   overflow-y: auto;
-
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -88,7 +91,7 @@
 }
 
 .sidebar-untoggled {
-  width: 250px;
+  width: 300px;
 }
 
 .sidebar-toggled {
@@ -98,7 +101,7 @@
 /*Boutton*/
 .menu-toggle {
   position: absolute;
-  margin-right: 25px;
+
 }
 
 /* Sidebar Styles */
@@ -109,7 +112,7 @@
   }
 
   #sidebar-wrapper {
-    width: 200px;
+    width: 285px;
   }
 }
 

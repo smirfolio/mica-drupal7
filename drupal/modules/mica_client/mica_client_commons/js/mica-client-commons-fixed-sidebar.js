@@ -15,6 +15,22 @@
         'error': function (data) {
         }
       });
+
+      if ($("#wrapper").hasClass("toggled")) {
+        $(".menu-toggle").toggleClass("glyphicon-chevron-left");
+        $(".menu-toggle").toggleClass("glyphicon-chevron-right");
+      }
+
+      $(".menu-toggle").click(function (e) {
+        e.preventDefault();
+
+        $("#sidebar-wrapper").toggleClass("sidebar-toggled");
+
+        $("#sidebar-wrapper").toggleClass("sidebar-untoggled");
+
+        $(".menu-toggle").toggleClass("glyphicon-chevron-left");
+        $(".menu-toggle").toggleClass("glyphicon-chevron-right");
+      });
     }
 
   }
