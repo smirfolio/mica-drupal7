@@ -94,6 +94,10 @@ function mica_client_facet_search_theme($existing, $type, $theme, $path) {
       'template' => 'mica_client_facet_search_vocabulary_charts',
       'path' => $path_theme
     ),
+    'mica_client_facet_search_fixed_sidebar' => array(
+      'template' => 'mica_client_facet_search_fixed_sidebar',
+      'path' => $path_theme
+    ),
   );
 }
 
@@ -112,7 +116,7 @@ function mica_client_commons_create_facet_search_query_form($arg) {
   $form['#suffix'] = '</div>';
 
   $input_id = "$type:matches:facet-search-query";
-  $form['facet-search-query'.$type] = array(
+  $form['facet-search-query' . $type] = array(
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Filter by',
@@ -287,28 +291,32 @@ function mica_client_facet_search_load_libs() {
       'networks' => t('Networks') //
     );
   drupal_add_js($module_path_ . '/js/mica-client-facet-search-query-renderer.js');
-  drupal_add_js(array('mica_client_facet' => array('facet_conf' => $facet_conf), 'terms_dictionary' => createTermsDictionary()), 'setting');
+  drupal_add_js(array(
+    'mica_client_facet' => array('facet_conf' => $facet_conf),
+    'terms_dictionary' => createTermsDictionary()
+  ), 'setting');
 
 }
 
 function createTermsDictionary() {
   $dictionary = array();
-  foreach($_SESSION['variables']['aggregations'] as $aggregtaion) {
-    if (!empty($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'})) {
-      foreach($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
-        $dictionary[sprintf("variables:%s:%s", $aggregtaion->aggregation,$term->key)] = $term->title;
-      }
+  if (!empty($_SESSION['variables'])) {
+    foreach ($_SESSION['variables']['aggregations'] as $aggregtaion) {
+      if (!empty($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+        foreach ($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+          $dictionary[sprintf("variables:%s:%s", $aggregtaion->aggregation, $term->key)] = $term->title;
+        }
     }
   }
 
-  foreach($_SESSION['variables']['aggregations'] as $aggregtaion) {
-    if (!empty($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'})) {
-      foreach($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
-        $dictionary[sprintf("studies:%s:%s", $aggregtaion->aggregation,$term->key)] = $term->title;
-      }
+    foreach ($_SESSION['variables']['aggregations'] as $aggregtaion) {
+      if (!empty($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+        foreach ($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+          $dictionary[sprintf("studies:%s:%s", $aggregtaion->aggregation, $term->key)] = $term->title;
+        }
     }
   }
-
+  }
   return $dictionary;
 }
 
@@ -463,6 +471,11 @@ Function mica_client_facet_search_get_terms($terms_buckets, $all_bucket) {
 }
 
 function mica_client_facet_search_coverage_page() {
+  $module_path_commons = drupal_get_path('module', 'mica_client_commons');
+  drupal_add_js($module_path_commons . '/js/mica-client-commons-fixed-sidebar.js');
+  drupal_add_js(array(
+    'template' => 'mica_client_facet_search_fixed_sidebar'
+  ), 'setting');
   mica_client_facet_search_load_libs();
   $url_param = explode('?', $_SERVER['REQUEST_URI']);
   if (!empty($url_param[1])) {
@@ -525,7 +538,8 @@ function mica_client_facet_search_coverage_page() {
       $vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name] = $vocabulary_coverage_output;
     }
   }
-
+  unset($_SESSION['fixed_menu']);
+  $_SESSION['fixed_menu'] = array('coverages' => $coverages);
   $output = theme('mica_client_facet_search_coverage', array(
     'coverages' => $coverages,
     'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,
@@ -570,7 +584,7 @@ function mica_client_facet_search_variables_table($variables) {
         l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId),
       );
 
-      if(!empty($variable->studyId)) {
+      if (!empty($variable->studyId)) {
         $row[] = l($study_name, 'mica/study/' . $variable->studyId);
         $has_study = TRUE;
       }
@@ -581,7 +595,7 @@ function mica_client_facet_search_variables_table($variables) {
   // this is just a temporary trick to hide an empty column
   // study count with search link is expected instead
   if ($has_study) {
-    for ($i = 0; $i<count($rows); $i++) {
+    for ($i = 0; $i < count($rows); $i++) {
       if (count($rows[$i]) == 3) {
         $rows[$i][] = '-';
       }

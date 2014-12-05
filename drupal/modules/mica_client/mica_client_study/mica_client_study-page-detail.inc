@@ -11,6 +11,11 @@ if (module_exists('mica_client_dataset')) {
 
 function mica_client_study_page_detail($study_id) {
   mica_client_study_load_libs();
+  $module_path_commons = drupal_get_path('module', 'mica_client_commons');
+  drupal_add_js($module_path_commons . '/js/mica-client-commons-fixed-sidebar.js');
+  drupal_add_js(array(
+    'template' => 'mica_client_study_fixed_sidebar'
+  ), 'setting');
   $url_param = explode('?', $_SERVER['REQUEST_URI']);
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
@@ -42,6 +47,14 @@ function mica_client_study_page_detail($study_id) {
         $themed_attachment .= mica_client_study_get_attachment_file($study_dto->id, $attachment);
       }
     }
+    $_SESSION['fixed_menu'] = array(
+      'study_dto' => $study_dto,
+      'coverage' => !empty($coverage) ? TRUE : FALSE,
+      'networks' => !empty($networks) ? TRUE : FALSE,
+      'datasets' => !empty($datasets) ? TRUE : FALSE,
+      'study_variables_aggs' => NULL, //mica_client_study_get_variables($study_id),
+    );
+
     return theme('mica_client_study_detail',
       array(
         'investigators_modal' => mica_client_study_get_contact_detail('investigator', $study_dto->id, $study_dto->investigators),

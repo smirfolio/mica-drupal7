@@ -177,7 +177,17 @@
         <?php print render($page['sidebar_second']); ?>
       </aside>  <!-- /#sidebar-second -->
     <?php endif; ?>
+    <!-- Sidebar -->
 
+    <!-- Fixed side -->
+    <div class="fixed_sidebar_div">
+      <div id="sidebar-wrapper" class="sideBarContent sidebar-untoggled">
+
+      </div>
+
+    </div>
+    <!-- /#Fixed side -->
+    <!-- /#sidebar-wrapper -->
   </div>
 </div>
 <footer class="footer container">

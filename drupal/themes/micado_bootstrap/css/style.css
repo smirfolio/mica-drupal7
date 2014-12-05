@@ -8505,20 +8505,31 @@ ul.facet-query-list li span:hover {
     content: "\e602";
 }
 
-.affix-sidebar {
-    margin-right: -585px;
+/***Fixed side bar ****/
+#sidebar-wrapper {
+    /*    margin-right: -(@container-lg/2); */
     float: right !important;
+    z-index: 1000;
+    position: fixed;
+    right: 200px;
+    height: 100%;
+    margin-right: -200px;
+    overflow-y: auto;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
-.affix-sidebar a {
+#sidebar-wrapper a {
     color: #737373;
 }
 
-.affix-sidebar .nav {
+#sidebar-wrapper .nav {
     width: 200px;
 }
 
-.affix-sidebar .nav .nav > li > a {
+#sidebar-wrapper .nav .nav > li > a {
     padding-top: 1px;
     padding-bottom: 1px;
     padding-left: 30px;
@@ -8527,12 +8538,38 @@ ul.facet-query-list li span:hover {
     border-bottom: dashed 1px #ccc;
 }
 
-.affix-sidebar .active > a {
+#sidebar-wrapper .active > a {
     color: #563d7c;
     background-color: transparent;
     border-left: 2px solid #563d7c;
 }
 
+.sidebar-untoggled {
+    width: 250px;
+}
+
+.sidebar-toggled {
+    width: 50px;
+}
+
+/*Boutton*/
+.menu-toggle {
+    position: absolute;
+    margin-right: 25px;
+}
+
+/* Sidebar Styles */
+@media (min-width: 1625px) {
+    .menu-toggle {
+        display: none;
+    }
+
+    #sidebar-wrapper {
+        width: 200px;
+    }
+}
+
+/***************fixed side bar********/
 div.legend {
     font-size: 12px;
 }
@@ -9482,9 +9519,11 @@ div.search-count span {
     opacity: 0.6;
     filter: alpha(opacity=60);
     /* For IE8 and earlier */
+    z-index: 10010;
 }
 
 .back-to-top:hover {
+    z-index: 10010;
     opacity: 0.8;
     filter: alpha(opacity=80);
     /* For IE8 and earlier */
@@ -9503,10 +9542,6 @@ div.search-count span {
 /*Dataset details*/
 .download-table {
     display: none;
-}
-
-.tooldata {
-    float: left;
 }
 
 /*search page see mor/less controle**/
