@@ -8563,13 +8563,14 @@ ul.facet-query-list li span:hover {
 }
 
 /* Sidebar Styles */
-@media (min-width: 1625px) {
+@media (min-width: 1600px) {
     .menu-toggle {
         display: none;
     }
 
     #sidebar-wrapper {
         width: 285px;
+        z-index: 1000;
     }
 }
 

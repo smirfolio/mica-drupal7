@@ -8,8 +8,8 @@
         'type': 'GET',
         'success': function (data) {
           var content_fixed_sidebar = data['fixed_menu'];
-          console.log(template);
-          $(".sideBarContent").html(content_fixed_sidebar);
+          //console.log(template);
+          $(".side-bar-content").html(content_fixed_sidebar);
         },
         "dataType": "json",
         'error': function (data) {
