@@ -22,6 +22,6 @@
   <div>
     <i class="glyphicon glyphicon-ban-circle alert-danger"></i>
     <h6><?php print t('No status') ?></h6>
-    <?php print ' - ' . t('There are no status harmonization for this variable') ?>
+    <?php print ' - ' . t('the harmonization potential has not been evaluated yet.') ?>
   </div>
 </div>
