@@ -326,7 +326,7 @@ function mica_client_dataset_harmonizations_table_data($dataset_type_dto, $datas
             }
           }
           if (!$found) {
-            $row[$Key_row] = '-';
+            $row[$Key_row] = '<span class="glyphicon glyphicon-ban-circle alert-danger" title="' . t('No status') . '"></span>';
           }
         }
 
