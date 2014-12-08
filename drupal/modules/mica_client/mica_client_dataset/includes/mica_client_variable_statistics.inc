@@ -286,8 +286,8 @@ class VariableStatistics {
           foreach ($aggregation->frequencies as $frequency) {
             if ($frequency->value == $missing) {
               $count = $frequency->count;
-              $pct = empty($aggregation->total) ? NULL : round(($count / $aggregation->total) * 100, 1);
-              $count = empty($pct) ? '0' : $count . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
+              $pct = empty($aggregation->total) ? 0 : round(($count / $aggregation->total) * 100, 1);
+              $count .= '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
               break;
             }
           }
