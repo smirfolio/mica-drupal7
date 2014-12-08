@@ -121,11 +121,13 @@ class MicaSearchResource extends MicaClient {
     $response = $join_query_response->getResponseWrapper($type);
 
     if (!$response->isEmpty()) {
+      $_SESSION['request-search-response'] = 'no-empty';
       $this->session_facets_builder($join_query_response->getResponseDto());
     }
     else {
       unset($_SESSION['variables']);
       unset($_SESSION['studies']);
+      $_SESSION['request-search-response'] = 'empty';
       $join_query_response2 = new JoinQueryResponseWrapper($this->_search_resource('empty_request'));
       $response = $join_query_response2->getResponseWrapper($type);
       if (!$response->isEmpty()) {

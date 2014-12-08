@@ -34,21 +34,24 @@
 
     <?php else : ?>
       <div class="row">
+        <?php if (($_SESSION['request-search-response'] == 'no-empty')) : ?>
+          <div class="col-xs-6">
+              <span class='term-count'
+                <?php if ($term->count != 0) : ?>
+                  data-toggle="tooltip" data-placement="top" title="Filtered"
+                <?php endif; ?>>
+                <?php $digits = strlen($term->count);
+                print ($digits < 6 ? str_repeat('&nbsp;', 6 - $digits) : '') . ($term->count === 0 ? '&nbsp;' : $term->count); ?>
+              </span>
+          </div>
+        <?php endif; ?>
         <div class="col-xs-6">
-        <span class='term-count'
-          <?php if ($term->count != 0) : ?>
-            data-toggle="tooltip" data-placement="top" title="Filtered"
-          <?php endif; ?>
-          >
-          <?php $digits = strlen($term->count);
-          print ($digits < 6 ? str_repeat('&nbsp;', 6 - $digits) : '') . ($term->count === 0 ? '&nbsp;' : $term->count); ?>
-            </span>
-        </div>
-        <div class="col-xs-6">
-        <span class='term-default' data-toggle="tooltip" data-placement="top" title="All">
-          <?php $digits = strlen($term->default);
-          print ($digits < 6 ? str_repeat('&nbsp;', 6 - $digits) : '') . $term->default; ?>
-            </span>
+              <span class='term-default' data-toggle="tooltip" data-placement="top" title="All">
+   <?php if (($term->count != $term->default) || ($_SESSION['request-search-response'] == 'empty')) : ?>
+     <?php $digits = strlen($term->default);
+     print ($digits < 6 ? str_repeat('&nbsp;', 6 - $digits) : '') . $term->default; ?>
+   <?php endif; ?>
+              </span>
         </div>
       </div>
     <?php endif; ?>
