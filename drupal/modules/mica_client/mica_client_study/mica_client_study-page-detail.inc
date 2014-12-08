@@ -47,11 +47,12 @@ function mica_client_study_page_detail($study_id) {
         $themed_attachment .= mica_client_study_get_attachment_file($study_dto->id, $attachment);
       }
     }
+    $coverage = mica_client_study_coverage($study_dto->id);
     $_SESSION['fixed_menu'] = array(
       'study_dto' => $study_dto,
       'coverage' => !empty($coverage) ? TRUE : FALSE,
-      'networks' => !empty($networks) ? TRUE : FALSE,
-      'datasets' => !empty($datasets) ? TRUE : FALSE,
+      'networks' => !empty($network_output) ? TRUE : FALSE,
+      'datasets' => !empty($dataset_output) ? TRUE : FALSE,
       'study_variables_aggs' => NULL, //mica_client_study_get_variables($study_id),
     );
 
