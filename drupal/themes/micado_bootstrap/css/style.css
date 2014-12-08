@@ -9559,3 +9559,7 @@ div.search-count span {
     font-size: 0.8em;
     margin-right: 10px;
 }
+
+.input-group-addon > i.glyphicon-remove {
+    cursor: pointer;
+}

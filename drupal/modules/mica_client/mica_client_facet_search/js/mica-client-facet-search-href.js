@@ -88,7 +88,7 @@
 
       function serializeElement(element) {
         var dataArr = new Array();
-        $.each(element.data(), function(att, value) {
+        $.each(element.data(), function (att, value) {
           dataArr.push({'name': att, 'value': value});
         })
 
@@ -209,7 +209,9 @@
 
       function updateWindowLocation(jsonQuery) {
         var params = {};
-        if (tabparam) params.type = tabparam;
+        if (tabparam) {
+          params.type = tabparam;
+        }
 
         if (jsonQuery && "{}" !== jsonQuery) {
           params.query = jsonQuery;
@@ -240,7 +242,8 @@
             json, //
             decodeURIComponent(serializeElement(input)) //
           );
-        } else {
+        }
+        else {
           $.query_serializer.removeItem( //
             json, //
             decodeURIComponent(serializeElement(input)) //
@@ -293,6 +296,7 @@
           formClickHandler($(this).attr('aggregation'));
         });
 
+
         $("input[id='range-auto-fill']").on("blur", function () {
           var term = $(this).attr('termselect');
           var minid = term + '-min';
@@ -309,6 +313,49 @@
 
         });
       }
+
+      /*************Deal with icon for clearing the full text search input field *******/
+      function bindOnClikIcone(icon) {
+        icon.on("click", function () {
+          var inputSearch = $("input[id='variables:matches:facet-search-query']");
+          inputSearch.val('');
+          console.log(inputSearch.attr('id'));
+          formClickHandler(inputSearch.attr('id'));
+        });
+      }
+
+      var inputSearch = $("input[id='variables:matches:facet-search-query']");
+      var form = inputSearch.parent().parent();
+      var valueInputSearch = inputSearch.val();
+      if (valueInputSearch) {
+        form.find("i").removeClass("glyphicon-filter");
+        form.find("i").addClass("glyphicon-remove");
+        form.find("i").parent().addClass("clickable");
+        bindOnClikIcone(form.find("i.glyphicon-remove"));
+      }
+
+      inputSearch.on("keyup", function () {
+        var form = inputSearch.parent().parent();
+        var valueInputSearch = inputSearch.val();
+        if (valueInputSearch) {
+          form.find("i").removeClass("glyphicon-filter");
+          form.find("i").addClass("glyphicon-remove");
+          form.find("i").parent().addClass("clickable");
+          //  bindOnClikIcone(form.find("i.glyphicon-remove"));
+          form.find("i.glyphicon-remove").on("click", function () {
+            console.log('effaaaaace');
+            inputSearch.val('');
+            form.find("i.glyphicon-remove").unbind("click");
+            form.find("i").removeClass("glyphicon-remove");
+            form.find("i").addClass("glyphicon-filter");
+          });
+        }
+        else {
+          form.find("i.glyphicon-remove").unbind("click");
+          form.find("i").removeClass("glyphicon-remove");
+          form.find("i").addClass("glyphicon-filter");
+        }
+      });
     }
   }
 })(jQuery);
