@@ -7765,6 +7765,7 @@ div.charts {
 }
 
 .facet-bar .facet_terms_range input[type="text"] {
+    margin: 5px;
     width: 60px;
     padding: 2px 3px;
     font-size: 12px;
@@ -8106,6 +8107,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 
 .region-facets .facet_terms_range input[type="text"] {
+    margin: 5px;
     width: 60px;
     padding: 2px 3px;
     font-size: 12px;
