@@ -123,7 +123,7 @@ function mica_client_facet_search_autocomplete_form_field($form, &$form_state, $
     return $form;
       break;
     case 'networkId' :
-      $title = t('Search a network..');
+      $title = t('Search a network...');
       $form['#attributes']['class'] = 'autocomplete';
       $form['#id'] = 'auto_' . $aggregation_facet;
       $form['#action'] = '';
