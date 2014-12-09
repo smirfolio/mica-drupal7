@@ -341,38 +341,46 @@
 
       /*************Deal with icon for clearing the full text search input field *******/
       var delIcon = $('<i class="remove-icon clickable glyphicon glyphicon-remove-circle"></i>');
-      var inputSearch = $("input[id='variables:matches:facet-search-query']");
+      var inputSearch = $("input[id*='matches:facet-search-query']");
 
-      function bindOnClikIcone(icon) {
-        icon.on("click", function () {
-          inputSearch.val('');
-          formClickHandler(inputSearch.attr('id'));
+      inputSearch.each(function () {
+        inputHaveValue($(this));
+        if ($(this).val()) {
+          divInput.append(delIcon);
+          bindOnClikIcone(delIcon, $(this));
+        }
+        else {
+          delIcon.remove();
+        }
+
+        $(this).on("keyup", function () {
+          if ($(this).val()) {
+            inputHaveValue($(this));
+          }
+          else {
+            formClickHandler($(this).attr('id'));
+          }
         });
-      }
+      });
 
       function inputHaveValue(inputSearch) {
         var divInput = inputSearch.parent().parent();
-
         if (inputSearch.val()) {
           divInput.append(delIcon);
-          bindOnClikIcone(delIcon);
+          bindOnClikIcone(delIcon, inputSearch);
         }
         else {
           delIcon.remove();
         }
       }
 
-      inputHaveValue(inputSearch);
-
-      inputSearch.on("keyup", function () {
-
-        if (inputSearch.val()) {
-          inputHaveValue(inputSearch);
-        }
-        else {
+      function bindOnClikIcone(icon, inputSearch) {
+        icon.on("click", function () {
+          inputSearch.val('');
           formClickHandler(inputSearch.attr('id'));
-        }
-      });
+        });
+      }
+
 
     }
   }
