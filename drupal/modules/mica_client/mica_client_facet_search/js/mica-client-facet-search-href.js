@@ -315,47 +315,40 @@
       }
 
       /*************Deal with icon for clearing the full text search input field *******/
+      var delIcon = $('<i class="remove-icon clickable glyphicon glyphicon-remove"></i>');
+      var inputSearch = $("input[id='variables:matches:facet-search-query']");
+
       function bindOnClikIcone(icon) {
         icon.on("click", function () {
-          var inputSearch = $("input[id='variables:matches:facet-search-query']");
           inputSearch.val('');
-          console.log(inputSearch.attr('id'));
           formClickHandler(inputSearch.attr('id'));
         });
       }
 
-      var inputSearch = $("input[id='variables:matches:facet-search-query']");
-      var form = inputSearch.parent().parent();
-      var valueInputSearch = inputSearch.val();
-      if (valueInputSearch) {
-        form.find("i").removeClass("glyphicon-filter");
-        form.find("i").addClass("glyphicon-remove");
-        form.find("i").parent().addClass("clickable");
-        bindOnClikIcone(form.find("i.glyphicon-remove"));
-      }
+      function inputHaveValue(inputSearch) {
+        var divInput = inputSearch.parent().parent();
 
-      inputSearch.on("keyup", function () {
-        var form = inputSearch.parent().parent();
-        var valueInputSearch = inputSearch.val();
-        if (valueInputSearch) {
-          form.find("i").removeClass("glyphicon-filter");
-          form.find("i").addClass("glyphicon-remove");
-          form.find("i").parent().addClass("clickable");
-          //  bindOnClikIcone(form.find("i.glyphicon-remove"));
-          form.find("i.glyphicon-remove").on("click", function () {
-            console.log('effaaaaace');
-            inputSearch.val('');
-            form.find("i.glyphicon-remove").unbind("click");
-            form.find("i").removeClass("glyphicon-remove");
-            form.find("i").addClass("glyphicon-filter");
-          });
+        if (inputSearch.val()) {
+          divInput.append(delIcon);
+          bindOnClikIcone(delIcon);
         }
         else {
-          form.find("i.glyphicon-remove").unbind("click");
-          form.find("i").removeClass("glyphicon-remove");
-          form.find("i").addClass("glyphicon-filter");
+          delIcon.remove();
+        }
+      }
+
+      inputHaveValue(inputSearch);
+
+      inputSearch.on("keyup", function () {
+
+        if (inputSearch.val()) {
+          inputHaveValue(inputSearch);
+        }
+        else {
+          formClickHandler(inputSearch.attr('id'));
         }
       });
+
     }
   }
 })(jQuery);
