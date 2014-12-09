@@ -105,7 +105,7 @@ function mica_client_facet_search_autocomplete_form_field($form, &$form_state, $
     case 'dceIds' :
     case 'datasetId' :
     $entity_search = explode('Id', $aggregation_facet);
-    $title = t('Search a @entity...', array('@entity' => strtoupper($entity_search[0])));
+    $title = t('Search a @entity...', array('@entity' => $entity_search[0]));
     $form['#attributes']['class'] = 'autocomplete';
       $form['#id'] = 'auto_' . $aggregation_facet;
       $form['#action'] = '';
@@ -123,7 +123,7 @@ function mica_client_facet_search_autocomplete_form_field($form, &$form_state, $
     return $form;
       break;
     case 'networkId' :
-      $title = t('Search a NETWORK..');
+      $title = t('Search a network..');
       $form['#attributes']['class'] = 'autocomplete';
       $form['#id'] = 'auto_' . $aggregation_facet;
       $form['#action'] = '';
