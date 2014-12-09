@@ -9566,3 +9566,7 @@ i.remove-icon {
     right: 5px;
     top: 10px;
 }
+
+.form-autocomplete {
+    margin: 5px;
+}

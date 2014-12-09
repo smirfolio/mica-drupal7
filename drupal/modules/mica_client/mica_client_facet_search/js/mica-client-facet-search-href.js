@@ -26,11 +26,12 @@
           return false;
         }
         if ($(checkboxSpan).hasClass("checked")) {
-          $.query_serializer.removeItem(json, decodeURIComponent(serializeElement(input)));
-          uncheckthebox($(checkboxSpan));
-          input.val('');
-          input.attr('data-value', '');
-          updateWindowLocation(JSON.stringify(json));
+          console.log(checkboxSpan);
+//          $.query_serializer.removeItem(json, decodeURIComponent(serializeElement(input)));
+//          uncheckthebox($(checkboxSpan));
+//          input.val('');
+//          input.attr('data-value', '');
+//          updateWindowLocation(JSON.stringify(json));
           return false;
         }
       }
