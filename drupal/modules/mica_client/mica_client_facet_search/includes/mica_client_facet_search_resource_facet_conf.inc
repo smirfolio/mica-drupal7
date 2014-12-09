@@ -139,7 +139,6 @@ function mica_client_facet_search_autocomplete_ajax_response($aggregation, $term
     case 'datasetId' :
       foreach ($_SESSION['variables']['aggregations'] as $aggre) {
         if ($aggre->aggregation == $aggregation) {
-          dpm($aggre);
           foreach ($aggre->{"obiba.mica.TermsAggregationResultDto.terms"} as $term) {
             if (stristr($term->title, $term_to_mach)) {
               $matches[$term->key] = $term->title;
