@@ -88,7 +88,7 @@
 
       function serializeElement(element) {
         var dataArr = new Array();
-        $.each(element.data(), function(att, value) {
+        $.each(element.data(), function (att, value) {
           dataArr.push({'name': att, 'value': value});
         })
 
@@ -209,7 +209,9 @@
 
       function updateWindowLocation(jsonQuery) {
         var params = {};
-        if (tabparam) params.type = tabparam;
+        if (tabparam) {
+          params.type = tabparam;
+        }
 
         if (jsonQuery && "{}" !== jsonQuery) {
           params.query = jsonQuery;
@@ -240,7 +242,8 @@
             json, //
             decodeURIComponent(serializeElement(input)) //
           );
-        } else {
+        }
+        else {
           $.query_serializer.removeItem( //
             json, //
             decodeURIComponent(serializeElement(input)) //
@@ -293,6 +296,7 @@
           formClickHandler($(this).attr('aggregation'));
         });
 
+
         $("input[id='range-auto-fill']").on("blur", function () {
           var term = $(this).attr('termselect');
           var minid = term + '-min';
@@ -309,6 +313,42 @@
 
         });
       }
+
+      /*************Deal with icon for clearing the full text search input field *******/
+      var delIcon = $('<i class="remove-icon clickable glyphicon glyphicon-remove-circle"></i>');
+      var inputSearch = $("input[id='variables:matches:facet-search-query']");
+
+      function bindOnClikIcone(icon) {
+        icon.on("click", function () {
+          inputSearch.val('');
+          formClickHandler(inputSearch.attr('id'));
+        });
+      }
+
+      function inputHaveValue(inputSearch) {
+        var divInput = inputSearch.parent().parent();
+
+        if (inputSearch.val()) {
+          divInput.append(delIcon);
+          bindOnClikIcone(delIcon);
+        }
+        else {
+          delIcon.remove();
+        }
+      }
+
+      inputHaveValue(inputSearch);
+
+      inputSearch.on("keyup", function () {
+
+        if (inputSearch.val()) {
+          inputHaveValue(inputSearch);
+        }
+        else {
+          formClickHandler(inputSearch.attr('id'));
+        }
+      });
+
     }
   }
 })(jQuery);
