@@ -315,7 +315,7 @@
       }
 
       /*************Deal with icon for clearing the full text search input field *******/
-      var delIcon = $('<i class="remove-icon clickable glyphicon glyphicon-remove"></i>');
+      var delIcon = $('<i class="remove-icon clickable glyphicon glyphicon-remove-circle"></i>');
       var inputSearch = $("input[id='variables:matches:facet-search-query']");
 
       function bindOnClikIcone(icon) {
