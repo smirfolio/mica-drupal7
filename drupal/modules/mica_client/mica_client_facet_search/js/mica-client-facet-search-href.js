@@ -215,7 +215,6 @@
       function updateCheckboxes() {
         var json = getQueryFromUrl();
         var aggregation_name = getAggregationMoniker(this);
-        console.log(aggregation_name);
         var input = $("input[id=" + aggregation_name + "]")
         if ($(this).hasClass("unchecked")) {
           checkthebox($(this));
