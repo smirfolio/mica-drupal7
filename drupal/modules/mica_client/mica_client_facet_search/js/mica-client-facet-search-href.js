@@ -4,6 +4,38 @@
 
       var tabparam = '';
 
+      /*override autocomplete Drupal dunction */
+      Drupal.jsAC.prototype.select = function (node) {
+        var selectedValue = $(node).data('autocompleteValue');
+
+        var selectorCheckbox = 'span#checkthebox[data-value="' + selectedValue + '"]';
+
+        updateCheckboxesByChekbox($(selectorCheckbox))
+      };
+
+      function updateCheckboxesByChekbox(checkboxSpan) {
+        var json = getQueryFromUrl();
+        var aggregation_name = getAggregationMoniker(checkboxSpan);
+        var input = $("input[id=" + aggregation_name + "]")
+        if ($(checkboxSpan).hasClass("unchecked")) {
+          checkthebox($(checkboxSpan));
+          input.val($(checkboxSpan).attr('value'));
+          input.attr('data-value', $(checkboxSpan).attr("data-value"));
+          $.query_serializer.addItem(json, decodeURIComponent(serializeElement(input)));
+          updateWindowLocation(JSON.stringify(json));
+          return false;
+        }
+        if ($(checkboxSpan).hasClass("checked")) {
+          $.query_serializer.removeItem(json, decodeURIComponent(serializeElement(input)));
+          uncheckthebox($(checkboxSpan));
+          input.val('');
+          input.attr('data-value', '');
+          updateWindowLocation(JSON.stringify(json));
+          return false;
+        }
+      }
+
+
       /**
        * Expose these methods to other JS files
        */
@@ -61,7 +93,7 @@
       }
 
       function updateQueryOperation(operationMoniker, value) {
-        console.log("Moniker", operationMoniker, value);
+        // console.log("Moniker", operationMoniker, value);
         var jsonQuery = getQueryFromUrl();
         if ($.isEmptyObject(jsonQuery)) {
           return;
@@ -183,6 +215,7 @@
       function updateCheckboxes() {
         var json = getQueryFromUrl();
         var aggregation_name = getAggregationMoniker(this);
+        console.log(aggregation_name);
         var input = $("input[id=" + aggregation_name + "]")
         if ($(this).hasClass("unchecked")) {
           checkthebox($(this));

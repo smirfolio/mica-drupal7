@@ -1,4 +1,6 @@
 <?php //dpm($items['VAR_ONE']);?>
+<?php print render($input_autocomplete); ?>
+
 <form id="facet-search_<?php print $formId; ?>">
   <?php $nbr = 0 ?>
   <?php foreach ($items as $term => $term_count): ?>
