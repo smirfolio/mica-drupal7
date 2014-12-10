@@ -507,7 +507,7 @@ class VariableStatistics {
     $percent = $subtotal > 0 ? round(($count / $subtotal) * 100, 1) : 0;
     $total_title = t('Percentage over total count');
     if (!empty($title)) {
-      return $count . '<p class="help-inline" title="' . $total_title . '">' . $percent_total . '% <i title="' . t($title) . '">(' . $percent . '%)</i></p>';
+      return $count . '<div class="help-inline" title="' . $total_title . '">' . $percent_total . '%</div><div class="help-inline" title="' . t($title) . '"><i>(' . $percent . '%)</i></div>';
     }
     return $count . '<p class="help-inline" title="' . $total_title . '">' . $percent_total . '%</p>';
   }
@@ -515,8 +515,8 @@ class VariableStatistics {
   private function statistics_to_row($aggregation) {
     if (!empty($aggregation->statistics)) {
       $statistics = $aggregation->statistics;
-      $pct = empty($aggregation->total) ? NULL : round(($aggregation->n / $aggregation->total) * 100, 1);
-      $n = empty($pct) ? '0' : $aggregation->n . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
+      $pct = empty($aggregation->total) ? 0 : round(($aggregation->n / $aggregation->total) * 100, 1);
+      $n = $aggregation->n . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
       return array(
         property_exists($statistics, 'min') ? round($statistics->min, 1) : '-',
         property_exists($statistics, 'max') ? round($statistics->max, 1) : '-',
