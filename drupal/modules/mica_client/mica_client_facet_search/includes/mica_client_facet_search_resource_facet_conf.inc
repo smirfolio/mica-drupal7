@@ -81,9 +81,13 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
         $agg_type = "range";
         $items = mica_client_facet_search_get_range_field($terms_aggregations['range'], $type_string, $aggregation_facet);
       }
-
+      $input_form = drupal_get_form('mica_client_facet_search_autocomplete_form_field', $aggregation_facet);
+      if (strstr($input_form['#id'], 'mica-client-facet-search-autocomplete-form-field')) {
+        unset($input_form);
+      }
       return theme('mica_client_facet_search_block_search',
         array(
+          'input_autocomplete' => !empty($input_form) ? $input_form : NULL,
           'items' => $items,
           'formId' => $aggregation_facet,
           'operatorId' => sprintf("%s:%s:%s:op", $type, $agg_type, $aggregation_facet)
@@ -92,6 +96,79 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
     }
   }
   return NULL;
+}
+
+
+function mica_client_facet_search_autocomplete_form_field($form, &$form_state, $aggregation_facet) {
+  switch ($aggregation_facet) {
+    case 'studyIds' :
+    case 'dceIds' :
+    case 'datasetId' :
+    $entity_search = explode('Id', $aggregation_facet);
+    $title = t('Search a @entity...', array('@entity' => $entity_search[0]));
+    $form['#attributes']['class'] = 'autocomplete';
+      $form['#id'] = 'auto_' . $aggregation_facet;
+      $form['#action'] = '';
+      $form['terms'] = array(
+        '#attributes' => array(
+          'id-attribute' => 'variables:' . $aggregation_facet . '[]-',
+          'placeholder' => $title
+        ),
+        '#type' => 'textfield',
+        //'#title' => 'City',
+        '#maxlength' => 128,
+        '#autocomplete_path' => 'bucket/autocomplete/' . $aggregation_facet,
+      );
+    // ['placeholder']
+    return $form;
+      break;
+    case 'networkId' :
+      $title = t('Search a network...');
+      $form['#attributes']['class'] = 'autocomplete';
+      $form['#id'] = 'auto_' . $aggregation_facet;
+      $form['#action'] = '';
+      $form['terms'] = array(
+        '#type' => 'textfield',
+        '#attributes' => array('id-attribute' => 'networks:id[]-', 'placeholder' => $title),
+        //'#title' => 'City',
+        '#maxlength' => 128,
+        '#autocomplete_path' => 'bucket/autocomplete/' . $aggregation_facet,
+      );
+
+      return $form;
+      break;
+  }
+  unset($form);
+  return NULL;
+}
+
+function mica_client_facet_search_autocomplete_ajax_response($aggregation, $term_to_mach) {
+  switch ($aggregation) {
+    case 'studyIds' :
+    case 'dceIds' :
+    case 'datasetId' :
+      foreach ($_SESSION['variables']['aggregations'] as $aggre) {
+        if ($aggre->aggregation == $aggregation) {
+          foreach ($aggre->{"obiba.mica.TermsAggregationResultDto.terms"} as $term) {
+            if (stristr($term->title, $term_to_mach)) {
+              $matches[$term->key] = $term->title;
+            }
+          }
+          drupal_json_output($matches);
+        }
+      }
+      break;
+    case 'networkId' :
+      foreach ($_SESSION['studies']['networks'] as $term) {
+        $name_network = mica_client_commons_get_localized_field($term, 'name');
+        if (stristr($name_network, $term_to_mach)) {
+          $matches[$term->id] = $name_network;
+        }
+      }
+      drupal_json_output($matches);
+      break;
+
+  }
 }
 
 function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_string, $aggregation_facet, $totalHits = NULL, $totalCount = NULL) {

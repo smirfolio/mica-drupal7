@@ -1,5 +1,12 @@
 <?php //dpm($items['VAR_ONE']);?>
-<form id="facet-search_<?php print $formId; ?>">
+<?php $style_hide = ''; ?>
+<?php if (!empty($input_autocomplete)) : ?>
+  <?php print render($input_autocomplete); ?>
+  <?php $style_hide = "style='display: none'"; ?>
+<?php endif; ?>
+
+<div <?php print $style_hide; ?>>
+  <form id="facet-search_<?php print $formId; ?>">
   <?php $nbr = 0 ?>
   <?php foreach ($items as $term => $term_count): ?>
     <?php if ($nbr < 4): ?>
@@ -35,4 +42,6 @@
     </div>
   <?php endif; ?>
 </form>
+</div>
+
 

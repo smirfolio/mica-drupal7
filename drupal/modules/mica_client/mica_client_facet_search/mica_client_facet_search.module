@@ -37,6 +37,14 @@ function mica_client_facet_search_menu() {
     'page arguments' => array(2)
   );
 
+  $items['bucket/autocomplete/%'] = array(
+    'page callback' => 'mica_client_facet_search_autocomplete_ajax_response',
+    'file' => 'includes/mica_client_facet_search_resource_facet_conf.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+    'type' => MENU_CALLBACK
+  );
+
   return $items;
 }
 
