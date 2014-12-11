@@ -246,7 +246,7 @@
         if (aggType !== 'matches') {
           total += Object.keys(typeValues[aggType]).length;
         }
-      })
+      });
 
       $.each(typeValues, function (aggType, aggs) {
 

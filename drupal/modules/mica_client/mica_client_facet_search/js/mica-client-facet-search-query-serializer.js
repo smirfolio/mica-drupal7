@@ -168,7 +168,7 @@
         $.each(jsonForm, function (type, typeValues) {
           if (type === entry.type) {
             $.each(typeValues, function (aggType, aggs) {
-              if (aggType === 'matches' && entry.hasOwnProperty('matches')) {
+              if (aggType === 'matches' && entry.hasOwnProperty('matches') && aggType !== 'range') {
                 delete typeValues[aggType];
 
                 $.trimJson(jsonForm);
@@ -178,8 +178,15 @@
               if (aggType === entry.aggType) {
                 $.each(aggs, function (name, agg) {
                   if (name === entry.agg) {
-                    agg.values = $.grep(agg.values, function(value) { return entry.aggDataValue !== value });
 
+                    if (aggType === 'range') {
+                      agg.values = [];
+                    }
+                    else {
+                      agg.values = $.grep(agg.values, function (value) {
+                        return entry.aggDataValue !== value
+                      });
+                    }
                     if (agg.values.length === 0) {
                       // do not keep incomplete agg object
                       delete agg['op'];

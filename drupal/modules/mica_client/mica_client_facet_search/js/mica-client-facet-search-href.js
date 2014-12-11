@@ -115,9 +115,10 @@
       function serializeElement(element) {
         var dataArr = new Array();
         $.each(element.data(), function (att, value) {
-          dataArr.push({'name': att, 'value': value});
-        })
-
+          if (value) {
+            dataArr.push({'name': att, 'value': value});
+          }
+        });
         return $.param(element.serializeArray().concat(dataArr));
       }
 
@@ -276,9 +277,8 @@
             decodeURIComponent(serializeElement(input)) //
           );
         }
-        console.log(decodeURIComponent(serializeElement(input)));
-        console.log(json);
-        //   updateWindowLocation(JSON.stringify(json));
+
+        updateWindowLocation(JSON.stringify(json));
       }
 
       function process() {
@@ -352,16 +352,29 @@
       input_ranges.each(function () {
         var input_form_container = $(this).parent();
         var content_icon = input_form_container.find('.remove-icon-content');
-        var aggregation = input_form_container.find("input[type='hidden'].form-item-range-from").attr('id');
+        var Hidden_input_form = input_form_container.find("input[type='hidden'].form-item-range-from");
+        var aggregation = Hidden_input_form.attr('id');
         var input_range_val_to_reset = input_form_container.find('.form-item-range-from');
+        var defaultMinvalue, defaultMaxvalue;
         if ($(this).val()) {
           var current_undo_icon = undoIcon.clone().appendTo(content_icon);
           current_undo_icon.attr('aggregation', aggregation);
           current_undo_icon.on("click", function () {
+            var clearButton = $(this);
             input_range_val_to_reset.each(function () {
               $(this).val('');
+              if ($(this).attr('term') == aggregation + '-min') {
+                defaultMinvalue = $(this).attr('placeholder');
+
+              }
+              if ($(this).attr('term') == aggregation + '-max') {
+                defaultMaxvalue = $(this).attr('placeholder');
+              }
             });
-            formClickHandler(current_undo_icon.attr('aggregation'));
+            Hidden_input_form.attr("value", '');
+            Hidden_input_form.val('');
+
+            formClickHandler($(clearButton).attr('aggregation'));
           });
         }
       });
@@ -370,6 +383,7 @@
       inputSearch.each(function () {
         inputHaveValue($(this));
         if ($(this).val()) {
+          var divInput = inputSearch.parent().parent();
           divInput.append(delIcon);
           bindOnClikIcone(delIcon, $(this));
         }

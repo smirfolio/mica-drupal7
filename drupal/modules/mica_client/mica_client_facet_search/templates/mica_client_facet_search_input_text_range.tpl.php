@@ -1,4 +1,4 @@
-<?php dpm($fields_terms); ?>
+<?php //dpm($fields_terms); ?>
 <span class="default_value_range range-default">
   <?php print  t('Default range: '); ?> <?php print  t('From'); ?> <?php print  $fields_terms['default']['min']; ?>
   <?php print  t('to'); ?> <?php print $fields_terms['default']['max']; ?></span>
