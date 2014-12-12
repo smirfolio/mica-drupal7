@@ -219,7 +219,13 @@ class MicaClient {
   protected function session_facets_builder($aggregations) {
     unset($_SESSION['variables']);
     unset($_SESSION['studies']);
+    $networkAggregations = NULL;
+
     foreach ($aggregations as $type_aggregations => $aggregation) {
+      if ($type_aggregations == 'networkResultDto') {
+        $networkAggregations = $aggregation->aggs;
+      }
+
       if ($type_aggregations == 'variableResultDto') {
         $_SESSION['variables']['studies'] = array();
         $study_result = $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'};
@@ -280,6 +286,15 @@ class MicaClient {
         $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
       }
     }
+
+    if (!empty($networkAggregations)) {
+      foreach ( $networkAggregations as $networkAggregation) {
+        array_push($_SESSION['studies']['aggregations'], $networkAggregation);
+      }
+    }
+
+    dpm($_SESSION['studies']['aggregations'], "study aggs");
+
   }
 
   protected function _get_aggregations_by_entity_dto($entity_aggr, $aggregations_term) {
