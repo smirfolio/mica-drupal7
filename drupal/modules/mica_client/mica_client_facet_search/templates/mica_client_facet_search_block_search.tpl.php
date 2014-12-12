@@ -2,7 +2,7 @@
 <?php $style_hide = ''; ?>
 <?php if (!empty($input_autocomplete)) : ?>
   <?php print render($input_autocomplete); ?>
-  <?php //$style_hide = "style='display: none'"; ?>
+  <?php $style_hide = "style='display: none'"; ?>
 <?php endif; ?>
 
 <div <?php print $style_hide; ?>>
