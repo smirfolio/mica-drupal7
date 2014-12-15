@@ -4,15 +4,16 @@
 
       var tabparam = '';
 
-      /*override autocomplete Drupal dunction */
-      Drupal.jsAC.prototype.select = function (node) {
-        var selectedValue = $(node).data('autocompleteValue');
+      /*override autocomplete Drupal function */
+      if (Drupal.jsAC) {
+        Drupal.jsAC.prototype.select = function (node) {
+          var selectedValue = $(node).data('autocompleteValue');
 
-        var selectorCheckbox = 'span#checkthebox[data-value="' + selectedValue + '"]';
+          var selectorCheckbox = 'span#checkthebox[data-value="' + selectedValue + '"]';
 
-        updateCheckboxesByChekbox($(selectorCheckbox))
-      };
-
+          updateCheckboxesByChekbox($(selectorCheckbox))
+        };
+      }
       function updateCheckboxesByChekbox(checkboxSpan) {
         var json = getQueryFromUrl();
         var aggregation_name = getAggregationMoniker(checkboxSpan);
@@ -114,9 +115,10 @@
       function serializeElement(element) {
         var dataArr = new Array();
         $.each(element.data(), function (att, value) {
-          dataArr.push({'name': att, 'value': value});
-        })
-
+          if (value) {
+            dataArr.push({'name': att, 'value': value});
+          }
+        });
         return $.param(element.serializeArray().concat(dataArr));
       }
 
@@ -262,6 +264,7 @@
       function formClickHandler(aggregation) {
         var json = getQueryFromUrl();
         var input = $("input[id='" + aggregation + "']");
+
         if (input.val()) {
           $.query_serializer.addItem( //
             json, //
@@ -341,11 +344,46 @@
 
       /*************Deal with icon for clearing the full text search input field *******/
       var delIcon = $('<i class="remove-icon clickable glyphicon glyphicon-remove-circle"></i>');
-      var inputSearch = $("input[id*='matches:facet-search-query']");
+      var undoIcon = $('<span class="remove-icon clickable flaticon-undo9" aggregation=""></span>');
+      //range input initializing reset
+      //  var input_ranges = $('.form-item-range-from');
+      var input_ranges = $("input[type='hidden'].form-item-range-from");
 
+      input_ranges.each(function () {
+        var input_form_container = $(this).parent();
+        var content_icon = input_form_container.find('.remove-icon-content');
+        var Hidden_input_form = input_form_container.find("input[type='hidden'].form-item-range-from");
+        var aggregation = Hidden_input_form.attr('id');
+        var input_range_val_to_reset = input_form_container.find('.form-item-range-from');
+        var defaultMinvalue, defaultMaxvalue;
+        if ($(this).val()) {
+          var current_undo_icon = undoIcon.clone().appendTo(content_icon);
+          current_undo_icon.attr('aggregation', aggregation);
+          current_undo_icon.on("click", function () {
+            var clearButton = $(this);
+            input_range_val_to_reset.each(function () {
+              $(this).val('');
+              if ($(this).attr('term') == aggregation + '-min') {
+                defaultMinvalue = $(this).attr('placeholder');
+
+              }
+              if ($(this).attr('term') == aggregation + '-max') {
+                defaultMaxvalue = $(this).attr('placeholder');
+              }
+            });
+            Hidden_input_form.attr("value", '');
+            Hidden_input_form.val('');
+
+            formClickHandler($(clearButton).attr('aggregation'));
+          });
+        }
+      });
+//free search initializing reset
+      var inputSearch = $("input[id*='matches:facet-search-query']");
       inputSearch.each(function () {
         inputHaveValue($(this));
         if ($(this).val()) {
+          var divInput = inputSearch.parent().parent();
           divInput.append(delIcon);
           bindOnClikIcone(delIcon, $(this));
         }
