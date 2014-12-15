@@ -6,6 +6,30 @@
 
       /*override autocomplete Drupal function */
       if (Drupal.jsAC) {
+
+        /*select On press enter action */
+        Drupal.jsAC.prototype.onkeydown = function (input, e) {
+          if (!e) {
+            e = window.event;
+          }
+          switch (e.keyCode) {
+            case 13: // Enter.
+              e.preventDefault();
+              var selectedValue = $(this.selected).data('autocompleteValue');
+              var selectorCheckbox = 'span#checkthebox[data-value="' + selectedValue + '"]';
+              updateCheckboxesByChekbox($(selectorCheckbox));
+              return true;
+            case 40: // down arrow.
+              this.selectDown();
+              return false;
+            case 38: // up arrow.
+              this.selectUp();
+              return false;
+            default: // All other keys.
+              return true;
+          }
+        };
+
         Drupal.jsAC.prototype.select = function (node) {
           var selectedValue = $(node).data('autocompleteValue');
 
@@ -264,7 +288,6 @@
       function formClickHandler(aggregation) {
         var json = getQueryFromUrl();
         var input = $("input[id='" + aggregation + "']");
-
         if (input.val()) {
           $.query_serializer.addItem( //
             json, //
