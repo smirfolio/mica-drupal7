@@ -197,12 +197,11 @@ function mica_client_study_get_contact_detail($type_contact, $study_id, $contact
  */
 function mica_client_study_get_dce_detail($study_id, $population_id, $dataCollectionEvents) {
   $page_render_dces = '';
-  $themed_attachment = '';
   foreach ($dataCollectionEvents as $dce) {
+    $themed_attachment = '';
     if (!empty($dce->attachments)) {
       foreach ($dce->attachments as $attachment) {
-        // TODO this should be addressed from the server-side
-//        $themed_attachment .= mica_client_study_get_attachment_file($dce_wrapper->id, $attachment, 'study');
+        $themed_attachment .= mica_client_study_get_attachment_file($study_id, $attachment, 'study');
       }
     }
     $page_render_dces .= theme('mica_dce_detail', array(
