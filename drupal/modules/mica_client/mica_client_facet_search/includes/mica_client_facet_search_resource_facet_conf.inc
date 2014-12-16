@@ -24,9 +24,6 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
     case 'search-datasetId' :
       $facet_build[$tab_block]['datasetId']['term'] = mica_client_facet_search_get_datasets();
       return $facet_build[$tab_block];
-    case 'search-networkId' :
-      $facet_build[$tab_block]['networkId']['term'] = mica_client_facet_search_get_networks();
-      return $facet_build[$tab_block];
   }
 
   foreach ($_SESSION[$type]['aggregations'] as $key_tab => $facet) {
@@ -236,31 +233,5 @@ function mica_client_facet_search_get_datasets() {
   }
 
   return $datasets;
-}
-
-function mica_client_facet_search_get_networks() {
-  $networks = array();
-  if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['networks'])) {
-    $studies_networks = $_SESSION['studies']['networks'];
-    array_filter($studies_networks, function (stdClass $studies_network) use (&$networks) {
-
-      if (empty($studies_network->{'obiba.mica.NetworkDigestDto.studies'})) {
-        $study_ids = $studies_network->studyIds;
-      }
-      else {
-        $study_ids = $studies_network->{'obiba.mica.NetworkDigestDto.studies'}->ids;
-      }
-
-      $network = new stdClass();
-      $network->key = $studies_network->id;
-      $network->title = $network->key;
-      $network->default = $_SESSION['studies']['aggregations']['totalCount'];
-      $network->count = count($study_ids);
-      array_push($networks, $network);
-      return TRUE;
-    });
-  }
-
-  return $networks;
 }
 
