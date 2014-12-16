@@ -53,6 +53,7 @@
             "searching": true,
             "ordering": true,
             "iDisplayLength": 25,
+            "stateSave": true,
             "language": {
               "url": Drupal.settings.basePath + 'mica/datatable-international'
             }
