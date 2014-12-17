@@ -6,7 +6,7 @@
 
       $('#harmo-algo').on('click', function () {
         var idHarmonizationVariable = $(this).attr('var-id');
-        var sectionContainer = $('section#harmo-algo');
+        var sectionContainer = $('div#harmo-algo');
 
         var $btn = $(this).button('loading');
         $('.collapse').collapse();

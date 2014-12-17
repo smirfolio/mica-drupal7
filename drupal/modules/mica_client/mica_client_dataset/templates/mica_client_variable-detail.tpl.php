@@ -213,9 +213,9 @@
 
         <?php print t('Harmonization Algorithms') ?>
         </button>
-        <section id="harmo-algo" class="collapse">
+        <div id="harmo-algo" class="collapse">
 
-        </section>
+        </div>
       <?php endif; ?>
     <?php else: ?>
       <div class="container-fluid">

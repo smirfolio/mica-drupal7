@@ -81,15 +81,18 @@ function mica_client_dataset_get_variable_algorithm($variable_id) {
     if (!empty($harmonization_variable->studyTable->name)) {
       $variable_title = $variable_title . ' (' . mica_client_commons_get_localized_field($harmonization_variable->studyTable, 'name') . ')';
     }
-    $algos[$variable_title] =
+    $algorithm = _mica_client_variable_attributes_detail($harmonization_variable, 'algorithm', array(
+      'maelstrom',
+      'Mlstr_harmo'
+    ));
+    if (!empty($algorithm)) {
+      $algos[$variable_title] =
       array(
         'var_id' => $variable_resolver->id,
-        'var_detail' => mica_client_commons_markdown(_mica_client_variable_attributes_detail($harmonization_variable, 'algorithm', array(
-          'maelstrom',
-          'Mlstr_harmo'
-        )))
+        'var_detail' => mica_client_commons_markdown($algorithm)
       )//
     ;
+    }
   }
   $themed_algo['algo'] = theme('mica_client_variable_harmonization_algorithm', array('variable_harmonization_algorithms' => $algos));
   drupal_json_output($themed_algo);
