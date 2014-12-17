@@ -9646,3 +9646,38 @@ div.algo-list {
   padding-left: 20px;
   margin-bottom: 20px;
 }
+
+div.dropdown {
+  position: absolute;
+  /* width: 450px; */
+  z-index: 150;
+}
+
+.dropdown-menu {
+  position: relative;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  -moz-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+}
+
+div.algo-list {
+  border-left: solid 3px #cccccc;
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
