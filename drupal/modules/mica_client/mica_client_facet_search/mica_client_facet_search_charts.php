@@ -151,7 +151,7 @@ function mica_client_facet_search_term_chart($term_coverage) {
  * @param null $bucket_filter_arg argument to be passed to the bucket filter closure
  * @return array
  */
-function mica_client_facet_search_query_charts($query, $bucket_filter = NULL, $bucket_filter_arg = NULL) {
+function mica_client_facet_search_query_charts($query, Callable $bucket_filter, $bucket_filter_arg = NULL) {
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query);
   //dpm($coverages);
