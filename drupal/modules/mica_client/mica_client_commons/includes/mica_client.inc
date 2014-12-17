@@ -288,12 +288,10 @@ class MicaClient {
     }
 
     if (!empty($networkAggregations)) {
-      foreach ( $networkAggregations as $networkAggregation) {
+      foreach ($networkAggregations as $networkAggregation) {
         array_push($_SESSION['studies']['aggregations'], $networkAggregation);
       }
     }
-
-    dpm($_SESSION['studies']['aggregations'], "study aggs");
 
   }
 
