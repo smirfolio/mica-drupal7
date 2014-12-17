@@ -1,6 +1,6 @@
 <?php
 //dpm($variable_dto);
-//dpm($variable_harmonization);
+dpm($variable_harmonization);
 ?>
 
 <article>
@@ -199,6 +199,18 @@
     <?php print render($harmonization_table_legend); ?>
     <?php if ($variable_dto->variableType == 'Dataschema'): ?>
       <?php print mica_client_variable_get_harmonizations($variable_dto); ?>
+
+      <?php if (!empty($variable_harmonization_algorithms)): ?>
+
+        <button id="harmo-algo" data-loading-text="<?php print t('Loading...') ?>" type="button" class="btn btn-success"
+          data-toggle="collapse" data-target="#harmo-algo" aria-expanded="true" aria-controls="harmo-algo">
+          <?php print t('Harmonization Algorithms') ?>
+        </button>
+        <section id="harmo-algo" class="collapse">
+          <h3><?php print t('Harmonization Algorithms') ?></h3>
+
+        </section>
+      <?php endif; ?>
     <?php else: ?>
       <div class="container-fluid">
         <div class="row">
@@ -250,5 +262,4 @@
     <?php endif; ?>
   </section>
 <?php endif; ?>
-
 </article>

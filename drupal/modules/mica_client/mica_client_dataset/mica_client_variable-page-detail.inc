@@ -12,6 +12,7 @@ function mica_client_variable_page_detail($variable_id) {
     drupal_add_js('http://www.google.com/jsapi', 'file');
   }
 
+  drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_variable_harmo_algo_datatable_init.js', 'file');
   drupal_add_js(drupal_get_path('module', 'mica_client_dataset') . '/js/mica_client_dataset_get_ajax_variables.js', 'file');
   drupal_add_js(array('mica_client_variable' => array('library' => $library_chart)), 'setting');
 
@@ -58,6 +59,7 @@ function mica_client_variable_page_detail($variable_id) {
   return theme('mica_client_variable-detail', array(
     'harmonization_table_legend' => theme('mica_client_dataset-harmonization-table-legend', array('clickable' => $variable->variableType != 'Harmonized')),
     'variable_dto' => $variable,
+    'variable_harmonization_algorithms' => 'harmo',
     'variable_harmonization' => mica_client_variable_get_harmonization($variable),
   ));
 }
@@ -197,6 +199,7 @@ function mica_client_variable_get_harmonizations($variable) {
 }
 
 function mica_client_variable_get_harmonization($harmonized_variable) {
+  dpm($harmonized_variable);
   return array(
     'status' => _mica_client_variable_attributes_detail($harmonized_variable, 'status', array(
       'maelstrom',

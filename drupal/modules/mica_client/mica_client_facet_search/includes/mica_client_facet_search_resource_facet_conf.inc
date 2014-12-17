@@ -174,7 +174,7 @@ function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_s
   uasort($fields_terms, 'mica_client_facet_search_sort_terms');
   foreach ($fields_terms as $term) {
     if ($aggregation_facet == 'studyIds') {
-      $term->name = MicaClient::get_name_entity_by_id_aggregation('variables', 'studies', $term->key);
+      $term->name = $term->title;
     }
     if ($aggregation_facet == 'datasetId') {
       $term->name = MicaClient::get_name_entity_by_id_aggregation('variables', 'datasets', $term->key);
