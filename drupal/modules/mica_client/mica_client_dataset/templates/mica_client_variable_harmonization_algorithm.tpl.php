@@ -8,7 +8,8 @@
 
 
   <blockquote>
-    <?php print !empty($variable_harmonization_algorithm['var_detail']) ? $variable_harmonization_algorithm['var_detail'] : t('have no algorithm'); ?>
+    <?php print !empty($variable_harmonization_algorithm['var_detail']) ? $variable_harmonization_algorithm['var_detail']
+      : t('No algorithm implemented'); ?>
   </blockquote>
   <hr>
 <?php endforeach; ?>
