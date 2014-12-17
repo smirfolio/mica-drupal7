@@ -92,6 +92,14 @@ function mica_client_dataset_menu() {
     'page arguments' => array(2),
   );
 
+  $items['mica/variables-harmonization-algo/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'mica_client_dataset_get_variable_algorithm',
+    'file' => 'mica_client_variable-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
   $items['mica/datatable-international'] = array(
     'title' => 'Dataset',
     'page callback' => 'mica_client_dataset_datatables_multi_Lang',
@@ -247,7 +255,12 @@ function mica_client_dataset_theme($existing, $type, $theme, $path) {
       array('template' => 'mica_client_dataset-harmonization-table-legend', 'path' => $path_theme), //
 
     'mica_client_dataset-tables' => array('template' => 'mica_client_dataset-tables', 'path' => $path_theme),
-    'mica_client_variable-detail' => array('template' => 'mica_client_variable-detail', 'path' => $path_theme)
+    'mica_client_variable-detail' => array('template' => 'mica_client_variable-detail', 'path' => $path_theme),
+    'mica_client_variable_harmonization_algorithm' => array(
+      'template' =>
+        'mica_client_variable_harmonization_algorithm',
+      'path' => $path_theme
+    )
   );
 }
 
@@ -333,7 +346,6 @@ function mica_client_dataset_get_datasets_list_tab($datasets, $study_id) {
     foreach ($summaries as $key_dataset => $summary) {
       // dpm($summary);
       $dataset_description = NULL;
-
 
       if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
         $nb_variables = l($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables, 'mica/search',
