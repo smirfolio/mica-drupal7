@@ -3,7 +3,6 @@ include_once('includes/mica_client_dataset_resource.inc');
 include_once('includes/mica_client_variable_statistics.inc');
 
 function mica_client_variable_page_detail($variable_id) {
-  $has_algo = FALSE;
   $library_chart = mica_client_variable_load_chart_libraries();
   drupal_add_js(
     drupal_get_path('module', 'charts') .
@@ -87,11 +86,11 @@ function mica_client_dataset_get_variable_algorithm($variable_id) {
     ));
     if (!empty($algorithm)) {
       $algos[$variable_title] =
-      array(
-        'var_id' => $variable_resolver->id,
-        'var_detail' => mica_client_commons_markdown($algorithm)
-      )//
-    ;
+        array(
+          'var_id' => $variable_resolver->id,
+          'var_detail' => mica_client_commons_markdown($algorithm)
+        )//
+      ;
     }
   }
   $themed_algo['algo'] = theme('mica_client_variable_harmonization_algorithm', array('variable_harmonization_algorithms' => $algos));
