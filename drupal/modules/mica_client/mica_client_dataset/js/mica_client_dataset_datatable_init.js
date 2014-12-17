@@ -46,7 +46,7 @@
           .dataTable({
             "processing": true,
             //  "sDom": '<"pull-left" i><"pull-right" f>t<"pull-left" l><"pull-right" p>',
-            "sDom": '<"pull-left" i>t<"pull-left" l><"pull-right" p>',
+            "sDom": '<"table-var-wrapper" <"pull-left" i>rt<"pull-left" l><"pull-right" p>>',
             "bServerSide": true,
             "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
             "aoColumns": headerTable,
