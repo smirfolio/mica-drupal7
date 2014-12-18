@@ -28,6 +28,7 @@
             console.log('Some errors....');
           }
         });
+        $("#harmo-algo").unbind("click");
         $(this).removeAttr('id');
         $btn.button('reset')
       });
