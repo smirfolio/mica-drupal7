@@ -309,22 +309,30 @@ function mica_client_facet_search_load_libs() {
 function createTermsDictionary() {
   $dictionary = array();
   if (!empty($_SESSION['variables'])) {
-    foreach ($_SESSION['variables']['aggregations'] as $aggregtaion) {
-      if (!empty($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'})) {
-        foreach ($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
-          $dictionary[sprintf("variables:%s:%s", $aggregtaion->aggregation, $term->key)] = $term->title;
+    foreach ($_SESSION['variables']['aggregations'] as $aggregation) {
+      if (empty($aggregation->aggregation)) continue;
+      $type = "studyIds" !== $aggregation->aggregation ? "variables" : "studies";
+
+      if (!empty($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+        foreach ($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+          $dictionary[sprintf("$type:%s:%s", $aggregation->aggregation, $term->key)] = $term->title;
         }
+      }
     }
   }
 
-    foreach ($_SESSION['variables']['aggregations'] as $aggregtaion) {
-      if (!empty($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'})) {
-        foreach ($aggregtaion->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
-          $dictionary[sprintf("studies:%s:%s", $aggregtaion->aggregation, $term->key)] = $term->title;
+  if (!empty($_SESSION['studies'])) {
+    foreach ($_SESSION['studies']['aggregations'] as $aggregation) {
+      if (empty($aggregation->aggregation)) continue;
+      $type = "networkId" !== $aggregation->aggregation ? "studies" : "networks";
+      if (!empty($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+        foreach ($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+          $dictionary[sprintf("$type:%s:%s", $aggregation->aggregation, $term->key)] = $term->title;
         }
+      }
     }
   }
-  }
+
   return $dictionary;
 }
 
@@ -359,7 +367,7 @@ function mica_client_get_hits_entities_variable($entity) {
 
 function mica_client_facet_search_variable_page_search() {
   //drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
-  mica_client_facet_search_load_libs();
+
   $studies = NULL;
   $study_charts = NULL;
   $variables = NULL;
@@ -426,6 +434,8 @@ function mica_client_facet_search_variable_page_search() {
       'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL,
       'network_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'networks')
     ));
+
+  mica_client_facet_search_load_libs();
   return $output;
 }
 

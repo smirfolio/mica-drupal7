@@ -10,7 +10,7 @@
   <?php if (!empty($network_dto->studyIds)): ?>
     <div class="pull-right md-bottom-margin">
       <?php
-      $query_array = array("variables" => array("terms" => array("studyIds" => $network_dto->studyIds)));
+      $query_array = array("studies" => array("terms" => array("studyIds" => $network_dto->studyIds)));
       $query = MicaClient::create_query_dto_as_string($query_array);
 
       print l(t('Search Variables'), 'mica/search',

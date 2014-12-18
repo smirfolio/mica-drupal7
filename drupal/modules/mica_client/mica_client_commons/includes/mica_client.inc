@@ -223,7 +223,9 @@ class MicaClient {
 
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if ($type_aggregations == 'networkResultDto') {
-        $networkAggregations = $aggregation->aggs;
+        $networkAggregations = array_filter($aggregation->aggs, function($agg){
+          return $agg->aggregation === "networkId";
+        });
       }
 
       if ($type_aggregations == 'variableResultDto') {
