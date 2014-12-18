@@ -141,15 +141,15 @@
                   <td>
                     <?php if (count($termAttribute->terms == 1)): ?>
                       <p data-toggle="tooltip"
-                         title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
-                        <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
+                        title="<?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
+                      <?php print mica_client_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
                       </p>
                     <?php else: ?>
                       <ul>
                         <?php foreach ($termAttribute->terms as $term) : ?>
                           <li data-toggle="tooltip"
-                              title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
-                            <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
+                            title="<?php print mica_client_commons_get_localized_field($term, 'descriptions'); ?>">
+                          <?php print mica_client_commons_get_localized_field($term, 'titles'); ?>
                           </li>
                         <?php endforeach; ?>
                       </ul>
@@ -199,6 +199,24 @@
     <?php print render($harmonization_table_legend); ?>
     <?php if ($variable_dto->variableType == 'Dataschema'): ?>
       <?php print mica_client_variable_get_harmonizations($variable_dto); ?>
+
+      <?php if (!empty($variable_harmonization_algorithms)): ?>
+
+        <button id="harmo-algo" data-loading-text="<?php print t('Loading...') ?>"
+          type="button"
+          class="btn btn-success"
+          data-toggle="collapse"
+          data-target="#harmo-algo"
+          aria-expanded="true"
+          aria-controls="harmo-algo"
+          var-id="<?php print $variable_dto->id; ?>">
+
+        <?php print t('Harmonization Algorithms') ?>
+        </button>
+        <div id="harmo-algo" class="collapse">
+
+        </div>
+      <?php endif; ?>
     <?php else: ?>
       <div class="container-fluid">
         <div class="row">
@@ -215,11 +233,11 @@
                   <?php
                   elseif ($variable_harmonization['status'] == 'impossible'): ?>
                     <span class="glyphicon glyphicon-remove alert-danger"
-                          title="<?php print t('Impossible') ?>"></span>
+                      title="<?php print t('Impossible') ?>"></span>
                   <?php
                   elseif ($variable_harmonization['status'] == 'undetermined'): ?>
                     <span class="glyphicon glyphicon-question-sign alert-warning"
-                          title="<?php print t('Undetermined') ?>"></span>
+                      title="<?php print t('Undetermined') ?>"></span>
                   <?php endif ?>
                 </td>
               </tr>
@@ -250,5 +268,4 @@
     <?php endif; ?>
   </section>
 <?php endif; ?>
-
 </article>
