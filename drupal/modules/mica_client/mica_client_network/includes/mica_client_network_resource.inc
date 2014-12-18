@@ -60,6 +60,8 @@ class MicaNetworkResource extends MicaClient {
       $this->setLastResponse($client->lastResponse);
       return new NetworkJoinResponseWrapper(json_decode($data));
     } catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
       return array();
     }
   }

@@ -25,30 +25,30 @@ function mica_client_facet_search_get_dto_facet_aggs($tab_block, $type) {
       $facet_build[$tab_block]['datasetId']['term'] = mica_client_facet_search_get_datasets();
       return $facet_build[$tab_block];
   }
+  if (!empty($_SESSION[$type])) {
+    foreach ($_SESSION[$type]['aggregations'] as $key_tab => $facet) {
+      if (is_int($key_tab)) {
+        if (!empty($facet->aggregation) && $tab_block == 'search-' . $facet->aggregation) {
+          if (!empty($facet->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+            $facet_build[$tab_block][$facet->aggregation]['term'] = $facet->{'obiba.mica.TermsAggregationResultDto.terms'};
+          }
+          elseif (!empty($facet->{'obiba.mica.StatsAggregationResultDto.stats'})) {
+            $facet_build[$tab_block][$facet->aggregation]['range']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->count;
+            $facet_build[$tab_block][$facet->aggregation]['range']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->min;
+            $facet_build[$tab_block][$facet->aggregation]['range']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->max;
+            $facet_build[$tab_block][$facet->aggregation]['range']['default']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->count;
+            $facet_build[$tab_block][$facet->aggregation]['range']['default']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->min;
+            $facet_build[$tab_block][$facet->aggregation]['range']['default']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->max;
+          }
+          else {
+            $facet_build[$tab_block][$facet->aggregation] = NULL;
+          }
 
-  foreach ($_SESSION[$type]['aggregations'] as $key_tab => $facet) {
-    if (is_int($key_tab)) {
-      if (!empty($facet->aggregation) && $tab_block == 'search-' . $facet->aggregation) {
-        if (!empty($facet->{'obiba.mica.TermsAggregationResultDto.terms'})) {
-          $facet_build[$tab_block][$facet->aggregation]['term'] = $facet->{'obiba.mica.TermsAggregationResultDto.terms'};
+          return $facet_build[$tab_block];
         }
-        elseif (!empty($facet->{'obiba.mica.StatsAggregationResultDto.stats'})) {
-          $facet_build[$tab_block][$facet->aggregation]['range']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->count;
-          $facet_build[$tab_block][$facet->aggregation]['range']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->min;
-          $facet_build[$tab_block][$facet->aggregation]['range']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->max;
-          $facet_build[$tab_block][$facet->aggregation]['range']['default']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->count;
-          $facet_build[$tab_block][$facet->aggregation]['range']['default']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->min;
-          $facet_build[$tab_block][$facet->aggregation]['range']['default']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->max;
-        }
-        else {
-          $facet_build[$tab_block][$facet->aggregation] = NULL;
-        }
-
-        return $facet_build[$tab_block];
       }
     }
   }
-
 }
 
 function mica_client_facet_search_precess_block_theme($block_delta, $type) {
@@ -95,7 +95,6 @@ function mica_client_facet_search_precess_block_theme($block_delta, $type) {
   return NULL;
 }
 
-
 function mica_client_facet_search_autocomplete_form_field($form, &$form_state, $aggregation_facet) {
   switch ($aggregation_facet) {
     case 'studyIds' :
@@ -104,7 +103,7 @@ function mica_client_facet_search_autocomplete_form_field($form, &$form_state, $
     $entity_search = explode('Id', $aggregation_facet);
     $title = t('Search a @entity...', array('@entity' => $entity_search[0]));
     $form['#attributes']['class'] = 'autocomplete';
-      $form['#id'] = 'auto_' . $aggregation_facet;
+    $form['#id'] = 'auto_' . $aggregation_facet;
       $form['#action'] = '';
       $form['terms'] = array(
         '#attributes' => array(
@@ -118,7 +117,7 @@ function mica_client_facet_search_autocomplete_form_field($form, &$form_state, $
       );
     // ['placeholder']
     return $form;
-      break;
+    break;
     case 'networkId' :
       $title = t('Search a network...');
       $form['#attributes']['class'] = 'autocomplete';

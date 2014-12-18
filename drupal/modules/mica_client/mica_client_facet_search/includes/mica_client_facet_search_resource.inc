@@ -77,6 +77,8 @@ class MicaSearchResource extends MicaClient {
       return json_decode($data);
 
     } catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
       return array();
     }
 
@@ -119,7 +121,6 @@ class MicaSearchResource extends MicaClient {
   private function search_documents($type) {
     $join_query_response = new JoinQueryResponseWrapper($this->_search_resource());
     $response = $join_query_response->getResponseWrapper($type);
-
     if (!$response->isEmpty()) {
       $_SESSION['request-search-response'] = 'no-empty';
       $this->session_facets_builder($join_query_response->getResponseDto());
@@ -133,9 +134,7 @@ class MicaSearchResource extends MicaClient {
       if (!$response->isEmpty()) {
         $this->session_facets_builder($join_query_response2->getResponseDto());
       }
-      //dpm($_SESSION['variables']);
     }
-
     return $join_query_response;
   }
 
