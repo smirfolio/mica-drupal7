@@ -19,9 +19,4 @@
     <h6><?php print t('Impossible') ?></h6>
     <?php print ' - ' . t('there is no information or insufficient information collected by this study to allow the construction of the variable as defined in the dataset.') ?>
   </div>
-  <div>
-    <i class="glyphicon glyphicon-ban-circle alert-danger"></i>
-    <h6><?php print t('No status') ?></h6>
-    <?php print ' - ' . t('the harmonization potential has not been evaluated yet.') ?>
-  </div>
 </div>
