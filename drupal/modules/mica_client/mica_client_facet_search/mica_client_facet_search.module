@@ -386,27 +386,11 @@ function mica_client_facet_search_variable_page_search() {
         $join_query_response = $search_resources->search_studies();
         $studies = $join_query_response->getStudyResponseWrapper();
         extract(mica_client_get_hits_entities_variable($join_query_response->getCountStats()), EXTR_OVERWRITE);
-        if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['aggregations'])) {
-          $charts = mica_client_facet_search_get_facets_chart('facet_conf_study', $_SESSION['studies']['aggregations']);
-          if (!empty($charts)) {
-            $study_charts = theme('mica_client_facet_search_charts', array(
-              'charts' => $charts
-            ));
-          }
-        }
         break;
       case  'variables' :
         $join_query_response = $search_resources->search_variables();
         $variables = $join_query_response->getVariableResponseWrapper();
         extract(mica_client_get_hits_entities_variable($join_query_response->getCountStats()), EXTR_OVERWRITE);
-        if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
-          $charts = mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations']);
-          if (!empty($charts)) {
-            $variable_charts = theme('mica_client_facet_search_charts', array(
-              'charts' => $charts
-            ));
-          }
-        }
         break;
     }
 
@@ -414,14 +398,6 @@ function mica_client_facet_search_variable_page_search() {
   else {
     $join_query_response = $search_resources->search_variables();
     $variables = $join_query_response->getVariableResponseWrapper();
-    if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
-      $charts = mica_client_facet_search_get_facets_chart('facet_conf_variable', $_SESSION['variables']['aggregations']);
-      if (!empty($charts)) {
-        $variable_charts = theme('mica_client_facet_search_charts', array(
-          'charts' => $charts
-        ));
-      }
-    }
   }
 
   $url_parm = explode('?', $_SERVER['REQUEST_URI']);
@@ -434,7 +410,6 @@ function mica_client_facet_search_variable_page_search() {
       'noval' => '',
       'query' => empty($parts['query']) ? '' : $parts['query'],
       'variables_result' => array('data' => mica_client_facet_search_variables_table($variables)),
-      'variable_charts' => $variable_charts,
       'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
       'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
       'variable_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'variables'),
@@ -443,7 +418,6 @@ function mica_client_facet_search_variable_page_search() {
       'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
       'dataset_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'datasets'),
       'studies' => array('data' => mica_client_facet_search_studies_table($studies)),
-      'study_charts' => $study_charts,
       'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
       'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
       'study_search_form' => drupal_get_form('mica_client_commons_create_facet_search_query_form', 'studies'),
