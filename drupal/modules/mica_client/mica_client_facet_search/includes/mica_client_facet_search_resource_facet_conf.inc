@@ -144,45 +144,38 @@ function mica_client_facet_search_autocomplete_ajax_response($aggregation, $term
     case 'studyIds' :
     case 'dceIds' :
     case 'datasetId' :
-      foreach ($_SESSION['variables']['aggregations'] as $aggre) {
-        if ($aggre->aggregation == $aggregation) {
-          foreach ($aggre->{"obiba.mica.TermsAggregationResultDto.terms"} as $term) {
-            if (stristr($term->title, $term_to_mach)) {
-              $matches[$term->key] = $term->title;
-            }
-          }
-          drupal_json_output($matches);
-        }
-      }
+      drupal_json_output(mica_client_facet_search_get_matched_agg_entries("variables", $aggregation, $term_to_mach));
       break;
     case 'networkId' :
-      foreach ($_SESSION['studies']['networks'] as $term) {
-        $name_network = mica_client_commons_get_localized_field($term, 'name');
-        if (stristr($name_network, $term_to_mach)) {
-          $matches[$term->id] = $name_network;
+      drupal_json_output(mica_client_facet_search_get_matched_agg_entries("studies", $aggregation, $term_to_mach));
+      break;
+  }
+}
+
+function mica_client_facet_search_get_matched_agg_entries($type, $aggregation, $term_to_mach)
+{
+  foreach ($_SESSION[$type]['aggregations'] as $aggre) {
+    if ($aggre->aggregation == $aggregation) {
+      foreach ($aggre->{"obiba.mica.TermsAggregationResultDto.terms"} as $term) {
+        if (stristr($term->title, $term_to_mach)) {
+          $matches[$term->key] = $term->title;
         }
       }
-      drupal_json_output($matches);
-      break;
-
+      return $matches;
+    }
   }
+
+  return array();
 }
 
 function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_string, $aggregation_facet, $totalHits = NULL, $totalCount = NULL) {
   $key = 1;
-  //dpm($fields_terms);
   uasort($fields_terms, 'mica_client_facet_search_sort_terms');
   foreach ($fields_terms as $term) {
     if ($aggregation_facet == 'studyIds') {
-      $term->name = $term->title;
-    }
-    if ($aggregation_facet == 'datasetId') {
-      $term->name = MicaClient::get_name_entity_by_id_aggregation('variables', 'datasets', $term->key);
-    }
-    if ($aggregation_facet == 'networkId') {
-      $aggregation_facet = 'id';
+      $type_string = 'studies:';
+    } else if ($aggregation_facet == 'networkId') {
       $type_string = 'networks:';
-      $term->name = MicaClient::get_name_entity_by_id_aggregation('studies', 'networks', $term->key);
     }
     $query_request = !empty($_GET['query']) ? TRUE : FALSE;
     $items[$term->key]['#markup'] = theme('mica_client_facet_search_checkbox_term', array(

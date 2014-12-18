@@ -274,6 +274,10 @@ class LogicalFilterQueryDtoBuilder extends AbstractDtoBuilder
     return $this;
   }
 
+  function hasFields() {
+    return $this->filter->hasFields();
+  }
+
   function build()
   {
     return $this->dto;
@@ -507,29 +511,62 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder
           continue;
         }
 
-        $logicalFilterBuilder = //
-          array_key_exists($type, $this->builderMap) //
-            ? $this->builderMap[$type] //
-            : LogicalFilterQueryDtoBuilder::newBuilder();
+        $logicalFilterBuilder = $this->getLogicalFilterBuilder($type);
 
-        foreach ($parts as $part => $agg) {
-          $normalizedAggName = preg_replace('/-/', '.', $part);
-          $aggValues = $agg->values;
-          $builder = $searchPartType == 'terms' //
-              ? TermsFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)->values($aggValues) //
-              : RangeFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)
-                ->fromBuilder(RangeConditionDtoBuilder::newBuilder()->gte($aggValues[0]->min))
-                ->toBuilder(RangeConditionDtoBuilder::newBuilder()->lte($aggValues[0]->max));
-
-          $logicalFilterBuilder->fieldBuilder($builder, $agg->op);
+        foreach ($parts as $aggName => $agg) {
+          if ($this->processException($logicalFilterBuilder, $type, $aggName, $agg, $searchPartType)) continue;
+          $logicalFilterBuilder->fieldBuilder(
+            $this->getAggregationBuilder($searchPartType, $aggName, $agg),
+            $agg->op
+          );
         }
       }
 
-      if (!empty($logicalFilterBuilder)) {
+      if (!empty($logicalFilterBuilder) && $logicalFilterBuilder->hasFields()) {
         $this->builderMap[$type] = $logicalFilterBuilder;
         $logicalFilterBuilder = NULL;
       }
     }
+  }
+
+  private function processException($logicalFilterBuilder, $type, $aggName, $agg, $searchPartType) {
+    if (self::NETWORKS === $type && "networkId" === $aggName) {
+      $logicalFilterBuilder->fieldBuilder(
+        $this->getAggregationBuilder($searchPartType, "id", $agg),
+        $agg->op
+      );
+      $this->builderMap[self::NETWORKS] = $logicalFilterBuilder;
+      return true;
+    } else if (self::STUDIES === $type && "studyIds" === $aggName) {
+      $logicalFilterBuilder->fieldBuilder(
+        $this->getAggregationBuilder($searchPartType, "id", $agg),
+        $agg->op
+      );
+      return true;
+    }
+
+
+    return false;
+  }
+
+  private function getNormalizedAggName($aggName) {
+    return preg_replace('/-/', '.', $aggName);
+  }
+
+  private function getLogicalFilterBuilder($type) {
+    return array_key_exists($type, $this->builderMap) //
+      ? $this->builderMap[$type] //
+      : LogicalFilterQueryDtoBuilder::newBuilder();
+  }
+
+  private function getAggregationBuilder($searchPartType, $aggName, $agg) {
+    $normalizedAggName = $this->getNormalizedAggName($aggName);
+    $aggValues = $agg->values;
+    return $searchPartType == 'terms' //
+      ? TermsFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)->values($aggValues) //
+      : RangeFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)
+        ->fromBuilder(RangeConditionDtoBuilder::newBuilder()->gte($aggValues[0]->min))
+        ->toBuilder(RangeConditionDtoBuilder::newBuilder()->lte($aggValues[0]->max));
   }
 
   private function createQuery(LogicalFilterQueryDtoBuilder $builder, $from, $size, $sort_field, $matches, $group_by = NULL)
