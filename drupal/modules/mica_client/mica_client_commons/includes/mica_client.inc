@@ -462,7 +462,9 @@ class MicaClient {
           }
         }
 
-        if (empty($array_current_query->{$entity_name}->terms->{$term_name}->{'op'})) {
+        if (!empty($array_current_query->{$entity_name}->terms->{$term_name}) &&
+          empty($array_current_query->{$entity_name}->terms->{$term_name}->{'op'})
+        ) {
           $array_current_query->{$entity_name}->terms->{$term_name}->{'op'} = 'and';
         }
       }
