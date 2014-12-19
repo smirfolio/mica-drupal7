@@ -179,7 +179,7 @@ function mica_client_variable_get_harmonizations($variable) {
       ))));
 
       if (empty($status)) {
-        $status = '-';
+        $status = '<span class="glyphicon glyphicon-question-sign alert-danger" title="' . t('No status') . '"></span>';
       }
       elseif ($status == 'complete') {
         $status = '<span class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>';
@@ -191,7 +191,7 @@ function mica_client_variable_get_harmonizations($variable) {
         $status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>';
       }
       else {
-        $status = '-';
+        $status = '<span class="glyphicon glyphicon-question-sign alert-danger" title="' . t('No status') . '"></span>';
       }
 
       $rows[] = array(

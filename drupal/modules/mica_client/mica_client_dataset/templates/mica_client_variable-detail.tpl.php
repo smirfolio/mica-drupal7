@@ -227,7 +227,8 @@
                 <td><h5><?php print t('Status'); ?></h5></td>
                 <td>
                   <?php if (empty($variable_harmonization['status'])): ?>
-                    -
+                    <span class="glyphicon glyphicon-question-sign alert-danger"
+                          title="<?php print t('No status') ?>"></span>
                   <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
                     <span class="glyphicon glyphicon-ok alert-success" title="<?php print t('Complete') ?>"></span>
                   <?php

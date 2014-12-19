@@ -137,7 +137,6 @@ function mica_client_dataset_Variables_table_ajax_data($dataset_type, $id_datase
   $data['iTotalRecords'] = $variables_dataset->total;
   $data['iTotalDisplayRecords'] = $variables_dataset->total;
   $data['aaData'] = $data_variable;
-  //dpm($data);
   return drupal_json_output($data);
 }
 
@@ -285,11 +284,13 @@ function mica_client_dataset_harmonizations_table_data($dataset_type_dto, $datas
                 $variable_title = $variable_title . ' (' . mica_client_commons_get_localized_field($study_table, 'name') . ')';
               }
               if (empty($status)) {
-                $row['variable'] = l('-', 'mica/variable/' . $harmonized_variable_id, array(
-                  'query' => array(
-                    'title' => $variable_title
-                  )
-                ));
+                $row[$Key_row] = l('<span class="glyphicon glyphicon-question-sign alert-danger" title="' . t('No status') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
+                  array(
+                    'html' => TRUE,
+                    'query' => array(
+                      'title' => $variable_title
+                    )
+                  ));
               }
               elseif ($status == 'complete') {
                 $row[$Key_row] = l('<span data-toggle="tooltip" title="Completed" class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>', 'mica/variable/' . $harmonized_variable_id,
