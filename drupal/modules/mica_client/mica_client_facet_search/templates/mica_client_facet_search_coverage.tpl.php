@@ -3,6 +3,11 @@
 //dpm($vocabulary_coverage_outputs);
 //dpm($query);
 //dpm($group_by);
+
+  // protect agaist empty queries
+  if (empty($query)) {
+    $query = array();
+  }
 ?>
 
 <div id="search-query"></div>

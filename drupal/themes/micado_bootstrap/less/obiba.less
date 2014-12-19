@@ -53,7 +53,7 @@
 
 #sidebar-wrapper {
   .affix {
-    margin-left: 50px;
+    margin-left: 10px;
   }
   /*    margin-right: -(@container-lg/2); */
   float: right !important;
@@ -74,13 +74,10 @@
   }
   .active > a {
     color: #563d7c;
-    background-color: transparent;
-    border-left: 2px solid #563d7c;
+    background-color: rgba(86, 61, 124, 0.10);
   }
 
-  z-index: 1000;
   position: fixed;
-  right: 250px;
   height: 100%;
   margin-right: -240px;
   overflow-y: auto;
@@ -94,10 +91,6 @@
   width: 300px;
 }
 
-.sidebar-toggled {
-  width: 50px;
-}
-
 /*Boutton*/
 .menu-toggle {
   position: absolute;
@@ -107,13 +100,10 @@
 /* Sidebar Styles */
 
 @media (min-width: 1600px) {
-  .menu-toggle {
-    display: none;
-  }
 
   #sidebar-wrapper {
     width: 285px;
-    z-index: 1000;
+    z-index: -1000;
   }
 }
 
