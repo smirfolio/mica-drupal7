@@ -43,9 +43,7 @@
                     'indent'
                   )
                 ),
-                'query' => array(
-                  'query' => $query
-                ),
+                'query' => empty($query) ? array() : array('query' => $query),
               )); ?>
             </p>
           </div>

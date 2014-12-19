@@ -7024,9 +7024,7 @@ ul.facet-query-list li span:hover {
 #sidebar-wrapper {
   /*    margin-right: -(@container-lg/2); */
   float: right !important;
-  z-index: 1000;
   position: fixed;
-  right: 250px;
   height: 100%;
   margin-right: -240px;
   overflow-y: auto;
@@ -7036,7 +7034,7 @@ ul.facet-query-list li span:hover {
   transition: all 0.5s ease;
 }
 #sidebar-wrapper .affix {
-  margin-left: 50px;
+  margin-left: 10px;
 }
 #sidebar-wrapper a {
   color: #737373;
@@ -7055,14 +7053,10 @@ ul.facet-query-list li span:hover {
 }
 #sidebar-wrapper .active > a {
   color: #563d7c;
-  background-color: transparent;
-  border-left: 2px solid #563d7c;
+  background-color: rgba(86, 61, 124, 0.1);
 }
 .sidebar-untoggled {
   width: 300px;
-}
-.sidebar-toggled {
-  width: 50px;
 }
 /*Boutton*/
 .menu-toggle {
@@ -7070,12 +7064,9 @@ ul.facet-query-list li span:hover {
 }
 /* Sidebar Styles */
 @media (min-width: 1600px) {
-  .menu-toggle {
-    display: none;
-  }
   #sidebar-wrapper {
     width: 285px;
-    z-index: 1000;
+    z-index: -1000;
   }
 }
 /***************fixed side bar********/

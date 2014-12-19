@@ -1,6 +1,4 @@
 <?php if (!empty($coverages->taxonomies)): ?>
-  <div class="menu-toggle btn btn-default glyphicon glyphicon-chevron-right" id="menu-toggle">
-  </div>
   <nav id="scroll-menu" data-spy="affix">
     <ul class="nav">
       <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
