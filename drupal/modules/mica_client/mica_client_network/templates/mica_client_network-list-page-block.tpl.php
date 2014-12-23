@@ -1,7 +1,7 @@
 <?php //dpm($network) ?>
 
 <div class="row sm-bottom-margin document-item-list flex-row">
-  <div class="col-md-2 hidden-xs text-center">
+  <div class="col-md-2 hidden-xs hidden-sm text-center">
   <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
            class="listImageThumb"/>
@@ -11,7 +11,7 @@
       </h1>
     <?php endif; ?>
   </div>
-  <div class="col-md-10 col-xs-12">
+  <div class="col-md-10  col-sm-12 col-xs-12">
   <div>
       <h4>
         <?php

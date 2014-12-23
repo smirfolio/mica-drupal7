@@ -1,9 +1,9 @@
 <?php if (!empty($dataset)): ?>
-  <div class="row lg-bottom-margin">
-    <div class="col-md-2 hidden-xs text-center">
-    <?php if (!empty($logo_url)): ?>
+  <div class="row sm-bottom-margin document-item-list flex-row">
+    <div class="col-md-2 hidden-xs hidden-sm text-center">
+      <?php if (!empty($logo_url)): ?>
         <img src="<?php print $logo_url ?>"
-             class="listImageThumb"/>
+          class="listImageThumb"/>
       <?php else : ?>
         <h1 class="big-character">
           <span
@@ -11,9 +11,9 @@
         </h1>
       <?php endif; ?>
     </div>
-    <div class="col-md-10 col-xs-12">
-    <h4>
-        <?php
+    <div class="col-md-10  col-sm-12 col-xs-12">
+      <h4>
+      <?php
         $acronym = mica_client_commons_get_localized_field($dataset, 'acronym');
         $name = mica_client_commons_get_localized_field($dataset, 'name');
         print l($acronym == $name ? $acronym : $acronym . ' - ' . $name,
@@ -35,11 +35,13 @@
           $studies = $counts->studies;
           $studies_caption = $studies < 2 ? t('study') : t('studies');
           ?>
-          <span>
-            <?php print ($variables === 0 ? '' : t('Includes ') .  MicaClientAnchorHelper::dataset_variables($variables, $dataset->id) . ' ' . $vars_caption) ?>
-            <?php print ($studies === 0 ? '' : t(' used in ') .  MicaClientAnchorHelper::dataset_studies($studies, $dataset->id) . ' ' . $studies_caption) ?>
-        </span>
         </li>
+      </ul>
+          <span>
+            <?php print ($variables === 0 ? '' : t('Includes ') . MicaClientAnchorHelper::dataset_variables($variables, $dataset->id) . ' ' . $vars_caption) ?>
+            <?php print ($studies === 0 ? '' : t(' used in ') . MicaClientAnchorHelper::dataset_studies($studies, $dataset->id) . ' ' . $studies_caption) ?>
+        </span>
+
 
     </div>
   </div>

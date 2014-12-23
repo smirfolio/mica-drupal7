@@ -8588,15 +8588,15 @@ div.legend i {
 }
 
 div.search-count {
+  text-align: center;
   vertical-align: middle;
   line-height: normal;
-  margin-left: -25px;
 }
 
 div.search-count span {
-  font-size: 25px;
+  font-size: 125%;
   font-weight: bold;
-  margin-top: 5px;
+  margin-top: 10px;
   color: #777777;
 }
 
@@ -8619,16 +8619,15 @@ div.search-content-tab {
   }
 
   div.search-count {
-    margin-left: -25px;
+    text-align: center;
     margin-bottom: 5px;
   }
 
   div.search-count span {
-    font-size: 25px;
+    font-size: 125%;
     font-weight: bold;
-    margin-top: 5px;
+    margin-top: 10px;
     color: #777777;
-    font-size: 20px;
   }
 
   h1 {

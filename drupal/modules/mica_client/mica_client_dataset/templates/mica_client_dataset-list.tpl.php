@@ -2,14 +2,14 @@
 
 <div class="list-page">
 
-  <div class="row container-fluid">
+  <div class="row">
     <?php
     $count = empty($total_items) ? 0 : $total_items;
     $caption = $count < 2 ? t('Dataset') : t('Datasets');
     ?>
-    <div class="col-md-2 min-height-align search-count">
+    <div class="col-md-2 col-sm-2 col-xs-4 min-height-align search-count">
        <span id="refrech-count">
-              <?php print $count ?>
+         <?php print $count ?>
         </span>
         <span id="refrech-count">
         <?php print $caption ?>
@@ -17,8 +17,8 @@
 
     </div>
 
-    <div class="col-md-10 min-height-align pull-right">
-      <div>
+    <div class="col-md-10  col-sm-10 col-xs-8 min-height-align pull-right">
+    <div>
         <ul class="search-list-no-style pull-right">
           <li><?php print $dataset_type === 'study_datasets' ? MicaClientAnchorHelper::search_study_datasets(t('Search Datasets')) : MicaClientAnchorHelper::search_harmonization_datasets(t('Search Variables')) ?></li>
           <li><?php print $dataset_type === 'study_datasets' ? MicaClientAnchorHelper::coverage_study_datasets(t('Coverage')) : MicaClientAnchorHelper::coverage_harmonization_datasets(t('Coverage')) ?></li>
