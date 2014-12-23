@@ -2,18 +2,18 @@
 <?php //dpm($network_digests); ?>
 
 <div class="row sm-bottom-margin document-item-list flex-row">
-  <div class="col-md-2 col-xs-2 text-center">
+  <div class="col-md-2 hidden-xs text-center ">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-           class="listImageThumb"/>
+        class="listImageThumb img-responsive"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-S"></span>
       </h1>
     <?php endif; ?>
   </div>
-  <div class="col-md-10 col-xs-10">
-    <div>
+  <div class="col-md-10 col-xs-12">
+  <div>
       <h4>
         <?php
         $acronym = mica_client_commons_get_localized_field($study, 'acronym');

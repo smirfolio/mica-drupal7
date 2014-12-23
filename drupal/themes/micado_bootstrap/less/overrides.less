@@ -519,7 +519,7 @@ div.password-suggestions ul {
   min-height: 1px;
 }
 
-.t_badge {
+.t_badge() {
   display: inline-block;
   height: 60px;
   width: 60px;
@@ -530,6 +530,10 @@ div.password-suggestions ul {
   padding-top: 10px;
   /* padding-left: 3px; */
   font-size: 40px;
+}
+
+.t_badge {
+  .t_badge();
 }
 
 .t_badge_100 {
@@ -578,7 +582,7 @@ div.password-suggestions ul {
 }
 
 .list-page {
-  min-height: 150px;
+  min-height: 75px;
   .big-character {
     min-width: 114px;
     font-size: 40px;
@@ -706,16 +710,6 @@ ul.search-item-list-no-style {
   color: rgba(73, 73, 73, 0.5)
 }
 
-div.search-count {
-  float: left;
-  margin-top: 15px;
-  span {
-    font-size: 25px;
-    font-weight: bold;
-    margin-top: 5px;
-    color: #777777;
-  }
-}
 
 .flex-row {
   display: flex;

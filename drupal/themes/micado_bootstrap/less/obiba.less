@@ -95,17 +95,6 @@
 /*Boutton*/
 .menu-toggle {
   position: absolute;
-
-}
-
-/* Sidebar Styles */
-
-@media (min-width: 1600px) {
-
-  #sidebar-wrapper {
-    width: 285px;
-    z-index: -1000;
-  }
 }
 
 /***************fixed side bar********/
@@ -136,4 +125,65 @@ div.legend {
 
 .document-listing-search-bar {
   display: inline-flex;
+}
+
+.searchCount() {
+  font-size: 25px;
+  font-weight: bold;
+  margin-top: 5px;
+  color: #777777;
+}
+
+div.search-count {
+  vertical-align: middle;
+  line-height: normal;
+  margin-left: -25px;
+  span {
+    .searchCount();
+  }
+}
+
+.min-height-align {
+  min-height: 45px;
+}
+
+/**Search page***/
+div.search-content-tab {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/**********media query small devise *****/
+@media (max-width: 604px) {
+  /******pages : list network, datasets, studies*****/
+  .main-container {
+    margin: 25px;
+  }
+
+  div.search-count {
+    //   float: left;
+    margin-left: -25px;
+    margin-bottom: 5px;
+    span {
+      .searchCount();
+      font-size: 20px;
+    }
+  }
+
+  h1 {
+    span.t_badge {
+      .t_badge();
+      height: 30px;
+      width: 30px;
+      padding-top: 5px;
+      font-size: 20px;
+    }
+    font-size: 30px;
+  }
+
+  .page-header {
+    margin-top: 75px ! important;
+  }
+
 }

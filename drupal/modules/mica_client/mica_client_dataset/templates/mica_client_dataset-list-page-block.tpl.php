@@ -1,7 +1,7 @@
 <?php if (!empty($dataset)): ?>
   <div class="row lg-bottom-margin">
-    <div class="col-md-2 col-xs-2 text-center">
-      <?php if (!empty($logo_url)): ?>
+    <div class="col-md-2 hidden-xs text-center">
+    <?php if (!empty($logo_url)): ?>
         <img src="<?php print $logo_url ?>"
              class="listImageThumb"/>
       <?php else : ?>
@@ -11,8 +11,8 @@
         </h1>
       <?php endif; ?>
     </div>
-    <div class="col-md-10 col-xs-10">
-      <h4>
+    <div class="col-md-10 col-xs-12">
+    <h4>
         <?php
         $acronym = mica_client_commons_get_localized_field($dataset, 'acronym');
         $name = mica_client_commons_get_localized_field($dataset, 'name');

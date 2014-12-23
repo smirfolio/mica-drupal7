@@ -93,7 +93,7 @@ class MicaClientAnchorHelper
       'query' => array(
         'type' => 'networks'
       ),
-      'attributes' => array('class' =>'highlight btn btn-primary')
+      'attributes' => array('class' => 'btn-sm highlight btn btn-primary')
     );
 
     return l($text, MicaClientPathProvider::SEARCH, $options);
@@ -105,7 +105,7 @@ class MicaClientAnchorHelper
       'query' => array(
         'group-by' => 'studyIds'
       ),
-      'attributes' => array('class' =>'highlight btn btn-primary')
+      'attributes' => array('class' => 'btn-sm highlight btn btn-primary')
     );
 
     return l($text, MicaClientPathProvider::COVERAGE, $options);
@@ -149,7 +149,7 @@ class MicaClientAnchorHelper
       'query' => array(
         'type' => 'studies'
       ),
-      'attributes' => array('class' =>'highlight btn btn-primary')
+      'attributes' => array('class' => 'btn-sm highlight btn btn-primary')
     );
 
     return l($text, MicaClientPathProvider::SEARCH, $options);
@@ -161,7 +161,7 @@ class MicaClientAnchorHelper
       'query' => array(
         'group-by' => 'studyIds'
       ),
-      'attributes' => array('class' =>'highlight btn btn-primary')
+      'attributes' => array('class' => 'btn-sm highlight btn btn-primary')
     );
 
     return l($text, MicaClientPathProvider::COVERAGE, $options);
@@ -178,7 +178,7 @@ class MicaClientAnchorHelper
         'type' => 'variables',
         'query' => $query
       ),
-      'attributes' => array('class' =>'highlight btn btn-primary')
+      'attributes' => array('class' => 'btn-sm highlight btn btn-primary')
     );
 
     return l($text, MicaClientPathProvider::SEARCH, $options);
@@ -194,7 +194,7 @@ class MicaClientAnchorHelper
         'group-by' => 'datasetId',
         'query' => $query
       ),
-      'attributes' => array('class' =>'highlight btn btn-primary')
+      'attributes' => array('class' => 'btn-sm highlight btn btn-primary')
     );
 
     return l($text, MicaClientPathProvider::COVERAGE, $options);
@@ -210,7 +210,7 @@ class MicaClientAnchorHelper
         'type' => 'variables',
         'query' => $query
       ),
-      'attributes' => array('class' =>'highlight btn btn-primary')
+      'attributes' => array('class' => 'btn-sm highlight btn btn-primary')
     );
 
     return l($text, MicaClientPathProvider::SEARCH, $options);
@@ -226,7 +226,7 @@ class MicaClientAnchorHelper
         'group-by' => 'datasetId',
         'query' => $query
       ),
-      'attributes' => array('class' =>'highlight btn btn-primary')
+      'attributes' => array('class' => 'btn-sm highlight btn btn-primary')
     );
 
     return l($text, MicaClientPathProvider::COVERAGE, $options);
