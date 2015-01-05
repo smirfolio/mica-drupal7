@@ -603,8 +603,8 @@ function mica_client_facet_search_variables_table($variables) {
     $headers[] = t('Study');
   }
   pager_default_initialize($totalHits, MicaSearchResource::SIZE_RESPONSE);
-  return '<div class="search-content-tab">' . theme(
-    'table',
+  return '<div class="scroll-content-tab">' . theme(
+  'table',
     array(
       'header' => $headers,
       'rows' => $rows, // empty($chunks) ? array() : $chunks[$current_page],
@@ -749,7 +749,7 @@ function mica_client_facet_search_studies_table($studies) {
   );
 
   pager_default_initialize($totalHits, MicaClient::SIZE_RESPONSE);
-  return '<div class="search-content-tab">' . theme(
+  return '<div class="scroll-content-tab">' . theme(
   'table',
     array(
       'header' => $headers,
@@ -844,7 +844,7 @@ function mica_client_facet_search_datasets_table($datasets) {
   );
 
   pager_default_initialize($totalHits, MicaClient::SIZE_RESPONSE);
-  return '<div class="search-content-tab">' . theme(
+  return '<div class="scroll-content-tab">' . theme(
   'table',
     array(
       'header' => $headers,
@@ -951,7 +951,7 @@ function mica_client_facet_search_networks_table($networks) {
 
   pager_default_initialize($totalHits, MicaClient::SIZE_RESPONSE);
 
-  return '<div class="search-content-tab">' . theme(
+  return '<div class="scroll-content-tab">' . theme(
   'table',
     array(
       'header' => $headers,

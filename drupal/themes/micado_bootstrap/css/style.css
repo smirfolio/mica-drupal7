@@ -8605,7 +8605,7 @@ div.search-count span {
 }
 
 /**Search page***/
-div.search-content-tab {
+div.scroll-content-tab {
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;

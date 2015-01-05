@@ -47,12 +47,13 @@
   </p>
 <?php endif; ?>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-6 lg-right-indent">
-        <h5><?php print t('Overview') ?></h5>
 
-        <table class="table table-striped">
+  <div class="row">
+    <div class="col-lg-5 col-xs-10 lg-right-indent">
+      <h5><?php print t('Overview') ?></h5>
+
+      <div class="scroll-content-tab">
+      <table class="table table-striped">
           <tbody>
 
           <?php if (!empty($population->numberOfParticipants->participant->number)): ?>
@@ -96,9 +97,14 @@
 
           </tbody>
         </table>
+      </div>
 
-        <h5><?php print t('Sources of recruitment') ?></h5>
+    </div>
 
+    <div class="col-lg-5 col-xs-10 ">
+      <h5><?php print t('Sources of recruitment') ?></h5>
+
+      <div class="scroll-content-tab">
         <table class="table table-striped">
           <tbody>
           <?php if (!empty($population->recruitment->generalPopulationSources)): ?>
@@ -150,10 +156,13 @@
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-11 col-xs-11 ">
+      <h5><?php print t('Selection criteria') ?></h5>
 
-      <div class="col-xs-6">
-        <h5><?php print t('Selection criteria') ?></h5>
-
+      <div class="scroll-content-tab">
         <table class="table table-striped">
           <tbody>
           <?php if (isset($population->selectionCriteria->gender) && ($population->selectionCriteria->gender === 0 || $population->selectionCriteria->gender === 1)): ?>
@@ -221,10 +230,6 @@
 
           </tbody>
         </table>
-      </div>
-
-      <div class="col-xs-6">
-
       </div>
     </div>
   </div>
