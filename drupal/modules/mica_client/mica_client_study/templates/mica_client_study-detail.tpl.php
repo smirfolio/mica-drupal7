@@ -83,7 +83,7 @@
                   <li>
                     <a href="#" data-toggle="modal"
                       data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
-                    <?php print $investigator->title; ?>
+                      <?php print $investigator->title; ?>
                       <?php print $investigator->firstName; ?>
                       <?php print $investigator->lastName; ?>
                       ( <?php print mica_client_commons_get_localized_field($investigator->institution, 'name'); ?>
@@ -105,7 +105,7 @@
                   <li>
                     <a href="#" data-toggle="modal"
                       data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
-                    <?php print $contact->title; ?>
+                      <?php print $contact->title; ?>
                       <?php print $contact->firstName; ?>
                       <?php print $contact->lastName; ?>
                       ( <?php print mica_client_commons_get_localized_field($contact->institution, 'name'); ?>
@@ -314,7 +314,7 @@
         </div>
       </div>
       <div class="col-lg-6 col-xs-12">
-      <!-- MARKER PAPER -->
+        <!-- MARKER PAPER -->
         <?php if (!empty($study_dto->markerPaper) || !empty($study_dto->pubmedId)): ?>
           <h3 id="marker"><?php print t('Marker Paper') ?></h3>
           <?php if (!empty($study_dto->markerPaper)): ?>
@@ -382,8 +382,8 @@
 
       <div class="row">
         <div class="col-lg-2 col-xs-12  ">
-        <ul class="nav nav-pills nav-stacked" role="tablist">
-            <?php foreach ($populations as $key => $population): ?>
+          <ul class="nav nav-pills nav-stacked" role="tablist">
+          <?php foreach ($populations as $key => $population): ?>
               <li <?php if ($key == array_keys($populations)[0]) {
                 print 'class="active"';
               } ?>>
@@ -402,7 +402,7 @@
                 print 'active';
               } ?>"
                 id="<?php print $key; ?>">
-              <?php print $population['html']; ?>
+                <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
           </div>
@@ -422,7 +422,7 @@
       </li>
       <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
         data-placement="top" title="<?php print t('Group by data collection event') ?>">
-      <?php
+        <?php
         print l(t('Data Collection Event'), 'mica/study/' . $study_dto->id, array(
           'query' => array(
             array(
@@ -433,7 +433,7 @@
       </li>
       <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
         data-placement="top" title="<?php print t('Group by dataset') ?>">
-      <?php
+        <?php
         print l(t('Dataset'), 'mica/study/' . $study_dto->id, array(
           'query' => array(
             array(
@@ -463,7 +463,10 @@
 <?php if (!empty($networks)): ?>
   <section>
     <h3 id="networks"><?php print t('Networks'); ?></h3>
-    <?php print $networks; ?>
+
+    <div class="scroll-content-tab">
+      <?php print $networks; ?>
+    </div>
   </section>
 <?php endif; ?>
 
@@ -471,7 +474,10 @@
 <?php if (!empty($datasets)): ?>
   <section>
     <h3 id="datasets"><?php print t('Datasets'); ?></h3>
-    <?php print render($datasets['dataset-tab']); ?>
+
+    <div class="scroll-content-tab">
+      <?php print render($datasets['dataset-tab']); ?>
+    </div>
   </section>
 <?php endif; ?>
 

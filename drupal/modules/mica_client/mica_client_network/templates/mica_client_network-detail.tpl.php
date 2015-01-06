@@ -176,7 +176,10 @@
 
   <section>
     <h3><?php print t('Studies') ?></h3>
+
+    <div class="scroll-content-tab">
     <?php print mica_client_network_study_table($network_dto) ?>
+    </div>
   </section>
 
 </article>

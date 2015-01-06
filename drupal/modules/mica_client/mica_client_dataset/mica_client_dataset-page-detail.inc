@@ -199,12 +199,15 @@ function mica_client_dataset_studies_table_data($variables_dataset) {
  * Harmonization ajax variable table
  * */
 function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto) {
+  $nbrStudies = count($dataset_type_dto->studyTables);
+  $witdhColStudy = (100 - (1 + 25)) / $nbrStudies;
   if (!empty($dataset_type_dto->studyTables)) {
     $header[] = array(
       "sTitle" => '',
       "data" => "index",
       "name" => "index",
-      "mDataProp" => "index"
+      "mDataProp" => "index",
+      "width" => "1%"
     );
 
     $header[] = array(
@@ -226,7 +229,8 @@ function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset
           "data" => str_replace(' ', '_', $acronym . mica_client_commons_get_localized_field($study_table, 'name')),
           "sTitle" => $title_header . $name,
           "name" => str_replace(' ', '_', $acronym . mica_client_commons_get_localized_field($study_table, 'name')),
-          "orderable" => FALSE
+          "orderable" => FALSE,
+          "width" => $witdhColStudy . "%"
         );
       }
       else {
@@ -234,7 +238,8 @@ function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset
           "data" => $acronym,
           "sTitle" => $title_header,
           "name" => $acronym,
-          "orderable" => FALSE
+          "orderable" => FALSE,
+          "width" => $witdhColStudy . "%"
         );
       }
     }
