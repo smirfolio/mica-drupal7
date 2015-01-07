@@ -230,7 +230,7 @@ class MicaClient {
 
       if ($type_aggregations == 'variableResultDto') {
         $_SESSION['variables']['studies'] = array();
-        $study_result = $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'};
+        $study_result = isset($aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'}) ? $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'} : NULL;
         if (!empty($study_result) && (!empty($study_result->summaries) || !empty($study_result->digests))) {
           $_SESSION['variables']['studies'] = //
             empty($study_result->summaries) //
@@ -238,7 +238,7 @@ class MicaClient {
               : $study_result->summaries;
         }
 
-        $dataset_result = $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'};
+        $dataset_result = isset($aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'}) ? $aggregations->datasetResultDto->{'obiba.mica.DatasetResultDto.result'} : NULL;
         $_SESSION['variables']['datasets'] = array();
         if (!empty($dataset_result) && (!empty($dataset_result->datasets) || !empty($dataset_result->digests))) {
           $_SESSION['variables']['datasets'] =
@@ -252,7 +252,7 @@ class MicaClient {
       }
       if ($type_aggregations == 'studyResultDto') {
         if (!empty($aggregations->networkResultDto)) {
-          $network_result = $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
+          $network_result = isset($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}) ? $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'} : NULL;
           if (!empty($network_result) && (!empty($network_result->networks) || !empty($network_result->digests))) {
             $_SESSION['studies']['networks'] = array();
             $_SESSION['studies']['networks'] =

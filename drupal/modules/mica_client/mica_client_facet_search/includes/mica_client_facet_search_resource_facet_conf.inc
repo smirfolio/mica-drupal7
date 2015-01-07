@@ -155,16 +155,19 @@ function mica_client_facet_search_get_matched_agg_entries($type, $aggregation, $
 {
   foreach ($_SESSION[$type]['aggregations'] as $aggre) {
     if ($aggre->aggregation == $aggregation) {
+      $matches = new ArrayObject();
+
       foreach ($aggre->{"obiba.mica.TermsAggregationResultDto.terms"} as $term) {
         if (stristr($term->title, $term_to_mach)) {
           $matches[$term->key] = $term->title;
         }
       }
+
       return $matches;
     }
   }
 
-  return array();
+  return new ArrayObject();
 }
 
 function mica_client_facet_search_get_checkbox_term_field($fields_terms, $type_string, $aggregation_facet, $totalHits = NULL, $totalCount = NULL) {
