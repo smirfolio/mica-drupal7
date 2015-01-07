@@ -51,7 +51,7 @@
           "scrollCollapse": true,
           "processing": true,
             //  "sDom": '<"pull-left" i><"pull-right" f>t<"pull-left" l><"pull-right" p>',
-            "sDom": '<"table-var-wrapper" <"pull-left" i>rt<"pull-left" l><"pull-right" p>>',
+            "sDom": '<"table-var-wrapper" <"md-top-margin" i>rt<"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
             "bServerSide": true,
             "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
             "aoColumns": headerTable,
