@@ -7,7 +7,7 @@
   <p>
     <?php if (!empty($study_dto->logo->id)): ?>
       <img src="<?php print mica_client_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-        class="imageThumb">
+           class="imageThumb">
     <?php endif; ?>
     <?php print mica_client_commons_get_localized_field($study_dto, 'objectives'); ?>
   </p>
@@ -82,7 +82,7 @@
                 <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
                   <li>
                     <a href="#" data-toggle="modal"
-                      data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
+                       data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
                       <?php print $investigator->title; ?>
                       <?php print $investigator->firstName; ?>
                       <?php print $investigator->lastName; ?>
@@ -104,7 +104,7 @@
                 <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
                   <li>
                     <a href="#" data-toggle="modal"
-                      data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
+                       data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
                       <?php print $contact->title; ?>
                       <?php print $contact->firstName; ?>
                       <?php print $contact->lastName; ?>
@@ -383,7 +383,7 @@
       <div class="row">
         <div class="col-lg-2 col-xs-12  ">
           <ul class="nav nav-pills nav-stacked" role="tablist">
-          <?php foreach ($populations as $key => $population): ?>
+            <?php foreach ($populations as $key => $population): ?>
               <li <?php if ($key == array_keys($populations)[0]) {
                 print 'class="active"';
               } ?>>
@@ -401,7 +401,7 @@
               <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) {
                 print 'active';
               } ?>"
-                id="<?php print $key; ?>">
+                   id="<?php print $key; ?>">
                 <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
@@ -421,7 +421,7 @@
         print l(t('All'), 'mica/study/' . $study_dto->id); ?>
       </li>
       <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
-        data-placement="top" title="<?php print t('Group by data collection event') ?>">
+          data-placement="top" title="<?php print t('Group by data collection event') ?>">
         <?php
         print l(t('Data Collection Event'), 'mica/study/' . $study_dto->id, array(
           'query' => array(
@@ -432,7 +432,7 @@
         )); ?>
       </li>
       <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
-        data-placement="top" title="<?php print t('Group by dataset') ?>">
+          data-placement="top" title="<?php print t('Group by dataset') ?>">
         <?php
         print l(t('Dataset'), 'mica/study/' . $study_dto->id, array(
           'query' => array(
@@ -446,16 +446,16 @@
 
     <h3 id="coverage"><?php print t('Classifications Coverage') ?></h3>
     <?php foreach ($coverage as $taxonomy_coverage): ?>
-    <h4><?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
+      <h4><?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
 
-    <p class="help-block">
-      <?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
-    </p>
+      <p class="help-block">
+        <?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
+      </p>
 
-    <div class="scroll-content-tab">
-      <?php print render($taxonomy_coverage['chart']); ?>
-      <div>
-        <?php endforeach ?>
+      <div class="scroll-content-tab">
+        <?php print render($taxonomy_coverage['chart']); ?>
+      </div>
+    <?php endforeach ?>
   </section>
 <?php endif; ?>
 
