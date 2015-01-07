@@ -100,86 +100,88 @@
   </section>
 
   <!-- STUDIES -->
-  <section>
-    <h3>
-      <?php
-      if (!empty($dataset_type_dto->project)):
-        echo t('Studies');
-      else:
-        echo t('Study');
-      endif;
-      ?>
-    </h3>
-    <?php if (!empty($dataset_type_dto->project)): ?>
-      <div class="scroll-content-tab">
-        <?php print mica_client_dataset_study_tables_table($dataset_type_dto) ?>
-      </div>
-    <?php else: ?>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-6 col-xs-12 lg-right-indent">
-            <table class="table table-striped">
-              <tbody>
-              <tr>
-                <td><h5><?php print t('Name') ?></h5></td>
-                <td>
-                  <p>
-                    <?php print l(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym') . ' - ' . mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Population') ?></h5></td>
-                <td>
-                  <?php $population_summary = NULL; ?>
-                  <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
-                    if ($pop_summary->id == $dataset_type_dto->studyTable->populationId) {
-                      $population_summary = $pop_summary;
-                      break;
+  <?php if ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables)): ?>
+    <section>
+      <h3>
+        <?php
+        if (!empty($dataset_type_dto->project)):
+          echo t('Studies');
+        else:
+          echo t('Study');
+        endif;
+        ?>
+      </h3>
+      <?php if (!empty($dataset_type_dto->project)): ?>
+        <div class="scroll-content-tab">
+          <?php print mica_client_dataset_study_tables_table($dataset_type_dto) ?>
+        </div>
+      <?php else: ?>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-6 col-xs-12 lg-right-indent">
+              <table class="table table-striped">
+                <tbody>
+                <tr>
+                  <td><h5><?php print t('Name') ?></h5></td>
+                  <td>
+                    <p>
+                      <?php print l(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym') . ' - ' . mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . mica_client_commons_to_slug(mica_client_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5><?php print t('Population') ?></h5></td>
+                  <td>
+                    <?php $population_summary = NULL; ?>
+                    <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
+                      if ($pop_summary->id == $dataset_type_dto->studyTable->populationId) {
+                        $population_summary = $pop_summary;
+                        break;
+                      }
                     }
-                  }
-                  ?>
-                  <?php print mica_client_commons_get_localized_field($population_summary, 'name'); ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Data Collection Event') ?></h5></td>
-                <td>
-                  <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
-                    if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId) {
-                      print mica_client_commons_get_localized_field($dce_summary, 'name');
-                      break;
+                    ?>
+                    <?php print mica_client_commons_get_localized_field($population_summary, 'name'); ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5><?php print t('Data Collection Event') ?></h5></td>
+                  <td>
+                    <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
+                      if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId) {
+                        print mica_client_commons_get_localized_field($dce_summary, 'name');
+                        break;
+                      }
                     }
-                  }
-                  ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Study Designs') ?></h5></td>
-                <td>
-                  <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->designs); ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Target Number') ?></h5></td>
-                <td>
-                  <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
-                    isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Countries') ?></h5></td>
-                <td>
-                  <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->countries); ?>
-                </td>
-              </tr>
-              </tbody>
-            </table>
+                    ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5><?php print t('Study Designs') ?></h5></td>
+                  <td>
+                    <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->designs); ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5><?php print t('Target Number') ?></h5></td>
+                  <td>
+                    <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
+                      isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td><h5><?php print t('Countries') ?></h5></td>
+                  <td>
+                    <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->countries); ?>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
-    <?php endif ?>
-  </section>
+      <?php endif ?>
+    </section>
+  <?php endif ?>
 
   <!-- COVERAGE -->
   <?php if (!empty($coverage)): ?>
@@ -197,38 +199,34 @@
     </section>
   <?php endif; ?>
 
-  <!-- Table VARIABLES -->
-  <section class="table-variables">
-
-    <?php if ($dataset_type != "study-dataset"): ?>
-      <h3><?php print t('Harmonization') ?></h3>
-      <?php print render($harmonization_table_legend); ?>
-      <div class="download-table">
-        <a id="download-harmo-table" href="" class="btn btn-success pull-right sm-bottom-margin"><i
-            class='glyphicon glyphicon-download'></i> <?php print t('Download') ?></a>
-      </div>
-      <div class="clearfix">
-      </div>
-    <?php else: ?>
-      <h3><?php print t('Study variables') ?></h3>
-    <?php endif; ?>
-    <div id="variables-table"
-      type-dataset="<?php print $dataset_type; ?>"
-      id-dataset="<?php print $dataset_dto->id; ?>">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12 col-xs-12 lg-right-indent">
-            <table class="table table-striped" id="table-variables"></table>
+  <!-- VARIABLES -->
+  <?php if ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables)): ?>
+    <section class="table-variables">
+      <?php if ($dataset_type != "study-dataset"): ?>
+        <h3><?php print t('Harmonization') ?></h3>
+        <?php print render($harmonization_table_legend); ?>
+        <div class="download-table">
+          <a id="download-harmo-table" href="" class="btn btn-success pull-right sm-bottom-margin"><i
+              class='glyphicon glyphicon-download'></i> <?php print t('Download') ?></a>
+        </div>
+        <div class="clearfix">
+        </div>
+      <?php else: ?>
+        <h3><?php print t('Study variables') ?></h3>
+      <?php endif; ?>
+      <div id="variables-table"
+           type-dataset="<?php print $dataset_type; ?>"
+           id-dataset="<?php print $dataset_dto->id; ?>">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12 col-xs-12 lg-right-indent">
+              <table class="table table-striped" id="table-variables"></table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="clearfix"></div>
-  </section>
+      <div class="clearfix"></div>
+    </section>
+  <?php endif; ?>
 
 </article>
-
-
-
-
-
