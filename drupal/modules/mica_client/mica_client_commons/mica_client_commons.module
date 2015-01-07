@@ -19,7 +19,6 @@ const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
 include_once($path_module_protos . '/protos/Mica.php');
 
-
 function mica_client_commons_menu() {
   $items = array();
 
@@ -131,10 +130,12 @@ function mica_client_commons_iterate_field($fields, $callback = NULL, $parameter
           $user_func = call_user_func_array($callback, array($field, $parameters));
           if (!empty($user_func->{$method})) {
             print $user_func->{$method};
-          } else {
+          }
+          else {
             print $field;
           }
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
           dpm($e->getMessage());
           dpm($callback);
           dpm($field);
@@ -167,7 +168,6 @@ function _mica_client_commons_normalize_rows(&$dce_rows) {
     unset($dce_row['data']['created']);
   }
 }
-
 
 function mica_client_commons_get_month_name($month) {
   global $language;
@@ -261,7 +261,7 @@ function mica_client_commons_create_search_form($context, $no_acronym = TRUE, $n
     '#description' => t('Sort by'),
     '#options' => $options,
     '#default_value' => !empty($_GET['search-sort']) ? $_GET['search-sort'] : NULL,
-    '#prefix' => '<div class="right-indent lg-width">',
+    '#prefix' => '<div class="right-indent md-width">',
     '#suffix' => '</div>',
   );
 
@@ -278,7 +278,6 @@ function mica_client_commons_create_search_form($context, $no_acronym = TRUE, $n
     '#suffix' => '</div>',
 
   );
-
 
   $form['search-query'] = array(
     '#type' => 'textfield',

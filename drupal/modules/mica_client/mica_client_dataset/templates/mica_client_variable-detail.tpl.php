@@ -7,8 +7,8 @@
 <section>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-xs-6 lg-right-indent">
-        <h3><?php print t('Overview') ?></h3>
+      <div class="col-lg-6 col-xs-12 lg-right-indent">
+      <h3><?php print t('Overview') ?></h3>
 
         <table class="table table-striped">
           <tbody>
@@ -112,8 +112,8 @@
           </tbody>
         </table>
       </div>
-      <div class="col-xs-6">
-        <!-- Taxonomy terms -->
+      <div class="col-lg-6 col-xs-12">
+      <!-- Taxonomy terms -->
         <?php if (!empty($variable_dto->termAttributes)): ?>
           <h3><?php print t('Classification') ?></h3>
           <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
@@ -179,8 +179,8 @@
 <section>
   <h3><?php print t('Statistics') ?></h3>
 
-  <div>
-    <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
+  <div class="scroll-content-tab">
+  <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
       <div id="toempty">
         <img
           src="<?php print base_path() . drupal_get_path('theme', mica_client_commons_get_current_theme()) ?>/img/spin.gif">
@@ -198,8 +198,9 @@
     <h3><?php print t('Harmonization') ?></h3>
     <?php print render($harmonization_table_legend); ?>
     <?php if ($variable_dto->variableType == 'Dataschema'): ?>
+      <div class="scroll-content-tab">
       <?php print mica_client_variable_get_harmonizations($variable_dto); ?>
-
+      </div>
       <?php if (!empty($variable_harmonization_algorithms)): ?>
 
         <button id="harmo-algo" data-loading-text="<?php print t('Loading...') ?>"
@@ -219,9 +220,8 @@
       <?php endif; ?>
     <?php else: ?>
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-xs-6 lg-right-indent">
-            <table class="table table-striped">
+
+      <table class="table table-striped">
               <tbody>
               <tr>
                 <td><h5><?php print t('Status'); ?></h5></td>
@@ -250,8 +250,7 @@
               </tr>
               </tbody>
             </table>
-          </div>
-        </div>
+
       </div>
 
       <?php if ($variable_harmonization['status'] == 'complete'): ?>

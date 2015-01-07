@@ -29,7 +29,8 @@
       /**********************/
       if (headerTable) {
         $(".download-table").show();
-        var dataTable = $('#table-variables').on('xhr.dt', function (e, settings, json) {
+        var divTableVariable = $('#table-variables');
+        divTableVariable.on('xhr.dt', function (e, settings, json) {
           if (json.iTotalRecords === 0) {
             $(".table-variables").hide();
           }
@@ -42,9 +43,13 @@
               return false;
             });
           }
-        })
-          .dataTable({
-            "processing": true,
+        });
+        var dataTable = divTableVariable.dataTable({
+          //  "scrollY": "100%",
+          "responsive": true,
+          "scrollX": true,
+          "scrollCollapse": true,
+          "processing": true,
             //  "sDom": '<"pull-left" i><"pull-right" f>t<"pull-left" l><"pull-right" p>',
             "sDom": '<"table-var-wrapper" <"pull-left" i>rt<"pull-left" l><"pull-right" p>>',
             "bServerSide": true,
@@ -57,9 +62,17 @@
             "language": {
               "url": Drupal.settings.basePath + 'mica/datatable-international'
             }
+//          ,
+//          "fnInitComplete": function() {
+//
+//            divTableVariable.css("width","100%");
+//          }
 
-          });
-        dataTable.fnSetColumnVis(0, false);
+        });
+
+        new $.fn.dataTable.FixedColumns(dataTable, {
+          leftColumns: 2
+        });
       }
 
       /*******************************/

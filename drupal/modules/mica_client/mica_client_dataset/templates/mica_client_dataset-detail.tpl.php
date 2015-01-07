@@ -43,7 +43,7 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-xs-6 lg-right-indent">
+        <div class="col-lg-6 col-xs-12 lg-right-indent">
           <table class="table table-striped">
             <tbody>
             <?php if (!empty($dataset_dto->description)): ?>
@@ -89,7 +89,7 @@
             </tbody>
           </table>
         </div>
-        <div class="col-xs-6">
+        <div class="col-lg-6 col-xs-12">
           <?php if (!empty($dataset_dto->attributes)): ?>
             <h5><?php print t('Attributes') ?></h5>
             <p><?php print mica_client_dataset_attributes_tab($dataset_dto->attributes, 'maelstrom'); ?></p>
@@ -111,11 +111,13 @@
       ?>
     </h3>
     <?php if (!empty($dataset_type_dto->project)): ?>
-      <?php print mica_client_dataset_study_tables_table($dataset_type_dto) ?>
+      <div class="scroll-content-tab">
+        <?php print mica_client_dataset_study_tables_table($dataset_type_dto) ?>
+      </div>
     <?php else: ?>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-xs-6 lg-right-indent">
+          <div class="col-lg-6 col-xs-12 lg-right-indent">
             <table class="table table-striped">
               <tbody>
               <tr>
@@ -188,7 +190,9 @@
         <p class="help-block">
           <?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
         </p>
-        <?php print render($taxonomy_coverage['chart']); ?>
+        <div class="scroll-content-tab">
+          <?php print render($taxonomy_coverage['chart']); ?>
+        </div>
       <?php endforeach ?>
     </section>
   <?php endif; ?>
@@ -209,10 +213,15 @@
       <h3><?php print t('Study variables') ?></h3>
     <?php endif; ?>
     <div id="variables-table"
-         type-dataset="<?php print $dataset_type; ?>"
-         id-dataset="<?php print $dataset_dto->id; ?>">
-      <table class="table table-striped" id="table-variables" width="100%"></table>
-
+      type-dataset="<?php print $dataset_type; ?>"
+      id-dataset="<?php print $dataset_dto->id; ?>">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-12 col-xs-12 lg-right-indent">
+            <table class="table table-striped" id="table-variables"></table>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="clearfix"></div>
   </section>

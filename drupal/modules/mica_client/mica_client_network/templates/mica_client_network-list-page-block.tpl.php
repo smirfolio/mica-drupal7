@@ -1,8 +1,8 @@
 <?php //dpm($network) ?>
 
 <div class="row sm-bottom-margin document-item-list flex-row">
-  <div class="col-md-2 col-xs-2 text-center">
-    <?php if (!empty($logo_url)): ?>
+  <div class="col-md-2 hidden-xs hidden-sm text-center">
+  <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
            class="listImageThumb"/>
     <?php else : ?>
@@ -11,8 +11,8 @@
       </h1>
     <?php endif; ?>
   </div>
-  <div class="col-md-10 col-xs-10">
-    <div>
+  <div class="col-md-10  col-sm-12 col-xs-12">
+  <div>
       <h4>
         <?php
         $acronym = mica_client_commons_get_localized_field($network, 'acronym');

@@ -2,8 +2,8 @@
 //dpm($network_dto);
 ?>
 
-<div>
-  <?php if (!empty($network_dto->description)): ?>
+<div xmlns="http://www.w3.org/1999/html">
+<?php if (!empty($network_dto->description)): ?>
     <p><?php print mica_client_commons_get_localized_field($network_dto, 'description'); ?></p>
   <?php endif; ?>
 
@@ -44,9 +44,9 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-xs-6 right-indent">
+        <div class="col-lg-6 col-xs-12 right-indent">
 
-          <table class="table table-striped">
+        <table class="table table-striped">
             <tbody>
             <?php if (!empty($network_dto->acronym)): ?>
               <tr>
@@ -107,8 +107,8 @@
           </table>
 
         </div>
-        <div class="col-xs-6">
-          <?php if (!empty($network_dto->attributes)): ?>
+        <div class="col-lg-6 col-xs-12">
+        <?php if (!empty($network_dto->attributes)): ?>
             <h5><?php print t('Attributes') ?></h5>
             <p><?php print mica_client_dataset_attributes_tab($network_dto->attributes, 'maelstrom'); ?></p>
           <?php endif; ?>
@@ -167,14 +167,19 @@
         <p class="help-block">
           <?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
         </p>
+        <div class="scroll-content-tab">
         <?php print render($taxonomy_coverage['chart']); ?>
+        </div>
       <?php endforeach ?>
     </section>
   <?php endif; ?>
 
   <section>
     <h3><?php print t('Studies') ?></h3>
+
+    <div class="scroll-content-tab">
     <?php print mica_client_network_study_table($network_dto) ?>
+    </div>
   </section>
 
 </article>
