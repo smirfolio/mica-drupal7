@@ -28,12 +28,47 @@ function mica_client_commons_menu() {
     'page arguments' => array(2)
   );
 
+  $items['download/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'mica_client_commons_download_attachment',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 2, 3)
+  );
+
   return $items;
 }
 
 function mica_client_commons_fixed_sidebar($template) {
   $output['fixed_menu'] = theme($template, $_SESSION['fixed_menu']);
   drupal_json_output($output);
+}
+
+function mica_client_commons_download_attachment($entity_type, $entity_id, $file_resource_id) {
+  if (!empty($file_resource_id)) {
+    $micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
+    $url = $micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_resource_id . "/_download";
+    $resource_data = drupal_http_request($url);
+    $response_code = floor($resource_data->code / 100) * 100;
+    if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
+      drupal_add_http_header('Content-Type', $resource_data->headers['content-type']);
+      drupal_add_http_header('Content-Disposition', $resource_data->headers['content-disposition']);
+      ob_clean();
+      print $resource_data->data;
+      exit;
+    }
+    else {
+      // dpm(drupal_get_destination());
+      drupal_set_message(t('An error occurred downloading file, server response code : @code, Server message: "@message"',
+          array(
+            '@code' => $response_code,
+            '@message' => $resource_data->error
+          )
+        ),
+        'error');
+      drupal_goto('mica/' . $entity_type . '/' . $entity_id);
+
+    }
+  }
 }
 
 function mica_client_commons_to_slug($string) {
@@ -292,17 +327,31 @@ function mica_client_commons_create_search_form($context, $no_acronym = TRUE, $n
 }
 
 function mica_client_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type) {
-  if (!empty($file_resource)) {
-    $micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
-    $url = $micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/"
-      . $file_resource->id . "/_download";
-    $resource_data = drupal_http_request($url);
-    $response_code = floor($resource_data->code / 100) * 100;
-    if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
-      $extension_file = _mica_client_commons_get_extention_file($file_resource);
-      $file = file_unmanaged_save_data($resource_data->data, 'public://tmp' . $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
-      $exposed_url = file_create_url($file);
-      return $exposed_url;
+  $attached_resource = & drupal_static(__FUNCTION__);
+  if (!isset($attached_resource)) {
+    $cached_attached_resources = cache_get($entity_id . '-' . $file_resource->id);
+
+    if (!empty($cached_attached_resources)) {
+      return $cached_attached_resources->data;
+    }
+    else {
+      if (!empty($file_resource)) {
+        $micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
+        $url = $micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/"
+          . $file_resource->id . "/_download";
+        $resource_data = drupal_http_request($url);
+        $response_code = floor($resource_data->code / 100) * 100;
+        if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
+          $extension_file = _mica_client_commons_get_extention_file($file_resource);
+          $file = file_unmanaged_save_data($resource_data->data, 'public://tmp' . $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
+          $exposed_url = file_create_url($file);
+          cache_set($entity_id . '-' . $file_resource->id, $exposed_url, 'cache', time() + 1800);
+          return $exposed_url;
+        }
+        else {
+          return NULL;
+        }
+      }
     }
   }
   return NULL;
