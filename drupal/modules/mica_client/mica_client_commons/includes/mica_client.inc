@@ -39,6 +39,8 @@ class MicaClient {
 
   const HEADER_CSV = 'text/csv';
 
+  const SIZE_RESPONSE_SM = 10;
+
   const SIZE_RESPONSE = 20;
 
   const PAGINATE_studies = 0;
