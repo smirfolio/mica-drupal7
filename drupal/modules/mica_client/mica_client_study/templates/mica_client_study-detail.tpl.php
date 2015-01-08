@@ -249,8 +249,8 @@
 </section>
 
 <section>
-  <div class="container-fluid">
-    <div class="row">
+
+<div class="row">
       <div class="col-lg-6 col-xs-12">
       <!-- ACCESS -->
         <h3 id="access"><?php print t('Access') ?></h3>
@@ -329,7 +329,7 @@
         <?php endif; ?>
       </div>
     </div>
-  </div>
+
 </section>
 
 <!-- SUPPLEMENTARY INFORMATION -->
