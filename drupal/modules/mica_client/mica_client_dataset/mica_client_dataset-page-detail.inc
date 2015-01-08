@@ -150,7 +150,8 @@ function mica_client_dataset_studies_Variables_table_ajax_header() {
       "sTitle" => '',
       "data" => "index",
       "mDataProp" => "index",
-      "name" => "index"
+      "name" => "index",
+      "visible" => FALSE
     ),
     array(
       "sTitle" => t('Variable'),
@@ -207,7 +208,7 @@ function mica_client_dataset_harmonizations_Variables_table_ajax_header($dataset
       "data" => "index",
       "name" => "index",
       "mDataProp" => "index",
-      "width" => "1%"
+      "visible" => FALSE
     );
 
     $header[] = array(
