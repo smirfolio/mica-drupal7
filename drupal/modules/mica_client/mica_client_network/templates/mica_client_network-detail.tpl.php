@@ -3,7 +3,7 @@
 ?>
 
 <div xmlns="http://www.w3.org/1999/html">
-<?php if (!empty($network_dto->description)): ?>
+  <?php if (!empty($network_dto->description)): ?>
     <p><?php print mica_client_commons_get_localized_field($network_dto, 'description'); ?></p>
   <?php endif; ?>
 
@@ -42,11 +42,10 @@
   <section>
     <h3><?php print t('Overview') ?></h3>
 
-    <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-6 col-xs-12 right-indent">
+        <div class="col-lg-6 col-xs-12">
 
-        <table class="table table-striped">
+          <table class="table table-striped">
             <tbody>
             <?php if (!empty($network_dto->acronym)): ?>
               <tr>
@@ -63,8 +62,8 @@
                     <?php foreach ($network_dto->investigators as $key_investigator => $investigator) : ?>
                       <li>
                         <a href="#" data-toggle="modal"
-                           data-target="#investigator_<?php print $network_dto->id ?>_<?php print $key_investigator ?>">
-                        <?php print $investigator->title; ?>
+                          data-target="#investigator_<?php print $network_dto->id ?>_<?php print $key_investigator ?>">
+                          <?php print $investigator->title; ?>
                           <?php print $investigator->firstName; ?>
                           <?php print $investigator->lastName; ?>
                           ( <?php print mica_client_commons_get_localized_field($investigator->institution, 'name'); ?>
@@ -85,8 +84,8 @@
                     <?php foreach ($network_dto->contacts as $key_contact => $contact) : ?>
                       <li>
                         <a href="#" data-toggle="modal"
-                           data-target="#contact_<?php print $network_dto->id ?>_<?php print $key_contact ?>">
-                        <?php print $contact->title; ?>
+                          data-target="#contact_<?php print $network_dto->id ?>_<?php print $key_contact ?>">
+                          <?php print $contact->title; ?>
                           <?php print $contact->firstName; ?>
                           <?php print $contact->lastName; ?>
                           ( <?php print mica_client_commons_get_localized_field($contact->institution, 'name'); ?>
@@ -108,13 +107,13 @@
 
         </div>
         <div class="col-lg-6 col-xs-12">
-        <?php if (!empty($network_dto->attributes)): ?>
+          <?php if (!empty($network_dto->attributes)): ?>
             <h5><?php print t('Attributes') ?></h5>
             <p><?php print mica_client_dataset_attributes_tab($network_dto->attributes, 'maelstrom'); ?></p>
           <?php endif; ?>
         </div>
       </div>
-    </div>
+
   </section>
 
   <!-- COVERAGE -->
@@ -126,8 +125,8 @@
           print l(t('All'), 'mica/network/' . $network_dto->id); ?>
         </li>
         <li class="<?php if (!empty($group_by) && $group_by == 'studyIds') print 'active' ?>" data-toggle="tooltip"
-            data-placement="top" title="<?php print t('Group by study') ?>">
-          <?php
+          data-placement="top" title="<?php print t('Group by study') ?>">
+        <?php
           print l(t('Study'), 'mica/network/' . $network_dto->id, array(
             'query' => array(
               array(
@@ -137,8 +136,8 @@
           )); ?>
         </li>
         <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
-            data-placement="top" title="<?php print t('Group by data collection event') ?>">
-          <?php
+          data-placement="top" title="<?php print t('Group by data collection event') ?>">
+        <?php
           print l(t('Data Collection Event'), 'mica/network/' . $network_dto->id, array(
             'query' => array(
               array(
@@ -148,8 +147,8 @@
           )); ?>
         </li>
         <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
-            data-placement="top" title="<?php print t('Group by dataset') ?>">
-          <?php
+          data-placement="top" title="<?php print t('Group by dataset') ?>">
+        <?php
           print l(t('Dataset'), 'mica/network/' . $network_dto->id, array(
             'query' => array(
               array(
@@ -168,7 +167,7 @@
           <?php print mica_client_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
         </p>
         <div class="scroll-content-tab">
-        <?php print render($taxonomy_coverage['chart']); ?>
+          <?php print render($taxonomy_coverage['chart']); ?>
         </div>
       <?php endforeach ?>
     </section>
@@ -177,8 +176,12 @@
   <section>
     <h3><?php print t('Studies') ?></h3>
 
-    <div class="scroll-content-tab">
-    <?php print mica_client_network_study_table($network_dto) ?>
+    <div class="row">
+      <div class="col-lg-12 col-xs-12">
+        <div class="scroll-content-tab">
+          <?php print mica_client_network_study_table($network_dto); ?>
+        </div>
+      </div>
     </div>
   </section>
 

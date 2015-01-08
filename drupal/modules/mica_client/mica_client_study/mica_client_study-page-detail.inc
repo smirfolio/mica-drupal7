@@ -136,7 +136,7 @@ function mica_client_study_get_populations_detail($study_detail) {
     foreach ($study_detail->populations as $population) {
       $dce_uids = array();
       if (!empty($population->dataCollectionEvents)) {
-        $dce_rows = mica_client_study_get_dce_table($population->dataCollectionEvents);
+        $dce_rows = mica_client_study_get_dce_table($population->dataCollectionEvents, $study_detail->id, $population->id);
         uasort($dce_rows, 'mica_client_study_sort_dce');
         _mica_client_commons_normalize_rows($dce_rows);
 
@@ -208,6 +208,7 @@ function mica_client_study_get_dce_detail($study_id, $population_id, $dataCollec
       'study_id' => $study_id,
       'population_id' => $population_id,
       'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
+      'dce_id_target' => $study_id . '-' . $population_id . '-' . $dce->id,
       'dce' => $dce,
       'attachements' => $themed_attachment
     ));
@@ -218,7 +219,7 @@ function mica_client_study_get_dce_detail($study_id, $population_id, $dataCollec
 /*
  * retrieve Data Collection event
  * */
-function mica_client_study_get_dce_table($dataCollectionEvents) {
+function mica_client_study_get_dce_table($dataCollectionEvents, $study_id, $population_id) {
   $dce_rows = array();
   foreach ($dataCollectionEvents as $key_dce => $dce_wrapper) {
     $dce_description = NULL;
@@ -233,7 +234,7 @@ function mica_client_study_get_dce_table($dataCollectionEvents) {
           'external' => TRUE,
           'attributes' => array(
             'data-toggle' => 'modal',
-            'data-target' => '#' . $dce_wrapper->id
+            'data-target' => '#dce-' . $study_id . '-' . $population_id . '-' . $dce_wrapper->id
           )
         )),
         'desc' => $dce_description,

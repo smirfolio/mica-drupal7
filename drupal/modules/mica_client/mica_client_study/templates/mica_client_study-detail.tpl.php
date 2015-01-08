@@ -44,13 +44,12 @@
 <article>
 
 <section>
-<div class="container-fluid">
+
 <div class="row">
   <div class="col-lg-6 col-xs-12 ">
     <!-- GENERAL INFORMATION -->
     <h3 id="overview"><?php print t('Overview') ?></h3>
 
-    <div class="table-responsive">
       <table class="table table-striped">
         <tbody>
 
@@ -66,7 +65,7 @@
             <td><h5><?php print t('Website') ?></h5></td>
             <td>
               <p><?php
-                print l($study_dto->website,
+                print l(mica_client_commons_get_localized_field($study_dto, 'acronym') . ' ' . t('website'),
                   $study_dto->website,
                   array('attributes' => array('target' => '_blank')));
                 ?></p>
@@ -145,7 +144,7 @@
 
         </tbody>
       </table>
-    </div>
+
   </div>
   <div class="col-lg-6  col-xs-12">
     <!-- GENERAL DESIGN -->
@@ -246,14 +245,14 @@
 
   </div>
 </div>
-</div>
+
 </section>
 
 <section>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-6 col-xs-12 right-indent">
-        <!-- ACCESS -->
+
+<div class="row">
+      <div class="col-lg-6 col-xs-12">
+      <!-- ACCESS -->
         <h3 id="access"><?php print t('Access') ?></h3>
 
         <?php if (!empty($study_dto->access) && (in_array('data', $study_dto->access) ||
@@ -330,7 +329,7 @@
         <?php endif; ?>
       </div>
     </div>
-  </div>
+
 </section>
 
 <!-- SUPPLEMENTARY INFORMATION -->
@@ -380,18 +379,18 @@
       <?php print array_pop($populations)['html']; ?>
     <?php else: ?>
 
-      <div class="row">
+      <div class="row tabbable tabs-left">
         <div class="col-lg-2 col-xs-12  ">
-          <ul class="nav nav-pills nav-stacked" role="tablist">
+          <ul class="nav nav-pills nav-stacked">
             <?php foreach ($populations as $key => $population): ?>
               <li <?php if ($key == array_keys($populations)[0]) {
                 print 'class="active"';
               } ?>>
-                <a href="#<?php print $key; ?>" role="tab" data-toggle="pill">
-                  <?php print mica_client_commons_get_localized_field($population['data'], 'name'); ?>
+                <a href="#population-<?php print $key; ?>" data-toggle="pill">
+                <?php print mica_client_commons_get_localized_field($population['data'], 'name'); ?>
                 </a>
               </li>
-              </li>
+
             <?php endforeach ?>
           </ul>
         </div>
@@ -401,8 +400,8 @@
               <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) {
                 print 'active';
               } ?>"
-                   id="<?php print $key; ?>">
-                <?php print $population['html']; ?>
+                id="population-<?php print $key; ?>">
+              <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
           </div>

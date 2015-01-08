@@ -2,8 +2,8 @@
 //dpm($dce);
 ?>
 
-<div id="<?php print $dce->id ?>" class="modal fade" xmlns="http://www.w3.org/1999/html">
-  <div class="modal-dialog">
+<div id="dce-<?php print $dce_id_target ?>" class="modal fade" xmlns="http://www.w3.org/1999/html">
+<div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

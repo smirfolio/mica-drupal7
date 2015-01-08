@@ -41,62 +41,61 @@
   <section>
     <h3><?php print t('Overview') ?></h3>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-6 col-xs-12 lg-right-indent">
-          <table class="table table-striped">
-            <tbody>
-            <?php if (!empty($dataset_dto->description)): ?>
-              <tr>
-                <td><h5><?php print t('Description') ?></h5></td>
-                <td><p><?php print mica_client_commons_get_localized_field($dataset_dto, 'description'); ?></p></td>
-              </tr>
-            <?php endif; ?>
-            <?php if (!empty($dataset_dto->acronym)): ?>
-              <tr>
-                <td><h5><?php print t('Acronym') ?></h5></td>
-                <td><p><?php print mica_client_commons_get_localized_field($dataset_dto, 'acronym'); ?></p></td>
-              </tr>
-            <?php endif; ?>
-
+    <div class="row">
+      <div class="col-lg-6 col-xs-12 lg-right-indent">
+        <table class="table table-striped">
+          <tbody>
+          <?php if (!empty($dataset_dto->description)): ?>
             <tr>
-              <td><h5><?php print t('Entity Type'); ?></h5></td>
-              <td><p><?php print t($dataset_dto->entityType); ?></p></td>
+              <td><h5><?php print t('Description') ?></h5></td>
+              <td><p><?php print mica_client_commons_get_localized_field($dataset_dto, 'description'); ?></p></td>
             </tr>
-
-            <tr>
-              <td><h5><?php print t('Dataset Type'); ?></h5></td>
-              <td>
-                <p>
-                  <?php
-                  if (!empty($dataset_type_dto->project)):
-                    echo t('Harmonization dataset');
-                  else:
-                    echo t('Study dataset');
-                  endif;
-                  ?>
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td><h5><?php print t('Number of variables') ?></h5></td>
-              <td>
-                <p>
-                  <?php print MicaClientAnchorHelper::dataset_variables(empty($variables_dataset->total) ? 0 : $variables_dataset->total, $dataset_dto->id); ?>
-                </p>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-lg-6 col-xs-12">
-          <?php if (!empty($dataset_dto->attributes)): ?>
-            <h5><?php print t('Attributes') ?></h5>
-            <p><?php print mica_client_dataset_attributes_tab($dataset_dto->attributes, 'maelstrom'); ?></p>
           <?php endif; ?>
-        </div>
+          <?php if (!empty($dataset_dto->acronym)): ?>
+            <tr>
+              <td><h5><?php print t('Acronym') ?></h5></td>
+              <td><p><?php print mica_client_commons_get_localized_field($dataset_dto, 'acronym'); ?></p></td>
+            </tr>
+          <?php endif; ?>
+
+          <tr>
+            <td><h5><?php print t('Entity Type'); ?></h5></td>
+            <td><p><?php print t($dataset_dto->entityType); ?></p></td>
+          </tr>
+
+          <tr>
+            <td><h5><?php print t('Dataset Type'); ?></h5></td>
+            <td>
+              <p>
+                <?php
+                if (!empty($dataset_type_dto->project)):
+                  echo t('Harmonization dataset');
+                else:
+                  echo t('Study dataset');
+                endif;
+                ?>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td><h5><?php print t('Number of variables') ?></h5></td>
+            <td>
+              <p>
+                <?php print MicaClientAnchorHelper::dataset_variables(empty($variables_dataset->total) ? 0 : $variables_dataset->total, $dataset_dto->id); ?>
+              </p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-lg-6 col-xs-12">
+        <?php if (!empty($dataset_dto->attributes)): ?>
+          <h5><?php print t('Attributes') ?></h5>
+          <p><?php print mica_client_dataset_attributes_tab($dataset_dto->attributes, 'maelstrom'); ?></p>
+        <?php endif; ?>
       </div>
     </div>
+
   </section>
 
   <!-- STUDIES -->
@@ -112,14 +111,18 @@
         ?>
       </h3>
       <?php if (!empty($dataset_type_dto->project)): ?>
-        <div class="scroll-content-tab">
-          <?php print mica_client_dataset_study_tables_table($dataset_type_dto) ?>
+        <div class="row">
+          <div class="col-lg-12 col-xs-12">
+            <div class="scroll-content-tab">
+              <?php print mica_client_dataset_study_tables_table($dataset_type_dto) ?>
+            </div>
+          </div>
         </div>
       <?php else: ?>
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-6 col-xs-12 lg-right-indent">
-              <table class="table table-striped">
+            <div class="col-lg-6 col-xs-12">
+            <table class="table table-striped">
                 <tbody>
                 <tr>
                   <td><h5><?php print t('Name') ?></h5></td>
@@ -215,16 +218,16 @@
         <h3><?php print t('Study variables') ?></h3>
       <?php endif; ?>
       <div id="variables-table"
-           type-dataset="<?php print $dataset_type; ?>"
-           id-dataset="<?php print $dataset_dto->id; ?>">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-12 col-xs-12 lg-right-indent">
-              <table class="table table-striped" id="table-variables"></table>
+        type-dataset="<?php print $dataset_type; ?>"
+        id-dataset="<?php print $dataset_dto->id; ?>">
+
+        <div class="row">
+          <div class="col-lg-12 col-xs-12">
+          <table class="table table-striped" id="table-variables"></table>
             </div>
           </div>
         </div>
-      </div>
+
       <div class="clearfix"></div>
     </section>
   <?php endif; ?>
