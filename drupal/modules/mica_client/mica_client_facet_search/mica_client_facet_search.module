@@ -487,7 +487,7 @@ function mica_client_facet_search_coverage_page() {
           foreach ($taxonomy_coverage->buckets as $key_bucket => $all_bucket) {
             $formatted_bucket = new stdClass();
             $formatted_bucket->field = $all_bucket->field;
-            $formatted_bucket->value = $all_bucket->value . '-nolink';
+            $formatted_bucket->value = $all_bucket->value;
             $formatted_bucket->hits = 0;
             $formatted_bucket->count = 0;
 

@@ -44,26 +44,20 @@
             <th style="text-align: center;
               min-width: 100%;
               width: <?php print 100 / (count($vocabulary_coverage->buckets) + 1) ?>%;">
-            <?php $is_link = explode('-', $bucket->value);
-              if (empty($is_link[1])) {
-                print l($is_link[0], 'mica/search',
+            <?php
+              print l($bucket->value, 'mica/search',
                   array(
                     'query' => array(
                       'type' => 'variables',
                       'query' => MicaClient::add_parameter_dto_query_link(array(
                           'variables' => array(
                             'terms' => array(
-                              $bucket->field => $is_link[0]
+                              $bucket->field => $bucket->value
                             )
                           )
                         ))
                     ),
                   ));
-              }
-              else {
-                print $is_link[0];
-              }
-              //
               ?>
             </th>
           <?php endforeach; ?>
