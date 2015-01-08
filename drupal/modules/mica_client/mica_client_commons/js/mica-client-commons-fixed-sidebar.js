@@ -12,7 +12,7 @@
         'url': Drupal.settings.basePath + 'mica/get_fixed_sidebar/' + template,
         'type': 'GET',
         'success': function (data) {
-          console.log("DATA", JSON.stringify(data));
+          // console.log("DATA", JSON.stringify(data));
           show();
           $(".side-bar-content").html(data['fixed_menu']);
         },
