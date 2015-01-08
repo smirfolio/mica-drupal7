@@ -23,8 +23,8 @@ function mica_client_study_page_list() {
 
   $response = mica_client_study_get_studies($study_query, $study_sort, $study_sort_by);
   $total_studies = empty($response) ? 0 : $response->getTotalHits();
-  pager_default_initialize($total_studies, 5);
-  $pager_output = theme('pager', array('quantity' => 5));
+  pager_default_initialize($total_studies, MicaClient::SIZE_RESPONSE_SM);
+  $pager_output = theme('pager', array('quantity' => MicaClient::SIZE_RESPONSE_SM));
   $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
     foreach ($summaries as $study) {
@@ -83,10 +83,10 @@ function mica_client_study_get_studies($query = NULL, $sort = NULL, $order = NUL
   $from = 0;
   $study_resource = new MicaStudyResource();
   if (!empty($_GET['page'])) {
-    $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-studies', 5);
+    $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'list-studies', MicaClient::SIZE_RESPONSE_SM);
   }
 
-  $response = $study_resource->get_studies($query, $from, NULL, $sort, $order);
+  $response = $study_resource->get_studies($query, $from, MicaClient::SIZE_RESPONSE_SM, $sort, $order);
   if(!empty($response)) {
     $_SESSION['list-studies']['aggregations']['totalHits'] = $response->getTotalHits();
   }
