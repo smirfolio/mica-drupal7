@@ -37,12 +37,10 @@
         <?php if (!$query_request): ?>
           <span class='term-count' data-toggle="tooltip" data-placement="top"
                 title="All"><?php print $term->default; ?></span>
-        <?php else : ?>
+        <?php elseif (($term->count != $term->default) || ($_SESSION['request-search-response'] == 'empty')) : ?>
           <span class='term-default' data-toggle="tooltip" data-placement="top" title="All">
-              <?php if (($term->count != $term->default) || ($_SESSION['request-search-response'] == 'empty')) : ?>
                 <?php $digits = strlen($term->default);
                 print ($digits < 6 && $term->count > 0 ? str_repeat('&nbsp;', 6 - $digits) : '') . $term->default; ?>
-              <?php endif; ?>
             </span>
         <?php endif; ?>
       </td>
