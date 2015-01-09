@@ -7155,8 +7155,12 @@ div.padding-left-15 {
     padding-top: 5px;
     font-size: 20px;
   }
-  .page-header {
-    margin-top: 75px ! important;
+  .block-content article {
+    border: none !important;
+  }
+  .block-content article section {
+    border: none !important;
+    padding: 0 !important;
   }
 }
 html.overlay-open .navbar-fixed-top {
@@ -7915,8 +7919,8 @@ ul.search-item-list-no-style {
 }
 /****************Domain coverage page *******/
 .fix-width-column {
-  width: 350px;
-  min-width: 350px;
+  width: 200px;
+  min-width: 200px;
 }
 .right-border {
   border-right: 1px solid #dddddd;
