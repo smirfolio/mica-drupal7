@@ -7258,6 +7258,12 @@ body.admin-menu .navbar-fixed-top {
   margin-top: 0;
   border: none;
 }
+section[class^="col-"],
+section[class*=" col-"],
+aside[class^="col-"],
+aside[class*=" col-"] {
+  padding: 0;
+}
 .breadcrumb {
   padding: 8px 0;
   background-color: transparent;
