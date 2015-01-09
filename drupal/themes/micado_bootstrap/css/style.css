@@ -4434,7 +4434,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 }
 .label {
   display: inline;
-  padding: .2em .6em .3em;
+  padding: .2em .6em .2em;
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
@@ -7277,6 +7277,9 @@ aside[class*=" col-"] {
 .breadcrumb {
   padding: 8px 0;
   background-color: transparent;
+}
+.label a {
+  color: #ffffff;
 }
 .block-content article {
   border-top: 1px solid #cccccc;
