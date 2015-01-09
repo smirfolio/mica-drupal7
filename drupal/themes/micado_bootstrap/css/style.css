@@ -6322,8 +6322,8 @@ div.charts {
   border: none;
   width: 100%;
 }
-.facet-bar .block-mica-client-facet-search div.block-content span.term-count,
-.facet-bar .block-mica-client-facet-search div.block-content span.term-default {
+.facet-bar .block-mica-client-facet-search div.block-content td.term-count span,
+.facet-bar .block-mica-client-facet-search div.block-content td.term-default span {
   position: relative;
   float: right;
   padding-right: 5px;
@@ -6331,13 +6331,15 @@ div.charts {
   font-weight: normal;
   font-family: monospace;
 }
-.facet-bar .block-mica-client-facet-search div.block-content span.term-count {
+.facet-bar .block-mica-client-facet-search div.block-content td.term-count {
   color: #000000;
   font-size: 10px;
+  width: 50px;
 }
-.facet-bar .block-mica-client-facet-search div.block-content span.term-default {
+.facet-bar .block-mica-client-facet-search div.block-content td.term-default {
   color: rgba(0, 0, 0, 0.3);
   font-size: 10px;
+  width: 50px;
 }
 .facet-bar .block-mica-client-facet-search div.block-content span.term-field {
   position: relative;
@@ -6618,8 +6620,8 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   border: none;
   width: 100%;
 }
-.region-facets .block-mica-client-facet-search div.block-content span.term-count,
-.region-facets .block-mica-client-facet-search div.block-content span.term-default {
+.region-facets .block-mica-client-facet-search div.block-content td.term-count span,
+.region-facets .block-mica-client-facet-search div.block-content td.term-default span {
   position: relative;
   float: right;
   padding-right: 5px;
@@ -6627,13 +6629,15 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   font-weight: normal;
   font-family: monospace;
 }
-.region-facets .block-mica-client-facet-search div.block-content span.term-count {
+.region-facets .block-mica-client-facet-search div.block-content td.term-count {
   color: #000000;
   font-size: 10px;
+  width: 50px;
 }
-.region-facets .block-mica-client-facet-search div.block-content span.term-default {
+.region-facets .block-mica-client-facet-search div.block-content td.term-default {
   color: rgba(0, 0, 0, 0.3);
   font-size: 10px;
+  width: 50px;
 }
 .region-facets .block-mica-client-facet-search div.block-content span.term-field {
   position: relative;
