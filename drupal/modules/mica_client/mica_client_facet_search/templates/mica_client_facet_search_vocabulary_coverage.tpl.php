@@ -140,7 +140,7 @@
             <?php if (empty($term_coverage->hits)): ?>
               <?php print 0; ?>
             <?php else: ?>
-              <span class="badge alert-success"><?php print $term_coverage->hits; ?></span>
+              <span class="label label-success"><?php print $term_coverage->hits; ?></span>
             <?php endif ?>
           </td>
           <?php if (!empty($term_coverage->buckets)): ?>
@@ -152,7 +152,7 @@
                     <?php if (empty($bucket->hits)): ?>
                       <?php print 0; ?>
                     <?php else: ?>
-                      <span class="badge alert-info">
+                      <span class="label label-info">
                     <?php print l($bucket->hits, 'mica/search',
                       array(
                         'query' => array(

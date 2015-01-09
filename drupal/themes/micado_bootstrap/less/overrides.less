@@ -120,7 +120,7 @@ body {
   width: 1px;
 }
 
-// Branding.
+// Branding
 .navbar .logo {
   margin-top: 15px;
   margin-right: 10px;
@@ -143,10 +143,19 @@ body {
   border: none;
 }
 
+section[class^="col-"], section[class*=" col-"], aside[class^="col-"], aside[class*=" col-"] {
+  padding: 0;
+}
+
 // Breadcrumbs
 .breadcrumb {
   padding: 8px 0;
   background-color: transparent;
+}
+
+// Labels
+.label a {
+  color: @label-color;
 }
 
 // Sections
@@ -819,8 +828,8 @@ ul.search-item-list-no-style {
 
 /****************Domain coverage page *******/
 .fix-width-column {
-  width: 350px;
-  min-width: 350px;
+  width: 200px;
+  min-width: 200px;
 }
 
 .right-border {
@@ -832,13 +841,13 @@ ul.search-item-list-no-style {
   display: none;
 }
 
-/*search page see mor/less controle**/
+/*Search page see more/less control**/
 .expand-control {
   text-align: right;
   .link-expand {
     cursor: pointer;
     font-size: 0.8em;
-    margin-right: 10px;
+    margin-right: 5px;
   }
 }
 
@@ -851,6 +860,7 @@ ul.search-item-list-no-style {
   span.input-group-addon {
     height: 25px;
     font-size: 8px;
+    padding: 6px 12px;
   }
 
 }
