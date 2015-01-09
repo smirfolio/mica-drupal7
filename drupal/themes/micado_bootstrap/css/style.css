@@ -7935,14 +7935,14 @@ ul.search-item-list-no-style {
 .download-table {
   display: none;
 }
-/*search page see mor/less controle**/
+/*Search page see more/less control**/
 .expand-control {
   text-align: right;
 }
 .expand-control .link-expand {
   cursor: pointer;
   font-size: 0.8em;
-  margin-right: 10px;
+  margin-right: 5px;
 }
 .form-autocomplete {
   margin: 5px;
