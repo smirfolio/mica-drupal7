@@ -87,12 +87,12 @@
     "target": {
         "title": "dataset-Target",
         "key": "target",
-        "aggs": "attributes-Mlstr_area__Target-und"
+        "aggs": "attributes-Mlstr_target__Target-und"
     },
     "source": {
         "title": "dataset-Source",
         "key": "source",
-        "aggs": "attributes-Mlstr_area__Source-und"
+        "aggs": "attributes-Mlstr_source__Source-und"
     },
     "variableType": {
         "title": "dataset-VARIABLE TYPE",
