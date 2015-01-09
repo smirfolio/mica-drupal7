@@ -20,30 +20,25 @@
           <?php print $title ?>
         </span>
       </td>
-      <td>
-        <?php if ($query_request): ?>
-          <?php if (($_SESSION['request-search-response'] == 'no-empty') && $term->count != 0) : ?>
-            <span class='term-count'
-
-                  data-toggle="tooltip" data-placement="top" title="Filtered"
-              >
-                <?php $digits = strlen($term->count);
-                print ($digits < 6 ? str_repeat('&nbsp;', 6 - $digits) : '') . ($term->count === 0 ? '&nbsp;' : $term->count); ?>
-              </span>
-          <?php endif; ?>
-        <?php endif; ?>
-      </td>
-      <td>
-        <?php if (!$query_request): ?>
-          <span class='term-count' data-toggle="tooltip" data-placement="top"
+      <?php if ($query_request && ($_SESSION['request-search-response'] == 'no-empty') && $term->count != 0) : ?>
+        <td class='term-count'>
+          <span data-toggle="tooltip" data-placement="top" title="Filtered">
+            <?php print $term->count; ?>
+          </span>
+        </td>
+      <?php endif; ?>
+      <?php if (!$query_request): ?>
+        <td class='term-count'>
+          <span data-toggle="tooltip" data-placement="top"
                 title="All"><?php print $term->default; ?></span>
-        <?php elseif (($term->count != $term->default) || ($_SESSION['request-search-response'] == 'empty')) : ?>
-          <span class='term-default' data-toggle="tooltip" data-placement="top" title="All">
-                <?php $digits = strlen($term->default);
-                print ($digits < 6 && $term->count > 0 ? str_repeat('&nbsp;', 6 - $digits) : '') . $term->default; ?>
-            </span>
-        <?php endif; ?>
-      </td>
+        </td>
+      <?php elseif (($term->count != $term->default) || ($_SESSION['request-search-response'] == 'empty')) : ?>
+        <td class='term-default'>
+          <span data-toggle="tooltip" data-placement="top" title="All">
+            <?php print $term->default; ?>
+          </span>
+        </td>
+      <?php endif; ?>
     </tr>
   </table>
 
