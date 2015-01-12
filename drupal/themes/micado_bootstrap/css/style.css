@@ -7586,15 +7586,15 @@ div.charts {
   line-height: 15px;
 }
 
-.facet-bar .block-mica-obiba-facet-search {
+.facet-bar .block-obiba-mica-facet-search {
   /************checkbox******/
 }
 
-.facet-bar .block-mica-obiba-facet-search .selected_item {
+.facet-bar .block-obiba-mica-facet-search .selected_item {
   color: gray;
 }
 
-.facet-bar .block-mica-obiba-facet-search h2 {
+.facet-bar .block-obiba-mica-facet-search h2 {
   font-size: 13px;
   text-transform: uppercase;
   margin: 0;
@@ -7603,54 +7603,54 @@ div.charts {
   border-left: 2px solid #957bbe;
 }
 
-.facet-bar .block-mica-obiba-facet-search h2 a {
+.facet-bar .block-obiba-mica-facet-search h2 a {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
   padding-left: 12px;
   color: #2c3e50;
 }
 
-.facet-bar .block-mica-obiba-facet-search h2 a.collapsed {
+.facet-bar .block-obiba-mica-facet-search h2 a.collapsed {
   background: url('../img/collapsed.png') no-repeat scroll left center transparent;
 }
 
-.facet-bar .block-mica-obiba-facet-search .block-content {
+.facet-bar .block-obiba-mica-facet-search .block-content {
   padding: 0;
 }
 
-.facet-bar .block-mica-obiba-facet-search .checkedterms {
+.facet-bar .block-obiba-mica-facet-search .checkedterms {
   position: relative;
 }
 
-.facet-bar .block-mica-obiba-facet-search a.facetapi-limit-link {
+.facet-bar .block-obiba-mica-facet-search a.facetapi-limit-link {
   margin-left: 10px;
 }
 
-.facet-bar .block-mica-obiba-facet-search ul.facetapi-facetapi-checkbox-links {
+.facet-bar .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links {
   margin-bottom: 0;
   margin-left: 10px;
 }
 
-.facet-bar .block-mica-obiba-facet-search ul.facetapi-facetapi-checkbox-links li {
+.facet-bar .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links li {
   list-style: none;
 }
 
-.facet-bar .block-mica-obiba-facet-search ul.facetapi-facetapi-checkbox-links li input {
+.facet-bar .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links li input {
   margin-right: 5px;
   margin-top: -2px;
 }
 
-.facet-bar .block-mica-obiba-facet-search label.terms_checkbox {
+.facet-bar .block-obiba-mica-facet-search label.terms_checkbox {
   display: inline;
   margin-bottom: -3px;
   margin-right: 5px;
   cursor: pointer;
 }
 
-.facet-bar .block-mica-obiba-facet-search .regular-checkbox {
+.facet-bar .block-obiba-mica-facet-search .regular-checkbox {
   display: none;
 }
 
-.facet-bar .block-mica-obiba-facet-search .regular-checkbox + label.terms_checkbox {
+.facet-bar .block-obiba-mica-facet-search .regular-checkbox + label.terms_checkbox {
   background-color: #fafafa;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 6px;
@@ -7659,18 +7659,18 @@ div.charts {
   position: relative;
 }
 
-.facet-bar .block-mica-obiba-facet-search .regular-checkbox + label.terms_checkbox:active,
-.facet-bar .block-mica-obiba-facet-search .regular-checkbox:checked + label.terms_checkbox:active {
+.facet-bar .block-obiba-mica-facet-search .regular-checkbox + label.terms_checkbox:active,
+.facet-bar .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox:active {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.facet-bar .block-mica-obiba-facet-search .regular-checkbox:checked + label.terms_checkbox {
+.facet-bar .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox {
   background-color: #e9ecee;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
   color: #99a1a7;
 }
 
-.facet-bar .block-mica-obiba-facet-search .regular-checkbox:checked + label.terms_checkbox:after {
+.facet-bar .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox:after {
   content: '\2714';
   font-size: 14px;
   position: absolute;
@@ -7679,12 +7679,12 @@ div.charts {
   color: #99a1a7;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content li {
+.facet-bar .block-obiba-mica-facet-search div.block-content li {
   margin-bottom: -10px;
   padding-left: 10px;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content span.terms_count {
+.facet-bar .block-obiba-mica-facet-search div.block-content span.terms_count {
   position: relative;
   float: right;
   padding-right: 25px;
@@ -7693,17 +7693,17 @@ div.charts {
   font-family: monospace;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content span.terms_count span.term-count {
+.facet-bar .block-obiba-mica-facet-search div.block-content span.terms_count span.term-count {
   color: #000000;
   font-size: 10px;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content span.terms_count span.term-default {
+.facet-bar .block-obiba-mica-facet-search div.block-content span.terms_count span.term-default {
   color: rgba(0, 0, 0, 0.3);
   font-size: 10px;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content span.terms_field {
+.facet-bar .block-obiba-mica-facet-search div.block-content span.terms_field {
   position: relative;
   display: inline-block;
   overflow: hidden;
@@ -7714,11 +7714,11 @@ div.charts {
   cursor: pointer;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content span.terms_field i {
+.facet-bar .block-obiba-mica-facet-search div.block-content span.terms_field i {
   color: #18bc9c;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content div.stat-container {
+.facet-bar .block-obiba-mica-facet-search div.block-content div.stat-container {
   height: 25px;
   width: 200px;
   position: absolute;
@@ -7727,7 +7727,7 @@ div.charts {
   background-color: transparent;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content span.terms_stat {
+.facet-bar .block-obiba-mica-facet-search div.block-content span.terms_stat {
   max-width: 200px;
   position: absolute;
   height: 25px;
@@ -7736,7 +7736,7 @@ div.charts {
   background-color: #8aa4be;
 }
 
-.facet-bar .block-mica-obiba-facet-search div.block-content label.span-checkbox {
+.facet-bar .block-obiba-mica-facet-search div.block-content label.span-checkbox {
   position: relative;
   display: block;
   min-height: 25px;
@@ -7928,15 +7928,15 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   line-height: 15px;
 }
 
-.region-facets .block-mica-obiba-facet-search {
+.region-facets .block-obiba-mica-facet-search {
   /************checkbox******/
 }
 
-.region-facets .block-mica-obiba-facet-search .selected_item {
+.region-facets .block-obiba-mica-facet-search .selected_item {
   color: gray;
 }
 
-.region-facets .block-mica-obiba-facet-search h2 {
+.region-facets .block-obiba-mica-facet-search h2 {
   font-size: 13px;
   text-transform: uppercase;
   margin: 0;
@@ -7945,54 +7945,54 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   border-left: 2px solid #957bbe;
 }
 
-.region-facets .block-mica-obiba-facet-search h2 a {
+.region-facets .block-obiba-mica-facet-search h2 a {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
   padding-left: 12px;
   color: #2c3e50;
 }
 
-.region-facets .block-mica-obiba-facet-search h2 a.collapsed {
+.region-facets .block-obiba-mica-facet-search h2 a.collapsed {
   background: url('../img/collapsed.png') no-repeat scroll left center transparent;
 }
 
-.region-facets .block-mica-obiba-facet-search .block-content {
+.region-facets .block-obiba-mica-facet-search .block-content {
   padding: 0;
 }
 
-.region-facets .block-mica-obiba-facet-search .checkedterms {
+.region-facets .block-obiba-mica-facet-search .checkedterms {
   position: relative;
 }
 
-.region-facets .block-mica-obiba-facet-search a.facetapi-limit-link {
+.region-facets .block-obiba-mica-facet-search a.facetapi-limit-link {
   margin-left: 10px;
 }
 
-.region-facets .block-mica-obiba-facet-search ul.facetapi-facetapi-checkbox-links {
+.region-facets .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links {
   margin-bottom: 0;
   margin-left: 10px;
 }
 
-.region-facets .block-mica-obiba-facet-search ul.facetapi-facetapi-checkbox-links li {
+.region-facets .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links li {
   list-style: none;
 }
 
-.region-facets .block-mica-obiba-facet-search ul.facetapi-facetapi-checkbox-links li input {
+.region-facets .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links li input {
   margin-right: 5px;
   margin-top: -2px;
 }
 
-.region-facets .block-mica-obiba-facet-search label.terms_checkbox {
+.region-facets .block-obiba-mica-facet-search label.terms_checkbox {
   display: inline;
   margin-bottom: -3px;
   margin-right: 5px;
   cursor: pointer;
 }
 
-.region-facets .block-mica-obiba-facet-search .regular-checkbox {
+.region-facets .block-obiba-mica-facet-search .regular-checkbox {
   display: none;
 }
 
-.region-facets .block-mica-obiba-facet-search .regular-checkbox + label.terms_checkbox {
+.region-facets .block-obiba-mica-facet-search .regular-checkbox + label.terms_checkbox {
   background-color: #fafafa;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 6px;
@@ -8001,18 +8001,18 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   position: relative;
 }
 
-.region-facets .block-mica-obiba-facet-search .regular-checkbox + label.terms_checkbox:active,
-.region-facets .block-mica-obiba-facet-search .regular-checkbox:checked + label.terms_checkbox:active {
+.region-facets .block-obiba-mica-facet-search .regular-checkbox + label.terms_checkbox:active,
+.region-facets .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox:active {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.region-facets .block-mica-obiba-facet-search .regular-checkbox:checked + label.terms_checkbox {
+.region-facets .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox {
   background-color: #e9ecee;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
   color: #99a1a7;
 }
 
-.region-facets .block-mica-obiba-facet-search .regular-checkbox:checked + label.terms_checkbox:after {
+.region-facets .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox:after {
   content: '\2714';
   font-size: 14px;
   position: absolute;
@@ -8021,12 +8021,12 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   color: #99a1a7;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content li {
+.region-facets .block-obiba-mica-facet-search div.block-content li {
   margin-bottom: -10px;
   padding-left: 10px;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content span.terms_count {
+.region-facets .block-obiba-mica-facet-search div.block-content span.terms_count {
   position: relative;
   float: right;
   padding-right: 25px;
@@ -8035,17 +8035,17 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   font-family: monospace;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content span.terms_count span.term-count {
+.region-facets .block-obiba-mica-facet-search div.block-content span.terms_count span.term-count {
   color: #000000;
   font-size: 10px;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content span.terms_count span.term-default {
+.region-facets .block-obiba-mica-facet-search div.block-content span.terms_count span.term-default {
   color: rgba(0, 0, 0, 0.3);
   font-size: 10px;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content span.terms_field {
+.region-facets .block-obiba-mica-facet-search div.block-content span.terms_field {
   position: relative;
   display: inline-block;
   overflow: hidden;
@@ -8056,11 +8056,11 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   cursor: pointer;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content span.terms_field i {
+.region-facets .block-obiba-mica-facet-search div.block-content span.terms_field i {
   color: #18bc9c;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content div.stat-container {
+.region-facets .block-obiba-mica-facet-search div.block-content div.stat-container {
   height: 25px;
   width: 200px;
   position: absolute;
@@ -8069,7 +8069,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   background-color: transparent;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content span.terms_stat {
+.region-facets .block-obiba-mica-facet-search div.block-content span.terms_stat {
   max-width: 200px;
   position: absolute;
   height: 25px;
@@ -8078,7 +8078,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   background-color: #8aa4be;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content label.span-checkbox {
+.region-facets .block-obiba-mica-facet-search div.block-content label.span-checkbox {
   position: relative;
   display: block;
   min-height: 25px;
@@ -9368,7 +9368,7 @@ div.password-suggestions ul {
   float: left;
 }
 
-.region-facets .block-mica-obiba-facet-search div.block-content li {
+.region-facets .block-obiba-mica-facet-search div.block-content li {
   margin-bottom: 0px;
 }
 

@@ -1,0 +1,463 @@
+<?php
+
+function obiba_mica_dataset_menu() {
+  $items = array();
+
+  $items['mica/datasets'] = array(
+    'title' => t('Datasets'),
+    'description' => t('Published datasets'),
+    'page callback' => 'obiba_mica_dataset_get_datasets_list',
+    'file' => 'obiba_mica_dataset-page-list.inc',
+    'access callback' => TRUE,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'expanded' => TRUE,
+    'weight' => 3
+  );
+
+  $items['mica/datasets/harmonization-datasets'] = array(
+    'title' => t('Harmonization Datasets'),
+    'description' => t('Published harmonization datasets'),
+    'page callback' => 'obiba_mica_dataset_get_harmonization_datasets_list',
+    'file' => 'obiba_mica_dataset-page-list.inc',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 2
+  );
+
+  $items['mica/datasets/study-datasets'] = array(
+    'title' => t('Study Datasets'),
+    'page callback' => 'obiba_mica_dataset_get_study_datasets_list',
+    'file' => 'obiba_mica_dataset-page-list.inc',
+    'access callback' => TRUE,
+    //  'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 3
+  );
+
+  $items['variable-detail-statistics/%'] = array(
+    'access callback' => TRUE,
+    'page callback' => 'obiba_mica_dataset_variable_get_ajax_statistics',
+    'page arguments' => array(1),
+    'weight' => 5,
+    'file' => 'obiba_mica_variable-page-detail.inc',
+  );
+
+  $items['variable-detail-statistics-test/%'] = array(
+    'access callback' => TRUE,
+    'page callback' => 'obiba_mica_dataset_variable_get_ajax_statistics_test',
+    'page arguments' => array(1),
+    'weight' => 5,
+    'file' => 'obiba_mica_variable-page-detail.inc',
+  );
+
+  $items['mica/study-dataset/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_page_detail',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 2),
+  );
+
+  $items['mica/harmonization-dataset/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_page_detail',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 2),
+  );
+  /*********Ajax table routes**************/
+  $items['mica/variables-tab/%/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_harmonizations_Variables_table_ajax',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2, 3),
+  );
+
+  $items['mica/variables-tab-data/%/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_Variables_table_ajax_data',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2, 3),
+  );
+
+  $items['mica/variables-tab-header/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_Variables_table_ajax_header',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  $items['mica/variables-harmonization-algo/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_get_variable_algorithm',
+    'file' => 'obiba_mica_variable-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  $items['mica/datatable-international'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_datatables_multi_Lang',
+    'access callback' => TRUE,
+    'page arguments' => array(),
+  );
+
+  /***************************/
+  $items['mica/harmonization-dataset/%/download'] = array(
+    'page callback' => 'obiba_mica_dataset_page_detail_download',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  $items['mica/variable/%'] = array(
+    'title' => 'Variable',
+    'page callback' => 'obiba_mica_variable_page_detail',
+    'file' => 'obiba_mica_variable-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  $items['mica/refresh_list_datasets_datasets/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'obiba_mica_dataset_retrieve_datasets',
+    'file' => 'obiba_mica_dataset-page-list.inc',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 3, 4)
+  );
+
+  $items['mica/refresh_list_datasets_harmonization_datasets/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'obiba_mica_dataset_retrieve_harmonizationDatasets',
+    'file' => 'obiba_mica_dataset-page-list.inc',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 3, 4)
+  );
+  $items['mica/refresh_list_datasets_study_datasets/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'obiba_mica_dataset_retrieve_studyDatasets',
+    'file' => 'obiba_mica_dataset-page-list.inc',
+    'access arguments' => array('access content'),
+    'page arguments' => array(2, 3, 4)
+  );
+
+  return $items;
+}
+
+function obiba_mica_dataset_menu_link_alter(&$items) {
+  if ($items['menu_name'] == 'main-menu') {
+//    dpm($items);
+  }
+}
+
+/**
+ * Implements hook_library().
+ */
+function obiba_mica_dataset_library() {
+  $libraries = array();
+  $lib_path_datatables = libraries_get_path('datatables');
+  // Make sure we have a valid library path before returning library load info.
+  if (!empty($lib_path_datatables)) {
+    $libraries['datatables'] = array(
+      'title' => 'DataTables',
+      'website' => 'http://datatables.net/',
+      'version' => '1.10.1',
+      'js' => array(
+        $lib_path_datatables . '/media/js/jquery.dataTables.js' => array(),
+        $lib_path_datatables . '/extensions/FixedColumns/js/dataTables.fixedColumns.js' => array(),
+        $lib_path_datatables . '/extensions/TableTools/js/dataTables.tableTools.js' => array(),
+        $lib_path_datatables . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.js' => array(),
+      ),
+      'css' => array(
+        $lib_path_datatables . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.css' => array(),
+        $lib_path_datatables . '/extensions/FixedColumns/css/dataTables.fixedColumns.min.css' => array()
+      )
+    );
+  }
+  return $libraries;
+}
+
+/*
+ * Add external js dataTables
+ * */
+function obiba_mica_dataset_datatables_external_source() {
+  drupal_add_js('http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js', 'external');
+  drupal_add_js('http://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', 'external');
+  drupal_add_js('http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', 'external');
+  drupal_add_css('http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', 'external');
+}
+
+/*
+ * Multi language Datatables  support
+ * */
+function obiba_mica_dataset_datatables_multi_Lang() {
+  $_lang_translation = array(
+    "sEmptyTable" => t("No data available in table"),
+    "sInfo" => t("Showing @start to @end of @total entries", array(
+      "@start" => "_START_",
+      "@end" => "_END_",
+      "@total" => "_TOTAL_"
+    )),
+    "sInfoEmpty" => t("Showing 0 to 0 of 0 entries"),
+    "sInfoFiltered" => t("(filtered from @max total entries)", array("@max" => "_MAX_")),
+    "sInfoPostFix" => t(""),
+    "sInfoThousands" => t(","),
+    "sLengthMenu" => t("Show @menu entries", array("@menu" => "_MENU_")),
+    "sLoadingRecords" => t("Loading..."),
+    "sProcessing" => t("Processing..."),
+    "sSearch" => t("Search:"),
+    "sZeroRecords" => t("No matching records found"),
+    "oPaginate" => array(
+      "sFirst" => t("First"),
+      "sLast" => t("Last"),
+      "sNext" => t("Next"),
+      "sPrevious" => t("Previous")
+    ),
+    "oAria" => array(
+      "sSortAscending" => t(": activate to sort column ascending"),
+      "sSortDescending" => t(": activate to sort column descending")
+    )
+  );
+
+  return drupal_json_output($_lang_translation);
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * copy '<modules>/obiba_mica_dataset/templates/'   files in  your customized theme  '<YOUR_THEME>/templates/' path
+ * you can modify default display of listed page templates by rearrange block field for example
+ * don't forget to clear the theme registry.
+ *
+ */
+
+function obiba_mica_dataset_theme($existing, $type, $theme, $path) {
+  $path_theme = $path . '/templates';
+  return array(
+    'obiba_mica_dataset-list' => array('template' => 'obiba_mica_dataset-list', 'path' => $path_theme),
+    'obiba_mica_dataset-detail' => array('template' => 'obiba_mica_dataset-detail', 'path' => $path_theme),
+    'obiba_mica_dataset_ajax_variables-detail' => array(
+      'template' => 'obiba_mica_dataset_ajax_variables-detail',
+      'path' => $path_theme
+    ),
+    'obiba_mica_dataset_harmonizations_Variables_table_ajax_header' =>
+      array('template' => 'obiba_mica_dataset_harmonizations_Variables_table_ajax_header', 'path' => $path_theme),
+    'obiba_mica_dataset-list-page-block' => array(
+      'template' => 'obiba_mica_dataset-list-page-block',
+      'path' => $path_theme
+    ),
+    'obiba_mica_dataset-harmonization-table-legend' => //
+      array('template' => 'obiba_mica_dataset-harmonization-table-legend', 'path' => $path_theme), //
+
+    'obiba_mica_dataset-tables' => array('template' => 'obiba_mica_dataset-tables', 'path' => $path_theme),
+    'obiba_mica_variable-detail' => array('template' => 'obiba_mica_variable-detail', 'path' => $path_theme),
+    'obiba_mica_variable_harmonization_algorithm' => array(
+      'template' =>
+        'obiba_mica_variable_harmonization_algorithm',
+      'path' => $path_theme
+    )
+  );
+}
+
+function obiba_mica_dataset_get_all_datasets_studies($study_id) {
+  $output = NULL;
+  $dataset_resource = new MicaDatasetResource();
+
+  $datasets = $dataset_resource->get_datasets('datasets', $study_id);
+
+  if (!empty($datasets)) {
+    $output = obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id);
+  }
+
+  return $output;
+}
+
+function obiba_mica_dataset_get_dce_name_from_dataset($study_table, $study_summary = NULL) {
+  if (empty($study_summary)) {
+    $study_summary = $study_table->studySummary;
+  }
+  if (!empty($study_summary)) {
+    foreach ($study_summary->populationSummaries as $population) {
+      if ($study_table->populationId == $population->id) {
+        foreach ($population->dataCollectionEventSummaries as $dce) {
+          if ($dce->id == $study_table->dataCollectionEventId) {
+            return obiba_mica_commons_get_localized_field($population, 'name') . ' -- ' . obiba_mica_commons_get_localized_field($dce, 'name');
+          }
+        }
+      }
+    }
+  }
+  return $study_table->populationId . ':' . $study_table->dataCollectionEventId;
+}
+
+function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = NULL) {
+  $dce_list = '-';
+  if (!empty($dataset_summary->{'obiba.mica.HarmonizationDatasetDto.type'})) {
+    $dce_list = '<ul>';
+    $dce_names = array();
+    foreach ($dataset_summary->{'obiba.mica.HarmonizationDatasetDto.type'}->studyTables as $study_table) {
+      if (empty($study_id) || $study_table->studyId == $study_id) {
+        $dce_name = obiba_mica_dataset_get_dce_name_from_dataset($study_table);
+        if (!in_array($dce_name, $dce_names)) {
+          $dce_list .= '<li>' . l($dce_name, '#', array(
+              'external' => TRUE,
+              'attributes' => array(
+                'data-toggle' => 'modal',
+                'data-target' => '#' . $study_table->dataCollectionEventId
+              )
+            )) . '</li>';
+          $dce_names[] = $dce_name;
+        }
+      }
+    }
+    $dce_list .= '</ul>';
+  }
+
+  if (!empty($dataset_summary->{'obiba.mica.StudyDatasetDto.type'})) {
+    $study_table = $dataset_summary->{'obiba.mica.StudyDatasetDto.type'}->studyTable;
+    $dce_name = obiba_mica_dataset_get_dce_name_from_dataset($study_table);
+    $dce_list = l($dce_name, '#', array(
+      'external' => TRUE,
+      'attributes' => array(
+        'data-toggle' => 'modal',
+        'data-target' => '#' . $study_table->dataCollectionEventId
+      )
+    ));
+  }
+  return $dce_list;
+}
+
+function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
+  if (empty($datasets)) {
+    return NULL;
+  }
+  $dataset_rows = array();
+  $summaries = $datasets->getSummaries();
+
+  if (empty($summaries)) {
+    return NULL;
+  }
+  else {
+    foreach ($summaries as $key_dataset => $summary) {
+      // dpm($summary);
+      $dataset_description = NULL;
+
+      if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
+        $nb_variables = l($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables, 'mica/search',
+          array(
+            'query' => array(
+              'type' => 'variables',
+              'query' => MicaClient::add_parameter_dto_query_link(
+                  array(
+                    'variables' =>
+                      array(
+                        'terms' => array(
+                          'datasetId' => $summary->id,
+                          'studyIds' => $study_id
+                        )
+                      )
+                  )
+                )
+            )
+          )
+        );
+      }
+
+      $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
+      $dataset_type = !empty($summary->{'obiba.mica.StudyDatasetDto.type'}) ? 'study-dataset' : 'harmonization-dataset';
+      $dataset_type_name = !empty($summary->{'obiba.mica.StudyDatasetDto.type'}) ? 'Study dataset' : 'Harmonization dataset';
+      $dataset_rows[$key_dataset] = array(
+        'data' => array(
+          'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id . '/' . obiba_mica_commons_to_slug($dataset_name)),
+          'type' => t($dataset_type_name),
+          'dce' => obiba_mica_dataset_get_dce_from_dataset($summary, $study_id),
+          'desc' => !empty($nb_variables) ? $nb_variables : '-'
+        )
+      );
+    }
+  }
+
+  $dataset['dataset-tab'] = theme(
+    'table',
+    array(
+      'header' => array(t('Name'), t('Type'), t('Data Collection Events'), t('Variables')),
+      'rows' => $dataset_rows,
+      'empty' => t('No dataset found'),
+      'sticky' => FALSE
+    )
+  );
+  return $dataset;
+}
+
+/**
+ * @param null $attributes
+ * @param null $namespace
+ * @param array $excluded_names
+ * @return bool|string
+ */
+function obiba_mica_dataset_attributes_tab($attributes = NULL, $namespace = NULL, $excluded_names = array()) {
+  $rows = array();
+  if (!empty($attributes)) {
+    foreach ($attributes as $attribute) {
+      if (empty($namespace) || !empty($attribute->namespace) && $namespace == $attribute->namespace) {
+        if (empty($excluded_names) || !in_array($attribute->name, $excluded_names)) {
+          $rows[] = array(
+            t($attribute->name),
+            obiba_mica_commons_get_localized_field($attribute, 'values'),
+          );
+        }
+      }
+    }
+    return theme(
+      'table',
+      array(
+        'header' => array(t('Name'), t('Value')),
+        'rows' => $rows,
+        'empty' => t('No attribute found'),
+        'sticky' => FALSE,
+        'attributes' => array('id' => 'variable_attributes')
+      )
+    );
+  }
+
+  return FALSE;
+}
+
+function _obiba_mica_variable_attributes_detail($variable, $name, $namespaces = array()) {
+  if (!empty($variable->attributes)) {
+    foreach ($variable->attributes as $attribute) {
+      if ((empty($namespaces) && empty($attribute->namespace)) || (is_array($namespaces) && in_array($attribute->namespace, $namespaces))) {
+        if (!empty($attribute->name) && $attribute->name == $name) {
+          return obiba_mica_commons_get_localized_field($attribute, 'values');
+        }
+      }
+    }
+  }
+  return NULL;
+}
+
+function _obiba_mica_variable_domains_list($variable) {
+  $output_vocab_list = '';
+  if (!empty($variable->termAttributes)) {
+    foreach ($variable->termAttributes as $vocabulary) {
+      $output_vocab_list .= '<div><ul>';
+      foreach ($vocabulary->vocabularyTerms as $taxonomy) {
+        $output_vocab_list .= ' <li><b>' . obiba_mica_commons_get_localized_field($taxonomy->vocabulary, 'titles') . '</b> : ';
+        $localized_terms = array();
+        foreach ($taxonomy->terms as $term) {
+          $localized_terms[] = obiba_mica_commons_get_localized_field($term, 'titles');
+        }
+        $output_vocab_list .= count($localized_terms) > 1 ? implode(', ', $localized_terms) : $localized_terms[0];
+        $output_vocab_list .= '</li>';
+      }
+
+      $output_vocab_list .= '</ul></div>';
+    }
+    return $output_vocab_list;
+  }
+  return NULL;
+}
