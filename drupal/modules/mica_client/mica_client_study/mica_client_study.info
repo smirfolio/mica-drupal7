@@ -1,9 +1,0 @@
-name = "Mica client Study"
-description = "Mica client Study"
-package = Mica
-core = 7.x
-
-dependencies[] = mica_client_commons
-dependencies[] = mica_client_model
-
-files[] = includes/mica_client_study_resource.inc

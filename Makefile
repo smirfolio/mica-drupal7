@@ -29,7 +29,7 @@ clean:
 setup-drupal:
 	drush make --prepare-install drupal/dev/drupal-basic.make target/drupal && \
 	chmod -R a+w target/drupal && \
-	ln -s $(CURDIR)/drupal/modules/mica_client $(CURDIR)/target/drupal/sites/all/modules/mica_client && \
+	ln -s $(CURDIR)/drupal/modules/mica_obiba $(CURDIR)/target/drupal/sites/all/modules/mica_obiba && \
 	ln -s $(CURDIR)/drupal/modules/mica_bootstrap_config $(CURDIR)/target/drupal/sites/all/modules/mica_bootstrap_config && \
 	ln -s $(CURDIR)/drupal/themes/micado_bootstrap $(CURDIR)/target/drupal/sites/all/themes/micado_bootstrap && \
 	git clone https://github.com/obiba/drupal7-auth.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
@@ -55,7 +55,7 @@ settings:
 
 enable-mica:
 	cd target/drupal && \
-	drush en -y mica_client
+	drush en -y mica_obiba
 
 enable-obiba-auth:
 	cd target/drupal && \
@@ -119,13 +119,13 @@ cc:
 # Push to Drupal.org
 #
 git-push-mica:
-	$(call clear-version-info,drupal/modules,mica_client) && \
-	$(call clear-version-info,drupal/modules/mica_client,mica_client_study) && \
-	$(call clear-version-info,drupal/modules/mica_client,mica_client_commons) && \
-	$(call clear-version-info,drupal/modules/mica_client,mica_client_network) && \
-	$(call clear-version-info,drupal/modules/mica_client,mica_client_model) && \
+	$(call clear-version-info,drupal/modules,mica_obiba) && \
+	$(call clear-version-info,drupal/modules/mica_obiba,mica_obiba_study) && \
+	$(call clear-version-info,drupal/modules/mica_obiba,mica_obiba_commons) && \
+	$(call clear-version-info,drupal/modules/mica_obiba,mica_obiba_network) && \
+	$(call clear-version-info,drupal/modules/mica_obiba,mica_obiba_model) && \
 	$(call git-prepare,$(drupal_org_mica),obiba_mica,$(mica_branch)) . && \
-	cp -r drupal/modules/mica_client/* target/drupal.org/obiba_mica && \
+	cp -r drupal/modules/mica_obiba/* target/drupal.org/obiba_mica && \
 	$(call git-finish,obiba_mica,$(mica_branch))
 
 clear-version-info = sed -i "/^version/d" $(1)/$2/$2.info && \
