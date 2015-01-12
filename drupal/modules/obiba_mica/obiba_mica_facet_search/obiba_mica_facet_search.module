@@ -127,7 +127,7 @@ function obiba_mica_commons_create_facet_search_query_form($arg) {
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Filter by',
-    '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
+    '#default_value' => !empty($_GET['search-query']) ? check_plain($_GET['search-query']) : NULL,
     '#prefix' => '<div class="lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>',
     '#suffix' => "</div></div>",
     '#attributes' => array('id' => $input_id, 'name' => $input_id)
