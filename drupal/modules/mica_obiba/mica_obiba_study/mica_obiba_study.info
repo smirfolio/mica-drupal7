@@ -1,0 +1,9 @@
+name = "Mica client Study"
+description = "Mica client Study"
+package = Mica
+core = 7.x
+
+dependencies[] = mica_obiba_commons
+dependencies[] = mica_obiba_model
+
+files[] = includes/mica_obiba_study_resource.inc

@@ -1,0 +1,8 @@
+name = "Mica Commons "
+description = "Mica Commons"
+package = Mica
+core = 7.x
+
+dependencies[] = http_client
+
+files[] = includes/mica_obiba.inc

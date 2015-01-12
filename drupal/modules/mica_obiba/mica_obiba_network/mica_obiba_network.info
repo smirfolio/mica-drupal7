@@ -1,0 +1,7 @@
+name = "Mica Network"
+description = "Mica Network"
+package = Mica
+core = 7.x
+dependencies[] = mica_obiba_commons
+dependencies[] = mica_obiba_model
+dependencies[] = mica_obiba_study
