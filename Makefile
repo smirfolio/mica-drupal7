@@ -30,8 +30,7 @@ setup-drupal:
 	drush make --prepare-install drupal/dev/drupal-basic.make target/drupal && \
 	chmod -R a+w target/drupal && \
 	ln -s $(CURDIR)/drupal/modules/obiba_mica $(CURDIR)/target/drupal/sites/all/modules/obiba_mica && \
-	ln -s $(CURDIR)/drupal/modules/mica_bootstrap_config $(CURDIR)/target/drupal/sites/all/modules/mica_bootstrap_config && \
-	ln -s $(CURDIR)/drupal/themes/micado_bootstrap $(CURDIR)/target/drupal/sites/all/themes/micado_bootstrap && \
+	ln -s $(CURDIR)/drupal/themes/obiba_bootstrap $(CURDIR)/target/drupal/sites/all/themes/obiba_bootstrap && \
 	git clone https://github.com/obiba/drupal7-auth.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
 	git clone https://github.com/obiba/drupal7-protobuf.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
 
@@ -71,12 +70,12 @@ bootstrap:
 	cd target/drupal && \
 	drush dl -y bootstrap && \
 	drush en -y bootstrap && \
-	drush en -y micado_bootstrap && \
-	drush vset -y theme_default micado_bootstrap && \
+	drush en -y obiba_bootstrap && \
+	drush vset -y theme_default obiba_bootstrap && \
 	drush vset -y admin_theme seven
 
 less-css:
-	lessc $(CURDIR)/drupal/themes/micado_bootstrap/less/style.less $(CURDIR)/drupal/themes/micado_bootstrap/css/style.css
+	lessc $(CURDIR)/drupal/themes/obiba_bootstrap/less/style.less $(CURDIR)/drupal/themes/obiba_bootstrap/css/style.css
 
 jquery_update:
 	cd target/drupal && \

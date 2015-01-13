@@ -1,6 +1,6 @@
-name = "Mica Datasets "
-description = "Mica datasetes"
-package = Mica
+name = "Obiba Mica Datasets "
+description = "Mica Client -- Datasets"
+package = Obiba
 core = 7.x
 dependencies[] = obiba_mica_commons
 dependencies[] = obiba_mica_model

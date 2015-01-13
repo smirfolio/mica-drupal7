@@ -1,6 +1,6 @@
-name = "Mica client Study"
-description = "Mica client Study"
-package = Mica
+name = "Obiba Mica Study"
+description = "Mica Client -- Study"
+package = Obiba
 core = 7.x
 
 dependencies[] = obiba_mica_commons
