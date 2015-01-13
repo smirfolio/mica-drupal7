@@ -77,9 +77,9 @@ function obiba_mica_network_study_table_headers() {
   return array(
     t('Short Name'),
     t('Name'),
-    t('Study Designs'),
+    t('Study Design'),
     t('Target Number'),
-    t('Countries'),
+    t('Country'),
   );
 }
 

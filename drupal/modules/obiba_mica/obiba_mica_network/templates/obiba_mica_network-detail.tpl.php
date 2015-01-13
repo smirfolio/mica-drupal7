@@ -115,6 +115,7 @@
         </table>
 
       </div>
+
       <div class="col-lg-6 col-xs-12">
         <?php if (!empty($network_dto->attributes)): ?>
           <h5><?php print t('Attributes') ?></h5>
