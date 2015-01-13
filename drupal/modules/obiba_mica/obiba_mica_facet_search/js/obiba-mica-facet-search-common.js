@@ -1,6 +1,7 @@
-/*
- * @file JScript code for common resources - search page
- * */
+/**
+ * @file
+ * JScript code for common resources - search page
+ */
 
 (function ($) {
   $(document).ready(function () {

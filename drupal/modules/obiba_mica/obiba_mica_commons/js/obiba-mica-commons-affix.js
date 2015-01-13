@@ -1,6 +1,7 @@
-/*
- * @file JsScript to deal for FixSidebar widget
- * */
+/**
+ * @file
+ * JsScript to deal for FixSidebar widget
+ */
 
 (function ($) {
   $(document).ready(function () {

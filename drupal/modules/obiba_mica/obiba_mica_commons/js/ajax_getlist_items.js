@@ -1,6 +1,7 @@
-/*
- * @file JsScript ajax helper for Search widget : in dataset, network, study list
- * */
+/**
+ * @file
+ * JsScript ajax helper for Search widget : in dataset, network, study list
+ */
 
 (function ($) {
   Drupal.behaviors.datatables_add_head = {

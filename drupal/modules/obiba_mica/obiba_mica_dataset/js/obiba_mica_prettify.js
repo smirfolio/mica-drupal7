@@ -1,6 +1,7 @@
-/*
- * @file JavaScript prettify helper
- * */
+/**
+ * @file
+ * JavaScript prettify helper
+ */
 
 // Using the closure to map jQuery to $.
 (function ($) {

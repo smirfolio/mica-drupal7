@@ -1,6 +1,7 @@
-/*
- * @file JsScript to deal with  attachment files
- * */
+/**
+ * @file
+ * JsScript to deal with  attachment files
+ */
 
 (function ($) {
   Drupal.behaviors.attachement_download = {

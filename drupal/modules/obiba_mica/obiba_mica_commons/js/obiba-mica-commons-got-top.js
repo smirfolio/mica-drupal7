@@ -1,6 +1,7 @@
-/*
- * @file JsScript for Go to  top button
- * */
+/**
+ * @file
+ * JsScript for Go to top button
+ */
 
 (function ($) {
   Drupal.behaviors.obiba_mica_commons = {

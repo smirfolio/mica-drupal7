@@ -1,6 +1,7 @@
-/*
- * @file JScript code for query builder parser
- * */
+/**
+ * @file
+ * JScript code for query builder parser
+ */
 
 (function ($) {
 

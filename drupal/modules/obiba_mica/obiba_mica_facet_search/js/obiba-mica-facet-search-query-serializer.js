@@ -1,6 +1,7 @@
-/*
- * @file JScript code for query builder serializing
- * */
+/**
+ * @file
+ * JScript code for query builder serializing
+ */
 
 (function ($) {
   Drupal.behaviors.query_serializer = {

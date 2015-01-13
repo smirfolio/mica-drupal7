@@ -1,6 +1,7 @@
-/*
- * @file JsScript to deal with FixSidebar
- * */
+/**
+ * @file
+ * JsScript to deal with FixSidebar
+ */
 
 (function ($) {
   Drupal.behaviors.obiba_mica_commons_fixed_sidebar = {

@@ -1,6 +1,7 @@
-/*
- * @file code to initialise Timeline
- * */
+/**
+ * @file
+ * code to initialise Timeline
+ */
 
 (function ($) {
   Drupal.behaviors.datatables_add_head = {

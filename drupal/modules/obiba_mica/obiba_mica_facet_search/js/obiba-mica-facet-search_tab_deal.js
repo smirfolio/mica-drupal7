@@ -1,6 +1,7 @@
-/*
- * @file JScript code for dealing with tabs
- * */
+/**
+ * @file
+ * JScript code for dealing with tabs
+ */
 
 (function ($) {
   Drupal.behaviors.obiba_mica_facet_search_collapse_tab = {

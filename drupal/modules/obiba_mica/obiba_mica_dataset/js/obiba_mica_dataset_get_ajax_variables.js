@@ -1,6 +1,7 @@
-/*
- * @file JavaScript ajax helper for Statistics variables retrieving
- * */
+/**
+ * @file
+ * JavaScript ajax helper for Statistics variables retrieving
+ */
 
 (function ($) {
 

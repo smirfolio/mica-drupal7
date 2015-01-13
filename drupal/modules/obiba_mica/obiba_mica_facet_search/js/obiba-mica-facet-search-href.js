@@ -1,6 +1,7 @@
-/*
- * @file JScript code for dealing with checkboxes facet
- * */
+/**
+ * @file
+ * JScript code for dealing with checkboxes facet
+ */
 (function ($) {
   Drupal.behaviors.query_href = {
     attach: function (context, settings) {
