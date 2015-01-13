@@ -54,6 +54,19 @@
             </tr>
           <?php endif; ?>
 
+          <?php if (!empty($network_dto->website)): ?>
+            <tr>
+              <td><h5><?php print t('Website') ?></h5></td>
+              <td>
+                <p><?php
+                  print l(obiba_mica_commons_get_localized_field($network_dto, 'acronym') . ' ' . t('website'),
+                    $network_dto->website,
+                    array('attributes' => array('target' => '_blank')));
+                  ?></p>
+              </td>
+            </tr>
+          <?php endif; ?>
+
           <?php if (!empty($network_dto->investigators)): ?>
             <tr>
               <td><h5><?php print t('Investigators') ?></h5></td>
@@ -62,7 +75,7 @@
                   <?php foreach ($network_dto->investigators as $key_investigator => $investigator) : ?>
                     <li>
                       <a href="#" data-toggle="modal"
-                        data-target="#investigator_<?php print $network_dto->id ?>_<?php print $key_investigator ?>">
+                         data-target="#investigator_<?php print $network_dto->id ?>_<?php print $key_investigator ?>">
                         <?php print $investigator->title; ?>
                         <?php print $investigator->firstName; ?>
                         <?php print $investigator->lastName; ?>
@@ -84,7 +97,7 @@
                   <?php foreach ($network_dto->contacts as $key_contact => $contact) : ?>
                     <li>
                       <a href="#" data-toggle="modal"
-                        data-target="#contact_<?php print $network_dto->id ?>_<?php print $key_contact ?>">
+                         data-target="#contact_<?php print $network_dto->id ?>_<?php print $key_contact ?>">
                         <?php print $contact->title; ?>
                         <?php print $contact->firstName; ?>
                         <?php print $contact->lastName; ?>
@@ -98,10 +111,6 @@
             </tr>
           <?php endif; ?>
 
-          <tr>
-            <td></td>
-            <td></td>
-          </tr>
           </tbody>
         </table>
 
@@ -125,7 +134,7 @@
           print l(t('All'), 'mica/network/' . $network_dto->id); ?>
         </li>
         <li class="<?php if (!empty($group_by) && $group_by == 'studyIds') print 'active' ?>" data-toggle="tooltip"
-          data-placement="top" title="<?php print t('Group by study') ?>">
+            data-placement="top" title="<?php print t('Group by study') ?>">
           <?php
           print l(t('Study'), 'mica/network/' . $network_dto->id, array(
             'query' => array(
@@ -136,7 +145,7 @@
           )); ?>
         </li>
         <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
-          data-placement="top" title="<?php print t('Group by data collection event') ?>">
+            data-placement="top" title="<?php print t('Group by data collection event') ?>">
           <?php
           print l(t('Data Collection Event'), 'mica/network/' . $network_dto->id, array(
             'query' => array(
@@ -147,7 +156,7 @@
           )); ?>
         </li>
         <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
-          data-placement="top" title="<?php print t('Group by dataset') ?>">
+            data-placement="top" title="<?php print t('Group by dataset') ?>">
           <?php
           print l(t('Dataset'), 'mica/network/' . $network_dto->id, array(
             'query' => array(
