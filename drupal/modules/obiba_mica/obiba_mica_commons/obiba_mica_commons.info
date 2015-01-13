@@ -1,6 +1,6 @@
-name = "Obiba mica Commons "
-description = "Obiba mica Commons"
-package = Mica
+name = "Obiba Mica Commons "
+description = "Mica Client -- Commons"
+package = Obiba
 core = 7.x
 
 dependencies[] = http_client
