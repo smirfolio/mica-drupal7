@@ -274,7 +274,7 @@ function obiba_mica_commons_get_current_theme() {
   if (!empty($custom_theme)) {
     return $custom_theme;
   }
-  return $theme ? $theme : 'micado_bootstrap';
+  return $theme ? $theme : 'obiba_bootstrap';
 }
 
 function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no_name = TRUE) {

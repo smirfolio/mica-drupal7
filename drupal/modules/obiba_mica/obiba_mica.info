@@ -1,6 +1,6 @@
-name = "Mica Client"
+name = "Obiba Mica"
 description = "Mica Client"
-package = Mica
+package = Obiba
 core = 7.x
 
 dependencies[] = charts

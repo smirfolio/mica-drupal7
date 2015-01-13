@@ -188,7 +188,7 @@
               $(this).parents("label.span-checkbox").removeClass();
 
               checkthebox($(this));
-              var copy_chekbox = $(this).parent().clone();
+              var copy_chekbox = $(this).parents("li.facets").clone();
               var divtofind = $(this).parents("section:first").find(".checkedterms:first");
               $("input[id=" + getAggregationMoniker(this) + "]").val($(this).attr('value')).attr('data-value', $(this).attr("data-value"));
               copy_chekbox.find('.terms_stat').width($current_width_percent);
