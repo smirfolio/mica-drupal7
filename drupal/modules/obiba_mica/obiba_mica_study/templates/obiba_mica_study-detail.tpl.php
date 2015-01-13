@@ -4,44 +4,45 @@
 //dpm($coverage)
 ?>
 
-<div class="pull-right md-bottom-margin">
-  <?php
-  $query_array = array("studies" => array("terms" => array("studyIds" => $study_dto->id)));
-  $query = MicaClient::create_query_dto_as_string($query_array);
+<div>
+  <p class="md-top-margin">
+    <?php if (!empty($study_dto->logo->id)): ?>
+      <img src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
+           class="imageThumb">
+    <?php endif; ?>
+    <?php print obiba_mica_commons_get_localized_field($study_dto, 'objectives'); ?>
+  </p>
 
-  print l(t('Search Variables'), 'mica/search',
-    array(
-      'query' => array(
-        'type' => 'variables',
-        'query' => $query
-      ),
-      'attributes' => array('class' => 'btn btn-primary')
-    ));
-  ?>
-  <?php
-  print l(t('Coverage'), 'mica/coverage',
-    array(
-      'query' => array(
-        'type' => 'variables',
-        'query' => $query
-      ),
-      'attributes' => array('class' => 'btn btn-primary indent')
-    ));
-  ?>
+  <div class="pull-right md-bottom-margin">
+    <?php
+    $query_array = array("studies" => array("terms" => array("studyIds" => $study_dto->id)));
+    $query = MicaClient::create_query_dto_as_string($query_array);
+
+    print l(t('Search Variables'), 'mica/search',
+      array(
+        'query' => array(
+          'type' => 'variables',
+          'query' => $query
+        ),
+        'attributes' => array('class' => 'btn btn-primary')
+      ));
+    ?>
+    <?php
+    print l(t('Coverage'), 'mica/coverage',
+      array(
+        'query' => array(
+          'type' => 'variables',
+          'query' => $query
+        ),
+        'attributes' => array('class' => 'btn btn-primary indent')
+      ));
+    ?>
+  </div>
 </div>
 
 <div class="clearfix"></div>
 
 <article>
-<section>
-  <div class="md-top-margin">
-    <?php if (!empty($study_dto->logo->id)): ?>
-      <img src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-           class="imageThumb">
-    <?php endif; ?>
-    <p><?php print obiba_mica_commons_get_localized_field($study_dto, 'objectives'); ?></p>
-  </div>
-</section>
 
 <section>
 <div class="row">
