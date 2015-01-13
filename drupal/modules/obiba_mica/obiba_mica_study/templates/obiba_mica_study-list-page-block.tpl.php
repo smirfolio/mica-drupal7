@@ -5,7 +5,7 @@
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-        class="listImageThumb img-responsive"/>
+           class="listImageThumb img-responsive"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-S"></span>
@@ -48,6 +48,8 @@
         : <span><?php print $study->targetNumber->noLimit
             ? t('No limits') : $study->targetNumber->number ?></span>
       </li>
+    </ul>
+    <ul class="nav sm-top-margin">
       <li>
         <?php
         $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
@@ -55,13 +57,26 @@
         $var_caption = $vars < 2 ? "variable" : "variables";
         $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
         $dataset_caption = $datasets < 2 ? "dataset" : "datasets";
+        $networks = $counts->networks;
+        $network_caption = $networks < 2 ? "network" : "networks";
         ?>
-        <span>
-          <?php print ($datasets === 0 ? '' : MicaClientAnchorHelper::study_datasets($datasets, $study->id) . ' ' . $dataset_caption) ?>
-          <?php print ($vars === 0 ? '' : ', ' . MicaClientAnchorHelper::study_variables($vars, $study->id) . ' ' . $var_caption) ?>
-        </span>
+        <?php if (!empty($networks)): ?>
+          <span class="label label-info">
+            <?php print MicaClientAnchorHelper::study_networks(t('@count ' . $network_caption, array('@count' => $networks)), $study->id) ?>
+          </span>
+        <?php endif ?>
+        <?php if (!empty($datasets)): ?>
+          <span class="indent label label-info">
+            <?php print MicaClientAnchorHelper::study_datasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id) ?>
+          </span>
+        <?php endif ?>
+        <?php if (!empty($vars)): ?>
+          <span class="indent label label-info">
+            <?php print MicaClientAnchorHelper::study_variables(t('@count ' . $var_caption, array('@count' => $vars)), $study->id) ?>
+          </span>
+        <?php endif ?>
       </li>
-
+    </ul>
   </div>
 </div>
 

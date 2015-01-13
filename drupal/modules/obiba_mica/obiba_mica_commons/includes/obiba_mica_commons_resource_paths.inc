@@ -67,6 +67,21 @@ class MicaClientAnchorHelper {
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
+  static function study_networks($text, $studyId) {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('studies' => array('terms' => array('studyIds' => $studyId))) //
+    );
+
+    $options = array(
+      'query' => array(
+        'type' => 'networks',
+        'query' => $query
+      )
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
   static function network_studies($text, $networkId) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('networks' => array('terms' => array('id' => $networkId))) //
