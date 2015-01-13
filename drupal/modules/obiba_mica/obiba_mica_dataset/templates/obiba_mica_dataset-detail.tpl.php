@@ -6,6 +6,10 @@
 ?>
 
 <div>
+  <?php if (!empty($dataset_dto->description)): ?>
+      <p class="md-top-margin"><?php print obiba_mica_commons_get_localized_field($dataset_dto, 'description'); ?></p>
+  <?php endif; ?>
+
   <div class="pull-right md-bottom-margin">
     <?php
     $query_array = array("variables" => array("terms" => array("datasetId" => $dataset_dto->id)));
@@ -37,12 +41,6 @@
 <div class="clearfix"></div>
 
 <article>
-
-  <?php if (!empty($dataset_dto->description)): ?>
-    <section>
-      <p class="md-top-margin"><?php print obiba_mica_commons_get_localized_field($dataset_dto, 'description'); ?></p>
-    </section>
-  <?php endif; ?>
 
   <!-- OVERVIEW -->
   <section>
