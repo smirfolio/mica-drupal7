@@ -12,7 +12,7 @@
  *don't forget to clear the theme registry.
  *
  */
-function micado_bootstrap_theme($existing, $type, $theme, $path) {
+function obiba_bootstrap_theme($existing, $type, $theme, $path) {
   $theme_array = array();
 
   $destination_path = file_exists($path . '/templates/obiba_mica_study-list-page.tpl.php');
@@ -249,18 +249,18 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_bootstrap_based_theme().
  */
-function micado_bootstrap_bootstrap_based_theme() {
-  return array('micado_bootstrap' => TRUE);
+function obiba_bootstrap_bootstrap_based_theme() {
+  return array('obiba_bootstrap' => TRUE);
 }
 
 /**
  * Implements hook_preprocess_html().
  */
-function micado_bootstrap_preprocess_html(&$variables) {
+function obiba_bootstrap_preprocess_html(&$variables) {
   drupal_add_css('https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700,700italic', array('type' => 'external'));
 }
 
-function micado_bootstrap_letters_badge_title() {
+function obiba_bootstrap_letters_badge_title() {
   $current_item = explode('/', current_path());
 
   if (!empty($current_item[0]) && $current_item[0] != 'mica') {
@@ -305,11 +305,11 @@ function micado_bootstrap_letters_badge_title() {
  *
  * @see page.tpl.php
  */
-function micado_bootstrap_preprocess_page(&$variables) {
+function obiba_bootstrap_preprocess_page(&$variables) {
   //add badge letter
-  $first_letter_title = micado_bootstrap_letters_badge_title();
+  $first_letter_title = obiba_bootstrap_letters_badge_title();
   if (!empty($first_letter_title)) {
-    $variables['classes_array']['title_page'] = micado_bootstrap_letters_badge_title();
+    $variables['classes_array']['title_page'] = obiba_bootstrap_letters_badge_title();
   }
   drupal_add_js('misc/jquery.cookie.js', 'file');
   // Add information about the number of sidebars.
@@ -335,7 +335,7 @@ function micado_bootstrap_preprocess_page(&$variables) {
 /**
  * Overrides theme_menu_local_action().
  */
-function micado_bootstrap_menu_local_action($variables) {
+function obiba_bootstrap_menu_local_action($variables) {
   $link = $variables['element']['#link'];
 
   $options = isset($link['localized_options']) ? $link['localized_options'] : array();
