@@ -1,0 +1,379 @@
+<?php
+
+/**
+ * Converts a string to a slug, for use in URLs or CSS classes. This function properly replaces
+ *  letters with accents with their non-accented counterparts.
+ *
+ * @param string The string to convert.
+ * @return string The slug.
+ */
+$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
+$path_module_protos = drupal_get_path('module', 'obiba_mica_model');
+
+include_once($path_module_protobuf . '/protobuf/Protobuf.php');
+use \DrSlump\Protobuf;
+
+Protobuf::autoload();
+
+const HEADER_BINARY = 'application/x-protobuf';
+const HEADER_JSON = 'application/json';
+include_once($path_module_protos . '/protos/Mica.php');
+
+function obiba_mica_commons_menu() {
+  $items = array();
+
+  $items['mica/get_fixed_sidebar/%'] = array(
+    'page callback' => 'obiba_mica_commons_fixed_sidebar',
+    'access callback' => TRUE,
+    'page arguments' => array(2)
+  );
+
+  $items['download/%/%/%'] = array(
+    //'title' => t('AutoComp Menu'),
+    'page callback' => 'obiba_mica_commons_download_attachment',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 2, 3)
+  );
+
+  return $items;
+}
+
+function obiba_mica_commons_fixed_sidebar($template) {
+  $output['fixed_menu'] = theme($template, $_SESSION['fixed_menu']);
+  drupal_json_output($output);
+}
+
+function obiba_mica_commons_download_attachment($entity_type, $entity_id, $file_resource_id) {
+  if (!empty($file_resource_id)) {
+    $micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
+    $url = $micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_resource_id . "/_download";
+    $resource_data = drupal_http_request($url);
+    $response_code = floor($resource_data->code / 100) * 100;
+    if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
+      drupal_add_http_header('Content-Type', $resource_data->headers['content-type']);
+      drupal_add_http_header('Content-Disposition', $resource_data->headers['content-disposition']);
+      ob_clean();
+      print $resource_data->data;
+      exit;
+    }
+    else {
+      // dpm(drupal_get_destination());
+      drupal_set_message(t('An error occurred downloading file, server response code : @code, Server message: "@message"',
+          array(
+            '@code' => $response_code,
+            '@message' => $resource_data->error
+          )
+        ),
+        'error');
+      drupal_goto('mica/' . $entity_type . '/' . $entity_id);
+
+    }
+  }
+}
+
+function obiba_mica_commons_to_slug($string) {
+  $string = str_replace(array('/', ' '), '-', $string);
+  $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
+  return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
+}
+
+/**
+ * @param $std The object with localized fields
+ * @param $field The localized field
+ * @param $lang
+ * @return the localized value for this field, with this priority order: $lang, $language->language, 'en' or the first other locale found
+ */
+function obiba_mica_commons_get_localized_field($std, $field, $lang = NULL) {
+  global $language;
+  if (empty($lang)) {
+    $lang = $language->language;
+  }
+  //  $lang='fr';//dpm($std);
+  $value = NULL;
+  if (!empty($std->{$field})) {
+    foreach ($std->{$field} as $field_value) {
+      if (!empty($lang) && $lang == $field_value->lang) {
+        return $field_value->value;
+      }
+      elseif ($field_value->lang == 'en') {
+        $value = $field_value->value;
+      }
+      else {
+        $value = $field_value->value;
+      }
+    }
+  }
+  elseif (is_array($std) && !empty($std[$field])) {
+    foreach ($std[$field] as $field_value) {
+      if (!empty($lang) && $lang == $field_value['lang']) {
+        return $field_value['value'];
+      }
+      elseif ($field_value['lang'] == 'en') {
+        $value = $field_value['value'];
+      }
+      else {
+        $value = $field_value['value'];
+      }
+    }
+  }
+  return $value;
+}
+
+/**
+ * @param $std The object with localized fields
+ * @param $field The localized field
+ * @param $lang
+ * @return the localized value for this field, with this priority order: $lang, $language->language, 'en' or the first other locale found
+ */
+
+function obiba_mica_commons_get_localized_dtos_field($std, $field, $lang = NULL) {
+  $value = array();
+  foreach ($std->{$field} as $items) {
+    $value[] = obiba_mica_commons_get_localized_field($items, 'localizedStrings');
+  }
+  return $value;
+}
+
+/**
+ * @param $limit
+ *
+ * @return text 'no limit' fin $limit is Null
+ */
+function obiba_mica_commons_get_if_no_limit($limit) {
+  if (!empty($limit)) {
+    return t('No limit');
+  }
+}
+
+/*
+ * @param $iso_country
+ * @return CamelCase Country name
+ * */
+function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters = NULL, $method = NULL) {
+  $i = 0;
+  $total_item = count($fields);
+  foreach ($fields as $field) {
+    if (!empty($callback)) {
+      if (empty($parameters)) {
+        print   call_user_func($callback, $field);
+      }
+      elseif (empty($method)) {
+        print   call_user_func_array($callback, array($field, $parameters));
+      }
+      else {
+        try {
+          $user_func = call_user_func_array($callback, array($field, $parameters));
+          if (!empty($user_func->{$method})) {
+            print $user_func->{$method};
+          }
+          else {
+            print $field;
+          }
+        }
+        catch (Exception $e) {
+          dpm($e->getMessage());
+          dpm($callback);
+          dpm($field);
+          dpm($parameters);
+          dpm($method);
+          print $field;
+        }
+      }
+
+    }
+    else {
+      print $field;
+    }
+    if ($i + 1 < $total_item) {
+      print ', ';
+    }
+    $i++;
+  }
+
+}
+
+function _obiba_mica_commons_normalize_rows(&$dce_rows) {
+  foreach ($dce_rows as &$dce_row) {
+    $dce_row['data']['start'] = obiba_mica_commons_format_year($dce_row['data']['start_year'], $dce_row['data']['start_month']);
+    $dce_row['data']['end'] = obiba_mica_commons_format_year($dce_row['data']['end_year'], $dce_row['data']['end_month']);
+    unset($dce_row['data']['start_year']);
+    unset($dce_row['data']['start_month']);
+    unset($dce_row['data']['end_year']);
+    unset($dce_row['data']['end_month']);
+    unset($dce_row['data']['created']);
+  }
+}
+
+function obiba_mica_commons_get_month_name($month) {
+  global $language;
+  return format_date(mktime(0, 0, 0, $month, 1, 2013), 'custom', 'F', NULL, $language->language);
+}
+
+function obiba_mica_commons_convert_to_month($year, $month) {
+  return $year * 12 + $month;
+}
+
+function obiba_mica_commons_format_year($year, $month) {
+  if (empty($year)) {
+    return '';
+  }
+  return empty($month) ? "$year" : "$year (" . obiba_mica_commons_get_month_name($month) . ")";
+}
+
+function obiba_mica_commons_add_page($title, $body_html, $alias = NULL, $format = 'full_html') {
+
+  $page_wrapper = entity_property_values_create_entity(
+    'node',
+    array(
+      'type' => 'page',
+      'title' => $title,
+      'title_field' => $title,
+      'body' => array(
+        'value' => $body_html,
+        'format' => $format,
+      ),
+      'language' => LANGUAGE_NONE,
+      'comment' => COMMENT_NODE_CLOSED,
+    )
+  )->save();
+
+  if (isset($alias)) {
+    $path = array('alias' => $alias);
+    $path['source'] = 'node/' . $page_wrapper->getIdentifier();
+    $path['language'] = LANGUAGE_NONE;
+    path_save($path);
+  }
+
+  return $page_wrapper->value();
+}
+
+/**
+ * Check if current theme is based on Twitter Bootstrap
+ */
+function obiba_mica_commons_is_bootstrap_based_theme() {
+  // cannot use module_invoke_all() because hook are invoked only for modules
+  $current_theme = obiba_mica_commons_get_current_theme();
+  $function = $current_theme . '_bootstrap_based_theme';
+  if (function_exists($function)) {
+    $result = call_user_func_array($function, array());
+    return !empty($result) && is_array($result) && isset($result[$current_theme]) ? $result[$current_theme] : FALSE;
+  }
+  return FALSE;
+}
+
+function obiba_mica_commons_get_current_theme() {
+  global $custom_theme, $theme, $user;
+
+  if (!empty($user->theme)) {
+    return $user->theme;
+  }
+  if (!empty($custom_theme)) {
+    return $custom_theme;
+  }
+  return $theme ? $theme : 'micado_bootstrap';
+}
+
+function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no_name = TRUE) {
+  global $language;
+  if ($no_name) {
+    $sort_name = 'name.' . $language->language;
+  }
+  if ($no_acronym) {
+    $sort_acronym = 'acronym.' . $language->language;
+    $options = array_merge(array($sort_name => t('Name'), $sort_acronym => t('Acronym')), $context['options']);
+  }
+  else {
+    $options = array_merge(array($sort_name => t('Name')), $context['options']);
+  }
+  $form = array();
+  $form['#id'] = 'obiba-mica-search-form';
+  $form['#method'] = 'get';
+  $form['#prefix'] = '<div class="inline-form">';
+  $form['#suffix'] = '</div>';
+  $form['search-sort'] = array(
+    '#type' => 'select',
+    '#title' => '',
+    '#description' => t('Sort by'),
+    '#options' => $options,
+    '#default_value' => !empty($_GET['search-sort']) ? $_GET['search-sort'] : NULL,
+    '#prefix' => '<div class="right-indent md-width">',
+    '#suffix' => '</div>',
+  );
+
+  $form['search-sort-order'] = array(
+    '#type' => 'select',
+    '#title' => '',
+    '#description' => 'Sort order',
+    '#options' => array(
+      'asc' => t('ASC'),
+      'desc' => t('DESC'),
+    ),
+    '#default_value' => !empty($_GET['search-sort-order']) ? $_GET['search-sort-order'] : NULL,
+    '#prefix' => '<div class="right-indent md-width">',
+    '#suffix' => '</div>',
+
+  );
+
+  $form['search-query'] = array(
+    '#type' => 'textfield',
+    '#title' => '',
+    '#description' => 'Filter by',
+    '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
+    '#prefix' => '<div class="right-indent lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+    '#suffix' => '</div></div>',
+  );
+
+  return $form;
+}
+
+function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type) {
+  $attached_resource = & drupal_static(__FUNCTION__);
+  if (!isset($attached_resource)) {
+    $cached_attached_resources = cache_get($entity_id . '-' . $file_resource->id);
+
+    if (!empty($cached_attached_resources)) {
+      return $cached_attached_resources->data;
+    }
+    else {
+      if (!empty($file_resource)) {
+        $micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
+        $url = $micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/"
+          . $file_resource->id . "/_download";
+        $resource_data = drupal_http_request($url);
+        $response_code = floor($resource_data->code / 100) * 100;
+        if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
+          $extension_file = _obiba_mica_commons_get_extention_file($file_resource);
+          $file = file_unmanaged_save_data($resource_data->data, 'public://tmp' . $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
+          $exposed_url = file_create_url($file);
+          cache_set($entity_id . '-' . $file_resource->id, $exposed_url, 'cache', time() + 1800);
+          return $exposed_url;
+        }
+        else {
+          return NULL;
+        }
+      }
+    }
+  }
+  return NULL;
+}
+
+function _obiba_mica_commons_get_extention_file($file_resource) {
+  $file_array = explode('.', $file_resource->fileName);
+  $extension_file = count($file_array);
+
+  return $file_array[$extension_file - 1];
+}
+
+/**
+ * Transform a markdown text into html and wrap it in a div with 'markdown' class.
+ * @param $text
+ * @return string
+ */
+function obiba_mica_commons_markdown($text) {
+  if (!empty($text)) {
+    module_load_include('php', 'obiba_mica_commons', 'includes/Parsedown');
+    $formatter = new Parsedown();
+    return '<div class="markdown">' . $formatter->text($text) . '</div>';
+  }
+  return $text;
+}

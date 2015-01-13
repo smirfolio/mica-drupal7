@@ -7,7 +7,7 @@
 
 /*
  * Hook to override default theme pages
- *  copy '<modules>/mica_client_study/templates/'   files in current theme 'templates/' path
+ *  copy '<modules>/obiba_mica_study/templates/'   files in current theme 'templates/' path
  * you can modify default display of listed page by rearrange block field
  *don't forget to clear the theme registry.
  *
@@ -15,34 +15,34 @@
 function micado_bootstrap_theme($existing, $type, $theme, $path) {
   $theme_array = array();
 
-  $destination_path = file_exists($path . '/templates/mica_client_study-list-page.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study-list-page.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_list-page'] = array(
-      'template' => 'mica_client_study-list-page',
+    $theme_array['obiba_mica_study_list-page'] = array(
+      'template' => 'obiba_mica_study-list-page',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study-list-page-block.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study-list-page-block.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study-list-page-block'] = array(
-      'template' => 'mica_client_study-list-page-block',
+    $theme_array['obiba_mica_study-list-page-block'] = array(
+      'template' => 'obiba_mica_study-list-page-block',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study_search.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_search'] = array(
-      'template' => 'mica_client_study_search',
+    $theme_array['obiba_mica_study_search'] = array(
+      'template' => 'obiba_mica_study_search',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study_detail.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study_detail.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_detail'] = array(
-      'template' => 'mica_client_study_detail',
+    $theme_array['obiba_mica_study_detail'] = array(
+      'template' => 'obiba_mica_study_detail',
       'path' => $path . '/templates'
     );
   }
@@ -55,7 +55,7 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study-dce-detail.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study-dce-detail.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['mica_dce_detail'] = array(
       'template' => 'mica_dce_detail',
@@ -63,7 +63,7 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study-contact-detail.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study-contact-detail.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['mica_contact_detail'] = array(
       'template' => 'mica_contact_detail',
@@ -71,173 +71,173 @@ function micado_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study_attachments.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study_attachments.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_attachments'] = array(
-      'template' => 'mica_client_study_attachments',
+    $theme_array['obiba_mica_study_attachments'] = array(
+      'template' => 'obiba_mica_study_attachments',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study_block_search.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study_block_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_block_search'] = array(
-      'template' => 'mica_client_study_block_search',
+    $theme_array['obiba_mica_study_block_search'] = array(
+      'template' => 'obiba_mica_study_block_search',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_dataset-detail.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_dataset-detail.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_dataset-detail'] = array(
-      'template' => 'mica_client_dataset-detail',
+    $theme_array['obiba_mica_dataset-detail'] = array(
+      'template' => 'obiba_mica_dataset-detail',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_dataset-tables.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_dataset-tables.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_dataset-tables'] = array(
-      'template' => 'mica_client_dataset-tables',
+    $theme_array['obiba_mica_dataset-tables'] = array(
+      'template' => 'obiba_mica_dataset-tables',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_dataset-harmonization-table-legend.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_dataset-harmonization-table-legend.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_dataset-harmonization-table-legend'] = array(
-      'template' => 'mica_client_dataset-harmonization-table-legend',
+    $theme_array['obiba_mica_dataset-harmonization-table-legend'] = array(
+      'template' => 'obiba_mica_dataset-harmonization-table-legend',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/block--mica_client_facet_search.tpl.php');
+  $destination_path = file_exists($path . '/templates/block--obiba_mica_facet_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['block__mica_client_facet_search.tpl.php'] = array(
+    $theme_array['block__obiba_mica_facet_search.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'block--mica_client_facet_search',
+      'template' => 'block--obiba_mica_facet_search',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_variable-search.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_variable-search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_variable-search.tpl.php'] = array(
+    $theme_array['obiba_mica_facet_search_variable-search.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_facet_search_variable-search',
+      'template' => 'obiba_mica_facet_search_variable-search',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_coverage.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_coverage.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_coverage.tpl.php'] = array(
-      'template' => 'mica_client_facet_search_coverage',
+    $theme_array['obiba_mica_facet_search_coverage.tpl.php'] = array(
+      'template' => 'obiba_mica_facet_search_coverage',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_vocabulary_coverage.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_vocabulary_coverage.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_vocabulary_coverage.tpl.php'] = array(
-      'template' => 'mica_client_facet_search_vocabulary_coverage',
+    $theme_array['obiba_mica_facet_search_vocabulary_coverage.tpl.php'] = array(
+      'template' => 'obiba_mica_facet_search_vocabulary_coverage',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_input_text_range.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_input_text_range.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_input_text_range.tpl.php'] = array(
+    $theme_array['obiba_mica_facet_search_input_text_range.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_facet_search_input_text_range',
+      'template' => 'obiba_mica_facet_search_input_text_range',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_checkbox_term.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_checkbox_term.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_checkbox_term.tpl.php'] = array(
+    $theme_array['obiba_mica_facet_search_checkbox_term.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_facet_search_checkbox_term',
+      'template' => 'obiba_mica_facet_search_checkbox_term',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_tab_block.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_tab_block.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_tab_block.tpl.php'] = array(
+    $theme_array['obiba_mica_facet_search_tab_block.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_facet_search_tab_block',
+      'template' => 'obiba_mica_facet_search_tab_block',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_charts.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_charts.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_charts.tpl.php'] = array(
+    $theme_array['obiba_mica_facet_search_charts.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_facet_search_charts',
+      'template' => 'obiba_mica_facet_search_charts',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_vocabulary_charts.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_vocabulary_charts.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_vocabulary_charts.tpl.php'] = array(
-      'template' => 'mica_client_facet_search_vocabulary_charts',
+    $theme_array['obiba_mica_facet_search_vocabulary_charts.tpl.php'] = array(
+      'template' => 'obiba_mica_facet_search_vocabulary_charts',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_network-detail.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_network-detail.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_network-detail.tpl.php'] = array(
+    $theme_array['obiba_mica_network-detail.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_network-detail',
+      'template' => 'obiba_mica_network-detail',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_network-list-page-block.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_network-list-page-block.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_network-list-page-block'] = array(
-      'template' => 'mica_client_network-list-page-block',
+    $theme_array['obiba_mica_network-list-page-block'] = array(
+      'template' => 'obiba_mica_network-list-page-block',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_network-list.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_network-list.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_network-list.tpl.php'] = array(
+    $theme_array['obiba_mica_network-list.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_network-list',
+      'template' => 'obiba_mica_network-list',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_facet_search_fixed_sidebar.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_fixed_sidebar.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_facet_search_fixed_sidebar.tpl.php'] = array(
+    $theme_array['obiba_mica_facet_search_fixed_sidebar.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_facet_search_fixed_sidebar',
+      'template' => 'obiba_mica_facet_search_fixed_sidebar',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_study_fixed_sidebar.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_study_fixed_sidebar.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_study_fixed_sidebar.tpl.php'] = array(
+    $theme_array['obiba_mica_study_fixed_sidebar.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_study_fixed_sidebar',
+      'template' => 'obiba_mica_study_fixed_sidebar',
       'path' => $path . '/templates'
     );
   }
 
-  $destination_path = file_exists($path . '/templates/mica_client_variable_harmonization_algorithm.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_variable_harmonization_algorithm.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['mica_client_variable_harmonization_algorithm.tpl.php'] = array(
+    $theme_array['obiba_mica_variable_harmonization_algorithm.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'mica_client_variable_harmonization_algorithm',
+      'template' => 'obiba_mica_variable_harmonization_algorithm',
       'path' => $path . '/templates'
     );
   }
@@ -286,7 +286,8 @@ function micado_bootstrap_letters_badge_title() {
     elseif (strstr($current_item[1], 'search')) {
       if (!empty($_GET['type'])) {
         return drupal_strtoupper(drupal_substr($_GET['type'], 0, 1));
-      } else {
+      }
+      else {
         return 'V';
       }
     }
