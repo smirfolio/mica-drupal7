@@ -1,11 +1,15 @@
 <?php
+
+/*
+ * @file code for network detail pages
+ * */
 include_once('includes/obiba_mica_network_resource.inc');
 
 $path_module_study = drupal_get_path('module', 'obiba_mica_study');
 include_once($path_module_study . '/obiba_mica_study-page-detail.inc');
 
 function obiba_mica_network_page_detail($network_id) {
-  $url_param = explode('?', $_SERVER['REQUEST_URI']);
+  $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
   }
@@ -18,7 +22,7 @@ function obiba_mica_network_page_detail($network_id) {
     drupal_set_title(obiba_mica_commons_get_localized_field($network_dto, 'name'));
 
     drupal_set_breadcrumb(array(
-      l('Home', '<front>'),
+      l(t('Home'), '<front>'),
       l(t('Networks'), 'mica/networks'),
     ));
 

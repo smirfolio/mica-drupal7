@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @file  code for obiba_mica_commons module
+ * */
+
 /**
  * Converts a string to a slug, for use in URLs or CSS classes. This function properly replaces
  *  letters with accents with their non-accented counterparts.
@@ -45,8 +49,8 @@ function obiba_mica_commons_fixed_sidebar($template) {
 
 function obiba_mica_commons_download_attachment($entity_type, $entity_id, $file_resource_id) {
   if (!empty($file_resource_id)) {
-    $micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
-    $url = $micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_resource_id . "/_download";
+    $mica_url = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
+    $url = $mica_url . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_resource_id . "/_download";
     $resource_data = drupal_http_request($url);
     $response_code = floor($resource_data->code / 100) * 100;
     if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
@@ -318,7 +322,7 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Filter by',
-    '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
+    '#default_value' => !empty($_GET['search-query']) ? check_plain($_GET['search-query']) : NULL,
     '#prefix' => '<div class="right-indent lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
     '#suffix' => '</div></div>',
   );
@@ -336,8 +340,8 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
     }
     else {
       if (!empty($file_resource)) {
-        $micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
-        $url = $micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/"
+        $mica_url = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
+        $url = $mica_url . "/" . $entity_type . "/" . $entity_id . "/file/"
           . $file_resource->id . "/_download";
         $resource_data = drupal_http_request($url);
         $response_code = floor($resource_data->code / 100) * 100;

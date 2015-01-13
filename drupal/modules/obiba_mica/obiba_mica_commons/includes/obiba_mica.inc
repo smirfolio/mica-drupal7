@@ -48,7 +48,7 @@ class MicaClient {
   const PAGINATE_datasets = 2;
   const PAGINATE_networks = 3;
 
-  protected $micaUrl;
+  protected $mica_url;
 
   private $lastResponse;
 
@@ -421,7 +421,7 @@ class MicaClient {
    * @return string
    */
   static function add_parameter_dto_query_link(array $param_to_add) {
-    $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+    $url_parm = explode('?', request_uri());
     if (!empty($url_parm[1])) {
       parse_str($url_parm[1], $parts);
       if (!empty($parts['query'])) {

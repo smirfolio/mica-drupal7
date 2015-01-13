@@ -1,4 +1,7 @@
 <?php
+/*
+ * @file code for resource to configure facet search
+ * */
 
 function obiba_mica_facet_search_resource_return_facets($dto_type = NULL) {
   $path_module = drupal_get_path('module', 'obiba_mica_facet_search');
@@ -56,11 +59,11 @@ function obiba_mica_facet_search_precess_block_theme($block_delta, $type) {
   $aggregation_facet = NULL;
 
   $type_string = $type . ':';
-  $totalHits = NULL;
-  $totalCount = NULL;
+  $total_hits = NULL;
+  $total_count = NULL;
   if (!empty($type) && !empty($_SESSION[$type]['aggregations'])) {
-    $totalHits = $_SESSION[$type]['aggregations']['totalHits'];
-    $totalCount = $_SESSION[$type]['aggregations']['totalCount'];
+    $total_hits = $_SESSION[$type]['aggregations']['totalHits'];
+    $total_count = $_SESSION[$type]['aggregations']['totalCount'];
   }
 
   if (!empty($block_delta)) {
@@ -72,7 +75,7 @@ function obiba_mica_facet_search_precess_block_theme($block_delta, $type) {
       $terms_aggregations = current($facet_pars);
       if (!empty($terms_aggregations) && !empty($terms_aggregations['term'])) {
         $agg_type = "terms";
-        $items = obiba_mica_facet_search_get_checkbox_term_field($terms_aggregations['term'], $type_string, $aggregation_facet, $totalHits, $totalCount);
+        $items = obiba_mica_facet_search_get_checkbox_term_field($terms_aggregations['term'], $type_string, $aggregation_facet, $total_hits, $total_count);
       }
       if (!empty($terms_aggregations) && !empty($terms_aggregations['range'])) {
         $agg_type = "range";
@@ -169,7 +172,7 @@ function obiba_mica_facet_search_get_matched_agg_entries($type, $aggregation, $t
   return new ArrayObject();
 }
 
-function obiba_mica_facet_search_get_checkbox_term_field($fields_terms, $type_string, $aggregation_facet, $totalHits = NULL, $totalCount = NULL) {
+function obiba_mica_facet_search_get_checkbox_term_field($fields_terms, $type_string, $aggregation_facet, $total_hits = NULL, $total_count = NULL) {
   $key = 1;
   uasort($fields_terms, 'obiba_mica_facet_search_sort_terms');
   foreach ($fields_terms as $term) {
@@ -186,8 +189,8 @@ function obiba_mica_facet_search_get_checkbox_term_field($fields_terms, $type_st
       'aggregation_facet' => $aggregation_facet,
       'type_string' => $type_string,
       'term' => !empty($term) ? $term : '',
-      'totalHits' => $totalHits,
-      'totalCount' => $totalCount,
+      'totalHits' => $total_hits,
+      'totalCount' => $total_count,
       'query_request' => $query_request
     ));
 

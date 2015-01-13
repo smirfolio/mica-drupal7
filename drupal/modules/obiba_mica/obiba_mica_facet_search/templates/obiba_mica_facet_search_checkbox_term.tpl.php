@@ -9,12 +9,12 @@
         $tooltip = empty($term->description) ? (strlen($title) < 30 ? '' : $title) : $term->description
         ?>
         <span id="checkthebox"
-              class="term-field <?php print $type_string . $aggregation_facet; ?> unchecked"
-              aggregation="<?php print $type_string . $aggregation_facet . '[]'; ?>"
-              value="<?php print  $title; ?>"
-              data-value="<?php print  $term->key; ?>"
-              data-toggle="tooltip"
-              title="<?php print $tooltip ?>">
+          class="term-field <?php print $type_string . $aggregation_facet; ?> unchecked"
+          aggregation="<?php print $type_string . $aggregation_facet . '[]'; ?>"
+          value="<?php print  $title; ?>"
+          data-value="<?php print  $term->key; ?>"
+          data-toggle="tooltip"
+          title="<?php print $tooltip ?>">
           <i class="glyphicon glyphicon-unchecked"></i>
 <!--          --><?php //print  truncate_utf8($title, $term->count > 0 ? 25 : 35, TRUE, TRUE); ?>
           <?php print $title ?>
@@ -30,7 +30,7 @@
       <?php if (!$query_request): ?>
         <td class='term-count'>
           <span data-toggle="tooltip" data-placement="top"
-                title="All"><?php print $term->default; ?></span>
+            title="All"><?php print $term->default; ?></span>
         </td>
       <?php elseif (($term->count != $term->default) || ($_SESSION['request-search-response'] == 'empty')) : ?>
         <td class='term-default'>

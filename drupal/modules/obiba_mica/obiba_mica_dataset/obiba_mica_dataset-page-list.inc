@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @file Code to dataset list page
+ * */
+
 include_once('includes/obiba_mica_dataset_resource.inc');
 
 function obiba_mica_dataset_get_datasets_list() {
@@ -40,8 +44,8 @@ function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
 
   $resource_dataset = obiba_mica_dataset_correct_resource_server($dataset_resource);
   $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset);
-  $totalHits = empty($response) ? 0 : $response->getTotalHits();
-  pager_default_initialize($totalHits, MicaClient::SIZE_RESPONSE_SM);
+  $total_hits = empty($response) ? 0 : $response->getTotalHits();
+  pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE_SM);
   $pager_output = theme('pager', array('quantity' => MicaClient::SIZE_RESPONSE_SM));
   $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
@@ -57,7 +61,7 @@ function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
   return theme('obiba_mica_dataset-list', array(
     "form_search" => drupal_get_form('obiba_mica_dataset_create_form'),
     'node_page' => $node_view,
-    "total_items" => $totalHits,
+    "total_items" => $total_hits,
     'list_datasets' => $list_datasets,
     'pager_wrap' => $pager_output,
     'dataset_type' => $dataset_resource

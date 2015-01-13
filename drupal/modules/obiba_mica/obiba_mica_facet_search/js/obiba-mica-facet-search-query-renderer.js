@@ -1,3 +1,8 @@
+/**
+ * @file
+ * JScript code for query builder parser
+ */
+
 (function ($) {
 
   "use strict";

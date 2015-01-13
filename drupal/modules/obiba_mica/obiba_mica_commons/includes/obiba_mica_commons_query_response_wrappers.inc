@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @file code to implement response server wrapper
+ * */
+
 abstract class AbstractResponseWrapper {
   const STUDY_RESULT_EXTENSION_ID = 'obiba.mica.StudyResultDto.result';
   const NETWORK_RESULT_EXTENSION_ID = 'obiba.mica.NetworkResultDto.result';
@@ -117,10 +121,10 @@ class StudyJoinResponseWrapper extends AbstractResponseWrapper {
     return $this->hasSummaries() ? $this->documentDto->{self::STUDY_RESULT_EXTENSION_ID}->summaries : array();
   }
 
-  function getNetworkDigests($studyId) {
+  function getNetworkDigests($study_id) {
     $networks = array();
-    if (!empty($this->studyToNetwork[$studyId])) {
-      $networks = $this->studyToNetwork[$studyId];
+    if (!empty($this->studyToNetwork[$study_id])) {
+      $networks = $this->studyToNetwork[$study_id];
     }
     return empty($networks) ? array() : $networks;
   }
@@ -131,21 +135,21 @@ class StudyJoinResponseWrapper extends AbstractResponseWrapper {
     }
 
     foreach ($this->getSummaries() as $study) {
-      $studyId = $study->id;
-      $networks = $this->mapNetwork($studyId);
+      $study_id = $study->id;
+      $networks = $this->mapNetwork($study_id);
       if (!empty($networks)) {
-        $this->studyToNetwork[$studyId] = $networks;
+        $this->studyToNetwork[$study_id] = $networks;
       }
     }
   }
 
-  private function mapNetwork($studyId) {
+  private function mapNetwork($study_id) {
     $networkDtoWrapper = new NetworkJoinResponseWrapper($this->dto);
     if (!$networkDtoWrapper->isEmpty() && $networkDtoWrapper->hasDigsts()) {
       return array_filter($networkDtoWrapper->getDigests(), //
-        function ($network) use ($studyId) {
+        function ($network) use ($study_id) {
           $studies = $network->{'obiba.mica.NetworkDigestDto.studies'};
-          return !empty($studies) && !empty($studies->ids) && in_array($studyId, $studies->ids);
+          return !empty($studies) && !empty($studies->ids) && in_array($study_id, $studies->ids);
         }
       );
     }

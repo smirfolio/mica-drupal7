@@ -1,3 +1,8 @@
+/**
+ * @file
+ * JavaScript ajax helper for Statistics variables retrieving
+ */
+
 (function ($) {
 
   Drupal.behaviors.obiba_mica_variable = {

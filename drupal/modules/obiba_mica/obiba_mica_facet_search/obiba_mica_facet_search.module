@@ -1,4 +1,7 @@
 <?php
+/*
+ * @file code for obiba_mica_facet_search module
+ * */
 $path_module_protobuf = drupal_get_path('module', 'obiba_mica_study');
 include_once($path_module_protobuf . '/obiba_mica_study-page-list.inc');
 
@@ -15,7 +18,7 @@ function obiba_mica_facet_search_menu() {
 
   $items['mica/search'] = array(
     'title' => 'Search',
-    'description' => t('Search'),
+    'description' => 'Search',
     'page callback' => 'obiba_mica_facet_search_variable_page_search',
     'menu_name' => 'main-menu',
     'weight' => 10,
@@ -24,14 +27,14 @@ function obiba_mica_facet_search_menu() {
 
   $items['mica/coverage'] = array(
     'title' => 'Classifications Coverage',
-    'description' => t('Classifications Coverage'),
+    'description' => 'Classifications Coverage',
     'page callback' => 'obiba_mica_facet_search_coverage_page',
     'access callback' => TRUE
   );
 
   $items['mica/studies_search/%'] = array(
-    'title' => t('Studies Search'),
-    'description' => t('Search published studies'),
+    'title' => 'Studies Search',
+    'description' => 'Search published studies',
     'page callback' => 'obiba_mica_facet_search_study_page_search',
     'access callback' => TRUE,
     'page arguments' => array(2)
@@ -127,7 +130,7 @@ function obiba_mica_commons_create_facet_search_query_form($arg) {
     '#type' => 'textfield',
     '#title' => '',
     '#description' => 'Filter by',
-    '#default_value' => !empty($_GET['search-query']) ? $_GET['search-query'] : NULL,
+    '#default_value' => !empty($_GET['search-query']) ? check_plain($_GET['search-query']) : NULL,
     '#prefix' => '<div class="lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>',
     '#suffix' => "</div></div>",
     '#attributes' => array('id' => $input_id, 'name' => $input_id)
@@ -299,12 +302,12 @@ function obiba_mica_facet_search_load_libs() {
   drupal_add_js($module_path_ . '/js/obiba-mica-facet-search-query-renderer.js');
   drupal_add_js(array(
     'obiba_mica_facet' => array('facet_conf' => $facet_conf),
-    'terms_dictionary' => createTermsDictionary()
+    'terms_dictionary' => obiba_mica_facet_search_create_terms_dictionary()
   ), 'setting');
 
 }
 
-function createTermsDictionary() {
+function obiba_mica_facet_search_create_terms_dictionary() {
   $dictionary = array();
   if (!empty($_SESSION['variables'])) {
     foreach ($_SESSION['variables']['aggregations'] as $aggregation) {
@@ -343,7 +346,7 @@ function createTermsDictionary() {
  * @return tab parameter if exist
  * */
 function obiba_mica_facet_search_get_url_tab_parameter() {
-  $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+  $url_parm = explode('?', request_uri());
   $type = 'variables';
   if (!empty($url_parm[1])) {
     parse_str($url_parm[1], $parts);
@@ -410,7 +413,7 @@ function obiba_mica_facet_search_variable_page_search() {
     $variables = $join_query_response->getVariableResponseWrapper();
   }
 
-  $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+  $url_parm = explode('?', request_uri());
   if (!empty($url_parm[1])) {
     parse_str($url_parm[1], $parts);
   }
@@ -470,7 +473,7 @@ function obiba_mica_facet_search_coverage_page() {
     'template' => 'obiba_mica_facet_search_fixed_sidebar'
   ), 'setting');
   obiba_mica_facet_search_load_libs();
-  $url_param = explode('?', $_SERVER['REQUEST_URI']);
+  $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
   }
@@ -554,11 +557,11 @@ function obiba_mica_facet_search_study_page_search() {
 
 function obiba_mica_facet_search_variables_table($variables) {
   $rows = array();
-  $totalHits = 0;
+  $total_hits = 0;
   $has_study = FALSE;
 
   if (!empty($variables)) {
-    $totalHits = $variables->getTotalHits();
+    $total_hits = $variables->getTotalHits();
     $summaries = $variables->getSummaries();
     foreach ($summaries as $variable) {
       $name = $variable->name;
@@ -601,7 +604,7 @@ function obiba_mica_facet_search_variables_table($variables) {
   if ($has_study) {
     $headers[] = t('Study');
   }
-  pager_default_initialize($totalHits, MicaSearchResource::SIZE_RESPONSE);
+  pager_default_initialize($total_hits, MicaSearchResource::SIZE_RESPONSE);
   return '<div class="scroll-content-tab">' . theme(
     'table',
     array(
@@ -615,10 +618,10 @@ function obiba_mica_facet_search_variables_table($variables) {
 
 function obiba_mica_facet_search_studies_table($studies) {
   $rows = array();
-  $totalHits = 0;
+  $total_hits = 0;
 
   if (!empty($studies)) {
-    $totalHits = $studies->getTotalHits();
+    $total_hits = $studies->getTotalHits();
     $summaries = $studies->getSummaries();
     $rows[] = array(
       '',
@@ -746,7 +749,7 @@ function obiba_mica_facet_search_studies_table($studies) {
     array('data' => t('Variables'), 'class' => 'col-sm-1'),
   );
 
-  pager_default_initialize($totalHits, MicaClient::SIZE_RESPONSE);
+  pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
   return '<div class="scroll-content-tab">' . theme(
     'table',
     array(
@@ -761,8 +764,8 @@ function obiba_mica_facet_search_studies_table($studies) {
   ) . '</div>' . theme('pager');
 }
 
-function obiba_mica_facet_search_has_datasource($dataSources, $value) {
-  foreach ($dataSources as $value_term) {
+function obiba_mica_facet_search_has_datasource($data_sources, $value) {
+  foreach ($data_sources as $value_term) {
     if ($value_term == $value) {
       return TRUE;
     }
@@ -772,10 +775,10 @@ function obiba_mica_facet_search_has_datasource($dataSources, $value) {
 
 function obiba_mica_facet_search_datasets_table($datasets) {
   $rows = array();
-  $totalHits = 0;
+  $total_hits = 0;
 
   if (!empty($datasets)) {
-    $totalHits = $datasets->getTotalHits();
+    $total_hits = $datasets->getTotalHits();
     $summaries = $datasets->getSummaries();
     foreach ($summaries as $dataset) {
       $query_datasets_param =
@@ -841,7 +844,7 @@ function obiba_mica_facet_search_datasets_table($datasets) {
     t('Variables'),
   );
 
-  pager_default_initialize($totalHits, MicaClient::SIZE_RESPONSE);
+  pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
   return '<div class="scroll-content-tab">' . theme(
     'table',
     array(
@@ -854,10 +857,10 @@ function obiba_mica_facet_search_datasets_table($datasets) {
 
 function obiba_mica_facet_search_networks_table($networks) {
   $rows = array();
-  $totalHits = 0;
+  $total_hits = 0;
 
   if (!empty($networks)) {
-    $totalHits = $networks->getTotalHits();
+    $total_hits = $networks->getTotalHits();
     $rows[] = array(
       '',
       '',
@@ -946,7 +949,7 @@ function obiba_mica_facet_search_networks_table($networks) {
     t('Variables'),
   );
 
-  pager_default_initialize($totalHits, MicaClient::SIZE_RESPONSE);
+  pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
 
   return '<div class="scroll-content-tab">' . theme(
     'table',
@@ -965,12 +968,12 @@ function obiba_mica_facet_search_networks_table($networks) {
 function obiba_mica_facet_search_get_studies_count_from_dto($dto) {
   $studies = array();
   $count_study = 0;
-  $studyIds = array();
-  foreach ($dto->studyIds as $studyId) {
+  $study_ids = array();
+  foreach ($dto->studyIds as $study_id) {
     $studies['count'] = ++$count_study;
-    $studyIds[] = $studyId;
+    $study_ids[] = $study_id;
   }
-  $studies['ids'] = $studyIds;
+  $studies['ids'] = $study_ids;
   return $studies;
 }
 

@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @file
+ * Code to perform installation operations
+ * */
 function obiba_mica_network_install() {
   obiba_mica_network_create_node();
 }

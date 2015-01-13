@@ -1,3 +1,8 @@
+/**
+ * @file
+ * JsScript to initialise dataTables widgets
+ */
+
 (function ($) {
   Drupal.behaviors.micaDataset_Datatable_init = {
 

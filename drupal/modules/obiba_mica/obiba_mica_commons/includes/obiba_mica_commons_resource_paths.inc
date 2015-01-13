@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @file class definition path server resources
+ * */
+
 class MicaClientPathProvider {
   const STUDIES = 'mica/studies';
   const STUDY = 'mica/study/{id}';
@@ -33,9 +37,9 @@ class MicaClientPathProvider {
 
 class MicaClientAnchorHelper {
 
-  static function study_datasets($text, $studyId) {
+  static function study_datasets($text, $study_id) {
     $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('studyIds' => $studyId))) //
+      array('variables' => array('terms' => array('studyIds' => $study_id))) //
     );
 
     $options = array(
@@ -48,9 +52,9 @@ class MicaClientAnchorHelper {
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
-  static function study_variables($text, $studyId) {
+  static function study_variables($text, $study_id) {
     $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('studyIds' => $studyId))) //
+      array('variables' => array('terms' => array('studyIds' => $study_id))) //
     );
 
     $options = array(

@@ -1,3 +1,8 @@
+/**
+ * @file
+ * JavaScript ajax helper for Algorithm variables retrieving
+ */
+
 (function ($) {
   Drupal.behaviors.micaDataset_variable_harmo_algo_datable_init = {
 

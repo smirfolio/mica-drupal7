@@ -1,4 +1,7 @@
-/*! mica-study-timeline - v1.0.0-SNAPSHOT
+/**
+ * @file
+ * code timeline configuration
+ * ! mica-study-timeline - v1.0.0-SNAPSHOT
  *  License: GNU Public License version 3
  *  Date: 2014-06-26
  */

@@ -1,3 +1,8 @@
+/**
+ * @file
+ * JScript code for dealing with collapsible blocks
+ */
+
 (function ($) {
   Drupal.behaviors.obiba_mica_facet_search_collapse_block = {
     attach: function (context, settings) {

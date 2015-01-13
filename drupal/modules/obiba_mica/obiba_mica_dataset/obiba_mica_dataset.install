@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @file code to perform module installation operations
+ * */
+
 function obiba_mica_dataset_install() {
   obiba_mica_dataset_create_node();
 }

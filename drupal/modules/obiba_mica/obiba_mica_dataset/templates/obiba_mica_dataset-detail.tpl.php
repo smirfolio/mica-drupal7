@@ -119,68 +119,67 @@
           </div>
         </div>
       <?php else: ?>
-        <div class="row">
-          <div class="col-lg-6 col-xs-12">
-            <table class="table table-striped">
-              <tbody>
-              <tr>
-                <td><h5><?php print t('Name') ?></h5></td>
-                <td>
-                  <p>
-                    <?php print l(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym') . ' - ' . obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Population') ?></h5></td>
-                <td>
-                  <?php $population_summary = NULL; ?>
-                  <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
-                    if ($pop_summary->id == $dataset_type_dto->studyTable->populationId) {
-                      $population_summary = $pop_summary;
-                      break;
-                    }
+      <div class="row">
+        <div class="col-lg-6 col-xs-12">
+          <table class="table table-striped">
+            <tbody>
+            <tr>
+              <td><h5><?php print t('Name') ?></h5></td>
+              <td>
+                <p>
+                  <?php print l(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym') . ' - ' . obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Population') ?></h5></td>
+              <td>
+                <?php $population_summary = NULL; ?>
+                <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
+                  if ($pop_summary->id == $dataset_type_dto->studyTable->populationId) {
+                    $population_summary = $pop_summary;
+                    break;
                   }
-                  ?>
-                  <?php print obiba_mica_commons_get_localized_field($population_summary, 'name'); ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Data Collection Event') ?></h5></td>
-                <td>
-                  <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
-                    if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId) {
-                      print obiba_mica_commons_get_localized_field($dce_summary, 'name');
-                      break;
-                    }
+                }
+                ?>
+                <?php print obiba_mica_commons_get_localized_field($population_summary, 'name'); ?>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Data Collection Event') ?></h5></td>
+              <td>
+                <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
+                  if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId) {
+                    print obiba_mica_commons_get_localized_field($dce_summary, 'name');
+                    break;
                   }
-                  ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Study Designs') ?></h5></td>
-                <td>
-                  <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->designs); ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Target Number') ?></h5></td>
-                <td>
-                  <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
-                    isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
-                </td>
-              </tr>
-              <tr>
-                <td><h5><?php print t('Countries') ?></h5></td>
-                <td>
-                  <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->countries); ?>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
+                }
+                ?>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Study Designs') ?></h5></td>
+              <td>
+                <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->designs); ?>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Target Number') ?></h5></td>
+              <td>
+                <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
+                  isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
+              </td>
+            </tr>
+            <tr>
+              <td><h5><?php print t('Countries') ?></h5></td>
+              <td>
+                <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->countries); ?>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
-      <?php endif ?>
+        <?php endif ?>
     </section>
   <?php endif ?>
 
@@ -216,8 +215,8 @@
         <h3><?php print t('Study variables') ?></h3>
       <?php endif; ?>
       <div id="variables-table"
-           type-dataset="<?php print $dataset_type; ?>"
-           id-dataset="<?php print $dataset_dto->id; ?>">
+        type-dataset="<?php print $dataset_type; ?>"
+        id-dataset="<?php print $dataset_dto->id; ?>">
 
         <div class="row">
           <div class="col-lg-12 col-xs-12">

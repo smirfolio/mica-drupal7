@@ -1,4 +1,9 @@
 <?php
+
+/*
+ * @file code for variable details page
+ * */
+
 include_once('includes/obiba_mica_dataset_resource.inc');
 include_once('includes/obiba_mica_variable_statistics.inc');
 
@@ -16,7 +21,7 @@ function obiba_mica_variable_page_detail($variable_id) {
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_get_ajax_variables.js', 'file');
   drupal_add_js(array('obiba_mica_variable' => array('library' => $library_chart)), 'setting');
 
-  $url_param = explode('?', $_SERVER['REQUEST_URI']);
+  $url_param = explode('?', request_uri());
   $url_query = NULL;
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $url_query);
@@ -51,7 +56,7 @@ function obiba_mica_variable_page_detail($variable_id) {
   $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
 
   drupal_set_breadcrumb(array(
-    l('Home', '<front>'),
+    l(t('Home'), '<front>'),
     l(t('Datasets'), 'mica/datasets'),
     l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
     l(obiba_mica_commons_get_localized_field($variable, 'datasetName'), 'mica/' . obiba_mica_variable_dataset_type($variable)
@@ -101,8 +106,8 @@ function obiba_mica_dataset_get_variable_algorithm($variable_id) {
 function _obiba_mica_dataset_remove_harmonization_taxonomy($variable) {
 
   if (!empty($variable->termAttributes)) {
-    $variable->termAttributes = array_filter($variable->termAttributes, function ($termAttribute) {
-      return $termAttribute->taxonomy->name !== 'Mlstr_harmo';
+    $variable->termAttributes = array_filter($variable->termAttributes, function ($term_attribute) {
+      return $term_attribute->taxonomy->name !== 'Mlstr_harmo';
     });
   }
 
@@ -251,12 +256,12 @@ function obiba_mica_variable_get_harmonization($harmonized_variable) {
 }
 
 function _obiba_mica_variable_html_truncated($text, $label, $size = 200, $is_code = FALSE, $pre_class = '') {
-  $htmlTruncate = '';
+  $html_truncate = '';
   if (!empty($text)) {
 
     // split to respect line size
     if ($is_code) {
-      $htmlTruncate = "<pre class='prettyprint $pre_class'>";
+      $html_truncate = "<pre class='prettyprint $pre_class'>";
       // split at ).
       $lines = explode(").", $text);
       $text = implode(")\n.", $lines);
@@ -267,26 +272,26 @@ function _obiba_mica_variable_html_truncated($text, $label, $size = 200, $is_cod
     }
 
     if (strlen($text) > $size) {
-      $htmlTruncate .= check_markup(truncate_utf8($text, $size, FALSE));
+      $html_truncate .= check_markup(truncate_utf8($text, $size, FALSE));
 
       if ($is_code) {
-        $htmlTruncate .= "</pre>";
+        $html_truncate .= "</pre>";
       }
 
-      $htmlTruncate .= "[" . $label . " " . t("truncated") . "]";
+      $html_truncate .= "[" . $label . " " . t("truncated") . "]";
     }
     else {
-      $htmlTruncate .= check_markup($text);
+      $html_truncate .= check_markup($text);
 
       if ($is_code) {
-        $htmlTruncate .= "</pre>";
+        $html_truncate .= "</pre>";
       }
     }
   }
   else {
-    $htmlTruncate = '-';
+    $html_truncate = '-';
   }
-  return $htmlTruncate;
+  return $html_truncate;
 }
 
 function obiba_mica_variable_get_categories($categories = NULL) {

@@ -46,7 +46,7 @@ class MicaSearchResource extends MicaClient {
    * */
   private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL) {
     $parts = NULL;
-    $url_parm = explode('?', $_SERVER['REQUEST_URI']);
+    $url_parm = explode('?', request_uri());
     $type = 'variables';
     if (!empty($url_parm[1])) {
       parse_str($url_parm[1], $parts);
