@@ -410,12 +410,11 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
       "alias,and,begin,case,class,def,defined,elsif,end,ensure,false,in,module,next,nil,not,or,redo,rescue,retry,self,super,then,true,undef,unless,until,when,yield,BEGIN,END"
     ], v = [
       v, "case,done,elif,esac,eval,fi,function,in,local,set,then,until"
-    ], K = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)/, N = /\S/, O = u({keywords:
-      [
-        F, H, w,
-        "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END" +
-          I, J, v
-      ], hashComments: !0, cStyleComments: !0, multiLineStrings: !0, regexLiterals: !0}), A = {};
+    ], K = /^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\d*)/, N = /\S/, O = u({keywords: [
+      F, H, w,
+      "caller,delete,die,do,dump,elsif,eval,exit,foreach,for,goto,if,import,last,local,my,next,no,our,print,package,redo,require,sub,undef,unless,until,use,wantarray,while,BEGIN,END" +
+        I, J, v
+    ], hashComments: !0, cStyleComments: !0, multiLineStrings: !0, regexLiterals: !0}), A = {};
   k(O, ["default-code"]);
   k(x([], [
     ["pln", /^[^<?]+/],

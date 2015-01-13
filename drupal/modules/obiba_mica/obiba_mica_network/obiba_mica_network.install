@@ -1,0 +1,15 @@
+<?php
+
+/*
+ * @file
+ * Code to perform installation operations
+ * */
+function obiba_mica_network_install() {
+  obiba_mica_network_create_node();
+}
+
+function obiba_mica_network_create_node() {
+  $my_body_content = '<div> <p>This page displays the list of networks. By clicking on the links below, users can learn about an specific network and its associated studies  .</p> </div> <hr/>';
+  $node_page = obiba_mica_commons_add_page(st('Networks'), st($my_body_content));
+  variable_set('networks_page', $node_page->nid);
+}
