@@ -2,42 +2,43 @@
 //dpm($network_dto);
 ?>
 
-<?php if (!empty($network_dto->studyIds)): ?>
-  <div class="pull-right md-bottom-margin">
-    <?php
-    $query_array = array("studies" => array("terms" => array("studyIds" => $network_dto->studyIds)));
-    $query = MicaClient::create_query_dto_as_string($query_array);
+<div>
+  <?php if (!empty($network_dto->description)): ?>
+    <p class="md-top-margin"><?php print obiba_mica_commons_get_localized_field($network_dto, 'description'); ?></p>
+  <?php endif; ?>
 
-    print l(t('Search Variables'), 'mica/search',
-      array(
-        'query' => array(
-          'type' => 'variables',
-          'query' => $query
-        ),
-        'attributes' => array('class' => 'btn btn-primary')
-      ));
-    ?>
-    <?php
-    print l(t('Coverage'), 'mica/coverage',
-      array(
-        'query' => array(
-          'type' => 'variables',
-          'query' => $query
-        ),
-        'attributes' => array('class' => 'btn btn-primary indent')
-      ));
-    ?>
-  </div>
-<?php endif; ?>
+  <?php if (!empty($network_dto->studyIds)): ?>
+    <div class="pull-right md-bottom-margin">
+      <?php
+      $query_array = array("studies" => array("terms" => array("studyIds" => $network_dto->studyIds)));
+      $query = MicaClient::create_query_dto_as_string($query_array);
+
+      print l(t('Search Variables'), 'mica/search',
+        array(
+          'query' => array(
+            'type' => 'variables',
+            'query' => $query
+          ),
+          'attributes' => array('class' => 'btn btn-primary')
+        ));
+      ?>
+      <?php
+      print l(t('Coverage'), 'mica/coverage',
+        array(
+          'query' => array(
+            'type' => 'variables',
+            'query' => $query
+          ),
+          'attributes' => array('class' => 'btn btn-primary indent')
+        ));
+      ?>
+    </div>
+  <?php endif; ?>
+</div>
 
 <div class="clearfix"></div>
 
 <article>
-  <?php if (!empty($network_dto->description)): ?>
-    <section>
-      <p class="md-top-margin"><?php print obiba_mica_commons_get_localized_field($network_dto, 'description'); ?></p>
-    </section>
-  <?php endif; ?>
 
   <section>
     <h3><?php print t('Overview') ?></h3>
