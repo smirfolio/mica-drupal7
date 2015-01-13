@@ -19,7 +19,9 @@ function obiba_mica_network_page_detail($network_id) {
 
   $network_dto = $network_resource->get_network($network_id);
   if (!empty($network_dto)) {
-    drupal_set_title(obiba_mica_commons_get_localized_field($network_dto, 'name'));
+    $acronym = obiba_mica_commons_get_localized_field($network_dto, 'acronym');
+    $name = obiba_mica_commons_get_localized_field($network_dto, 'name');
+    drupal_set_title($acronym . ' - ' . $name);
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),

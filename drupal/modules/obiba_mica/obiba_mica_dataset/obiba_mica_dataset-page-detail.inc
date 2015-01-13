@@ -31,7 +31,9 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
     }
-    drupal_set_title(obiba_mica_commons_get_localized_field($dataset_dto, 'name'));
+    $acronym = obiba_mica_commons_get_localized_field($dataset_dto, 'acronym');
+    $name = obiba_mica_commons_get_localized_field($dataset_dto, 'name');
+    drupal_set_title($acronym . ' - ' . $name);
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
