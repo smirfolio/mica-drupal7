@@ -75,7 +75,7 @@ function obiba_mica_network_study_table_rows($study_summaries) {
 
 function obiba_mica_network_study_table_headers() {
   return array(
-    t('Short Name'),
+    t('Acronym'),
     t('Name'),
     t('Study Design'),
     t('Target Number'),
