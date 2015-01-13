@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * @file query build code
+ * */
+
 abstract class AbstractDtoBuilder {
   protected $dto = NULL;
 

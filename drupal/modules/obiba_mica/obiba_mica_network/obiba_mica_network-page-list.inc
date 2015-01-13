@@ -1,5 +1,7 @@
 <?php
-
+/*
+ * @file code for list networks page
+ * */
 include_once('includes/obiba_mica_network_resource.inc');
 
 function obiba_mica_network_page_list() {

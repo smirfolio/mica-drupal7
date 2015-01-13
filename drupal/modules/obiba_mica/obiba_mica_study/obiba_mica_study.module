@@ -8,8 +8,8 @@ function obiba_mica_study_menu() {
   $items = array();
 
   $items['mica/studies'] = array(
-    'title' => t('Studies'),
-    'description' => t('Published studies'),
+    'title' => 'Studies',
+    'description' => 'Published studies',
     'page callback' => 'obiba_mica_study_page_list',
     'file' => 'obiba_mica_study-page-list.inc',
     'access callback' => TRUE,
@@ -18,7 +18,7 @@ function obiba_mica_study_menu() {
   );
 
   $items['mica/study/%'] = array(
-    'title' => t('Mica study detail'),
+    'title' => 'Mica study detail',
     'page callback' => 'obiba_mica_study_page_detail',
     'file' => 'obiba_mica_study-page-detail.inc',
     'access callback' => TRUE,

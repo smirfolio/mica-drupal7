@@ -1,8 +1,12 @@
+/*
+ * @file JsScript to deal with  attachment files
+ * */
+
 (function ($) {
   Drupal.behaviors.attachement_download = {
     attach: function (context, settings) {
       $('a#download-attachment').each(function () {
-        console.log($(this));
+        //console.log($(this));
 
         $(this).on('click', function (event) {
           // create a form for the file upload

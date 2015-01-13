@@ -1,3 +1,7 @@
+/*
+ * @file JScript code for query builder serializing
+ * */
+
 (function ($) {
   Drupal.behaviors.query_serializer = {
     attach: function (context, settings) {

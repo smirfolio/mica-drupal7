@@ -10,8 +10,8 @@ function obiba_mica_network_menu() {
   $items = array();
 
   $items['mica/networks'] = array(
-    'title' => t('Networks'),
-    'description' => t('Published networks'),
+    'title' => 'Networks',
+    'description' => 'Published networks',
     'page callback' => 'obiba_mica_network_page_list',
     'file' => 'obiba_mica_network-page-list.inc',
     'access callback' => TRUE,
@@ -20,7 +20,7 @@ function obiba_mica_network_menu() {
   );
 
   $items['mica/network/%'] = array(
-    'title' => t('Mica network detail'),
+    'title' => 'Mica network detail',
     'page callback' => 'obiba_mica_network_page_detail',
     'file' => 'obiba_mica_network-page-detail.inc',
     'access callback' => TRUE,

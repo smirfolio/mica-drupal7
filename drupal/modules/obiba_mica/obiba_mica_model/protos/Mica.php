@@ -151,7 +151,7 @@ namespace obiba\mica {
     public $objectives = array();
 
     /**  @var string[] */
-    public $dataSources = array();
+    public $data_sources = array();
 
     /**  @var \obiba\mica\PopulationSummaryDto[] */
     public $populationSummaries = array();
@@ -2130,7 +2130,7 @@ namespace obiba\mica\StudyDto\PopulationDto {
   class RecruitmentDto extends \DrSlump\Protobuf\Message {
 
     /**  @var string[] */
-    public $dataSources = array();
+    public $data_sources = array();
 
     /**  @var string[] */
     public $generalPopulationSources = array();
@@ -3304,7 +3304,7 @@ namespace obiba\mica\StudyDto\PopulationDto {
     public $endMonth = NULL;
 
     /**  @var string[] */
-    public $dataSources = array();
+    public $data_sources = array();
 
     /**  @var string[] */
     public $administrativeDatabases = array();

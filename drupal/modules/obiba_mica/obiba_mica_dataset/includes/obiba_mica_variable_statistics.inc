@@ -1,7 +1,7 @@
 <?php
 
 /**
- *
+ * @file code to deal with variable statics
  */
 class VariableStatistics {
 

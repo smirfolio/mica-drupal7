@@ -1,11 +1,15 @@
 <?php
 
+/*
+ * @file code for obiba_mica_dataset module
+ * */
+
 function obiba_mica_dataset_menu() {
   $items = array();
 
   $items['mica/datasets'] = array(
-    'title' => t('Datasets'),
-    'description' => t('Published datasets'),
+    'title' => 'Datasets',
+    'description' => 'Published datasets',
     'page callback' => 'obiba_mica_dataset_get_datasets_list',
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access callback' => TRUE,
@@ -16,8 +20,8 @@ function obiba_mica_dataset_menu() {
   );
 
   $items['mica/datasets/harmonization-datasets'] = array(
-    'title' => t('Harmonization Datasets'),
-    'description' => t('Published harmonization datasets'),
+    'title' => 'Harmonization Datasets',
+    'description' => 'Published harmonization datasets',
     'page callback' => 'obiba_mica_dataset_get_harmonization_datasets_list',
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access callback' => TRUE,
@@ -26,7 +30,7 @@ function obiba_mica_dataset_menu() {
   );
 
   $items['mica/datasets/study-datasets'] = array(
-    'title' => t('Study Datasets'),
+    'title' => 'Study Datasets',
     'page callback' => 'obiba_mica_dataset_get_study_datasets_list',
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access callback' => TRUE,
@@ -106,7 +110,6 @@ function obiba_mica_dataset_menu() {
     'page arguments' => array(),
   );
 
-  /***************************/
   $items['mica/harmonization-dataset/%/download'] = array(
     'page callback' => 'obiba_mica_dataset_page_detail_download',
     'file' => 'obiba_mica_dataset-page-detail.inc',
@@ -123,7 +126,6 @@ function obiba_mica_dataset_menu() {
   );
 
   $items['mica/refresh_list_datasets_datasets/%/%/%'] = array(
-    //'title' => t('AutoComp Menu'),
     'page callback' => 'obiba_mica_dataset_retrieve_datasets',
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access arguments' => array('access content'),
@@ -131,14 +133,12 @@ function obiba_mica_dataset_menu() {
   );
 
   $items['mica/refresh_list_datasets_harmonization_datasets/%/%/%'] = array(
-    //'title' => t('AutoComp Menu'),
     'page callback' => 'obiba_mica_dataset_retrieve_harmonizationDatasets',
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access arguments' => array('access content'),
     'page arguments' => array(2, 3, 4)
   );
   $items['mica/refresh_list_datasets_study_datasets/%/%/%'] = array(
-    //'title' => t('AutoComp Menu'),
     'page callback' => 'obiba_mica_dataset_retrieve_studyDatasets',
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access arguments' => array('access content'),
