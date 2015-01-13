@@ -28,17 +28,18 @@
         </small>
       </p>
     </div>
-    <ul class="search-item-list-no-style sm-top-margin help-block">
+    <ul class="nav nav-pills sm-top-margin">
       <li>
         <?php
         $counts = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
         $studies = $counts->studies;
-        $caption = $studies < 2 ? t('study') : t('studies');
-        $line = $studies < 1 ? '' : t('Includes ') . MicaClientAnchorHelper::network_studies($studies, $network->id) . ' ' . $caption;
+        $caption = $studies < 2 ? 'study' : 'studies';
         ?>
-        <span>
-          <?php print $line ?>
-        </span>
+        <?php if (!empty($studies)): ?>
+          <span class="label label-info">
+            <?php print MicaClientAnchorHelper::network_studies(t('@count ' . $caption, array('@count' => $studies)), $network->id) ?>
+          </span>
+        <?php endif ?>
       </li>
 
   </div>

@@ -15,7 +15,7 @@
             success: function (data) {
               if (data) {
                 $('#refresh-list').empty().append(data.list);
-                $('#refrech-count').empty().append(data.total === null ? 0 : data.total);
+                $('#refresh-count').empty().append(data.total === null ? 0 : data.total);
               }
             }
           });

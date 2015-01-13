@@ -26,7 +26,9 @@ function obiba_mica_study_page_detail($study_id) {
   $study_resource = new MicaStudyResource();
   $study_dto = $study_resource->get_study($study_id);
   if (!empty($study_dto)) {
-    drupal_set_title(obiba_mica_commons_get_localized_field($study_dto, 'name'));
+    $acronym = obiba_mica_commons_get_localized_field($study_dto, 'acronym');
+    $name = obiba_mica_commons_get_localized_field($study_dto, 'name');
+    drupal_set_title($acronym . ' - ' . $name);
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),

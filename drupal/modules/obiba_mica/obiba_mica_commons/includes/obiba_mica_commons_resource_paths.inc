@@ -67,9 +67,24 @@ class MicaClientAnchorHelper {
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
-  static function network_studies($text, $networkId) {
+  static function study_networks($text, $study_id) {
     $query = MicaClient::add_parameter_dto_query_link( //
-      array('networks' => array('terms' => array('id' => $networkId))) //
+      array('studies' => array('terms' => array('studyIds' => $study_id))) //
+    );
+
+    $options = array(
+      'query' => array(
+        'type' => 'networks',
+        'query' => $query
+      )
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
+  static function network_studies($text, $network_id) {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('networks' => array('terms' => array('id' => $network_id))) //
     );
 
     $options = array(
@@ -104,9 +119,9 @@ class MicaClientAnchorHelper {
     return l($text, MicaClientPathProvider::COVERAGE, $options);
   }
 
-  static function dataset_variables($text, $datasetId) {
+  static function dataset_variables($text, $dataset_id) {
     $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('datasetId' => $datasetId))) //
+      array('variables' => array('terms' => array('datasetId' => $dataset_id))) //
     );
 
     $options = array(
@@ -119,9 +134,9 @@ class MicaClientAnchorHelper {
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
-  static function dataset_studies($text, $datasetId) {
+  static function dataset_studies($text, $dataset_id) {
     $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('datasetId' => $datasetId))) //
+      array('variables' => array('terms' => array('datasetId' => $dataset_id))) //
     );
 
     $options = array(
