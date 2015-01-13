@@ -37,6 +37,13 @@
 <div class="clearfix"></div>
 
 <article>
+
+  <?php if (!empty($dataset_dto->description)): ?>
+    <section>
+      <p class="md-top-margin"><?php print obiba_mica_commons_get_localized_field($dataset_dto, 'description'); ?></p>
+    </section>
+  <?php endif; ?>
+
   <!-- OVERVIEW -->
   <section>
     <h3><?php print t('Overview') ?></h3>
@@ -45,12 +52,7 @@
       <div class="col-lg-6 col-xs-12 lg-right-indent">
         <table class="table table-striped">
           <tbody>
-          <?php if (!empty($dataset_dto->description)): ?>
-            <tr>
-              <td><h5><?php print t('Description') ?></h5></td>
-              <td><p><?php print obiba_mica_commons_get_localized_field($dataset_dto, 'description'); ?></p></td>
-            </tr>
-          <?php endif; ?>
+
           <?php if (!empty($dataset_dto->acronym)): ?>
             <tr>
               <td><h5><?php print t('Acronym') ?></h5></td>
@@ -215,8 +217,8 @@
         <h3><?php print t('Study variables') ?></h3>
       <?php endif; ?>
       <div id="variables-table"
-        type-dataset="<?php print $dataset_type; ?>"
-        id-dataset="<?php print $dataset_dto->id; ?>">
+           type-dataset="<?php print $dataset_type; ?>"
+           id-dataset="<?php print $dataset_dto->id; ?>">
 
         <div class="row">
           <div class="col-lg-12 col-xs-12">
