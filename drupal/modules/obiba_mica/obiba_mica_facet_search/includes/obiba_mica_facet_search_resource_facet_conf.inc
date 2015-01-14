@@ -37,11 +37,12 @@ function obiba_mica_facet_search_get_dto_facet_aggs($tab_block, $type) {
           }
           elseif (!empty($facet->{'obiba.mica.StatsAggregationResultDto.stats'})) {
             $facet_build[$tab_block][$facet->aggregation]['range']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->count;
-            $facet_build[$tab_block][$facet->aggregation]['range']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->min;
-            $facet_build[$tab_block][$facet->aggregation]['range']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->max;
+            $facet_build[$tab_block][$facet->aggregation]['range']['min'] = isset($facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->min) ? $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->min : NULL;
+            $facet_build[$tab_block][$facet->aggregation]['range']['max'] = isset($facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->max) ? $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->max : NULL;
+
             $facet_build[$tab_block][$facet->aggregation]['range']['default']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->count;
-            $facet_build[$tab_block][$facet->aggregation]['range']['default']['min'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->min;
-            $facet_build[$tab_block][$facet->aggregation]['range']['default']['max'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->max;
+            $facet_build[$tab_block][$facet->aggregation]['range']['default']['min'] = isset($facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->min) ? $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->min : NULL;
+            $facet_build[$tab_block][$facet->aggregation]['range']['default']['max'] = isset($facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->max) ? $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->max : NULL;
           }
           else {
             $facet_build[$tab_block][$facet->aggregation] = NULL;
