@@ -3,7 +3,7 @@
     <div class="col-md-2 hidden-xs hidden-sm text-center">
       <?php if (!empty($logo_url)): ?>
         <img src="<?php print $logo_url ?>"
-          class="listImageThumb"/>
+             class="listImageThumb"/>
       <?php else : ?>
         <h1 class="big-character">
           <span
@@ -26,23 +26,32 @@
             truncate_utf8(strip_tags(obiba_mica_commons_get_localized_field($dataset, 'description')), 250, TRUE, TRUE);; ?>
         </small>
       </p>
-      <ul class="search-item-list-no-style sm-top-margin help-block">
-        <li>
-          <?php
-          $counts = $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'};
-          $variables = $counts->variables;
-          $vars_caption = $variables < 2 ? t('variable') : t('variables');
-          $studies = $counts->studies;
-          $studies_caption = $studies < 2 ? t('study') : t('studies');
-          ?>
-        </li>
-      </ul>
-          <span>
-            <?php print ($variables === 0 ? '' : t('Includes ') . MicaClientAnchorHelper::dataset_variables($variables, $dataset->id) . ' ' . $vars_caption) ?>
-            <?php print ($studies === 0 ? '' : t(' used in ') . MicaClientAnchorHelper::dataset_studies($studies, $dataset->id) . ' ' . $studies_caption) ?>
-        </span>
-
-
+      <div>
+        <?php
+        $counts = $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'};
+        $variables = $counts->variables;
+        $vars_caption = $variables < 2 ? t('variable') : t('variables');
+        $studies = $counts->studies;
+        $studies_caption = $studies < 2 ? t('study') : t('studies');
+        $networks = $counts->networks;
+        $network_caption = $networks < 2 ? "network" : "networks";
+        ?>
+        <?php if (!empty($networks)): ?>
+          <span class="label label-info right-indent">
+            <?php print MicaClientAnchorHelper::dataset_networks(t('@count ' . $network_caption, array('@count' => $networks)), $dataset->id) ?>
+          </span>
+        <?php endif ?>
+        <?php if (!empty($studies)): ?>
+          <span class="label label-info right-indent">
+            <?php print MicaClientAnchorHelper::dataset_studies(t('@count ' . $studies_caption, array('@count' => $studies)), $dataset->id) ?>
+          </span>
+        <?php endif ?>
+        <?php if (!empty($variables)): ?>
+          <span class="label label-info">
+            <?php print MicaClientAnchorHelper::dataset_variables(t('@count ' . $vars_caption, array('@count' => $variables)), $dataset->id) ?>
+          </span>
+        <?php endif ?>
+      </div>
     </div>
   </div>
 

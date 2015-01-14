@@ -97,6 +97,36 @@ class MicaClientAnchorHelper {
     return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
+  static function network_datasets($text, $network_id) {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('networks' => array('terms' => array('id' => $network_id))) //
+    );
+
+    $options = array(
+      'query' => array(
+        'type' => 'datasets',
+        'query' => $query
+      )
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
+  static function network_variables($text, $network_id) {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('networks' => array('terms' => array('id' => $network_id))) //
+    );
+
+    $options = array(
+      'query' => array(
+        'type' => 'variables',
+        'query' => $query
+      )
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
   static function search_networks($text) {
     $options = array(
       'query' => array(
@@ -142,6 +172,21 @@ class MicaClientAnchorHelper {
     $options = array(
       'query' => array(
         'type' => 'studies',
+        'query' => $query
+      )
+    );
+
+    return l($text, MicaClientPathProvider::SEARCH, $options);
+  }
+
+  static function dataset_networks($text, $dataset_id) {
+    $query = MicaClient::add_parameter_dto_query_link( //
+      array('variables' => array('terms' => array('datasetId' => $dataset_id))) //
+    );
+
+    $options = array(
+      'query' => array(
+        'type' => 'networks',
         'query' => $query
       )
     );

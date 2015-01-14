@@ -49,34 +49,32 @@
             ? t('No limits') : $study->targetNumber->number ?></span>
       </li>
     </ul>
-    <ul class="nav sm-top-margin">
-      <li>
-        <?php
-        $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
-        $vars = $counts->variables;
-        $var_caption = $vars < 2 ? "variable" : "variables";
-        $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
-        $dataset_caption = $datasets < 2 ? "dataset" : "datasets";
-        $networks = $counts->networks;
-        $network_caption = $networks < 2 ? "network" : "networks";
-        ?>
-        <?php if (!empty($networks)): ?>
-          <span class="label label-info">
+    <div class="sm-top-margin">
+      <?php
+      $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
+      $vars = $counts->variables;
+      $var_caption = $vars < 2 ? "variable" : "variables";
+      $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
+      $dataset_caption = $datasets < 2 ? "dataset" : "datasets";
+      $networks = $counts->networks;
+      $network_caption = $networks < 2 ? "network" : "networks";
+      ?>
+      <?php if (!empty($networks)): ?>
+        <span class="label label-info right-indent">
             <?php print MicaClientAnchorHelper::study_networks(t('@count ' . $network_caption, array('@count' => $networks)), $study->id) ?>
           </span>
-        <?php endif ?>
-        <?php if (!empty($datasets)): ?>
-          <span class="indent label label-info">
+      <?php endif ?>
+      <?php if (!empty($datasets)): ?>
+        <span class="label label-info right-indent">
             <?php print MicaClientAnchorHelper::study_datasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id) ?>
           </span>
-        <?php endif ?>
-        <?php if (!empty($vars)): ?>
-          <span class="indent label label-info">
+      <?php endif ?>
+      <?php if (!empty($vars)): ?>
+        <span class="label label-info">
             <?php print MicaClientAnchorHelper::study_variables(t('@count ' . $var_caption, array('@count' => $vars)), $study->id) ?>
           </span>
-        <?php endif ?>
-      </li>
-    </ul>
+      <?php endif ?>
+    </div>
   </div>
 </div>
 
