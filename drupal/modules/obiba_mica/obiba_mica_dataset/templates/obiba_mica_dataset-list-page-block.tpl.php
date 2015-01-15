@@ -1,18 +1,7 @@
 <?php if (!empty($dataset)): ?>
   <div class="row sm-bottom-margin document-item-list flex-row">
-    <div class="col-md-2 hidden-xs hidden-sm text-center">
-      <?php if (!empty($logo_url)): ?>
-        <img src="<?php print $logo_url ?>"
-             class="listImageThumb"/>
-      <?php else : ?>
-        <h1 class="big-character">
-          <span
-            class="t_badge color_light <?php print empty($dataset->{'obiba.mica.HarmonizationDatasetDto.type'}) ? 'i-obiba-D' : 'i-obiba-D-h' ?>"></span>
-        </h1>
-      <?php endif; ?>
-    </div>
-    <div class="col-md-10  col-sm-12 col-xs-12">
-      <h4>
+    <div class="col-md-12  col-sm-12 col-xs-12">
+    <h4>
         <?php
         $acronym = obiba_mica_commons_get_localized_field($dataset, 'acronym');
         $name = obiba_mica_commons_get_localized_field($dataset, 'name');
