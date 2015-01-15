@@ -279,8 +279,6 @@ function obiba_mica_commons_get_current_theme() {
 
 function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no_name = TRUE) {
   global $language;
-  $reset_button = '<button type="button" class="right-indent "><i class="flaticon-undo9"></i></button>';
-  //isset($_GET['search-sort'])?$reset_button:NULL.
   if ($no_name) {
     $sort_name = 'name.' . $language->language;
   }
