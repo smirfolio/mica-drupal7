@@ -242,6 +242,15 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_cloned_block.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_mica_facet_search_cloned_block.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_mica_facet_search_cloned_block',
+      'path' => $path . '/templates'
+    );
+  }
+
   return $theme_array;
 
 }
