@@ -4,7 +4,8 @@
 
 <div>
   <?php if (!empty($network_dto->description)): ?>
-    <p class="md-top-margin"><?php print obiba_mica_commons_get_localized_field($network_dto, 'description'); ?></p>
+    <p
+      class="md-top-margin"><?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?></p>
   <?php endif; ?>
 
   <?php if (!empty($network_dto->studyIds)): ?>

@@ -7,7 +7,8 @@
 
 <div>
   <?php if (!empty($dataset_dto->description)): ?>
-      <p class="md-top-margin"><?php print obiba_mica_commons_get_localized_field($dataset_dto, 'description'); ?></p>
+    <p
+      class="md-top-margin"><?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($dataset_dto, 'description')); ?></p>
   <?php endif; ?>
 
   <div class="pull-right md-bottom-margin">
