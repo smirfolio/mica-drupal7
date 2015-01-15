@@ -8,9 +8,9 @@
   <p class="md-top-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
       <img src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-           class="imageThumb">
+        class="imageThumb">
     <?php endif; ?>
-    <?php print obiba_mica_commons_get_localized_field($study_dto, 'objectives'); ?>
+    <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($study_dto, 'objectives')); ?>
   </p>
 
   <div class="pull-right md-bottom-margin">
@@ -81,7 +81,7 @@
               <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
                 <li>
                   <a href="#" data-toggle="modal"
-                     data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
+                    data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
                     <?php print $investigator->title; ?>
                     <?php print $investigator->firstName; ?>
                     <?php print $investigator->lastName; ?>
@@ -103,7 +103,7 @@
               <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
                 <li>
                   <a href="#" data-toggle="modal"
-                     data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
+                    data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
                     <?php print $contact->title; ?>
                     <?php print $contact->firstName; ?>
                     <?php print $contact->lastName; ?>
@@ -400,7 +400,7 @@
               <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) {
                 print 'active';
               } ?>"
-                   id="population-<?php print $key; ?>">
+                id="population-<?php print $key; ?>">
                 <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
@@ -420,7 +420,7 @@
         print l(t('All'), 'mica/study/' . $study_dto->id); ?>
       </li>
       <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
-          data-placement="top" title="<?php print t('Group by data collection event') ?>">
+        data-placement="top" title="<?php print t('Group by data collection event') ?>">
         <?php
         print l(t('Data Collection Event'), 'mica/study/' . $study_dto->id, array(
           'query' => array(
@@ -431,7 +431,7 @@
         )); ?>
       </li>
       <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
-          data-placement="top" title="<?php print t('Group by dataset') ?>">
+        data-placement="top" title="<?php print t('Group by dataset') ?>">
         <?php
         print l(t('Dataset'), 'mica/study/' . $study_dto->id, array(
           'query' => array(
