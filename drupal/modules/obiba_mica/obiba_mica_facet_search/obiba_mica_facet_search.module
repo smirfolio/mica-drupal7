@@ -212,7 +212,7 @@ function obiba_mica_facet_search_load_libs() {
   drupal_add_js($module_path_ . '/js/obiba-mica-facet-search-href.js');
   drupal_add_js(array(
     'UrlErrorsQuery' => !empty($_SESSION['errorsQuery']) ? $_SESSION['errorsQuery'] : NULL,
-    'ErrorMessage' => t('An error occurred when parsing url query, Please make sure to use facet search tools //
+    'ErrorMessage' => t('An error occurred when parsing url query, Please make sure to use facet search tools
        to perform your search. <br>This page will be refeshed in 3s ')
   ), 'setting');
   $facet_conf["studies"] = obiba_mica_facet_search_resource_return_facets('facet_conf_study');
