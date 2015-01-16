@@ -277,6 +277,7 @@
           updateWindowLocation(JSON.stringify(json));
           return false;
         }
+        return false;
       }
 
       function updateJsonQuery(jsonQuery) {
