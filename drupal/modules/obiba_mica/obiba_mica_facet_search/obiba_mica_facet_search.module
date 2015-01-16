@@ -724,7 +724,7 @@ function obiba_mica_facet_search_datasets_table($datasets) {
       }
       else {
         $type_dataset_link = 'harmonization-dataset';
-        $type_dataset = t('Harmonized');
+        $type_dataset = t('Harmonization');
       }
       $name = obiba_mica_commons_get_localized_field($dataset, 'name');
       $rows[] = array(
