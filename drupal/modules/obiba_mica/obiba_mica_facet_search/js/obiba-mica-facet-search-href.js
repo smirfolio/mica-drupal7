@@ -5,7 +5,12 @@
 (function ($) {
   Drupal.behaviors.query_href = {
     attach: function (context, settings) {
-
+      if (Drupal.settings.UrlErrorsQuery) {
+        console.log('error on page session error');
+        setTimeout(function () {
+          updateWindowLocation();
+        }, 2000);
+      }
       var tabparam = '';
 
       /*override autocomplete Drupal function */
@@ -107,11 +112,28 @@
       }
 
       function getQueryFromUrl() {
+        var messageError = '<div class="alert alert-block alert-warning">' +
+          '<a class="close" data-dismiss="alert" href="#">×</a>' +
+          '<h4 class="element-invisible">Warning message</h4> ' + Drupal.settings.ErrorMessage +
+          ' </div>';
+        var UrlJsonParm;
         var jsonParam = (window.location.search.replace(/(^\?)/, '').split("&").map(function (n) {
           return n = n.split("="), this[n[0]] = n[1], this
         }.bind({}))[0])['query'];
-
-        return jsonParam === undefined ? {} : JSON.parse(decodeURIComponent(jsonParam));
+        //if not valid jsonParam (url manually tampered by user) the scrip crash MK-201
+        try {
+          UrlJsonParm = JSON.parse(decodeURIComponent(jsonParam));
+          return jsonParam === undefined ? {} : UrlJsonParm;
+        } catch (e) {
+          if (jsonParam === undefined) {
+            return {};
+          }
+          $(".region-content").before(messageError);
+          setTimeout(function () {
+            updateWindowLocation();
+          }, 2000);
+          return {};
+        }
       }
 
       function updateQueryOperation(operationMoniker, value) {
