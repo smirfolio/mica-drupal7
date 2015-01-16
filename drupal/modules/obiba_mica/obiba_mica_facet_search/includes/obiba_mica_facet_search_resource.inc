@@ -26,15 +26,15 @@ class MicaSearchResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
-  public function taxonomies_coverage($parameters = NULL) {
-    return $this->_aggregation_resource('coverage', $parameters);
+  public function taxonomies_coverage($parameters = NULL, $default_dto_search = NULL) {
+    return $this->_aggregation_resource('coverage', $parameters, $default_dto_search);
   }
 
   private function _search_resource($parameters = NULL) {
     return $this->_aggregation_resource('search', $parameters);
   }
 
-  private function _get_dto_query_param_from_url($parts = NULL, $type, $parameters = NULL) {
+  public function _get_dto_query_param_from_url($parts = NULL, $type, $parameters = NULL) {
     $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
     $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
     $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
@@ -44,7 +44,7 @@ class MicaSearchResource extends MicaClient {
   /*
    * $parameters : json query hard coded
    * */
-  private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL) {
+  private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL, $default_dto_search = NULL) {
     unset($_SESSION['errorsQuery']);
     $parts = NULL;
     $url_parm = explode('?', request_uri());
@@ -53,6 +53,14 @@ class MicaSearchResource extends MicaClient {
       parse_str($url_parm[1], $parts);
       if (!empty($parts['type'])) {
         $type = $parts['type'];
+      }
+    }
+    if (!empty($default_dto_search)) {
+      if (empty($parts)) {
+        $parts = $default_dto_search;
+      }
+      else {
+        $parts = array_merge($parts, $default_dto_search);
       }
     }
     if (empty($parameters) || $parameters != 'empty_request') {
