@@ -131,8 +131,10 @@ class TermsFieldFilterQueryDtoBuilder extends FieldFilterQueryDtoBuilder {
   }
 
   function values($values) {
-    foreach ($values as $value) {
-      $this->terms->addValues($value);
+    if (!empty($values)) {
+      foreach ($values as $value) {
+        $this->terms->addValues($value);
+      }
     }
     return $this;
   }
@@ -466,10 +468,16 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder {
           if ($this->processException($logicalFilterBuilder, $type, $aggName, $agg, $searchPartType)) {
             continue;
           }
-          $logicalFilterBuilder->fieldBuilder(
-            $this->getAggregationBuilder($searchPartType, $aggName, $agg),
-            $agg->op
-          );
+          $field_filter_query_dto_builder = $this->getAggregationBuilder($searchPartType, $aggName, $agg);
+          if (!empty($field_filter_query_dto_builder) && !empty($agg->op)) {
+            $logicalFilterBuilder->fieldBuilder(
+              $field_filter_query_dto_builder,
+              $agg->op
+            );
+          }
+          else {
+            $this->fireAnErrorQueryBuilder();
+          }
         }
       }
 
@@ -514,12 +522,17 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder {
 
   private function getAggregationBuilder($searchPartType, $aggName, $agg) {
     $normalizedAggName = $this->getNormalizedAggName($aggName);
-    $aggValues = $agg->values;
-    return $searchPartType == 'terms' //
-      ? TermsFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)->values($aggValues) //
-      : RangeFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)
-        ->fromBuilder(RangeConditionDtoBuilder::newBuilder()->gte($aggValues[0]->min))
-        ->toBuilder(RangeConditionDtoBuilder::newBuilder()->lte($aggValues[0]->max));
+    if (empty($agg->values) || ($searchPartType != 'terms' && $searchPartType != 'range')) {
+      return $this->fireAnErrorQueryBuilder();
+    }
+    else {
+      $aggValues = $agg->values;
+      return $searchPartType == 'terms' //
+        ? TermsFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)->values($aggValues) //
+        : RangeFieldFilterQueryDtoBuilder::newBuilder()->field($normalizedAggName)
+          ->fromBuilder(RangeConditionDtoBuilder::newBuilder()->gte($aggValues[0]->min))
+          ->toBuilder(RangeConditionDtoBuilder::newBuilder()->lte($aggValues[0]->max));
+    }
   }
 
   private function createQuery(LogicalFilterQueryDtoBuilder $builder, $from, $size, $sort_field, $matches, $group_by = NULL) {
@@ -539,6 +552,15 @@ class JoinQueryDtoBuilder extends AbstractDtoBuilder {
       self::STUDIES => "acronym." . $lang, //
       self::NETWORKS => "acronym." . $lang //
     );
+  }
+
+  private function fireAnErrorQueryBuilder() {
+    if (empty($_SESSION['errorsQuery'])) {
+      drupal_set_message(t("An error occurred when parsing url query, Please make sure to use facet search tools
+        to perform your search. <br>This page will be refeshed in 3s "), 'warning');
+      $_SESSION['errorsQuery'] = TRUE;
+    }
+    return FALSE;
   }
 
 }

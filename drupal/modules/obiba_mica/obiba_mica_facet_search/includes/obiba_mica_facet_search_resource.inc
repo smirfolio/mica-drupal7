@@ -45,6 +45,7 @@ class MicaSearchResource extends MicaClient {
    * $parameters : json query hard coded
    * */
   private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL) {
+    unset($_SESSION['errorsQuery']);
     $parts = NULL;
     $url_parm = explode('?', request_uri());
     $type = 'variables';
