@@ -9710,3 +9710,7 @@ div.algo-list {
   padding-left: 20px;
   margin-bottom: 20px;
 }
+
+.refresh-list {
+  max-height: 39px;
+}

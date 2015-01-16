@@ -31,6 +31,10 @@
         window.location = '?' + data_url;
       });
 
+      $(".refresh-list").on("click", function () {
+        window.location = window.location.pathname;
+      });
+
       $("#edit-search-sort").on("change", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
         window.location = '?' + data_url;
