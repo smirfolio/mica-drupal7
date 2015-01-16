@@ -68,7 +68,7 @@ function obiba_mica_network_study_table_rows($study_summaries) {
         implode(', ', t($study_summary->designs)),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
-        implode($study_summary->countries),
+        implode(', ', $study_summary->countries),
       );
     }
   }
