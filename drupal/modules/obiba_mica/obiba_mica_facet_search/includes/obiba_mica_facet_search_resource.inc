@@ -45,7 +45,9 @@ class MicaSearchResource extends MicaClient {
    * $parameters : json query hard coded
    * */
   private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL, $default_dto_search = NULL) {
-    unset($_SESSION['errorsQuery']);
+    if (!empty($_SESSION['errorsQuery'])) {
+      unset($_SESSION['errorsQuery']);
+    }
     $parts = NULL;
     $url_parm = explode('?', request_uri());
     $type = 'variables';
@@ -84,7 +86,6 @@ class MicaSearchResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return json_decode($data);
-
     }
     catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
