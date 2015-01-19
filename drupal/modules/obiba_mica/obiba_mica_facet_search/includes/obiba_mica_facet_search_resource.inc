@@ -34,7 +34,7 @@ class MicaSearchResource extends MicaClient {
     return $this->_aggregation_resource('search', $parameters);
   }
 
-  public function _get_dto_query_param_from_url($parts = NULL, $type, $parameters = NULL) {
+  private function _get_dto_query_param_from_url($parts = NULL, $type, $parameters = NULL) {
     $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
     $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
     $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
