@@ -60,7 +60,7 @@ class MicaSearchResource extends MicaClient {
         $parts = $default_dto_search;
       }
       else {
-        $parts = array_merge($parts, $default_dto_search);
+        $parts = array_merge($default_dto_search, $parts);
       }
     }
     if (empty($parameters) || $parameters != 'empty_request') {
