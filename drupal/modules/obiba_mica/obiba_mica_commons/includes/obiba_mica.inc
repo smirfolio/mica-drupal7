@@ -221,13 +221,23 @@ class MicaClient {
   protected function session_facets_builder($aggregations) {
     unset($_SESSION['variables']);
     unset($_SESSION['studies']);
+    unset($_SESSION['datasets']);
+    unset($_SESSION['networks']);
     $networkAggregations = NULL;
-
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if ($type_aggregations == 'networkResultDto') {
+        $_SESSION['networks']['aggregations'] = $aggregation->aggs;
+        $_SESSION['networks']['aggregations']['totalHits'] = $aggregation->totalHits;
+        $_SESSION['networks']['aggregations']['totalCount'] = $aggregation->totalCount;
         $networkAggregations = array_filter($aggregation->aggs, function ($agg) {
           return $agg->aggregation === "networkId";
         });
+      }
+
+      if ($type_aggregations == 'datasetResultDto') {
+        $_SESSION['datasets']['aggregations'] = $aggregation->aggs;
+        $_SESSION['datasets']['aggregations']['totalHits'] = $aggregation->totalHits;
+        $_SESSION['datasets']['aggregations']['totalCount'] = $aggregation->totalCount;
       }
 
       if ($type_aggregations == 'variableResultDto') {
@@ -296,7 +306,6 @@ class MicaClient {
         array_push($_SESSION['studies']['aggregations'], $networkAggregation);
       }
     }
-
   }
 
   protected function _get_aggregations_by_entity_dto($entity_aggr, $aggregations_term) {
