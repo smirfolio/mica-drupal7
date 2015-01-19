@@ -33,7 +33,7 @@ function obiba_mica_network_page_detail($network_id) {
       'contacts_modal' => obiba_mica_study_get_contact_detail('contact', $network_dto->id, $network_dto->contacts),
       'network_dto' => $network_dto,
       'coverage' => obiba_mica_network_coverage($network_dto->studyIds),
-      'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
+      'group_by' => 'studyIds',
     ));
   }
   else {
@@ -86,7 +86,11 @@ function obiba_mica_network_study_table_headers() {
 }
 
 function obiba_mica_network_coverage($study_ids) {
-  return obiba_mica_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study_ids)))));
+  return obiba_mica_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array(
+      'variables' =>
+        array('terms' => array('studyIds' => $study_ids))
+    )), NULL, NULL,
+    array('group-by' => 'studyIds'));
 }
 
 
