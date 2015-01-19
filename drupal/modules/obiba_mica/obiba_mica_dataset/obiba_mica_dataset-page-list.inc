@@ -81,12 +81,12 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resou
   $from = 0;
   $resource = new MicaDatasetResource();
   if (!empty($_GET['page'])) {
-    $from = $resource->pagination_list_search_parameters($_GET['page'], 'list-datasets', MicaClient::SIZE_RESPONSE_SM);
+    $from = $resource->pagination_list_search_parameters($_GET['page'], 'datasets', MicaClient::SIZE_RESPONSE_SM);
   }
 
   $response = $resource->get_datasets($dataset_resource, NULL, $query, $from, MicaClient::SIZE_RESPONSE_SM, $sort, $sort_by);
   if (!empty($response)) {
-    $_SESSION['list-datasets']['aggregations']['totalHits'] = $response->getTotalHits();
+    $_SESSION['datasets']['aggregations']['totalHits'] = $response->getTotalHits();
   }
 
   return $response;
