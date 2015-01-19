@@ -33,7 +33,7 @@ function obiba_mica_network_page_detail($network_id) {
       'contacts_modal' => obiba_mica_study_get_contact_detail('contact', $network_dto->id, $network_dto->contacts),
       'network_dto' => $network_dto,
       'coverage' => obiba_mica_network_coverage($network_dto->studyIds),
-      'group_by' => 'studyIds',
+      'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
     ));
   }
   else {
