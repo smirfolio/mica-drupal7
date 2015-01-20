@@ -116,18 +116,14 @@
           '<a class="close" data-dismiss="alert" href="#">×</a>' +
           '<h4 class="element-invisible">Warning message</h4> ' + Drupal.settings.ErrorMessage +
           ' </div>';
-        var UrlJsonParm;
         var jsonParam = (window.location.search.replace(/(^\?)/, '').split("&").map(function (n) {
           return n = n.split("="), this[n[0]] = n[1], this
         }.bind({}))[0])['query'];
         //if not valid jsonParam (url manually tampered by user) the scrip crash MK-201
+        if (jsonParam === undefined || jsonParam === '') return {};
         try {
-          UrlJsonParm = JSON.parse(decodeURIComponent(jsonParam));
-          return jsonParam === undefined ? {} : UrlJsonParm;
+          return JSON.parse(decodeURIComponent(jsonParam));
         } catch (e) {
-          if (jsonParam === undefined) {
-            return {};
-          }
           $(".region-content").before(messageError);
           setTimeout(function () {
             updateWindowLocation();

@@ -412,7 +412,7 @@ function obiba_mica_facet_search_coverage_page() {
   $vocabulary_coverage_outputs = array();
   $vocabulary_coverage_output = array();
   $search_resources = new MicaSearchResource();
-  $coverages = $search_resources->taxonomies_coverage();
+  $coverages = $search_resources->taxonomies_coverage(NULL, array('group-by' => 'studyIds'));
   if (!empty($coverages->taxonomies)) {
     foreach ($coverages->taxonomies as $taxonomy_coverage) {
       $formatted_vocabulary_coverage = new stdClass();
@@ -470,7 +470,7 @@ function obiba_mica_facet_search_coverage_page() {
     'coverages' => $coverages,
     'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,
     'query' => !empty($parts['query']) ? $parts['query'] : NULL,
-    'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
+    'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
   ));
   return $output;
 }

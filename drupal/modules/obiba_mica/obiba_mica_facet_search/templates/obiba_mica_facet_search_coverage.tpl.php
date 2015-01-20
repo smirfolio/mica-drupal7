@@ -41,14 +41,6 @@ if (empty($query)) {
   </p>
 
   <ul class="nav nav-pills pull-right">
-    <li class="<?php if (empty($group_by)) print 'active' ?>">
-      <?php
-      print l(t('All'), 'mica/coverage', array(
-        'query' => array(
-          array('query' => $query)
-        ),
-      )); ?>
-    </li>
     <li class="<?php if (!empty($group_by) && $group_by == 'studyIds') print 'active' ?>" data-toggle="tooltip"
       data-placement="top" title="<?php print t('Group by study') ?>">
       <?php
