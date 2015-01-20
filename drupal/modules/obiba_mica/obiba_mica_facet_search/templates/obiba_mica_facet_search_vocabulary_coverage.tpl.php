@@ -113,46 +113,47 @@
       <tbody>
 
       <?php foreach ($vocabulary_coverage->terms as $key_term => $term_coverage) : ?>
-        <tr data-toggle="tooltip"
-          title="<?php print obiba_mica_commons_get_localized_field($term_coverage->term, 'descriptions'); ?>">
-          <td style="vertical-align: middle; word-wrap:break-word;" class="right-border">
-            <?php if (empty($term_coverage->hits)): ?>
-              <?php print obiba_mica_commons_get_localized_field($term_coverage->term, 'titles'); ?>
-            <?php else: ?>
-              <?php print l(obiba_mica_commons_get_localized_field($term_coverage->term, 'titles'), 'mica/search',
-                array(
-                  'query' => array(
-                    'type' => 'variables',
-                    'query' => MicaClient::add_parameter_dto_query_link(array(
-                          'variables' => array(
-                            'terms' => array(
-                              $vocabulary_attribute => $term_coverage->term->name
+        <?php if (!empty($term_coverage->hits)): ?>
+          <tr data-toggle="tooltip"
+              title="<?php print obiba_mica_commons_get_localized_field($term_coverage->term, 'descriptions'); ?>">
+            <td style="vertical-align: middle; word-wrap:break-word;" class="right-border">
+              <?php if (empty($term_coverage->hits)): ?>
+                <?php print obiba_mica_commons_get_localized_field($term_coverage->term, 'titles'); ?>
+              <?php else: ?>
+                <?php print l(obiba_mica_commons_get_localized_field($term_coverage->term, 'titles'), 'mica/search',
+                  array(
+                    'query' => array(
+                      'type' => 'variables',
+                      'query' => MicaClient::add_parameter_dto_query_link(array(
+                            'variables' => array(
+                              'terms' => array(
+                                $vocabulary_attribute => $term_coverage->term->name
+                              )
                             )
                           )
                         )
-                      )
-                  ),
-                )) ?>
-            <?php endif ?>
-          </td>
-          <td style="text-align: center; vertical-align: middle;"
-            title="<?php print empty($vocabulary_coverage->hits) ? '0' : floor($term_coverage->hits * 10000 / $vocabulary_coverage->hits) / 100; ?>%">
-            <?php if (empty($term_coverage->hits)): ?>
-              <?php print 0; ?>
-            <?php else: ?>
-              <span class="label label-success"><?php print $term_coverage->hits; ?></span>
-            <?php endif ?>
-          </td>
-          <?php if (!empty($term_coverage->buckets)): ?>
-            <?php foreach ($bucket_names as $bucket_name) : ?>
-              <?php $found = FALSE ?>
-              <?php foreach ($term_coverage->buckets as $bucket) : ?>
-                <?php if ($bucket->value == $bucket_name): ?>
-                  <td style="text-align: center; vertical-align: middle;">
-                    <?php if (empty($bucket->hits)): ?>
-                      <?php print 0; ?>
-                    <?php else: ?>
-                      <span class="label label-info">
+                    ),
+                  )) ?>
+              <?php endif ?>
+            </td>
+            <td style="text-align: center; vertical-align: middle;"
+                title="<?php print empty($vocabulary_coverage->hits) ? '0' : floor($term_coverage->hits * 10000 / $vocabulary_coverage->hits) / 100; ?>%">
+              <?php if (empty($term_coverage->hits)): ?>
+                <?php print 0; ?>
+              <?php else: ?>
+                <span class="label label-success"><?php print $term_coverage->hits; ?></span>
+              <?php endif ?>
+            </td>
+            <?php if (!empty($term_coverage->buckets)): ?>
+              <?php foreach ($bucket_names as $bucket_name) : ?>
+                <?php $found = FALSE ?>
+                <?php foreach ($term_coverage->buckets as $bucket) : ?>
+                  <?php if ($bucket->value == $bucket_name): ?>
+                    <td style="text-align: center; vertical-align: middle;">
+                      <?php if (empty($bucket->hits)): ?>
+                        <?php print 0; ?>
+                      <?php else: ?>
+                        <span class="label label-info">
                     <?php print l($bucket->hits, 'mica/search',
                       array(
                         'query' => array(
@@ -168,21 +169,22 @@
                         ),
                       )) ?>
                     </span>
-                    <?php endif ?>
-                  </td>
-                  <?php $found = TRUE ?>
+                      <?php endif ?>
+                    </td>
+                    <?php $found = TRUE ?>
+                  <?php endif ?>
+                <?php endforeach; ?>
+                <?php if (!$found): ?>
+                  <td style="text-align: center; vertical-align: middle;">0</td>
                 <?php endif ?>
               <?php endforeach; ?>
-              <?php if (!$found): ?>
+            <?php else: ?>
+              <?php foreach ($bucket_names as $bucket_name) : ?>
                 <td style="text-align: center; vertical-align: middle;">0</td>
-              <?php endif ?>
-            <?php endforeach; ?>
-          <?php else: ?>
-            <?php foreach ($bucket_names as $bucket_name) : ?>
-              <td style="text-align: center; vertical-align: middle;">0</td>
-            <?php endforeach; ?>
-          <?php endif ?>
-        </tr>
+              <?php endforeach; ?>
+            <?php endif ?>
+          </tr>
+        <?php endif ?>
       <?php endforeach; ?>
 
       </tbody>

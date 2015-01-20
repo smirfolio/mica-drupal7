@@ -153,7 +153,8 @@ function obiba_mica_facet_search_block_info() {
     'status' => 1,
     'region' => 'facets',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/search',
+    'pages' => '*mica/search
+*mica/coverage',
     'weight' => 10,
     'custom' => 1,
   );

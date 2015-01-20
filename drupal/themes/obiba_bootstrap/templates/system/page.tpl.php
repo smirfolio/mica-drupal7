@@ -180,13 +180,11 @@
     <!-- Sidebar -->
 
     <!-- Fixed side -->
-    <div class="fixed-sidebar-div">
-      <div id="sidebar-wrapper" class="side-bar-content sidebar-untoggled">
-
-      </div>
-
+    <div id="fixed-sidebar">
+      <div id="sidebar-wrapper" class="side-bar-content sidebar-untoggled"></div>
     </div>
     <!-- /#Fixed side -->
+
     <!-- /#sidebar-wrapper -->
   </div>
 </div>
