@@ -36,8 +36,9 @@
           min-width: 100%;
         <?php !empty($vocabulary_coverage->buckets) ?
           print 'width: ' . (100 / (count($vocabulary_coverage->buckets) + 1)) . '%;' : ''; ?>
-          ">
-          <?php print t('All'); ?>
+          " data-toggle="tooltip" data-placement="top"
+            title="<?php print t('Total number of variables per term'); ?>">
+          <?php print t('Total'); ?>
         </th>
         <?php if (!empty($vocabulary_coverage->buckets)): ?>
           <?php foreach ($vocabulary_coverage->buckets as $bucket) : ?>
@@ -67,7 +68,7 @@
       <tfoot>
       <tr>
         <th class="right-border"><?php print t('Total'); ?></th>
-        <th style="text-align: center;" title="100%">
+        <th style="text-align: center;">
           <?php
           print l($vocabulary_coverage->hits, 'mica/search',
             array(

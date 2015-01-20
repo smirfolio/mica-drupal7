@@ -7,25 +7,25 @@
   Drupal.behaviors.obiba_mica_facet_search_collapse_tab = {
     attach: function (context, settings) {
       /***Here we deal with facet tab that is retrieved from cookies *******************/
-      //get active facet tab from cooki
-      var activeTabCooki = $.getCookieDataTabs('activeFacetTab');
+      //get active facet tab from cookie
+      var activeTabCookie = $.getCookieDataTabs('activeFacetTab');
 
       //if empty cookie save current facet tab state
-      if (jQuery.isEmptyObject(activeTabCooki)) {
+      if (jQuery.isEmptyObject(activeTabCookie)) {
         $(".facets-tab>li").each(function (id, state) {
           //   var current_id = this.firstChild().attr('href');
           console.log($(this).attr('class'));
           if ($(this).attr('class') == 'active') {
             console.log($(this).find('a').attr('href'));
-            activeTabCooki['active'] = $(this).find('a').attr('href');
+            activeTabCookie['active'] = $(this).find('a').attr('href');
           }
         });
         //save current facet tab state
-        $.saveCookieDataTabs(activeTabCooki, 'activeFacetTab');
+        $.saveCookieDataTabs(activeTabCookie, 'activeFacetTab');
       }
       else {
-        //open active facet tab (retrived from cookies)
-        $('#facet-search a[href$="' + activeTabCooki["active"] + '"]').tab('show');
+        //open active facet tab (retrieved from cookies)
+        $('#facet-search a[href$="' + activeTabCookie["active"] + '"]').tab('show');
       }
       //save current stat of facet tab in cookie
       $("div#search-facets").find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -34,8 +34,8 @@
         e.preventDefault();
         var targetPanel = e.target.hash;
         $.saveCookieDataTabs('', 'activeFacetTab');
-        activeTabCooki['active'] = targetPanel;
-        $.saveCookieDataTabs(activeTabCooki, 'activeFacetTab');
+        activeTabCookie['active'] = targetPanel;
+        $.saveCookieDataTabs(activeTabCookie, 'activeFacetTab');
       });
 
       /***Here we deal with result search tab that is retrieved from url *******************/

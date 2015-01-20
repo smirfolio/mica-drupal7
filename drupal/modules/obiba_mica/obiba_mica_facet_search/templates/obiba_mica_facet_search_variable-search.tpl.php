@@ -44,7 +44,10 @@
                     'indent'
                   )
                 ),
-                'query' => empty($query) ? array() : array('query' => $query),
+                'query' => array(
+                    'query' => $query,
+                    'group-by' => 'studyIds'
+                  ),
               )); ?>
             </p>
           </div>
@@ -71,7 +74,8 @@
                   )
                 ),
                 'query' => array(
-                  'query' => $query
+                  'query' => $query,
+                  'group-by' => 'datasetId'
                 ),
               )); ?>
             </p>
@@ -100,7 +104,8 @@
                   )
                 ),
                 'query' => array(
-                  'query' => $query
+                  'query' => $query,
+                  'group-by' => 'studyIds'
                 ),
               )); ?>
             </p>
@@ -128,7 +133,8 @@
                   )
                 ),
                 'query' => array(
-                  'query' => $query
+                  'query' => $query,
+                  'group-by' => 'studyIds'
                 ),
               )); ?>
             </p>
