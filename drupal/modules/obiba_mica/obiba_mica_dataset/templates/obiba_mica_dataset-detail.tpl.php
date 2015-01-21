@@ -206,8 +206,8 @@
       <?php if ($dataset_type != "study-dataset"): ?>
         <h3><?php print t('Harmonization') ?></h3>
         <?php print render($harmonization_table_legend); ?>
-        <div class="download-table">
-          <a id="download-harmo-table" href="" class="btn btn-success pull-right sm-bottom-margin"><i
+        <div id="download-btn">
+          <a href="" class="btn btn-success pull-right"><i
               class='glyphicon glyphicon-download'></i> <?php print t('Download') ?></a>
         </div>
         <div class="clearfix">

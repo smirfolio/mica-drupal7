@@ -33,14 +33,14 @@
 
       /**********************/
       if (headerTable) {
-        $(".download-table").show();
+        $("#download-btn").show();
         var divTableVariable = $('#table-variables');
         divTableVariable.on('xhr.dt', function (e, settings, json) {
           if (json.iTotalRecords === 0) {
             $(".table-variables").hide();
           }
           else {
-            $("#download-harmo-table").on('click', function (event) {
+            $("#download-btn > a").on('click', function (event) {
               // create a form for the file upload
               var form = $("<form action='" + idDataset + '/download' + "' method='post'>");
               $(this).after(form);

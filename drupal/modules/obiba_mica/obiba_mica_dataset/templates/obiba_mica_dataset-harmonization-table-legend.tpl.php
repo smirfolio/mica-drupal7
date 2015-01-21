@@ -1,4 +1,4 @@
-<div class="legend lg-top-margin lg-bottom-margin">
+<div class="legend lg-bottom-margin pull-left">
   <?php if (!empty($clickable)): ?>
     <p>
       <?php print t('Click on each status icon to get more details on the corresponding harmonization results') ?>:
