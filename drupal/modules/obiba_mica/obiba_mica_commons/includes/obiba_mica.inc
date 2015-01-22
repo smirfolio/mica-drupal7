@@ -217,8 +217,20 @@ class MicaClient {
     return $client;
   }
 
+  protected function session_facets_bucket_construction($facets_bucket) {
+    $facets_buckets = array();
+    foreach ($facets_bucket as $bucket) {
+      $facets_buckets[$bucket->aggregation] = array(
+        'title' => obiba_mica_commons_get_localized_field($bucket, 'title'),
+        'key' => $bucket->aggregation,
+        'aggs' => $bucket->aggregation
+      );
+    }
+    return $facets_buckets;
+  }
 
   protected function session_facets_builder($aggregations) {
+    $dataset_buckets = array();
     unset($_SESSION['variables']);
     unset($_SESSION['studies']);
     unset($_SESSION['datasets']);
@@ -235,12 +247,14 @@ class MicaClient {
       }
 
       if ($type_aggregations == 'datasetResultDto') {
+        $dataset_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
         $_SESSION['datasets']['aggregations'] = $aggregation->aggs;
         $_SESSION['datasets']['aggregations']['totalHits'] = $aggregation->totalHits;
         $_SESSION['datasets']['aggregations']['totalCount'] = $aggregation->totalCount;
       }
 
       if ($type_aggregations == 'variableResultDto') {
+        $_SESSION['datasets']['facets-buckets'] = array_merge($dataset_buckets, $this->session_facets_bucket_construction($aggregation->aggs));
         $_SESSION['variables']['studies'] = array();
         $study_result = isset($aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'}) ? $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'} : NULL;
         if (!empty($study_result) && (!empty($study_result->summaries) || !empty($study_result->digests))) {
@@ -263,6 +277,7 @@ class MicaClient {
         $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
       }
       if ($type_aggregations == 'studyResultDto') {
+        $_SESSION['studies']['facets-buckets'] = $this->session_facets_bucket_construction($aggregation->aggs);
         if (!empty($aggregations->networkResultDto)) {
           $network_result = isset($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}) ? $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'} : NULL;
           if (!empty($network_result) && (!empty($network_result->networks) || !empty($network_result->digests))) {

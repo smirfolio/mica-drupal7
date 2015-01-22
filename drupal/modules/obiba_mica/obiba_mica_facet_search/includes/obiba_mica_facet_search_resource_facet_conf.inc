@@ -7,13 +7,9 @@ function obiba_mica_facet_search_resource_return_facets($dto_type = NULL) {
   $path_module = drupal_get_path('module', 'obiba_mica_facet_search');
   switch ($dto_type) {
     case 'facet_conf_variable':
-      $data = file_get_contents($path_module . '/includes/obiba_mica_facet_search_json_variable_facet.json');
-      $facets = drupal_json_decode($data);
-      return $facets;
+      return $_SESSION['datasets']['facets-buckets'];
     case 'facet_conf_study' :
-      $data = file_get_contents($path_module . '/includes/obiba_mica_facet_search_json_study_facet.json');
-      $facets = drupal_json_decode($data);
-      return $facets;
+      return $_SESSION['studies']['facets-buckets'];
     default :
       $data = file_get_contents($path_module . '/includes/obiba_mica_facet_search_json_variable_facet.json');
       $facets = drupal_json_decode($data);
