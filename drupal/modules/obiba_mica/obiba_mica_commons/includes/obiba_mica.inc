@@ -207,7 +207,6 @@ class MicaClient {
     }
 
     $client->options['curlopts'] += array(
-      CURLOPT_SSLVERSION => 3,
       CURLOPT_SSL_VERIFYHOST => FALSE,
       CURLOPT_SSL_VERIFYPEER => FALSE
     );
