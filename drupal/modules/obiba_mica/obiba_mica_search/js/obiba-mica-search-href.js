@@ -330,7 +330,7 @@
       function process() {
         /**********************/
         /*hide main search facet block*/
-        $("section#block-obiba-mica-facet-search-facet-search").find("h2:first").css("display", "none");
+        $("section#block-obiba-mica-search-facet-search").find("h2:first").css("display", "none");
 
         var selectedVars = getUrlVars();
         if (selectedVars) {

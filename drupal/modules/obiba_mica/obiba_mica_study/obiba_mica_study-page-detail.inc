@@ -271,7 +271,7 @@ function obiba_mica_study_get_variables($study_id) {
 }
 
 function obiba_mica_study_coverage($study_id) {
-  return obiba_mica_facet_search_query_charts(
+  return obiba_mica_search_query_charts(
     MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study_id)))),
     function ($b, $study_id) {
       // filter the dces of the current study

@@ -92,7 +92,7 @@ class VariableStatistics {
       }
 
       if (!empty($data)) {
-        $to_render = obiba_mica_facet_search_stacked_column_chart($labels, $data, t('Valid and other values frequencies'), NULL, 400, 'none');
+        $to_render = obiba_mica_search_stacked_column_chart($labels, $data, t('Valid and other values frequencies'), NULL, 400, 'none');
         return render($to_render);
       }
       else {
@@ -126,7 +126,7 @@ class VariableStatistics {
     }
 
     if (!empty($data)) {
-      $to_render = obiba_mica_facet_search_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right');
+      $to_render = obiba_mica_search_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right');
       return render($to_render);
     }
     else {

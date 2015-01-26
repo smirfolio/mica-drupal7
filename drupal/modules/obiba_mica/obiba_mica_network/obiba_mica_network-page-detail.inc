@@ -86,7 +86,7 @@ function obiba_mica_network_study_table_headers() {
 }
 
 function obiba_mica_network_coverage($study_ids) {
-  return obiba_mica_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array(
+  return obiba_mica_search_query_charts(MicaClient::add_parameter_dto_query_link(array(
       'variables' =>
         array('terms' => array('studyIds' => $study_ids))
     )), NULL, NULL,

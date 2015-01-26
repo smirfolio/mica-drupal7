@@ -4,7 +4,7 @@
  */
 
 (function ($) {
-  Drupal.behaviors.obiba_mica_facet_search_collapse_tab = {
+  Drupal.behaviors.obiba_mica_search_collapse_tab = {
     attach: function (context, settings) {
       /***Here we deal with facet tab that is retrieved from cookies *******************/
       //get active facet tab from cookie

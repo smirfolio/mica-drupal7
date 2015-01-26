@@ -4,7 +4,7 @@
  */
 
 (function ($) {
-  Drupal.behaviors.obiba_mica_facet_search_collapse_block = {
+  Drupal.behaviors.obiba_mica_search_collapse_block = {
     attach: function (context, settings) {
 
       var newst = {};
