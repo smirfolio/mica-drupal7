@@ -128,6 +128,19 @@
 
   </section>
 
+  <!-- STUDIES -->
+  <section>
+    <h3><?php print t('Studies') ?></h3>
+
+    <div class="row">
+      <div class="col-lg-12 col-xs-12">
+        <div class="scroll-content-tab">
+          <?php print obiba_mica_network_study_table($network_dto); ?>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- COVERAGE -->
   <?php if (!empty($coverage)): ?>
     <section>
@@ -171,7 +184,7 @@
         </li>
       </ul>
 
-      <h3 id="coverage"><?php print t('Coverage') ?></h3>
+      <h3 id="coverage"><?php print t('Classifications Coverage') ?></h3>
 
       <?php foreach ($coverage as $taxonomy_coverage): ?>
         <h4><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
@@ -185,17 +198,7 @@
     </section>
   <?php endif; ?>
 
-  <section>
-    <h3><?php print t('Studies') ?></h3>
 
-    <div class="row">
-      <div class="col-lg-12 col-xs-12">
-        <div class="scroll-content-tab">
-          <?php print obiba_mica_network_study_table($network_dto); ?>
-        </div>
-      </div>
-    </div>
-  </section>
 
 </article>
 <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
