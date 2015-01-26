@@ -4,20 +4,19 @@
  * */
 
 function obiba_mica_facet_search_resource_return_facets($dto_type = NULL) {
-  $path_module = drupal_get_path('module', 'obiba_mica_facet_search');
+  if (empty($_SESSION)) {
+    return array();
+  }
   switch ($dto_type) {
     case 'facet_conf_variable':
-      if(isset($_SESSION['datasets'])) return $_SESSION['datasets']['facets-buckets'];
-      break;
+      if (!empty($_SESSION['datasets']) && !empty($_SESSION['datasets']['facets-buckets'])) {
+        return $_SESSION['datasets']['facets-buckets'];
+      }
     case 'facet_conf_study' :
-      if(isset($_SESSION['studies'])) return $_SESSION['studies']['facets-buckets'];
-      break;
-    default :
-      $data = file_get_contents($path_module . '/includes/obiba_mica_facet_search_json_variable_facet.json');
-      $facets = drupal_json_decode($data);
-      return $facets;
+      if (!empty($_SESSION['studies']) && empty($_SESSION['studies']['facets-buckets'])) {
+        return $_SESSION['studies']['facets-buckets'];
+      }
   }
-
   return array();
 }
 
