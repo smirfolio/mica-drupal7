@@ -51,10 +51,13 @@ function obiba_mica_study_page_detail($study_id) {
     }
     $coverage = obiba_mica_study_coverage($study_dto->id);
     $_SESSION['fixed_menu'] = array(
-      'study_dto' => $study_dto,
-      'coverage' => !empty($coverage) ? TRUE : FALSE,
-      'networks' => !empty($network_output) ? TRUE : FALSE,
-      'datasets' => !empty($dataset_output) ? TRUE : FALSE,
+      'marker_paper' => !empty($study_dto->markerPaper),
+      'pubmed_id' => !empty($study_dto->pubmedId),
+      'info' => !empty($study_dto->info),
+      'attachments' => !empty($study_dto->attachments),
+      'coverage' => !empty($coverage),
+      'networks' => !empty($network_output),
+      'datasets' => !empty($dataset_output),
       'study_variables_aggs' => NULL, //obiba_mica_study_get_variables($study_id),
     );
 

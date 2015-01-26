@@ -12,20 +12,22 @@
         </li>
         <li>
           <a href="#access">
-            <?php if (!empty($study_dto->markerPaper) || !empty($study_dto->pubmedId)): ?>
+            <?php if ($marker_paper && $pubmed_id): ?>
               <?php print t('Access / Marker Paper'); ?>
+            <?php elseif ($marker_paper): ?>
+              <?php print t('Marker Paper'); ?>
             <?php else: ?>
               <?php print t('Access'); ?>
             <?php endif; ?>
           </a>
         </li>
-        <?php if (!empty($study_dto->info)): ?>
+        <?php if ($info): ?>
           <li>
             <a href="#info"><?php print t('Supplementary Information'); ?>
             </a>
           </li>
         <?php endif; ?>
-        <?php if (!empty($study_dto->attachments)): ?>
+        <?php if ($attachments): ?>
           <li>
             <a href="#documents">
               <?php print t('Documents'); ?>
@@ -42,13 +44,6 @@
             <?php print t('Populations'); ?>
           </a>
         </li>
-        <?php if (!empty($coverage)): ?>
-          <li>
-            <a href="#coverage">
-              <?php print t('Classifications Coverage'); ?>
-            </a>
-          </li>
-        <?php endif; ?>
         <?php if (!empty($networks)): ?>
           <li>
             <a href="#networks">
@@ -67,6 +62,13 @@
           <li>
             <a href="#variables">
               <?php print t('Variables'); ?>
+            </a>
+          </li>
+        <?php endif; ?>
+        <?php if (!empty($coverage)): ?>
+          <li>
+            <a href="#coverage">
+              <?php print t('Classifications Coverage'); ?>
             </a>
           </li>
         <?php endif; ?>
