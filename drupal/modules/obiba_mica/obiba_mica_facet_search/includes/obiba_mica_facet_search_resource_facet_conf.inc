@@ -13,7 +13,7 @@ function obiba_mica_facet_search_resource_return_facets($dto_type = NULL) {
         return $_SESSION['datasets']['facets-buckets'];
       }
     case 'facet_conf_study' :
-      if (!empty($_SESSION['studies']) && empty($_SESSION['studies']['facets-buckets'])) {
+      if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['facets-buckets'])) {
         return $_SESSION['studies']['facets-buckets'];
       }
   }
