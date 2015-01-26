@@ -8002,3 +8002,6 @@ div.algo-list {
 .refresh-list {
   max-height: 39px;
 }
+.nav-tabs > li > a {
+  padding: 10px 15px;
+}
