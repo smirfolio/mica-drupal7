@@ -72,8 +72,8 @@ function obiba_mica_facet_search_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_facet_search_block_search',
       'path' => $path_theme
     ),
-    'obiba_mica_facet_search_variable-search' => array(
-      'template' => 'obiba_mica_facet_search_variable-search',
+    'obiba_mica_facet_search_search' => array(
+      'template' => 'obiba_mica_facet_search_search',
       'path' => $path_theme
     ),
     'obiba_mica_facet_search_coverage' => array(
@@ -351,7 +351,7 @@ function obiba_mica_facet_search_variable_page_search() {
     parse_str($url_parm[1], $parts);
   }
 
-  $output = theme('obiba_mica_facet_search_variable-search',
+  $output = theme('obiba_mica_facet_search_search',
     array(
       'noval' => '',
       'query' => empty($parts['query']) ? '' : $parts['query'],

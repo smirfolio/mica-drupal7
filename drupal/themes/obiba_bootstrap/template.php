@@ -120,11 +120,11 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_variable-search.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_mica_facet_search_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_facet_search_variable-search.tpl.php'] = array(
+    $theme_array['obiba_mica_facet_search_search.tpl.php'] = array(
       'variables' => array('block' => array()),
-      'template' => 'obiba_mica_facet_search_variable-search',
+      'template' => 'obiba_mica_facet_search_search',
       'path' => $path . '/templates'
     );
   }
