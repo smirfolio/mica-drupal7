@@ -27,7 +27,17 @@ class MicaSearchResource extends MicaClient {
   }
 
   public function taxonomies_coverage($parameters = NULL, $default_dto_search = NULL) {
-    return $this->_aggregation_resource('coverage', $parameters, $default_dto_search);
+    $coverage_result = $this->_aggregation_resource('coverage', $parameters, $default_dto_search);
+
+    if (!empty($coverage_result)) {
+      $_SESSION['request-search-response'] = 'no-empty';
+      $this->session_facets_builder($coverage_result->queryResult);
+    }
+    else {
+      $_SESSION['request-search-response'] = 'empty';
+    }
+
+    return $coverage_result;
   }
 
   private function _search_resource($parameters = NULL) {
@@ -85,6 +95,7 @@ class MicaSearchResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
+
       return json_decode($data);
     }
     catch (HttpClientException $e) {
