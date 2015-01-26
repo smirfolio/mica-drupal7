@@ -775,7 +775,7 @@ pre code {
 }
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 80%;
   }
 }
 .container-fluid {
@@ -1712,7 +1712,7 @@ input[type="checkbox"]:focus {
 }
 output {
   display: block;
-  padding-top: 11px;
+  padding-top: 6px;
   font-size: 15px;
   line-height: 1.42857143;
   color: #95a5a6;
@@ -1720,8 +1720,8 @@ output {
 .form-control {
   display: block;
   width: 100%;
-  height: 43px;
-  padding: 10px 15px;
+  height: 33px;
+  padding: 5px 10px;
   font-size: 15px;
   line-height: 1.42857143;
   color: #95a5a6;
@@ -1770,7 +1770,7 @@ input[type="date"],
 input[type="time"],
 input[type="datetime-local"],
 input[type="month"] {
-  line-height: 43px;
+  line-height: 33px;
   line-height: 1.42857143 \0;
 }
 input[type="date"].input-sm,
@@ -1850,8 +1850,8 @@ fieldset[disabled] .checkbox label {
   cursor: not-allowed;
 }
 .form-control-static {
-  padding-top: 11px;
-  padding-bottom: 11px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   margin-bottom: 0;
 }
 .form-control-static.input-lg,
@@ -1895,7 +1895,7 @@ select[multiple] .input-lg {
   position: relative;
 }
 .has-feedback .form-control {
-  padding-right: 53.75px;
+  padding-right: 41.25px;
 }
 .form-control-feedback {
   position: absolute;
@@ -1903,9 +1903,9 @@ select[multiple] .input-lg {
   right: 0;
   z-index: 2;
   display: block;
-  width: 43px;
-  height: 43px;
-  line-height: 43px;
+  width: 33px;
+  height: 33px;
+  line-height: 33px;
   text-align: center;
 }
 .input-lg + .form-control-feedback {
@@ -2064,11 +2064,11 @@ select[multiple] .input-lg {
 .form-horizontal .checkbox-inline {
   margin-top: 0;
   margin-bottom: 0;
-  padding-top: 11px;
+  padding-top: 6px;
 }
 .form-horizontal .radio,
 .form-horizontal .checkbox {
-  min-height: 32px;
+  min-height: 27px;
 }
 .form-horizontal .form-group {
   margin-left: -15px;
@@ -2078,7 +2078,7 @@ select[multiple] .input-lg {
   .form-horizontal .control-label {
     text-align: right;
     margin-bottom: 0;
-    padding-top: 11px;
+    padding-top: 6px;
   }
 }
 .form-horizontal .has-feedback .form-control-feedback {
@@ -2105,7 +2105,7 @@ select[multiple] .input-lg {
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  padding: 10px 15px;
+  padding: 5px 10px;
   font-size: 15px;
   line-height: 1.42857143;
   border-radius: 4px;
@@ -3496,7 +3496,7 @@ select[multiple] .input-group-sm > .input-group-btn > .btn {
   vertical-align: middle;
 }
 .input-group-addon {
-  padding: 10px 15px;
+  padding: 5px 10px;
   font-size: 15px;
   font-weight: normal;
   line-height: 1;
@@ -3582,7 +3582,7 @@ select[multiple] .input-group-sm > .input-group-btn > .btn {
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 5px 10px;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {
@@ -3979,8 +3979,8 @@ select[multiple] .input-group-sm > .input-group-btn > .btn {
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  margin-top: 8.5px;
-  margin-bottom: 8.5px;
+  margin-top: 13.5px;
+  margin-bottom: 13.5px;
 }
 @media (min-width: 768px) {
   .navbar-form .form-group {
@@ -4060,8 +4060,8 @@ select[multiple] .input-group-sm > .input-group-btn > .btn {
   border-bottom-left-radius: 0;
 }
 .navbar-btn {
-  margin-top: 8.5px;
-  margin-bottom: 8.5px;
+  margin-top: 13.5px;
+  margin-bottom: 13.5px;
 }
 .navbar-btn.btn-sm {
   margin-top: 13.5px;
@@ -4314,7 +4314,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
 .pagination > li > span {
   position: relative;
   float: left;
-  padding: 10px 15px;
+  padding: 5px 10px;
   line-height: 1.42857143;
   text-decoration: none;
   color: #02a676;
@@ -6413,7 +6413,7 @@ div.charts {
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  padding: 10px 15px;
+  padding: 5px 10px;
   font-size: 15px;
   line-height: 1.42857143;
   border-radius: 4px;
@@ -6711,7 +6711,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   background-image: none;
   border: 1px solid transparent;
   white-space: nowrap;
-  padding: 10px 15px;
+  padding: 5px 10px;
   font-size: 15px;
   line-height: 1.42857143;
   border-radius: 4px;
@@ -8001,4 +8001,7 @@ div.algo-list {
 }
 .refresh-list {
   max-height: 39px;
+}
+.nav-tabs > li > a {
+  padding: 10px 15px;
 }

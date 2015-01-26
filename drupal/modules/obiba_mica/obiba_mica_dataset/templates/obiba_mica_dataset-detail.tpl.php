@@ -184,22 +184,6 @@
     </section>
   <?php endif ?>
 
-  <!-- COVERAGE -->
-  <?php if (!empty($coverage)): ?>
-    <section>
-      <h3><?php print t('Classifications Coverage') ?></h3>
-      <?php foreach ($coverage as $taxonomy_coverage): ?>
-        <h4><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
-        <p class="help-block">
-          <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
-        </p>
-        <div class="scroll-content-tab">
-          <?php print render($taxonomy_coverage['chart']); ?>
-        </div>
-      <?php endforeach ?>
-    </section>
-  <?php endif; ?>
-
   <!-- VARIABLES -->
   <?php if ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables)): ?>
     <section class="table-variables">
@@ -227,6 +211,22 @@
       </div>
 
       <div class="clearfix"></div>
+    </section>
+  <?php endif; ?>
+
+  <!-- COVERAGE -->
+  <?php if (!empty($coverage)): ?>
+    <section>
+      <h3><?php print t('Classifications Coverage') ?></h3>
+      <?php foreach ($coverage as $taxonomy_coverage): ?>
+        <h4><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
+        <p class="help-block">
+          <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
+        </p>
+        <div class="scroll-content-tab">
+          <?php print render($taxonomy_coverage['chart']); ?>
+        </div>
+      <?php endforeach ?>
     </section>
   <?php endif; ?>
 

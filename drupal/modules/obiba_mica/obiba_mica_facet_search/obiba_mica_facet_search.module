@@ -183,15 +183,17 @@ function _obiba_mica_facet_search_get_facets_block_by_dto_type($dto_type, $type)
   $rendred_blocks = "";
   $facets = obiba_mica_facet_search_resource_return_facets($dto_type);
   //dpm(drupal_json_encode($facets));
-  foreach ($facets as $key_facet => $facet) {
-    $has_terms = MicaClient::has_entity_by_id_aggregation($facet['aggs']);
-    if (!empty($has_terms) || ($facet['aggs'] == 'datasetId') || ($facet['aggs'] == 'networkId')) {
-      $facet_title_array = explode('-', $facet['title']);
-      $rendred_blocks .= theme('obiba_mica_facet_search_cloned_block', array(
-        'content' => obiba_mica_facet_search_precess_block_theme('search-' . $facet['aggs'], $type),
-        'title' => $facet_title_array[1],
-        'block_html_id' => $key_facet,
-      ));
+  if (!empty($facets)) {
+    foreach ($facets as $key_facet => $facet) {
+      $has_terms = MicaClient::has_entity_by_id_aggregation($facet['aggs']);
+      if (!empty($has_terms) || ($facet['aggs'] == 'datasetId') || ($facet['aggs'] == 'networkId')) {
+        $facet_title_array = explode('-', $facet['title']);
+        $rendred_blocks .= theme('obiba_mica_facet_search_cloned_block', array(
+          'content' => obiba_mica_facet_search_precess_block_theme('search-' . $facet['aggs'], $type),
+          'title' => $facet_title_array[1],
+          'block_html_id' => $key_facet,
+        ));
+      }
     }
   }
   if (!empty($rendred_blocks)) {
