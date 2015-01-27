@@ -115,7 +115,7 @@ function obiba_mica_search_theme($existing, $type, $theme, $path) {
   );
 }
 
-function obiba_mica_commons_create_facet_search_query_form($arg) {
+function obiba_mica_commons_create_full_text_query_form($arg) {
   $args = func_get_args();
   $type = $args[2];
   if (empty($type)) {
@@ -357,19 +357,19 @@ function obiba_mica_search_variable_page_search() {
       'variables_result' => array('data' => obiba_mica_search_variables_table($variables)),
       'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
       'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
-      'variable_search_form' => drupal_get_form('obiba_mica_commons_create_facet_search_query_form', 'variables'),
+      'variable_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'variables'),
       'datasets' => array('data' => obiba_mica_search_datasets_table($datasets)),
       'dataset_totalHits' => !empty($dataset_totalHits) ? $dataset_totalHits : NULL,
       'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
-      'dataset_search_form' => drupal_get_form('obiba_mica_commons_create_facet_search_query_form', 'datasets'),
+      'dataset_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'datasets'),
       'studies' => array('data' => obiba_mica_search_studies_table($studies)),
       'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
       'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
-      'study_search_form' => drupal_get_form('obiba_mica_commons_create_facet_search_query_form', 'studies'),
+      'study_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'studies'),
       'networks' => array('data' => obiba_mica_search_networks_table($networks)),
       'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
       'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL,
-      'network_search_form' => drupal_get_form('obiba_mica_commons_create_facet_search_query_form', 'networks')
+      'network_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'networks')
     ));
 
   obiba_mica_search_load_libs();
@@ -480,11 +480,11 @@ function obiba_mica_search_study_page_search() {
   $output['title'] = t('Study search page');
   obiba_mica_search_load_libs();
   $search_resources = new MicaSearchResource();
-  $facet_search_response = $search_resources->search_studies();
+  $search_response = $search_resources->search_studies();
   $study_charts = theme('obiba_mica_search_charts', array(
     'charts' => obiba_mica_search_get_facets_chart('obiba_mica_study', $_SESSION['studies']['aggregations'])
   ));
-  return $study_charts . obiba_mica_search_studies_table($facet_search_response);
+  return $study_charts . obiba_mica_search_studies_table($search_response);
 }
 
 function obiba_mica_search_variables_table($variables) {
