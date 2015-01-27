@@ -6839,6 +6839,14 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 .facets {
   list-style-type: none;
 }
+.nav-tabs > .active > a,
+.nav .nonactive a:hover {
+  border: 1px solid rgba(0, 0, 0, 0);
+  background: rgba(0, 0, 0, 0);
+}
+.nav-tabs .monospace > a {
+  font-family: monospace;
+}
 .unclickable {
   pointer-events: none;
 }

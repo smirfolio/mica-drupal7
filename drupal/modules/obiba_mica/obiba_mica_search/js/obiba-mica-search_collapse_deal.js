@@ -4,7 +4,8 @@
  */
 
 (function ($) {
-  Drupal.behaviors.obiba_mica_search_collapse_block = {
+
+  Drupal.behaviors.obiba_mica_facet_search_collapse_block = {
     attach: function (context, settings) {
 
       var newst = {};
@@ -12,36 +13,38 @@
       var sectionid;
       var st = $.getCookieDataTabs('activeAccordionGroup');
 
-      if (jQuery.isEmptyObject(st)) {
-        $(".block-content").each(function (id, state) {
-          var current_id = this.id;
+      $("#facets-expand-collapse").on("click", function(e){
+        $(this).blur();
+        var st = $.getCookieDataTabs('activeAccordionGroup');
+        if (jQuery.isEmptyObject(st)) {
+          expandAll();
+        } else {
+          collapseAll();
+        }
+        e.preventDefault();
+        return false;
+      });
+
+      $(".block-content").each(function (id, state) {
+        var current_id = this.id;
+        if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") return true;
+
+        //show the last visible group
+        if (st[current_id]) {
           $("#" + current_id).collapse("show");
           newst1[current_id] = 'in';
+        }
+        else {
+          $("#" + current_id).collapse("hide");
+          addCollapsedIcon(current_id, 'collapsed');
+          delete newst1[current_id];
 
-        });
+        }
 
-        $.saveCookieDataTabs(newst1, 'activeAccordionGroup');
-      }
-      else {
-        $(".block-content").each(function (id, state) {
-          var current_id = this.id;
+      });
 
-          //show the last visible group
-          if (st[current_id]) {
-            $("#" + current_id).collapse("show");
-            newst1[current_id] = 'in';
-          }
-          else {
-            $("#" + current_id).collapse("hide");
-            dealwithhrefico(current_id, 'collapsed');
-            delete newst1[current_id];
-
-          }
-
-        });
-
-        $.saveCookieDataTabs(newst1, 'activeAccordionGroup');
-      }
+      updateExpandCollapsecon(newst1);
+      $.saveCookieDataTabs(newst1, 'activeAccordionGroup');
 
 //when a group is shown, save it as the active accordion group
       $(".block").on('shown.bs.collapse', function () {
@@ -57,6 +60,7 @@
           }
         });
         $.saveCookieDataTabs(newst, 'activeAccordionGroup');
+        updateExpandCollapsecon(newst);
       });
 
       //when a group is shown, save it as the active accordion group
@@ -72,7 +76,8 @@
           }
 
         });
-        $.saveCookieDataTabs(newst, 'activeAccordionGroup')
+        $.saveCookieDataTabs(newst, 'activeAccordionGroup');
+        updateExpandCollapsecon(newst);
       });
 
 
@@ -100,11 +105,48 @@
 
 
       /*******************************************/
+      function updateExpandCollapsecon(data) {
+        $("#facets-expand-collapse").text((jQuery.isEmptyObject(data)) ? "[+]" : "[-]");
+      }
 
-      function dealwithhrefico(current_id, collapse) {
+      function expandAll() {
+        var newst1 = {};
+        $(".block-content").each(function (id, state) {
+          var current_id = this.id;
+          if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") return true;
+          $("#" + current_id).collapse("show");
+          newst1[current_id] = 'in';
+          removeCollapsedIcon(current_id, "collapsed");
+        });
+
+        $.saveCookieDataTabs(newst1, 'activeAccordionGroup');
+        updateExpandCollapsecon(newst1);
+      }
+
+      function collapseAll() {
+
+        $(".block-content").each(function (id, state) {
+          var current_id = this.id;
+          if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") return true;
+          $("#" + current_id).collapse("hide");
+          addCollapsedIcon(current_id, 'collapsed');
+        });
+
+        $.saveCookieDataTabs({}, 'activeAccordionGroup');
+        updateExpandCollapsecon({});
+      }
+
+      function removeCollapsedIcon(current_id, collapse) {
         if (collapse && current_id) {
           sectionid = current_id.replace("collapse-", "");
-          $("#" + sectionid + " h2.block-title a:first").addClass(collapse);
+          $("a[data-parent="+sectionid+"]").removeClass(collapse);
+        }
+      }
+
+      function addCollapsedIcon(current_id, collapse) {
+        if (collapse && current_id) {
+          sectionid = current_id.replace("collapse-", "");
+          $("a[data-parent="+sectionid+"]").addClass(collapse);
         }
       }
 
