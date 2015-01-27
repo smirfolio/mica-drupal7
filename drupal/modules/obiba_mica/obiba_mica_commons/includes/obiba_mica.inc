@@ -372,7 +372,7 @@ class MicaClient {
     return FALSE;
   }
 
-  static function obiba_mica_facet_search_get_item_count($type, $aggregation_facet, $id) {
+  static function obiba_mica_search_get_item_count($type, $aggregation_facet, $id) {
     if (!empty($_SESSION[$type][$aggregation_facet])) {
       foreach ($_SESSION[$type][$aggregation_facet] as $value) {
         if ($value->key == $id) {

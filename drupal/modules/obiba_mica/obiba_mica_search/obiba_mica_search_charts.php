@@ -1,7 +1,7 @@
 <?php
-include_once('includes/obiba_mica_facet_search_resource_facet_conf.inc');
+include_once('includes/obiba_mica_search_resource_facet_conf.inc');
 
-function obiba_mica_facet_search_get_facets_chart($type = NULL, $data, $library = NULL, $id = NULL) {
+function obiba_mica_search_get_facets_chart($type = NULL, $data, $library = NULL, $id = NULL) {
   if ($library && $library_info = chart_get_library($library)) {
     $charts_info = array($library => $library_info);
   }
@@ -29,9 +29,9 @@ function obiba_mica_facet_search_get_facets_chart($type = NULL, $data, $library 
         }
       }
       if (count($terms_title) > 1) {
-        $title_chart = obiba_mica_facet_search_get_title_chart($type, $facet->aggregation);
+        $title_chart = obiba_mica_search_get_title_chart($type, $facet->aggregation);
         if (!empty($title_chart)) {
-          $charts[] = obiba_mica_facet_search_pie_chart($terms_title, $count_terms, $title_chart);
+          $charts[] = obiba_mica_search_pie_chart($terms_title, $count_terms, $title_chart);
         }
       }
     }
@@ -40,8 +40,8 @@ function obiba_mica_facet_search_get_facets_chart($type = NULL, $data, $library 
   return $charts;
 }
 
-function obiba_mica_facet_search_get_title_chart($type = NULL, $aggregations = NULL) {
-  foreach (obiba_mica_facet_search_resource_return_facets($type) as $agg) {
+function obiba_mica_search_get_title_chart($type = NULL, $aggregations = NULL) {
+  foreach (obiba_mica_search_resource_return_facets($type) as $agg) {
     if ($aggregations == $agg['aggs']) {
       $title = explode('-', $agg['title']);
       return ucwords(drupal_strtolower($title[1]));
@@ -49,14 +49,14 @@ function obiba_mica_facet_search_get_title_chart($type = NULL, $aggregations = N
   }
 }
 
-function obiba_mica_facet_search_vocabulary_chart($vocabulary_coverage) {
+function obiba_mica_search_vocabulary_chart($vocabulary_coverage) {
   if (empty($vocabulary_coverage->buckets)) {
-    return obiba_mica_facet_search_vocabulary_pie_chart($vocabulary_coverage);
+    return obiba_mica_search_vocabulary_pie_chart($vocabulary_coverage);
   }
-  return obiba_mica_facet_search_vocabulary_bar_chart($vocabulary_coverage, TRUE);
+  return obiba_mica_search_vocabulary_bar_chart($vocabulary_coverage, TRUE);
 }
 
-function obiba_mica_facet_search_vocabulary_pie_chart($vocabulary_coverage) {
+function obiba_mica_search_vocabulary_pie_chart($vocabulary_coverage) {
   if (empty($vocabulary_coverage->hits)) {
     return '';
   }
@@ -75,10 +75,10 @@ function obiba_mica_facet_search_vocabulary_pie_chart($vocabulary_coverage) {
     return '';
   }
 
-  return obiba_mica_facet_search_pie_chart($labels, $data, obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'bottom');
+  return obiba_mica_search_pie_chart($labels, $data, obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'bottom');
 }
 
-function obiba_mica_facet_search_vocabulary_bar_chart($vocabulary_coverage, $with_buckets = FALSE) {
+function obiba_mica_search_vocabulary_bar_chart($vocabulary_coverage, $with_buckets = FALSE) {
   if (empty($vocabulary_coverage->hits)) {
     return '';
   }
@@ -124,14 +124,14 @@ function obiba_mica_facet_search_vocabulary_bar_chart($vocabulary_coverage, $wit
   }
 
   if (!empty($data)) {
-    return obiba_mica_facet_search_stacked_column_chart($labels, $data, obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'none');
+    return obiba_mica_search_stacked_column_chart($labels, $data, obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'), NULL, 400, 'none');
   }
   else {
     return FALSE;
   }
 }
 
-function obiba_mica_facet_search_term_chart($term_coverage) {
+function obiba_mica_search_term_chart($term_coverage) {
   if (empty($term_coverage->hits) || empty($term_coverage->buckets)) {
     return '';
   }
@@ -145,8 +145,8 @@ function obiba_mica_facet_search_term_chart($term_coverage) {
       $data[] = $term_bucket->hits;
     }
   }
-  //return obiba_mica_facet_search_pie_chart($labels, $data, '', 100, 100, 'none');
-  return obiba_mica_facet_search_mini_column_chart($labels, $data, '', 200, 50, 'none');
+  //return obiba_mica_search_pie_chart($labels, $data, '', 100, 100, 'none');
+  return obiba_mica_search_mini_column_chart($labels, $data, '', 200, 50, 'none');
 }
 
 /**
@@ -156,7 +156,7 @@ function obiba_mica_facet_search_term_chart($term_coverage) {
  * @param null $bucket_filter_arg argument to be passed to the bucket filter closure
  * @return array
  */
-function obiba_mica_facet_search_query_charts($query, Callable $bucket_filter = NULL, $bucket_filter_arg = NULL, $default_dto_search = NULL) {
+function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, $bucket_filter_arg = NULL, $default_dto_search = NULL) {
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search);
   //dpm($coverages);
@@ -184,7 +184,7 @@ function obiba_mica_facet_search_query_charts($query, Callable $bucket_filter = 
       if (!empty($data)) {
         $taxonomy_charts[] = array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
-          'chart' => obiba_mica_facet_search_stacked_column_chart($labels, $data, t('Number of variables'), 1000, 450, 'none')
+          'chart' => obiba_mica_search_stacked_column_chart($labels, $data, t('Number of variables'), 1000, 450, 'none')
         );
       }
     }
@@ -192,12 +192,12 @@ function obiba_mica_facet_search_query_charts($query, Callable $bucket_filter = 
   return $taxonomy_charts;
 }
 
-function obiba_mica_facet_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart_param = variable_get('charts_default_settings');
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
-    '#colors' => obiba_mica_facet_search_charts_colors(),
+    '#colors' => obiba_mica_search_charts_colors(),
     '#width' => $width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,
@@ -217,12 +217,12 @@ function obiba_mica_facet_search_pie_chart($labels, $data, $title, $width = 250,
   return $chart;
 }
 
-function obiba_mica_facet_search_mini_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+function obiba_mica_search_mini_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart_param = variable_get('charts_default_settings');
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
-    '#colors' => obiba_mica_facet_search_charts_colors(),
+    '#colors' => obiba_mica_search_charts_colors(),
     '#width' => $width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,
@@ -253,12 +253,12 @@ function obiba_mica_facet_search_mini_column_chart($labels, $data, $title, $widt
   return $chart;
 }
 
-function obiba_mica_facet_search_stacked_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart_param = variable_get('charts_default_settings');
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
-    '#colors' => obiba_mica_facet_search_charts_colors(),
+    '#colors' => obiba_mica_search_charts_colors(),
     '#stacking' => TRUE,
     '#width' => $width,
     '#height' => $height,
@@ -282,7 +282,7 @@ function obiba_mica_facet_search_stacked_column_chart($labels, $data, $title, $w
   return $chart;
 }
 
-function obiba_mica_facet_search_charts_colors() {
+function obiba_mica_search_charts_colors() {
   // http://paletton.com/#uid=63G0A0kgXCa57FeaZFGlFCCqIHv
   return array(
     '#6285BC',
@@ -308,7 +308,7 @@ function obiba_mica_facet_search_charts_colors() {
   );
 }
 
-function obiba_mica_facet_search_charts_gray_colors() {
+function obiba_mica_search_charts_gray_colors() {
   return array(
     '#111',
     '#333',

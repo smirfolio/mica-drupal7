@@ -2,8 +2,8 @@
 //dpm('title =>'.$title);
 //dpm('block_html_id =>'.$block_html_id);
 ?>
-<section id="block-obiba-mica-facet-search-facet-search<?php print $block_html_id; ?>"
-  class="boot-collapse block-obiba-mica-facet-search">
+<section id="block-obiba-mica-search-facet-search<?php print $block_html_id; ?>"
+  class="boot-collapse block-obiba-mica-search">
 
   <?php if ($title): ?>
 

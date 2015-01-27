@@ -12,6 +12,6 @@ dependencies[] = i18n
 dependencies[] = libraries
 dependencies[] = variable
 dependencies[] = obiba_mica_study
-dependencies[] = obiba_mica_facet_search
+dependencies[] = obiba_mica_search
 dependencies[] = obiba_mica_dataset
 dependencies[] = obiba_mica_network

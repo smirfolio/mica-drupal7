@@ -11,7 +11,7 @@
 
 
 (function ($) {
-  Drupal.behaviors.obiba_mica_facet_search_common = {
+  Drupal.behaviors.obiba_mica_search_common = {
     attach: function (context, settings) {
       /********************/
       $.saveCookieDataTabs = function (newst, cookieName) {

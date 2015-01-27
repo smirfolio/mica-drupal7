@@ -6238,13 +6238,13 @@ div.charts {
 .facet-bar .block-current-search .current-search-group ul li {
   line-height: 15px;
 }
-.facet-bar .block-obiba-mica-facet-search {
+.facet-bar .block-obiba-mica-search {
   /************checkbox******/
 }
-.facet-bar .block-obiba-mica-facet-search .selected_item {
+.facet-bar .block-obiba-mica-search .selected_item {
   color: gray;
 }
-.facet-bar .block-obiba-mica-facet-search h2 {
+.facet-bar .block-obiba-mica-search h2 {
   font-size: 13px;
   text-transform: uppercase;
   margin: 0;
@@ -6252,44 +6252,44 @@ div.charts {
   background-color: #f2f2f2;
   border-left: 2px solid #957bbe;
 }
-.facet-bar .block-obiba-mica-facet-search h2 a {
+.facet-bar .block-obiba-mica-search h2 a {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
   padding-left: 12px;
   color: #2c3e50;
 }
-.facet-bar .block-obiba-mica-facet-search h2 a.collapsed {
+.facet-bar .block-obiba-mica-search h2 a.collapsed {
   background: url('../img/collapsed.png') no-repeat scroll left center transparent;
 }
-.facet-bar .block-obiba-mica-facet-search .block-content {
+.facet-bar .block-obiba-mica-search .block-content {
   padding: 0;
 }
-.facet-bar .block-obiba-mica-facet-search .checkedterms {
+.facet-bar .block-obiba-mica-search .checkedterms {
   position: relative;
 }
-.facet-bar .block-obiba-mica-facet-search a.facetapi-limit-link {
+.facet-bar .block-obiba-mica-search a.facetapi-limit-link {
   margin-left: 10px;
 }
-.facet-bar .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links {
+.facet-bar .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links {
   margin-bottom: 0;
   margin-left: 10px;
 }
-.facet-bar .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links li {
+.facet-bar .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links li {
   list-style: none;
 }
-.facet-bar .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links li input {
+.facet-bar .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links li input {
   margin-right: 5px;
   margin-top: -2px;
 }
-.facet-bar .block-obiba-mica-facet-search label.terms_checkbox {
+.facet-bar .block-obiba-mica-search label.terms_checkbox {
   display: inline;
   margin-bottom: -3px;
   margin-right: 5px;
   cursor: pointer;
 }
-.facet-bar .block-obiba-mica-facet-search .regular-checkbox {
+.facet-bar .block-obiba-mica-search .regular-checkbox {
   display: none;
 }
-.facet-bar .block-obiba-mica-facet-search .regular-checkbox + label.terms_checkbox {
+.facet-bar .block-obiba-mica-search .regular-checkbox + label.terms_checkbox {
   background-color: #fafafa;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 6px;
@@ -6297,16 +6297,16 @@ div.charts {
   display: inline-block;
   position: relative;
 }
-.facet-bar .block-obiba-mica-facet-search .regular-checkbox + label.terms_checkbox:active,
-.facet-bar .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox:active {
+.facet-bar .block-obiba-mica-search .regular-checkbox + label.terms_checkbox:active,
+.facet-bar .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox:active {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
-.facet-bar .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox {
+.facet-bar .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox {
   background-color: #e9ecee;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
   color: #99a1a7;
 }
-.facet-bar .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox:after {
+.facet-bar .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox:after {
   content: '\2714';
   font-size: 14px;
   position: absolute;
@@ -6314,16 +6314,16 @@ div.charts {
   left: 0px;
   color: #99a1a7;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content li {
+.facet-bar .block-obiba-mica-search div.block-content li {
   margin-bottom: -10px;
   padding-left: 5px;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content table {
+.facet-bar .block-obiba-mica-search div.block-content table {
   border: none;
   width: 100%;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content td.term-count span,
-.facet-bar .block-obiba-mica-facet-search div.block-content td.term-default span {
+.facet-bar .block-obiba-mica-search div.block-content td.term-count span,
+.facet-bar .block-obiba-mica-search div.block-content td.term-default span {
   position: relative;
   float: right;
   padding-right: 5px;
@@ -6331,17 +6331,17 @@ div.charts {
   font-weight: normal;
   font-family: monospace;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content td.term-count {
+.facet-bar .block-obiba-mica-search div.block-content td.term-count {
   color: #000000;
   font-size: 10px;
   width: 50px;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content td.term-default {
+.facet-bar .block-obiba-mica-search div.block-content td.term-default {
   color: rgba(0, 0, 0, 0.3);
   font-size: 10px;
   width: 50px;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content span.term-field {
+.facet-bar .block-obiba-mica-search div.block-content span.term-field {
   position: relative;
   display: inline-block;
   overflow: hidden;
@@ -6349,10 +6349,10 @@ div.charts {
   font-weight: normal;
   cursor: pointer;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content span.term-field i {
+.facet-bar .block-obiba-mica-search div.block-content span.term-field i {
   color: #02a676;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content div.stat-container {
+.facet-bar .block-obiba-mica-search div.block-content div.stat-container {
   height: 25px;
   width: 200px;
   position: absolute;
@@ -6360,7 +6360,7 @@ div.charts {
   right: 0;
   background-color: transparent;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content span.terms_stat {
+.facet-bar .block-obiba-mica-search div.block-content span.terms_stat {
   max-width: 200px;
   position: absolute;
   height: 25px;
@@ -6368,7 +6368,7 @@ div.charts {
   right: 0;
   background-color: #8aa4be;
 }
-.facet-bar .block-obiba-mica-facet-search div.block-content label.span-checkbox {
+.facet-bar .block-obiba-mica-search div.block-content label.span-checkbox {
   position: relative;
   display: block;
   min-height: 25px;
@@ -6536,13 +6536,13 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 .region-facets .block-current-search .current-search-group ul li {
   line-height: 15px;
 }
-.region-facets .block-obiba-mica-facet-search {
+.region-facets .block-obiba-mica-search {
   /************checkbox******/
 }
-.region-facets .block-obiba-mica-facet-search .selected_item {
+.region-facets .block-obiba-mica-search .selected_item {
   color: gray;
 }
-.region-facets .block-obiba-mica-facet-search h2 {
+.region-facets .block-obiba-mica-search h2 {
   font-size: 13px;
   text-transform: uppercase;
   margin: 0;
@@ -6550,44 +6550,44 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   background-color: #f2f2f2;
   border-left: 2px solid #957bbe;
 }
-.region-facets .block-obiba-mica-facet-search h2 a {
+.region-facets .block-obiba-mica-search h2 a {
   background: url('../img/expanded.png') no-repeat scroll left center transparent;
   padding-left: 12px;
   color: #2c3e50;
 }
-.region-facets .block-obiba-mica-facet-search h2 a.collapsed {
+.region-facets .block-obiba-mica-search h2 a.collapsed {
   background: url('../img/collapsed.png') no-repeat scroll left center transparent;
 }
-.region-facets .block-obiba-mica-facet-search .block-content {
+.region-facets .block-obiba-mica-search .block-content {
   padding: 0;
 }
-.region-facets .block-obiba-mica-facet-search .checkedterms {
+.region-facets .block-obiba-mica-search .checkedterms {
   position: relative;
 }
-.region-facets .block-obiba-mica-facet-search a.facetapi-limit-link {
+.region-facets .block-obiba-mica-search a.facetapi-limit-link {
   margin-left: 10px;
 }
-.region-facets .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links {
+.region-facets .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links {
   margin-bottom: 0;
   margin-left: 10px;
 }
-.region-facets .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links li {
+.region-facets .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links li {
   list-style: none;
 }
-.region-facets .block-obiba-mica-facet-search ul.facetapi-facetapi-checkbox-links li input {
+.region-facets .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links li input {
   margin-right: 5px;
   margin-top: -2px;
 }
-.region-facets .block-obiba-mica-facet-search label.terms_checkbox {
+.region-facets .block-obiba-mica-search label.terms_checkbox {
   display: inline;
   margin-bottom: -3px;
   margin-right: 5px;
   cursor: pointer;
 }
-.region-facets .block-obiba-mica-facet-search .regular-checkbox {
+.region-facets .block-obiba-mica-search .regular-checkbox {
   display: none;
 }
-.region-facets .block-obiba-mica-facet-search .regular-checkbox + label.terms_checkbox {
+.region-facets .block-obiba-mica-search .regular-checkbox + label.terms_checkbox {
   background-color: #fafafa;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 6px;
@@ -6595,16 +6595,16 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   display: inline-block;
   position: relative;
 }
-.region-facets .block-obiba-mica-facet-search .regular-checkbox + label.terms_checkbox:active,
-.region-facets .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox:active {
+.region-facets .block-obiba-mica-search .regular-checkbox + label.terms_checkbox:active,
+.region-facets .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox:active {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
 }
-.region-facets .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox {
+.region-facets .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox {
   background-color: #e9ecee;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
   color: #99a1a7;
 }
-.region-facets .block-obiba-mica-facet-search .regular-checkbox:checked + label.terms_checkbox:after {
+.region-facets .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox:after {
   content: '\2714';
   font-size: 14px;
   position: absolute;
@@ -6612,16 +6612,16 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   left: 0px;
   color: #99a1a7;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content li {
+.region-facets .block-obiba-mica-search div.block-content li {
   margin-bottom: -10px;
   padding-left: 5px;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content table {
+.region-facets .block-obiba-mica-search div.block-content table {
   border: none;
   width: 100%;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content td.term-count span,
-.region-facets .block-obiba-mica-facet-search div.block-content td.term-default span {
+.region-facets .block-obiba-mica-search div.block-content td.term-count span,
+.region-facets .block-obiba-mica-search div.block-content td.term-default span {
   position: relative;
   float: right;
   padding-right: 5px;
@@ -6629,17 +6629,17 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   font-weight: normal;
   font-family: monospace;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content td.term-count {
+.region-facets .block-obiba-mica-search div.block-content td.term-count {
   color: #000000;
   font-size: 10px;
   width: 50px;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content td.term-default {
+.region-facets .block-obiba-mica-search div.block-content td.term-default {
   color: rgba(0, 0, 0, 0.3);
   font-size: 10px;
   width: 50px;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content span.term-field {
+.region-facets .block-obiba-mica-search div.block-content span.term-field {
   position: relative;
   display: inline-block;
   overflow: hidden;
@@ -6647,10 +6647,10 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   font-weight: normal;
   cursor: pointer;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content span.term-field i {
+.region-facets .block-obiba-mica-search div.block-content span.term-field i {
   color: #02a676;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content div.stat-container {
+.region-facets .block-obiba-mica-search div.block-content div.stat-container {
   height: 25px;
   width: 200px;
   position: absolute;
@@ -6658,7 +6658,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   right: 0;
   background-color: transparent;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content span.terms_stat {
+.region-facets .block-obiba-mica-search div.block-content span.terms_stat {
   max-width: 200px;
   position: absolute;
   height: 25px;
@@ -6666,7 +6666,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   right: 0;
   background-color: #8aa4be;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content label.span-checkbox {
+.region-facets .block-obiba-mica-search div.block-content label.span-checkbox {
   position: relative;
   display: block;
   min-height: 25px;
@@ -7740,7 +7740,7 @@ div.password-suggestions ul {
   margin-top: 10px;
   float: left;
 }
-.region-facets .block-obiba-mica-facet-search div.block-content li {
+.region-facets .block-obiba-mica-search div.block-content li {
   margin-bottom: 0px;
 }
 /**********Page Searche*********************/

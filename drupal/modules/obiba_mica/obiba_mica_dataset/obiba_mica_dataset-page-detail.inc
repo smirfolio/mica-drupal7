@@ -358,7 +358,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
 /*End harmonization variable ajax table */
 
 function obiba_mica_dataset_coverage($dataset_id) {
-  return obiba_mica_facet_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id)))));
+  return obiba_mica_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id)))));
 }
 
 function obiba_mica_dataset_create_form() {
