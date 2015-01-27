@@ -6934,7 +6934,8 @@ span.plus-minus {
 .grouping-symbol {
   pointer-events: none;
   display: inline-block;
-  opacity: 0.2;
+  opacity: 0.8;
+  font-weight: bold;
 }
 .comma {
   pointer-events: none;
