@@ -110,6 +110,19 @@
 
       $.trimJson = trimJson;
 
+      function queryParamToJson() {
+        var j, q;
+        q = window.location.search.replace(/\?/, "").split("&");
+        j = {};
+        $.each(q, function(i, arr) {
+          arr = arr.split('=');
+          return j[arr[0]] = arr[1];
+        });
+        return j;
+      }
+
+      $.queryParamToJson = queryParamToJson;
+
     }
 
   }

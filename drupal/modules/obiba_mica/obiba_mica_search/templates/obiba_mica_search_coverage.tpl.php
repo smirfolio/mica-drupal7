@@ -47,6 +47,10 @@ if (empty($query)) {
         array('query' => $query)
       ),
     )); ?>
+    <span id="download-coverage">
+      <a href="" class="btn btn-success"><i
+          class='glyphicon glyphicon-download'></i> <?php print t('Download') ?></a>
+    </span>
   </p>
 
   <ul class="nav nav-pills pull-right">

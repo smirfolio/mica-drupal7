@@ -282,15 +282,15 @@
       }
 
       function updateWindowLocation(jsonQuery) {
-        var params = {};
+        var searchUrl = $.queryParamToJson();
         if (tabparam) {
-          params.type = tabparam;
+          searchUrl.type = tabparam;
         }
 
         if (jsonQuery && "{}" !== jsonQuery) {
-          params.query = jsonQuery;
+          searchUrl.query = jsonQuery;
         }
-        window.location.search = '?' + decodeURIComponent($.param(params));
+        window.location.search = '?' + decodeURIComponent($.param(searchUrl));
       }
 
       function initializeTabParam() {

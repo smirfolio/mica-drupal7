@@ -32,6 +32,13 @@ function obiba_mica_search_menu() {
     'access callback' => TRUE
   );
 
+  $items['mica/coverage/download'] = array(
+    'title' => 'Classifications Coverage',
+    'description' => 'Classifications Coverage',
+    'page callback' => 'obiba_mica_search_coverage_download',
+    'access callback' => TRUE
+  );
+
   $items['mica/studies_search/%'] = array(
     'title' => 'Studies Search',
     'description' => 'Search published studies',
@@ -208,6 +215,7 @@ function obiba_mica_search_load_libs() {
   drupal_add_js($module_path_commons . '/js/obiba-mica-commons-got-top.js');
   $module_path_ = drupal_get_path('module', 'obiba_mica_search');
   drupal_add_js($module_path_ . '/js/obiba-mica-search-common.js');
+  drupal_add_js($module_path_ . '/js/obiba-mica-search-coverage.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-search-query-serializer.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-search_collapse_deal.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-search_tab_deal.js');
@@ -474,6 +482,20 @@ function obiba_mica_search_coverage_page() {
     'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
   ));
   return $output;
+}
+
+function obiba_mica_search_coverage_download() {
+  obiba_mica_search_load_libs();
+  $search_resources = new MicaSearchResource();
+  $response = $search_resources->download_taxonomies_coverage(NULL, array('group-by' => 'studyIds'));
+  if (!empty($response)) {
+    $headers = $search_resources->getLastResponseHeaders();
+    drupal_add_http_header('Content-Type', $headers['Content-Type'][0] . '; utf-8');
+    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+    ob_clean();
+    print $response->body;
+    exit;
+  }
 }
 
 function obiba_mica_search_study_page_search() {

@@ -26,6 +26,19 @@ class MicaSearchResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
+  public function download_taxonomies_coverage($parameters = NULL, $default_dto_search = NULL) {
+    $response_data =
+      $this->_aggregation_resource_internal(parent::HEADER_CSV,
+        'coverage',
+        $parameters,
+        $default_dto_search
+      );
+
+    if (!empty($response_data)) {
+      return $response_data['last_response'];
+    }
+  }
+
   public function taxonomies_coverage($parameters = NULL, $default_dto_search = NULL) {
     $coverage_result = $this->_aggregation_resource('coverage', $parameters, $default_dto_search);
 
@@ -55,6 +68,19 @@ class MicaSearchResource extends MicaClient {
    * $parameters : json query hard coded
    * */
   private function  _aggregation_resource($aggregation_type = 'search', $parameters = NULL, $default_dto_search = NULL) {
+    $response_data =
+      $this->_aggregation_resource_internal(parent::HEADER_JSON,
+        $aggregation_type,
+        $parameters,
+        $default_dto_search
+      );
+
+    if (!empty($response_data)) {
+      return json_decode($response_data['data']);
+    }
+  }
+
+  private function _aggregation_resource_internal($accept_type, $aggregation_type = 'search', $parameters = NULL, $default_dto_search = NULL) {
     if (!empty($_SESSION['errorsQuery'])) {
       unset($_SESSION['errorsQuery']);
     }
@@ -84,10 +110,10 @@ class MicaSearchResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_POST,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-            'Content-Type' => array(parent::HEADER_JSON)
-          )
-        ),
+          'Accept' => array($accept_type),
+          'Content-Type' => array(parent::HEADER_JSON)
+        )
+      ),
       'data' => !empty($dto_param) ? $dto_param : $this->dto_filter_construct($type, NULL, 0, NULL),
     ));
 
@@ -96,7 +122,7 @@ class MicaSearchResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
 
-      return json_decode($data);
+      return array('data' => $data, 'last_response' => $client->lastResponse);
     }
     catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
