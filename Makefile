@@ -76,6 +76,7 @@ bootstrap:
 
 less-css:
 	lessc $(CURDIR)/drupal/themes/obiba_bootstrap/less/style.less $(CURDIR)/drupal/themes/obiba_bootstrap/css/style.css
+	lessc $(CURDIR)/drupal/themes/obiba_bootstrap/less/obiba.less $(CURDIR)/drupal/themes/obiba_bootstrap/css/obiba.css
 
 jquery_update:
 	cd target/drupal && \
