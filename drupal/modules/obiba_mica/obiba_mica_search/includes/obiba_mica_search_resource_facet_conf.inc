@@ -103,7 +103,8 @@ function obiba_mica_search_autocomplete_form_field($form, &$form_state, $aggrega
     case 'dceIds' :
     case 'datasetId' :
       $entity_search = explode('Id', $aggregation_facet);
-      $title = t('Search a @entity...', array('@entity' => $entity_search[0]));
+      $entity_name = $entity_search[0] == 'dce' ? 'data collection event' : $entity_search[0];
+      $title = t('Search a @entity...', array('@entity' => $entity_name));
       $form['#attributes']['class'] = 'autocomplete';
       $form['#id'] = 'auto_' . $aggregation_facet;
       $form['#action'] = '';

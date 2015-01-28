@@ -28,9 +28,10 @@
 
 .query-item {
   .clickable;
-  padding: 5px !important;
+  padding: 5px 10px !important;
   margin: 2px !important;
-  border-radius: @background-radius
+  border-radius: @background-radius;
+  white-space: nowrap;
 }
 
 .aggregate-background {
@@ -65,13 +66,8 @@
   color: @aggregate-value-color;
 }
 
-.refresh-button {
-  .query-item;
-  //margin: 5px 8px 6px 15px !important;
-  border: 0;
-  color: #ffffff;
-  background-color: @refresh-background-color;
-  font-size: 20px;
+.aggregate:hover, .aggregate-value:hover, .matches:hover, .matches-value:hover {
+  text-decoration: line-through;
 }
 
 .operation {
@@ -80,7 +76,10 @@
 }
 
 .logical-operation {
-  margin: 2px;
+  .clickable;
+  padding: 5px !important;
+  margin: 2px !important;
+  border-radius: @background-radius;
 }
 
 .no-text-decoration {
@@ -102,7 +101,8 @@ span.plus-minus {
 .grouping-symbol {
   .unclickable;
   display: inline-block;
-  opacity: 0.2;
+  opacity: 0.8;
+  font-weight: bold;
 }
 
 .comma {
@@ -123,26 +123,20 @@ span.plus-minus {
   color: @and-operation-color;
 }
 
+.or-operation:hover, .and-operation:hover {
+  background-color: @gray-lighter;
+  color:@gray;
+}
+
 .no-style-list {
   list-style: none;
   padding: 0px;
   margin: 10px 0;
 }
 
-ul.facet-query-list {
-  .no-style-list;
+.facet-query-list {
   display: inline-block;
   font-size: 12px;
-  li {
-    span {
-      white-space: nowrap;
-    }
-    span:hover {
-      text-decoration: line-through;
-    }
-
-    .no-style-list;
-    display: inline;
-  }
+  line-height: 3;
 }
 
