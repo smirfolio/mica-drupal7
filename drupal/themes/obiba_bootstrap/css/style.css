@@ -6858,9 +6858,10 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 }
 .query-item {
   cursor: pointer !important;
-  padding: 5px !important;
+  padding: 5px 10px !important;
   margin: 2px !important;
   border-radius: 5px;
+  white-space: nowrap;
 }
 .aggregate-background {
   background-color: #c0e1f6;
@@ -6870,52 +6871,55 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 }
 .matches {
   cursor: pointer !important;
-  padding: 5px !important;
+  padding: 5px 10px !important;
   margin: 2px !important;
   border-radius: 5px;
+  white-space: nowrap;
   color: #79539c;
   background-color: #cbb3ea;
 }
 .matches-value {
   cursor: pointer !important;
-  padding: 5px !important;
+  padding: 5px 10px !important;
   margin: 2px !important;
   border-radius: 5px;
+  white-space: nowrap;
   color: #b88bd1;
   background-color: rgba(203, 179, 234, 0.5);
 }
 .aggregate {
   cursor: pointer !important;
-  padding: 5px !important;
+  padding: 5px 10px !important;
   margin: 2px !important;
   border-radius: 5px;
+  white-space: nowrap;
   background-color: #c0e1f6;
   color: #5575a9;
 }
 .aggregate-value {
   cursor: pointer !important;
-  padding: 5px !important;
+  padding: 5px 10px !important;
   margin: 2px !important;
   border-radius: 5px;
+  white-space: nowrap;
   background-color: #daf2fb;
   color: #3ac8f3;
 }
-.refresh-button {
-  cursor: pointer !important;
-  padding: 5px !important;
-  margin: 2px !important;
-  border-radius: 5px;
-  border: 0;
-  color: #ffffff;
-  background-color: #e9931c;
-  font-size: 20px;
+.aggregate:hover,
+.aggregate-value:hover,
+.matches:hover,
+.matches-value:hover {
+  text-decoration: line-through;
 }
 .operation {
   padding: 2px;
   border-radius: 5px;
 }
 .logical-operation {
-  margin: 2px;
+  cursor: pointer !important;
+  padding: 5px !important;
+  margin: 2px !important;
+  border-radius: 5px;
 }
 .no-text-decoration {
   text-decoration: none !important;
@@ -6944,39 +6948,34 @@ span.plus-minus {
 }
 .or-operation {
   padding: 2px;
+  cursor: pointer !important;
+  padding: 5px !important;
+  margin: 2px !important;
   border-radius: 5px;
-  margin: 2px;
   color: #ce6503;
 }
 .and-operation {
   padding: 2px;
+  cursor: pointer !important;
+  padding: 5px !important;
+  margin: 2px !important;
   border-radius: 5px;
-  margin: 2px;
   color: #15b562;
+}
+.or-operation:hover,
+.and-operation:hover {
+  background-color: #ecf0f1;
+  color: #95a5a6;
 }
 .no-style-list {
   list-style: none;
   padding: 0px;
   margin: 10px 0;
 }
-ul.facet-query-list {
-  list-style: none;
-  padding: 0px;
-  margin: 10px 0;
+.facet-query-list {
   display: inline-block;
   font-size: 12px;
-}
-ul.facet-query-list li {
-  list-style: none;
-  padding: 0px;
-  margin: 10px 0;
-  display: inline;
-}
-ul.facet-query-list li span {
-  white-space: nowrap;
-}
-ul.facet-query-list li span:hover {
-  text-decoration: line-through;
+  line-height: 3;
 }
 @font-face {
   font-family: "Flaticon";

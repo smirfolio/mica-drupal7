@@ -31,7 +31,7 @@
         window.location = '?' + data_url;
       });
 
-      $(".refresh-list").on("click", function () {
+      $("#refresh-button").on("click", function () {
         window.location = window.location.pathname;
       });
 

@@ -1,6 +1,14 @@
 <?php //dvm('search var',$studies);
 ?>
-<div id="search-query"></div>
+<div class="alert alert-info">
+  <div id="search-help">
+    <i class="glyphicon glyphicon-arrow-left"></i>
+    <span class="indent">
+      <?php print t('Start searching by selecting a facet'); ?>
+    </span>
+  </div>
+  <div id="search-query"></div>
+</div>
 
 <div id="search-result">
   <ul class="nav nav-tabs" role="tablist" id="result-search">
@@ -45,9 +53,9 @@
                   )
                 ),
                 'query' => array(
-                    'query' => $query,
-                    'group-by' => 'studyIds'
-                  ),
+                  'query' => $query,
+                  'group-by' => 'studyIds'
+                ),
               )); ?>
             </p>
           </div>

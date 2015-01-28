@@ -16,7 +16,7 @@
 
   var AND_OPERATOR = 'and';
   var OR_OPERATOR = 'or';
-  var MAX_VIISBLE_AGG_VALUE = 3;
+  var MAX_VISIBLE_AGG_VALUE = 3;
 
   /**
    * Constructor
@@ -24,8 +24,8 @@
    */
   $.QueryViewRenderer = function (translationMap, dictionary) {
     container = $("<div class='row'>");
-    contentRefresh = $("<ul class='facet-query-list'></ul>");
-    contentQuery = $("<ul class='facet-query-list'></ul>");
+    contentRefresh = $("<div class='facet-query-list'></div>");
+    contentQuery = $("<div class='facet-query-list'></div>");
     container.append($("<div class='col-xs-1'>").append(contentRefresh)) //
       .append($("<div class='col-xs-11 col-pull-left-30'>").append(contentQuery));
     translation = translationMap;
@@ -52,7 +52,7 @@
   }
 
   function renderRefresh() {
-    return $("<li><button type='button' class='refresh-button'><i class='flaticon-undo9'></i></button></li>")
+    return $("<button type='button' class='btn btn-warning'><span class='flaticon-undo9'></span></button>")
       .on("click", function () {
         $.query_href.updateWindowLocation(null);
       });
@@ -65,7 +65,7 @@
   }
 
   function renderMatchesElement(cssClass, type, text) {
-    var htmlMatchesElement = $("<li></li>").append($("<span class='" + cssClass + "'></span>").text(text));
+    var htmlMatchesElement = $("<span></span>").append($("<span class='" + cssClass + "' title='" + Drupal.t('Click to remove') + "'></span>").text(text));
     htmlMatchesElement.click(function (e) {
       delete jsonQuery[type]['matches'];
       update();
@@ -81,7 +81,7 @@
 
 
   function renderValuesContainer() {
-    return $("<ul class='facet-query-list'></ul>");
+    return $("<div class='facet-query-list'></div>");
   }
 
   function leftParenthesis() {
@@ -134,11 +134,11 @@
   }
 
   function renderOrOperation(show, moniker) {
-    return $("<span data-op='or' id='or-" + moniker + "' " + (show ? "" : "hidden") + "  class='or-operation'>" + translate('or').toUpperCase() + "</span>");
+    return $("<span data-op='or' id='or-" + moniker + "' " + (show ? "" : "hidden") + "  class='or-operation' title='" + Drupal.t('Switch to AND') + "'>" + translate('or').toUpperCase() + "</span>");
   }
 
   function renderAndOperation(show, moniker) {
-    return $("<span data-op='and' id='and-" + moniker + "' " + (show ? "" : "hidden") + "  class='and-operation'>" + translate('and').toUpperCase() + "</span>");
+    return $("<span data-op='and' id='and-" + moniker + "' " + (show ? "" : "hidden") + "  class='and-operation' title='" + Drupal.t('Switch to OR') + "'>" + translate('and').toUpperCase() + "</span>");
   }
 
   function renderAndOrOperation(operator, moniker) {
@@ -158,27 +158,27 @@
   }
 
   function renderAggregate(type, typeValues, aggType, name) {
-    var aggregate = $("<span class='aggregate'></span>").text(translateAggregation(name)).click(function (e) {
+    var aggregate = $("<span class='aggregate' title='" + Drupal.t('Click to remove') + "'></span>").text(translateAggregation(name)).click(function (e) {
       delete jsonQuery[type][aggType][name];
       update();
       e.stopPropagation();
     });
 
-    var htmlAggregate = $("<li></li>").append(aggregate);
+    var htmlAggregate = $("<span></span>").append(aggregate);
 
     return htmlAggregate;
   }
 
   function renderTermsAggregationValue(value) {
-    return $("<span class='aggregate-value'></span>").text(value);
+    return $("<span class='aggregate-value' title='" + Drupal.t('Click to remove') + "'></span>").text(value);
   }
 
   function renderRangeAggregationValue(value) {
-    return $("<span class='aggregate-value'></span>").text(value.min + " - " + value.max);
+    return $("<span class='aggregate-value' title='" + Drupal.t('Click to remove') + "'></span>").text(value.min + " - " + value.max);
   }
 
   function renderAggregateValue(aggType, agg, i, value, valuesContaier, hiddenValuesContainer) {
-    if (i > 0 && i < MAX_VIISBLE_AGG_VALUE) valuesContaier.append(renderComma());
+    if (i > 0 && i < MAX_VISIBLE_AGG_VALUE) valuesContaier.append(renderComma());
 
     var htmlValue =
       aggType === "terms" //
@@ -231,7 +231,7 @@
     $.each(translation, function (i, v) {
       $.each(v, function (j, o) {
         if (o.aggs === key) {
-          result = o.title.replace(/[^-]+-/, '');
+          result = o.title;
           return false;
         }
       });
@@ -273,20 +273,20 @@
 
         if (prevType != null && prevType != type) {
           // separate queries by type
-          contentQuery.append($("<li><br/></li>"));
+          contentQuery.append($("<br/>"));
         }
 
         $.each(aggs, function (name, agg) {
           if (!$.isEmptyObject(agg.values) && agg.values.length > 0) {
             var aggValueContainer = renderAggregationContainer(type, typeValues, aggType, name, getOperation(agg.op), i === last);
-            var valuesContainer = $("<li></li>");
+            var valuesContainer = $("<span></span>");
             var hiddenValuesContainer = null;
             $(aggValueContainer).append(valuesContainer);
 
 
             $.each(agg.values, function (i, value) {
               var caption = termsDictionary[createTermsMoniker(type, name, value)] || value;
-              if (i >= MAX_VIISBLE_AGG_VALUE && hiddenValuesContainer === null) {
+              if (i >= MAX_VISIBLE_AGG_VALUE && hiddenValuesContainer === null) {
                 hiddenValuesContainer = renderPlusMinus(valuesContainer);
                 valuesContainer.append(hiddenValuesContainer);
               }
@@ -328,7 +328,9 @@
         new $.QueryViewRenderer(Drupal.settings.obiba_mica_facet.facet_conf, Drupal.settings.terms_dictionary) //
           .render(jsonQuery);
 
+        console.log(view);
       $('#search-query').append(view);
+      $('#search-help').hide();
     }
   }
 })(jQuery);

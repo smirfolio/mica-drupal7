@@ -298,8 +298,11 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
     $form['button'] = array(
       '#type' => 'button',
       '#value' => '<i class="flaticon-undo9"></i>',
+      '#prefix' => '<div>',
+      '#suffix' => '</div>',
       '#attributes' => array(
-        'class' => array('right-indent md-width', 'refresh-button', 'refresh-list')
+        'class' => array('right-indent', 'btn-warning'),
+        'id' => array('refresh-button')
       ),
     );
   }
