@@ -4,8 +4,14 @@
 
 <div>
   <?php if (!empty($network_dto->description)): ?>
-    <p
-      class="md-top-margin"><?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?></p>
+    <p class="md-top-margin">
+      <?php if (!empty($network_dto->logo->id)): ?>
+        <img
+          src="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
+          class="imageThumb">
+      <?php endif; ?>
+      <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?>
+    </p>
   <?php endif; ?>
 
   <?php if (!empty($network_dto->studyIds)): ?>
