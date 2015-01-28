@@ -18,6 +18,7 @@ function obiba_mica_network_page_detail($network_id) {
   $network_dto = NULL;
 
   $network_dto = $network_resource->get_network($network_id);
+
   if (!empty($network_dto)) {
     $acronym = obiba_mica_commons_get_localized_field($network_dto, 'acronym');
     $name = obiba_mica_commons_get_localized_field($network_dto, 'name');
@@ -64,7 +65,8 @@ function obiba_mica_network_study_table_rows($study_summaries) {
       $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
       $rows[] = array(
         obiba_mica_commons_get_localized_field($study_summary, 'acronym'),
-        l($name, 'mica/study/' . $study_summary->id . '/' . obiba_mica_commons_to_slug($name)),
+        $study_summary->getPublished() ?
+          l($name, 'mica/study/' . $study_summary->id . '/' . obiba_mica_commons_to_slug($name)) : t($name),
         implode(', ', t($study_summary->designs)),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
