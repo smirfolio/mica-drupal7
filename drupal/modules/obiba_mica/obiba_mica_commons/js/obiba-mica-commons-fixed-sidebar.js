@@ -8,7 +8,7 @@
     attach: function (context, settings) {
       var template = Drupal.settings.template;
       var sidebar = $('#fixed-sidebar');
-      var content = $("div.main-container > div.row > .page-header ~ section");
+      var content = $("div.main-container > div.row > section ");
       hide();
       updatePosition();
 
