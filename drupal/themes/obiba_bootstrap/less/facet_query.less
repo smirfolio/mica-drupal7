@@ -8,11 +8,34 @@
 @aggregate-background-color: #C0E1F6;
 @aggregate-value-color: #3AC8F3;
 @aggregate-value-background-color: #DAF2FB;
-@refresh-background-color: #E9931C;
 @agg-or-operation-color: #2a89f3;
 @or-operation-color: #CE6503;
 @and-operation-color: #15B562;
 @plus-minus-operation-color: rgba(40, 96, 181, 0.64);
+
+.block-content table.facet-query {
+  border: none;
+}
+
+.facet-query-reset {
+  margin-right: 10px;
+}
+
+div.facet-query {
+  display: inline;
+}
+
+div.facet-query > div {
+  display: inline-block;
+}
+
+.facet-query-where {
+  //display: inline;
+}
+
+.facet-query-conjunction {
+  display: none;
+}
 
 .unclickable {
   pointer-events: none;
@@ -28,7 +51,7 @@
 
 .query-item {
   .clickable;
-  padding: 5px 10px !important;
+  //padding: 5px 10px !important;
   margin: 2px !important;
   border-radius: @background-radius;
   white-space: nowrap;
@@ -45,28 +68,34 @@
 .matches {
   .query-item;
   color: @matches-color;
-  background-color: @matches-background-color;
 }
 
 .matches-value {
   .query-item;
   color: @matches-value-color;
-  background-color: @matches-value-background-color;
 }
 
 .aggregate {
+  display:inline;
+  background-color: #eee;
+  padding: 5px !important;
+  margin: 2px !important;
+  border-radius: @background-radius;
+}
+
+.aggregate-field {
   .query-item;
-  .aggregate-background;
+  //.aggregate-background;
   color: @aggregate-color;
 }
 
 .aggregate-value {
   .query-item;
-  .aggregate-value-background;
+  //.aggregate-value-background;
   color: @aggregate-value-color;
 }
 
-.aggregate:hover, .aggregate-value:hover, .matches:hover, .matches-value:hover {
+.aggregate-field:hover, .aggregate-value:hover, .matches:hover, .matches-value:hover {
   text-decoration: line-through;
 }
 
@@ -123,6 +152,12 @@ span.plus-minus {
   color: @and-operation-color;
 }
 
+.no-operation {
+  .operation;
+  .logical-operation;
+  .unclickable;
+}
+
 .or-operation:hover, .and-operation:hover {
   background-color: @gray-lighter;
   color:@gray;
@@ -135,8 +170,8 @@ span.plus-minus {
 }
 
 .facet-query-list {
+  .no-style-list;
   display: inline-block;
   font-size: 12px;
-  line-height: 3;
 }
 
