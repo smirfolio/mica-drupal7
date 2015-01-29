@@ -71,6 +71,7 @@ function obiba_mica_network_study_table_rows($study_summaries) {
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
         implode(', ', $study_summary->countries),
+        $study_summary->variables
       );
     }
   }
@@ -84,6 +85,7 @@ function obiba_mica_network_study_table_headers() {
     t('Study Design'),
     t('Target Number'),
     t('Country'),
+    t('Variables')
   );
 }
 
