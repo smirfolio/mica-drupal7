@@ -229,8 +229,8 @@ function obiba_mica_search_load_libs() {
   $facet_conf["variables"] = obiba_mica_search_resource_return_facets('facet_conf_variable');
   $facet_conf["general"] = //
     array( //
-      'matches' => t('Matches'), //
-      'match' => t('Match'), //
+      'matches' => t('matches'), //
+      'match' => t('match'), //
       'is' => t('be'), //
       'and' => t('and'), //
       'or' => t('or'), //
