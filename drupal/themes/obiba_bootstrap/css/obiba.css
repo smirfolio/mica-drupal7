@@ -6832,6 +6832,10 @@ div.facet-query {
 div.facet-query > div {
   display: inline-block;
 }
+.facet-query-where {
+  display: inline-block;
+  margin-right: 5px;
+}
 .facet-query-conjunction {
   display: none;
 }
@@ -6871,7 +6875,7 @@ div.facet-query > div {
   color: #b88bd1;
 }
 .aggregate {
-  display: inline;
+  display: inline-block;
   background-color: #eee;
   padding: 5px !important;
   margin: 2px !important;
@@ -6915,6 +6919,8 @@ span.plus-minus {
   text-decoration: none !important;
   border-radius: 5px;
   color: rgba(40, 96, 181, 0.64);
+  font-size: 10px !important;
+  margin: 0 5px;
 }
 .match {
   padding: 2px;
@@ -6972,6 +6978,16 @@ span.plus-minus {
   margin: 10px 0;
   display: inline-block;
   font-size: 12px;
+}
+ul.facet-query-list > li:first-child {
+  margin-top: 0px;
+}
+ul.facet-query-list > li {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+ul.facet-query-list > li:last-child {
+  margin-bottom: 0px;
 }
 @font-face {
   font-family: "Flaticon";

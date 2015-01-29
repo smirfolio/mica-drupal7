@@ -24,7 +24,7 @@
      */
     $.QueryViewRenderer = function (translationMap, dictionary) {
         contentReset = $("<div class='facet-query-reset'></div>");
-        contentQuery = $("<ul class='facet-query-list'></ul>");
+        contentQuery = $("<ul class='facet-query-list no-margin'></ul>");
         container = $("<table class='facet-query'></table>");
         var row = $("<tr></tr>");
         row.append($("<td></td>").css("vertical-align","top").append(contentReset));
@@ -54,7 +54,7 @@
     }
 
     function renderReset() {
-        return $("<button type='button' class='btn btn-warning'><span class='flaticon-undo9'></span></button>")
+        return $("<button type='button' class='btn btn-warning' title='" + Drupal.t('Clear query') + "'><span class='flaticon-undo9'></span></button>")
             .on("click", function () {
                 $.query_href.updateWindowLocation(null);
             });
@@ -64,14 +64,13 @@
         var matches = renderMatchesElement('matches', type, translate(type));
         var matchesValue = renderMatchesElement('matches-value', type, value);
 
-        var htmlContainer = $("<div></div>");
-        htmlContainer.append(matches.append(renderMatch()).append(matchesValue));
+        var htmlContainer = $("<div class='aggregate'></div>");
+        htmlContainer.append(matches).append(renderMatch()).append(matchesValue);
         return htmlContainer;
     }
 
     function renderMatchesElement(cssClass, type, text) {
-        var htmlMatchesElement = $("<div class='aggregate'></div>");
-        htmlMatchesElement.append($("<span class='" + cssClass + "' title='" + Drupal.t('Click to remove') + "'></span>").text(text));
+        var htmlMatchesElement = $("<span class='" + cssClass + "' title='" + Drupal.t('Click to remove') + "'></span>").text(text);
         htmlMatchesElement.click(function (e) {
             delete jsonQuery[type]['matches'];
             update();
@@ -87,7 +86,7 @@
 
 
     function renderValuesContainer() {
-        return $("<div class='facet-query-list'></div>");
+        return $("<div class='facet-query-list no-margin'></div>");
     }
 
     function leftParenthesis() {
@@ -119,7 +118,7 @@
     }
 
     function renderIn() {
-        return $("<span class='operation'>:</span>");
+        return $("<span class='operation'>" + Drupal.t('in') + "</span>");
     }
 
     function renderAggregationContainer(type, typeValues, aggType, name, op, showOp, aggValueContainer) {
@@ -182,8 +181,12 @@
         return $("<span class='aggregate-value' title='" + Drupal.t('Click to remove') + "'></span>").text(value.min + " - " + value.max);
     }
 
-    function renderAggregateValue(aggType, agg, i, value, valuesContaier, hiddenValuesContainer) {
-        if (i > 0 && i < MAX_VISIBLE_AGG_VALUE) valuesContaier.append(renderComma());
+    function renderAggregateValue(aggType, agg, i, value, valuesContainer, hiddenValuesContainer) {
+        if (i > 0 && i < MAX_VISIBLE_AGG_VALUE) {
+            valuesContainer.append(renderComma());
+        } else if (i > MAX_VISIBLE_AGG_VALUE) {
+            hiddenValuesContainer.append(renderComma());
+        }
 
         var htmlValue =
             aggType === "terms" //
@@ -197,7 +200,7 @@
             e.stopPropagation();
         });
 
-        valuesContaier.append(hiddenValuesContainer === null ? htmlValue : hiddenValuesContainer.append(htmlValue));
+        valuesContainer.append(hiddenValuesContainer === null ? htmlValue : hiddenValuesContainer.append(htmlValue));
     }
 
     function getOperation(op) {
@@ -261,7 +264,7 @@
                         contentQueryItem.append($("<div class='facet-query-conjunction'></div>").append(translate('and').toUpperCase()));
                     }
                     var where = $("<div class='facet-query-where'></div>");
-                    where.append(type.charAt(0).toUpperCase() + type.slice(1)).append(' ').append(Drupal.t('where')).append(':');
+                    where.append(type.charAt(0).toUpperCase() + type.slice(1)).append(' ').append(Drupal.t('where'));
                     contentQueryItem.append(where);
                 }
                 contentQueryItem.append(typeContentQuery);
@@ -286,7 +289,7 @@
         });
 
         $.each(typeValues, function (aggType, aggs) {
-            if (aggType === 'terms') {
+            if (aggType !== 'matches') {
                 var last = total - 1;
 
 

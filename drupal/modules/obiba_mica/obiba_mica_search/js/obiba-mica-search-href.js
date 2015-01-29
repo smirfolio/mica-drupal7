@@ -286,10 +286,7 @@
         if (tabparam) {
           searchUrl.type = tabparam;
         }
-
-        if (jsonQuery && "{}" !== jsonQuery) {
-          searchUrl.query = jsonQuery;
-        }
+        searchUrl.query = jsonQuery;
         window.location.search = '?' + decodeURIComponent($.param(searchUrl));
       }
 

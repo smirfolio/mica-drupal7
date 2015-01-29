@@ -30,7 +30,8 @@ div.facet-query > div {
 }
 
 .facet-query-where {
-  //display: inline;
+  display: inline-block;
+  margin-right: 5px;
 }
 
 .facet-query-conjunction {
@@ -76,7 +77,7 @@ div.facet-query > div {
 }
 
 .aggregate {
-  display:inline;
+  display:inline-block;
   background-color: #eee;
   padding: 5px !important;
   margin: 2px !important;
@@ -120,6 +121,8 @@ span.plus-minus {
   .no-text-decoration;
   border-radius: @background-radius;
   color: @plus-minus-operation-color;
+  font-size: 10px !important;
+  margin: 0 5px;
 }
 
 .match {
@@ -174,4 +177,19 @@ span.plus-minus {
   display: inline-block;
   font-size: 12px;
 }
+
+ul.facet-query-list > li:first-child {
+    margin-top: 0px;
+}
+
+ul.facet-query-list > li {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+ul.facet-query-list > li:last-child {
+  margin-bottom: 0px;
+}
+
+
 
