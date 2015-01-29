@@ -9,8 +9,8 @@ function obiba_mica_search_resource_return_facets($dto_type = NULL) {
   }
   switch ($dto_type) {
     case 'facet_conf_variable':
-      if (!empty($_SESSION['datasets']) && !empty($_SESSION['datasets']['facets-buckets'])) {
-        return $_SESSION['datasets']['facets-buckets'];
+      if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['facets-buckets'])) {
+        return $_SESSION['variables']['facets-buckets'];
       }
     case 'facet_conf_study' :
       if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['facets-buckets'])) {
@@ -53,7 +53,7 @@ function obiba_mica_search_get_dto_facet_aggs($tab_block, $type) {
   }
 }
 
-function obiba_mica_search_precess_block_theme($block_delta, $type) {
+function obiba_mica_search_process_block_theme($block_delta, $type) {
   $items = array();
   $aggregation_facet = NULL;
 
@@ -160,8 +160,8 @@ function obiba_mica_search_get_matched_agg_entries($type, $aggregation, $term_to
       $matches = new ArrayObject();
 
       foreach ($aggre->{"obiba.mica.TermsAggregationResultDto.terms"} as $term) {
-        if (stristr($term->title, $term_to_mach)) {
-          $matches[$term->key] = $term->title;
+        if (stristr($term->title, $term_to_mach) || (!empty($term->description) && stristr($term->description, $term_to_mach))) {
+          $matches[$term->key] = $term->title . (empty($term->description) ? '' : ' -- ' . $term->description);
         }
       }
 
