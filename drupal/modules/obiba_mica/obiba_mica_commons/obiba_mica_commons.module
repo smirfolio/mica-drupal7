@@ -124,6 +124,15 @@ function obiba_mica_commons_get_localized_field($std, $field, $lang = NULL) {
 }
 
 /**
+ * Change a keyword into a readable string.
+ * @param $str a string
+ * @return null|string
+ */
+function obiba_mica_commons_clean_string($str) {
+  return ucwords(str_replace('_',' ',$str));
+}
+
+/**
  * @param $std The object with localized fields
  * @param $field The localized field
  * @param $lang
@@ -186,7 +195,7 @@ function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters
 
     }
     else {
-      print $field;
+      print t(obiba_mica_commons_clean_string($field));
     }
     if ($i + 1 < $total_item) {
       print ', ';
@@ -358,7 +367,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
         $resource_data = drupal_http_request($url);
         $response_code = floor($resource_data->code / 100) * 100;
         if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
-          $extension_file = _obiba_mica_commons_get_extention_file($file_resource);
+          $extension_file = _obiba_mica_commons_get_file_extension($file_resource);
           $file = file_unmanaged_save_data($resource_data->data, 'public://tmp' . $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
           $exposed_url = file_create_url($file);
           cache_set($entity_id . '-' . $file_resource->id, $exposed_url, 'cache', time() + 1800);
@@ -373,7 +382,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
   return NULL;
 }
 
-function _obiba_mica_commons_get_extention_file($file_resource) {
+function _obiba_mica_commons_get_file_extension($file_resource) {
   $file_array = explode('.', $file_resource->fileName);
   $extension_file = count($file_array);
 

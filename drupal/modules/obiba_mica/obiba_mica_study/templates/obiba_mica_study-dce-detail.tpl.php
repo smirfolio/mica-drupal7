@@ -71,7 +71,7 @@
                   <ul>
                     <?php foreach ($dce->dataSources as $dataSource): ?>
                       <li>
-                        <?php print t($dataSource); ?>
+                        <?php print t(obiba_mica_commons_clean_string($dataSource)); ?>
                       </li>
                     <?php endforeach; ?>
                     <?php if (!empty($dce->otherDataSources)): ?>
@@ -91,7 +91,7 @@
                   <ul>
                     <?php foreach ($dce->administrativeDatabases as $database): ?>
                       <li>
-                        <?php print $database; ?>
+                        <?php print t(obiba_mica_commons_clean_string($database)); ?>
                       </li>
                     <?php endforeach; ?>
                   </ul>
@@ -106,7 +106,7 @@
                   <ul>
                     <?php foreach ($dce->bioSamples as $samples): ?>
                       <li>
-                        <?php print $samples; ?>
+                        <?php print t(obiba_mica_commons_clean_string($samples)); ?>
                       </li>
                     <?php endforeach; ?>
                     <?php if (!empty($dce->otherBioSamples)): ?>
