@@ -6854,12 +6854,6 @@ div.facet-query > div {
   border-radius: 5px;
   white-space: nowrap;
 }
-.aggregate-background {
-  background-color: #c0e1f6;
-}
-.aggregate-value-background {
-  background-color: #daf2fb;
-}
 .matches {
   cursor: pointer !important;
   margin: 2px !important;
