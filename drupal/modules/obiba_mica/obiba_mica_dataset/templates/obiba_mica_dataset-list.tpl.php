@@ -21,7 +21,7 @@
       <div>
         <ul class="search-list-no-style pull-right">
           <li><?php print $dataset_type === 'study_datasets' ? MicaClientAnchorHelper::search_study_datasets(t('Search Datasets')) : MicaClientAnchorHelper::search_harmonization_datasets(t('Search Variables')) ?></li>
-          <li><?php print $dataset_type === 'study_datasets' ? MicaClientAnchorHelper::coverage_study_datasets(t('Coverage')) : MicaClientAnchorHelper::coverage_harmonization_datasets(t('Coverage')) ?></li>
+          <li><?php print $dataset_type === 'study_datasets' ? MicaClientAnchorHelper::coverage_study_datasets(t('View Coverage')) : MicaClientAnchorHelper::coverage_harmonization_datasets(t('View Coverage')) ?></li>
         </ul>
 
       </div>
