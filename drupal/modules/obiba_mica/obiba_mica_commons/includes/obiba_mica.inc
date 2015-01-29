@@ -229,7 +229,10 @@ class MicaClient {
   }
 
   protected function session_facets_builder($aggregations) {
+    $network_buckets = array();
+    $study_buckets = array();
     $dataset_buckets = array();
+    $variable_buckets = array();
     unset($_SESSION['variables']);
     unset($_SESSION['studies']);
     unset($_SESSION['datasets']);
@@ -243,17 +246,22 @@ class MicaClient {
         $networkAggregations = array_filter($aggregation->aggs, function ($agg) {
           return $agg->aggregation === "networkId";
         });
+        $network_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
       }
 
       if ($type_aggregations == 'datasetResultDto') {
-        $dataset_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
-        $_SESSION['datasets']['aggregations'] = $aggregation->aggs;
+        if (!empty($aggregation->aggs)) {
+          $dataset_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
+          $_SESSION['datasets']['aggregations'] = $aggregation->aggs;
+        }
         $_SESSION['datasets']['aggregations']['totalHits'] = $aggregation->totalHits;
         $_SESSION['datasets']['aggregations']['totalCount'] = $aggregation->totalCount;
       }
 
       if ($type_aggregations == 'variableResultDto') {
-        $_SESSION['datasets']['facets-buckets'] = array_merge($dataset_buckets, $this->session_facets_bucket_construction($aggregation->aggs));
+        if (!empty($aggregation->aggs)) {
+          $variable_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
+        }
         $_SESSION['variables']['studies'] = array();
         $study_result = isset($aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'}) ? $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'} : NULL;
         if (!empty($study_result) && (!empty($study_result->summaries) || !empty($study_result->digests))) {
@@ -276,7 +284,7 @@ class MicaClient {
         $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
       }
       if ($type_aggregations == 'studyResultDto') {
-        $_SESSION['studies']['facets-buckets'] = $this->session_facets_bucket_construction($aggregation->aggs);
+        $study_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
         if (!empty($aggregations->networkResultDto)) {
           $network_result = isset($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}) ? $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'} : NULL;
           if (!empty($network_result) && (!empty($network_result->networks) || !empty($network_result->digests))) {
@@ -302,7 +310,7 @@ class MicaClient {
             $networks_studies_id_aggregations : NULL;
         }
 
-        if (!empty($aggregations->datasetResultDto)) {
+        if (!empty($aggregations->datasetResultDto) && !empty($aggregations->datasetResultDto->aggs)) {
           $datasets_studyTableSstudyIdstudies_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTable-studyId');
           $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_studyTableSstudyIdstudies_id_aggregations) ?
@@ -315,11 +323,15 @@ class MicaClient {
       }
     }
 
+    $_SESSION['studies']['facets-buckets'] = array_merge($network_buckets, $study_buckets);
+    $_SESSION['variables']['facets-buckets'] = array_merge($dataset_buckets, $variable_buckets);
+
     if (!empty($networkAggregations)) {
       foreach ($networkAggregations as $networkAggregation) {
         array_push($_SESSION['studies']['aggregations'], $networkAggregation);
       }
     }
+    //dpm($_SESSION);
   }
 
   protected function _get_aggregations_by_entity_dto($entity_aggr, $aggregations_term) {

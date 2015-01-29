@@ -91,15 +91,18 @@
         $('.text-button-field').html(Drupal.t('Show all'));
       });
 
-      /*********more less in search block ********/
+      /********* More/Less in search block ********/
       $(".expand-control").each(function () {
-        $('.expand-control-div' + $(this).attr('id')).on('shown.bs.collapse', function () {
+        var controlSelector = '.expand-control-div-' + $(this).attr('id');
+        var linkSelector = '.expand-control-link-' + $(this).attr('id');
+
+        $(controlSelector).on('shown.bs.collapse', function () {
           console.log($(this).attr('id'));
-          $('.expand-control-link' + $(this).attr('id')).html(Drupal.t('Less'));
+          $(linkSelector).html(Drupal.t('Less'));
         });
 
-        $('.expand-control-div' + $(this).attr('id')).on('hidden.bs.collapse', function () {
-          $('.expand-control-link' + $(this).attr('id')).html(Drupal.t('More'));
+        $(controlSelector).on('hidden.bs.collapse', function () {
+          $(linkSelector).html(Drupal.t('More'));
         });
       });
 

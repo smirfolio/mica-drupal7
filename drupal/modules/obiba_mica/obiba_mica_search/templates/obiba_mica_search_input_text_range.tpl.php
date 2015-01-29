@@ -1,7 +1,4 @@
 <?php //dpm($fields_terms); ?>
-<span class="default_value_range range-default">
-  <?php print  t('Default range: '); ?> <?php print  t('From'); ?> <?php print  $fields_terms['default']['min']; ?>
-  <?php print  t('to'); ?> <?php print $fields_terms['default']['max']; ?></span>
 <div id="range" class="facet_terms_range form-inline" term="<?php print $aggregation_facet . '-range'; ?>">
   <label for="edit-range-from"><?php print  t('From'); ?> </label>
   <input type="text" id="range-auto-fill"
