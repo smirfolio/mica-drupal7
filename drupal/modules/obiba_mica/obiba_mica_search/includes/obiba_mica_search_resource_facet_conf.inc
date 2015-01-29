@@ -21,13 +21,18 @@ function obiba_mica_search_resource_return_facets($dto_type = NULL) {
 }
 
 function obiba_mica_search_get_dto_facet_aggs($tab_block, $type) {
+  $agg_type = $type;
   switch ($tab_block) {
     case 'search-datasetId' :
       $facet_build[$tab_block]['datasetId']['term'] = obiba_mica_search_get_datasets();
       return $facet_build[$tab_block];
+    case 'search-studyIds':
+    case 'search-dceIds':
+      // these are displayed with the studies tab but aggregations are variables ones
+      $agg_type = 'variables';
   }
-  if (!empty($_SESSION[$type])) {
-    foreach ($_SESSION[$type]['aggregations'] as $key_tab => $facet) {
+  if (!empty($_SESSION[$agg_type])) {
+    foreach ($_SESSION[$agg_type]['aggregations'] as $key_tab => $facet) {
       if (is_int($key_tab)) {
         if (!empty($facet->aggregation) && $tab_block == 'search-' . $facet->aggregation) {
           if (!empty($facet->{'obiba.mica.TermsAggregationResultDto.terms'})) {
