@@ -331,7 +331,6 @@ class MicaClient {
         array_push($_SESSION['studies']['aggregations'], $networkAggregation);
       }
     }
-    //dpm($_SESSION);
   }
 
   protected function _get_aggregations_by_entity_dto($entity_aggr, $aggregations_term) {
