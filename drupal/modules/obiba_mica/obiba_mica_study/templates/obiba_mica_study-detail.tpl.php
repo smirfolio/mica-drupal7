@@ -107,8 +107,7 @@
                     <?php print $contact->title; ?>
                     <?php print $contact->firstName; ?>
                     <?php print $contact->lastName; ?>
-                    ( <?php print obiba_mica_commons_get_localized_field($contact->institution, 'name'); ?>
-                    )
+                    (<?php print obiba_mica_commons_get_localized_field($contact->institution, 'name'); ?>)
                   </a>
                 </li>
               <?php endforeach; ?>
@@ -160,7 +159,7 @@
             <ul>
               <?php foreach ($study_dto->methods->designs as $design): ?>
                 <li>
-                  <?php print t($design); ?>
+                  <?php print t(obiba_mica_commons_clean_string($design)); ?>
                   <?php if ($design == 'other'): ?>
                     : <?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherDesign'); ?>
                   <?php endif; ?>
@@ -186,7 +185,7 @@
             <ul>
               <?php foreach ($study_dto->methods->recruitments as $recruitment): ?>
                 <li>
-                  <?php print t($recruitment) ?>
+                  <?php print t(obiba_mica_commons_clean_string($recruitment)) ?>
                   <?php if ($recruitment == 'other'): ?>
                     : <?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherRecruitment'); ?>
                   <?php endif; ?>
