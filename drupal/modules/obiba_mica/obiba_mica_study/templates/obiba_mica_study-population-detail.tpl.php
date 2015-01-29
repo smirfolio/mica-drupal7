@@ -23,7 +23,7 @@
           ));
         ?>
         <?php
-        print l(t('Coverage'), 'mica/coverage',
+        print l(t('View Coverage'), 'mica/coverage',
           array(
             'query' => array(
               'type' => 'variables',

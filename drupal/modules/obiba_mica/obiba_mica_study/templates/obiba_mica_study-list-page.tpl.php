@@ -21,7 +21,7 @@
       <div>
         <ul class="search-list-no-style pull-right">
           <li><?php print MicaClientAnchorHelper::search_studies(t('Search Studies')) ?></li>
-          <li><?php print MicaClientAnchorHelper::coverage_studies(t('Coverage')) ?></li>
+          <li><?php print MicaClientAnchorHelper::coverage_studies(t('View Coverage')) ?></li>
         </ul>
 
       </div>

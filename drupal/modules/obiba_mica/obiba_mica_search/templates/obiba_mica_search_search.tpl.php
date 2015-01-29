@@ -44,7 +44,7 @@
           <div class="pull-right lg-top-margin facet-search-form">
             <?php print render($variable_search_form) ?>
             <p>
-              <?php print l(t('Coverage'), 'mica/coverage', array(
+              <?php print l(t('View Coverage'), 'mica/coverage', array(
                 'attributes' => array(
                   'class' => array(
                     'btn',
@@ -73,7 +73,7 @@
           <div class="pull-right lg-top-margin facet-search-form">
             <?php print render($dataset_search_form) ?>
             <p>
-              <?php print l(t('Coverage'), 'mica/coverage', array(
+              <?php print l(t('View Coverage'), 'mica/coverage', array(
                 'attributes' => array(
                   'class' => array(
                     'btn',
@@ -103,7 +103,7 @@
           <div class="pull-right lg-top-margin facet-search-form">
             <?php print render($study_search_form) ?>
             <p>
-              <?php print l(t('Coverage'), 'mica/coverage', array(
+              <?php print l(t('View Coverage'), 'mica/coverage', array(
                 'attributes' => array(
                   'class' => array(
                     'btn',
@@ -132,7 +132,7 @@
           <div class="pull-right lg-top-margin facet-search-form">
             <?php print render($network_search_form) ?>
             <p>
-              <?php print l(t('Coverage'), 'mica/coverage', array(
+              <?php print l(t('View Coverage'), 'mica/coverage', array(
                 'attributes' => array(
                   'class' => array(
                     'btn',

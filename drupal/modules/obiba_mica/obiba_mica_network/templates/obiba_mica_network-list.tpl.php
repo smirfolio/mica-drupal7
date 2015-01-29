@@ -21,7 +21,7 @@
       <div>
         <ul class="search-list-no-style pull-right">
           <li><?php print MicaClientAnchorHelper::search_networks(t('Search Networks')) ?></li>
-          <li><?php print MicaClientAnchorHelper::coverage_networks(t('Coverage')) ?></li>
+          <li><?php print MicaClientAnchorHelper::coverage_networks(t('View Coverage')) ?></li>
         </ul>
 
       </div>
