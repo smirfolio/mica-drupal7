@@ -168,7 +168,7 @@
 
 </section>
 
-<!-- Categories -->
+<!-- CATEGORIES -->
 <?php if (!empty($variable_dto->categories)): ?>
   <section>
     <h3><?php print t('Categories') ?></h3>
@@ -176,6 +176,8 @@
   </section>
 <?php endif; ?>
 
+<!-- STATISTICS -->
+<?php if(variable_get_value('mica_statistics')): ?>
 <section>
   <h3><?php print t('Statistics') ?></h3>
 
@@ -192,6 +194,7 @@
       </div>
     </div>
 </section>
+<?php endif; ?>
 
 <?php if ($variable_dto->variableType != 'Study'): ?>
   <section>
