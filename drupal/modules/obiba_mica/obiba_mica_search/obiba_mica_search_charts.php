@@ -182,9 +182,18 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
         }
       }
       if (!empty($data)) {
+        $title = t('Number of variables');
+        if (!empty($default_dto_search['group-by'])) {
+          $group_by_names = array(
+            'studyIds' => t('study'),
+            'dceIds' => t('data collection event'),
+            'datasetId' => t('dataset'),
+          );
+          $title = $title . ' (' . t('group by') . ' ' . $group_by_names[$default_dto_search['group-by']] . ')';
+        }
         $taxonomy_charts[] = array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
-          'chart' => obiba_mica_search_stacked_column_chart($labels, $data, t('Number of variables'), 1000, 450, 'none')
+          'chart' => obiba_mica_search_stacked_column_chart($labels, $data, $title, 1000, 450, 'none')
         );
       }
     }
