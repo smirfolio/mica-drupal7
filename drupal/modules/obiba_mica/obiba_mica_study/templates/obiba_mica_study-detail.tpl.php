@@ -85,6 +85,7 @@
                     <?php print $investigator->title; ?>
                     <?php print $investigator->firstName; ?>
                     <?php print $investigator->lastName; ?>
+                    <?php if (!empty($investigator->academicLevel)) print ', ' . $investigator->academicLevel; ?>
                     (<?php print obiba_mica_commons_get_localized_field($investigator->institution, 'name'); ?>)
                   </a>
                 </li>
@@ -106,6 +107,7 @@
                     <?php print $contact->title; ?>
                     <?php print $contact->firstName; ?>
                     <?php print $contact->lastName; ?>
+                    <?php if (!empty($contact->academicLevel)) print ', ' . $contact->academicLevel; ?>
                     (<?php print obiba_mica_commons_get_localized_field($contact->institution, 'name'); ?>)
                   </a>
                 </li>
