@@ -24,9 +24,8 @@ if (empty($query)) {
   <p class="pull-left">
 
     <?php if (!empty($coverages->totalHits)): ?>
-      <?php print t('%hits variables (among %count)', array(
+      <?php print t('%hits variables', array(
         '%hits' => $coverages->totalHits,
-        '%count' => $coverages->totalCount
       )) ?>
     <?php else: ?>
       <?php print t('%hits variables', array(
