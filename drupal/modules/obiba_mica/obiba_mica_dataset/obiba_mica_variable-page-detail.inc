@@ -319,6 +319,7 @@ function obiba_mica_variable_get_categories($categories = NULL) {
 }
 
 function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
+  if (!variable_get_value('mica_statistics')) return;
   $stat_tab = FALSE;
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
@@ -333,6 +334,7 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
 }
 
 function obiba_mica_dataset_variable_get_ajax_statistics_test($variable_id = NULL) {
+  if (!variable_get_value('mica_statistics')) return;
   $stat_tab = '';
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);

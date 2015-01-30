@@ -26,5 +26,11 @@ function obiba_mica_variable_info($options) {
     'type' => 'string',
     'default' => 'password',
   );
+  $variable['mica_statistics'] = array(
+    'title' => t('Show statistics'),
+    'description' => t('If show statistics is selected, variable pages will include a statistics summary section, contingency tables and queries for entity counts features will be available.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
   return $variable;
 }

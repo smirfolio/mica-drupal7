@@ -12,8 +12,7 @@ function obiba_mica_admin_settings() {
   $form['server'] = array(
     '#type' => 'fieldset',
     '#title' => t('OBiBa study server (Mica)'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
+    '#collapsible' => FALSE,
   );
 
   $info = variable_get_info('mica_url');
@@ -43,6 +42,20 @@ function obiba_mica_admin_settings() {
     '#required' => TRUE,
     '#default_value' => variable_get_value('mica_anonymous_password'),
     '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $form['statistics'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Statistics settings'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('mica_statistics');
+  $form['statistics']['mica_statistics'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_statistics'),
     '#description' => $info['description'],
   );
 
