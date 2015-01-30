@@ -8,7 +8,7 @@
   <p class="md-top-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
       <img src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-        class="imageThumb">
+           class="imageThumb">
     <?php endif; ?>
     <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($study_dto, 'objectives')); ?>
   </p>
@@ -81,11 +81,13 @@
               <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
                 <li>
                   <a href="#" data-toggle="modal"
-                    data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
+                     data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
                     <?php print $investigator->title; ?>
                     <?php print $investigator->firstName; ?>
                     <?php print $investigator->lastName; ?>
-                    <?php if (!empty($investigator->academicLevel)) print ', ' . $investigator->academicLevel; ?>
+                    <?php if (!empty($investigator->academicLevel)) {
+                      print ', ' . $investigator->academicLevel;
+                    } ?>
                     (<?php print obiba_mica_commons_get_localized_field($investigator->institution, 'name'); ?>)
                   </a>
                 </li>
@@ -103,11 +105,13 @@
               <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
                 <li>
                   <a href="#" data-toggle="modal"
-                    data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
+                     data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
                     <?php print $contact->title; ?>
                     <?php print $contact->firstName; ?>
                     <?php print $contact->lastName; ?>
-                    <?php if (!empty($contact->academicLevel)) print ', ' . $contact->academicLevel; ?>
+                    <?php if (!empty($contact->academicLevel)) {
+                      print ', ' . $contact->academicLevel;
+                    } ?>
                     (<?php print obiba_mica_commons_get_localized_field($contact->institution, 'name'); ?>)
                   </a>
                 </li>
@@ -400,7 +404,7 @@
               <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) {
                 print 'active';
               } ?>"
-                id="population-<?php print $key; ?>">
+                   id="population-<?php print $key; ?>">
                 <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
@@ -512,7 +516,8 @@
   </section>
 <?php endif; ?>
 
+  <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
+  <div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
+
 </article>
-<div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
-<div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
 <div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i></div>
