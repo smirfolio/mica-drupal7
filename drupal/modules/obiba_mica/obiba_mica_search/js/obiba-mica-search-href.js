@@ -286,8 +286,14 @@
         if (tabparam) {
           searchUrl.type = tabparam;
         }
-        searchUrl.query = jsonQuery;
-        window.location.search = '?' + decodeURIComponent($.param(searchUrl));
+
+        if ($.isEmptyObject(jsonQuery) || "{}" === jsonQuery) {
+          delete searchUrl['query'];
+        } else {
+          searchUrl.query = jsonQuery;
+        }
+
+        window.location.search = $.isEmptyObject(searchUrl) ? "" : '?' + decodeURIComponent($.param(searchUrl));
       }
 
       function initializeTabParam() {
@@ -305,10 +311,37 @@
 
       }
 
+      function validateRangeValues(input) {
+        var value = $(input).val();
+        var matches = value &&value.match(/\[\s*(\d*)\s*to\s*(\d*)\s*\]/);
+
+        if (matches) {
+          var id = $(input).attr("id");
+          var minid = id + '-min';
+          var maxid = id + '-max';
+          var minvalue = $("input[term='" + minid + "']").attr("placeholder");
+          var maxvalue = $("input[term='" + maxid + "']").attr('placeholder');
+
+          if (matches[1].length === 0) {
+            matches[1] = minvalue;
+          }
+          if (matches[2].length === 0) {
+            matches[2] = maxvalue;
+          }
+
+          $(input).val(id + '.[ ' + matches[1] + ' to ' + matches[2] + ' ]');
+        }
+      }
+
       function formClickHandler(aggregation) {
         var json = getQueryFromUrl();
         var input = $("input[id='" + aggregation + "']");
+
         if (input.val()) {
+          if ($(input).attr('name').match(/:range:/)) {
+            validateRangeValues(input);
+          }
+
           $.query_serializer.addItem( //
             json, //
             decodeURIComponent(serializeElement(input)) //

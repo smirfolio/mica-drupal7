@@ -112,7 +112,10 @@
 
       function queryParamToJson() {
         var j, q;
-        q = window.location.search.replace(/\?/, "").split("&");
+        q = window.location.search.replace(/\?/, "").trim();
+        if ("" === q) return {};
+
+        q = q.split("&");
         j = {};
         $.each(q, function(i, arr) {
           arr = arr.split('=');
