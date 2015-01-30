@@ -7,7 +7,8 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4
-          class="modal-title"><?php print $contact->title; ?> <?php print $contact->firstName; ?>  <?php print $contact->lastName; ?> </h4>
+          class="modal-title"><?php print $contact->title; ?> <?php print $contact->firstName; ?>  <?php print $contact->lastName; ?>
+          <?php if (!empty($contact->academicLevel)) print ', ' . $contact->academicLevel; ?></h4>
       </div>
       <div class="modal-body">
 
