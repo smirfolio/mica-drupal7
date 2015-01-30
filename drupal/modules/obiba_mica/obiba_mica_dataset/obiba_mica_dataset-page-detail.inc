@@ -191,7 +191,7 @@ function obiba_mica_dataset_studies_table_data($variables_dataset) {
       $rows[] = array(
         "index" => '',
         "name" => $var_row,
-        "label" => obiba_mica_commons_get_localized_field($variable, 'name'),
+        "label" => _obiba_mica_variable_attributes_detail($variable, 'label'),
         "classifications" => $domains
       );
     }
