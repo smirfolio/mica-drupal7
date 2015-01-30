@@ -276,5 +276,6 @@ function obiba_mica_study_coverage($study_id) {
     function ($b, $study_id) {
       // filter the dces of the current study
       return strpos($b->value, ':') === FALSE || strpos($b->value, $study_id . ':') === 0;
-    }, $study_id);
+    }, $study_id,
+    array('group-by' => 'dceIds'));
 }
