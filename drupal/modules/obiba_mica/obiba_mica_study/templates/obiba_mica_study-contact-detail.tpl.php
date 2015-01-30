@@ -8,7 +8,9 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4
           class="modal-title"><?php print $contact->title; ?> <?php print $contact->firstName; ?>  <?php print $contact->lastName; ?>
-          <?php if (!empty($contact->academicLevel)) print ', ' . $contact->academicLevel; ?></h4>
+          <?php if (!empty($contact->academicLevel)) {
+            print ', ' . $contact->academicLevel;
+          } ?></h4>
       </div>
       <div class="modal-body">
 
@@ -40,46 +42,59 @@
               <?php endif; ?>
 
               <?php if (!empty($contact->institution->name) ||
-                !empty($contact->institution->department) ||
-                !empty($contact->institution->address)
+                !empty($contact->institution->department)
               ): ?>
                 <tr>
                   <td><h5><?php print t('Institution') ?></h5></td>
                   <td>
-                    <div>
-                      <?php !empty($contact->institution->name) ? //
-                        print t('Name') . ' : ' . obiba_mica_commons_get_localized_field($contact->institution, 'name') : ''; ?>
-                    </div>
-                    <div>
-                      <?php !empty($contact->institution->department) ?
-                        print t('Department') . ' : ' . obiba_mica_commons_get_localized_field($contact->institution, 'department') : ''; ?></li>
-                    </div>
-
+                    <?php if (!empty($contact->institution->name)): ?>
+                      <p>
+                        <?php print obiba_mica_commons_get_localized_field($contact->institution, 'name'); ?>
+                      </p>
+                    <?php endif; ?>
+                    <?php if (!empty($contact->institution->department)): ?>
+                      <p>
+                        <?php print obiba_mica_commons_get_localized_field($contact->institution, 'department'); ?>
+                      </p>
+                    <?php endif; ?>
                   </td>
                 </tr>
-                <?php
-                if (!empty($contact->institution->address->street) ||
-                  !empty($contact->institution->address->city) ||
-                  !empty($contact->institution->address->state) ||
-                  !empty($contact->institution->address->country)
-                ): ?>
-                  <tr>
-                    <td><h5><?php print t('Adresse') ?></h5></td>
-                    <td>
-                      <div>   <?php !empty($contact->institution->address->street) ? print t('Street') . ' : ' .
-                          obiba_mica_commons_get_localized_field($contact->institution->address, 'street') : ''; ?> </div>
-                      <div>  <?php !empty($contact->institution->address->city) ?
-                          print t('City') . ' : ' . obiba_mica_commons_get_localized_field($contact->institution->address, 'city') : ''; ?></div>
-                      <div>  <?php !empty($contact->institution->address->zip) ?
-                          print t('Zip code') . ' : ' . $contact->institution->address->zip : ''; ?></div>
-                      <div>   <?php !empty($contact->institution->address->state) ?
-                          print t('State') . ' : ' . $contact->institution->address->state : ''; ?></div>
-                      <div>  <?php !empty($contact->institution->address->country) ?
-                          print t('Country') . ' : ' . $contact->institution->address->country->iso : ''; ?></div>
-
-                    </td>
-                  </tr>
-                <?php endif; ?>
+              <?php endif; ?>
+              <?php
+              if (!empty($contact->institution->address->street) ||
+                !empty($contact->institution->address->city) ||
+                !empty($contact->institution->address->zip) ||
+                !empty($contact->institution->address->state) ||
+                !empty($contact->institution->address->country)
+              ): ?>
+                <tr>
+                  <td><h5><?php print t('Address') ?></h5></td>
+                  <td>
+                    <?php if (!empty($contact->institution->address->street)): ?>
+                      <p>
+                        <?php print obiba_mica_commons_get_localized_field($contact->institution->address, 'street'); ?>
+                      </p>
+                    <?php endif; ?>
+                    <?php if (!empty($contact->institution->address->city)): ?>
+                      <p>
+                        <?php print obiba_mica_commons_get_localized_field($contact->institution->address, 'city'); ?>
+                      </p>
+                    <?php endif; ?>
+                    <?php if (!empty($contact->institution->address->zip)): ?>
+                      <p>
+                        <?php print $contact->institution->address->zip; ?>
+                      </p>
+                    <?php endif; ?>
+                    <?php if (!empty($contact->institution->address->country)): ?>
+                      <p>
+                        <?php if (!empty($contact->institution->address->state)): ?>
+                          <?php print $contact->institution->address->state . ', '; ?>
+                        <?php endif; ?>
+                        <?php print $contact->institution->address->country->iso; ?>
+                      </p>
+                    <?php endif; ?>
+                  </td>
+                </tr>
               <?php endif; ?>
 
               </tbody>
