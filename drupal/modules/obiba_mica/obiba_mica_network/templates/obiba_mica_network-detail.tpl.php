@@ -128,12 +128,13 @@
 
       </div>
 
-      <div class="col-lg-6 col-xs-12">
-        <?php if (!empty($network_dto->attributes)): ?>
+      <?php if (!empty($network_dto->attributes)): ?>
+        <div class="col-lg-6 col-xs-12">
           <h5><?php print t('Attributes') ?></h5>
+
           <p><?php print obiba_mica_dataset_attributes_tab($network_dto->attributes, 'maelstrom'); ?></p>
-        <?php endif; ?>
-      </div>
+        </div>
+      <?php endif; ?>
     </div>
 
   </section>

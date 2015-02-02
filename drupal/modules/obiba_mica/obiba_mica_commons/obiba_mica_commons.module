@@ -129,6 +129,15 @@ function obiba_mica_commons_get_localized_field($std, $field, $lang = NULL) {
  * @return null|string
  */
 function obiba_mica_commons_clean_string($str) {
+  if(empty($str)) return $str;
+  if(is_array($str)) {
+    $nstr = array();
+    foreach($str as $k => $v) {
+      $nstr[$k] = obiba_mica_commons_clean_string($v);
+    }
+    return $nstr;
+  }
+
   return ucwords(str_replace('_',' ',$str));
 }
 
