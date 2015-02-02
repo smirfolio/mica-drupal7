@@ -43,10 +43,9 @@
 
       <li>
         <?php print empty($study->designs) ? '' : t('Study design') ?>:
-        <span><?php print implode(', ', $study->designs) ?></span>
-        <?php print empty($study->targetNumber) ? '' : t('; Target number of participants') ?>
-        : <span><?php print $study->targetNumber->noLimit
-            ? t('No limits') : $study->targetNumber->number ?></span>
+        <span><?php print implode(', ', obiba_mica_commons_clean_string($study->designs)) ?></span>
+        <?php print empty($study->targetNumber) ? '' : t('; Target number of participants') ?>:
+        <span><?php print $study->targetNumber->noLimit ? t('No limits') : $study->targetNumber->number ?></span>
       </li>
     </ul>
     <div class="sm-top-margin">
