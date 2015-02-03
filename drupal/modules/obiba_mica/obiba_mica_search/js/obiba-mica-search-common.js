@@ -13,7 +13,8 @@
 (function ($) {
   Drupal.behaviors.obiba_mica_search_common = {
     attach: function (context, settings) {
-      /********************/
+      var isAjax = context !== document;
+
       $.saveCookieDataTabs = function (newst, cookieName) {
 
         // Stringify the object in JSON format for saving in the cookie.
@@ -41,50 +42,41 @@
           return '';
         }
       }
-      /******************************/
-      $.urlParam = function (name) {
-        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-        if (results == null) {
-          return null;
-        }
-        else {
 
-          return results[1] || 0;
-        }
+      $.urlParam = function (name) {
+        var results = isAjax ? new RegExp('[!&]' + name + '=([^&#]*)').exec(window.location.hash):
+          new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.search);
+
+        return  results !== null ? results[1] || 0 : null;
       };
 
       $.urlParamToAdd = function () {
-        {
-          var url = window.location.href;
-          var type = 'type';
-          var page = 'page';
-          var urlparts = url.split('?');
-          if (urlparts.length >= 2) {
-            var typeParam = encodeURIComponent(type) + '=';
-            var pageParam = encodeURIComponent(page) + '=';
-            var pars = urlparts[1].split(/[&;]/g);
-            for (var i = pars.length; i-- > 0;) {
-              if (pars[i].indexOf(typeParam, 0) == 0) {
-                pars.splice(i, 1);
-              }
-            }
-            for (var i = pars.length; i-- > 0;) {
-              if (pars[i].indexOf(pageParam, 0) == 0) {
-                pars.splice(i, 1);
-              }
-            }
+        var url = isAjax ? window.location.hash : window.location.search;
+        var type = 'type';
+        var page = 'page';
+        var urlparts = url.split(isAjax ? '!' : '?');
 
-            if (pars.length > 0) {
-              return pars.join('&');
-            }
-            else {
-              return '';
-            }
-          }
-          else {
-            return '';
+        if (urlparts.length < 2) {
+          return '';
+        }
+
+        var typeParam = encodeURIComponent(type) + '=';
+        var pageParam = encodeURIComponent(page) + '=';
+        var pars = urlparts[1].split(/[&;]/g);
+
+        for (var i = pars.length; i-- > 0;) {
+          if (pars[i].indexOf(typeParam, 0) == 0) {
+            pars.splice(i, 1);
           }
         }
+
+        for (var i = pars.length; i-- > 0;) {
+          if (pars[i].indexOf(pageParam, 0) == 0) {
+            pars.splice(i, 1);
+          }
+        }
+
+        return pars.join('&');
       };
 
       function trimJson(obj, parent, key) {
@@ -112,7 +104,9 @@
 
       function queryParamToJson() {
         var j, q;
-        q = window.location.search.replace(/\?/, "").trim();
+        q = isAjax ? window.location.hash.replace(/^#!/, '').trim() :
+          window.location.search.replace(/^\?/, '').trim();
+
         if ("" === q) return {};
 
         q = q.split("&");
@@ -121,11 +115,19 @@
           arr = arr.split('=');
           return j[arr[0]] = arr[1];
         });
+
         return j;
       }
 
       $.queryParamToJson = queryParamToJson;
 
+      $.getParameterByName = function(query, name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = isAjax ? new RegExp('[!&]' + name + '=([^&#]*)') : new RegExp('[\\?&]' + name + '=([^&#]*)'),
+          results = regex.exec(query);
+
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+      }
     }
 
   }

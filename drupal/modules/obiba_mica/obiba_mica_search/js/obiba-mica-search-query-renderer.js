@@ -348,19 +348,18 @@
  * client-server bridge
  */
 (function ($) {
+  Drupal.behaviors.query_builder = {
+    attach: function (context, settings) {
+      var jsonQuery = $.query_href.getQueryFromUrl();
 
-    Drupal.behaviors.query_builder = {
-        attach: function (context, settings) {
-            var jsonQuery = $.query_href.getQueryFromUrl();
-            if ($.isEmptyObject(jsonQuery)) return;
+      if ($.isEmptyObject(jsonQuery)) return;
 
-            var view = //
-                new $.QueryViewRenderer(Drupal.settings.obiba_mica_facet.facet_conf, Drupal.settings.terms_dictionary) //
-                    .render(jsonQuery);
+      var view = new $.QueryViewRenderer(
+        Drupal.settings.obiba_mica_facet.facet_conf, Drupal.settings.terms_dictionary).render(jsonQuery);
 
-            $('#search-query').append(view);
-            $('#search-help').hide();
-        }
+      $('#search-query').append(view);
+      $('#search-help').hide();
     }
+  };
 })(jQuery);
 

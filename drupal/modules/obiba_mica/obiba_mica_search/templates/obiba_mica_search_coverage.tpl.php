@@ -63,6 +63,9 @@ if (empty($query)) {
             'group-by' => 'studyIds'
           )
         ),
+        'attributes' => array (
+          'class' => ['group-by']
+        ),
       )); ?>
     </li>
     <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
@@ -75,6 +78,9 @@ if (empty($query)) {
             'group-by' => 'dceIds'
           )
         ),
+        'attributes' => array (
+          'class' => ['group-by']
+        ),
       )); ?>
     </li>
     <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
@@ -86,6 +92,9 @@ if (empty($query)) {
             'query' => $query,
             'group-by' => 'datasetId'
           )
+        ),
+        'attributes' => array (
+          'class' => ['group-by']
         ),
       )); ?>
     </li>

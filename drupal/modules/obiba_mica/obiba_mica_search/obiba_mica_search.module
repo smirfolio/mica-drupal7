@@ -174,16 +174,20 @@ function obiba_mica_search_block_info() {
 function obiba_mica_search_block_view($delta = '') {
   switch ($delta) {
     case 'facet-search':
-      $output = theme('obiba_mica_search_tab_block', array(
-        'obiba_mica_variable' =>
-          _obiba_mica_search_get_facets_block_by_dto_type('facet_conf_variable', 'variables'),
-        'obiba_mica_study' =>
-          _obiba_mica_search_get_facets_block_by_dto_type('facet_conf_study', 'studies')
-      ));
+      $output = _get_facets_theme();
       $block['subject'] = t('Facet search');
       $block['content'] = $output;
       return $block;
   }
+}
+
+function _get_facets_theme() {
+  return theme('obiba_mica_search_tab_block', array(
+    'obiba_mica_variable' =>
+      _obiba_mica_search_get_facets_block_by_dto_type('facet_conf_variable', 'variables'),
+    'obiba_mica_study' =>
+      _obiba_mica_search_get_facets_block_by_dto_type('facet_conf_study', 'studies')
+  ));
 }
 
 function _obiba_mica_search_get_facets_block_by_dto_type($dto_type, $type) {
@@ -312,7 +316,18 @@ function obiba_mica_get_hits_entities_variable($entity) {
 
 function obiba_mica_search_variable_page_search() {
   //drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
+  $output = theme('obiba_mica_search_search', _get_search_data());
 
+  if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    // AJAX request
+    return drupal_json_output(array('facets' =>_get_facets_theme(), 'searchResult' => $output));
+  }
+
+  obiba_mica_search_load_libs();
+  return $output;
+}
+
+function _get_search_data() {
   $studies = NULL;
   $study_charts = NULL;
   $variables = NULL;
@@ -358,30 +373,26 @@ function obiba_mica_search_variable_page_search() {
     parse_str($url_parm[1], $parts);
   }
 
-  $output = theme('obiba_mica_search_search',
-    array(
-      'noval' => '',
-      'query' => empty($parts['query']) ? '' : $parts['query'],
-      'variables_result' => array('data' => obiba_mica_search_variables_table($variables)),
-      'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
-      'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
-      'variable_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'variables'),
-      'datasets' => array('data' => obiba_mica_search_datasets_table($datasets)),
-      'dataset_totalHits' => !empty($dataset_totalHits) ? $dataset_totalHits : NULL,
-      'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
-      'dataset_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'datasets'),
-      'studies' => array('data' => obiba_mica_search_studies_table($studies)),
-      'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
-      'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
-      'study_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'studies'),
-      'networks' => array('data' => obiba_mica_search_networks_table($networks)),
-      'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
-      'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL,
-      'network_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'networks')
-    ));
-
-  obiba_mica_search_load_libs();
-  return $output;
+  return array(
+    'noval' => '',
+    'query' => empty($parts['query']) ? '' : $parts['query'],
+    'variables_result' => array('data' => obiba_mica_search_variables_table($variables)),
+    'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
+    'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
+    'variable_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'variables'),
+    'datasets' => array('data' => obiba_mica_search_datasets_table($datasets)),
+    'dataset_totalHits' => !empty($dataset_totalHits) ? $dataset_totalHits : NULL,
+    'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
+    'dataset_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'datasets'),
+    'studies' => array('data' => obiba_mica_search_studies_table($studies)),
+    'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
+    'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
+    'study_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'studies'),
+    'networks' => array('data' => obiba_mica_search_networks_table($networks)),
+    'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
+    'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL,
+    'network_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'networks')
+  );
 }
 
 Function obiba_mica_search_get_buckets($vocabulary_coverage, $all_bucket) {
@@ -412,7 +423,19 @@ function obiba_mica_search_coverage_page() {
 //  drupal_add_js(array(
 //    'template' => 'obiba_mica_search_fixed_sidebar'
 //  ), 'setting');
+
+  $output = theme('obiba_mica_search_coverage', _get_coverage_data());
+
+  if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    // AJAX request
+    return drupal_json_output(array('facets' =>_get_facets_theme(), 'searchResult' => $output));
+  }
+
   obiba_mica_search_load_libs();
+  return $output;
+}
+
+function _get_coverage_data() {
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
@@ -475,17 +498,15 @@ function obiba_mica_search_coverage_page() {
   }
   unset($_SESSION['fixed_menu']);
   $_SESSION['fixed_menu'] = array('coverages' => $coverages);
-  $output = theme('obiba_mica_search_coverage', array(
+  return array(
     'coverages' => $coverages,
     'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,
     'query' => !empty($parts['query']) ? $parts['query'] : NULL,
     'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
-  ));
-  return $output;
+  );
 }
 
 function obiba_mica_search_coverage_download() {
-  obiba_mica_search_load_libs();
   $search_resources = new MicaSearchResource();
   $response = $search_resources->download_taxonomies_coverage(NULL, array('group-by' => 'studyIds'));
   if (!empty($response)) {

@@ -5,12 +5,17 @@
 (function ($) {
   Drupal.behaviors.query_href = {
     attach: function (context, settings) {
+      var isAjax = context !== document;
+      var delIcon = $('<i class="remove-icon clickable glyphicon glyphicon-remove-circle"></i>');
+      var undoIcon = $('<span class="remove-icon clickable flaticon-undo9" aggregation=""></span>');
+
       if (Drupal.settings.UrlErrorsQuery) {
         console.log('error on page session error');
         setTimeout(function () {
           updateWindowLocation();
         }, 2000);
       }
+
       var tabparam = '';
 
       /*override autocomplete Drupal function */
@@ -41,42 +46,88 @@
 
         Drupal.jsAC.prototype.select = function (node) {
           var selectedValue = $(node).data('autocompleteValue');
-
           var selectorCheckbox = 'span#checkthebox[data-value="' + selectedValue + '"]';
-
           updateCheckboxesByChekbox($(selectorCheckbox))
         };
       }
+
       function updateCheckboxesByChekbox(checkboxSpan) {
         var json = getQueryFromUrl();
         var aggregation_name = getAggregationMoniker(checkboxSpan);
-        var input = $("input[id=" + aggregation_name + "]")
+        var input = $("input[id=" + aggregation_name + "]");
+
         if ($(checkboxSpan).hasClass("unchecked")) {
           checkthebox($(checkboxSpan));
           input.val($(checkboxSpan).attr('value'));
           input.attr('data-value', $(checkboxSpan).attr("data-value"));
           $.query_serializer.addItem(json, decodeURIComponent(serializeElement(input)));
           updateWindowLocation(JSON.stringify(json));
-          return false;
         }
+
         return false;
       }
 
+      function initSearchTerms() {
+          initializeTabParam();
+          process();
+          /*************Deal with icon for clearing the full text search input field *******/
+          //range input initializing reset
+          //  var input_ranges = $('.form-item-range-from');
+          var input_ranges = $("input[type='hidden'].form-item-range-from");
 
-      /**
-       * Expose these methods to other JS files
-       */
-      $.extend({
-        query_href: {
-          updateJsonQuery: updateJsonQuery,
-          updateWindowLocation: updateWindowLocation,
-          updateQueryOperation: updateQueryOperation,
-          getQueryFromUrl: getQueryFromUrl
-        }
-      });
+          input_ranges.each(function () {
+              var input_form_container = $(this).parent();
+              var content_icon = input_form_container.find('.remove-icon-content');
+              var Hidden_input_form = input_form_container.find("input[type='hidden'].form-item-range-from");
+              var aggregation = Hidden_input_form.attr('id');
+              var input_range_val_to_reset = input_form_container.find('.form-item-range-from');
+              var defaultMinvalue, defaultMaxvalue;
+              if ($(this).val()) {
+                  var current_undo_icon = undoIcon.clone().appendTo(content_icon);
+                  current_undo_icon.attr('aggregation', aggregation);
+                  current_undo_icon.on("click", function () {
+                      var clearButton = $(this);
 
-      initializeTabParam();
-      process();
+                      input_range_val_to_reset.each(function () {
+                          $(this).val('');
+                          if ($(this).attr('term') == aggregation + '-min') {
+                              defaultMinvalue = $(this).attr('placeholder');
+
+                          }
+                          if ($(this).attr('term') == aggregation + '-max') {
+                              defaultMaxvalue = $(this).attr('placeholder');
+                          }
+                      });
+
+                      Hidden_input_form.attr("value", '');
+                      Hidden_input_form.val('');
+
+                      formClickHandler($(clearButton).attr('aggregation'));
+                  });
+              }
+          });
+
+          //free search initializing reset
+          var inputSearch = $("input[id*='matches:facet-search-query']");
+          inputSearch.each(function () {
+              inputHaveValue($(this));
+              if ($(this).val()) {
+                  var divInput = inputSearch.parent().parent();
+                  divInput.append(delIcon);
+                  bindOnClikIcone(delIcon, $(this));
+              } else {
+                  delIcon.remove();
+              }
+
+              $(this).on("keyup", function () {
+                  if ($(this).val()) {
+                      inputHaveValue($(this));
+                  } else {
+                      formClickHandler($(this).attr('id'));
+                  }
+              });
+          });
+      }
 
       function getSelectedtermsAggSearchKey(attrAgg, value) {
         return attrAgg.replace("[]", "-terms[]") + value;
@@ -116,11 +167,20 @@
           '<a class="close" data-dismiss="alert" href="#">×</a>' +
           '<h4 class="element-invisible">Warning message</h4> ' + Drupal.settings.ErrorMessage +
           ' </div>';
-        var jsonParam = (window.location.search.replace(/(^\?)/, '').split("&").map(function (n) {
-          return n = n.split("="), this[n[0]] = n[1], this
-        }.bind({}))[0])['query'];
+        var qs = isAjax ?  window.location.hash.replace(/^#!/, '') :
+          window.location.search.replace(/^\?/, '');
+        var jsonParam = (qs.split("&")
+            .map(
+            function (n) {
+              return n = n.split("="), this[n[0]] = n[1], this
+            }.bind({}))[0]
+        )['query'];
+
         //if not valid jsonParam (url manually tampered by user) the scrip crash MK-201
-        if (jsonParam === undefined || jsonParam === '') return {};
+        if (jsonParam === undefined || jsonParam === '') {
+            return {};
+        }
+
         try {
           return JSON.parse(decodeURIComponent(jsonParam));
         } catch (e) {
@@ -128,6 +188,7 @@
           setTimeout(function () {
             updateWindowLocation();
           }, 2000);
+
           return {};
         }
       }
@@ -192,7 +253,6 @@
           if (selectedVar) {
             $('#' + currInputId).val(selectedVar.replace(/\+/g, ' '));
           }
-
         });
 
         $('span#checkthebox').each(function () {
@@ -206,11 +266,11 @@
               $(this).parents("label.span-checkbox").removeClass();
 
               checkthebox($(this));
+
               var copy_chekbox = $(this).parents("li.facets").clone();
               var divtofind = $(this).parents("section:first").find(".checkedterms:first");
               $("input[id=" + getAggregationMoniker(this) + "]").val($(this).attr('value')).attr('data-value', $(this).attr("data-value"));
               copy_chekbox.find('.terms_stat').width($current_width_percent);
-
               divtofind.append(copy_chekbox);
               $(this).parents("li.facets").remove();
             }
@@ -287,20 +347,19 @@
           searchUrl.type = tabparam;
         }
 
-        if ($.isEmptyObject(jsonQuery) || "{}" === jsonQuery) {
+        if ($.isEmptyObject(jsonQuery) || '{}' === jsonQuery) {
           delete searchUrl['query'];
         } else {
           searchUrl.query = jsonQuery;
         }
 
-        window.location.search = $.isEmptyObject(searchUrl) ? "" : '?' + decodeURIComponent($.param(searchUrl));
+        window.location.hash = $.isEmptyObject(searchUrl) ? '' : '!' + decodeURIComponent($.param(searchUrl));
       }
 
       function initializeTabParam() {
-        /**************************/
-          //deal with tabs
         tabparam = '';
         var urlTabParam = $.urlParam('type');
+
         if (urlTabParam) {
           var div = $("div.search-result").find("div.tab-pane");
           div.removeClass("active");
@@ -308,7 +367,6 @@
           $('#result-search a[href$="#' + urlTabParam + '"]').tab('show');
           tabparam = urlTabParam;
         }
-
       }
 
       function validateRangeValues(input) {
@@ -363,45 +421,36 @@
         $("section#block-obiba-mica-search-facet-search").find("h2:first").css("display", "none");
 
         var selectedVars = getUrlVars();
+
         if (selectedVars) {
           processMatchesInput(selectedVars);
           processTermsAggregationInputs(selectedVars);
           processRangeAggregationInputs(selectedVars);
         }
 
-        $("span#checkthebox").on("click", updateCheckboxes);
+        $("span#checkthebox", context).on("click", updateCheckboxes);
 
-        $("span#checkthebox").mouseover(function () {
+        $("span#checkthebox", context).on('mouseover', function () {
           if ($(this).hasClass("checked")) {
             rollover($(this));
             return false;
           }
         });
 
-        $("span#checkthebox").mouseout(function () {
+        $("span#checkthebox", context).on('mouseout', function () {
           if ($(this).hasClass("checked")) {
             rollout($(this));
             return false;
           }
         });
 
-        $("body").keypress(function (event) {
-          if (event.which == 13) {
-            if ($("input[id*='matches:facet-search-query']").is(":focus")) {
-              var element = $(document.activeElement)[0];
-              event.preventDefault();
-              formClickHandler($(element).attr('id'));
-            }
-          }
-        });
-
         /*send request search on checking the box or on click go button */
-        $("div#checkthebox, button#facet-search-submit").on("click", function () {
+        $("div#checkthebox, button#facet-search-submit", context).on("click", function () {
           formClickHandler($(this).attr('aggregation'));
         });
 
 
-        $("input[id='range-auto-fill']").on("blur", function () {
+        $("input[id='range-auto-fill']", context).on("blur", function () {
           var term = $(this).attr('termselect');
           var minid = term + '-min';
           var maxid = term + '-max';
@@ -417,65 +466,6 @@
 
         });
       }
-
-      /*************Deal with icon for clearing the full text search input field *******/
-      var delIcon = $('<i class="remove-icon clickable glyphicon glyphicon-remove-circle"></i>');
-      var undoIcon = $('<span class="remove-icon clickable flaticon-undo9" aggregation=""></span>');
-      //range input initializing reset
-      //  var input_ranges = $('.form-item-range-from');
-      var input_ranges = $("input[type='hidden'].form-item-range-from");
-
-      input_ranges.each(function () {
-        var input_form_container = $(this).parent();
-        var content_icon = input_form_container.find('.remove-icon-content');
-        var Hidden_input_form = input_form_container.find("input[type='hidden'].form-item-range-from");
-        var aggregation = Hidden_input_form.attr('id');
-        var input_range_val_to_reset = input_form_container.find('.form-item-range-from');
-        var defaultMinvalue, defaultMaxvalue;
-        if ($(this).val()) {
-          var current_undo_icon = undoIcon.clone().appendTo(content_icon);
-          current_undo_icon.attr('aggregation', aggregation);
-          current_undo_icon.on("click", function () {
-            var clearButton = $(this);
-            input_range_val_to_reset.each(function () {
-              $(this).val('');
-              if ($(this).attr('term') == aggregation + '-min') {
-                defaultMinvalue = $(this).attr('placeholder');
-
-              }
-              if ($(this).attr('term') == aggregation + '-max') {
-                defaultMaxvalue = $(this).attr('placeholder');
-              }
-            });
-            Hidden_input_form.attr("value", '');
-            Hidden_input_form.val('');
-
-            formClickHandler($(clearButton).attr('aggregation'));
-          });
-        }
-      });
-//free search initializing reset
-      var inputSearch = $("input[id*='matches:facet-search-query']");
-      inputSearch.each(function () {
-        inputHaveValue($(this));
-        if ($(this).val()) {
-          var divInput = inputSearch.parent().parent();
-          divInput.append(delIcon);
-          bindOnClikIcone(delIcon, $(this));
-        }
-        else {
-          delIcon.remove();
-        }
-
-        $(this).on("keyup", function () {
-          if ($(this).val()) {
-            inputHaveValue($(this));
-          }
-          else {
-            formClickHandler($(this).attr('id'));
-          }
-        });
-      });
 
       function inputHaveValue(inputSearch) {
         var divInput = inputSearch.parent().parent();
@@ -495,7 +485,67 @@
         });
       }
 
+      function populateFacetTabs(facetsHtml) {
+        var sections = $('#collapse-block-obiba-mica-search-facet-search').find('section');
+        var temp = $('<div></div>').html(facetsHtml);
 
+        sections.each(function () {
+          $(this).find('.checkedterms').html('');
+          var termsBlock = $(this).find('.block-content');
+          $(termsBlock[0]).html(temp.find('#' + $(this).attr('id') + ' .block-content').html());
+        });
+      }
+
+      function loadSearchResult(url) {
+        $('#block-system-main').fadeTo(300, 0.5);
+
+        $.ajax({
+          url: '?' + url.replace(/^!/, ''),
+          success: function (data) {
+            $('#block-system-main>.block-content').html(data.searchResult);
+            populateFacetTabs(data.facets); //TODO: this is a workaround to collapse problems.
+            Drupal.attachBehaviors($('.main-container')[0], settings);
+            $('html, body').animate({scrollTop: 0}, 'fast');
+          },
+          complete : function () {
+            $('div.tooltip').remove();
+            $('#block-system-main').fadeTo(300, 1.0);
+          }
+        });
+      }
+
+      if(!isAjax && window.location.hash) { //bookmarked url with hash
+        loadSearchResult(window.location.hash.replace(/^#/, ''));
+      }
+
+      $('form[id^=facet-search-query-form]', context).on('submit', function (e) {
+        e.preventDefault();
+        var el = $(this).find('input[id*="matches:facet-search-query"]')[0];
+        formClickHandler($(el).attr('id'));
+      });
+
+      $('#search-result .pagination a, .group-by', context).on('click', function(e) {
+        e.preventDefault();
+        window.location.hash = '!' + $(this).attr('href').split('?')[1];
+      });
+
+      $(window).unbind('hashchange').bind('hashchange', function () {
+        loadSearchResult(window.location.hash.replace(/^#/, ''));
+      });
+
+      initSearchTerms();
+
+      /**
+       * Expose these methods to other JS files
+       */
+      $.extend({
+        query_href: {
+          updateJsonQuery: updateJsonQuery,
+          updateWindowLocation: updateWindowLocation,
+          updateQueryOperation: updateQueryOperation,
+          getQueryFromUrl: getQueryFromUrl
+        }
+      });
     }
   }
 })(jQuery);
