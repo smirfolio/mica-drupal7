@@ -140,17 +140,20 @@
   </section>
 
   <!-- STUDIES -->
+  <?php if (!empty($network_dto->studySummaries)):?>
   <section>
     <h3><?php print t('Studies') ?></h3>
 
-    <div class="row">
-      <div class="col-lg-12 col-xs-12">
-        <div class="scroll-content-tab">
-          <?php print obiba_mica_network_study_table($network_dto); ?>
+    <div id="studies-table">
+      <div class="row">
+        <div class="col-lg-12 col-xs-12">
+          <table class="table table-striped" id="table-studies"></table>
         </div>
       </div>
     </div>
+
   </section>
+  <?php endif; ?>
 
   <!-- COVERAGE -->
   <?php if (!empty($coverage)): ?>
