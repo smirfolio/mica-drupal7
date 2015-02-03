@@ -10,7 +10,7 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
   }
   else {
-    obiba_mica_dataset_datatables_external_source();
+    obiba_mica_commons_datatables_external_source();
   }
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_datatable_init.js', 'file');
