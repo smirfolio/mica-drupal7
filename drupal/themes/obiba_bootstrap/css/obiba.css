@@ -7618,3 +7618,7 @@ div.algo-list {
 .vertical-tabs .form-item {
   margin: 1em 0;
 }
+table.dataTable tbody > tr > td {
+  padding-left: 18px;
+  padding-right: 18px;
+}
