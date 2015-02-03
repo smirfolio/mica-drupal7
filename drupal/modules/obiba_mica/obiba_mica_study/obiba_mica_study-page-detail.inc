@@ -11,11 +11,11 @@ if (module_exists('obiba_mica_dataset')) {
 
 function obiba_mica_study_page_detail($study_id) {
   obiba_mica_study_load_libs();
-  $module_path_commons = drupal_get_path('module', 'obiba_mica_commons');
-  drupal_add_js($module_path_commons . '/js/obiba-mica-commons-fixed-sidebar.js');
-  drupal_add_js(array(
-    'template' => 'obiba_mica_study_fixed_sidebar'
-  ), 'setting');
+//  $module_path_commons = drupal_get_path('module', 'obiba_mica_commons');
+//  drupal_add_js($module_path_commons . '/js/obiba-mica-commons-fixed-sidebar.js');
+//  drupal_add_js(array(
+//    'template' => 'obiba_mica_study_fixed_sidebar'
+//  ), 'setting');
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);

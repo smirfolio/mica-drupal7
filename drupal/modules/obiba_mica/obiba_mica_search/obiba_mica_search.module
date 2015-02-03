@@ -407,11 +407,11 @@ Function obiba_mica_search_get_terms($terms_buckets, $all_bucket) {
 }
 
 function obiba_mica_search_coverage_page() {
-  $module_path_commons = drupal_get_path('module', 'obiba_mica_commons');
-  drupal_add_js($module_path_commons . '/js/obiba-mica-commons-fixed-sidebar.js');
-  drupal_add_js(array(
-    'template' => 'obiba_mica_search_fixed_sidebar'
-  ), 'setting');
+//  $module_path_commons = drupal_get_path('module', 'obiba_mica_commons');
+//  drupal_add_js($module_path_commons . '/js/obiba-mica-commons-fixed-sidebar.js');
+//  drupal_add_js(array(
+//    'template' => 'obiba_mica_search_fixed_sidebar'
+//  ), 'setting');
   obiba_mica_search_load_libs();
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {

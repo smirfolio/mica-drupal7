@@ -67,10 +67,10 @@ function obiba_mica_network_study_table_rows($study_summaries) {
         obiba_mica_commons_get_localized_field($study_summary, 'acronym'),
         $study_summary->getPublished() ?
           l($name, 'mica/study/' . $study_summary->id . '/' . obiba_mica_commons_to_slug($name)) : t($name),
-        implode(', ', t($study_summary->designs)),
+        implode(', ', t(obiba_mica_commons_clean_string($study_summary->designs))),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
-        implode(', ', $study_summary->countries),
+        obiba_mica_commons_countries($study_summary->countries),
         empty($study_summary->variables) ? '-' : $study_summary->variables
       );
     }

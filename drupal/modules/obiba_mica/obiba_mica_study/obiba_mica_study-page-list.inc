@@ -137,10 +137,10 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
   return array(
     l(obiba_mica_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id . '/' . obiba_mica_commons_to_slug($name)),
     $name,
-    implode(', ', $study_summary->designs),
+    implode(', ', t(obiba_mica_commons_clean_string($study_summary->designs))),
     isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
       isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
-    implode(', ', $study_summary->countries),
+    obiba_mica_commons_countries($study_summary->countries),
   );
 }
 
@@ -148,7 +148,7 @@ function obiba_mica_study_study_summaries_table_headers() {
   return array(
     t('Acronym'),
     t('Name'),
-    t('Study Designs'),
+    t('Study Design'),
     t('Target Number'),
     t('Countries'),
   );
