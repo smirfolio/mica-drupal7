@@ -125,10 +125,18 @@
           <table class="table table-striped">
             <tbody>
             <tr>
+              <td><h5><?php print t('Acronym') ?></h5></td>
+              <td>
+                <p>
+                  <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym'); ?>
+                </p>
+              </td>
+            </tr>
+            <tr>
               <td><h5><?php print t('Name') ?></h5></td>
               <td>
                 <p>
-                  <?php print l(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym') . ' - ' . obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
+                  <?php print l(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
                 </p>
               </td>
             </tr>
@@ -161,7 +169,7 @@
             <tr>
               <td><h5><?php print t('Study Designs') ?></h5></td>
               <td>
-                <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->designs); ?>
+                <?php print implode(', ', t(obiba_mica_commons_clean_string($dataset_type_dto->studyTable->studySummary->designs))); ?>
               </td>
             </tr>
             <tr>
@@ -174,7 +182,7 @@
             <tr>
               <td><h5><?php print t('Countries') ?></h5></td>
               <td>
-                <?php print implode(', ', $dataset_type_dto->studyTable->studySummary->countries); ?>
+                <?php print obiba_mica_commons_countries($dataset_type_dto->studyTable->studySummary->countries); ?>
               </td>
             </tr>
             </tbody>
