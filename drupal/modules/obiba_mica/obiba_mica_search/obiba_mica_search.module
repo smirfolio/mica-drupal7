@@ -529,13 +529,14 @@ function obiba_mica_search_variables_table($variables) {
       $row = array(
         l($name, 'mica/variable/' . $variable->id),
         !empty($variable_label) ? $variable_label : '-',
-        l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId),
       );
 
       if (!empty($variable->studyId)) {
         $row[] = l($study_name, 'mica/study/' . $variable->studyId);
         $has_study = TRUE;
       }
+
+      $row[] = l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId);
       $rows[] = $row;
     }
   }
@@ -552,12 +553,12 @@ function obiba_mica_search_variables_table($variables) {
 
   $headers = array(
     t('Variable'),
-    t('Label'),
-    t('Dataset'),
+    t('Label')
   );
   if ($has_study) {
     $headers[] = t('Study');
   }
+  $headers[] = t('Dataset');
   pager_default_initialize($total_hits, MicaSearchResource::SIZE_RESPONSE);
   return '<div class="scroll-content-tab">' . theme(
     'table',
