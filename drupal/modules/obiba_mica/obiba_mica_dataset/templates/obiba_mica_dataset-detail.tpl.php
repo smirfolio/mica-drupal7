@@ -147,23 +147,42 @@
                 <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
                   if ($pop_summary->id == $dataset_type_dto->studyTable->populationId) {
                     $population_summary = $pop_summary;
+                    $population_anchor = l(obiba_mica_commons_get_localized_field($population_summary, 'name'), '#', array(
+                      'external' => TRUE,
+                      'attributes' => array(
+                        'data-toggle' => 'modal',
+                        'data-target' => '#population-' . $population_summary->id
+                      )
+                    ));
+
+                    print $population_anchor;
                     break;
                   }
                 }
                 ?>
-                <?php print obiba_mica_commons_get_localized_field($population_summary, 'name'); ?>
               </td>
             </tr>
             <tr>
               <td><h5><?php print t('Data Collection Event') ?></h5></td>
               <td>
-                <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
+                <?php
+                  $dce_anchor = NULL;
+                  foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
                   if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId) {
-                    print obiba_mica_commons_get_localized_field($dce_summary, 'name');
+                    $dce_anchor = l(obiba_mica_commons_get_localized_field($dce_summary, 'name'), '#', array(
+                      'external' => TRUE,
+                      'attributes' => array(
+                        'data-toggle' => 'modal',
+                        'data-target' => '#dce-' . $dataset_type_dto->studyTable->studyId . '-' . $dataset_type_dto->studyTable->populationId . '-' . $dce_summary->id
+                      )
+                    ));
+
+                    print $dce_anchor;
                     break;
                   }
                 }
                 ?>
+
               </td>
             </tr>
             <tr>
@@ -189,6 +208,12 @@
           </table>
         </div>
         <?php endif ?>
+        <?php
+          if (!empty($modals)) {
+            if (!empty($modals['population'])) print render($modals['population']);
+            if (!empty($modals['dce'])) print render($modals['dce']);
+          }
+        ?>
     </section>
   <?php endif ?>
 
