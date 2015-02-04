@@ -55,6 +55,8 @@ function obiba_mica_study_theme($existing, $type, $theme, $path) {
     ),
     'obiba_mica_study_detail' => array('template' => 'obiba_mica_study-detail', 'path' => $path_theme),
     'mica_population_detail' => array('template' => 'obiba_mica_study-population-detail', 'path' => $path_theme),
+    'mica_population_content_detail' => array('template' => 'obiba_mica_study-population-content-detail', 'path' => $path_theme),
+    'mica_population_content_detail_modal' => array('template' => 'obiba_mica_study-population-content-detail-modal', 'path' => $path_theme),
     'mica_dce_detail' => array('template' => 'obiba_mica_study-dce-detail', 'path' => $path_theme),
     'mica_contact_detail' => array('template' => 'obiba_mica_study-contact-detail', 'path' => $path_theme),
     'obiba_mica_study_attachments' => array('template' => 'obiba_mica_study_attachments', 'path' => $path_theme),

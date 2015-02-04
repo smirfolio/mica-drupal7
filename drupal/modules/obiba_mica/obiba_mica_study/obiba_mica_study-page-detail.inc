@@ -11,11 +11,6 @@ if (module_exists('obiba_mica_dataset')) {
 
 function obiba_mica_study_page_detail($study_id) {
   obiba_mica_study_load_libs();
-//  $module_path_commons = drupal_get_path('module', 'obiba_mica_commons');
-//  drupal_add_js($module_path_commons . '/js/obiba-mica-commons-fixed-sidebar.js');
-//  drupal_add_js(array(
-//    'template' => 'obiba_mica_study_fixed_sidebar'
-//  ), 'setting');
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
@@ -34,8 +29,6 @@ function obiba_mica_study_page_detail($study_id) {
       l(t('Home'), '<front>'),
       l(t('Studies'), 'mica/studies'),
     ));
-
-    // dpm(obiba_mica_study_get_contact_detail('investigator',$study_dto->id,$study_dto->investigators));
 
     $dataset_output = (module_exists('obiba_mica_dataset')) ?
       obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
@@ -162,8 +155,10 @@ function obiba_mica_study_get_populations_detail($study_detail) {
       $page_render_populations[$population->id] = array(
         'data' => $population,
         'html' => theme('mica_population_detail', array(
-          'study_id' => $study_detail->id,
-          'dce_uids' => $dce_uids,
+          'population_content' => theme('mica_population_content_detail', array(
+            'dce_uids' => $dce_uids,
+            'population' => $population
+          )),
           'population' => $population
         ))
       );
