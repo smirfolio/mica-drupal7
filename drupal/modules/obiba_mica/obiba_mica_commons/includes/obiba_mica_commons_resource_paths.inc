@@ -54,7 +54,7 @@ class MicaClientAnchorHelper {
 
   static function study_variables($text, $study_id) {
     $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('studyIds' => $study_id))) //
+      array('studies' => array('terms' => array('studyIds' => $study_id))) //
     );
 
     $options = array(
