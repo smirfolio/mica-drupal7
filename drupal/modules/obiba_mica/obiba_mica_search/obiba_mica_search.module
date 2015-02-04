@@ -596,7 +596,7 @@ function obiba_mica_search_studies_table($studies) {
     foreach ($summaries as $study) {
       $query_studies_param =
         MicaClient::add_parameter_dto_query_link(array(
-          'variables' => array('terms' => array('studyIds' => $study->id))
+          'studies' => array('terms' => array('studyIds' => $study->id))
         ));
 
       $query_studies_param_harmo =
