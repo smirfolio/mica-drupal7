@@ -66,8 +66,8 @@ function obiba_mica_search_process_block_theme($block_delta, $type) {
   $total_hits = NULL;
   $total_count = NULL;
   if (!empty($type) && !empty($_SESSION[$type]['aggregations'])) {
-    $total_hits = $_SESSION[$type]['aggregations']['totalHits'];
-    $total_count = $_SESSION[$type]['aggregations']['totalCount'];
+    $total_hits = $_SESSION[$type]['aggregations']['total_hits'];
+    $total_count = $_SESSION[$type]['aggregations']['total_count'];
   }
 
   if (!empty($block_delta)) {
@@ -198,8 +198,8 @@ function obiba_mica_search_get_checkbox_term_field($fields_terms, $type_string, 
       'aggregation_facet' => $aggregation_facet,
       'type_string' => $mapped_type_string,
       'term' => !empty($term) ? $term : '',
-      'totalHits' => $total_hits,
-      'totalCount' => $total_count,
+      'total_hits' => $total_hits,
+      'total_count' => $total_count,
       'query_request' => $query_request
     ));
 

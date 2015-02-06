@@ -68,7 +68,7 @@ function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL,
   }
   $networks = $study_resource->get_networks($study_id, $query, $from, MicaClient::SIZE_RESPONSE_SM, $sort, $sort_by);
   if (!empty($networks)) {
-    $_SESSION['networks']['aggregations']['totalHits'] = $networks->getTotalHits();
+    $_SESSION['networks']['aggregations']['total_hits'] = $networks->getTotalHits();
   }
   return $networks;
 }

@@ -450,7 +450,7 @@
           <h5><?php print t('Number of variables') ?></h5>
 
           <p>
-            <?php print $study_variables_aggs['totalHits']; ?>
+            <?php print $study_variables_aggs['total_hits']; ?>
           </p>
 
           <?php

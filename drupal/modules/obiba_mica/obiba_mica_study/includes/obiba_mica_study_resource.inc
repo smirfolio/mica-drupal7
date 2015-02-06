@@ -166,7 +166,7 @@ class MicaStudyResource extends MicaClient {
           $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($study));
         }
       }
-      $dtos ['totalHits'] = $dto_data_response->totalHits;
+      $dtos ['total_hits'] = $dto_data_response->totalHits;
       return $dtos;
     }
     catch (HttpClientException $e) {

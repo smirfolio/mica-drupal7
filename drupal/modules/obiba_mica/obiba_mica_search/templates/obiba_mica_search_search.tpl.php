@@ -13,22 +13,22 @@
 <div id="search-result">
   <ul class="nav nav-tabs" role="tablist" id="result-search">
     <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
-        (<?php print !empty($network_totalHits) ? $network_totalHits : 0; ?>)
+        (<?php print !empty($network_total_hits) ? $network_total_hits : 0; ?>)
       </a>
     </li>
 
     <li><a href="#studies" role="tab"> <?php print t('Studies') ?>
-        (<?php print !empty($study_totalHits) ? $study_totalHits : 0; ?>)
+        (<?php print !empty($study_total_hits) ? $study_total_hits : 0; ?>)
       </a>
     </li>
 
     <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
-        (<?php print !empty($dataset_totalHits) ? $dataset_totalHits : 0; ?>)
+        (<?php print !empty($dataset_total_hits) ? $dataset_total_hits : 0; ?>)
       </a>
     </li>
 
     <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
-        (<?php print !empty($variable_totalHits) ? $variable_totalHits : 0; ?>)
+        (<?php print !empty($variable_total_hits) ? $variable_total_hits : 0; ?>)
       </a>
     </li>
 

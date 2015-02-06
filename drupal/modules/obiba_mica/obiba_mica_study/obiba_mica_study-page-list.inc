@@ -93,7 +93,7 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
 
   $response = $study_resource->get_studies($query, $from, MicaClient::SIZE_RESPONSE_SM, $sort, $order);
   if (!empty($response)) {
-    $_SESSION['studies']['aggregations']['totalHits'] = $response->getTotalHits();
+    $_SESSION['studies']['aggregations']['total_hits'] = $response->getTotalHits();
   }
 
   return $response;
@@ -102,8 +102,8 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
 function obiba_mica_study_studies_table($studies) {
   $rows = array();
   $total = 0;
-  if (!empty($studies['totalHits']) && $studies['totalHits'] > 0) {
-    $total = $studies['totalHits'];
+  if (!empty($studies['total_hits']) && $studies['total_hits'] > 0) {
+    $total = $studies['total_hits'];
     $rows = obiba_mica_study_study_summaries_table_rows($studies['data']);
   }
   $headers = obiba_mica_study_study_summaries_table_headers();

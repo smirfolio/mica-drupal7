@@ -135,17 +135,17 @@ class MicaSearchResource extends MicaClient {
   public function get_stats_entities_count($dto, $dto_data_response) { //dpm($dto_data_response);
     return array(
       'data' => $dto['data'],
-      'study_totalHits' => empty($dto_data_response->studyResultDto) ? 0 : $dto_data_response->studyResultDto->totalHits,
-      'study_totalCount' => empty($dto_data_response->studyResultDto) ? 0 : $dto_data_response->studyResultDto->totalCount,
-      'variable_totalHits' => empty($dto_data_response->variableResultDto) ? 0 : $dto_data_response->variableResultDto->totalHits,
-      'variable_totalCount' => empty($dto_data_response->variableResultDto) ? 0 : $dto_data_response->variableResultDto->totalCount,
-      'network_totalHits' => !empty($dto_data_response->networkResultDto->totalHits) ?
+      'study_total_hits' => empty($dto_data_response->studyResultDto) ? 0 : $dto_data_response->studyResultDto->totalHits,
+      'study_total_count' => empty($dto_data_response->studyResultDto) ? 0 : $dto_data_response->studyResultDto->totalCount,
+      'variable_total_hits' => empty($dto_data_response->variableResultDto) ? 0 : $dto_data_response->variableResultDto->totalHits,
+      'variable_total_count' => empty($dto_data_response->variableResultDto) ? 0 : $dto_data_response->variableResultDto->totalCount,
+      'network_total_hits' => !empty($dto_data_response->networkResultDto->totalHits) ?
           $dto_data_response->networkResultDto->totalHits : 0,
-      'network_totalCount' => !empty($dto_data_response->networkResultDto->totalCount) ?
+      'network_total_count' => !empty($dto_data_response->networkResultDto->totalCount) ?
           $dto_data_response->networkResultDto->totalCount : 0,
-      'dataset_totalHits' => !empty($dto_data_response->datasetResultDto->totalHits) ?
+      'dataset_total_hits' => !empty($dto_data_response->datasetResultDto->totalHits) ?
           $dto_data_response->datasetResultDto->totalHits : 0,
-      'dataset_totalCount' => !empty($dto_data_response->datasetResultDto->totalCount) ?
+      'dataset_total_count' => !empty($dto_data_response->datasetResultDto->totalCount) ?
           $dto_data_response->datasetResultDto->totalCount : 0
     );
   }

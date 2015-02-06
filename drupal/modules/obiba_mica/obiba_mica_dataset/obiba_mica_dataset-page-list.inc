@@ -86,7 +86,7 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resou
 
   $response = $resource->get_datasets($dataset_resource, NULL, $query, $from, MicaClient::SIZE_RESPONSE_SM, $sort, $sort_by);
   if (!empty($response)) {
-    $_SESSION['datasets']['aggregations']['totalHits'] = $response->getTotalHits();
+    $_SESSION['datasets']['aggregations']['total_hits'] = $response->getTotalHits();
   }
 
   return $response;
