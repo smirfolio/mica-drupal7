@@ -181,18 +181,22 @@ function obiba_mica_search_get_checkbox_term_field($fields_terms, $type_string, 
   $key = 1;
   uasort($fields_terms, 'obiba_mica_search_sort_terms');
   foreach ($fields_terms as $term) {
+    $mapped_type_string = $type_string;
+
     if ($aggregation_facet == 'studyIds') {
-      $type_string = 'studies:';
+      $mapped_type_string = 'studies:';
     }
-    else {
-      if ($aggregation_facet == 'networkId') {
-        $type_string = 'networks:';
-      }
+    else if ($aggregation_facet == 'networkId') {
+      $mapped_type_string = 'networks:';
     }
+    else if ($aggregation_facet == 'dceIds') {
+      $mapped_type_string = 'variables:';
+    }
+
     $query_request = !empty($_GET['query']) ? TRUE : FALSE;
     $items[$term->key]['#markup'] = theme('obiba_mica_search_checkbox_term', array(
       'aggregation_facet' => $aggregation_facet,
-      'type_string' => $type_string,
+      'type_string' => $mapped_type_string,
       'term' => !empty($term) ? $term : '',
       'totalHits' => $total_hits,
       'totalCount' => $total_count,
@@ -200,6 +204,7 @@ function obiba_mica_search_get_checkbox_term_field($fields_terms, $type_string, 
     ));
 
     $key++;
+
     if ($key == 12) {
       $key = 0;
     }
