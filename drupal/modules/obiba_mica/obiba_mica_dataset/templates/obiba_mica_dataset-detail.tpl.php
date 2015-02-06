@@ -112,10 +112,10 @@
         ?>
       </h3>
       <?php if (!empty($dataset_type_dto->project)): ?>
-        <div class="row">
-          <div class="col-lg-12 col-xs-12">
-            <div class="scroll-content-tab">
-              <?php print obiba_mica_dataset_study_tables_table($dataset_type_dto) ?>
+        <div id="studies-table">
+          <div class="row">
+            <div class="col-lg-12 col-xs-12">
+              <table class="table table-striped" id="table-studies"></table>
             </div>
           </div>
         </div>
@@ -210,8 +210,8 @@
         <?php endif ?>
         <?php
           if (!empty($modals)) {
-            if (!empty($modals['population'])) print render($modals['population']);
-            if (!empty($modals['dce'])) print render($modals['dce']);
+            if (!empty($modals['population'])) print render($modals['population'][0]);
+            if (!empty($modals['dce'])) print render($modals['dce'][0]);
           }
         ?>
     </section>

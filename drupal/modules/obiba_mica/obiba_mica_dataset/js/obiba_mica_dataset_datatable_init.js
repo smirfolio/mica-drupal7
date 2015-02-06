@@ -67,12 +67,6 @@
           "language": {
             "url": Drupal.settings.basePath + 'mica/datatable-international'
           }
-//          ,
-//          "fnInitComplete": function() {
-//
-//            divTableVariable.css("width","100%");
-//          }
-
         });
 
         new $.fn.dataTable.FixedColumns(dataTable, {
