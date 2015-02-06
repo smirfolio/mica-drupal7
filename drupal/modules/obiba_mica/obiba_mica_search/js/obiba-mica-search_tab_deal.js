@@ -6,31 +6,25 @@
 (function ($) {
   Drupal.behaviors.obiba_mica_search_collapse_tab = {
     attach: function (context, settings) {
-      /***Here we deal with facet tab that is retrieved from cookies *******************/
-      //get active facet tab from cookie
+      var isAjax = context !== document;
       var activeTabCookie = $.getCookieDataTabs('activeFacetTab');
 
-      //if empty cookie save current facet tab state
       if (jQuery.isEmptyObject(activeTabCookie)) {
         $(".facets-tab>li").each(function (id, state) {
-          //   var current_id = this.firstChild().attr('href');
           console.log($(this).attr('class'));
           if ($(this).attr('class') == 'active') {
             console.log($(this).find('a').attr('href'));
             activeTabCookie['active'] = $(this).find('a').attr('href');
           }
         });
-        //save current facet tab state
+
         $.saveCookieDataTabs(activeTabCookie, 'activeFacetTab');
       }
       else {
-        //open active facet tab (retrieved from cookies)
         $('#facet-search a[href$="' + activeTabCookie["active"] + '"]').tab('show');
       }
-      //save current stat of facet tab in cookie
-      $("div#search-facets").find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        // e.target // activated tab
-        // e.relatedTarget // previous tab
+
+      $('div#search-facets a[data-toggle="tab"]', context).on('shown.bs.tab', function (e) {
         e.preventDefault();
         var targetPanel = e.target.hash;
         $.saveCookieDataTabs('', 'activeFacetTab');
@@ -38,22 +32,25 @@
         $.saveCookieDataTabs(activeTabCookie, 'activeFacetTab');
       });
 
-      /***Here we deal with result search tab that is retrieved from url *******************/
-      if ($.urlParam('type')) {
-        var div = $("div.search-result").find("div.tab-pane");
-        div.removeClass("active");
-        $("div#" + $.urlParam('type')).addClass("active");
-        $('#result-search a[href$="#' + $.urlParam('type') + '"]').tab('show');
-      }
-
-      $("div#search-result").find('a[role="tab"]').on('click', function (e) {
+      $('#block-system-main a[role="tab"]', context).on('click', function (e) {
         e.preventDefault();
-        var targetPanel = e.target.hash;
-        var current_page = ($.getCookieDataTabs('page_' + targetPanel.replace('#', ''))) ?
-          '&page=' + $.getCookieDataTabs('page_' + targetPanel.replace('#', '')) : '';
-        window.location = '?' + 'type=' + targetPanel.replace('#', '') + '&' + $.urlParamToAdd() + current_page
+        var targetPanel = e.target.hash.replace('#', '');
+        var current_page = $.getCookieDataTabs('page_' + targetPanel) ? 'page=' + $.getCookieDataTabs('page_' + targetPanel) : '';
+        window.location.hash = '!' + ['type=' + targetPanel, $.urlParamToAdd(), current_page].filter(function(x) {return x;}).join('&');
       });
 
+      function setActiveTab(type) {
+        var div = $("div.search-result").find("div.tab-pane");
+        div.removeClass("active");
+        $("div#" + type).addClass("active");
+        $('#result-search a[href$="#' + type + '"]').tab('show');
+      }
+
+      var type = $.getParameterByName(isAjax ? window.location.hash : window.location.search, 'type');
+
+      if (type) {
+        setActiveTab(type);
+      }
     }
   }
 }(jQuery));

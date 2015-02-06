@@ -7,29 +7,17 @@
 
   Drupal.behaviors.obiba_mica_facet_search_collapse_block = {
     attach: function (context, settings) {
-
       var newst = {};
       var newst1 = {};
-      var sectionid;
       var st = $.getCookieDataTabs('activeAccordionGroup');
 
-      $("#facets-expand-collapse").on("click", function(e){
-        $(this).blur();
-        var st = $.getCookieDataTabs('activeAccordionGroup');
-        if (jQuery.isEmptyObject(st)) {
-          expandAll();
-        } else {
-          collapseAll();
-        }
-        e.preventDefault();
-        return false;
-      });
-
-      $(".block-content").each(function (id, state) {
+      $('.block-content').each(function (id, state) {
         var current_id = this.id;
-        if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") return true;
 
-        //show the last visible group
+        if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") {
+          return true;
+        }
+
         if (st[current_id]) {
           $("#" + current_id).collapse("show");
           newst1[current_id] = 'in';
@@ -38,56 +26,66 @@
           $("#" + current_id).collapse("hide");
           addCollapsedIcon(current_id, 'collapsed');
           delete newst1[current_id];
-
         }
-
       });
 
-      updateExpandCollapsecon(newst1);
       $.saveCookieDataTabs(newst1, 'activeAccordionGroup');
 
-//when a group is shown, save it as the active accordion group
-      $(".block").on('shown.bs.collapse', function () {
-        $(".block-content").each(function (id, state) {
-          //var id_active = $(".panel-collapse .in").attr('id');
-          var current_id = this.id;
-          if ($("#" + current_id).hasClass("in")) {
-            newst[current_id] = 'in';
+      updateExpandCollapsecon(newst1);
 
-          }
-          else {
-            delete newst[current_id];
+      if (context === document) { //We don't attach event when calling from an ajax triggered context
+        $('#facets-expand-collapse', context).on('click', function (e) {
+          e.preventDefault();
+          $(this).blur();
+          var st = $.getCookieDataTabs('activeAccordionGroup');
+          if ($.isEmptyObject(st)) {
+            expandAll();
+          } else {
+            collapseAll();
           }
         });
-        $.saveCookieDataTabs(newst, 'activeAccordionGroup');
-        updateExpandCollapsecon(newst);
-      });
 
-      //when a group is shown, save it as the active accordion group
-      $(".block").on('hidden.bs.collapse', function () {
-        $(".block-content").each(function (id, state) {
-          //var id_active = $(".panel-collapse .in").attr('id');
-          var current_id = this.id;
-          if ($("#" + current_id).hasClass("in")) {
-            newst[current_id] = 'in';
-          }
-          else {
-            delete newst[current_id];
-          }
+        $('.block', context).on('shown.bs.collapse', function () {
+          $(".block-content").each(function (id, state) {
+            //var id_active = $(".panel-collapse .in").attr('id');
+            var current_id = this.id;
 
+            if ($("#" + current_id).hasClass("in")) {
+              newst[current_id] = 'in';
+            }
+            else {
+              delete newst[current_id];
+            }
+          });
+
+          $.saveCookieDataTabs(newst, 'activeAccordionGroup');
+          updateExpandCollapsecon(newst);
         });
-        $.saveCookieDataTabs(newst, 'activeAccordionGroup');
-        updateExpandCollapsecon(newst);
-      });
 
+        $('.block', context).on('hidden.bs.collapse', function () {
+          $('.block-content').each(function (id, state) {
+            //var id_active = $(".panel-collapse .in").attr('id');
+            var current_id = this.id;
+
+            if ($("#" + current_id).hasClass("in")) {
+              newst[current_id] = 'in';
+            }
+            else {
+              delete newst[current_id];
+            }
+          });
+
+          $.saveCookieDataTabs(newst, 'activeAccordionGroup');
+          updateExpandCollapsecon(newst);
+        });
+      }
 
       /********** Show more show less on search page********/
-
-      $('.charts').on('shown.bs.collapse', function () {
+      $('.charts', context).on('shown.bs.collapse', function () {
         $('.text-button-field').html(Drupal.t('Show less'));
       });
 
-      $('.charts').on('hidden.bs.collapse', function () {
+      $('.charts', context).on('hidden.bs.collapse', function () {
         $('.text-button-field').html(Drupal.t('Show all'));
       });
 
@@ -105,7 +103,6 @@
           $(linkSelector).html(Drupal.t('More'));
         });
       });
-
 
       /*******************************************/
       function updateExpandCollapsecon(data) {
@@ -142,17 +139,16 @@
       function removeCollapsedIcon(current_id, collapse) {
         if (collapse && current_id) {
           sectionid = current_id.replace("collapse-", "");
-          $("a[data-parent="+sectionid+"]").removeClass(collapse);
+          $("a[data-parent=" + sectionid + "]").removeClass(collapse);
         }
       }
 
       function addCollapsedIcon(current_id, collapse) {
         if (collapse && current_id) {
           sectionid = current_id.replace("collapse-", "");
-          $("a[data-parent="+sectionid+"]").addClass(collapse);
+          $("a[data-parent=" + sectionid + "]").addClass(collapse);
         }
       }
-
     }
   }
 }(jQuery));
