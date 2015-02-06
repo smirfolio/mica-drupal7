@@ -28,10 +28,15 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
     $variables_dataset = $dataset_resource->get_variables($dataset_type, $dataset_id, 0, 1);
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
-      $modals = obiba_mica_dataset_get_population_dce_modals($dataset_type_dto);
+      $modals = obiba_mica_dataset_get_population_dce_modals(
+        $dataset_type_dto->studyTable->studyId,
+        obiba_mica_dataset_get_population_dce($dataset_type_dto)
+      );
     }
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
+      drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_harmo_modals.js', 'file');
+      obiba_mica_dataset_studies_datatable_init($dataset_type_dto);
     }
     $acronym = obiba_mica_commons_get_localized_field($dataset_dto, 'acronym');
     $name = obiba_mica_commons_get_localized_field($dataset_dto, 'name');
@@ -61,57 +66,75 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
   }
 }
 
-function obiba_mica_dataset_get_population_dce_modals($dataset_type_dto) {
-  $modals = array();
-
+function obiba_mica_dataset_get_population_dce($dataset_type_dto) {
+  $data = array('study' => NULL, 'population' => NULL, 'dce' => NULL);
   $studyTable = $dataset_type_dto->studyTable;
   $study_resource = new MicaStudyResource();
   $study_dto = $study_resource->get_study($studyTable->studyId);
-  if (empty($study_dto)) return NULL;
-  $studyId = $studyTable->studyId;
-  $population = array_filter($study_dto->populations, function($population) use($studyTable) {
-    return $studyTable->populationId === $population->id;
-  });
 
-  if (empty($population)) return NULL;
-  $population = array_pop($population);
+  if (!empty($study_dto)) {
+    $data ['study'] = $study_dto;
+    $population = array_filter($study_dto->populations, function ($population) use ($studyTable) {
+      return $studyTable->populationId === $population->id;
+    });
 
-  foreach ($population->dataCollectionEvents as $dce) {
-    $dce_uids[] = $studyId . ':' . $population->id . ':' . $dce->id;
-  }
-
-  $modals['population'] = theme('mica_population_content_detail_modal', array(
-    'population' => $population,
-    'population_content' => theme('mica_population_content_detail', array(
-      'dce_uids' => $dce_uids,
-      'population' => $population,
-      'hide_title' => true
-    ))
-  ));
-
-  if (empty($population->dataCollectionEvents)) return NULL;
-
-  $dce = array_filter($population->dataCollectionEvents, function($dce) use($studyTable) {
-    return $studyTable->dataCollectionEventId === $dce->id;
-  });
-
-  $themed_attachment = '';
-  $populationId = $studyTable->populationId;
-  $dataCollectionEventId = $studyTable->dataCollectionEventId;
-  if (!empty($study_dto->attachments)) {
-    foreach ($study_dto->attachments as $attachment) {
-      $themed_attachment .= obiba_mica_study_get_attachment_file($study_dto->id, $attachment);
+    if (!empty($population)) {
+      $data['population'] = $population;
+      $population = array_pop($population);
+      if (!empty($population->dataCollectionEvents)) {
+        $data['dce'] = array_filter($population->dataCollectionEvents, function ($dce) use ($studyTable) {
+          return $studyTable->dataCollectionEventId === $dce->id;
+        });
+      }
     }
   }
 
-  $modals['dce'] = theme('mica_dce_detail', array(
-    'study_id' => $studyId,
-    'population_id' => $populationId,
-    'dce_uid' => $studyId . ':' . $populationId . ':' . $dataCollectionEventId,
-    'dce_id_target' => $studyId . '-' . $populationId . '-' . $dataCollectionEventId,
-    'dce' => array_pop($dce),
-    'attachements' => $themed_attachment
-  ));
+  return $data;
+}
+
+function obiba_mica_dataset_get_population_dce_modals($studyId, $data) {
+  $modals = array();
+  $populations = $data['population'];
+
+  if (!empty($populations)) {
+    foreach($populations as $population) {
+
+      foreach ($population->dataCollectionEvents as $dce) {
+        $dce_uids[] = $studyId . ':' . $population->id . ':' . $dce->id;
+      }
+
+      $modals['population'][] = theme('mica_population_content_detail_modal', array(
+        'population' => $population,
+        'population_content' => theme('mica_population_content_detail', array(
+          'dce_uids' => $dce_uids,
+          'population' => $population,
+          'hide_title' => true
+        ))
+      ));
+
+      $dces = $data['dce'];
+      $themed_attachment = '';
+      $populationId = $population->id;
+
+      foreach ($dces as $dce) {
+        $study_dto = $data['study'];
+        if (!empty($study_dto->attachments)) {
+          foreach ($study_dto->attachments as $attachment) {
+            $themed_attachment .= obiba_mica_study_get_attachment_file($study_dto->id, $attachment);
+          }
+        }
+
+        $modals['dce'][] = theme('mica_dce_detail', array(
+          'study_id' => $studyId,
+          'population_id' => $populationId,
+          'dce_uid' => $studyId . ':' . $populationId . ':' . $dce->id,
+          'dce_id_target' => $studyId . '-' . $populationId . '-' . $dce->id,
+          'dce' => $dce,
+          'attachements' => $themed_attachment
+        ));
+      }
+    }
+  }
 
   return $modals;
 }
@@ -433,6 +456,37 @@ function obiba_mica_dataset_create_form() {
   return obiba_mica_commons_create_search_form($context, FALSE);
 }
 
+/**
+ * @param $dataset_type_dto
+ */
+function obiba_mica_dataset_studies_datatable_init($dataset_type_dto)
+{
+  if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
+    drupal_add_library('obiba_mica_dataset', 'datatables');
+  } else {
+    obiba_mica_commons_datatables_external_source();
+  }
+
+  $study_tables = array();
+  if (!empty($dataset_type_dto->studyTables)) {
+    foreach ($dataset_type_dto->studyTables as $study_table) {
+      array_push($study_tables, $study_table);
+    }
+  }
+
+  if (!empty($dataset_type_dto->studyTable)) {
+    array_push($study_tables, $dataset_type_dto->studyTable);
+  }
+
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_harmo_studies_datatable_init.js', 'file');
+  $data = array(
+    'table_headers' => obiba_mica_study_study_summaries_table_headers(),
+    'table_data' => obiba_mica_dataset_study_tables_rows($study_tables)
+  );
+
+  drupal_add_js($data, 'setting');
+}
+
 function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
   $study_tables = array();
   if (!empty($dataset_type_dto->studyTables)) {
@@ -447,7 +501,6 @@ function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
 
   $rows = obiba_mica_dataset_study_tables_rows($study_tables);
   $headers = obiba_mica_study_study_summaries_table_headers();
-  //array_splice($headers, 2, 0, array(t('Data Collection Events')));
 
   return theme(
     'table',
@@ -463,42 +516,11 @@ function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
 function obiba_mica_dataset_study_tables_rows($study_tables) {
   $rows = array();
   if (!empty($study_tables)) {
-    $study_dces = array();
-    foreach ($study_tables as $study_table) {
-      $population_name = $study_table->populationId;
-      $dce_name = $study_table->dataCollectionEventId;
-      foreach ($study_table->studySummary->populationSummaries as $population_summary) {
-        if ($population_summary->id == $study_table->populationId) {
-          $population_name = obiba_mica_commons_get_localized_field($population_summary, 'name');
-          foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
-            if ($dce_summary->id == $study_table->dataCollectionEventId) {
-              $dce_name = obiba_mica_commons_get_localized_field($dce_summary, 'name');
-            }
-          }
-        }
-      }
-      $dce_full_name = $population_name . ' -- ' . $dce_name;
-      if (!in_array($study_table->studyId, array_keys($study_dces))) {
-        $study_dces[$study_table->studyId] = array();
-      }
-      if (!in_array($dce_full_name, $study_dces[$study_table->studyId])) {
-        $study_dces[$study_table->studyId][] = $dce_full_name;
-      }
-    }
     $study_ids = array();
     foreach ($study_tables as $study_table) {
       if (!in_array($study_table->studyId, $study_ids)) {
         $study_ids[] = $study_table->studyId;
         $row = obiba_mica_study_study_summaries_table_row($study_table->studySummary);
-        $dec_list = '<ul>';
-        if (!empty($study_dces[$study_table->studyId])) {
-
-          foreach ($study_dces[$study_table->studyId] as $dce_full_name) {
-            $dec_list = $dec_list . '<li>' . $dce_full_name . '</li>';
-          }
-        }
-        $dec_list = $dec_list . '</ul>';
-        //array_splice($row, 2, 0, array($dec_list));
         $rows[] = $row;
       }
     }

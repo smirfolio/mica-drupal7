@@ -122,6 +122,17 @@ function obiba_mica_study_studies_table($studies) {
   ) . theme('pager', $args);
 }
 
+function obiba_mica_study_study_summaries_table_headers() {
+
+  return array(
+    array("title" => t('Acronym')),
+    array("title" => t('Name')),
+    array("title" => t('Study Design')),
+    array("title" => t('Target Number')),
+    array("title" => t('Countries')),
+  );
+}
+
 function obiba_mica_study_study_summaries_table_rows($study_summaries) {
   $rows = array();
   if (!empty($study_summaries)) {
@@ -134,6 +145,7 @@ function obiba_mica_study_study_summaries_table_rows($study_summaries) {
 
 function obiba_mica_study_study_summaries_table_row($study_summary) {
   $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
+
   return array(
     l(obiba_mica_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id . '/' . obiba_mica_commons_to_slug($name)),
     $name,
@@ -144,15 +156,6 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
   );
 }
 
-function obiba_mica_study_study_summaries_table_headers() {
-  return array(
-    t('Acronym'),
-    t('Name'),
-    t('Study Design'),
-    t('Target Number'),
-    t('Countries'),
-  );
-}
 
 
 
