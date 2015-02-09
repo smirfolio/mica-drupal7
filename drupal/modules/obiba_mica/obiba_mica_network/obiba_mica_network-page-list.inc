@@ -68,7 +68,7 @@ function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL,
   }
   $networks = $study_resource->get_networks($study_id, $query, $from, MicaClient::SIZE_RESPONSE_SM, $sort, $sort_by);
   if (!empty($networks)) {
-    $_SESSION['networks']['aggregations']['total_hits'] = $networks->getTotalHits();
+    $_SESSION['networks']['aggregations']['totalHits'] = $networks->getTotalHits();
   }
   return $networks;
 }
@@ -76,8 +76,9 @@ function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL,
 function obiba_mica_network_create_form() {
   $context =
     array(
-      'options' => //
-        array()
+      'options' => array('script' => t('Relevance')),
+      'default_sort' => 'script',
+      'default_sort_order' => 'desc'
     );
 
   return obiba_mica_commons_create_search_form($context);
