@@ -303,14 +303,14 @@ function obiba_mica_search_get_url_tab_parameter() {
 
 function obiba_mica_get_hits_entities_variable($entity) {
   return array(
-    'study_totalHits' => !empty($entity['study_totalHits']) ? $entity['study_totalHits'] : NULL,
-    'study_totalCount' => !empty($entity['study_totalHits']) ? $entity['study_totalHits'] : NULL,
-    'variable_totalHits' => !empty($entity['variable_totalHits']) ? $entity['variable_totalHits'] : NULL,
-    'variable_totalCount' => !empty($entity['variable_totalCount']) ? $entity['variable_totalCount'] : NULL,
-    'dataset_totalHits' => !empty($entity['dataset_totalHits']) ? $entity['dataset_totalHits'] : NULL,
-    'dataset_totalCount' => !empty($entity['dataset_totalCount']) ? $entity['dataset_totalCount'] : NULL,
-    'network_totalHits' => !empty($entity['network_totalHits']) ? $entity['network_totalHits'] : NULL,
-    'network_totalCount' => !empty($entity['network_totalCount']) ? $entity['network_totalCount'] : NULL
+    'study_total_hits' => !empty($entity['study_total_hits']) ? $entity['study_total_hits'] : NULL,
+    'study_total_count' => !empty($entity['study_total_hits']) ? $entity['study_total_hits'] : NULL,
+    'variable_total_hits' => !empty($entity['variable_total_hits']) ? $entity['variable_total_hits'] : NULL,
+    'variable_total_count' => !empty($entity['variable_total_count']) ? $entity['variable_total_count'] : NULL,
+    'dataset_total_hits' => !empty($entity['dataset_total_hits']) ? $entity['dataset_total_hits'] : NULL,
+    'dataset_total_count' => !empty($entity['dataset_total_count']) ? $entity['dataset_total_count'] : NULL,
+    'network_total_hits' => !empty($entity['network_total_hits']) ? $entity['network_total_hits'] : NULL,
+    'network_total_count' => !empty($entity['network_total_count']) ? $entity['network_total_count'] : NULL
   );
 }
 
@@ -377,20 +377,20 @@ function _get_search_data() {
     'noval' => '',
     'query' => empty($parts['query']) ? '' : $parts['query'],
     'variables_result' => array('data' => obiba_mica_search_variables_table($variables)),
-    'variable_totalHits' => !empty($variable_totalHits) ? $variable_totalHits : NULL,
-    'variable_totalCount' => !empty($variable_totalCount) ? $variable_totalCount : NULL,
+    'variable_total_hits' => !empty($variable_total_hits) ? $variable_total_hits : NULL,
+    'variable_total_count' => !empty($variable_total_count) ? $variable_total_count : NULL,
     'variable_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'variables'),
     'datasets' => array('data' => obiba_mica_search_datasets_table($datasets)),
-    'dataset_totalHits' => !empty($dataset_totalHits) ? $dataset_totalHits : NULL,
-    'dataset_totalCount' => !empty($dataset_totalCount) ? $dataset_totalCount : NULL,
+    'dataset_total_hits' => !empty($dataset_total_hits) ? $dataset_total_hits : NULL,
+    'dataset_total_count' => !empty($dataset_total_count) ? $dataset_total_count : NULL,
     'dataset_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'datasets'),
     'studies' => array('data' => obiba_mica_search_studies_table($studies)),
-    'study_totalHits' => !empty($study_totalHits) ? $study_totalHits : NULL,
-    'study_totalCount' => !empty($study_totalCount) ? $study_totalCount : NULL,
+    'study_total_hits' => !empty($study_total_hits) ? $study_total_hits : NULL,
+    'study_total_count' => !empty($study_total_count) ? $study_total_count : NULL,
     'study_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'studies'),
     'networks' => array('data' => obiba_mica_search_networks_table($networks)),
-    'network_totalHits' => !empty($network_totalHits) ? $network_totalHits : NULL,
-    'network_totalCount' => !empty($network_totalCount) ? $network_totalCount : NULL,
+    'network_total_hits' => !empty($network_total_hits) ? $network_total_hits : NULL,
+    'network_total_count' => !empty($network_total_count) ? $network_total_count : NULL,
     'network_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'networks')
   );
 }

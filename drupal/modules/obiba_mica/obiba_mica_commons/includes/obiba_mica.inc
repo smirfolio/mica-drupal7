@@ -241,8 +241,8 @@ class MicaClient {
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if ($type_aggregations == 'networkResultDto') {
         $_SESSION['networks']['aggregations'] = $aggregation->aggs;
-        $_SESSION['networks']['aggregations']['totalHits'] = $aggregation->totalHits;
-        $_SESSION['networks']['aggregations']['totalCount'] = $aggregation->totalCount;
+        $_SESSION['networks']['aggregations']['total_hits'] = $aggregation->totalHits;
+        $_SESSION['networks']['aggregations']['total_count'] = $aggregation->totalCount;
         $networkAggregations = array_filter($aggregation->aggs, function ($agg) {
           return $agg->aggregation === "networkId";
         });
@@ -254,8 +254,8 @@ class MicaClient {
           $dataset_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
           $_SESSION['datasets']['aggregations'] = $aggregation->aggs;
         }
-        $_SESSION['datasets']['aggregations']['totalHits'] = $aggregation->totalHits;
-        $_SESSION['datasets']['aggregations']['totalCount'] = $aggregation->totalCount;
+        $_SESSION['datasets']['aggregations']['total_hits'] = $aggregation->totalHits;
+        $_SESSION['datasets']['aggregations']['total_count'] = $aggregation->totalCount;
       }
 
       if ($type_aggregations == 'variableResultDto') {
@@ -280,8 +280,8 @@ class MicaClient {
               : $dataset_result->datasets;
         }
         $_SESSION['variables']['aggregations'] = $aggregation->aggs;
-        $_SESSION['variables']['aggregations']['totalHits'] = $aggregation->totalHits;
-        $_SESSION['variables']['aggregations']['totalCount'] = $aggregation->totalCount;
+        $_SESSION['variables']['aggregations']['total_hits'] = $aggregation->totalHits;
+        $_SESSION['variables']['aggregations']['total_count'] = $aggregation->totalCount;
       }
       if ($type_aggregations == 'studyResultDto') {
         $study_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
@@ -318,8 +318,8 @@ class MicaClient {
         }
 
         $_SESSION['studies']['aggregations'] = $aggregation->aggs;
-        $_SESSION['studies']['aggregations']['totalHits'] = $aggregation->totalHits;
-        $_SESSION['studies']['aggregations']['totalCount'] = $aggregation->totalCount;
+        $_SESSION['studies']['aggregations']['total_hits'] = $aggregation->totalHits;
+        $_SESSION['studies']['aggregations']['total_count'] = $aggregation->totalCount;
       }
     }
 
@@ -405,7 +405,7 @@ class MicaClient {
     return self::next_page_offset( //
       empty($current_page) ? 0 : $current_page, //
       $size, //
-      $_SESSION[strtolower($type)]['aggregations']['totalHits'] //
+      $_SESSION[strtolower($type)]['aggregations']['total_hits'] //
     );
   }
 

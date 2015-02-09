@@ -52,17 +52,17 @@ class JoinQueryResponseWrapper {
 
   function getCountStats() {
     return array(
-      'study_totalHits' => empty($this->dto->studyResultDto) ? 0 : $this->dto->studyResultDto->totalHits,
-      'study_totalCount' => empty($this->dto->studyResultDto) ? 0 : $this->dto->studyResultDto->totalCount,
-      'variable_totalHits' => empty($this->dto->variableResultDto) ? 0 : $this->dto->variableResultDto->totalHits,
-      'variable_totalCount' => empty($this->dto->variableResultDto) ? 0 : $this->dto->variableResultDto->totalCount,
-      'network_totalHits' => !empty($this->dto->networkResultDto->totalHits) ?
+      'study_total_hits' => empty($this->dto->studyResultDto) ? 0 : $this->dto->studyResultDto->totalHits,
+      'study_total_count' => empty($this->dto->studyResultDto) ? 0 : $this->dto->studyResultDto->totalCount,
+      'variable_total_hits' => empty($this->dto->variableResultDto) ? 0 : $this->dto->variableResultDto->totalHits,
+      'variable_total_count' => empty($this->dto->variableResultDto) ? 0 : $this->dto->variableResultDto->totalCount,
+      'network_total_hits' => !empty($this->dto->networkResultDto->totalHits) ?
           $this->dto->networkResultDto->totalHits : 0,
-      'network_totalCount' => !empty($this->dto->networkResultDto->totalCount) ?
+      'network_total_count' => !empty($this->dto->networkResultDto->totalCount) ?
           $this->dto->networkResultDto->totalCount : 0,
-      'dataset_totalHits' => !empty($this->dto->datasetResultDto->totalHits) ?
+      'dataset_total_hits' => !empty($this->dto->datasetResultDto->totalHits) ?
           $this->dto->datasetResultDto->totalHits : 0,
-      'dataset_totalCount' => !empty($this->dto->datasetResultDto->totalCount) ?
+      'dataset_total_count' => !empty($this->dto->datasetResultDto->totalCount) ?
           $this->dto->datasetResultDto->totalCount : 0
     );
   }
