@@ -514,8 +514,14 @@
         });
       }
 
-      if(!isAjax && window.location.hash) { //bookmarked url with hash
-        loadSearchResult(window.location.hash.replace(/^#/, ''));
+      if(!isAjax) { //events attached when page is first loaded
+        $(window).bind('hashchange', function () {
+          loadSearchResult(window.location.hash.replace(/^#/, ''));
+        });
+
+        if (window.location.hash) { //load bookmarked hash
+          loadSearchResult(window.location.hash.replace(/^#/, ''));
+        }
       }
 
       $('form[id^=facet-search-query-form]', context).on('submit', function (e) {
@@ -527,10 +533,6 @@
       $('#search-result .pagination a, .group-by', context).on('click', function(e) {
         e.preventDefault();
         window.location.hash = '!' + $(this).attr('href').split('?')[1];
-      });
-
-      $(window).unbind('hashchange').bind('hashchange', function () {
-        loadSearchResult(window.location.hash.replace(/^#/, ''));
       });
 
       initSearchTerms();
