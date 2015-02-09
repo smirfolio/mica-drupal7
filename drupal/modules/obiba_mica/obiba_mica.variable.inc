@@ -32,5 +32,12 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+
+  $variable['image_cache_time_out'] = array(
+    'title' => t('The image cache timout'),
+    'description' => t('The timeout in minute to expire Studies and  networks image cache'),
+    'type' => 'boolean',
+    'default' => 30,
+  );
   return $variable;
 }

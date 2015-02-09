@@ -429,7 +429,7 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
 function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type) {
   $attached_resource = & drupal_static(__FUNCTION__);
   if (!isset($attached_resource)) {
-    $cached_attached_resources = cache_get($entity_id . '-' . $file_resource->id);
+    $cached_attached_resources = cache_get('images-cache-' . $entity_id . '-' . $file_resource->id);
 
     if (!empty($cached_attached_resources)) {
       return $cached_attached_resources->data;
@@ -445,7 +445,9 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
           $extension_file = _obiba_mica_commons_get_file_extension($file_resource);
           $file = file_unmanaged_save_data($resource_data->data, 'public://tmp' . $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
           $exposed_url = file_create_url($file);
-          cache_set($entity_id . '-' . $file_resource->id, $exposed_url, 'cache', time() + 1800);
+          //Time out in second
+          $time_out = variable_get_value('image_cache_time_out') * 60;
+          cache_set('images-cache-' . $entity_id . '-' . $file_resource->id, $exposed_url, 'cache', time() + $time_out);
           return $exposed_url;
         }
         else {
