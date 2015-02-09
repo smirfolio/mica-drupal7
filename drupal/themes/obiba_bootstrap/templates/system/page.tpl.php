@@ -140,7 +140,7 @@
     <?php endif; ?>
 
     <?php if (!empty($page['sidebar_first']) || !empty($page['facets'])): ?>
-      <aside class="col-sm-3" role="complementary">
+      <aside class="col-sm-4 col-lg-3" role="complementary">
         <?php if (!empty($page['facets'])): ?>
           <?php print render($page['facets']); ?>
         <?php endif; ?>

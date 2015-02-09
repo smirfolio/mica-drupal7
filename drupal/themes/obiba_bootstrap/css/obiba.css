@@ -7598,6 +7598,11 @@ div.algo-list {
 .nav-tabs > li > a {
   padding: 10px 15px;
 }
+@media (min-width: 768px) {
+  .nav-tabs > li > a {
+    padding: 10px 10px;
+  }
+}
 .inline-form > form > div {
   display: inline-flex;
 }

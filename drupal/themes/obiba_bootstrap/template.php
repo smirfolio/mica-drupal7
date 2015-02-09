@@ -326,14 +326,14 @@ function obiba_bootstrap_preprocess_page(&$variables) {
     $variables['content_column_class'] = ' class="col-sm-6"';
   }
   elseif (!empty($variables['page']['facets']) || !empty($variables['page']['sidebar_second'])) {
-    $variables['content_column_class'] = ' class="col-sm-9"';
+    $variables['content_column_class'] = ' class="col-sm-8 col-lg-9"';
   }
   // Add information about the number of sidebars.
   elseif (!empty($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_second'])) {
     $variables['content_column_class'] = ' class="col-sm-6"';
   }
   elseif (!empty($variables['page']['sidebar_first']) || !empty($variables['page']['sidebar_second'])) {
-    $variables['content_column_class'] = ' class="col-sm-9"';
+    $variables['content_column_class'] = ' class="col-sm-8 col-lg-9"';
   }
 
   else {
