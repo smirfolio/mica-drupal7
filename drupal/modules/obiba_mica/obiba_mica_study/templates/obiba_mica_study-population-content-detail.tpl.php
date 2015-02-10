@@ -71,7 +71,7 @@
 
     <?php if (!empty($population->numberOfParticipants->sample->number)): ?>
     <tr>
-      <th><h5><?php print t('Number of samples') ?></h5></th>
+      <th><h5><?php print t('Number of participants with biological samples') ?></h5></th>
       <td>
         <p>
           <?php print $population->numberOfParticipants->sample->number ?>
