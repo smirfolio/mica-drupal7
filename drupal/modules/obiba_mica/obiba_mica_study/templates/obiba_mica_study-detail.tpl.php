@@ -345,21 +345,6 @@
   </section>
 <?php endif; ?>
 
-<!-- DOCUMENTS -->
-<?php if (!empty($study_dto->attachments)): ?>
-  <section>
-    <h3 id="documents"><?php print t('Documents'); ?></h3>
-
-    <div>
-      <?php if (!empty($study_attachements)): ?>
-        <ul class="list-group">
-          <?php print $study_attachements; ?>
-        </ul>
-      <?php endif; ?>
-    </div>
-  </section>
-<?php endif; ?>
-
 <!-- TIMELINE -->
 <?php if (!empty($timeline)): ?>
   <section>
@@ -415,7 +400,20 @@
   </section>
 <?php endif; ?>
 
+<!-- DOCUMENTS -->
+<?php if (!empty($study_dto->attachments)): ?>
+  <section>
+    <h3 id="documents"><?php print t('Documents'); ?></h3>
 
+    <div>
+      <?php if (!empty($study_attachements)): ?>
+        <ul class="list-group">
+          <?php print $study_attachements; ?>
+        </ul>
+      <?php endif; ?>
+    </div>
+  </section>
+<?php endif; ?>
 
 <!-- NETWORKS -->
 <?php if (!empty($networks)): ?>
