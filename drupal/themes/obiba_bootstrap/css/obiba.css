@@ -6223,7 +6223,6 @@ div.charts {
 }
 .facet-bar .block-obiba-mica-search h2 {
   font-size: 13px;
-  text-transform: uppercase;
   margin: 0;
   padding: 2px 5px;
   background-color: #f2f2f2;
@@ -6519,7 +6518,6 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 }
 .region-facets .block-obiba-mica-search h2 {
   font-size: 13px;
-  text-transform: uppercase;
   margin: 0;
   padding: 2px 5px;
   background-color: #f2f2f2;
