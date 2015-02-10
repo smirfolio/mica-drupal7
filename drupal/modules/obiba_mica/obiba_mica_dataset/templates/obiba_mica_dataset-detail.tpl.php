@@ -54,18 +54,18 @@
 
           <?php if (!empty($dataset_dto->acronym)): ?>
             <tr>
-              <td><h5><?php print t('Acronym') ?></h5></td>
+              <th><?php print t('Acronym') ?></th>
               <td><p><?php print obiba_mica_commons_get_localized_field($dataset_dto, 'acronym'); ?></p></td>
             </tr>
           <?php endif; ?>
 
           <tr>
-            <td><h5><?php print t('Entity Type'); ?></h5></td>
+            <th><?php print t('Entity Type'); ?></th>
             <td><p><?php print t($dataset_dto->entityType); ?></p></td>
           </tr>
 
           <tr>
-            <td><h5><?php print t('Dataset Type'); ?></h5></td>
+            <th><?php print t('Dataset Type'); ?></th>
             <td>
               <p>
                 <?php
@@ -79,7 +79,7 @@
             </td>
           </tr>
           <tr>
-            <td><h5><?php print t('Number of variables') ?></h5></td>
+            <th><?php print t('Number of variables') ?></th>
             <td>
               <p>
                 <?php print MicaClientAnchorHelper::dataset_variables(empty($variables_dataset->total) ? 0 : $variables_dataset->total, $dataset_dto->id); ?>
@@ -125,7 +125,7 @@
           <table class="table table-striped">
             <tbody>
             <tr>
-              <td><h5><?php print t('Acronym') ?></h5></td>
+              <th><?php print t('Acronym') ?></th>
               <td>
                 <p>
                   <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym'); ?>
@@ -133,7 +133,7 @@
               </td>
             </tr>
             <tr>
-              <td><h5><?php print t('Name') ?></h5></td>
+              <th><?php print t('Name') ?></th>
               <td>
                 <p>
                   <?php print l(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
@@ -141,7 +141,7 @@
               </td>
             </tr>
             <tr>
-              <td><h5><?php print t('Population') ?></h5></td>
+              <th><?php print t('Population') ?></th>
               <td>
                 <?php $population_summary = NULL; ?>
                 <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
@@ -163,7 +163,7 @@
               </td>
             </tr>
             <tr>
-              <td><h5><?php print t('Data Collection Event') ?></h5></td>
+              <th><?php print t('Data Collection Event') ?></th>
               <td>
                 <?php
                   $dce_anchor = NULL;
@@ -186,20 +186,20 @@
               </td>
             </tr>
             <tr>
-              <td><h5><?php print t('Study Design') ?></h5></td>
+              <th><?php print t('Study Design') ?></th>
               <td>
                 <?php print implode(', ', t(obiba_mica_commons_clean_string($dataset_type_dto->studyTable->studySummary->designs))); ?>
               </td>
             </tr>
             <tr>
-              <td><h5><?php print t('Target Number') ?></h5></td>
+              <th><?php print t('Target Number') ?></th>
               <td>
                 <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
                   isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
               </td>
             </tr>
             <tr>
-              <td><h5><?php print t('Countries') ?></h5></td>
+              <th><?php print t('Countries') ?></th>
               <td>
                 <?php print obiba_mica_commons_countries($dataset_type_dto->studyTable->studySummary->countries); ?>
               </td>

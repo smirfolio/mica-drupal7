@@ -52,21 +52,21 @@
             <tbody>
             <?php if (!empty($dce->startYear)): ?>
               <tr>
-                <td><h5><?php print t('Start Year') ?></h5></td>
+                <th><?php print t('Start Year') ?></th>
                 <td><p><?php print obiba_mica_commons_format_year($dce->startYear, $dce->startMonth); ?></p></td>
               </tr>
             <?php endif; ?>
 
             <?php if (!empty($dce->endYear)): ?>
               <tr>
-                <td><h5><?php print t('End Year') ?></h5></td>
+                <th><?php print t('End Year') ?></th>
                 <td><p><?php print obiba_mica_commons_format_year($dce->endYear, $dce->endMonth); ?></p></td>
               </tr>
             <?php endif; ?>
 
             <?php if (!empty($dce->dataSources)): ?>
               <tr>
-                <td><h5><?php print t('Data Sources') ?></h5></td>
+                <th><?php print t('Data Sources') ?></th>
                 <td>
                   <ul>
                     <?php foreach ($dce->dataSources as $dataSource): ?>
@@ -86,7 +86,7 @@
 
             <?php if (!empty($dce->administrativeDatabases)): ?>
               <tr>
-                <td><h5><?php print t('Administrative Databases') ?></h5></td>
+                <th><?php print t('Administrative Databases') ?></th>
                 <td>
                   <ul>
                     <?php foreach ($dce->administrativeDatabases as $database): ?>
@@ -101,7 +101,7 @@
 
             <?php if (!empty($dce->bioSamples)): ?>
               <tr>
-                <td><h5><?php print t('Bio Samples') ?>:</h5></td>
+                <th><?php print t('Bio Samples') ?>:</th>
                 <td>
                   <ul>
                     <?php foreach ($dce->bioSamples as $samples): ?>
@@ -121,14 +121,14 @@
 
             <?php if (!empty($dce->tissueTypes)): ?>
               <tr>
-                <td><h5><?php print t('Tissue Types') ?></h5></td>
+                <th><?php print t('Tissue Types') ?></th>
                 <td><p><?php print obiba_mica_commons_get_localized_field($dce, 'tissueTypes'); ?></p></td>
               </tr>
             <?php endif; ?>
 
             <?php if (!empty($attachements)): ?>
               <tr>
-                <td><h5><?php print t('Documents') ?></h5></td>
+                <th><?php print t('Documents') ?></th>
                 <td>
                   <ul class="list-group">
                     <?php print $attachements; ?>
