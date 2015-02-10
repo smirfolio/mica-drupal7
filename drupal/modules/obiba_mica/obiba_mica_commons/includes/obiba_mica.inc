@@ -331,7 +331,7 @@ class MicaClient {
     );
     unset($_SESSION['variables']['facets-buckets']['dceIds']);
     unset($_SESSION['variables']['facets-buckets']['studyIds']);
-    $_SESSION['studies']['facets-buckets'] = array_merge(array_merge($moved_facets, $network_buckets), $study_buckets);
+    $_SESSION['studies']['facets-buckets'] = array_merge(array_merge($network_buckets, $moved_facets), $study_buckets);
 
     if (!empty($networkAggregations)) {
       foreach ($networkAggregations as $networkAggregation) {
