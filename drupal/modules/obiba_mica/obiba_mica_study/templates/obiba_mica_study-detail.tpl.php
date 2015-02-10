@@ -55,14 +55,14 @@
 
       <?php if (!empty($study_dto->acronym)): ?>
         <tr>
-          <td><h5><?php print t('Acronym') ?></h5></td>
+          <th><?php print t('Acronym') ?></th>
           <td><p><?php print obiba_mica_commons_get_localized_field($study_dto, 'acronym'); ?></p></td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($study_dto->website)): ?>
         <tr>
-          <td><h5><?php print t('Website') ?></h5></td>
+          <th><?php print t('Website') ?></th>
           <td>
             <p><?php
               print l(obiba_mica_commons_get_localized_field($study_dto, 'acronym') . ' ' . t('website'),
@@ -75,7 +75,7 @@
 
       <?php if (!empty($study_dto->investigators)): ?>
         <tr>
-          <td><h5><?php print t('Investigators') ?></h5></td>
+          <th><?php print t('Investigators') ?></th>
           <td>
             <ul>
               <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
@@ -99,7 +99,7 @@
 
       <?php if (!empty($study_dto->contacts)): ?>
         <tr>
-          <td><h5><?php print t('Contacts') ?></h5></td>
+          <th><?php print t('Contacts') ?></th>
           <td>
             <ul>
               <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
@@ -123,21 +123,21 @@
 
       <?php if (!empty($study_dto->startYear)): ?>
         <tr>
-          <td><h5><?php print t('Study Start Year') ?></h5></td>
+          <th><?php print t('Study Start Year') ?></th>
           <td><p><?php print $study_dto->startYear; ?></p></td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($study_dto->endYear)): ?>
         <tr>
-          <td><h5><?php print t('Study End Year') ?></h5></td>
+          <th><?php print t('Study End Year') ?></th>
           <td><p><?php print $study_dto->endYear; ?></p></td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($study_dto->networks)): ?>
         <tr>
-          <td><h5><?php print t('Networks') ?> :</h5></td>
+          <th><?php print t('Networks') ?> :</th>
           <td>
             <p>
               <a href=""><?php //print $study_dto->networks; ?></a>
@@ -159,7 +159,7 @@
 
       <?php if (!empty($study_dto->methods->designs)): ?>
         <tr>
-          <td><h5><?php print t('Study Designs') ?></h5></td>
+          <th><?php print t('Study Design') ?></th>
           <td>
             <ul>
               <?php foreach ($study_dto->methods->designs as $design): ?>
@@ -177,7 +177,7 @@
 
       <?php if (!empty($study_dto->methods->followUpInfo)): ?>
         <tr>
-          <td><h5><?php print t('General Information on Follow Up (profile and frequency)') ?></h5></td>
+          <th><?php print t('General Information on Follow Up (profile and frequency)') ?></th>
           <td><p><?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'followUpInfo'); ?></p>
           </td>
         </tr>
@@ -185,7 +185,7 @@
 
       <?php if (!empty($study_dto->methods->recruitments)): ?>
         <tr>
-          <td><h5><?php print t('Recruitment Target') ?></h5></td>
+          <th><?php print t('Recruitment Target') ?></th>
           <td>
             <ul>
               <?php foreach ($study_dto->methods->recruitments as $recruitment): ?>
@@ -203,7 +203,7 @@
 
       <?php if (!empty($study_dto->numberOfParticipants->participant->number)): ?>
         <tr>
-          <td><h5><?php print t('Target number of participants') ?></h5></td>
+          <th><?php print t('Target number of participants') ?></th>
           <td>
             <p>
               <?php print $study_dto->numberOfParticipants->participant->number; ?>
@@ -217,7 +217,7 @@
 
       <?php if (!empty($study_dto->numberOfParticipants->sample->number)): ?>
         <tr>
-          <td><h5><?php print t('Target number of participants with biological samples') ?></h5></td>
+          <th><?php print t('Target number of participants with biological samples') ?></th>
           <td>
             <p>
               <?php print $study_dto->numberOfParticipants->sample->number; ?>
@@ -231,7 +231,7 @@
 
       <?php if (!empty($study_dto->numberOfParticipants->info)): ?>
         <tr>
-          <td><h5><?php print t('Supplementary information about target number of participants') ?></h5></td>
+          <th><?php print t('Supplementary information about target number of participants') ?></th>
           <td>
             <p><?php print obiba_mica_commons_get_localized_field($study_dto->numberOfParticipants, 'info'); ?></p>
           </td>
@@ -240,7 +240,7 @@
 
       <?php if (!empty($study_dto->methods->info)): ?>
         <tr>
-          <td><h5><?php print t('Supplementary information') ?></h5></td>
+          <th><?php print t('Supplementary information') ?></th>
           <td><p><?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'info'); ?></p></td>
         </tr>
       <?php endif; ?>
@@ -272,7 +272,7 @@
         <table class="table table-striped">
           <tbody>
           <tr>
-            <td><h5><?php print t('Data (questionnaire-derived, measured...)'); ?></h5></td>
+            <th><?php print t('Data (questionnaire-derived, measured...)'); ?></th>
             <td>
               <p>
                 <?php if (in_array('data', $study_dto->access)): ?>
@@ -285,7 +285,7 @@
           </tr>
 
           <tr>
-            <td><h5><?php print t('Biological samples'); ?></h5></td>
+            <th><?php print t('Biological samples'); ?></th>
             <td>
               <p>
                 <?php if (in_array('bio_samples', $study_dto->access)): ?>
@@ -299,7 +299,7 @@
 
           <?php if (in_array('other', $study_dto->access)): ?>
             <tr>
-              <td><h5><?php print t('Other'); ?></h5></td>
+              <th><?php print t('Other'); ?></th>
               <td>
                 <p>
                   <?php if (in_array('other', $study_dto->access)): ?>
@@ -345,21 +345,6 @@
   </section>
 <?php endif; ?>
 
-<!-- DOCUMENTS -->
-<?php if (!empty($study_dto->attachments)): ?>
-  <section>
-    <h3 id="documents"><?php print t('Documents'); ?></h3>
-
-    <div>
-      <?php if (!empty($study_attachements)): ?>
-        <ul class="list-group">
-          <?php print $study_attachements; ?>
-        </ul>
-      <?php endif; ?>
-    </div>
-  </section>
-<?php endif; ?>
-
 <!-- TIMELINE -->
 <?php if (!empty($timeline)): ?>
   <section>
@@ -378,7 +363,7 @@
 <!-- POPULATIONS -->
 <?php if (!empty($populations)): ?>
   <section>
-    <h3 id="populations"><?php print t('Populations'); ?></h3>
+    <h3 id="populations"><?php if (count($populations) > 1) print t('Populations'); else print t('Population') ?></h3>
     <?php if (count($populations) == 1): ?>
       <?php print array_pop($populations)['html']; ?>
     <?php else: ?>
@@ -415,7 +400,20 @@
   </section>
 <?php endif; ?>
 
+<!-- DOCUMENTS -->
+<?php if (!empty($study_dto->attachments)): ?>
+  <section>
+    <h3 id="documents"><?php print t('Documents'); ?></h3>
 
+    <div>
+      <?php if (!empty($study_attachements)): ?>
+        <ul class="list-group">
+          <?php print $study_attachements; ?>
+        </ul>
+      <?php endif; ?>
+    </div>
+  </section>
+<?php endif; ?>
 
 <!-- NETWORKS -->
 <?php if (!empty($networks)): ?>

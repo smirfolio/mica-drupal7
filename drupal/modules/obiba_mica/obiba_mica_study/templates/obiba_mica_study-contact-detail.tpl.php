@@ -20,21 +20,21 @@
               <tbody>
               <?php if (!empty($contact->email)): ?>
                 <tr>
-                  <td><h5><?php print t('Email') ?></h5></td>
+                  <th><?php print t('Email') ?></th>
                   <td><p><?php print $contact->email; ?></p></td>
                 </tr>
               <?php endif; ?>
 
               <?php if (!empty($contact->phone)): ?>
                 <tr>
-                  <td><h5><?php print t('Phone') ?></h5></td>
+                  <th><?php print t('Phone') ?></th>
                   <td><p><?php print $contact->phone; ?></p></td>
                 </tr>
               <?php endif; ?>
 
               <?php if (!empty($contact->dataAccessCommitteeMember)): ?>
                 <tr>
-                  <td><h5><?php print t('Data Access Committee member') ?></h5></td>
+                  <th><?php print t('Data Access Committee member') ?></th>
                   <td>
                     <?php print !empty($contact->dataAccessCommitteeMember) ? 'YES' : 'NO'; ?>
                   </td>
@@ -45,7 +45,7 @@
                 !empty($contact->institution->department)
               ): ?>
                 <tr>
-                  <td><h5><?php print t('Institution') ?></h5></td>
+                  <th><?php print t('Institution') ?></th>
                   <td>
                     <?php if (!empty($contact->institution->name)): ?>
                       <p>
@@ -68,7 +68,7 @@
                 !empty($contact->institution->address->country)
               ): ?>
                 <tr>
-                  <td><h5><?php print t('Address') ?></h5></td>
+                  <th><?php print t('Address') ?></th>
                   <td>
                     <?php if (!empty($contact->institution->address->street)): ?>
                       <p>

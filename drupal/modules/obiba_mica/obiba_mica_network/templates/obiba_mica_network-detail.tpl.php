@@ -57,14 +57,14 @@
           <tbody>
           <?php if (!empty($network_dto->acronym)): ?>
             <tr>
-              <td><h5><?php print t('Acronym') ?></h5></td>
+              <th><?php print t('Acronym') ?></th>
               <td><p><?php print obiba_mica_commons_get_localized_field($network_dto, 'acronym'); ?></p></td>
             </tr>
           <?php endif; ?>
 
           <?php if (!empty($network_dto->website)): ?>
             <tr>
-              <td><h5><?php print t('Website') ?></h5></td>
+              <th><?php print t('Website') ?></th>
               <td>
                 <p><?php
                   print l(obiba_mica_commons_get_localized_field($network_dto, 'acronym') . ' ' . t('website'),
@@ -77,7 +77,7 @@
 
           <?php if (!empty($network_dto->investigators)): ?>
             <tr>
-              <td><h5><?php print t('Investigators') ?></h5></td>
+              <th><?php print t('Investigators') ?></th>
               <td>
                 <ul>
                   <?php foreach ($network_dto->investigators as $key_investigator => $investigator) : ?>
@@ -101,7 +101,7 @@
 
           <?php if (!empty($network_dto->contacts)): ?>
             <tr>
-              <td><h5><?php print t('Contacts') ?></h5></td>
+              <th><?php print t('Contacts') ?></th>
               <td>
                 <ul>
                   <?php foreach ($network_dto->contacts as $key_contact => $contact) : ?>

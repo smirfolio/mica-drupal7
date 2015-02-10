@@ -15,30 +15,28 @@
 
         <?php if (!empty($variable_dto->label)): ?>
           <tr>
-            <td><h5><?php print t('Label') ?></h5></td>
+            <th><?php print t('Label') ?></th>
             <td><?php print $variable_dto->label; ?></td>
           </tr>
         <?php endif; ?>
 
         <?php if (!empty($variable_dto->description)): ?>
           <tr>
-            <td><h5><?php print t('Description') ?></h5></td>
+            <th><?php print t('Description') ?></th>
             <td><p><?php print $variable_dto->description; ?></p></td>
           </tr>
         <?php endif; ?>
 
         <?php if (!empty($variable_dto->studySummaries)): ?>
           <tr>
-            <td>
-              <h5>
+            <th>
                 <?php if ($variable_dto->variableType == 'Dataschema') {
                   print t('Studies');
                 }
                 else {
                   print t('Study');
                 }?>
-              </h5>
-            </td>
+            </th>
             <td>
               <?php if ($variable_dto->variableType == 'Dataschema'): ?>
                 <ul>
@@ -57,7 +55,7 @@
 
         <?php if (!empty($variable_dto->datasetId)): ?>
           <tr>
-            <td><h5><?php print t('Dataset'); ?></h5></td>
+            <th><?php print t('Dataset'); ?></th>
             <td>
               <p>
                 <?php
@@ -70,24 +68,24 @@
         <?php endif; ?>
 
         <tr>
-          <td><h5><?php print t('Entity Type'); ?></h5></td>
+          <th><?php print t('Entity Type'); ?></th>
           <td><p><?php print t($variable_dto->entityType); ?></p></td>
         </tr>
 
         <tr>
-          <td><h5><?php print t('Value Type'); ?></h5></td>
+          <th><?php print t('Value Type'); ?></th>
           <td><p><?php print t($variable_dto->valueType); ?></p></td>
         </tr>
 
         <?php if (!empty($variable_dto->unit)): ?>
           <tr>
-            <td><h5><?php print t('Unit'); ?></h5></td>
+            <th><?php print t('Unit'); ?></th>
             <td><p><?php print t($variable_dto->unit); ?></p></td>
           </tr>
         <?php endif; ?>
 
         <tr>
-          <td><h5><?php print t('Variable Type'); ?></h5></td>
+          <th><?php print t('Variable Type'); ?></th>
           <td>
             <p>
               <?php print t('@type variable', array('@type' => t($variable_dto->variableType))); ?>
@@ -103,7 +101,7 @@
 
         <?php if (!empty($variable_dto->comment)): ?>
           <tr>
-            <td><h5><?php print t('Comment'); ?></h5></td>
+            <th><?php print t('Comment'); ?></th>
             <td><p><?php print($variable_dto->comment); ?></p></td>
           </tr>
         <?php endif; ?>
@@ -228,7 +226,7 @@
           <table class="table table-striped">
             <tbody>
             <tr>
-              <td><h5><?php print t('Status'); ?></h5></td>
+              <th><?php print t('Status'); ?></th>
               <td>
                 <?php if (empty($variable_harmonization['status'])): ?>
                   <span class="glyphicon glyphicon-question-sign alert-danger"
@@ -247,7 +245,7 @@
               </td>
             </tr>
             <tr>
-              <td><h5><?php print t('Comment'); ?></h5></td>
+              <th><?php print t('Comment'); ?></th>
               <td>
                 <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : $variable_harmonization['comment']; ?></p>
               </td>

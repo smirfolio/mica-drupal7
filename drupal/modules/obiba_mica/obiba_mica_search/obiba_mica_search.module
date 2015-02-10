@@ -651,7 +651,7 @@ function obiba_mica_search_studies_table($studies) {
         /*name*/
         $name,
         /*Type*/
-        implode(', ', t($study->designs)),
+        implode(', ', t(obiba_mica_commons_clean_string($study->designs))),
         /*Quest-DSA*/
         array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'questionnaires') ?
