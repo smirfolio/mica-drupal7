@@ -363,7 +363,7 @@
 <!-- POPULATIONS -->
 <?php if (!empty($populations)): ?>
   <section>
-    <h3 id="populations"><?php print t('Populations'); ?></h3>
+    <h3 id="populations"><?php if (count($populations) > 1) print t('Populations'); else print t('Population') ?></h3>
     <?php if (count($populations) == 1): ?>
       <?php print array_pop($populations)['html']; ?>
     <?php else: ?>

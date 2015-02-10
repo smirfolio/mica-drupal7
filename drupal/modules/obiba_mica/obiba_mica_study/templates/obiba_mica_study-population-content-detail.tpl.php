@@ -161,6 +161,7 @@
 <?php if ((isset($population->selectionCriteria->gender) && ($population->selectionCriteria->gender === 0 || $population->selectionCriteria->gender === 1))
 || !empty($population->selectionCriteria->ageMin) || !empty($population->selectionCriteria->ageMax)
 || !empty($population->selectionCriteria->countriesIso)
+  || !empty($population->selectionCriteria->territory)
 || !empty($population->selectionCriteria->ethnicOrigin)
 || !empty($population->selectionCriteria->healthStatus)
 || !empty($population->selectionCriteria->otherCriteria)
@@ -197,6 +198,15 @@
         'countries_country_lookup', 'iso3', 'name'); ?>
       </td>
     </tr>
+    <?php endif; ?>
+
+    <?php if (!empty($population->selectionCriteria->territory)): ?>
+      <tr>
+        <td><h5><?php print t('Territory') ?></h5></td>
+        <td>
+          <?php print obiba_mica_commons_get_localized_field($population->selectionCriteria, 'territory'); ?>
+        </td>
+      </tr>
     <?php endif; ?>
 
     <?php if (!empty($population->selectionCriteria->ethnicOrigin)): ?>
