@@ -7489,6 +7489,9 @@ div.dataTables_processing {
   font-size: 15px;
   background-color: transparent;
 }
+.block-content table tbody th {
+  width: 200px;
+}
 .block-content .modal-body section {
   background-color: #ffffff;
   margin: 0;
