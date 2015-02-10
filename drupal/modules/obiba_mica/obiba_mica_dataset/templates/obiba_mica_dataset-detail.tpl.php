@@ -192,7 +192,7 @@
               </td>
             </tr>
             <tr>
-              <th><?php print t('Target Number') ?></th>
+              <th><?php print t('Target number of participants') ?></th>
               <td>
                 <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
                   isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
