@@ -33,7 +33,7 @@ if (empty($query)) {
       )) ?>
     <?php endif ?>
     <?php
-    print l(t('Search'), 'mica/search', array(
+    print l(t('Search Variables'), 'mica/search', array(
       'attributes' => array(
         'class' => array(
           'btn',
