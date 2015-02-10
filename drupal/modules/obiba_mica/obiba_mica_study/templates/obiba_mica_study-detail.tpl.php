@@ -159,7 +159,7 @@
 
       <?php if (!empty($study_dto->methods->designs)): ?>
         <tr>
-          <td><h5><?php print t('Study Designs') ?></h5></td>
+          <td><h5><?php print t('Study Design') ?></h5></td>
           <td>
             <ul>
               <?php foreach ($study_dto->methods->designs as $design): ?>

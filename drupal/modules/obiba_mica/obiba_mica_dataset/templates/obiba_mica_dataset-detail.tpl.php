@@ -186,7 +186,7 @@
               </td>
             </tr>
             <tr>
-              <td><h5><?php print t('Study Designs') ?></h5></td>
+              <td><h5><?php print t('Study Design') ?></h5></td>
               <td>
                 <?php print implode(', ', t(obiba_mica_commons_clean_string($dataset_type_dto->studyTable->studySummary->designs))); ?>
               </td>
