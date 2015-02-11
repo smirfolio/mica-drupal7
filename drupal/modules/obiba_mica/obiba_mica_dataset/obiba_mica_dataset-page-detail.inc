@@ -24,13 +24,17 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
   unset($_SESSION['ajax']);
   $dataset_dto = $dataset_resource->get_dataset($dataset_type, $dataset_id);
   $_SESSION['ajax']['variable'] = serialize($dataset_dto);
+  $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
   if (!empty($dataset_dto)) {
     $variables_dataset = $dataset_resource->get_variables($dataset_type, $dataset_id, 0, 1);
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+      $has_coverage = !empty($coverage['has_coverage']) ? $coverage['has_coverage'] : NULL;
       $modals = obiba_mica_dataset_get_population_dce_modals(
         $dataset_type_dto->studyTable->studyId,
-        obiba_mica_dataset_get_population_dce($dataset_type_dto)
+        obiba_mica_dataset_get_population_dce($dataset_type_dto),
+        $variables_dataset,
+        $has_coverage
       );
     }
     else {
@@ -52,7 +56,7 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
       //TODO implement resources to perform queries in variables resources
       //   "form_search" => drupal_get_form('obiba_mica_dataset_create_form'),
       'dataset_dto' => $dataset_dto,
-      'coverage' => obiba_mica_dataset_coverage($dataset_dto->id),
+      'coverage' => !empty($coverage) ? $coverage['charts'] : NULL,
       'dataset_type_dto' => $dataset_type_dto,
       'dataset_type' => $dataset_type,
       'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => TRUE)),
@@ -92,12 +96,12 @@ function obiba_mica_dataset_get_population_dce($dataset_type_dto) {
   return $data;
 }
 
-function obiba_mica_dataset_get_population_dce_modals($studyId, $data) {
+function obiba_mica_dataset_get_population_dce_modals($studyId, $data, $variables_dataset = NULL, $has_coverage = NULL) {
   $modals = array();
   $populations = $data['population'];
 
   if (!empty($populations)) {
-    foreach($populations as $population) {
+    foreach ($populations as $population) {
 
       foreach ($population->dataCollectionEvents as $dce) {
         $dce_uids[] = $studyId . ':' . $population->id . ':' . $dce->id;
@@ -108,7 +112,7 @@ function obiba_mica_dataset_get_population_dce_modals($studyId, $data) {
         'population_content' => theme('mica_population_content_detail', array(
           'dce_uids' => $dce_uids,
           'population' => $population,
-          'hide_title' => true
+          'hide_title' => TRUE
         ))
       ));
 
@@ -125,6 +129,8 @@ function obiba_mica_dataset_get_population_dce_modals($studyId, $data) {
         }
 
         $modals['dce'][] = theme('mica_dce_detail', array(
+          'has_coverage' => $has_coverage,
+          'variables_nbr' => $variables_dataset,
           'study_id' => $studyId,
           'population_id' => $populationId,
           'dce_uid' => $studyId . ':' . $populationId . ':' . $dce->id,
@@ -441,7 +447,16 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
 /*End harmonization variable ajax table */
 
 function obiba_mica_dataset_coverage($dataset_id) {
-  return obiba_mica_search_query_charts(MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset_id)))));
+  $coverage['charts'] = obiba_mica_search_query_charts(
+    MicaClient::add_parameter_dto_query_link(
+      array('variables' => array('terms' => array('datasetId' => $dataset_id)))));
+  if (!empty($coverage['charts'])) {
+    $coverage['has_coverage'] = TRUE;
+    return $coverage;
+  }
+  else {
+    return FALSE;
+  }
 }
 
 function obiba_mica_dataset_create_form() {
@@ -459,11 +474,11 @@ function obiba_mica_dataset_create_form() {
 /**
  * @param $dataset_type_dto
  */
-function obiba_mica_dataset_studies_datatable_init($dataset_type_dto)
-{
+function obiba_mica_dataset_studies_datatable_init($dataset_type_dto) {
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
-  } else {
+  }
+  else {
     obiba_mica_commons_datatables_external_source();
   }
 

@@ -285,7 +285,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
   }
   $dataset_rows = array();
   $summaries = $datasets->getSummaries();
-
+  $Total_nb_variables = NULL;
   if (empty($summaries)) {
     return NULL;
   }
@@ -295,6 +295,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
       $dataset_description = NULL;
 
       if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
+
         $nb_variables = l($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables, 'mica/search',
           array(
             'query' => array(
@@ -313,6 +314,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
             )
           )
         );
+        $Total_nb_variables += $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;
       }
 
       $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
@@ -328,7 +330,9 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
       );
     }
   }
-
+  if (!empty($Total_nb_variables)) {
+    $dataset['total_variable_nbr'] = $Total_nb_variables;
+  }
   $dataset['dataset-tab'] = theme(
     'table',
     array(

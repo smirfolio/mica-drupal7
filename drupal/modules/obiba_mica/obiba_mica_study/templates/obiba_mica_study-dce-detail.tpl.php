@@ -19,6 +19,7 @@
               </p>
             <?php endif; ?>
 
+            <?php if (!empty($variables_nbr)): ?>
             <div class="pull-right md-bottom-margin">
               <?php
               $query_array = array("variables" => array("terms" => array("dceIds" => $dce_uid)));
@@ -33,19 +34,22 @@
                   'attributes' => array('class' => 'btn btn-primary')
                 ));
               ?>
-              <?php
-              print l(t('View Coverage'), 'mica/coverage',
-                array(
-                  'query' => array(
-                    'type' => 'variables',
-                    'query' => $query
-                  ),
-                  'attributes' => array('class' => 'btn btn-primary indent')
-                ));
-              ?>
+
+              <?php if (!empty($has_coverage)): ?>
+                <?php
+                print l(t('View Coverage'), 'mica/coverage',
+                  array(
+                    'query' => array(
+                      'type' => 'variables',
+                      'query' => $query
+                    ),
+                    'attributes' => array('class' => 'btn btn-primary indent')
+                  ));
+                ?>
+              <?php endif; ?>
             </div>
           </div>
-
+          <?php endif; ?>
           <div class="clearfix"></div>
 
           <table class="table table-striped">
