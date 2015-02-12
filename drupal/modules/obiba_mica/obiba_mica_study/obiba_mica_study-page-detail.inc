@@ -53,6 +53,7 @@ function obiba_mica_study_page_detail($study_id) {
       'datasets' => !empty($dataset_output),
       'study_variables_aggs' => NULL, //obiba_mica_study_get_variables($study_id),
     );
+    dpm($dataset_output);
     $has_coverage = !empty($coverage['has_coverage']) ? $coverage['has_coverage'] : NULL;
     return theme('obiba_mica_study_detail',
       array(
@@ -61,7 +62,7 @@ function obiba_mica_study_page_detail($study_id) {
         'study_dto' => $study_dto,
         'study_attachements' => $themed_attachment,
         'timeline' => obiba_mica_study_get_timeline_detail($study_dto),
-        'populations' => obiba_mica_study_get_populations_detail($study_dto, $dataset_output['total_variable_nbr'], $has_coverage),
+        'populations' => obiba_mica_study_get_populations_detail($study_dto, $dataset_output['dce_variables'], $has_coverage),
         'datasets' => $dataset_output,
         'networks' => $network_output,
         'opal' => $opal_output,
@@ -125,7 +126,7 @@ function obiba_mica_study_get_timeline_detail($study_detail) {
  * Format populations schema
  * */
 
-function obiba_mica_study_get_populations_detail($study_detail, $variables_nbr = NULL, $has_coverage = NULL) {
+function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_nbr = NULL, $has_coverage = NULL) {
   $page_render_populations = array();
 
   if (!empty($study_detail->populations)) {
@@ -149,7 +150,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $variables_nbr =
         $population['dce-modal'] = obiba_mica_study_get_dce_detail(
           $study_detail->id, $population->id,
           $population->dataCollectionEvents,
-          $variables_nbr,
+          $dce_variables_nbr,
           $has_coverage);
         foreach ($population->dataCollectionEvents as $dce) {
           $dce_uids[] = $study_detail->id . ':' . $population->id . ':' . $dce->id;
@@ -196,7 +197,8 @@ function obiba_mica_study_get_contact_detail($type_contact, $study_id, $contacts
  * @param $data_collection_events
  * @return string
  */
-function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collection_events, $variables_nbr = NULL, $has_coverage = NULL) {
+function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collection_events, $dce_variables_nbr = NULL, $has_coverage = NULL) {
+  dpm($dce_variables_nbr);
   $page_render_dces = '';
   foreach ($data_collection_events as $dce) {
     $themed_attachment = '';
@@ -207,7 +209,7 @@ function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collec
     }
     $page_render_dces .= theme('mica_dce_detail', array(
       'has_coverage' => $has_coverage,
-      'variables_nbr' => $variables_nbr,
+      'dce_variables_nbr' => $dce_variables_nbr,
       'study_id' => $study_id,
       'population_id' => $population_id,
       'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,

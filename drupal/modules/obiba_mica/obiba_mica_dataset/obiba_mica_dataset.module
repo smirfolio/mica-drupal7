@@ -276,7 +276,10 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
       )
     ));
   }
-  return $dce_list;
+  $dce_name_array = explode(' -- ', $dce_name);
+  $dce['list'] = $dce_list;
+  $dce['name'] = !empty($dce_name_array[1]) ? $dce_name_array[1] : NULL;
+  return $dce;
 }
 
 function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
@@ -285,6 +288,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
   }
   $dataset_rows = array();
   $summaries = $datasets->getSummaries();
+  $dce_variables = array();
   $total_nb_variables = NULL;
   if (empty($summaries)) {
     return NULL;
@@ -295,8 +299,8 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
       $dataset_description = NULL;
 
       if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
-
-        $nb_variables = l($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables, 'mica/search',
+        $variable_nbr_row = $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;;
+        $nb_variables = l($variable_nbr_row, 'mica/search',
           array(
             'query' => array(
               'type' => 'variables',
@@ -314,7 +318,11 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
             )
           )
         );
-        $total_nb_variables += $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;
+      }
+      $dce_name_array = obiba_mica_dataset_get_dce_from_dataset($summary, $study_id);
+      if (!empty($variable_nbr_row)) {
+        $total_nb_variables += $variable_nbr_row;
+        $dce_variables[$dce_name_array['name']] = $variable_nbr_row;
       }
 
       $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
@@ -324,7 +332,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
         'data' => array(
           'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id . '/' . obiba_mica_commons_to_slug($dataset_name)),
           'type' => t($dataset_type_name),
-          'dce' => obiba_mica_dataset_get_dce_from_dataset($summary, $study_id),
+          'dce' => $dce_name_array['list'],
           'desc' => !empty($nb_variables) ? $nb_variables : '-'
         )
       );
@@ -332,6 +340,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
   }
   if (!empty($total_nb_variables)) {
     $dataset['total_variable_nbr'] = $total_nb_variables;
+    $dataset['dce_variables'] = $dce_variables;
   }
   $dataset['dataset-tab'] = theme(
     'table',

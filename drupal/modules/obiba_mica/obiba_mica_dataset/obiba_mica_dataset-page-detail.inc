@@ -99,7 +99,6 @@ function obiba_mica_dataset_get_population_dce($dataset_type_dto) {
 function obiba_mica_dataset_get_population_dce_modals($studyId, $data, $variables_dataset = NULL, $has_coverage = NULL) {
   $modals = array();
   $populations = $data['population'];
-
   if (!empty($populations)) {
     foreach ($populations as $population) {
 
@@ -119,7 +118,7 @@ function obiba_mica_dataset_get_population_dce_modals($studyId, $data, $variable
       $dces = $data['dce'];
       $themed_attachment = '';
       $populationId = $population->id;
-
+      $dce_variables_nbr = array();
       foreach ($dces as $dce) {
         $study_dto = $data['study'];
         if (!empty($study_dto->attachments)) {
@@ -127,10 +126,10 @@ function obiba_mica_dataset_get_population_dce_modals($studyId, $data, $variable
             $themed_attachment .= obiba_mica_study_get_attachment_file($study_dto->id, $attachment);
           }
         }
-
+        $dce_variables_nbr[obiba_mica_commons_get_localized_field($dce, 'name')] = $variables_dataset->total;
         $modals['dce'][] = theme('mica_dce_detail', array(
           'has_coverage' => $has_coverage,
-          'variables_nbr' => $variables_dataset,
+          'dce_variables_nbr' => $dce_variables_nbr,
           'study_id' => $studyId,
           'population_id' => $populationId,
           'dce_uid' => $studyId . ':' . $populationId . ':' . $dce->id,
