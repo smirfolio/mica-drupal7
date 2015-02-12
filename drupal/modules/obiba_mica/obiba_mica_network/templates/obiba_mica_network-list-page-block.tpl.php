@@ -4,7 +4,7 @@
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-           class="listImageThumb"/>
+        class="listImageThumb"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-N"></span>
@@ -23,8 +23,22 @@
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>
-          <?php print empty($network->description) ? '' :
-            truncate_utf8(strip_tags(obiba_mica_commons_get_localized_field($network, 'description')), 250, TRUE, TRUE);; ?>
+          <?php
+          if (empty($network->description)) {
+            print '';
+          }
+          else {
+            $objective = obiba_mica_commons_get_localized_field($network, 'description');
+            if (drupal_strlen($objective) >= 300) {
+              print text_summary(strip_tags($objective), 'html', 300)
+                . '... ' . l('Read More',
+                  'mica/network/' . $network->id);
+            }
+            else {
+              print $objective;
+            }
+          }
+          ?>
         </small>
       </p>
     </div>

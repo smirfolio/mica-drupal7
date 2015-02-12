@@ -5,7 +5,7 @@
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-           class="listImageThumb img-responsive"/>
+        class="listImageThumb img-responsive"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-S"></span>
@@ -27,7 +27,6 @@
           <?php
           $objective = obiba_mica_commons_get_localized_field($study, 'objectives');
           if (drupal_strlen($objective) >= 300) {
-
             print text_summary(strip_tags($objective), 'html', 300)
               . '... ' . l('Read More',
                 'mica/study/' . $study->id);
