@@ -1,5 +1,5 @@
 <?php
-//dpm($dce);
+$dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
 ?>
 
 <div id="dce-<?php print $dce_id_target ?>" class="modal fade" xmlns="http://www.w3.org/1999/html">
@@ -7,7 +7,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><?php print obiba_mica_commons_get_localized_field($dce, 'name'); ?></h4>
+        <h4 class="modal-title"><?php print $dce_name ?></h4>
       </div>
       <div class="modal-body">
 
@@ -19,6 +19,7 @@
               </p>
             <?php endif; ?>
 
+            <?php if (array_key_exists($dce_name, $dce_variables_nbr)): ?>
             <div class="pull-right md-bottom-margin">
               <?php
               $query_array = array("variables" => array("terms" => array("dceIds" => $dce_uid)));
@@ -33,19 +34,22 @@
                   'attributes' => array('class' => 'btn btn-primary')
                 ));
               ?>
-              <?php
-              print l(t('View Coverage'), 'mica/coverage',
-                array(
-                  'query' => array(
-                    'type' => 'variables',
-                    'query' => $query
-                  ),
-                  'attributes' => array('class' => 'btn btn-primary indent')
-                ));
-              ?>
+
+              <?php if (!empty($has_coverage)): ?>
+                <?php
+                print l(t('View Coverage'), 'mica/coverage',
+                  array(
+                    'query' => array(
+                      'type' => 'variables',
+                      'query' => $query
+                    ),
+                    'attributes' => array('class' => 'btn btn-primary indent')
+                  ));
+                ?>
+              <?php endif; ?>
             </div>
           </div>
-
+          <?php endif; ?>
           <div class="clearfix"></div>
 
           <table class="table table-striped">
