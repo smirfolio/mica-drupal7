@@ -53,7 +53,6 @@ function obiba_mica_study_page_detail($study_id) {
       'datasets' => !empty($dataset_output),
       'study_variables_aggs' => NULL, //obiba_mica_study_get_variables($study_id),
     );
-    dpm($dataset_output);
     $has_coverage = !empty($coverage['has_coverage']) ? $coverage['has_coverage'] : NULL;
     return theme('obiba_mica_study_detail',
       array(
@@ -198,7 +197,6 @@ function obiba_mica_study_get_contact_detail($type_contact, $study_id, $contacts
  * @return string
  */
 function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collection_events, $dce_variables_nbr = NULL, $has_coverage = NULL) {
-  dpm($dce_variables_nbr);
   $page_render_dces = '';
   foreach ($data_collection_events as $dce) {
     $themed_attachment = '';
@@ -274,7 +272,7 @@ function obiba_mica_study_get_variables($study_id) {
 
 function obiba_mica_study_coverage($study_id) {
   $coverage['charts'] = obiba_mica_search_query_charts(
-  MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study_id)))),
+    MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study_id)))),
     function ($b, $study_id) {
       // filter the dces of the current study
       return strpos($b->value, ':') === FALSE || strpos($b->value, $study_id . ':') === 0;

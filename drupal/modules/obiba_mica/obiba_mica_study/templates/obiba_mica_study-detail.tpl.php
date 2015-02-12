@@ -18,7 +18,7 @@
     $query_array = array("studies" => array("terms" => array("studyIds" => $study_dto->id)));
     $query = MicaClient::create_query_dto_as_string($query_array);
 
-    print l(t('Search Variables') . ' :' . $datasets['total_variable_nbr'], 'mica/search',
+    print l(t('Search Variables'), 'mica/search',
       array(
         'query' => array(
           'type' => 'variables',
