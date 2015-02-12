@@ -266,7 +266,6 @@ function obiba_bootstrap_bootstrap_based_theme() {
  * Implements hook_preprocess_html().
  */
 function obiba_bootstrap_preprocess_html(&$variables) {
-  dpm($variables);
   drupal_add_css('https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700,700italic', array('type' => 'external'));
 }
 
