@@ -20,15 +20,26 @@
       $query_array = array("networks" => array("terms" => array("networkId" => $network_dto->id)));
       $query = MicaClient::create_query_dto_as_string($query_array);
 
-      print l(t('Search Variables'), 'mica/search',
+      print l(t('Search studies'), 'mica/search',
+        array(
+          'query' => array(
+            'type' => 'studies',
+            'query' => $query
+          ),
+          'attributes' => array('class' => 'btn btn-primary')
+        ));
+
+      ?>
+      <?php print l(t('Search Variables'), 'mica/search',
         array(
           'query' => array(
             'type' => 'variables',
             'query' => $query
           ),
-          'attributes' => array('class' => 'btn btn-primary')
+          'attributes' => array('class' => 'btn btn-primary indent')
         ));
       ?>
+
       <?php
       print l(t('View Coverage'), 'mica/coverage',
         array(
@@ -83,8 +94,8 @@
                   <?php foreach ($network_dto->investigators as $key_investigator => $investigator) : ?>
                     <li>
                       <a href="#" data-toggle="modal"
-                         data-target="#investigator_<?php print $network_dto->id ?>_<?php print $key_investigator ?>">
-                        <?php print $investigator->title; ?>
+                        data-target="#investigator_<?php print $network_dto->id ?>_<?php print $key_investigator ?>">
+                      <?php print $investigator->title; ?>
                         <?php print $investigator->firstName; ?>
                         <?php print $investigator->lastName; ?>
                         <?php if (!empty($investigator->academicLevel)) {
@@ -107,8 +118,8 @@
                   <?php foreach ($network_dto->contacts as $key_contact => $contact) : ?>
                     <li>
                       <a href="#" data-toggle="modal"
-                         data-target="#contact_<?php print $network_dto->id ?>_<?php print $key_contact ?>">
-                        <?php print $contact->title; ?>
+                        data-target="#contact_<?php print $network_dto->id ?>_<?php print $key_contact ?>">
+                      <?php print $contact->title; ?>
                         <?php print $contact->firstName; ?>
                         <?php print $contact->lastName; ?>
                         <?php if (!empty($contact->academicLevel)) {
@@ -141,18 +152,18 @@
 
   <!-- STUDIES -->
   <?php if (!empty($network_dto->studySummaries)):?>
-  <section>
-    <h3><?php print t('Studies') ?></h3>
+    <section>
+      <h3><?php print t('Studies') ?></h3>
 
-    <div id="studies-table">
-      <div class="row">
-        <div class="col-lg-12 col-xs-12">
-          <table class="table table-striped" id="table-studies"></table>
+      <div id="studies-table">
+        <div class="row">
+          <div class="col-lg-12 col-xs-12">
+            <table class="table table-striped" id="table-studies"></table>
+          </div>
         </div>
       </div>
-    </div>
 
-  </section>
+    </section>
   <?php endif; ?>
 
   <!-- COVERAGE -->
