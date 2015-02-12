@@ -19,7 +19,8 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
               </p>
             <?php endif; ?>
 
-            <?php if (array_key_exists($dce_name, $dce_variables_nbr)): ?>
+
+            <?php if (is_array($dce_variables_nbr) && array_key_exists($dce_name, $dce_variables_nbr)): ?>
             <div class="pull-right md-bottom-margin">
               <?php
               $query_array = array("variables" => array("terms" => array("dceIds" => $dce_uid)));
