@@ -95,7 +95,7 @@
                     <li>
                       <a href="#" data-toggle="modal"
                         data-target="#investigator_<?php print $network_dto->id ?>_<?php print $key_investigator ?>">
-                      <?php print $investigator->title; ?>
+                        <?php print $investigator->title; ?>
                         <?php print $investigator->firstName; ?>
                         <?php print $investigator->lastName; ?>
                         <?php if (!empty($investigator->academicLevel)) {
@@ -119,7 +119,7 @@
                     <li>
                       <a href="#" data-toggle="modal"
                         data-target="#contact_<?php print $network_dto->id ?>_<?php print $key_contact ?>">
-                      <?php print $contact->title; ?>
+                        <?php print $contact->title; ?>
                         <?php print $contact->firstName; ?>
                         <?php print $contact->lastName; ?>
                         <?php if (!empty($contact->academicLevel)) {
@@ -151,7 +151,7 @@
   </section>
 
   <!-- STUDIES -->
-  <?php if (!empty($network_dto->studySummaries)):?>
+  <?php if (!empty($network_dto->studySummaries)): ?>
     <section>
       <h3><?php print t('Studies') ?></h3>
 
