@@ -32,6 +32,7 @@ function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
   $sort = NULL;
   $sort_by = NULL;
   $list_datasets = '';
+  $dataset_limits = NULL;
   if (!empty($_GET['search-query'])) {
     $query = $_GET['search-query'];
   }
@@ -41,12 +42,16 @@ function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
   if (!empty($_GET['search-sort-order'])) {
     $sort_by = $_GET['search-sort-order'];
   }
+  if (!empty($_GET['search-nbr-result'])) {
+    $dataset_limits = $_GET['search-nbr-result'];
+  }
 
   $resource_dataset = obiba_mica_dataset_correct_resource_server($dataset_resource);
-  $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset);
+  $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset, $dataset_limits);
   $total_hits = empty($response) ? 0 : $response->getTotalHits();
-  pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE_SM);
-  $pager_output = theme('pager', array('quantity' => MicaClient::SIZE_RESPONSE_SM));
+  $dataset_limits = !empty($dataset_limits) ? $dataset_limits : MicaClient::SIZE_RESPONSE_SM;
+  pager_default_initialize($total_hits, $dataset_limits);
+  $pager_output = theme('pager', array('quantity' => $dataset_limits));
   $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
     foreach ($summaries as $dataset) {
@@ -77,14 +82,14 @@ function obiba_mica_dataset_correct_resource_server($dataset_resource) {
   return $resource[$dataset_resource];
 }
 
-function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resource) {
+function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resource, $dataset_limits = NULL) {
   $from = 0;
   $resource = new MicaDatasetResource();
+  $size_response = !empty($dataset_limits) ? $dataset_limits : MicaClient::SIZE_RESPONSE_SM;
   if (!empty($_GET['page'])) {
-    $from = $resource->pagination_list_search_parameters($_GET['page'], 'datasets', MicaClient::SIZE_RESPONSE_SM);
+    $from = $resource->pagination_list_search_parameters($_GET['page'], 'datasets', $size_response);
   }
-
-  $response = $resource->get_datasets($dataset_resource, NULL, $query, $from, MicaClient::SIZE_RESPONSE_SM, $sort, $sort_by);
+  $response = $resource->get_datasets($dataset_resource, NULL, $query, $from, $size_response, $sort, $sort_by);
   if (!empty($response)) {
     $_SESSION['datasets']['aggregations']['total_hits'] = $response->getTotalHits();
   }

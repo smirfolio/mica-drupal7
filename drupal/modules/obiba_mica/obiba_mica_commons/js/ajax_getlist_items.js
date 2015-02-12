@@ -24,7 +24,7 @@
       }
       $("#edit-search-query").on("blur", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
-        //   window.location = '?' + data_url;
+        window.location = '?' + data_url;
       });
 
       $("#edit-search-sort-order").on("change", function () {

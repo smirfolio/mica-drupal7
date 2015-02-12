@@ -33,7 +33,8 @@ function obiba_mica_study_page_list() {
 
   $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_by, $study_limits);
   $total_studies = empty($response) ? 0 : $response->getTotalHits();
-  !empty($study_limits) ? $study_limits : MicaClient::SIZE_RESPONSE_SM;
+  $study_limits = !empty($study_limits) ? $study_limits : MicaClient::SIZE_RESPONSE_SM;
+
   pager_default_initialize($total_studies, $study_limits);
   $pager_output = theme('pager', array('quantity' => $study_limits));
   $summaries = empty($response) ? array() : $response->getSummaries();
@@ -97,7 +98,6 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
   if (!empty($_GET['page'])) {
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'studies', $size_response);
   }
-
   $response = $study_resource->get_studies($query, $from, $size_response, $sort, $order);
   if (!empty($response)) {
     $_SESSION['studies']['aggregations']['total_hits'] = $response->getTotalHits();
