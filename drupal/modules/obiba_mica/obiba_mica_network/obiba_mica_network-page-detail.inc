@@ -94,7 +94,7 @@ function obiba_mica_network_study_table_headers() {
     array("title" => t('Acronym')),
     array("title" => t('Name')),
     array("title" =>t('Study Design')),
-    array("title" => t('Target Number')),
+    array("title" => t('Participants')),
     array("title" =>t('Country')),
     array("title" => t('Variables'))
   );
