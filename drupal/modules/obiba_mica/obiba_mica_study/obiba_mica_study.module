@@ -25,12 +25,12 @@ function obiba_mica_study_menu() {
     'page arguments' => array(2),
   );
 
-  $items['mica/refresh_list_studies/%/%/%'] = array(
+  $items['mica/refresh_list_studies/%/%/%/%'] = array(
     //'title' => t('AutoComp Menu'),
     'page callback' => 'obiba_mica_study_retrieve_studies',
     'file' => 'obiba_mica_study-page-list.inc',
     'access arguments' => array('access content'),
-    'page arguments' => array(2, 3, 4)
+    'page arguments' => array(2, 3, 4, 5)
   );
 
   return $items;

@@ -12,6 +12,7 @@ function obiba_mica_study_page_list() {
   $study_query = NULL;
   $study_sort = NULL;
   $study_sort_by = NULL;
+  $study_limits = NULL;
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   $node_rendred['#node']->title = '';
   $themed_studies = '';
@@ -26,10 +27,16 @@ function obiba_mica_study_page_list() {
     $study_sort_by = $_GET['search-sort-order'];
   }
 
-  $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_by);
+  if (!empty($_GET['search-nbr-result'])) {
+    $study_limits = $_GET['search-nbr-result'];
+  }
+
+  $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_by, $study_limits);
   $total_studies = empty($response) ? 0 : $response->getTotalHits();
-  pager_default_initialize($total_studies, MicaClient::SIZE_RESPONSE_SM);
-  $pager_output = theme('pager', array('quantity' => MicaClient::SIZE_RESPONSE_SM));
+  $study_limits = !empty($study_limits) ? $study_limits : MicaClient::SIZE_RESPONSE_SM;
+
+  pager_default_initialize($total_studies, $study_limits);
+  $pager_output = theme('pager', array('quantity' => $study_limits));
   $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
     foreach ($summaries as $study) {
@@ -58,8 +65,8 @@ function obiba_mica_study_page_list() {
   ));
 }
 
-function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = NULL) {
-  $list_studies = obiba_mica_study_get_studies($query, $sort, $sort_order);
+function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = NULL, $size_response_param = NULL) {
+  $list_studies = obiba_mica_study_get_studies($query, $sort, $sort_order, $size_response_param);
   $list_studies_rendered = '';
   foreach ($list_studies->getSummaries() as $study) {
     $list_studies_rendered .= theme('obiba_mica_study-list-page-block', array(
@@ -84,14 +91,14 @@ function obiba_mica_study_create_form() {
   return obiba_mica_commons_create_search_form($context);
 }
 
-function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL) {
+function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL, $study_limits = NULL) {
   $from = 0;
   $study_resource = new MicaStudyResource();
+  $size_response = !empty($study_limits) ? $study_limits : MicaClient::SIZE_RESPONSE_SM;
   if (!empty($_GET['page'])) {
-    $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'studies', MicaClient::SIZE_RESPONSE_SM);
+    $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'studies', $size_response);
   }
-
-  $response = $study_resource->get_studies($query, $from, MicaClient::SIZE_RESPONSE_SM, $sort, $order);
+  $response = $study_resource->get_studies($query, $from, $size_response, $sort, $order);
   if (!empty($response)) {
     $_SESSION['studies']['aggregations']['total_hits'] = $response->getTotalHits();
   }

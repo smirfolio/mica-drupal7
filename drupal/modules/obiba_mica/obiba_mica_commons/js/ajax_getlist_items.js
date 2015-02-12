@@ -11,7 +11,8 @@
         //console.log(Drupal.settings.context.url);
         $("#edit-search-query").on("keyup", function () {
           $.ajax({
-            url: Drupal.settings.context.url + '/' + $(this).val() + '/' + $("#edit-search-sort").val() + '/' + $("#edit-search-sort-order").val(),
+            url: Drupal.settings.context.url + '/' + $(this).val() + '/' + $("#edit-search-sort").val()
+              + '/' + $("#edit-search-sort-order").val() + '/' + $("#edit-search-nbr-result").val(),
             success: function (data) {
               if (data) {
                 $('#refresh-list').empty().append(data.list);
@@ -31,13 +32,18 @@
         window.location = '?' + data_url;
       });
 
-      $("#refresh-button").on("click", function () {
-        window.location = window.location.pathname;
+      $("#edit-search-nbr-result").on("change", function () {
+        var data_url = $('#obiba-mica-search-form').serialize();
+        window.location = '?' + data_url;
       });
 
       $("#edit-search-sort").on("change", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
         window.location = '?' + data_url;
+      });
+
+      $("#refresh-button").on("click", function () {
+        window.location = window.location.pathname;
       });
       /*******************/
     }

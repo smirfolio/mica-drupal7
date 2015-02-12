@@ -382,6 +382,10 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
     ? empty($context['default_sort_order']) ? NULL : $context['default_sort_order']
     : $_GET['search-sort-order'];
 
+  $default_nbr_result = empty($_GET['search-nbr-result'])
+    ? empty($context['search_nbr_result']) ? NULL : $context['search_nbr_result']
+    : $_GET['search-nbr-result'];
+
   $form = array();
   $form['#id'] = 'obiba-mica-search-form';
   $form['#method'] = 'get';
@@ -399,6 +403,23 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
       ),
     );
   }
+  $form['search-nbr-result'] = array(
+    '#type' => 'select',
+    '#title' => '',
+    '#description' => 'Number of displayed entries',
+    '#options' => array(
+      '' => '-',
+      10 => '10',
+      25 => '25',
+      50 => '50',
+      100 => '100'
+    ),
+    '#default_value' => $default_nbr_result,
+    '#prefix' => '<div class="right-indent md-width">',
+    '#suffix' => '</div>',
+
+  );
+
   $form['search-sort'] = array(
     '#type' => 'select',
     '#title' => '',
