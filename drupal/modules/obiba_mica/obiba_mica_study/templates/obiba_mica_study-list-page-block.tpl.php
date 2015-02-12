@@ -24,7 +24,18 @@
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>
-          <?php print truncate_utf8(strip_tags(obiba_mica_commons_get_localized_field($study, 'objectives')), 250, TRUE, TRUE); ?>
+          <?php
+          $objective = obiba_mica_commons_get_localized_field($study, 'objectives');
+          if (drupal_strlen($objective) >= 300) {
+
+            print text_summary(strip_tags($objective), 'html', 300)
+              . '... ' . l('Read More',
+                'mica/study/' . $study->id);
+          }
+          else {
+            print $objective;
+          }
+          ?>
         </small>
       </p>
     </div>
