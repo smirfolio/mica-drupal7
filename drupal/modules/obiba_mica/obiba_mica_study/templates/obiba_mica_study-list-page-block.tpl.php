@@ -26,8 +26,9 @@
         <small>
           <?php
           $objective = obiba_mica_commons_get_localized_field($study, 'objectives');
+
           if (drupal_strlen($objective) >= 300) {
-            print text_summary(strip_tags($objective), 'html', 300)
+            print text_summary(strip_tags(obiba_mica_commons_markdown($objective)), 'html', 300)
               . '... ' . l('Read More',
                 'mica/study/' . $study->id);
           }
