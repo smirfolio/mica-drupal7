@@ -409,10 +409,10 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
     '#description' => 'Number of displayed entries',
     '#options' => array(
       '' => '-',
-      5 => '5',
       10 => '10',
-      20 => '20',
-      30 => '30'
+      25 => '25',
+      50 => '50',
+      100 => '100'
     ),
     '#default_value' => $default_nbr_result,
     '#prefix' => '<div class="right-indent md-width">',
