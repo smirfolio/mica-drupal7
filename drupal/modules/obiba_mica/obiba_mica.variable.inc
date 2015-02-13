@@ -39,5 +39,58 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => 1440,
   );
+
+  $variable['search_networks'] = array(
+    'title' => t('Show networks search'),
+    'description' => t('If Show networks search is selected, the networks tab will be displayed in the search page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['networks_column_studies'] = array(
+    'title' => t('Show studies column'),
+    'description' => t('Show studies column in the networks table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['networks_column_study_datasets'] = array(
+    'title' => t('Show studies dataset column'),
+    'description' => t('Show studies dataset column in the networks table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['networks_column_harmonization_datasets'] = array(
+    'title' => t('Show harmonization dataset column'),
+    'description' => t('Show harmonization dataset column in the networks table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['networks_column_variables'] = array(
+    'title' => t('Show variables column'),
+    'description' => t('Show variables column in the networks table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['search_studies'] = array(
+    'title' => t('Show studies search'),
+    'description' => t('If Show Show studies search is selected, the studies tab will be displayed in the search page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['search_datasets'] = array(
+    'title' => t('Show datasets search'),
+    'description' => t('If Show Show datasets search is selected, the studies tab will be displayed in the search page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['search_variables'] = array(
+    'title' => t('Show variables search'),
+    'description' => t('If Show Show variables search is selected, the studies tab will be displayed in the search page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
   return $variable;
 }

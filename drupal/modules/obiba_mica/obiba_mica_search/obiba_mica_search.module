@@ -314,13 +314,28 @@ function obiba_mica_get_hits_entities_variable($entity) {
   );
 }
 
+function _obiba_mica_search_get_search_display_param() {
+  $search_parameters = array(
+    'search_networks',
+    'search_studies',
+    'search_datasets',
+    'search_variables'
+  );
+  $search_param = array();
+  foreach ($search_parameters as $search_param_val) {
+    $search_param[$search_param_val] = variable_get_value($search_param_val);
+  }
+
+  return $search_param;
+}
+
 function obiba_mica_search_variable_page_search() {
   //drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
   $output = theme('obiba_mica_search_search', _get_search_data());
 
   if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     // AJAX request
-    return drupal_json_output(array('facets' =>_get_facets_theme(), 'searchResult' => $output));
+    return drupal_json_output(array('facets' => _get_facets_theme(), 'searchResult' => $output));
   }
 
   obiba_mica_search_load_libs();
@@ -374,6 +389,7 @@ function _get_search_data() {
   }
 
   return array(
+    'search_param' => _obiba_mica_search_get_search_display_param(),
     'noval' => '',
     'query' => empty($parts['query']) ? '' : $parts['query'],
     'variables_result' => array('data' => obiba_mica_search_variables_table($variables)),
@@ -428,7 +444,7 @@ function obiba_mica_search_coverage_page() {
 
   if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
     // AJAX request
-    return drupal_json_output(array('facets' =>_get_facets_theme(), 'searchResult' => $output));
+    return drupal_json_output(array('facets' => _get_facets_theme(), 'searchResult' => $output));
   }
 
   obiba_mica_search_load_libs();
@@ -831,23 +847,76 @@ function obiba_mica_search_datasets_table($datasets) {
   ) . '</div>' . theme('pager');
 }
 
+function _obiba_mica_search_get_sub_header_netowrks_table() {
+  $rows_column = array();
+  $headers = array();
+  $column_networks_param = array(
+    0 => '',
+    1 => '',
+    2 => variable_get_value('networks_column_studies'),
+    3 => variable_get_value('networks_column_study_datasets'),
+    4 => variable_get_value('networks_column_harmonization_datasets'),
+    5 => variable_get_value('networks_column_variables')
+  );
+
+  $headers[] = t('Acronym');
+  $rows_column[] = '';
+
+  $headers[] = t('Name');
+  $rows_column[] = '';
+
+  if (!empty($column_networks_param[2])) {
+    $headers[] = t('Studies');
+    $rows_column[] = '';
+  }
+
+  if (!empty($column_networks_param[3]) && !empty($column_networks_param[4])) {
+    $headers[] = array('data' => t('Datasets'), 'colspan' => 2);
+    if (!empty($column_networks_param[3])) {
+      $rows_column[] = t('Study');
+    }
+    if (!empty($column_networks_param[4])) {
+      $rows_column[] = t('Harmonization');
+    }
+  }
+  else {
+    if (!empty($column_networks_param[3]) || !empty($column_networks_param[4])) {
+      $headers[] = t('Datasets');
+      if (!empty($column_networks_param[3])) {
+        $rows_column[] = t('Study');
+      }
+      if (!empty($column_networks_param[4])) {
+        $rows_column[] = t('Harmonization');
+      }
+    }
+  }
+
+  if (!empty($column_networks_param[5])) {
+    $headers[] = t('Variables');
+    $rows_column[] = '';
+  }
+  if (empty($column_networks_param[3]) && empty($column_networks_param[4])) {
+    $rows_column = NULL;
+  }
+  $headers_columns['headers'] = $headers;
+  $headers_columns['rows_column'] = $rows_column;
+  return $headers_columns;
+}
+
 function obiba_mica_search_networks_table($networks) {
   $rows = array();
   $total_hits = 0;
 
   if (!empty($networks)) {
     $total_hits = $networks->getTotalHits();
-    $rows[] = array(
-      '',
-      '',
-      '',
-      t('Study'),
-      t('Harmonization'),
-      ''
-    );
+    $headers_columns = _obiba_mica_search_get_sub_header_netowrks_table();
+    if (!empty($headers_columns['rows_column'])) {
+      $rows[] = $headers_columns['rows_column'];
+    }
 
     $summaries = $networks->getSummaries();
     foreach ($summaries as $network) {
+      $rows_columns = array();
       $param_network_query =
         MicaClient::add_parameter_dto_query_link(array('networks' => array('terms' => array('id' => $network->id))));
 
@@ -881,49 +950,50 @@ function obiba_mica_search_networks_table($networks) {
 
       $name = obiba_mica_commons_get_localized_field($network, 'name');
 
-      $rows[] = array(
-        l(obiba_mica_commons_get_localized_field($network, 'acronym'), 'mica/network/' . $network->id),
-        $name,
-        l($studies_count, 'mica/search', array(
+      $rows_columns[] = l(obiba_mica_commons_get_localized_field($network, 'acronym'), 'mica/network/' . $network->id);
+      $rows_columns[] = $name;
+      $column_studies = variable_get_value('networks_column_studies');
+      if (!empty($column_studies)) {
+        $rows_columns[] = l($studies_count, 'mica/search', array(
           'query' => array(
             'type' => 'studies',
             'query' => $param_network_query
           )
-        )),
-        l($datasets_study_count, 'mica/search', array(
+        ));
+      }
+
+      $column_study_dataset = variable_get_value('networks_column_study_datasets');
+      if (!empty($column_study_dataset)) {
+        $rows_columns[] = l($datasets_study_count, 'mica/search', array(
           'query' => array(
             'type' => 'datasets',
             'query' => $param_network_query_study_dataset
           )
-        )),
-        l($datasets_harmonized_count, 'mica/search', array(
+        ));
+      }
+      $column_harmonization_dataset = variable_get_value('networks_column_harmonization_datasets');
+      if (!empty($column_harmonization_dataset)) {
+        $rows_columns[] = l($datasets_harmonized_count, 'mica/search', array(
           'query' => array(
             'type' => 'datasets',
             'query' => $param_network_query_harmo_dataset
           )
-        )),
-        l($variables_count, 'mica/search', array(
+        ));
+      }
+      $column_variables = variable_get_value('networks_column_variables');
+      if (!empty($column_variables)) {
+        $rows_columns[] = l($variables_count, 'mica/search', array(
           'query' => array(
             'type' => 'variables',
             'query' => $param_network_query
           )
-        )),
-      );
+        ));
+      }
+      $rows[] = $rows_columns;
     }
   }
 
-  $headers = array(
-    /*Short Name*/
-    t('Acronym'),
-    /*Name*/
-    t('Name'),
-    /*Studies cout*/
-    t('Studies'),
-    /*Datasets counts*/
-    array('data' => t('Datasets'), 'colspan' => 2),
-    /*Variables Counts*/
-    t('Variables'),
-  );
+  $headers = $headers_columns['headers'];
 
   pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
 

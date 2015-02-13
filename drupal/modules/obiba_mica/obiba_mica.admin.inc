@@ -39,7 +39,6 @@ function obiba_mica_admin_settings() {
   $form['server']['mica_anonymous_password'] = array(
     '#type' => 'password',
     '#title' => $info['title'],
-    '#required' => TRUE,
     '#default_value' => variable_get_value('mica_anonymous_password'),
     '#maxlength' => 255,
     '#description' => $info['description'],
@@ -79,6 +78,83 @@ function obiba_mica_admin_settings() {
     '#submit' => array('obiba_mica_clear_images_cache'),
     '#limit_validation_errors' => array(),
   );
+
+  $form['search_display_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Search page display settings'),
+    '#collapsible' => FALSE,
+  );
+  /********Networks Tabs ***********************/
+  $info = variable_get_info('search_networks');
+  $form['search_display_settings']['search_networks'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('search_networks'),
+    '#description' => $info['description'],
+  );
+  /************Network columns********************/
+  $form['search_display_settings']['networks_column'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Network column display settings'),
+    '#collapsible' => FALSE,
+  );
+  $info = variable_get_info('networks_column_studies');
+  $form['search_display_settings']['networks_column']['networks_column_studies'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_column_studies'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('networks_column_study_datasets');
+  $form['search_display_settings']['networks_column']['networks_column_study_datasets'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_column_study_datasets'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('networks_column_harmonization_datasets');
+  $form['search_display_settings']['networks_column']['networks_column_harmonization_datasets'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_column_harmonization_datasets'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('networks_column_variables');
+  $form['search_display_settings']['networks_column']['networks_column_variables'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_column_variables'),
+    '#description' => $info['description'],
+  );
+  /***********End networks******************************/
+
+  /*******************Studies Tabs**************************/
+  $info = variable_get_info('search_studies');
+  $form['search_display_settings']['search_studies'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('search_studies'),
+    '#description' => $info['description'],
+  );
+
+  /*******************datasets Tabs**************************/
+  $info = variable_get_info('search_datasets');
+  $form['search_display_settings']['search_datasets'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('search_datasets'),
+    '#description' => $info['description'],
+  );
+  /*******************variables Tabs**************************/
+  $info = variable_get_info('search_variables');
+  $form['search_display_settings']['search_variables'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('search_variables'),
+    '#description' => $info['description'],
+  );
+
   return system_settings_form($form);
 }
 
