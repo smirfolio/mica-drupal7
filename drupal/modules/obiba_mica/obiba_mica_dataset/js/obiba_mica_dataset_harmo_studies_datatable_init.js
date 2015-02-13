@@ -18,11 +18,11 @@
           },
           "fnDrawCallback": function(oSettings) {
             if (oSettings._iDisplayLength > oSettings.aoData.length) {
-              $('.dataTables_paginate').hide();
-              $('.dataTables_length').hide();
+              $('#table-studies_paginate').hide();
+              $('#table-studies_length').hide();
             } else {
-              $('.dataTables_paginate').show();
-              $('.dataTables_length').show();
+              $('#table-studies_paginate').show();
+              $('#table-studies_length').show();
             }
           }
         }

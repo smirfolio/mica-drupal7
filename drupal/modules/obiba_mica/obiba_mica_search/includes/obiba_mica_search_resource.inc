@@ -104,7 +104,7 @@ class MicaSearchResource extends MicaClient {
     if (empty($parameters) || $parameters != 'empty_request') {
       $dto_param = $this->_get_dto_query_param_from_url($parts, $type, $parameters);
     }
-    //dpm($dto_param);
+
     $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
 
     $request = new HttpClientRequest($url, array(
@@ -121,10 +121,12 @@ class MicaSearchResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-
       return array('data' => $data, 'last_response' => $client->lastResponse);
     }
     catch (HttpClientException $e) {
+      if ($e->getCode() == 403) {
+        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
+      }
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
         array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
       return array();

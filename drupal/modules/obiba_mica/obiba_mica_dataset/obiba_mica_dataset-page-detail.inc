@@ -14,7 +14,6 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
   }
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_datatable_init.js', 'file');
-  // drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_download_harmonizations.js', 'file');
   $dataset_resource = new MicaDatasetResource();
   $dataset_dto = NULL;
   $dataset_type_dto = NULL;
@@ -39,7 +38,6 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
     }
     else {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
-      drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_harmo_modals.js', 'file');
       obiba_mica_dataset_studies_datatable_init($dataset_type_dto);
     }
     $acronym = obiba_mica_commons_get_localized_field($dataset_dto, 'acronym');
