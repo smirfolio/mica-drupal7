@@ -17,8 +17,8 @@
 
     <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($study_dto, 'objectives')); ?>
   </p>
-  <?php if (!empty($datasets) && !empty($datasets['total_variable_nbr'])): ?>
-  <div class="pull-right md-bottom-margin">
+
+  <div id="studyActions" class="pull-right md-bottom-margin">
     <?php
     $query_array = array("studies" => array("terms" => array("studyIds" => $study_dto->id)));
     $query = MicaClient::create_query_dto_as_string($query_array);
@@ -29,10 +29,9 @@
           'type' => 'variables',
           'query' => $query
         ),
-        'attributes' => array('class' => 'btn btn-primary')
+        'attributes' => array('class' => 'btn btn-primary disabled')
       ));
     ?>
-    <?php if (!empty($coverage)): ?>
       <?php
       print l(t('View Coverage'), 'mica/coverage',
         array(
@@ -40,13 +39,12 @@
             'type' => 'variables',
             'query' => $query
           ),
-          'attributes' => array('class' => 'btn btn-primary indent')
+          'attributes' => array('class' => 'btn btn-primary indent show-coverage disabled')
         ));
       ?>
-    <?php endif; ?>
   </div>
 </div>
-<?php endif; ?>
+
 <div class="clearfix"></div>
 
 <article>
@@ -425,31 +423,15 @@
   </section>
 <?php endif; ?>
 
-<!-- NETWORKS -->
-<?php if (!empty($networks)): ?>
-  <section>
-    <h2 id="networks"><?php print t('Networks'); ?></h2>
+  <!-- NETWORKS placeholder -->
+  <section id="networks"><div><?php print t('Loading ...') ?></div></section>
 
-    <div class="scroll-content-tab">
-      <?php print $networks; ?>
-    </div>
-  </section>
-<?php endif; ?>
-
-<!-- DATASETS -->
-<?php if (!empty($datasets)): ?>
-  <section>
-    <h2 id="datasets"><?php print t('Datasets'); ?></h2>
-
-    <div class="scroll-content-tab">
-      <?php print render($datasets['dataset-tab']); ?>
-    </div>
-  </section>
-<?php endif; ?>
+  <!-- DATASETS placeholder -->
+  <section id="datasets"><div><?php print t('Loading ...') ?></div></section>
 
 <!-- VARIABLES -->
-<?php if (!empty($datasets) && !empty($study_variables_aggs)): ?>
-  <section>
+<?php if (!empty($study_variables_aggs)): ?>
+  <section id="variables">
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-3 right-indent">
@@ -476,27 +458,9 @@
     </div>
   </section>
 <?php endif; ?>
-
-<!-- COVERAGE -->
-<?php if (!empty($coverage)): ?>
-  <section>
-    <h2 id="coverage"><?php print t('Variable Coverage') ?></h2>
-    <?php foreach ($coverage as $taxonomy_coverage): ?>
-      <h3><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h3>
-
-      <p class="help-block">
-        <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
-      </p>
-
-      <div class="scroll-content-tab">
-        <?php print render($taxonomy_coverage['chart']); ?>
-      </div>
-    <?php endforeach ?>
-  </section>
-<?php endif; ?>
-
+  <!-- COVERAGE placeholder -->
+  <section id="coverage"><div><?php print t('Loading ...') ?></div></section>
 <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
 <div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
-
 </article>
 <div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i></div>

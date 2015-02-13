@@ -9,8 +9,47 @@ if (module_exists('obiba_mica_dataset')) {
   include_once($path_module_dataset . '/includes/obiba_mica_dataset_resource.inc');
 }
 
+function obiba_mica_study_page_detail_coverage($study_id) {
+  $coverage = obiba_mica_study_coverage($study_id);
+
+  if(empty($coverage['charts'])) {
+    exit;
+  }
+
+  $_SESSION['fixed_menu']['coverage'] = $coverage['charts'];
+  print theme('obiba_mica_study_detail_coverage', array('coverage' => $coverage['charts']));
+}
+
+function obiba_mica_study_page_detail_networks($study_id) {
+  $network_output = (module_exists('obiba_mica_network')) ?
+    obiba_mica_network_networks_list($study_id) : NULL;
+
+  $_SESSION['fixed_menu']['networks'] = $network_output;
+
+  if(empty($network_output)) {
+    exit;
+  }
+
+  print theme('obiba_mica_study_detail_networks', array('networks' => $network_output));
+}
+
+function obiba_mica_study_page_detail_datasets($study_id) {
+  $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
+
+  if(empty($dataset_output)) {
+    exit;
+  }
+
+  $_SESSION['fixed_menu']['datasets'] = $dataset_output;
+  print theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
+}
+
 function obiba_mica_study_page_detail($study_id) {
   obiba_mica_study_load_libs();
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/mica-study-detail.js', 'file');
+  drupal_add_js('//www.google.com/jsapi', 'external');
+  drupal_add_js(drupal_get_path('module', 'charts_google') . '/charts_google.js', 'file');
+
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
@@ -30,30 +69,24 @@ function obiba_mica_study_page_detail($study_id) {
       l(t('Studies'), 'mica/studies'),
     ));
 
-    $dataset_output = (module_exists('obiba_mica_dataset')) ?
-      obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
-
-    $network_output = (module_exists('obiba_mica_network')) ?
-      obiba_mica_network_networks_list($study_id) : NULL;
-
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;
     if (!empty($study_dto->attachments)) {
       foreach ($study_dto->attachments as $attachment) {
         $themed_attachment .= obiba_mica_study_get_attachment_file($study_dto->id, $attachment);
       }
     }
-    $coverage = obiba_mica_study_coverage($study_dto->id);
+
     $_SESSION['fixed_menu'] = array(
       'marker_paper' => !empty($study_dto->markerPaper),
       'pubmed_id' => !empty($study_dto->pubmedId),
       'info' => !empty($study_dto->info),
       'attachments' => !empty($study_dto->attachments),
-      'coverage' => !empty($coverage['charts']),
-      'networks' => !empty($network_output),
-      'datasets' => !empty($dataset_output),
+      'coverage' => NULL,
+      'networks' => NULL,
+      'datasets' => NULL,
       'study_variables_aggs' => NULL, //obiba_mica_study_get_variables($study_id),
     );
-    $has_coverage = !empty($coverage['has_coverage']) ? $coverage['has_coverage'] : NULL;
+
     return theme('obiba_mica_study_detail',
       array(
         'investigators_modal' => obiba_mica_study_get_contact_detail('investigator', $study_dto->id, $study_dto->investigators),
@@ -61,12 +94,9 @@ function obiba_mica_study_page_detail($study_id) {
         'study_dto' => $study_dto,
         'study_attachements' => $themed_attachment,
         'timeline' => obiba_mica_study_get_timeline_detail($study_dto),
-        'populations' => obiba_mica_study_get_populations_detail($study_dto, $dataset_output['dce_variables'], $has_coverage),
-        'datasets' => $dataset_output,
-        'networks' => $network_output,
+        'populations' => obiba_mica_study_get_populations_detail($study_dto),
         'opal' => $opal_output,
         'study_variables_aggs' => NULL, //obiba_mica_study_get_variables($study_id),
-        'coverage' => !empty($coverage) ? $coverage['charts'] : NULL,
         'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
       ));
   }

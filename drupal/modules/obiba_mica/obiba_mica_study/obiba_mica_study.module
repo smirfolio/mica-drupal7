@@ -17,6 +17,27 @@ function obiba_mica_study_menu() {
     'type' => MENU_NORMAL_ITEM
   );
 
+  $items['mica/study/%/coverage'] = array(
+    'page callback' => 'obiba_mica_study_page_detail_coverage',
+    'file' => 'obiba_mica_study-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  $items['mica/study/%/networks'] = array(
+    'page callback' => 'obiba_mica_study_page_detail_networks',
+    'file' => 'obiba_mica_study-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  $items['mica/study/%/datasets'] = array(
+    'page callback' => 'obiba_mica_study_page_detail_datasets',
+    'file' => 'obiba_mica_study-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
   $items['mica/study/%'] = array(
     'title' => 'Mica study detail',
     'page callback' => 'obiba_mica_study_page_detail',
@@ -54,6 +75,9 @@ function obiba_mica_study_theme($existing, $type, $theme, $path) {
       'path' => $path_theme
     ),
     'obiba_mica_study_detail' => array('template' => 'obiba_mica_study-detail', 'path' => $path_theme),
+    'obiba_mica_study_detail_coverage' => array('template' => 'obiba_mica_study_detail_coverage', 'path' => $path_theme),
+    'obiba_mica_study_detail_networks' => array('template' => 'obiba_mica_study_detail_networks', 'path' => $path_theme),
+    'obiba_mica_study_detail_datasets' => array('template' => 'obiba_mica_study_detail_datasets', 'path' => $path_theme),
     'mica_population_detail' => array('template' => 'obiba_mica_study-population-detail', 'path' => $path_theme),
     'mica_population_content_detail' => array('template' => 'obiba_mica_study-population-content-detail', 'path' => $path_theme),
     'mica_population_content_detail_modal' => array('template' => 'obiba_mica_study-population-content-detail-modal', 'path' => $path_theme),
