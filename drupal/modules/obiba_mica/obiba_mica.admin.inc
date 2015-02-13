@@ -39,7 +39,7 @@ function obiba_mica_admin_settings() {
   $form['server']['mica_anonymous_password'] = array(
     '#type' => 'password',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('mica_anonymous_password'),
+    //  '#default_value' => variable_get_value('mica_anonymous_password'),
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
@@ -155,7 +155,14 @@ function obiba_mica_admin_settings() {
     '#description' => $info['description'],
   );
 
+  $form['#submit'] = array('my_default_password');
   return system_settings_form($form);
+}
+
+function my_default_password($form, &$form_state) {
+  if (empty($form_state['values']['mica_anonymous_password'])) {
+    $form_state['values']['mica_anonymous_password'] = variable_get_value('mica_anonymous_password');
+  }
 }
 
 function obiba_mica_clear_images_cache() {
