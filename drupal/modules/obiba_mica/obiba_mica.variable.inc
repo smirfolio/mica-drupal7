@@ -77,9 +77,9 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
-  $variable['studies_column_type'] = array(
-    'title' => t('Show type column'),
-    'description' => t('Show type column in the studies table.'),
+  $variable['studies_column_design'] = array(
+    'title' => t('Show design column'),
+    'description' => t('Show design column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
