@@ -7,9 +7,14 @@
 <div>
   <p class="md-top-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
-      <img src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-        class="imageThumb">
+      <a href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
+        class="fancybox-button">
+        <img
+          src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
+          class="imageThumb">
+      </a>
     <?php endif; ?>
+
     <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($study_dto, 'objectives')); ?>
   </p>
   <?php if (!empty($datasets) && !empty($datasets['total_variable_nbr'])): ?>
@@ -395,7 +400,7 @@
                 print 'active';
               } ?>"
                 id="population-<?php print $key; ?>">
-              <?php print $population['html']; ?>
+                <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
           </div>
