@@ -271,7 +271,6 @@ function obiba_bootstrap_preprocess_html(&$variables) {
 
 function obiba_bootstrap_letters_badge_title() {
   $current_item = explode('/', current_path());
-  dpm($current_item);
   if (!empty($current_item[0]) && $current_item[0] != 'mica') {
     return NULL;
   }
@@ -293,7 +292,7 @@ function obiba_bootstrap_letters_badge_title() {
     }
 
     elseif (strstr($current_item[1], 'search')) {
-      return 'Sea glyphicon glyphicon-search';
+      return 'search-icon';
     }
     else {
       return drupal_strtoupper(drupal_substr($current_item[1], 0, 1));

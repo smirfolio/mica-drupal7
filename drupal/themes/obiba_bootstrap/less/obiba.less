@@ -8,9 +8,8 @@
 
 @font-face {
   font-family: 'obiba';
-  src: url('../fonts/obiba.eot?#iefixvf05fh') format('embedded-opentype'), url('../fonts/obiba.woff?vf05fh') format('woff'), url('../fonts/obiba.ttf?vf05fh') format('truetype'), url('../fonts/obiba.svg?vf05fh#obiba') format('svg');
-  font-family: 'Glyphicons';
-  src: url('../fonts/glyphicons-halflings-regular.eot?#iefixvf05fh') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff?vf05fh') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf?vf05fh') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg?vf05fh#obiba') format('svg');
+  src: url('../fonts/obiba.eot?7u6h79');
+  src: url('../fonts/obiba.eot?#iefix7u6h79') format('embedded-opentype'), url('../fonts/obiba.woff?7u6h79') format('woff'), url('../fonts/obiba.ttf?7u6h79') format('truetype'), url('../fonts/obiba.svg?7u6h79#obiba') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -45,23 +44,8 @@
   content: "\e603";
 }
 
-.i-obiba-Sea:before {
-  color: white;
-  margin-top: 12px;
-  font-size: 40px;
-}
-
-.i-obiba-Sea.glyphicon {
-  position: relative !important;
-  top: 1px !important;
-  display: inline-block !important;
-  font-family: 'Glyphicons Halflings' !important;
-  font-style: normal !important;
-  font-weight: normal !important;
-  line-height: 1 !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  content: "\e604";
+.i-obiba-search-icon:before {
+  content: "\e606";
 }
 
 .i-obiba-N:before {
@@ -79,6 +63,74 @@
 
 .i-obiba-D-h:before {
   content: "\e602";
+}
+
+.t_badge() {
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50% !important;
+  color: #ffffff;
+  padding-top: 10px;
+  /* padding-left: 3px; */
+  font-size: 40px;
+  margin-right: 10px;
+}
+
+.t_badge {
+  .t_badge();
+}
+
+.t_badge_100 {
+  height: 100px;
+  width: 100px;
+  font-size: 70px;
+  padding-top: 14px;
+}
+
+.color_S {
+  background-color: #50A6DC;
+  background-size: cover;
+}
+
+.color_search-icon {
+  background-color: #50A6DC;
+  background-size: cover;
+}
+
+.color_D, .color_D-h {
+  background-color: #47AE48;
+  background-size: cover;
+}
+
+.color_D-h {
+  background-color: #47AE48;
+  background-size: cover;
+  font-size: 38px;
+  padding-left: 2px;
+  padding-top: 11px;
+}
+
+.color_N {
+  background-color: #A8509E;
+  background-size: cover;
+}
+
+.color_V {
+  background-color: #EF4C3D;
+  background-size: cover;
+}
+
+.color_taxonomy {
+  background-color: #EF4C3D;
+  background-size: cover;
+}
+
+.color_light {
+  background-color: @gray-lighter;
+  background-size: cover;
 }
 
 /***Fixed side bar ****/
@@ -413,75 +465,6 @@ ul.search-item-list-no-style {
     vertical-align: middle;
   }
 
-}
-
-.t_badge() {
-  display: inline-block;
-  height: 60px;
-  width: 60px;
-  text-align: center;
-  vertical-align: middle;
-  border-radius: 50% !important;
-  color: #ffffff;
-  padding-top: 10px;
-  /* padding-left: 3px; */
-  font-size: 40px;
-  margin-right: 10px;
-}
-
-.t_badge {
-  .t_badge();
-}
-
-.t_badge_100 {
-  height: 100px;
-  width: 100px;
-  font-size: 70px;
-  padding-top: 14px;
-}
-
-.color_S {
-  background-color: #50A6DC;
-  background-size: cover;
-}
-
-.color_Sea {
-  color: white;
-  background-color: #50A6DC;
-  background-size: cover;
-}
-
-.color_D, .color_D-h {
-  background-color: #47AE48;
-  background-size: cover;
-}
-
-.color_D-h {
-  background-color: #47AE48;
-  background-size: cover;
-  font-size: 38px;
-  padding-left: 2px;
-  padding-top: 11px;
-}
-
-.color_N {
-  background-color: #A8509E;
-  background-size: cover;
-}
-
-.color_V {
-  background-color: #EF4C3D;
-  background-size: cover;
-}
-
-.color_taxonomy {
-  background-color: #EF4C3D;
-  background-size: cover;
-}
-
-.color_light {
-  background-color: @gray-lighter;
-  background-size: cover;
 }
 
 /****************Domain coverage page *******/
