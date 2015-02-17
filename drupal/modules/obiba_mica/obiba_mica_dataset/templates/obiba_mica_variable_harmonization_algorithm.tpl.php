@@ -1,9 +1,9 @@
 <?php foreach ($variable_harmonization_algorithms as $key_var_harmo => $variable_harmonization_algorithm) : ?>
-  <h4><?php print l($key_var_harmo, 'mica/variable/' . $variable_harmonization_algorithm['var_id'], array(
+  <h3><?php print l($key_var_harmo, 'mica/variable/' . $variable_harmonization_algorithm['var_id'], array(
       'query' => array(
         'title' => $key_var_harmo
       )
-    )); ?></h4>
+    )); ?></h3>
 
 
   <div class="algo-list">

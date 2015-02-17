@@ -113,9 +113,9 @@ if (empty($query)) {
           <!--          <a href="#" class="btn btn-success md-top-margin pull-right"><i class="glyphicon glyphicon-download right-indent"></i>Download</a>-->
 
           <div>
-            <h3 id="<?php print $taxonomy_coverage->taxonomy->name; ?>">
+            <h2 id="<?php print $taxonomy_coverage->taxonomy->name; ?>">
               <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage->taxonomy, 'titles'); ?>
-            </h3>
+            </h2>
 
             <p class="help-block">
               <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage->taxonomy, 'descriptions'); ?>

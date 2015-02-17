@@ -5,7 +5,7 @@
 ?>
 <?php if (!empty($tab_var)): ?>
   <section>
-    <h3><?php print $title_section ?></h3>
+    <h2><?php print $title_section ?></h2>
 
     <div>
       <?php print $tab_var; ?>

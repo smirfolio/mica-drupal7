@@ -165,7 +165,7 @@
       function getQueryFromUrl() {
         var messageError = '<div class="alert alert-block alert-warning">' +
           '<a class="close" data-dismiss="alert" href="#">×</a>' +
-          '<h4 class="element-invisible">Warning message</h4> ' + Drupal.settings.ErrorMessage +
+          '<h3 class="element-invisible">Warning message</h3> ' + Drupal.settings.ErrorMessage +
           ' </div>';
         var qs = isAjax ?  window.location.hash.replace(/^#!/, '') :
           window.location.search.replace(/^\?/, '');

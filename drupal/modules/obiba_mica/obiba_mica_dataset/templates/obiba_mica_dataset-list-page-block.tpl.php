@@ -1,13 +1,13 @@
 <?php if (!empty($dataset)): ?>
   <div class="row sm-bottom-margin document-item-list flex-row">
     <div class="col-md-12  col-sm-12 col-xs-12">
-    <h4>
+    <h3>
         <?php
         $acronym = obiba_mica_commons_get_localized_field($dataset, 'acronym');
         $name = obiba_mica_commons_get_localized_field($dataset, 'name');
         print l($acronym == $name ? $acronym : $acronym . ' - ' . $name,
           'mica/' . obiba_mica_dataset_type($dataset) . '/' . $dataset->id); ?>
-      </h4>
+      </h3>
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>

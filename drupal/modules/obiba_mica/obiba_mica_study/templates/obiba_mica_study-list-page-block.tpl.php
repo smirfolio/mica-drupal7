@@ -14,13 +14,13 @@
   </div>
   <div class="col-md-10  col-sm-12 col-xs-12">
     <div>
-      <h4>
+      <h3>
         <?php
         $acronym = obiba_mica_commons_get_localized_field($study, 'acronym');
         $name = obiba_mica_commons_get_localized_field($study, 'name');
         print l($acronym == $name ? $acronym : $acronym . ' - ' . $name,
           'mica/study/' . $study->id); ?>
-      </h4>
+      </h3>
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>

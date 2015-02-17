@@ -50,7 +50,7 @@
       <div class="tab-pane active" id="variables">
         <article>
           <section>
-            <h3 class="pull-left"><?php print t('Variables') ?></h3>
+            <h2 class="pull-left"><?php print t('Variables') ?></h2>
 
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($variable_search_form) ?>
@@ -81,7 +81,7 @@
       <div class="tab-pane" id="datasets">
         <article>
           <section>
-            <h3 class="pull-left"><?php print t('Datasets') ?></h3>
+            <h2 class="pull-left"><?php print t('Datasets') ?></h2>
 
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($dataset_search_form) ?>
@@ -113,7 +113,7 @@
       <div class="tab-pane" id="studies">
         <article>
           <section>
-            <h3 class="pull-left"><?php print t('Studies') ?></h3>
+            <h2 class="pull-left"><?php print t('Studies') ?></h2>
 
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($study_search_form) ?>
@@ -144,7 +144,7 @@
       <div class="tab-pane" id="networks">
         <article>
           <section>
-            <h3 class="pull-left"><?php print t('Networks') ?></h3>
+            <h2 class="pull-left"><?php print t('Networks') ?></h2>
 
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($network_search_form) ?>
