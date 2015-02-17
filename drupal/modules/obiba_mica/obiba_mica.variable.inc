@@ -144,10 +144,46 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['datasets_column_type'] = array(
+    'title' => t('Show type dataset column'),
+    'description' => t('Show type dataset column in the datasets table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['datasets_column_networks'] = array(
+    'title' => t('Show networks column'),
+    'description' => t('Show networks column in the datasets table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['datasets_column_studies'] = array(
+    'title' => t('Show studies column'),
+    'description' => t('Show studies column in the datasets table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['datasets_column_variables'] = array(
+    'title' => t('Show variables column'),
+    'description' => t('Show variables column in the datasets table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 
   $variable['search_variables'] = array(
     'title' => t('Show variables search'),
-    'description' => t('If Show Show variables search is selected, the studies tab will be displayed in the search page.'),
+    'description' => t('If Show variables search is selected, the studies tab will be displayed in the search page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['variables_column_study'] = array(
+    'title' => t('Show study column'),
+    'description' => t('Show study column in the variables table.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['variables_column_dataset'] = array(
+    'title' => t('Show dataset column'),
+    'description' => t('Show dataset column in the variables table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );

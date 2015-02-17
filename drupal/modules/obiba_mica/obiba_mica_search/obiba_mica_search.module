@@ -568,34 +568,35 @@ function obiba_mica_search_variables_table($variables) {
         !empty($variable_label) ? $variable_label : '-',
       );
 
-      if (!empty($variable->studyId)) {
-        $row[] = l($study_name, 'mica/study/' . $variable->studyId);
-        $has_study = TRUE;
+      $display_study_column = variable_get_value('variables_column_study');
+      if (!empty($display_study_column)) {
+        if (!empty($variable->studyId)) {
+          $row[] = l($study_name, 'mica/study/' . $variable->studyId);
+          $has_study = TRUE;
+        }
       }
 
-      $row[] = l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId);
+      $display_dataset_column = variable_get_value('variables_column_dataset');
+      if (!empty($display_dataset_column)) {
+        $row[] = l($dataset_name, 'mica/' . $dataset_type . '/' . $variable->datasetId);
+      }
       $rows[] = $row;
     }
   }
 
   // this is just a temporary trick to hide an empty column
   // study count with search link is expected instead
-  if ($has_study) {
+  if ($has_study && (!empty($display_study_column) || !empty($display_dataset_column))) {
     for ($i = 0; $i < count($rows); $i++) {
-      if (count($rows[$i]) == 3) {
+      if (count($rows[$i]) == 1 + ($display_study_column + $display_dataset_column)) {
         $rows[$i][] = '-';
       }
     }
   }
 
-  $headers = array(
-    t('Variable'),
-    t('Label')
-  );
-  if ($has_study) {
-    $headers[] = t('Study');
-  }
-  $headers[] = t('Dataset');
+  $headers_param = _obiba_mica_search_get_header_variables_table($has_study);
+  $headers = $headers_param['header'];
+
   pager_default_initialize($total_hits, MicaSearchResource::SIZE_RESPONSE);
   return '<div class="scroll-content-tab">' . theme(
     'table',
@@ -603,9 +604,29 @@ function obiba_mica_search_variables_table($variables) {
       'header' => $headers,
       'rows' => $rows, // empty($chunks) ? array() : $chunks[$current_page],
       'empty' => t('No variable found')
-
     )
   ) . '</div>' . theme('pager');
+}
+
+function _obiba_mica_search_get_header_variables_table($has_study = NULL) {
+  $params_column_display = array(
+    0 => '',
+    1 => '',
+    2 => variable_get_value('variables_column_study'),
+    3 => variable_get_value('variables_column_dataset')
+  );
+  $headers = array();
+  $headers[] = t('Variable');
+  $headers[] = t('Label');
+  if (!empty($has_study) && !empty($params_column_display[2])) {
+    $headers[] = t('Study');
+  }
+  if (!empty($params_column_display[3])) {
+    $headers[] = t('Dataset');
+  }
+  $headers_params['header'] = $headers;
+  $headers_params['params'] = $params_column_display;
+  return $headers_params;
 }
 
 function _obiba_mica_search_get_sub_header_studies_table() {
@@ -737,8 +758,8 @@ function obiba_mica_search_studies_table($studies) {
 
       $column_row[] = l(obiba_mica_commons_get_localized_field($study, 'acronym'), 'mica/study/' . $study->id);
       $column_row[] = $name;
-      $study_column_type = variable_get_value('studies_column_design');
-      if (!empty($study_column_type)) {
+      $study_column_design = variable_get_value('studies_column_design');
+      if (!empty($study_column_design)) {
         $column_row[] = implode(', ', t(obiba_mica_commons_clean_string($study->designs)));
       }
 
@@ -857,6 +878,7 @@ function obiba_mica_search_datasets_table($datasets) {
     $total_hits = $datasets->getTotalHits();
     $summaries = $datasets->getSummaries();
     foreach ($summaries as $dataset) {
+      $row = array();
       $query_datasets_param =
         MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('datasetId' => $dataset->id))));
 
@@ -878,47 +900,51 @@ function obiba_mica_search_datasets_table($datasets) {
         $type_dataset = t('Harmonization');
       }
       $name = obiba_mica_commons_get_localized_field($dataset, 'name');
-      $rows[] = array(
-        l(obiba_mica_commons_get_localized_field($dataset, 'acronym'), 'mica/' . $type_dataset_link . '/' . $dataset->id),
-        $name,
-        $type_dataset,
-        !empty($count_networks) ?
+      $row[] = l(obiba_mica_commons_get_localized_field($dataset, 'acronym'), 'mica/' . $type_dataset_link . '/' . $dataset->id);
+      $row[] = $name;
+      $dataset_column_type = variable_get_value('datasets_column_type');
+      if (!empty($dataset_column_type)) {
+        $row[] = $type_dataset;
+      }
+      $dataset_column_networks = variable_get_value('datasets_column_networks');
+      if (!empty($dataset_column_networks)) {
+        $row[] = !empty($count_networks) ?
           l($count_networks, 'mica/search', array(
             'query' => array(
               'type' => 'networks',
               'query' => $query_datasets_param
             )
           ))
-          : '--',
-        !empty($count_studies) ?
+          : '--';
+      }
+      $dataset_column_studies = variable_get_value('datasets_column_studies');
+      if (!empty($dataset_column_studies)) {
+        $row[] = !empty($count_studies) ?
           l($count_studies, 'mica/search', array(
             'query' => array(
               'type' => 'studies',
               'query' => $query_datasets_param
             )
           ))
-          : '--',
-        !empty($count_variables) ?
+          : '--';
+      }
+      $dataset_column_variables = variable_get_value('datasets_column_variables');
+      if (!empty($dataset_column_variables)) {
+        $row[] = !empty($count_variables) ?
           l($count_variables, 'mica/search', array(
             'query' => array(
               'type' => 'variables',
               'query' => $query_datasets_param
             )
           ))
-          : '--'
-
-      );
+          : '--';
+      }
+      $rows[] = $row;
     }
+
   }
 
-  $headers = array(
-    t('Acronym'),
-    t('Name'),
-    t('Type'),
-    t('Networks'),
-    t('Studies'),
-    t('Variables'),
-  );
+  $headers = _obiba_mica_search_get_header_datasets_table();
 
   pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
   return '<div class="scroll-content-tab">' . theme(
@@ -929,6 +955,33 @@ function obiba_mica_search_datasets_table($datasets) {
       'empty' => t('No dataset found'),
     )
   ) . '</div>' . theme('pager');
+}
+
+function _obiba_mica_search_get_header_datasets_table() {
+  $params_column_display = array(
+    0 => '',
+    1 => '',
+    2 => variable_get_value('datasets_column_type'),
+    3 => variable_get_value('datasets_column_networks'),
+    4 => variable_get_value('datasets_column_studies'),
+    5 => variable_get_value('datasets_column_variables')
+  );
+  $headers = array();
+  $headers[] = t('Acronym');
+  $headers[] = t('Name');
+  if (!empty($params_column_display[2])) {
+    $headers[] = t('Type');
+  }
+  if (!empty($params_column_display[3])) {
+    $headers[] = t('Networks');
+  }
+  if (!empty($params_column_display[4])) {
+    $headers[] = t('Studies');
+  }
+  if (!empty($params_column_display[5])) {
+    $headers[] = t('Variables');
+  }
+  return $headers;
 }
 
 function _obiba_mica_search_get_sub_header_networks_table() {
@@ -989,8 +1042,6 @@ function _obiba_mica_search_get_sub_header_networks_table() {
 
 function obiba_mica_search_networks_table($networks) {
   $rows = array();
-  $total_hits = 0;
-  $headers_columns = array();
   if (!empty($networks)) {
     $total_hits = $networks->getTotalHits();
     $headers_columns = _obiba_mica_search_get_sub_header_networks_table();
