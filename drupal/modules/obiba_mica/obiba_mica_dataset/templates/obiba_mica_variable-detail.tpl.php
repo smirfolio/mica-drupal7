@@ -121,16 +121,9 @@
             <tbody>
             <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
               <tr>
-                <td>
-                  <h4>
-                    <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
-                  </h4>
-
-                  <p class="help-block">
-                    <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>
-                  </p>
-                </td>
-
+                <th data-toggle="tooltip" title="<?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>">
+                  <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
+                </th>
                 <td>
                   <?php if (count($termAttribute->terms == 1)): ?>
                     <p data-toggle="tooltip"
