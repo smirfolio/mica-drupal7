@@ -614,7 +614,7 @@ function _obiba_mica_search_get_sub_header_studies_table() {
   $column_studies_param = array(
     0 => '',
     1 => '',
-    2 => variable_get_value('studies_column_type'),
+    2 => variable_get_value('studies_column_design'),
     3 => variable_get_value('studies_column_questionnaire'),
     4 => variable_get_value('studies_column_pm'),
     5 => variable_get_value('studies_column_bio'),
@@ -631,7 +631,7 @@ function _obiba_mica_search_get_sub_header_studies_table() {
   $rows_column[] = '';
 
   if ($column_studies_param[2]) {
-    $headers[] = t('Type');
+    $headers[] = t('Design');
     $rows_column[] = '';
   }
   $colspan_datasources = $column_studies_param[3] + $column_studies_param[4] + $column_studies_param[5] + $column_studies_param[6];
@@ -737,7 +737,7 @@ function obiba_mica_search_studies_table($studies) {
 
       $column_row[] = l(obiba_mica_commons_get_localized_field($study, 'acronym'), 'mica/study/' . $study->id);
       $column_row[] = $name;
-      $study_column_type = variable_get_value('studies_column_type');
+      $study_column_type = variable_get_value('studies_column_design');
       if (!empty($study_column_type)) {
         $column_row[] = implode(', ', t(obiba_mica_commons_clean_string($study->designs)));
       }
@@ -829,7 +829,7 @@ function obiba_mica_search_studies_table($studies) {
       array(
         'header' => $headers,
         'rows' => $rows,
-        variable_get_value('studies_column_type'),
+        variable_get_value('studies_column_design'),
         'empty' => t('No study found'),
         'attributes' => array(
           'id' => 'studies-results',
