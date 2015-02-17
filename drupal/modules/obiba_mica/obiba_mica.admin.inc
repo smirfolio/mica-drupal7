@@ -92,7 +92,7 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('search_networks'),
     '#description' => $info['description'],
   );
-  /************Network columns********************/
+  /*############***********Network columns**********############**********/
   $form['search_display_settings']['networks_column'] = array(
     '#type' => 'fieldset',
     '#title' => t('Network column display settings'),
@@ -135,6 +135,82 @@ function obiba_mica_admin_settings() {
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('search_studies'),
+    '#description' => $info['description'],
+  );
+  /*############***********studies columns**********############**********/
+  $form['search_display_settings']['studies_column'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Study column display settings'),
+    '#collapsible' => FALSE,
+  );
+  $info = variable_get_info('studies_column_type');
+  $form['search_display_settings']['studies_column']['studies_column_type'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_type'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_questionnaire');
+  $form['search_display_settings']['studies_column']['studies_column_questionnaire'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_questionnaire'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_pm');
+  $form['search_display_settings']['studies_column']['studies_column_pm'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_pm'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_bio');
+  $form['search_display_settings']['studies_column']['studies_column_bio'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_bio'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_other');
+  $form['search_display_settings']['studies_column']['studies_column_other'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_other'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_participants');
+  $form['search_display_settings']['studies_column']['studies_column_participants'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_participants'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_networks');
+  $form['search_display_settings']['studies_column']['studies_column_networks'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_networks'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_study_datasets');
+  $form['search_display_settings']['studies_column']['studies_column_study_datasets'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_study_datasets'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_harmonization_datasets');
+  $form['search_display_settings']['studies_column']['studies_column_harmonization_datasets'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_harmonization_datasets'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_variables');
+  $form['search_display_settings']['studies_column']['studies_column_variables'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_variables'),
     '#description' => $info['description'],
   );
 

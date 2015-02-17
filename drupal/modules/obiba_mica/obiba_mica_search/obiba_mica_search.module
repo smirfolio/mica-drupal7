@@ -608,29 +608,103 @@ function obiba_mica_search_variables_table($variables) {
   ) . '</div>' . theme('pager');
 }
 
+function _obiba_mica_search_get_sub_header_studies_table() {
+  $rows_column = array();
+  $headers = array();
+  $column_studies_param = array(
+    0 => '',
+    1 => '',
+    2 => variable_get_value('studies_column_type'),
+    3 => variable_get_value('studies_column_questionnaire'),
+    4 => variable_get_value('studies_column_pm'),
+    5 => variable_get_value('studies_column_bio'),
+    6 => variable_get_value('studies_column_other'),
+    7 => variable_get_value('studies_column_participants'),
+    8 => variable_get_value('studies_column_networks'),
+    9 => variable_get_value('studies_column_study_datasets'),
+    10 => variable_get_value('studies_column_harmonization_datasets'),
+    11 => variable_get_value('studies_column_variables')
+  );
+  $headers[] = array('data' => t('Acronym'), 'class' => 'col-sm-1');
+  $rows_column[] = '';
+  $headers[] = array('data' => t('Name'), 'class' => 'col-sm-3');
+  $rows_column[] = '';
+
+  if ($column_studies_param[2]) {
+    $headers[] = t('Type');
+    $rows_column[] = '';
+  }
+  $colspan_datasources = $column_studies_param[3] + $column_studies_param[4] + $column_studies_param[5] + $column_studies_param[6];
+
+  if ($colspan_datasources > 0) {
+    $headers[] = array(
+      'data' => t('Data Sources Available'),
+      'colspan' => $colspan_datasources,
+      'class' => 'checkebox'
+    );
+
+    if (!empty($column_studies_param[3])) {
+      $rows_column[] = t('Quest');
+    }
+    if (!empty($column_studies_param[4])) {
+      $rows_column[] = t('PM');
+    }
+    if (!empty($column_studies_param[5])) {
+      $rows_column[] = t('Bio');
+    }
+    if (!empty($column_studies_param[6])) {
+      $rows_column[] = t('Others');
+    }
+  }
+  if ($column_studies_param[7]) {
+    $headers[] = array('data' => t('Participants'));
+    $rows_column[] = '';
+  }
+  if ($column_studies_param[8]) {
+    $headers[] = array('data' => t('Networks'));
+    $rows_column[] = '';
+  }
+
+  $colspan_datasets = $column_studies_param[9] + $column_studies_param[10];
+  if ($colspan_datasets > 0) {
+    $headers[] = array('data' => t('Datasets'), 'colspan' => $colspan_datasets);
+    if (!empty($column_studies_param[9])) {
+      $rows_column[] = t('Study');
+    }
+    if (!empty($column_studies_param[10])) {
+      $rows_column[] = t('Harmonization');
+    }
+  }
+
+  if (!empty($column_studies_param[11])) {
+    $headers[] = array('data' => t('Variables'));
+    $rows_column[] = '';
+  }
+  if ($colspan_datasets == 0 && $colspan_datasources == 0) {
+    $rows_column = NULL;
+  }
+  $headers_columns['headers'] = $headers;
+  $headers_columns['rows_column'] = $rows_column;
+  return $headers_columns;
+}
+
 function obiba_mica_search_studies_table($studies) {
   $rows = array();
   $total_hits = 0;
+  $headers_columns = array();
 
   if (!empty($studies)) {
     $total_hits = $studies->getTotalHits();
     $summaries = $studies->getSummaries();
-    $rows[] = array(
-      '',
-      '',
-      '',
-      t('Quest'),
-      t('PM'),
-      t('Bio'),
-      t('Others'),
-      '',
-      '',
-      t('Study'),
-      t('Harmonization'),
-      ''
-    );
+
+    $headers_columns = _obiba_mica_search_get_sub_header_studies_table();
+
+    if (!empty($headers_columns['rows_column'])) {
+      $rows[] = $headers_columns['rows_column'];
+    }
 
     foreach ($summaries as $study) {
+      $column_row = array();
       $query_studies_param =
         MicaClient::add_parameter_dto_query_link(array(
           'studies' => array('terms' => array('studyIds' => $study->id))
@@ -661,99 +735,109 @@ function obiba_mica_search_studies_table($studies) {
 
       $name = obiba_mica_commons_get_localized_field($study, 'name');
 
-      $rows[] = array(
-        /*acronym*/
-        l(obiba_mica_commons_get_localized_field($study, 'acronym'), 'mica/study/' . $study->id),
-        /*name*/
-        $name,
-        /*Type*/
-        implode(', ', t(obiba_mica_commons_clean_string($study->designs))),
-        /*Quest-DSA*/
-        array(
+      $column_row[] = l(obiba_mica_commons_get_localized_field($study, 'acronym'), 'mica/study/' . $study->id);
+      $column_row[] = $name;
+      $study_column_type = variable_get_value('studies_column_type');
+      if (!empty($study_column_type)) {
+        $column_row[] = implode(', ', t(obiba_mica_commons_clean_string($study->designs)));
+      }
+
+      $study_column_quest = variable_get_value('studies_column_questionnaire');
+      if (!empty($study_column_quest)) {
+        $column_row[] = array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'questionnaires') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
-        ),
-        /*PM-DSA*/
-        array(
+        );
+      }
+      $study_column_pm = variable_get_value('studies_column_pm');
+      if (!empty($study_column_pm)) {
+        $column_row[] = array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'physical_measures') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
-        ),
-        /*Bio-DSA*/
-        array(
+        );
+      }
+      $study_column_bio = variable_get_value('studies_column_bio');
+      if (!empty($study_column_bio)) {
+        $column_row[] = array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'biological_samples') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
-        ),
-        /*Others-DSA*/
-        array(
+        );
+      }
+      $study_column_other = variable_get_value('studies_column_other');
+      if (!empty($study_column_other)) {
+        $column_row[] = array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'others') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
           'class' => 'checkebox'
-        ),
-        /*Participants*/
-        isset($study->targetNumber->noLimit) ? t('No Limit') :
-          isset($study->targetNumber->number) ? $study->targetNumber->number : NULL,
-        /*Networks*/
-        !empty($number_networks_study) ?
+        );
+      }
+      $study_column_participant = variable_get_value('studies_column_participants');
+      if (!empty($study_column_participant)) {
+        $column_row[] = isset($study->targetNumber->noLimit) ? t('No Limit') :
+          isset($study->targetNumber->number) ? $study->targetNumber->number : NULL;
+      }
+      $study_column_networks = variable_get_value('studies_column_networks');
+      if (!empty($study_column_networks)) {
+        $column_row[] = !empty($number_networks_study) ?
           l($number_networks_study, 'mica/search', array(
             'query' => array(
               'type' => 'networks',
               'query' => $query_studies_param
             )
-          )) : '-',
-        /*Study-dataset*/
-        !empty($number_table_study_study) ? l($number_table_study_study, 'mica/search', array(
+          )) : '-';
+      }
+      $study_column_study_datasets = variable_get_value('studies_column_study_datasets');
+      if (!empty($study_column_study_datasets)) {
+        $column_row[] = !empty($number_table_study_study) ? l($number_table_study_study, 'mica/search', array(
           'query' => array(
             'type' => 'datasets',
             'query' => $query_studies_param_dataset
           )
-        )) : '-',
-        /*Harmonization-dataset*/
-        !empty($number_tables_study_harmo) ? l($number_tables_study_harmo, 'mica/search', array(
+        )) : '-';
+      }
+      $study_column_harmonization_datasets = variable_get_value('studies_column_harmonization_datasets');
+      if (!empty($study_column_harmonization_datasets)) {
+        $column_row[] = !empty($number_tables_study_harmo) ? l($number_tables_study_harmo, 'mica/search', array(
           'query' => array(
             'type' => 'datasets',
             'query' => $query_studies_param_harmo
           )
-        )) : '-',
-        /*Variables*/
-        !empty($number_variables) ?
+        )) : '-';
+      }
+
+      $study_column_variables = variable_get_value('studies_column_variables');
+      if (!empty($study_column_variables)) {
+        $column_row[] = !empty($number_variables) ?
           l($number_variables, 'mica/search', array(
             'query' => array(
               'type' => 'variables',
               'query' => $query_studies_param
             )
           ))
-          : '-',
-      );
-    }
-  }
-// t('Quest'), t('PM'), t('Bio'),t('Others'),
-  $headers = array(
-    array('data' => t('Acronym'), 'class' => 'col-sm-1'),
-    array('data' => t('Name'), 'class' => 'col-sm-3'),
-    array('data' => t('Type'), 'class' => 'col-sm-1'),
-    array('data' => t('Data Sources Available'), 'colspan' => 4, 'class' => 'col-sm-3 checkebox'),
-    array('data' => t('Participants'), 'class' => 'col-sm-1'),
-    array('data' => t('Networks'), 'class' => 'col-sm-1'),
-    array('data' => t('Datasets'), 'colspan' => 2, 'class' => 'col-sm-2'),
-    array('data' => t('Variables'), 'class' => 'col-sm-1'),
-  );
+          : '-';
+      }
 
-  pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
-  return '<div class="scroll-content-tab">' . theme(
-    'table',
-    array(
-      'header' => $headers,
-      'rows' => $rows,
-      'empty' => t('No study found'),
-      'attributes' => array(
-        'id' => 'studies-results',
-        'class' => array('table-bordered', 'table-hover', 'table-condensed')
+      $rows[] = $column_row;
+    }
+    $headers = $headers_columns['headers'];
+    pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
+    return '<div class="scroll-content-tab">' . theme(
+      'table',
+      array(
+        'header' => $headers,
+        'rows' => $rows,
+        variable_get_value('studies_column_type'),
+        'empty' => t('No study found'),
+        'attributes' => array(
+          'id' => 'studies-results',
+          'class' => array('table-bordered', 'table-hover', 'table-condensed')
+        )
       )
-    )
-  ) . '</div>' . theme('pager');
+    ) . '</div>' . theme('pager');
+  }
 }
 
 function obiba_mica_search_has_datasource($data_sources, $value) {
@@ -847,7 +931,7 @@ function obiba_mica_search_datasets_table($datasets) {
   ) . '</div>' . theme('pager');
 }
 
-function _obiba_mica_search_get_sub_header_netowrks_table() {
+function _obiba_mica_search_get_sub_header_networks_table() {
   $rows_column = array();
   $headers = array();
   $column_networks_param = array(
@@ -885,7 +969,7 @@ function _obiba_mica_search_get_sub_header_netowrks_table() {
       if (!empty($column_networks_param[3])) {
         $rows_column[] = t('Study');
       }
-      if (!empty($column_networks_param[4])) {
+      if (!empty($cheaders_columnsolumn_networks_param[4])) {
         $rows_column[] = t('Harmonization');
       }
     }
@@ -906,10 +990,10 @@ function _obiba_mica_search_get_sub_header_netowrks_table() {
 function obiba_mica_search_networks_table($networks) {
   $rows = array();
   $total_hits = 0;
-
+  $headers_columns = array();
   if (!empty($networks)) {
     $total_hits = $networks->getTotalHits();
-    $headers_columns = _obiba_mica_search_get_sub_header_netowrks_table();
+    $headers_columns = _obiba_mica_search_get_sub_header_networks_table();
     if (!empty($headers_columns['rows_column'])) {
       $rows[] = $headers_columns['rows_column'];
     }
@@ -991,24 +1075,23 @@ function obiba_mica_search_networks_table($networks) {
       }
       $rows[] = $rows_columns;
     }
-  }
+    $headers = $headers_columns['headers'];
 
-  $headers = $headers_columns['headers'];
+    pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
 
-  pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
-
-  return '<div class="scroll-content-tab">' . theme(
-    'table',
-    array(
-      'header' => $headers,
-      'rows' => $rows,
-      'empty' => t('No network found'),
-      'attributes' => array(
-        'id' => 'networks-results',
-        'class' => array('table-bordered', 'table-hover', 'table-condensed')
+    return '<div class="scroll-content-tab">' . theme(
+      'table',
+      array(
+        'header' => $headers,
+        'rows' => $rows,
+        'empty' => t('No network found'),
+        'attributes' => array(
+          'id' => 'networks-results',
+          'class' => array('table-bordered', 'table-hover', 'table-condensed')
+        )
       )
-    )
-  ) . '</div>' . theme('pager');
+    ) . '</div>' . theme('pager');
+  }
 }
 
 function obiba_mica_search_get_studies_count_from_dto($dto) {
