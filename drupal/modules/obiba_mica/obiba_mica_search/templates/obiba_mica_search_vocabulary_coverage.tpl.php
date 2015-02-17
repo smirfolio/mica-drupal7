@@ -14,9 +14,9 @@
       $term_names[] = $term_coverage->term->name;
     }
   } ?>
-  <h4 id="<?php print $taxonomy->name . '-' . $vocabulary_coverage->vocabulary->name; ?>">
+  <h3 id="<?php print $taxonomy->name . '-' . $vocabulary_coverage->vocabulary->name; ?>">
     <?php print obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles'); ?>
-  </h4>
+  </h3>
 
   <p class="help-block">
     <?php print obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'descriptions'); ?>

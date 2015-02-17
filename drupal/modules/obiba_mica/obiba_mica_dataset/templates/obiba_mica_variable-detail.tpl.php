@@ -8,7 +8,7 @@
 
   <div class="row">
     <div class="col-lg-6 col-xs-12 ">
-      <h3><?php print t('Overview') ?></h3>
+      <h2><?php print t('Overview') ?></h2>
 
       <table class="table table-striped">
         <tbody>
@@ -108,11 +108,11 @@
     <div class="col-lg-6 col-xs-12">
       <!-- Taxonomy terms -->
       <?php if (!empty($variable_dto->termAttributes)): ?>
-        <h3><?php print t('Classification') ?></h3>
+        <h2><?php print t('Classification') ?></h2>
         <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
-          <h4>
+          <h3>
             <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
-          </h4>
+          </h3>
           <p class="help-block">
             <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>
           </p>
@@ -122,9 +122,9 @@
             <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
               <tr>
                 <td>
-                  <h5>
+                  <h4>
                     <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
-                  </h5>
+                  </h4>
 
                   <p class="help-block">
                     <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>
@@ -164,7 +164,7 @@
 <!-- CATEGORIES -->
 <?php if (!empty($variable_dto->categories)): ?>
   <section>
-    <h3><?php print t('Categories') ?></h3>
+    <h2><?php print t('Categories') ?></h2>
     <?php print obiba_mica_variable_get_categories($variable_dto->categories); ?>
   </section>
 <?php endif; ?>
@@ -172,7 +172,7 @@
 <!-- STATISTICS -->
 <?php if(variable_get_value('mica_statistics')): ?>
 <section>
-  <h3><?php print t('Statistics') ?></h3>
+  <h2><?php print t('Statistics') ?></h2>
 
   <div class="scroll-content-tab">
     <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
@@ -191,7 +191,7 @@
 
 <?php if ($variable_dto->variableType != 'Study'): ?>
   <section>
-    <h3><?php print t('Harmonization') ?></h3>
+    <h2><?php print t('Harmonization') ?></h2>
     <?php print render($harmonization_table_legend); ?>
     <?php if ($variable_dto->variableType == 'Dataschema'): ?>
       <div class="scroll-content-tab">
@@ -253,10 +253,10 @@
 
       <?php if ($variable_harmonization['status'] == 'complete'): ?>
         <?php if (!empty($variable_harmonization['algorithm'])): ?>
-          <h3><?php print t('Algorithm') ?></h3>
+          <h2><?php print t('Algorithm') ?></h2>
           <?php print $variable_harmonization['algorithm']; ?>
         <?php else: ?>
-          <h5><?php print t('Script'); ?></h5>
+          <h4><?php print t('Script'); ?></h4>
           <pre class="prettyprint lang-js">
             <?php print $variable_harmonization['script']; ?>
           </pre>

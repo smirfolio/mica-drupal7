@@ -50,7 +50,7 @@
 <div class="row">
 <div class="col-lg-6 col-xs-12 ">
   <!-- GENERAL INFORMATION -->
-  <h3 id="overview"><?php print t('Overview') ?></h3>
+  <h2 id="overview"><?php print t('Overview') ?></h2>
 
   <table class="table table-striped">
     <tbody>
@@ -154,7 +154,7 @@
 </div>
 <div class="col-lg-6  col-xs-12">
   <!-- GENERAL DESIGN -->
-  <h3 id="design"><?php print t('Design') ?></h3>
+  <h2 id="design"><?php print t('Design') ?></h2>
 
   <table class="table table-striped">
     <tbody>
@@ -259,7 +259,7 @@
   <div class="row">
     <div class="col-lg-6 col-xs-12">
       <!-- ACCESS -->
-      <h3 id="access"><?php print t('Access') ?></h3>
+      <h2 id="access"><?php print t('Access') ?></h2>
 
       <?php if (!empty($study_dto->access) && (in_array('data', $study_dto->access) ||
           in_array('bio_samples', $study_dto->access) ||
@@ -321,7 +321,7 @@
     <div class="col-lg-6 col-xs-12">
       <!-- MARKER PAPER -->
       <?php if (!empty($study_dto->markerPaper) || !empty($study_dto->pubmedId)): ?>
-        <h3 id="marker"><?php print t('Marker Paper') ?></h3>
+        <h2 id="marker"><?php print t('Marker Paper') ?></h2>
         <?php if (!empty($study_dto->markerPaper)): ?>
           <p><?php print $study_dto->markerPaper; ?></p>
         <?php endif; ?>
@@ -341,7 +341,7 @@
 <!-- SUPPLEMENTARY INFORMATION -->
 <?php if (!empty($study_dto->info)): ?>
   <section>
-    <h3 id="info"><?php print t('Supplementary Information'); ?></h3>
+    <h2 id="info"><?php print t('Supplementary Information'); ?></h2>
 
     <p><?php print obiba_mica_commons_get_localized_field($study_dto, 'info'); ?></p>
   </section>
@@ -350,7 +350,7 @@
 <!-- TIMELINE -->
 <?php if (!empty($timeline)): ?>
   <section>
-    <h3 id="timeline"><?php print t('Timeline'); ?></h3>
+    <h2 id="timeline"><?php print t('Timeline'); ?></h2>
 
     <p>
       <?php print t('Each colour in the timeline graph below represents a separate Study Population, while each segment in the graph represents a separate Data Collection Event. Clicking on a segment gives more detailed information on a Data Collection Event.') ?>
@@ -365,10 +365,10 @@
 <!-- POPULATIONS -->
 <?php if (!empty($populations)): ?>
   <section>
-    <h3 id="populations"><?php if (count($populations) > 1) {
+    <h2 id="populations"><?php if (count($populations) > 1) {
         print t('Populations');
       }
-      else print t('Population') ?></h3>
+      else print t('Population') ?></h2>
     <?php if (count($populations) == 1): ?>
       <?php print array_pop($populations)['html']; ?>
     <?php else: ?>
@@ -408,7 +408,7 @@
 <!-- DOCUMENTS -->
 <?php if (!empty($study_dto->attachments)): ?>
   <section>
-    <h3 id="documents"><?php print t('Documents'); ?></h3>
+    <h2 id="documents"><?php print t('Documents'); ?></h2>
 
     <div>
       <?php if (!empty($study_attachements)): ?>
@@ -423,7 +423,7 @@
 <!-- NETWORKS -->
 <?php if (!empty($networks)): ?>
   <section>
-    <h3 id="networks"><?php print t('Networks'); ?></h3>
+    <h2 id="networks"><?php print t('Networks'); ?></h2>
 
     <div class="scroll-content-tab">
       <?php print $networks; ?>
@@ -434,7 +434,7 @@
 <!-- DATASETS -->
 <?php if (!empty($datasets)): ?>
   <section>
-    <h3 id="datasets"><?php print t('Datasets'); ?></h3>
+    <h2 id="datasets"><?php print t('Datasets'); ?></h2>
 
     <div class="scroll-content-tab">
       <?php print render($datasets['dataset-tab']); ?>
@@ -448,9 +448,9 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-3 right-indent">
-          <h3 id="variables"><?php print t('Variables') ?></h3>
+          <h2 id="variables"><?php print t('Variables') ?></h2>
 
-          <h5><?php print t('Number of variables') ?></h5>
+          <h4><?php print t('Number of variables') ?></h4>
 
           <p>
             <?php print $study_variables_aggs['total_hits']; ?>
@@ -475,9 +475,9 @@
 <!-- COVERAGE -->
 <?php if (!empty($coverage)): ?>
   <section>
-    <h3 id="coverage"><?php print t('Classifications Coverage') ?></h3>
+    <h2 id="coverage"><?php print t('Classifications Coverage') ?></h2>
     <?php foreach ($coverage as $taxonomy_coverage): ?>
-      <h4><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
+      <h3><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h3>
 
       <p class="help-block">
         <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>

@@ -7,7 +7,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title"><?php print $dce_name ?></h4>
+        <h3 class="modal-title"><?php print $dce_name ?></h3>
       </div>
       <div class="modal-body">
 
