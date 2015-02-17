@@ -271,7 +271,6 @@ function obiba_bootstrap_preprocess_html(&$variables) {
 
 function obiba_bootstrap_letters_badge_title() {
   $current_item = explode('/', current_path());
-
   if (!empty($current_item[0]) && $current_item[0] != 'mica') {
     return NULL;
   }
@@ -293,12 +292,7 @@ function obiba_bootstrap_letters_badge_title() {
     }
 
     elseif (strstr($current_item[1], 'search')) {
-      if (!empty($_GET['type'])) {
-        return drupal_strtoupper(drupal_substr($_GET['type'], 0, 1));
-      }
-      else {
-        return 'V';
-      }
+      return 'search-icon';
     }
     else {
       return drupal_strtoupper(drupal_substr($current_item[1], 0, 1));
@@ -318,7 +312,7 @@ function obiba_bootstrap_preprocess_page(&$variables) {
   //add badge letter
   $first_letter_title = obiba_bootstrap_letters_badge_title();
   if (!empty($first_letter_title)) {
-    $variables['classes_array']['title_page'] = obiba_bootstrap_letters_badge_title();
+    $variables['classes_array']['title_page'] = $first_letter_title;
   }
   drupal_add_js('misc/jquery.cookie.js', 'file');
   // Add information about the number of sidebars.
