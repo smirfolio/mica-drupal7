@@ -68,11 +68,6 @@
         <?php endif; ?>
 
         <tr>
-          <th><?php print t('Entity Type'); ?></th>
-          <td><p><?php print t($variable_dto->entityType); ?></p></td>
-        </tr>
-
-        <tr>
           <th><?php print t('Value Type'); ?></th>
           <td><p><?php print t($variable_dto->valueType); ?></p></td>
         </tr>

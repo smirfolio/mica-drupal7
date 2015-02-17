@@ -60,11 +60,6 @@
         <?php endif; ?>
 
         <tr>
-          <th><?php print t('Entity Type'); ?></th>
-          <td><p><?php print t($dataset_dto->entityType); ?></p></td>
-        </tr>
-
-        <tr>
           <th><?php print t('Dataset Type'); ?></th>
           <td>
             <p>
