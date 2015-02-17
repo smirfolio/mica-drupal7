@@ -13,13 +13,13 @@
   </div>
   <div class="col-md-10  col-sm-12 col-xs-12">
     <div>
-      <h3>
+      <h4>
         <?php
         $acronym = obiba_mica_commons_get_localized_field($network, 'acronym');
         $name = obiba_mica_commons_get_localized_field($network, 'name');
         print l($acronym == $name ? $acronym : $acronym . ' - ' . $name,
           MicaClientPathProvider::network($network->id)); ?>
-      </h3>
+      </h4>
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>
@@ -31,7 +31,7 @@
             $objective = obiba_mica_commons_get_localized_field($network, 'description');;
             if (drupal_strlen($objective) >= 300) {
               print text_summary(strip_tags(obiba_mica_commons_markdown($objective)), 'html', 300)
-                . '... ' . l('Read More',
+                . '... ' . l('Read more',
                   'mica/network/' . $network->id);
             }
             else {
