@@ -84,8 +84,8 @@ function obiba_mica_variable_info($options) {
     'default' => TRUE,
   );
   $variable['studies_column_questionnaire'] = array(
-    'title' => t('Show questionnaire column'),
-    'description' => t('Show questionnaire column in the studies table.'),
+    'title' => t('Show questionnaires column'),
+    'description' => t('Show questionnaires column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );

@@ -4,7 +4,7 @@
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-        class="listImageThumb"/>
+           class="listImageThumb"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-N"></span>
@@ -52,17 +52,17 @@
       $studies = $counts->studies;
       $caption = $studies < 2 ? 'study' : 'studies';
       ?>
-      <?php if (!empty($studies)): ?>
+      <?php if (!empty($studies) && variable_get_value('networks_column_studies')): ?>
         <span class="label label-info right-indent">
           <?php print MicaClientAnchorHelper::network_studies(t('@count ' . $caption, array('@count' => $studies)), $network->id) ?>
         </span>
       <?php endif ?>
-      <?php if (!empty($datasets)): ?>
+      <?php if (!empty($datasets) && (variable_get_value('networks_column_study_datasets') || variable_get_value('networks_column_harmonization_datasets'))): ?>
         <span class="label label-info right-indent">
             <?php print MicaClientAnchorHelper::network_datasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $network->id) ?>
           </span>
       <?php endif ?>
-      <?php if (!empty($variables)): ?>
+      <?php if (!empty($variables) && variable_get_value('networks_column_variables')): ?>
         <span class="label label-info">
             <?php print MicaClientAnchorHelper::network_variables(t('@count ' . $vars_caption, array('@count' => $variables)), $network->id) ?>
           </span>

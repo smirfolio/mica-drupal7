@@ -39,17 +39,17 @@
         $networks = $counts->networks;
         $network_caption = $networks < 2 ? "network" : "networks";
         ?>
-        <?php if (!empty($networks)): ?>
+        <?php if (!empty($networks) && variable_get_value('datasets_column_networks')): ?>
           <span class="label label-info right-indent">
             <?php print MicaClientAnchorHelper::dataset_networks(t('@count ' . $network_caption, array('@count' => $networks)), $dataset->id) ?>
           </span>
         <?php endif ?>
-        <?php if (!empty($studies)): ?>
+        <?php if (!empty($studies) && variable_get_value('datasets_column_studies')): ?>
           <span class="label label-info right-indent">
             <?php print MicaClientAnchorHelper::dataset_studies(t('@count ' . $studies_caption, array('@count' => $studies)), $dataset->id) ?>
           </span>
         <?php endif ?>
-        <?php if (!empty($variables)): ?>
+        <?php if (!empty($variables) && variable_get_value('datasets_column_variables')): ?>
           <span class="label label-info">
             <?php print MicaClientAnchorHelper::dataset_variables(t('@count ' . $vars_caption, array('@count' => $variables)), $dataset->id) ?>
           </span>
