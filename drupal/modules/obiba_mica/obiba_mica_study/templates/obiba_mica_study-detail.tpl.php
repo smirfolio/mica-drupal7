@@ -357,7 +357,7 @@
   <section>
     <h2 id="timeline"><?php print t('Timeline'); ?></h2>
 
-    <p>
+    <p class="help-block">
       <?php print t('Each colour in the timeline graph below represents a separate Study Population, while each segment in the graph represents a separate Data Collection Event. Clicking on a segment gives more detailed information on a Data Collection Event.') ?>
     </p>
 
