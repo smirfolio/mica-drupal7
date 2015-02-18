@@ -10,7 +10,6 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
         <h3 class="modal-title"><?php print $dce_name ?></h3>
       </div>
       <div class="modal-body">
-
         <section>
           <div>
             <?php if (!empty($dce->description)): ?>
@@ -19,13 +18,10 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
               </p>
             <?php endif; ?>
 
-
-            <?php if (is_array($dce_variables_nbr) && array_key_exists($dce_name, $dce_variables_nbr)): ?>
-            <div class="pull-right md-bottom-margin">
+            <div class="pull-right md-bottom-margin dce-actions" style="display: none;"  data-dce-name="<?php print $dce_name ?>">
               <?php
               $query_array = array("variables" => array("terms" => array("dceIds" => $dce_uid)));
               $query = MicaClient::create_query_dto_as_string($query_array);
-
               print l(t('Search Variables'), 'mica/search',
                 array(
                   'query' => array(
@@ -35,22 +31,20 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                   'attributes' => array('class' => 'btn btn-primary')
                 ));
               ?>
-
-              <?php if (!empty($has_coverage)): ?>
-                <?php
+              <?php
                 print l(t('View Coverage'), 'mica/coverage',
                   array(
                     'query' => array(
                       'type' => 'variables',
                       'query' => $query
                     ),
-                    'attributes' => array('class' => 'btn btn-primary indent')
+                    'attributes' => array('class' => 'btn btn-primary indent show-coverage disabled')
                   ));
                 ?>
-              <?php endif; ?>
             </div>
+
           </div>
-          <?php endif; ?>
+
           <div class="clearfix"></div>
 
           <table class="table table-striped">
