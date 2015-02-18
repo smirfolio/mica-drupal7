@@ -413,9 +413,13 @@ function _get_search_data() {
 
 Function obiba_mica_search_get_buckets($vocabulary_coverage, $all_bucket) {
   if (!empty($vocabulary_coverage->buckets)) {
-    foreach ($vocabulary_coverage->buckets as $bucket) {
-      if ((string) $bucket->value == (string) $all_bucket->value) {
-        return $bucket;
+    foreach ($vocabulary_coverage->terms as $term) {
+      if (!empty($term->buckets)) {
+        foreach ($term->buckets as $bucket) {
+          if ((string) $bucket->value == (string) $all_bucket->value) {
+            return $bucket;
+          }
+        }
       }
     }
   }
@@ -466,34 +470,34 @@ function _get_coverage_data() {
       $formatted_vocabulary_coverage = new stdClass();
       foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
         if (!empty($taxonomy_coverage->buckets)) {
-          //  dpm($taxonomy_coverage->buckets);
-          foreach ($taxonomy_coverage->buckets as $key_bucket => $all_bucket) {
-            $formatted_bucket = new stdClass();
-            $formatted_bucket->field = $all_bucket->field;
-            $formatted_bucket->value = $all_bucket->value;
-            $formatted_bucket->hits = 0;
-            $formatted_bucket->count = 0;
-
-            $bucket_returned = obiba_mica_search_get_buckets($vocabulary_coverage, $all_bucket);
-            if (!empty($bucket_returned)) {
-              $formatted_vocabulary_coverage->buckets[$key_bucket] = $bucket_returned;
-              $bucket_names[$key_bucket] = $bucket_returned->value;
-            }
-            else {
-              $formatted_vocabulary_coverage->buckets[$key_bucket] = $formatted_bucket;
-              $bucket_names[$key_bucket] = $formatted_bucket->value;
-            }
-
-            foreach ($vocabulary_coverage->terms as $key_term => $term) {
-              $returned_term_bucket = obiba_mica_search_get_terms($vocabulary_coverage, $all_bucket);
-              if (!empty($returned_term_bucket)) {
-                $formatted_vocabulary_coverage->terms[$key_term]->buckets[$key_bucket] = $returned_term_bucket;
+          foreach ($vocabulary_coverage->terms as $term) {
+            if (!empty($term->buckets)) {
+              foreach ($term->buckets as $key_bucket => $all_bucket) {
+                $formatted_bucket = new stdClass();
+                $formatted_bucket->field = $all_bucket->field;
+                $formatted_bucket->value = $all_bucket->value;
+                $formatted_bucket->hits = 0;
+                $formatted_bucket->count = 0;
+                $bucket_returned = obiba_mica_search_get_buckets($vocabulary_coverage, $all_bucket);
+                if (!empty($bucket_returned)) {
+                  $formatted_vocabulary_coverage->buckets[$key_bucket] = $bucket_returned;
+                  $bucket_names[$key_bucket] = $bucket_returned->value;
+                }
+                else {
+                  $formatted_vocabulary_coverage->buckets[$key_bucket] = $formatted_bucket;
+                  $bucket_names[$key_bucket] = $formatted_bucket->value;
+                }
+                foreach ($vocabulary_coverage->terms as $key_term => $term) {
+                  $returned_term_bucket = obiba_mica_search_get_terms($term, $all_bucket);
+                  if (!empty($returned_term_bucket)) {
+                    $formatted_vocabulary_coverage->terms[$key_term]->buckets[$key_bucket] = $returned_term_bucket;
+                  }
+                  else {
+                    $formatted_vocabulary_coverage->terms[$key_term]->buckets[$key_bucket] = $formatted_bucket;
+                  }
+                }
               }
-              else {
-                $formatted_vocabulary_coverage->terms[$key_term]->buckets[$key_bucket] = $formatted_bucket;
-              }
             }
-
           }
         }
         unset($vocabulary_coverage->buckets);
