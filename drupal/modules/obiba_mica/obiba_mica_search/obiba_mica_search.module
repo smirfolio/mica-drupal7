@@ -665,13 +665,13 @@ function _obiba_mica_search_get_sub_header_studies_table() {
     );
 
     if (!empty($column_studies_param[3])) {
-      $rows_column[] = t('Quest');
+      $rows_column[] = array('data' => t('Quest'), 'title' => t('Questionnaires'));
     }
     if (!empty($column_studies_param[4])) {
-      $rows_column[] = t('PM');
+      $rows_column[] = array('data' => t('PM'), 'title' => t('Physical Measures'));
     }
     if (!empty($column_studies_param[5])) {
-      $rows_column[] = t('Bio');
+      $rows_column[] = array('data' => t('Bio'), 'title' => t('Biological Samples'));
     }
     if (!empty($column_studies_param[6])) {
       $rows_column[] = t('Others');

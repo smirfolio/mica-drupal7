@@ -106,7 +106,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
 
             <?php if (!empty($dce->bioSamples)): ?>
               <tr>
-                <th><?php print t('Bio Samples') ?>:</th>
+                <th><?php print t('Biological Samples') ?></th>
                 <td>
                   <ul>
                     <?php foreach ($dce->bioSamples as $samples): ?>
