@@ -68,7 +68,7 @@
         <?php if (!empty($coverage)): ?>
           <li>
             <a href="#coverage">
-              <?php print t('Classifications Coverage'); ?>
+              <?php print t('Variable Coverage'); ?>
             </a>
           </li>
         <?php endif; ?>

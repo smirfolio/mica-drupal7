@@ -26,15 +26,15 @@ function obiba_mica_search_menu() {
   );
 
   $items['mica/coverage'] = array(
-    'title' => 'Classifications Coverage',
-    'description' => 'Classifications Coverage',
+    'title' => 'Variable Coverage',
+    'description' => 'Variable Coverage',
     'page callback' => 'obiba_mica_search_coverage_page',
     'access callback' => TRUE
   );
 
   $items['mica/coverage/download'] = array(
-    'title' => 'Classifications Coverage',
-    'description' => 'Classifications Coverage',
+    'title' => 'Variable Coverage',
+    'description' => 'Variable Coverage',
     'page callback' => 'obiba_mica_search_coverage_download',
     'access callback' => TRUE
   );
