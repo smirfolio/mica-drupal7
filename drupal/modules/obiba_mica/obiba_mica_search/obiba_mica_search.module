@@ -26,15 +26,15 @@ function obiba_mica_search_menu() {
   );
 
   $items['mica/coverage'] = array(
-    'title' => 'Classifications Coverage',
-    'description' => 'Classifications Coverage',
+    'title' => 'Variable Coverage',
+    'description' => 'Variable Coverage',
     'page callback' => 'obiba_mica_search_coverage_page',
     'access callback' => TRUE
   );
 
   $items['mica/coverage/download'] = array(
-    'title' => 'Classifications Coverage',
-    'description' => 'Classifications Coverage',
+    'title' => 'Variable Coverage',
+    'description' => 'Variable Coverage',
     'page callback' => 'obiba_mica_search_coverage_download',
     'access callback' => TRUE
   );
@@ -661,17 +661,17 @@ function _obiba_mica_search_get_sub_header_studies_table() {
     $headers[] = array(
       'data' => t('Data Sources Available'),
       'colspan' => $colspan_datasources,
-      'class' => 'checkebox'
+      'class' => 'checkbox'
     );
 
     if (!empty($column_studies_param[3])) {
-      $rows_column[] = t('Quest');
+      $rows_column[] = array('data' => t('Quest'), 'title' => t('Questionnaires'));
     }
     if (!empty($column_studies_param[4])) {
-      $rows_column[] = t('PM');
+      $rows_column[] = array('data' => t('PM'), 'title' => t('Physical Measures'));
     }
     if (!empty($column_studies_param[5])) {
-      $rows_column[] = t('Bio');
+      $rows_column[] = array('data' => t('Bio'), 'title' => t('Biological Samples'));
     }
     if (!empty($column_studies_param[6])) {
       $rows_column[] = t('Others');
@@ -768,7 +768,7 @@ function obiba_mica_search_studies_table($studies) {
         $column_row[] = array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'questionnaires') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
-          'class' => 'checkebox'
+          'class' => 'checkbox'
         );
       }
       $study_column_pm = variable_get_value('studies_column_pm');
@@ -776,7 +776,7 @@ function obiba_mica_search_studies_table($studies) {
         $column_row[] = array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'physical_measures') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
-          'class' => 'checkebox'
+          'class' => 'checkbox'
         );
       }
       $study_column_bio = variable_get_value('studies_column_bio');
@@ -784,7 +784,7 @@ function obiba_mica_search_studies_table($studies) {
         $column_row[] = array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'biological_samples') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
-          'class' => 'checkebox'
+          'class' => 'checkbox'
         );
       }
       $study_column_other = variable_get_value('studies_column_other');
@@ -792,7 +792,7 @@ function obiba_mica_search_studies_table($studies) {
         $column_row[] = array(
           'data' => !empty($study->dataSources) && obiba_mica_search_has_datasource($study->dataSources, 'others') ?
               '<i class="glyphicon glyphicon-ok"></i>' : '--',
-          'class' => 'checkebox'
+          'class' => 'checkbox'
         );
       }
       $study_column_participant = variable_get_value('studies_column_participants');

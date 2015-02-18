@@ -13,7 +13,7 @@
 || !empty($population->numberOfParticipants->sample->number)
 || !empty($population->info)
 ): ?>
-<h4><?php print t('Overview') ?></h4>
+<h4><?php print t('Sample Size') ?></h4>
 
 <div class="scroll-content-tab">
   <table class="table table-striped">
@@ -70,7 +70,7 @@
 || !empty($population->recruitment->otherSource)
 || !empty($population->recruitment->info)
 ): ?>
-<h4><?php print t('Sources of recruitment') ?></h4>
+<h4><?php print t('Sources of Recruitment') ?></h4>
 
 <div class="scroll-content-tab">
   <table class="table table-striped">
@@ -135,7 +135,7 @@
 || !empty($population->selectionCriteria->otherCriteria)
 || !empty($population->selectionCriteria->info)
 ): ?>
-<h4><?php print t('Selection criteria') ?></h4>
+<h4><?php print t('Selection Criteria') ?></h4>
 <div class="scroll-content-tab">
   <table class="table table-striped">
     <tbody>

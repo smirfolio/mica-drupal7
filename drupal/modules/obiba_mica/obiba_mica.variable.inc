@@ -47,25 +47,25 @@ function obiba_mica_variable_info($options) {
     'default' => TRUE,
   );
   $variable['networks_column_studies'] = array(
-    'title' => t('Show studies column'),
+    'title' => t('Show studies'),
     'description' => t('Show studies column in the networks table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['networks_column_study_datasets'] = array(
-    'title' => t('Show studies dataset column'),
+    'title' => t('Show studies dataset'),
     'description' => t('Show studies dataset column in the networks table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['networks_column_harmonization_datasets'] = array(
-    'title' => t('Show harmonization dataset column'),
+    'title' => t('Show harmonization dataset'),
     'description' => t('Show harmonization dataset column in the networks table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['networks_column_variables'] = array(
-    'title' => t('Show variables column'),
+    'title' => t('Show variables'),
     'description' => t('Show variables column in the networks table.'),
     'type' => 'boolean',
     'default' => TRUE,
@@ -78,61 +78,61 @@ function obiba_mica_variable_info($options) {
     'default' => TRUE,
   );
   $variable['studies_column_design'] = array(
-    'title' => t('Show design column'),
+    'title' => t('Show design'),
     'description' => t('Show design column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_questionnaire'] = array(
-    'title' => t('Show questionnaire column'),
-    'description' => t('Show questionnaire column in the studies table.'),
+    'title' => t('Show questionnaires'),
+    'description' => t('Show questionnaires column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_pm'] = array(
-    'title' => t('Show physical measures column'),
+    'title' => t('Show physical measures'),
     'description' => t('Show physical measures column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_bio'] = array(
-    'title' => t('Show biological samples column'),
+    'title' => t('Show biological samples'),
     'description' => t('Show biological samples column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_other'] = array(
-    'title' => t('Show other data sources column'),
+    'title' => t('Show other data sources'),
     'description' => t('Show other data sources column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_participants'] = array(
-    'title' => t('Show participants column'),
+    'title' => t('Show participants'),
     'description' => t('Show participants column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_networks'] = array(
-    'title' => t('Show networks column'),
+    'title' => t('Show networks'),
     'description' => t('Show networks column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_study_datasets'] = array(
-    'title' => t('Show studies dataset column'),
-    'description' => t('Show studies dataset column in the studies table.'),
+    'title' => t('Show study datasets'),
+    'description' => t('Show study datasets column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_harmonization_datasets'] = array(
-    'title' => t('Show harmonization dataset column'),
+    'title' => t('Show harmonization datasets'),
     'description' => t('Show harmonization dataset column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_variables'] = array(
-    'title' => t('Show variables column'),
+    'title' => t('Show variables'),
     'description' => t('Show variables column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
@@ -145,25 +145,25 @@ function obiba_mica_variable_info($options) {
     'default' => TRUE,
   );
   $variable['datasets_column_type'] = array(
-    'title' => t('Show type dataset column'),
+    'title' => t('Show type dataset'),
     'description' => t('Show type dataset column in the datasets table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['datasets_column_networks'] = array(
-    'title' => t('Show networks column'),
+    'title' => t('Show networks'),
     'description' => t('Show networks column in the datasets table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['datasets_column_studies'] = array(
-    'title' => t('Show studies column'),
+    'title' => t('Show studies'),
     'description' => t('Show studies column in the datasets table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['datasets_column_variables'] = array(
-    'title' => t('Show variables column'),
+    'title' => t('Show variables'),
     'description' => t('Show variables column in the datasets table.'),
     'type' => 'boolean',
     'default' => TRUE,
@@ -176,13 +176,13 @@ function obiba_mica_variable_info($options) {
     'default' => TRUE,
   );
   $variable['variables_column_study'] = array(
-    'title' => t('Show study column'),
+    'title' => t('Show study'),
     'description' => t('Show study column in the variables table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['variables_column_dataset'] = array(
-    'title' => t('Show dataset column'),
+    'title' => t('Show dataset'),
     'description' => t('Show dataset column in the variables table.'),
     'type' => 'boolean',
     'default' => TRUE,

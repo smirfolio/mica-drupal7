@@ -7198,7 +7198,7 @@ div.scroll-content-tab {
 .search-result table > tbody {
   font-size: 12px;
 }
-.search-result table > tbody > tr > td.checkebox {
+.search-result table > tbody > tr > td.checkbox {
   text-align: center;
 }
 .search-result table#studies-results > tbody > tr:first-child,

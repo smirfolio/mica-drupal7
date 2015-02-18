@@ -357,7 +357,7 @@
   <section>
     <h2 id="timeline"><?php print t('Timeline'); ?></h2>
 
-    <p>
+    <p class="help-block">
       <?php print t('Each colour in the timeline graph below represents a separate Study Population, while each segment in the graph represents a separate Data Collection Event. Clicking on a segment gives more detailed information on a Data Collection Event.') ?>
     </p>
 
@@ -480,7 +480,7 @@
 <!-- COVERAGE -->
 <?php if (!empty($coverage)): ?>
   <section>
-    <h2 id="coverage"><?php print t('Classifications Coverage') ?></h2>
+    <h2 id="coverage"><?php print t('Variable Coverage') ?></h2>
     <?php foreach ($coverage as $taxonomy_coverage): ?>
       <h3><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h3>
 
