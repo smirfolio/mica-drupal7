@@ -22,6 +22,7 @@ function obiba_mica_search_resource_return_facets($dto_type = NULL) {
 
 function obiba_mica_search_get_dto_facet_aggs($tab_block, $type) {
   $agg_type = $type;
+  $have_term = FALSE;
   switch ($tab_block) {
     case 'search-datasetId' :
       $facet_build[$tab_block]['datasetId']['term'] = obiba_mica_search_get_datasets();
@@ -33,10 +34,16 @@ function obiba_mica_search_get_dto_facet_aggs($tab_block, $type) {
   }
   if (!empty($_SESSION[$agg_type])) {
     foreach ($_SESSION[$agg_type]['aggregations'] as $key_tab => $facet) {
+
       if (is_int($key_tab)) {
         if (!empty($facet->aggregation) && $tab_block == 'search-' . $facet->aggregation) {
           if (!empty($facet->{'obiba.mica.TermsAggregationResultDto.terms'})) {
-            $facet_build[$tab_block][$facet->aggregation]['term'] = $facet->{'obiba.mica.TermsAggregationResultDto.terms'};
+            foreach ($facet->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+              if (!empty($term->default)) {
+                $facet_build[$tab_block][$facet->aggregation]['term'][] = $term;
+                $have_term = TRUE;
+              }
+            }
           }
           elseif (!empty($facet->{'obiba.mica.StatsAggregationResultDto.stats'})) {
             $facet_build[$tab_block][$facet->aggregation]['range']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->data->count;
@@ -50,10 +57,12 @@ function obiba_mica_search_get_dto_facet_aggs($tab_block, $type) {
           else {
             $facet_build[$tab_block][$facet->aggregation] = NULL;
           }
-
-          return $facet_build[$tab_block];
+          if (!empty($facet_build) && !empty($have_term)) {
+            return $facet_build[$tab_block];
+          }
         }
       }
+
     }
   }
 }
@@ -71,7 +80,6 @@ function obiba_mica_search_process_block_theme($block_delta, $type) {
   }
 
   if (!empty($block_delta)) {
-    //  dpm(obiba_mica_commons_get_dto_facet_aggs($block_delta, $type));
     $facet_pars = obiba_mica_search_get_dto_facet_aggs($block_delta, $type);
     $agg_type = "";
     if (!empty($facet_pars)) {
@@ -186,11 +194,15 @@ function obiba_mica_search_get_checkbox_term_field($fields_terms, $type_string, 
     if ($aggregation_facet == 'studyIds') {
       $mapped_type_string = 'studies:';
     }
-    else if ($aggregation_facet == 'networkId') {
-      $mapped_type_string = 'networks:';
-    }
-    else if ($aggregation_facet == 'dceIds') {
-      $mapped_type_string = 'variables:';
+    else {
+      if ($aggregation_facet == 'networkId') {
+        $mapped_type_string = 'networks:';
+      }
+      else {
+        if ($aggregation_facet == 'dceIds') {
+          $mapped_type_string = 'variables:';
+        }
+      }
     }
 
     $query_request = !empty($_GET['query']) ? TRUE : FALSE;
