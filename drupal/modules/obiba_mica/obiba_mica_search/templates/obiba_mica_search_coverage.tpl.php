@@ -33,19 +33,13 @@ if (empty($query)) {
       )) ?>
     <?php endif ?>
     <?php
-    print l(t('Search Variables'), 'mica/search', array(
-      'attributes' => array(
-        'class' => array(
-          'btn',
-          'btn-primary',
-          'indent'
-        )
-      ),
-      'query' => array(
-        'type' => 'variables',
-        array('query' => $query)
-      ),
-    )); ?>
+      print MicaClientAnchorHelper::ajax_friendly_anchor(
+        MicaClientPathProvider::SEARCH,
+        t('Search Variables'),
+        array('class' => 'btn btn-primary indent'),
+        array('type' => 'variables', 'query' => $query)
+      );
+    ?>
     <span id="download-coverage">
       <a href="" class="btn btn-success"><i
           class='glyphicon glyphicon-download'></i> <?php print t('Download') ?></a>
@@ -56,47 +50,35 @@ if (empty($query)) {
     <li class="<?php if (!empty($group_by) && $group_by == 'studyIds') print 'active' ?>" data-toggle="tooltip"
       data-placement="top" title="<?php print t('Group by study') ?>">
       <?php
-      print l(t('Study'), 'mica/coverage', array(
-        'query' => array(
-          array(
-            'query' => $query,
-            'group-by' => 'studyIds'
-          )
-        ),
-        'attributes' => array (
-          'class' => ['group-by']
-        ),
-      )); ?>
+        print MicaClientAnchorHelper::ajax_friendly_anchor(
+          MicaClientPathProvider::COVERAGE,
+          t('Study'),
+          array('class' => 'group-by'),
+          array('group-by' => 'studyIds', 'query' => $query)
+        );
+      ?>
     </li>
     <li class="<?php if (!empty($group_by) && $group_by == 'dceIds') print 'active' ?>" data-toggle="tooltip"
       data-placement="top" title="<?php print t('Group by data collection event') ?>">
       <?php
-      print l(t('Data Collection Event'), 'mica/coverage', array(
-        'query' => array(
-          array(
-            'query' => $query,
-            'group-by' => 'dceIds'
-          )
-        ),
-        'attributes' => array (
-          'class' => ['group-by']
-        ),
-      )); ?>
+        print MicaClientAnchorHelper::ajax_friendly_anchor(
+          MicaClientPathProvider::COVERAGE,
+          t('Data Collection Event'),
+          array('class' => 'group-by'),
+          array('group-by' => 'dceIds', 'query' => $query)
+        );
+      ?>
     </li>
     <li class="<?php if (!empty($group_by) && $group_by == 'datasetId') print 'active' ?>" data-toggle="tooltip"
       data-placement="top" title="<?php print t('Group by dataset') ?>">
       <?php
-      print l(t('Dataset'), 'mica/coverage', array(
-        'query' => array(
-          array(
-            'query' => $query,
-            'group-by' => 'datasetId'
-          )
-        ),
-        'attributes' => array (
-          'class' => ['group-by']
-        ),
-      )); ?>
+        print MicaClientAnchorHelper::ajax_friendly_anchor(
+          MicaClientPathProvider::COVERAGE,
+          t('Dataset'),
+          array('class' => 'group-by'),
+          array('group-by' => 'datasetId', 'query' => $query)
+        );
+      ?>
     </li>
   </ul>
 </div>

@@ -41,13 +41,11 @@
               <?php if ($variable_dto->variableType == 'Dataschema'): ?>
                 <ul>
                   <?php foreach ($variable_dto->studySummaries as $studySummary): ?>
-                    <li>
-                      <?php print l(obiba_mica_commons_get_localized_field($studySummary, 'name'), 'mica/study/' . $studySummary->id . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($studySummary, 'name'))); ?>
-                    </li>
+                    <li><?php print MicaClientAnchorHelper::study($studySummary); ?></li>
                   <?php endforeach ?>
                 </ul>
               <?php elseif (!empty($variable_dto->studySummaries)): ?>
-                <?php print l(obiba_mica_commons_get_localized_field($variable_dto->studySummaries[0], 'name'), 'mica/study/' . $variable_dto->studySummaries[0]->id . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($variable_dto->studySummaries[0], 'name'))); ?>
+                <?php print MicaClientAnchorHelper::study($variable_dto->studySummaries[0]); ?>
               <?php endif ?>
             </td>
           </tr>
@@ -58,10 +56,7 @@
             <th><?php print t('Dataset'); ?></th>
             <td>
               <p>
-                <?php
-                print l(obiba_mica_commons_get_localized_field($variable_dto, 'datasetName'), 'mica/' . obiba_mica_variable_dataset_type($variable_dto)
-                  . '/' . $variable_dto->datasetId . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($variable_dto, 'datasetName')));
-                ?>
+                <?php print MicaClientAnchorHelper::variable_dataset($variable_dto); ?>
               </p>
             </td>
           </tr>
@@ -85,10 +80,7 @@
             <p>
               <?php print t('@type variable', array('@type' => t($variable_dto->variableType))); ?>
               <?php if ($variable_dto->variableType == 'Harmonized'): ?>
-                <?php
-                print '(' . l($variable_dto->name, 'mica/variable/' . $variable_dto->datasetId . ':' . $variable_dto->name
-                    . ':Dataschema' . '/' . obiba_mica_commons_to_slug($variable_dto->name)) . ')';
-                ?>
+                <?php print '(' . MicaClientAnchorHelper::variable_harmonized($variable_dto) . ')'; ?>
               <?php endif; ?>
             </p>
           </td>

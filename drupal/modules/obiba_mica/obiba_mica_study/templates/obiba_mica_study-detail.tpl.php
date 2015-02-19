@@ -20,28 +20,18 @@
 
   <div id="studyActions" class="pull-right md-bottom-margin">
     <?php
-    $query_array = array("studies" => array("terms" => array("studyIds" => $study_dto->id)));
-    $query = MicaClient::create_query_dto_as_string($query_array);
+      print MicaClientAnchorHelper::study_variables(
+        t('Search Variables'),
+        $study_dto->id,
+        array('class' => 'btn btn-primary disabled')
+      );
 
-    print l(t('Search Variables'), 'mica/search',
-      array(
-        'query' => array(
-          'type' => 'variables',
-          'query' => $query
-        ),
-        'attributes' => array('class' => 'btn btn-primary disabled')
-      ));
+      print MicaClientAnchorHelper::coverage_study(
+        t('View Coverage'),
+        $study_dto->id,
+        array('class' => MicaClientAnchorHelper::DEFAULT_PRIMARY_BUTTON_CLASSES . ' indent disabled')
+      );
     ?>
-      <?php
-      print l(t('View Coverage'), 'mica/coverage',
-        array(
-          'query' => array(
-            'type' => 'variables',
-            'query' => $query
-          ),
-          'attributes' => array('class' => 'btn btn-primary indent show-coverage disabled')
-        ));
-      ?>
   </div>
 </div>
 
@@ -429,7 +419,7 @@
   <!-- DATASETS placeholder -->
   <section id="datasets"><div><?php print t('Loading ...') ?></div></section>
 
-<!-- VARIABLES -->
+  <!-- VARIABLES -->
 <?php if (!empty($study_variables_aggs)): ?>
   <section id="variables">
     <div class="container-fluid">
@@ -444,14 +434,16 @@
           </p>
 
           <?php
-          print l(t('Search Variables'), 'mica/search',
-            array(
-              'query' => array(
-                'type' => 'variables',
-                'parent:id[]' => 'id.' . $study_dto->id
-              ),
-              'attributes' => array('class' => 'btn btn-primary')
-            ));
+            // TODO currently the code that feeds the data is commented, see obiba_mica_study-page-detail.inc
+            print MicaClientAnchorHelper::ajax_friendly_anchor(
+              MicaClientPathProvider::SEARCH,
+                t('Search Variables'),
+                array('class' => 'btn btn-primary'),
+                array(
+                  'type' => 'variables',
+                  'parent:id[]' => 'id.' . $study_dto->id
+                )
+              );
           ?>
         </div>
       </div>

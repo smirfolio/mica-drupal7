@@ -13,28 +13,18 @@
 
   <div class="pull-right md-bottom-margin">
     <?php
-    $query_array = array("variables" => array("terms" => array("datasetId" => $dataset_dto->id)));
-    $query = MicaClient::create_query_dto_as_string($query_array);
+    print MicaClientAnchorHelper::dataset_variables(
+      t('Search Variables'),
+      $dataset_dto->id,
+      array('class' => 'btn btn-primary')
+    );
 
-    print l(t('Search Variables'), 'mica/search',
+    print MicaClientAnchorHelper::coverage_dataset(
+      t('View Coverage'),
+      $dataset_dto->id,
+      array('class' => 'btn btn-primary indent')
+    );
 
-      array(
-        'query' => array(
-          'type' => 'variables',
-          'query' => $query
-        ),
-        'attributes' => array('class' => 'btn btn-primary')
-      ));
-    ?>
-    <?php
-    print l(t('View Coverage'), 'mica/coverage',
-      array(
-        'query' => array(
-          'type' => 'variables',
-          'query' => $query
-        ),
-        'attributes' => array('class' => 'btn btn-primary indent')
-      ));
     ?>
   </div>
 </div>
@@ -131,7 +121,7 @@
             <th><?php print t('Name') ?></th>
             <td>
               <p>
-                <?php print l(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'), 'mica/study/' . $dataset_type_dto->studyTable->studySummary->id . '/' . obiba_mica_commons_to_slug(obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'))); ?>
+                <?php print MicaClientAnchorHelper::study($dataset_type_dto->studyTable->studySummary); ?>
               </p>
             </td>
           </tr>
@@ -142,15 +132,7 @@
               <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary) {
                 if ($pop_summary->id == $dataset_type_dto->studyTable->populationId) {
                   $population_summary = $pop_summary;
-                  $population_anchor = l(obiba_mica_commons_get_localized_field($population_summary, 'name'), '#', array(
-                    'external' => TRUE,
-                    'attributes' => array(
-                      'data-toggle' => 'modal',
-                      'data-target' => '#population-' . $population_summary->id
-                    )
-                  ));
-
-                  print $population_anchor;
+                  print MicaClientAnchorHelper::study_population_modal($pop_summary);
                   break;
                 }
               }
@@ -164,15 +146,12 @@
               $dce_anchor = NULL;
               foreach ($population_summary->dataCollectionEventSummaries as $dce_summary) {
                 if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId) {
-                  $dce_anchor = l(obiba_mica_commons_get_localized_field($dce_summary, 'name'), '#', array(
-                    'external' => TRUE,
-                    'attributes' => array(
-                      'data-toggle' => 'modal',
-                      'data-target' => '#dce-' . $dataset_type_dto->studyTable->studyId . '-' . $dataset_type_dto->studyTable->populationId . '-' . $dce_summary->id
-                    )
-                  ));
+                  print MicaClientAnchorHelper::study_population_dce_modal(
+                    $dataset_type_dto->studyTable->studyId,
+                    $dataset_type_dto->studyTable->populationId,
+                    $dce_summary
+                  );
 
-                  print $dce_anchor;
                   break;
                 }
               }

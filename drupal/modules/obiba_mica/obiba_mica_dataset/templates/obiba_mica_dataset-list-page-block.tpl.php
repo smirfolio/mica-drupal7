@@ -3,29 +3,18 @@
     <div class="col-md-12  col-sm-12 col-xs-12">
       <h4>
         <?php
-        $acronym = obiba_mica_commons_get_localized_field($dataset, 'acronym');
-        $name = obiba_mica_commons_get_localized_field($dataset, 'name');
-        print l($acronym == $name ? $acronym : $acronym . ' - ' . $name,
-          'mica/' . obiba_mica_dataset_type($dataset) . '/' . $dataset->id); ?>
+          print MicaClientAnchorHelper::dataset_list_item($dataset);
+        ?>
       </h4>
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>
           <?php
-          if (empty($dataset->description)) {
-            print '';
-          }
-          else {
-            $objective = obiba_mica_commons_get_localized_field($dataset, 'description');;
-            if (drupal_strlen($objective) >= 300) {
-              print text_summary(strip_tags(obiba_mica_commons_markdown($objective)), 'html', 300)
-                . '... ' . l('Read more',
-                  'mica/' . obiba_mica_dataset_type($dataset) . '/' . $dataset->id);
-            }
-            else {
-              print $objective;
-            }
-          }
+          print MicaClientAnchorHelper::ellipses(
+            t('Read more'),
+            obiba_mica_commons_get_localized_field($dataset, 'description'),
+            'mica/' . obiba_mica_dataset_type($dataset) . '/' . $dataset->id
+          );
           ?>
         </small>
       </p>

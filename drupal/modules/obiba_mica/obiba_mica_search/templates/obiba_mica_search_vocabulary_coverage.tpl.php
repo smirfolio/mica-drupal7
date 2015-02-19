@@ -46,19 +46,21 @@
               min-width: 100%;
               width: <?php print 100 / (count($vocabulary_coverage->buckets) + 1) ?>%;">
               <?php
-              print l($bucket->value, 'mica/search',
-                array(
-                  'query' => array(
+                print MicaClientAnchorHelper::ajax_friendly_anchor(
+                  MicaClientPathProvider::SEARCH,
+                  $bucket->value,
+                  array(),
+                  array(
                     'type' => 'variables',
                     'query' => MicaClient::add_parameter_dto_query_link(array(
-                        'variables' => array(
-                          'terms' => array(
-                            $bucket->field => $bucket->value
-                          )
+                      'variables' => array(
+                        'terms' => array(
+                          $bucket->field => $bucket->value
                         )
-                      ))
-                  ),
-                ));
+                      )
+                    ))
+                  )
+                );
               ?>
             </th>
           <?php endforeach; ?>
@@ -70,19 +72,22 @@
         <th class="right-border"><?php print t('Total'); ?></th>
         <th style="text-align: center;">
           <?php
-          print l($vocabulary_coverage->hits, 'mica/search',
-            array(
-              'query' => array(
+            print MicaClientAnchorHelper::ajax_friendly_anchor(
+              MicaClientPathProvider::SEARCH,
+              $vocabulary_coverage->hits,
+              array(),
+              array(
                 'type' => 'variables',
                 'query' => MicaClient::add_parameter_dto_query_link(array(
-                    'variables' => array(
-                      'terms' => array(
-                        $vocabulary_attribute => $term_names,
-                      )
+                  'variables' => array(
+                    'terms' => array(
+                      $vocabulary_attribute => $term_names,
                     )
-                  ))
-              ),
-            )) ?>
+                  )
+                ))
+              )
+            );
+          ?>
         </th>
         <?php if (!empty($vocabulary_coverage->buckets)): ?>
           <?php foreach ($vocabulary_coverage->buckets as $bucket) : ?>
@@ -91,20 +96,23 @@
                 <?php print 0; ?>
               <?php else: ?>
                 <?php
-                print l($bucket->hits, 'mica/search',
-                  array(
-                    'query' => array(
+                  print MicaClientAnchorHelper::ajax_friendly_anchor(
+                    MicaClientPathProvider::SEARCH,
+                    $bucket->hits,
+                    array(),
+                    array(
                       'type' => 'variables',
                       'query' => MicaClient::add_parameter_dto_query_link(array(
-                          'variables' => array(
-                            'terms' => array(
-                              $bucket->field => $bucket->value,
-                              $vocabulary_attribute => $term_names,
-                            )
+                        'variables' => array(
+                          'terms' => array(
+                            $bucket->field => $bucket->value,
+                            $vocabulary_attribute => $term_names,
                           )
-                        ))
-                    ),
-                  )) ?>
+                        )
+                      ))
+                    )
+                  );
+                ?>
               <?php endif ?>
             </th>
           <?php endforeach; ?>
@@ -121,20 +129,23 @@
               <?php if (empty($term_coverage->hits)): ?>
                 <?php print obiba_mica_commons_get_localized_field($term_coverage->term, 'titles'); ?>
               <?php else: ?>
-                <?php print l(obiba_mica_commons_get_localized_field($term_coverage->term, 'titles'), 'mica/search',
-                  array(
-                    'query' => array(
+                <?php
+                  print MicaClientAnchorHelper::ajax_friendly_anchor(
+                    MicaClientPathProvider::SEARCH,
+                    obiba_mica_commons_get_localized_field($term_coverage->term, 'titles'),
+                    array(),
+                    array(
                       'type' => 'variables',
                       'query' => MicaClient::add_parameter_dto_query_link(array(
-                            'variables' => array(
-                              'terms' => array(
-                                $vocabulary_attribute => $term_coverage->term->name
-                              )
-                            )
+                        'variables' => array(
+                          'terms' => array(
+                            $vocabulary_attribute => $term_coverage->term->name
                           )
                         )
-                    ),
-                  )) ?>
+                      ))
+                    )
+                  );
+                ?>
               <?php endif ?>
             </td>
             <td style="text-align: center; vertical-align: middle;"
@@ -155,21 +166,25 @@
                         <?php print 0; ?>
                       <?php else: ?>
                         <span class="label label-info">
-                    <?php print l($bucket->hits, 'mica/search',
-                      array(
-                        'query' => array(
-                          'type' => 'variables',
-                          'query' => MicaClient::add_parameter_dto_query_link(array(
-                              'variables' => array(
-                                'terms' => array(
-                                  $vocabulary_attribute => $term_coverage->term->name,
-                                  $bucket->field => $bucket->value
+                        <?php
+                          print MicaClientAnchorHelper::ajax_friendly_anchor(
+                            MicaClientPathProvider::SEARCH,
+                            $bucket->hits,
+                            array(),
+                            array(
+                              'type' => 'variables',
+                              'query' => MicaClient::add_parameter_dto_query_link(array(
+                                'variables' => array(
+                                  'terms' => array(
+                                    $vocabulary_attribute => $term_coverage->term->name,
+                                    $bucket->field => $bucket->value
+                                  )
                                 )
-                              )
-                            ))
-                        ),
-                      )) ?>
-                    </span>
+                              ))
+                            )
+                          );
+                        ?>
+                        </span>
                       <?php endif ?>
                     </td>
                     <?php $found = TRUE ?>

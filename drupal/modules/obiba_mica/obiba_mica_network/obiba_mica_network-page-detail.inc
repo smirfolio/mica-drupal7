@@ -31,7 +31,7 @@ function obiba_mica_network_page_detail($network_id) {
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
-      l(t('Networks'), 'mica/networks'),
+      l(t('Networks'), MicaClientPathProvider::NETWORKS),
     ));
 
     return theme('obiba_mica_network-detail', array(
@@ -73,8 +73,7 @@ function obiba_mica_network_study_table_rows($study_summaries) {
       $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
       $rows[] = array(
         obiba_mica_commons_get_localized_field($study_summary, 'acronym'),
-        $study_summary->getPublished() ?
-          l($name, 'mica/study/' . $study_summary->id . '/' . obiba_mica_commons_to_slug($name)) : t($name),
+        $study_summary->getPublished() ? MicaClientAnchorHelper::study($study_summary)  : t($name),
         implode(', ', t(obiba_mica_commons_clean_string($study_summary->designs))),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
