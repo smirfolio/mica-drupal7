@@ -36,20 +36,19 @@ class MicaClientPathProvider {
 }
 
 class MicaClientAnchorHelper {
+  const DEFAULT_PRIMARY_BUTTON_CLASSES = 'btn highlight btn btn-primary';
 
   static function study_datasets($text, $study_id) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('studyIds' => $study_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'datasets',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'datasets', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function study_variables($text, $study_id) {
@@ -57,14 +56,12 @@ class MicaClientAnchorHelper {
       array('studies' => array('terms' => array('studyIds' => $study_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'variables',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'variables', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function study_networks($text, $study_id) {
@@ -72,14 +69,12 @@ class MicaClientAnchorHelper {
       array('studies' => array('terms' => array('studyIds' => $study_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'networks',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'networks', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function network_studies($text, $network_id) {
@@ -87,14 +82,12 @@ class MicaClientAnchorHelper {
       array('networks' => array('terms' => array('id' => $network_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'studies',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'studies', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function network_datasets($text, $network_id) {
@@ -102,14 +95,12 @@ class MicaClientAnchorHelper {
       array('networks' => array('terms' => array('id' => $network_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'datasets',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'datasets', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function network_variables($text, $network_id) {
@@ -117,36 +108,30 @@ class MicaClientAnchorHelper {
       array('networks' => array('terms' => array('id' => $network_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'variables',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'variables', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function search_networks($text) {
-    $options = array(
-      'query' => array(
-        'type' => 'networks'
-      ),
-      'attributes' => array('class' => 'btn highlight btn btn-primary')
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      array('type' => 'networks') //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function coverage_networks($text) {
-    $options = array(
-      'query' => array(
-        'group-by' => 'studyIds'
-      ),
-      'attributes' => array('class' => 'btn highlight btn btn-primary')
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::COVERAGE, //
+      $text, //
+      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      array('group-by' => 'studyIds') //
     );
-
-    return l($text, MicaClientPathProvider::COVERAGE, $options);
   }
 
   static function dataset_variables($text, $dataset_id) {
@@ -154,14 +139,12 @@ class MicaClientAnchorHelper {
       array('variables' => array('terms' => array('datasetId' => $dataset_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'variables',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'variables', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function dataset_studies($text, $dataset_id) {
@@ -169,14 +152,12 @@ class MicaClientAnchorHelper {
       array('variables' => array('terms' => array('datasetId' => $dataset_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'studies',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'studies', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function dataset_networks($text, $dataset_id) {
@@ -184,36 +165,30 @@ class MicaClientAnchorHelper {
       array('variables' => array('terms' => array('datasetId' => $dataset_id))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'networks',
-        'query' => $query
-      )
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array(), //
+      array('type' => 'networks', 'query' => $query) //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function search_studies($text) {
-    $options = array(
-      'query' => array(
-        'type' => 'studies'
-      ),
-      'attributes' => array('class' => 'btn highlight btn btn-primary')
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      array('type' => 'studies') //
     );
-
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function coverage_studies($text) {
-    $options = array(
-      'query' => array(
-        'group-by' => 'studyIds'
-      ),
-      'attributes' => array('class' => 'btn highlight btn btn-primary')
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::COVERAGE, //
+      $text, //
+      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      array('group-by' => 'studyIds') //
     );
-
-    return l($text, MicaClientPathProvider::COVERAGE, $options);
   }
 
   static function search_study_datasets($text) {
@@ -221,60 +196,59 @@ class MicaClientAnchorHelper {
       array('variables' => array('terms' => array('variableType' => "study"))) //
     );
 
-    $options = array(
-      'query' => array(
-        'type' => 'variables',
-        'query' => $query
-      ),
-      'attributes' => array('class' => 'btn highlight btn btn-primary')
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      array('type' => 'variables', 'query' => $query) //
     );
 
-    return l($text, MicaClientPathProvider::SEARCH, $options);
   }
 
   static function coverage_study_datasets($text) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('variableType' => "study"))) //
     );
-    $options = array(
-      'query' => array(
-        'group-by' => 'datasetId',
-        'query' => $query
-      ),
-      'attributes' => array('class' => 'btn highlight btn btn-primary')
-    );
 
-    return l($text, MicaClientPathProvider::COVERAGE, $options);
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::COVERAGE, //
+      $text, //
+      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      array('group-by' => 'datasetId', 'query' => $query) //
+    );
   }
 
   static function search_harmonization_datasets($text) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('variableType' => "dataschema"))) //
     );
-    $options = array(
-      'query' => array(
-        'type' => 'variables',
-        'query' => $query
-      ),
-      'attributes' => array('class' => 'btn highlight btn btn-primary')
-    );
 
-    return l($text, MicaClientPathProvider::SEARCH, $options);
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::SEARCH, //
+      $text, //
+      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      array('type' => 'variables', 'query' => $query) //
+    );
   }
 
   static function coverage_harmonization_datasets($text) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('variableType' => "dataschema"))) //
     );
-    $options = array(
-      'query' => array(
-        'group-by' => 'datasetId',
-        'query' => $query
-      ),
-      'attributes' => array('class' => 'btn highlight btn btn-primary')
-    );
 
-    return l($text, MicaClientPathProvider::COVERAGE, $options);
+    return self::ajax_friendly_anchor( //
+      MicaClientPathProvider::COVERAGE, //
+      $text, //
+      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      array('group-by' => 'datasetId', 'query' => $query) //
+    );
+  }
+
+  static function ajax_friendly_anchor($url, $text, array $attributes, array $query) {
+    $options = array();
+    if (!empty($attributes)) $options['attributes'] = $attributes;
+    if (!empty($query)) $options['fragment'] = '!' . http_build_query($query);
+    return l($text, $url, empty($options) ? NULL : $options);
   }
 
 }
