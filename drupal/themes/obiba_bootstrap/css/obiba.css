@@ -9308,3 +9308,7 @@ table.dataTable tbody > tr > td {
   padding-left: 18px;
   padding-right: 18px;
 }
+
+.no-float-tab {
+  clear: both;
+}
