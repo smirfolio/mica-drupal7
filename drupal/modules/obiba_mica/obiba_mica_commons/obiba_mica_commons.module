@@ -164,6 +164,7 @@ function obiba_mica_commons_datatables_multi_Lang() {
 
   return drupal_json_output($_lang_translation);
 }
+
 /*
  * Add external js dataTables
  * */
@@ -180,16 +181,18 @@ function obiba_mica_commons_datatables_external_source() {
  * @return null|string
  */
 function obiba_mica_commons_clean_string($str) {
-  if(empty($str)) return $str;
-  if(is_array($str)) {
+  if (empty($str)) {
+    return $str;
+  }
+  if (is_array($str)) {
     $nstr = array();
-    foreach($str as $k => $v) {
+    foreach ($str as $k => $v) {
       $nstr[$k] = obiba_mica_commons_clean_string($v);
     }
     return $nstr;
   }
 
-  return ucwords(str_replace('_',' ',$str));
+  return ucwords(str_replace('_', ' ', $str));
 }
 
 /**
@@ -228,7 +231,6 @@ function obiba_mica_commons_countries($iso_countries) {
   obiba_mica_commons_iterate_field($iso_countries, 'countries_country_lookup', 'iso3', 'name');
   return ob_get_clean();
 }
-
 
 /**
  *
@@ -389,8 +391,6 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
   $form = array();
   $form['#id'] = 'obiba-mica-search-form';
   $form['#method'] = 'get';
-//  $form['#prefix'] = '<div class="inline-form">';
-//  $form['#suffix'] = '</div>';
   if (isset($_GET['search-sort']) || isset($_GET['search-sort-order']) || isset($_GET['search-query'])) {
     $form['button'] = array(
       '#type' => 'button',
@@ -413,9 +413,6 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
       100 => '100'
     ),
     '#default_value' => $default_nbr_result,
-//    '#prefix' => '<div class="right-indent md-width">',
-//    '#suffix' => '</div>',
-
   );
 
   $form['search-sort'] = array(
@@ -424,8 +421,6 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
     '#description' => t('Sort by'),
     '#options' => $options,
     '#default_value' => $default_sort,
-//    '#prefix' => '<div class="right-indent lg-width">',
-//    '#suffix' => '</div>',
   );
 
   $form['search-sort-order'] = array(
@@ -437,9 +432,6 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
       'desc' => t('Desc.'),
     ),
     '#default_value' => $default_sort_order,
-//    '#prefix' => '<div class="right-indent md-width">',
-//    '#suffix' => '</div>',
-
   );
 
   $form['search-query'] = array(
