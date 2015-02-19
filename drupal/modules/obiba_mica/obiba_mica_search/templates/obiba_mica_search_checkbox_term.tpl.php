@@ -17,7 +17,7 @@
           title="<?php print $tooltip ?>">
           <i class="glyphicon glyphicon-unchecked"></i>
 <!--          --><?php //print  truncate_utf8($title, $term->count > 0 ? 25 : 35, TRUE, TRUE); ?>
-          <?php print $title ?>
+          <div class="tilte-term"><?php print $title ?></div>
         </span>
       </td>
       <?php if ($query_request && ($_SESSION['request-search-response'] == 'no-empty') && $term->count != 0) : ?>

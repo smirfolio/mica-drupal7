@@ -7966,14 +7966,14 @@ div.password-suggestions ul {
 }
 
 #obiba-mica-search-form .form-item {
-  display: inline !important;
+  display: inline;
 }
 
 #obiba-mica-search-form .form-control {
-  display: inline !important;
+  display: inline;
   width: auto !important;
   height: 34px;
-  padding: 6px 12px !important;
+  padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857143;
   color: #555;
@@ -7986,13 +7986,13 @@ div.password-suggestions ul {
   -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   border-radius: 0px !important;
-  margin-right: 5px !important;
+  margin-right: 5px;
 }
 
 #obiba-mica-search-form .input-group-addon {
-  margin-right: -4px !important;
+  margin-right: -4px;
   display: inline !important;
-  padding: 8px 10px 6px 10px !important;
+  padding: 8px 10px 6px 10px;
   font-size: 15px;
   font-weight: normal;
   line-height: 1;
