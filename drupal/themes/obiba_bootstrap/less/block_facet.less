@@ -55,16 +55,22 @@
       font-size: @facet_font_size;
       margin: 0;
       padding: 2px 5px;
-      background-color: @block_title_background_color;
+      background-color: rgb(248, 248, 253);
+      border-top: 1px solid lighten(#563d7c, 55%);
       border-left: 2px solid lighten(#563d7c, 25%);
-
       a {
-        background: url('../img/expanded.png') no-repeat scroll left center transparent;
-        padding-left: 12px;
+        padding-left: 15px;
         color: @text-color;
+        display: inline-block;
+        position: relative;
       }
-      a.collapsed {
-        background: url('../img/collapsed.png') no-repeat scroll left center transparent;
+      a:before {
+        content: url('../img/expanded.png') no-repeat scroll left center transparent;
+        position: absolute;
+        margin-left: -15px;
+      }
+      a.collapsed:before {
+        content: url('../img/collapsed.png') no-repeat scroll left center transparent;
       }
     }
 
@@ -171,11 +177,20 @@
         padding-top: 7px;
         font-weight: normal;
         cursor: pointer;
+        margin-left: -5px;
         i {
           color: @link-color;
+          position: absolute !important;
+          left: 5px;
+          top: 7px;
         }
       }
-
+      div.tilte-term {
+        display: inline-block;
+        position: relative;
+        margin-left: 25px;
+        margin-top: -5px;
+      }
       div.stat-container {
         height: 25px;
         width: 200px;
