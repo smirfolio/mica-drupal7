@@ -21,38 +21,9 @@
   <?php if (!empty($network_dto->studyIds)): ?>
     <div class="pull-right md-bottom-margin">
       <?php
-      $query_array = array("networks" => array("terms" => array("networkId" => $network_dto->id)));
-      $query = MicaClient::create_query_dto_as_string($query_array);
-
-      print l(t('Search studies'), 'mica/search',
-        array(
-          'query' => array(
-            'type' => 'studies',
-            'query' => $query
-          ),
-          'attributes' => array('class' => 'btn btn-primary')
-        ));
-
-      ?>
-      <?php print l(t('Search Variables'), 'mica/search',
-        array(
-          'query' => array(
-            'type' => 'variables',
-            'query' => $query
-          ),
-          'attributes' => array('class' => 'btn btn-primary indent')
-        ));
-      ?>
-
-      <?php
-      print l(t('View Coverage'), 'mica/coverage',
-        array(
-          'query' => array(
-            'type' => 'variables',
-            'query' => $query
-          ),
-          'attributes' => array('class' => 'btn btn-primary indent')
-        ));
+        print MicaClientAnchorHelper::network_studies(t('Search Studies'), $network_dto->id, array('class' => 'btn btn-primary'));
+        print MicaClientAnchorHelper::network_variables(t('Search Variables'), $network_dto->id, array('class' => 'btn btn-primary indent'));
+        print MicaClientAnchorHelper::coverage_network(t('View Coverage'), $network_dto->id);
       ?>
     </div>
   <?php endif; ?>

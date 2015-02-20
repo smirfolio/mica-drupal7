@@ -123,10 +123,9 @@ function obiba_mica_network_networks_table_rows($networks) {
     foreach ($networks as $network) {
       $stats = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
       $study_count = MicaClientAnchorHelper::network_studies($stats->studies, $network->id);
-      $name = obiba_mica_commons_get_localized_field($network, 'name');
       $rows[] = array(
         obiba_mica_commons_get_localized_field($network, 'acronym'),
-        l($name, 'mica/network/' . $network->id . '/' . obiba_mica_commons_to_slug($name)),
+        MicaClientAnchorHelper::network($network),
         $study_count,
       );
     }

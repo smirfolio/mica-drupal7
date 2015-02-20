@@ -17,30 +17,20 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                 <?php print obiba_mica_commons_get_localized_field($dce, 'description'); ?>
               </p>
             <?php endif; ?>
-
             <div class="pull-right md-bottom-margin dce-actions" style="display: none;"  data-dce-name="<?php print $dce_name ?>">
               <?php
-              $query_array = array("variables" => array("terms" => array("dceIds" => $dce_uid)));
-              $query = MicaClient::create_query_dto_as_string($query_array);
-              print l(t('Search Variables'), 'mica/search',
-                array(
-                  'query' => array(
-                    'type' => 'variables',
-                    'query' => $query
-                  ),
-                  'attributes' => array('class' => 'btn btn-primary')
-                ));
+                print MicaClientAnchorHelper::dce_study(
+                  t('Search Variables'),
+                  $dce_uid,
+                  array('class' => 'btn btn-primary')
+                );
+
+                print MicaClientAnchorHelper::coverage_dce_study(
+                  t('View Coverage'),
+                  $dce_uid,
+                  array('class' => 'btn btn-primary indent show-coverage disabled')
+                );
               ?>
-              <?php
-                print l(t('View Coverage'), 'mica/coverage',
-                  array(
-                    'query' => array(
-                      'type' => 'variables',
-                      'query' => $query
-                    ),
-                    'attributes' => array('class' => 'btn btn-primary indent show-coverage disabled')
-                  ));
-                ?>
             </div>
 
           </div>

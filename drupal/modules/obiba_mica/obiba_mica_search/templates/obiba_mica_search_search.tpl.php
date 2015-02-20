@@ -55,19 +55,14 @@
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($variable_search_form) ?>
               <p>
-                <?php print l(t('View Coverage'), 'mica/coverage', array(
-                  'attributes' => array(
-                    'class' => array(
-                      'btn',
-                      'btn-primary',
-                      'indent'
-                    )
-                  ),
-                  'query' => array(
-                    'query' => $query,
-                    'group-by' => 'studyIds'
-                  ),
-                )); ?>
+                <?php
+                  print MicaClientAnchorHelper::ajax_friendly_anchor(
+                    MicaClientPathProvider::COVERAGE,
+                    t('View Coverage'),
+                    array('class' => 'btn btn-primary indent'),
+                    array('query' => $query, 'group-by' => 'studyIds')
+                  );
+                 ?>
               </p>
             </div>
             <div class="clearfix"/>
@@ -86,19 +81,14 @@
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($dataset_search_form) ?>
               <p>
-                <?php print l(t('View Coverage'), 'mica/coverage', array(
-                  'attributes' => array(
-                    'class' => array(
-                      'btn',
-                      'btn-primary',
-                      'indent'
-                    )
-                  ),
-                  'query' => array(
-                    'query' => $query,
-                    'group-by' => 'datasetId'
-                  ),
-                )); ?>
+                <?php
+                  print MicaClientAnchorHelper::ajax_friendly_anchor(
+                    MicaClientPathProvider::COVERAGE,
+                    t('View Coverage'),
+                    array('class' => 'btn btn-primary indent'),
+                    array('query' => $query, 'group-by' => 'datasetId')
+                  );
+                ?>
               </p>
             </div>
 
@@ -118,19 +108,14 @@
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($study_search_form) ?>
               <p>
-                <?php print l(t('View Coverage'), 'mica/coverage', array(
-                  'attributes' => array(
-                    'class' => array(
-                      'btn',
-                      'btn-primary',
-                      'indent'
-                    )
-                  ),
-                  'query' => array(
-                    'query' => $query,
-                    'group-by' => 'studyIds'
-                  ),
-                )); ?>
+                <?php
+                  print MicaClientAnchorHelper::ajax_friendly_anchor(
+                    MicaClientPathProvider::COVERAGE,
+                    t('View Coverage'),
+                    array('class' => 'btn btn-primary indent'),
+                    array('query' => $query, 'group-by' => 'studyIds')
+                  );
+                ?>
               </p>
             </div>
             <div class="clearfix"/>
@@ -149,19 +134,14 @@
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($network_search_form) ?>
               <p>
-                <?php print l(t('View Coverage'), 'mica/coverage', array(
-                  'attributes' => array(
-                    'class' => array(
-                      'btn',
-                      'btn-primary',
-                      'indent'
-                    )
-                  ),
-                  'query' => array(
-                    'query' => $query,
-                    'group-by' => 'studyIds'
-                  ),
-                )); ?>
+                <?php
+                  print MicaClientAnchorHelper::ajax_friendly_anchor(
+                    MicaClientPathProvider::COVERAGE,
+                    t('View Coverage'),
+                    array('class' => 'btn btn-primary indent'),
+                    array('query' => $query, 'group-by' => 'studyIds')
+                  );
+                ?>
               </p>
             </div>
             <div class="clearfix"/>

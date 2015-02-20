@@ -530,11 +530,6 @@
         formClickHandler($(el).attr('id'));
       });
 
-      $('#search-result .pagination a, .group-by', context).on('click', function(e) {
-        e.preventDefault();
-        window.location.hash = '!' + $(this).attr('href').split('?')[1];
-      });
-
       initSearchTerms();
 
       /**
