@@ -26,12 +26,13 @@ class MicaSearchResource extends MicaClient {
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
   }
 
-  public function download_taxonomies_coverage($parameters = NULL, $default_dto_search = NULL) {
+  public function download_taxonomies_coverage($query_param_parts, $default_dto_search = NULL) {
     $response_data =
       $this->_aggregation_resource_internal(parent::HEADER_CSV,
         'coverage',
-        $parameters,
-        $default_dto_search
+        NULL,
+        $default_dto_search,
+        $query_param_parts
       );
 
     if (!empty($response_data)) {
@@ -80,19 +81,30 @@ class MicaSearchResource extends MicaClient {
     }
   }
 
-  private function _aggregation_resource_internal($accept_type, $aggregation_type = 'search', $parameters = NULL, $default_dto_search = NULL) {
+  private function _aggregation_resource_internal($accept_type,
+                                                  $aggregation_type = 'search',
+                                                  $parameters = NULL,
+                                                  $default_dto_search = NULL,
+                                                  $query_param_parts = NULL)
+  {
     if (!empty($_SESSION['errorsQuery'])) {
       unset($_SESSION['errorsQuery']);
     }
-    $parts = NULL;
-    $url_parm = explode('?', request_uri());
+
+    $parts = $query_param_parts;
     $type = 'variables';
-    if (!empty($url_parm[1])) {
-      parse_str($url_parm[1], $parts);
-      if (!empty($parts['type'])) {
-        $type = $parts['type'];
+
+    if (empty($parts)) {
+      $url_parm = explode('?', request_uri());
+
+      if (!empty($url_parm[1])) {
+        parse_str($url_parm[1], $parts);
+        if (!empty($parts['type'])) {
+          $type = $parts['type'];
+        }
       }
     }
+
     if (!empty($default_dto_search)) {
       if (empty($parts)) {
         $parts = $default_dto_search;

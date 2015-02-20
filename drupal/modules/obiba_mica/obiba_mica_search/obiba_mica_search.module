@@ -32,11 +32,12 @@ function obiba_mica_search_menu() {
     'access callback' => TRUE
   );
 
-  $items['mica/coverage/download'] = array(
+  $items['mica/coverage/download/%'] = array(
     'title' => 'Variable Coverage',
     'description' => 'Variable Coverage',
     'page callback' => 'obiba_mica_search_coverage_download',
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'page arguments' => array(3)
   );
 
   $items['mica/studies_search/%'] = array(
@@ -529,9 +530,10 @@ function _get_coverage_data() {
   );
 }
 
-function obiba_mica_search_coverage_download() {
+function obiba_mica_search_coverage_download($query_params) {
+  parse_str($query_params, $query_param_parts);
   $search_resources = new MicaSearchResource();
-  $response = $search_resources->download_taxonomies_coverage(NULL, array('group-by' => 'studyIds'));
+  $response = $search_resources->download_taxonomies_coverage($query_param_parts, array('group-by' => 'studyIds'));
   if (!empty($response)) {
     $headers = $search_resources->getLastResponseHeaders();
     drupal_add_http_header('Content-Type', $headers['Content-Type'][0] . '; utf-8');
