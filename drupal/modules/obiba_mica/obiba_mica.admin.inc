@@ -90,6 +90,22 @@ function obiba_mica_admin_settings() {
   _obiba_mica_settings_datasets_form($form);
   _obiba_mica_settings_variables_form($form);
 
+  $form['taxonomies'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Taxonomies'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('mica_taxonomy_figures');
+  $form['taxonomies']['mica_taxonomy_figures'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('mica_taxonomy_figures'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
   $form['#submit'] = array('obiba_mica_default_password');
   return system_settings_form($form);
 }

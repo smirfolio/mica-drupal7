@@ -34,7 +34,7 @@ function obiba_mica_variable_info($options) {
   );
 
   $variable['image_cache_time_out'] = array(
-    'title' => t('The image cache timout'),
+    'title' => t('The image cache timeout'),
     'description' => t('The timeout in minute to expire Studies and networks image cache'),
     'type' => 'boolean',
     'default' => 1440,
@@ -186,6 +186,13 @@ function obiba_mica_variable_info($options) {
     'description' => t('Show dataset column in the variables table.'),
     'type' => 'boolean',
     'default' => TRUE,
+  );
+
+  $variable['mica_taxonomy_figures'] = array(
+    'title' => t('Taxonomy in figures'),
+    'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Coverage figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
+    'type' => 'string',
+    'default' => '',
   );
 
   return $variable;
