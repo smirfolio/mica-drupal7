@@ -729,7 +729,7 @@ function obiba_mica_search_studies_table($studies) {
 
     $headers_columns = _obiba_mica_search_get_sub_header_studies_table();
 
-    if (!empty($headers_columns['rows_column'])) {
+    if ($total_hits>0 && !empty($headers_columns['rows_column'])) {
       $rows[] = $headers_columns['rows_column'];
     }
 
@@ -1054,7 +1054,7 @@ function obiba_mica_search_networks_table($networks) {
   if (!empty($networks)) {
     $total_hits = $networks->getTotalHits();
     $headers_columns = _obiba_mica_search_get_sub_header_networks_table();
-    if (!empty($headers_columns['rows_column'])) {
+    if ($total_hits>0 && !empty($headers_columns['rows_column'])) {
       $rows[] = $headers_columns['rows_column'];
     }
 
@@ -1094,46 +1094,49 @@ function obiba_mica_search_networks_table($networks) {
 
       $name = obiba_mica_commons_get_localized_field($network, 'name');
 
-      $rows_columns[] = l(obiba_mica_commons_get_localized_field($network, 'acronym'), 'mica/network/' . $network->id);
-      $rows_columns[] = $name;
-      $column_studies = variable_get_value('networks_column_studies');
-      if (!empty($column_studies)) {
-        $rows_columns[] = l($studies_count, 'mica/search', array(
-          'query' => array(
-            'type' => 'studies',
-            'query' => $param_network_query
-          )
-        ));
-      }
+      dpm($total_hits);
+      if ($total_hits > 0) {
+        $rows_columns[] = l(obiba_mica_commons_get_localized_field($network, 'acronym'), 'mica/network/' . $network->id);
+        $rows_columns[] = $name;
+        $column_studies = variable_get_value('networks_column_studies');
+        if (!empty($column_studies)) {
+          $rows_columns[] = l($studies_count, 'mica/search', array(
+            'query' => array(
+              'type' => 'studies',
+              'query' => $param_network_query
+            )
+          ));
+        }
 
-      $column_study_dataset = variable_get_value('networks_column_study_datasets');
-      if (!empty($column_study_dataset)) {
-        $rows_columns[] = l($datasets_study_count, 'mica/search', array(
-          'query' => array(
-            'type' => 'datasets',
-            'query' => $param_network_query_study_dataset
-          )
-        ));
+        $column_study_dataset = variable_get_value('networks_column_study_datasets');
+        if (!empty($column_study_dataset)) {
+          $rows_columns[] = l($datasets_study_count, 'mica/search', array(
+            'query' => array(
+              'type' => 'datasets',
+              'query' => $param_network_query_study_dataset
+            )
+          ));
+        }
+        $column_harmonization_dataset = variable_get_value('networks_column_harmonization_datasets');
+        if (!empty($column_harmonization_dataset)) {
+          $rows_columns[] = l($datasets_harmonized_count, 'mica/search', array(
+            'query' => array(
+              'type' => 'datasets',
+              'query' => $param_network_query_harmo_dataset
+            )
+          ));
+        }
+        $column_variables = variable_get_value('networks_column_variables');
+        if (!empty($column_variables)) {
+          $rows_columns[] = l($variables_count, 'mica/search', array(
+            'query' => array(
+              'type' => 'variables',
+              'query' => $param_network_query
+            )
+          ));
+        }
+        $rows[] = $rows_columns;
       }
-      $column_harmonization_dataset = variable_get_value('networks_column_harmonization_datasets');
-      if (!empty($column_harmonization_dataset)) {
-        $rows_columns[] = l($datasets_harmonized_count, 'mica/search', array(
-          'query' => array(
-            'type' => 'datasets',
-            'query' => $param_network_query_harmo_dataset
-          )
-        ));
-      }
-      $column_variables = variable_get_value('networks_column_variables');
-      if (!empty($column_variables)) {
-        $rows_columns[] = l($variables_count, 'mica/search', array(
-          'query' => array(
-            'type' => 'variables',
-            'query' => $param_network_query
-          )
-        ));
-      }
-      $rows[] = $rows_columns;
     }
     $headers = $headers_columns['headers'];
 
