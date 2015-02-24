@@ -20,20 +20,15 @@ function obiba_mica_search_resource_return_facets($dto_type = NULL) {
   return array();
 }
 
-function obiba_mica_search_get_dto_facet_aggs($tab_block, $type) {
-  $agg_type = $type;
+function obiba_mica_search_get_dto_facet_aggs($tab_block, $type, $source) {
   $have_term = FALSE;
-  switch ($tab_block) {
-    case 'search-datasetId' :
+  if ($tab_block === 'search-datasetId') {
       $facet_build[$tab_block]['datasetId']['term'] = obiba_mica_search_get_datasets();
       return $facet_build[$tab_block];
-    case 'search-studyIds':
-    case 'search-dceIds':
-      // these are displayed with the studies tab but aggregations are variables ones
-      $agg_type = 'variables';
   }
-  if (!empty($_SESSION[$agg_type])) {
-    foreach ($_SESSION[$agg_type]['aggregations'] as $key_tab => $facet) {
+
+  if (!empty($source)) {
+    foreach ($source as $key_tab => $facet) {
 
       if (is_int($key_tab)) {
         if (!empty($facet->aggregation) && $tab_block == 'search-' . $facet->aggregation) {
@@ -67,7 +62,7 @@ function obiba_mica_search_get_dto_facet_aggs($tab_block, $type) {
   }
 }
 
-function obiba_mica_search_process_block_theme($block_delta, $type) {
+function obiba_mica_search_process_block_theme($block_delta, $type, $source) {
   $items = array();
   $aggregation_facet = NULL;
 
@@ -80,7 +75,7 @@ function obiba_mica_search_process_block_theme($block_delta, $type) {
   }
 
   if (!empty($block_delta)) {
-    $facet_pars = obiba_mica_search_get_dto_facet_aggs($block_delta, $type);
+    $facet_pars = obiba_mica_search_get_dto_facet_aggs($block_delta, $type, $source);
     $agg_type = "";
     if (!empty($facet_pars)) {
       $aggregation_facet = key($facet_pars);

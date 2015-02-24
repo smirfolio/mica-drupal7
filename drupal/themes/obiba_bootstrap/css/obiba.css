@@ -6226,7 +6226,6 @@ div.charts {
   margin: 0;
   padding: 5px 5px;
   background-color: #FAFAFA;
-  border-left: 4px solid #CCCCCC;
 }
 .facet-bar .block-obiba-mica-search h2 a {
   padding-left: 15px;
@@ -6364,7 +6363,6 @@ div.charts {
   display: block;
   min-height: 25px;
   margin-bottom: 0;
-  border-bottom: #cabcbc dashed 1px;
 }
 .facet-bar .facet_terms_range {
   font-weight: normal;
@@ -6536,7 +6534,6 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   margin: 0;
   padding: 5px 5px;
   background-color: #FAFAFA;
-  border-left: 4px solid #CCCCCC;
 }
 .region-facets .block-obiba-mica-search h2 a {
   padding-left: 15px;
@@ -6674,7 +6671,6 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   display: block;
   min-height: 25px;
   margin-bottom: 0;
-  border-bottom: #cabcbc dashed 1px;
 }
 .region-facets .facet_terms_range {
   font-weight: normal;
@@ -6836,6 +6832,19 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 }
 #block-mica-mica-search-filters .advanced {
   font-size: 15px;
+}
+.bordered-tab-content {
+  border: 1px solid #dddddd !important;
+}
+.panel-group {
+  margin-bottom: 5px;
+}
+.panel-group .panel {
+  border-radius: 0 !important;
+  border: 0;
+}
+.panel-group .panel-heading {
+  border-radius: 0 !important;
 }
 .facets {
   list-style-type: none;
@@ -7674,4 +7683,7 @@ table.dataTable tbody > tr > td {
 }
 .no-float-tab {
   clear: both;
+}
+.no-border {
+  border: none !important;
 }

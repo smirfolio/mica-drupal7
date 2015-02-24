@@ -120,6 +120,10 @@ function obiba_mica_search_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_search_cloned_block',
       'path' => $path_theme
     ),
+    'obiba_mica_search_aggregation_group' => array(
+      'template' => 'obiba_mica_search_aggregation_group',
+      'path' => $path_theme
+    )
   );
 }
 
@@ -192,30 +196,57 @@ function _get_facets_theme() {
 }
 
 function _obiba_mica_search_get_facets_block_by_dto_type($dto_type, $type) {
-  $rendred_blocks = "";
+  $rendered_blocks = "";
   $facets = obiba_mica_search_resource_return_facets($dto_type);
-
   if (!empty($facets)) {
     foreach ($facets as $key_facet => $facet) {
-      $has_terms = MicaClient::has_entity_by_id_aggregation($facet['aggs']);
-      $content_block = obiba_mica_search_process_block_theme('search-' . $facet['aggs'], $type);
-      if (!empty($content_block)) {
-        if (!empty($has_terms) || ($facet['aggs'] == 'datasetId') || ($facet['aggs'] == 'networkId')) {
-          $rendred_blocks .= theme('obiba_mica_search_cloned_block', array(
-            'content' => $content_block,
+      if (!empty($facet['children'])) {
+        $rendered_group = "";
+
+        foreach ($facet['children'] as $key_child_facet => $child_facet) {
+          if (!MicaClient::has_entity_aggregations($child_facet['dto'])) continue;
+          $content_block = obiba_mica_search_process_block_theme('search-' . $child_facet['aggs'], $type, $facet['dto']->children);
+          if (!empty($content_block)) {
+            $rendered_group .= theme('obiba_mica_search_cloned_block', array(
+              'content' => $content_block,
+              'title' => $child_facet['title'],
+              'block_html_id' => $child_facet['key'],
+            ));
+          }
+        }
+
+        if (!empty($rendered_group)) {
+          $rendered_blocks .= theme('obiba_mica_search_aggregation_group', array(
+            'name' => $facet['key'],
             'title' => $facet['title'],
-            'block_html_id' => $key_facet,
+            'content' => $rendered_group
           ));
+        }
+
+      } else {
+        $has_terms = MicaClient::has_entity_by_id_aggregation($facet['aggs']);
+        // aggs that are from studies but must be displayed as variable aggregations
+        $source_type = preg_match("/^(studyIds|dceIds)$/", $key_facet) ? "variables" : $type;
+        $content_block =
+          obiba_mica_search_process_block_theme(
+            'search-' . $facet['aggs'],
+            $type,
+            $_SESSION[$source_type]['aggregations']
+          );
+
+        if (!empty($content_block)) {
+          if (!empty($has_terms) || ($facet['aggs'] == 'datasetId') || ($facet['aggs'] == 'networkId')) {
+            $rendered_blocks .= theme('obiba_mica_search_cloned_block', array(
+              'content' => $content_block,
+              'title' => $facet['title'],
+              'block_html_id' => $key_facet,
+            ));
+          }
         }
       }
     }
   }
-  if (!empty($rendred_blocks)) {
-    return $rendred_blocks;
-  }
-  else {
-    return NULL;
-  }
+  return empty($rendered_blocks) ? NULL : $rendered_blocks;
 }
 
 function obiba_mica_search_load_libs() {

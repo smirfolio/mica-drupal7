@@ -16,7 +16,6 @@
           data-toggle="tooltip"
           title="<?php print $tooltip ?>">
           <i class="glyphicon glyphicon-unchecked"></i>
-<!--          --><?php //print  truncate_utf8($title, $term->count > 0 ? 25 : 35, TRUE, TRUE); ?>
           <div class="tilte-term"><?php print $title ?></div>
         </span>
       </td>

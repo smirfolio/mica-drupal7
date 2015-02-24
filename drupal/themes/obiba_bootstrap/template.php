@@ -251,6 +251,15 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/obiba_mica_search_aggregation_group.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_mica_search_aggregation_group.tpl.php'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_mica_search_aggregation_group',
+      'path' => $path . '/templates'
+    );
+  }
+
   return $theme_array;
 
 }
