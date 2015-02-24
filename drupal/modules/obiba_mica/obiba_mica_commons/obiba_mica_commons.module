@@ -82,12 +82,6 @@ function obiba_mica_commons_download_attachment($entity_type, $entity_id, $file_
   }
 }
 
-function obiba_mica_commons_to_slug($string) {
-  $string = str_replace(array('/', ' '), '-', $string);
-  $accents = '/&([A-Za-z]{1,2})(tilde|grave|acute|circ|cedil|uml|lig);/';
-  return urlencode(strtolower(preg_replace($accents, '$1', htmlentities(utf8_decode($string)))));
-}
-
 /**
  * @param $std The object with localized fields
  * @param $field The localized field
