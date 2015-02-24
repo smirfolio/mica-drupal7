@@ -222,8 +222,23 @@ class MicaClient {
       $facets_buckets[$bucket->aggregation] = array(
         'title' => obiba_mica_commons_get_localized_field($bucket, 'title'),
         'key' => $bucket->aggregation,
-        'aggs' => $bucket->aggregation
+        'aggs' => $bucket->aggregation,
+        'dto' => $bucket
       );
+
+      if (!empty($bucket->children)) {
+        $children = array();
+        foreach ($bucket->children as $child) {
+          array_push($children, array(
+            'title' => obiba_mica_commons_get_localized_field($child, 'title'),
+            'key' => $child->aggregation,
+            'aggs' => $child->aggregation,
+            'dto' => $child
+          ));
+        }
+
+        $facets_buckets[$bucket->aggregation]['children'] = $children;
+      }
     }
     return $facets_buckets;
   }
@@ -358,6 +373,11 @@ class MicaClient {
     }
 
     return NULL;
+  }
+
+  static function has_entity_aggregations($entity) {
+    return !empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'})
+            || !empty($entity->{'obiba.mica.StatsAggregationResultDto.stats'});
   }
 
   static function has_entity_by_id_aggregation($facet) {

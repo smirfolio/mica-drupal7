@@ -56,7 +56,7 @@
       margin: 0;
       padding: 5px 5px;
       background-color: #FAFAFA;
-      border-left: 4px solid #CCCCCC;
+
       a {
         padding-left: 15px;
         color: @text-color;
@@ -211,7 +211,6 @@
         display: block;
         min-height: 25px;
         margin-bottom: 0;
-        border-bottom: rgb(202, 188, 188) dashed 1px;
       }
     }
   }
@@ -323,4 +322,21 @@
     font-size: @font-size-h5;
   }
 
+}
+
+.bordered-tab-content {
+  border: 1px solid #dddddd !important;
+}
+
+.panel-group {
+  margin-bottom: 5px;
+
+  .panel {
+    border-radius: 0 !important;
+    border: 0;
+  }
+
+  .panel-heading {
+    border-radius: 0 !important;
+  }
 }
