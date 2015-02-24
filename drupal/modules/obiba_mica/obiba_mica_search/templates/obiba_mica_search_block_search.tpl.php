@@ -33,7 +33,7 @@
     <?php if ($nch > 5) : ?>
       <div class="expand-control" id="<?php print $formId; ?>">
         <a id="<?php print $formId; ?>"
-          class="label label-info link-expand expand-control-link-<?php print $formId; ?>"
+          class="btn btn-primary btn-xs  expand-control-link-<?php print $formId; ?>"
           data-toggle="collapse"
           data-target="#block-search<?php print $formId; ?>"
           aria-expanded="true"
