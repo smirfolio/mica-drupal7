@@ -147,7 +147,7 @@ function _obiba_mica_dataset_get_datasets_table($datasets, $type) {
 
     $dataset_rows[$key_dataset] = array(
       'data' => array(
-        'label' => l($dataset_name, 'mica/' . $type . '/' . $dataset_dto->id . '/' . obiba_mica_commons_to_slug($dataset_name)),
+        'label' => l($dataset_name, 'mica/' . $type . '/' . $dataset_dto->id),
         'desc' => !empty($dataset_description) ? $dataset_description : '-'
       )
     );

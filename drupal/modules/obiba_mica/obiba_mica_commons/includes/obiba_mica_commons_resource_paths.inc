@@ -79,8 +79,7 @@ class MicaClientAnchorHelper {
 
   static function study($study) {
     $name = obiba_mica_commons_get_localized_field($study, 'name');
-    $id = $study->id . '/' . obiba_mica_commons_to_slug($name);
-    return l( $name, MicaClientPathProvider::study($id), array());
+    return l( $name, MicaClientPathProvider::study($study->id), array());
   }
 
   static function study_population_modal($population) {
@@ -157,8 +156,7 @@ class MicaClientAnchorHelper {
 
   static function network($network) {
     $name = obiba_mica_commons_get_localized_field($network, 'name');
-    $id = $network->id . '/' . obiba_mica_commons_to_slug($name);
-    return l( $name, MicaClientPathProvider::network($id), array());
+    return l( $name, MicaClientPathProvider::network($network->id), array());
   }
 
   static function study_networks($text, $study_id) {
@@ -386,14 +384,14 @@ class MicaClientAnchorHelper {
     $datasetName = obiba_mica_commons_get_localized_field($variable, 'datasetName');
     return l(
       $datasetName,
-      MicaClientPathProvider::variable_dataset($variable) . '/' . obiba_mica_commons_to_slug($datasetName)
+      MicaClientPathProvider::variable_dataset($variable)
     );
   }
 
   static function variable_harmonized($variable) {
     return l(
       $variable->name,
-      MicaClientPathProvider::variable_harmonized($variable) . '/' . obiba_mica_commons_to_slug($variable->name)
+      MicaClientPathProvider::variable_harmonized($variable)
     );
   }
 

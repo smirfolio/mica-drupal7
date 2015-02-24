@@ -154,7 +154,7 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
   $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
 
   return array(
-    l(obiba_mica_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id . '/' . obiba_mica_commons_to_slug($name)),
+    l(obiba_mica_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id),
     $name,
     implode(', ', t(obiba_mica_commons_clean_string($study_summary->designs))),
     isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
