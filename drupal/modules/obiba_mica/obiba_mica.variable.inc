@@ -34,7 +34,7 @@ function obiba_mica_variable_info($options) {
   );
 
   $variable['image_cache_time_out'] = array(
-    'title' => t('The image cache timout'),
+    'title' => t('The image cache timeout'),
     'description' => t('The timeout in minute to expire Studies and networks image cache'),
     'type' => 'boolean',
     'default' => 1440,
@@ -42,7 +42,7 @@ function obiba_mica_variable_info($options) {
   /**************Networks****************************/
   $variable['search_networks'] = array(
     'title' => t('Show networks search'),
-    'description' => t('If Show networks search is selected, the networks tab will be displayed in the search page.'),
+    'description' => t('If selected, the networks tab will be displayed in the search page.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -73,7 +73,7 @@ function obiba_mica_variable_info($options) {
   /**************Studies****************************/
   $variable['search_studies'] = array(
     'title' => t('Show studies search'),
-    'description' => t('If Show studies search is selected, the studies tab will be displayed in the search page.'),
+    'description' => t('If selected, the studies tab will be displayed in the search page.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -140,7 +140,7 @@ function obiba_mica_variable_info($options) {
 
   $variable['search_datasets'] = array(
     'title' => t('Show datasets search'),
-    'description' => t('If Show Show datasets search is selected, the studies tab will be displayed in the search page.'),
+    'description' => t('If selected, the datasets tab will be displayed in the search page.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -171,7 +171,7 @@ function obiba_mica_variable_info($options) {
 
   $variable['search_variables'] = array(
     'title' => t('Show variables search'),
-    'description' => t('If Show variables search is selected, the studies tab will be displayed in the search page.'),
+    'description' => t('If selected, the variables tab will be displayed in the search page.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -186,6 +186,13 @@ function obiba_mica_variable_info($options) {
     'description' => t('Show dataset column in the variables table.'),
     'type' => 'boolean',
     'default' => TRUE,
+  );
+
+  $variable['mica_taxonomy_figures'] = array(
+    'title' => t('Taxonomy in figures'),
+    'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Coverage figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
+    'type' => 'string',
+    'default' => '',
   );
 
   return $variable;

@@ -80,16 +80,44 @@ function obiba_mica_admin_settings() {
   );
 
   $form['search_display_settings'] = array(
-    '#type' => 'fieldset',
+    '#type' => 'vertical_tabs',
     '#title' => t('Search page display settings'),
     '#collapsible' => FALSE,
   );
-  /********Networks Tabs ***********************/
-  $form['search_display_settings']['networks_form'] = array(
+
+  _obiba_mica_settings_networks_form($form);
+  _obiba_mica_settings_studies_form($form);
+  _obiba_mica_settings_datasets_form($form);
+  _obiba_mica_settings_variables_form($form);
+
+  $form['taxonomies'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Networks Search display settings'),
+    '#title' => t('Taxonomies'),
     '#collapsible' => FALSE,
   );
+
+  $info = variable_get_info('mica_taxonomy_figures');
+  $form['taxonomies']['mica_taxonomy_figures'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('mica_taxonomy_figures'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $form['#submit'] = array('obiba_mica_default_password');
+  return system_settings_form($form);
+}
+
+function _obiba_mica_settings_networks_form(&$form) {
+  $form['search_display_settings']['networks_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Networks Search'),
+    '#collapsible' => FALSE,
+  );
+
+  // tab
   $info = variable_get_info('search_networks');
   $form['search_display_settings']['networks_form']['search_networks'] = array(
     '#type' => 'checkbox',
@@ -97,7 +125,8 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('search_networks'),
     '#description' => $info['description'],
   );
-  /*############***********Network columns**********############**********/
+
+  // networks
   $form['search_display_settings']['networks_form']['networks_column'] = array(
     '#type' => 'fieldset',
     '#title' => t('Network column display settings'),
@@ -132,14 +161,16 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('networks_column_variables'),
     '#description' => $info['description'],
   );
-  /***********End networks******************************/
+}
 
-  /*******************Studies Tabs**************************/
+function _obiba_mica_settings_studies_form(&$form) {
   $form['search_display_settings']['studies_form'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Studies Search display settings'),
+    '#title' => t('Studies Search'),
     '#collapsible' => FALSE,
   );
+
+  // tab
   $info = variable_get_info('search_studies');
   $form['search_display_settings']['studies_form']['search_studies'] = array(
     '#type' => 'checkbox',
@@ -147,7 +178,8 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('search_studies'),
     '#description' => $info['description'],
   );
-  /*############***********studies columns**********############**********/
+
+  // columns
   $form['search_display_settings']['studies_form']['studies_column'] = array(
     '#type' => 'fieldset',
     '#title' => t('Study column display settings'),
@@ -223,13 +255,16 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('studies_column_variables'),
     '#description' => $info['description'],
   );
+}
 
-  /*******************datasets Tabs**************************/
+function _obiba_mica_settings_datasets_form(&$form) {
   $form['search_display_settings']['datasets_form'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Datasets Search display settings'),
+    '#title' => t('Datasets Search'),
     '#collapsible' => FALSE,
   );
+
+  // tab
   $info = variable_get_info('search_datasets');
   $form['search_display_settings']['datasets_form']['search_datasets'] = array(
     '#type' => 'checkbox',
@@ -237,7 +272,8 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('search_datasets'),
     '#description' => $info['description'],
   );
-  /*############***********Datasets columns**********############**********/
+
+  // columns
   $form['search_display_settings']['datasets_form']['datasets_column'] = array(
     '#type' => 'fieldset',
     '#title' => t('Dataset column display settings'),
@@ -271,12 +307,16 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('datasets_column_variables'),
     '#description' => $info['description'],
   );
-  /*******************variables Tabs**************************/
+}
+
+function _obiba_mica_settings_variables_form(&$form) {
   $form['search_display_settings']['variables_form'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Variables Search display settings'),
+    '#title' => t('Variables Search'),
     '#collapsible' => FALSE,
   );
+
+  // tab
   $info = variable_get_info('search_variables');
   $form['search_display_settings']['variables_form']['search_variables'] = array(
     '#type' => 'checkbox',
@@ -284,7 +324,8 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('search_variables'),
     '#description' => $info['description'],
   );
-  /*############***********variables columns**********############**********/
+
+  // columns
   $form['search_display_settings']['variables_form']['variables_column'] = array(
     '#type' => 'fieldset',
     '#title' => t('Variables column display settings'),
@@ -304,12 +345,9 @@ function obiba_mica_admin_settings() {
     '#default_value' => variable_get_value('variables_column_dataset'),
     '#description' => $info['description'],
   );
-
-  $form['#submit'] = array('my_default_password');
-  return system_settings_form($form);
 }
 
-function my_default_password($form, &$form_state) {
+function obiba_mica_default_password($form, &$form_state) {
   if (empty($form_state['values']['mica_anonymous_password'])) {
     $form_state['values']['mica_anonymous_password'] = variable_get_value('mica_anonymous_password');
   }

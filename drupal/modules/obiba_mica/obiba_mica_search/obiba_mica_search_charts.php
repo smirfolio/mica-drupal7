@@ -198,7 +198,23 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
       }
     }
   }
-  return $taxonomy_charts;
+
+  // filter and order the named taxonomies
+  $mica_taxonomy_figures = trim(variable_get_value('mica_taxonomy_figures'));
+  if(empty($mica_taxonomy_figures)) return $taxonomy_charts;
+
+  $taxonomy_figures = explode(',', $mica_taxonomy_figures);
+  $filtered_coverages = array();
+  foreach ($taxonomy_figures as $taxo) {
+    $name = trim($taxo);
+    foreach ($taxonomy_charts as $coverage) {
+      if ($coverage['taxonomy']->name == $name) {
+        $filtered_coverages[] = $coverage;
+        break;
+      }
+    }
+  }
+  return $filtered_coverages;
 }
 
 function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
