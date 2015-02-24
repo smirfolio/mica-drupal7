@@ -6333,7 +6333,6 @@ div.charts {
   margin-left: -5px;
 }
 .facet-bar .block-obiba-mica-search div.block-content span.term-field i {
-  color: #02a676;
   position: absolute !important;
   left: 5px;
   top: 7px;
@@ -6644,7 +6643,6 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   margin-left: -5px;
 }
 .region-facets .block-obiba-mica-search div.block-content span.term-field i {
-  color: #02a676;
   position: absolute !important;
   left: 5px;
   top: 7px;

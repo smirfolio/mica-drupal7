@@ -54,8 +54,8 @@
     }
 
     function renderReset() {
-        return $("<button type='button' class='btn btn-warning' title='" + Drupal.t('Clear query') + "'><span class='flaticon-undo9'></span></button>")
-            .on("click", function () {
+      return $("<button type='button' class='btn btn-default rounded' title='" + Drupal.t('Clear query') + "'><span class='flaticon-undo9'></span></button>")
+        .on("click", function () {
                 $.query_href.updateWindowLocation(null);
             });
     }
