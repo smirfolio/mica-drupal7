@@ -193,7 +193,7 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
         }
         $taxonomy_charts[] = array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
-          'chart' => obiba_mica_search_stacked_column_chart($labels, $data, $title, 1000, 450, 'none')
+          'chart' => obiba_mica_search_stacked_column_chart($labels, $data, $title, NULL, 450, 'none')
         );
       }
     }
@@ -222,7 +222,7 @@ function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $heig
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
-    '#colors' => obiba_mica_search_charts_colors(),
+    '#colors' => obiba_mica_search_charts_monochromatic(),
     '#width' => $width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,
@@ -247,7 +247,7 @@ function obiba_mica_search_mini_column_chart($labels, $data, $title, $width = 25
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
-    '#colors' => obiba_mica_search_charts_colors(),
+    '#colors' => obiba_mica_search_charts_monochromatic(),
     '#width' => $width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,
@@ -280,12 +280,16 @@ function obiba_mica_search_mini_column_chart($labels, $data, $title, $width = 25
 
 function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart_param = variable_get('charts_default_settings');
+  $chart_width = $width;
+  if (empty($width) && count($labels) < 10) {
+    $chart_width = count($labels) * 20 + $height;
+  }
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
-    '#colors' => obiba_mica_search_charts_colors(),
+    '#colors' => obiba_mica_search_charts_monochromatic(),
     '#stacking' => TRUE,
-    '#width' => $width,
+    '#width' => $chart_width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,
     '#legend_position' => $legend_position,
@@ -307,7 +311,7 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
   return $chart;
 }
 
-function obiba_mica_search_charts_colors() {
+function obiba_mica_search_charts_polychromatic() {
   // http://paletton.com/#uid=63G0A0kgXCa57FeaZFGlFCCqIHv
   return array(
     '#6285BC',
@@ -333,21 +337,13 @@ function obiba_mica_search_charts_colors() {
   );
 }
 
-function obiba_mica_search_charts_gray_colors() {
+function obiba_mica_search_charts_monochromatic() {
+  // http://paletton.com/#uid=13H0u0k7UUa3cZA5wXlaiQ5cFL3
   return array(
-    '#111',
-    '#333',
-    '#555',
-    '#777',
-    '#999',
-    '#bbb',
-    '#ddd',
-    '#222',
-    '#444',
-    '#666',
-    '#888',
-    '#aaa',
-    '#ccc',
-    '#eee',
+    '#b8cbed',
+    '#e5edfb',
+    '#cfddf5',
+    '#a0b8e2',
+    '#88a4d4',
   );
 }
