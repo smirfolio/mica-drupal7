@@ -449,7 +449,6 @@
           formClickHandler($(this).attr('aggregation'));
         });
 
-
         $("input[id='range-auto-fill']", context).on("blur", function () {
           var term = $(this).attr('termselect');
           var minid = term + '-min';
