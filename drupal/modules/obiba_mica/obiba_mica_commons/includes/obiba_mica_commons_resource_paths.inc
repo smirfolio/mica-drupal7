@@ -115,37 +115,37 @@ class MicaClientAnchorHelper {
     );
   }
 
-  static function study_variables($text, $study_id, array $attributes = array()) {
+  static function study_variables($text, $study_id, $is_button = FALSE) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('studies' => array('terms' => array('studyIds' => $study_id))) //
     );
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
-      $attributes, //
+      empty($text) ? t(variable_get_value('variables_search_label')) : $text, //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('type' => 'variables', 'query' => $query) //
     );
   }
 
-  static function dce_study($text, $dceId, array $attributes = array()) {
-    $query = MicaClient::create_query_dto_as_string(array("variables" => array("terms" => array("dceIds" => $dceId))));
+  static function dce_study_variables($text, $dce_id, $is_button = FALSE) {
+    $query = MicaClient::create_query_dto_as_string(array("variables" => array("terms" => array("dceIds" => $dce_id))));
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
-      $attributes, //
+      empty($text) ? t(variable_get_value('variables_search_label')) : $text, //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('type' => 'variables', 'query' => $query) //
     );
   }
 
-  static function coverage_dce_study($text, $dceId, array $attributes = array()) {
+  static function coverage_dce_study($dceId, $is_button = FALSE) {
     $query = MicaClient::create_query_dto_as_string(array("variables" => array("terms" => array("dceIds" => $dceId))));
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::COVERAGE, //
-      $text, //
-      $attributes, //
+      t(variable_get_value('variable_coverage_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('type' => 'variables', 'query' => $query) //
     );
   }
@@ -179,7 +179,7 @@ class MicaClientAnchorHelper {
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
+      empty($text) ? t(variable_get_value('variables_search_label')) : $text, //
       $attributes, //
       array('type' => 'studies', 'query' => $query) //
     );
@@ -192,7 +192,7 @@ class MicaClientAnchorHelper {
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
+      empty($text) ? t(variable_get_value('variables_search_label')) : $text, //
       array(), //
       array('type' => 'datasets', 'query' => $query) //
     );
@@ -205,39 +205,39 @@ class MicaClientAnchorHelper {
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
+      empty($text) ? t(variable_get_value('variables_search_label')) : $text, //
       $attributes, //
       array('type' => 'variables', 'query' => $query) //
     );
   }
 
-  static function search_networks($text) {
+  static function search_networks($is_button = FALSE) {
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      t(variable_get_value('networks_search_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('type' => 'networks') //
     );
   }
 
-  static function coverage_network($text, $networkId) {
+  static function coverage_network($networkId, $is_button = FALSE) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('networks' => array('terms' => array('networkId' => $networkId))) //
     );
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::COVERAGE, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      t(variable_get_value('variable_coverage_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('group-by' => 'studyIds', 'query' => $query) //
     );
   }
 
-  static function coverage_networks($text) {
+  static function coverage_networks($is_button = FALSE) {
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::COVERAGE, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      t(variable_get_value('variable_coverage_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('group-by' => 'studyIds') //
     );
   }
@@ -253,21 +253,21 @@ class MicaClientAnchorHelper {
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
+      empty($text) ? t(variable_get_value('variables_search_label')) : $text, //
       $attributes, //
       array('type' => 'variables', 'query' => $query) //
     );
   }
 
-  static function coverage_dataset($text, $dataset_id, array $attributes = array()) {
+  static function coverage_dataset($dataset_id, $is_button = FALSE) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('datasetId' => $dataset_id))) //
     );
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::COVERAGE, //
-      $text, //
-      empty($attributes) ? array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES) : $attributes, //
+      t(variable_get_value('variable_coverage_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('group-by' => 'studyIds', 'query' => $query) //
     );
   }
@@ -298,85 +298,50 @@ class MicaClientAnchorHelper {
     );
   }
 
-  static function search_studies($text) {
+  static function search_studies($is_button = FALSE) {
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      t(variable_get_value('studies_search_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('type' => 'studies') //
     );
   }
 
-  static function coverage_studies($text) {
+  static function coverage_studies($is_button = FALSE) {
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::COVERAGE, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
+      t(variable_get_value('variable_coverage_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('group-by' => 'studyIds') //
     );
   }
 
-  static function coverage_study($text, $studyId, array $attributes = array()) {
-    $query = MicaClient::create_query_dto_as_string(array("studies" => array("terms" => array("studyIds" => $studyId))));
+  static function coverage_study($study_id, $is_button = FALSE) {
+    $query = MicaClient::create_query_dto_as_string(array("studies" => array("terms" => array("studyIds" => $study_id))));
 
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::COVERAGE, //
-      $text, //
-      $attributes, //
+      t(variable_get_value('variable_coverage_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
       array('group-by' => 'studyIds', 'query' => $query) //
     );
   }
 
-  static function search_study_datasets($text) {
-    $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('variableType' => "study"))) //
-    );
-
-    return self::ajax_friendly_anchor( //
-      MicaClientPathProvider::SEARCH, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
-      array('type' => 'variables', 'query' => $query) //
-    );
-
-  }
-
-  static function coverage_study_datasets($text) {
-    $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('variableType' => "study"))) //
-    );
-
+  static function coverage_datasets($is_button = FALSE) {
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::COVERAGE, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
-      array('group-by' => 'datasetId', 'query' => $query) //
+      t(variable_get_value('variable_coverage_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
+      array('group-by' => 'datasetId') //
     );
   }
 
-  static function search_harmonization_datasets($text) {
-    $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('variableType' => "dataschema"))) //
-    );
-
+  static function search_datasets($is_button = FALSE) {
     return self::ajax_friendly_anchor( //
       MicaClientPathProvider::SEARCH, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
-      array('type' => 'variables', 'query' => $query) //
-    );
-  }
-
-  static function coverage_harmonization_datasets($text) {
-    $query = MicaClient::add_parameter_dto_query_link( //
-      array('variables' => array('terms' => array('variableType' => "dataschema"))) //
-    );
-
-    return self::ajax_friendly_anchor( //
-      MicaClientPathProvider::COVERAGE, //
-      $text, //
-      array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES), //
-      array('group-by' => 'datasetId', 'query' => $query) //
+      t(variable_get_value('datasets_search_label')), //
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''), //
+      array('type' => 'datasets') //
     );
   }
 

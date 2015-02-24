@@ -8,7 +8,7 @@
   <p class="md-top-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
       <a href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-        class="fancybox-button">
+         class="fancybox-button">
         <img
           src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
           class="imageThumb">
@@ -18,20 +18,15 @@
     <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($study_dto, 'objectives')); ?>
   </p>
 
-  <div id="studyActions" class="pull-right md-bottom-margin">
-    <?php
-      print MicaClientAnchorHelper::study_variables(
-        t('Search Variables'),
-        $study_dto->id,
-        array('class' => 'btn btn-primary disabled')
-      );
-
-      print MicaClientAnchorHelper::coverage_study(
-        t('View Coverage'),
-        $study_dto->id,
-        array('class' => MicaClientAnchorHelper::DEFAULT_PRIMARY_BUTTON_CLASSES . ' indent disabled')
-      );
-    ?>
+  <div class="btn-group pull-right md-bottom-margin">
+    <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle disabled" data-toggle="dropdown"
+            aria-expanded="false">
+      <?php print t('Search') ?> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><?php print MicaClientAnchorHelper::coverage_study($study_dto->id) ?></li>
+      <li><?php print MicaClientAnchorHelper::study_variables(NULL, $study_dto->id) ?></li>
+    </ul>
   </div>
 </div>
 
@@ -76,7 +71,7 @@
             <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
               <li>
                 <a href="#" data-toggle="modal"
-                  data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
+                   data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
                   <?php print $investigator->title; ?>
                   <?php print $investigator->firstName; ?>
                   <?php print $investigator->lastName; ?>
@@ -100,7 +95,7 @@
             <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
               <li>
                 <a href="#" data-toggle="modal"
-                  data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
+                   data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
                   <?php print $contact->title; ?>
                   <?php print $contact->firstName; ?>
                   <?php print $contact->lastName; ?>
@@ -387,7 +382,7 @@
               <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) {
                 print 'active';
               } ?>"
-                id="population-<?php print $key; ?>">
+                   id="population-<?php print $key; ?>">
                 <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
@@ -413,13 +408,17 @@
   </section>
 <?php endif; ?>
 
-  <!-- NETWORKS placeholder -->
-  <section id="networks"><div><?php print t('Loading ...') ?></div></section>
+<!-- NETWORKS placeholder -->
+<section id="networks">
+  <div><?php print t('Loading ...') ?></div>
+</section>
 
-  <!-- DATASETS placeholder -->
-  <section id="datasets"><div><?php print t('Loading ...') ?></div></section>
+<!-- DATASETS placeholder -->
+<section id="datasets">
+  <div><?php print t('Loading ...') ?></div>
+</section>
 
-  <!-- VARIABLES -->
+<!-- VARIABLES -->
 <?php if (!empty($study_variables_aggs)): ?>
   <section id="variables">
     <div class="container-fluid">
@@ -434,24 +433,26 @@
           </p>
 
           <?php
-            // TODO currently the code that feeds the data is commented, see obiba_mica_study-page-detail.inc
-            print MicaClientAnchorHelper::ajax_friendly_anchor(
-              MicaClientPathProvider::SEARCH,
-                t('Search Variables'),
-                array('class' => 'btn btn-primary'),
-                array(
-                  'type' => 'variables',
-                  'parent:id[]' => 'id.' . $study_dto->id
-                )
-              );
+          // TODO currently the code that feeds the data is commented, see obiba_mica_study-page-detail.inc
+          print MicaClientAnchorHelper::ajax_friendly_anchor(
+            MicaClientPathProvider::SEARCH,
+            t('Search Variables'),
+            array('class' => 'btn btn-primary'),
+            array(
+              'type' => 'variables',
+              'parent:id[]' => 'id.' . $study_dto->id
+            )
+          );
           ?>
         </div>
       </div>
     </div>
   </section>
 <?php endif; ?>
-  <!-- COVERAGE placeholder -->
-  <section id="coverage"><div><?php print t('Loading ...') ?></div></section>
+<!-- COVERAGE placeholder -->
+<section id="coverage">
+  <div><?php print t('Loading ...') ?></div>
+</section>
 <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
 <div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
 </article>

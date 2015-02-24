@@ -21,7 +21,6 @@ function obiba_mica_dataset_menu() {
 
   $items['mica/datasets/harmonization-datasets'] = array(
     'title' => 'Harmonization Datasets',
-    'description' => 'Published harmonization datasets',
     'page callback' => 'obiba_mica_dataset_get_harmonization_datasets_list',
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access callback' => TRUE,
@@ -34,7 +33,6 @@ function obiba_mica_dataset_menu() {
     'page callback' => 'obiba_mica_dataset_get_study_datasets_list',
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access callback' => TRUE,
-    //  'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
     'weight' => 3
   );

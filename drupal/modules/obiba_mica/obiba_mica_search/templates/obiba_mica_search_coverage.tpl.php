@@ -35,7 +35,7 @@ if (empty($query)) {
     <?php
       print MicaClientAnchorHelper::ajax_friendly_anchor(
         MicaClientPathProvider::SEARCH,
-        t('Search Variables'),
+        t(variable_get_value('variables_search_label')),
         array('class' => 'btn btn-primary indent'),
         array('type' => 'variables', 'query' => $query)
       );

@@ -9,10 +9,6 @@ include_once('includes/obiba_mica_search_resource.inc');
 include_once('includes/obiba_mica_search_resource_facet_conf.inc');
 include_once('obiba_mica_search_charts.php');
 
-/*********Temporary*********/
-$path_module_networks = drupal_get_path('module', 'obiba_mica_network');
-include_once($path_module_networks . '/obiba_mica_network-page-list.inc');
-
 function obiba_mica_search_menu() {
   $items = array();
 
@@ -26,9 +22,11 @@ function obiba_mica_search_menu() {
   );
 
   $items['mica/coverage'] = array(
-    'title' => 'Variable Coverage',
+    'title' => 'Coverage',
     'description' => 'Variable Coverage',
     'page callback' => 'obiba_mica_search_coverage_page',
+    'menu_name' => 'main-menu',
+    'weight' => 11,
     'access callback' => TRUE
   );
 

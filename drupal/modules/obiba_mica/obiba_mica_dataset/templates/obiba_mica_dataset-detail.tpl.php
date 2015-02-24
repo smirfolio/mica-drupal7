@@ -11,21 +11,14 @@
       class="md-top-margin"><?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($dataset_dto, 'description')); ?></p>
   <?php endif; ?>
 
-  <div class="pull-right md-bottom-margin">
-    <?php
-    print MicaClientAnchorHelper::dataset_variables(
-      t('Search Variables'),
-      $dataset_dto->id,
-      array('class' => 'btn btn-primary')
-    );
-
-    print MicaClientAnchorHelper::coverage_dataset(
-      t('View Coverage'),
-      $dataset_dto->id,
-      array('class' => 'btn btn-primary indent')
-    );
-
-    ?>
+  <div class="btn-group pull-right md-bottom-margin">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+      <?php print t('Search') ?> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li><?php print MicaClientAnchorHelper::coverage_dataset($dataset_dto->id) ?></li>
+      <li><?php print MicaClientAnchorHelper::dataset_variables(NULL, $dataset_dto->id) ?></li>
+    </ul>
   </div>
 </div>
 

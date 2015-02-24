@@ -19,12 +19,14 @@
   <?php endif; ?>
 
   <?php if (!empty($network_dto->studyIds)): ?>
-    <div class="pull-right md-bottom-margin">
-      <?php
-        print MicaClientAnchorHelper::network_studies(t('Search Studies'), $network_dto->id, array('class' => 'btn btn-primary'));
-        print MicaClientAnchorHelper::network_variables(t('Search Variables'), $network_dto->id, array('class' => 'btn btn-primary indent'));
-        print MicaClientAnchorHelper::coverage_network(t('View Coverage'), $network_dto->id);
-      ?>
+    <div class="btn-group pull-right md-bottom-margin">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <?php print t('Search') ?> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><?php print MicaClientAnchorHelper::coverage_network($network_dto->id) ?></li>
+        <li><?php print MicaClientAnchorHelper::network_variables(NULL, $network_dto->id) ?></li>
+      </ul>
     </div>
   <?php endif; ?>
 </div>
