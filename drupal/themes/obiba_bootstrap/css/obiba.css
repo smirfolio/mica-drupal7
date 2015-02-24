@@ -7235,6 +7235,10 @@ div.scroll-content-tab {
 .search-result table#networks-results > tbody > tr:first-child {
   font-weight: bolder;
 }
+.search-result table#studies-results > tbody > tr:first-child .empty.message,
+.search-result table#networks-results > tbody > tr:first-child .empty.message {
+  font-weight: normal;
+}
 .facet-search-form div.inline-form {
   display: inline-block;
 }

@@ -53,7 +53,7 @@ function obiba_mica_network_page_list() {
     }
   }
   else {
-    $list_networks = t('No network found');
+    $list_networks = t(variable_get_value('networks_empty_label'));
   }
 
   return theme('obiba_mica_network-list', array(
@@ -111,7 +111,7 @@ function obiba_mica_network_networks_table($networks_result) {
     array(
       'header' => $headers,
       'rows' => empty($chunks) ? array() : $chunks[$current_page],
-      'empty' => t('No network found')
+      'empty' => t(variable_get_value('networks_empty_label'))
     )
   ) . theme('pager', $args);
 }

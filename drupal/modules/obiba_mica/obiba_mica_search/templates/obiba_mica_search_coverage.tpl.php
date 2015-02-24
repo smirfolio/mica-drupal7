@@ -118,7 +118,7 @@ if (empty($query)) {
 
 <?php if (!$has_coverage): ?>
   <p class="md-top-margin pull-left">
-    <i><?php print t('No coverage'); ?></i>
+    <i><?php print t(variable_get_value('variables_empty_label')); ?></i>
   </p>
 <?php endif ?>
 <div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i></div>

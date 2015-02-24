@@ -39,7 +39,23 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => 1440,
   );
-  /**************Networks****************************/
+
+  _obiba_mica_variable_info_networks($variable);
+  _obiba_mica_variable_info_studies($variable);
+  _obiba_mica_variable_info_datasets($variable);
+  _obiba_mica_variable_info_variables($variable);
+
+  $variable['mica_taxonomy_figures'] = array(
+    'title' => t('Taxonomy in figures'),
+    'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Coverage figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
+    'type' => 'string',
+    'default' => '',
+  );
+
+  return $variable;
+}
+
+function _obiba_mica_variable_info_networks(&$variable) {
   $variable['search_networks'] = array(
     'title' => t('Show networks search'),
     'description' => t('If selected, the networks tab will be displayed in the search page.'),
@@ -70,7 +86,15 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
-  /**************Studies****************************/
+  $variable['networks_empty_label'] = array(
+    'title' => t('No network label'),
+    'description' => t('Text to be displayed when no network is found.'),
+    'type' => 'string',
+    'default' => 'No network found',
+  );
+}
+
+function _obiba_mica_variable_info_studies(&$variable) {
   $variable['search_studies'] = array(
     'title' => t('Show studies search'),
     'description' => t('If selected, the studies tab will be displayed in the search page.'),
@@ -137,7 +161,15 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['studies_empty_label'] = array(
+    'title' => t('No study label'),
+    'description' => t('Text to be displayed when no study is found.'),
+    'type' => 'string',
+    'default' => 'No study found',
+  );
+}
 
+function _obiba_mica_variable_info_datasets(&$variable) {
   $variable['search_datasets'] = array(
     'title' => t('Show datasets search'),
     'description' => t('If selected, the datasets tab will be displayed in the search page.'),
@@ -168,7 +200,15 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['datasets_empty_label'] = array(
+    'title' => t('No dataset label'),
+    'description' => t('Text to be displayed when no dataset is found.'),
+    'type' => 'string',
+    'default' => 'No dataset found',
+  );
+}
 
+function _obiba_mica_variable_info_variables(&$variable) {
   $variable['search_variables'] = array(
     'title' => t('Show variables search'),
     'description' => t('If selected, the variables tab will be displayed in the search page.'),
@@ -187,13 +227,10 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
-
-  $variable['mica_taxonomy_figures'] = array(
-    'title' => t('Taxonomy in figures'),
-    'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Coverage figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
+  $variable['variables_empty_label'] = array(
+    'title' => t('No variable label'),
+    'description' => t('Text to be displayed when no variable is found.'),
     'type' => 'string',
-    'default' => '',
+    'default' => 'No variable found',
   );
-
-  return $variable;
 }
