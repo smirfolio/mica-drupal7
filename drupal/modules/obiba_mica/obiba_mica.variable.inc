@@ -86,6 +86,12 @@ function _obiba_mica_variable_info_networks(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['networks_search_label'] = array(
+    'title' => t('Networks search label'),
+    'description' => t('Text to be displayed in links to network search.'),
+    'type' => 'string',
+    'default' => 'Search Networks',
+  );
   $variable['networks_empty_label'] = array(
     'title' => t('No network label'),
     'description' => t('Text to be displayed when no network is found.'),
@@ -161,6 +167,12 @@ function _obiba_mica_variable_info_studies(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['studies_search_label'] = array(
+    'title' => t('Studies search label'),
+    'description' => t('Text to be displayed in links to study search.'),
+    'type' => 'string',
+    'default' => 'Search Studies',
+  );
   $variable['studies_empty_label'] = array(
     'title' => t('No study label'),
     'description' => t('Text to be displayed when no study is found.'),
@@ -200,6 +212,12 @@ function _obiba_mica_variable_info_datasets(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['datasets_search_label'] = array(
+    'title' => t('Datasets search label'),
+    'description' => t('Text to be displayed in links to dataset search.'),
+    'type' => 'string',
+    'default' => 'Search Datasets',
+  );
   $variable['datasets_empty_label'] = array(
     'title' => t('No dataset label'),
     'description' => t('Text to be displayed when no dataset is found.'),
@@ -226,6 +244,18 @@ function _obiba_mica_variable_info_variables(&$variable) {
     'description' => t('Show dataset column in the variables table.'),
     'type' => 'boolean',
     'default' => TRUE,
+  );
+  $variable['variable_coverage_label'] = array(
+    'title' => t('Variable coverage label'),
+    'description' => t('Text to be displayed in links to variable coverage.'),
+    'type' => 'string',
+    'default' => 'Variable Coverage',
+  );
+  $variable['variables_search_label'] = array(
+    'title' => t('Variables search label'),
+    'description' => t('Text to be displayed in links to variable search.'),
+    'type' => 'string',
+    'default' => 'Search Variables',
   );
   $variable['variables_empty_label'] = array(
     'title' => t('No variable label'),

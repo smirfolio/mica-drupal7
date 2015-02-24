@@ -8,29 +8,28 @@
     $caption = $count < 2 ? t('Dataset') : t('Datasets');
     ?>
     <div class="col-md-2 col-sm-2 col-xs-4 min-height-align search-count">
-       <span id="refresh-count">
-         <?php print $count ?>
-        </span>
-        <span id="refresh-count">
+      <span id="refresh-count">
+        <?php print $count ?>
+      </span>
+      <span id="refresh-count">
         <?php print $caption ?>
-        </span>
-
+      </span>
     </div>
 
     <div class="col-md-10  col-sm-10 col-xs-8 min-height-align pull-right">
-      <div>
-        <ul class="search-list-no-style pull-right">
-          <li><?php print $dataset_type === 'study_datasets' ? MicaClientAnchorHelper::search_study_datasets(t('Search Datasets')) : MicaClientAnchorHelper::search_harmonization_datasets(t('Search Variables')) ?></li>
-          <li><?php print $dataset_type === 'study_datasets' ? MicaClientAnchorHelper::coverage_study_datasets(t('View Coverage')) : MicaClientAnchorHelper::coverage_harmonization_datasets(t('View Coverage')) ?></li>
-        </ul>
-
-      </div>
-      <div class="hidden-xs inline pull-right">
+      <div class="hidden-xs inline pull-left">
         <?php print render($form_search); ?>
       </div>
-
+      <div class="btn-group pull-right">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <?php print t('Search') ?> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><?php print MicaClientAnchorHelper::coverage_datasets() ?></li>
+          <li><?php print MicaClientAnchorHelper::search_datasets() ?></li>
+        </ul>
+      </div>
     </div>
-
 
   </div>
 

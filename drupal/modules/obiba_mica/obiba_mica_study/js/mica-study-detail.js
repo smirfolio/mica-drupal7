@@ -51,7 +51,7 @@
           var datasets = $('#datasetsDisplay').data();
 
           if(datasets && datasets.totalVariables > 0) {
-            $('#studyActions a:first').removeClass('disabled');
+            $('#study-actions').removeClass('disabled');
           }
 
           if($('#coverage').is(':visible')) {

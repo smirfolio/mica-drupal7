@@ -58,7 +58,7 @@
                 <?php
                   print MicaClientAnchorHelper::ajax_friendly_anchor(
                     MicaClientPathProvider::COVERAGE,
-                    t('View Coverage'),
+                    t(variable_get_value('variable_coverage_label')),
                     array('class' => 'btn btn-primary indent'),
                     array('query' => $query, 'group-by' => 'studyIds')
                   );
@@ -84,7 +84,7 @@
                 <?php
                   print MicaClientAnchorHelper::ajax_friendly_anchor(
                     MicaClientPathProvider::COVERAGE,
-                    t('View Coverage'),
+                    t(variable_get_value('variable_coverage_label')),
                     array('class' => 'btn btn-primary indent'),
                     array('query' => $query, 'group-by' => 'datasetId')
                   );
@@ -111,7 +111,7 @@
                 <?php
                   print MicaClientAnchorHelper::ajax_friendly_anchor(
                     MicaClientPathProvider::COVERAGE,
-                    t('View Coverage'),
+                    t(variable_get_value('variable_coverage_label')),
                     array('class' => 'btn btn-primary indent'),
                     array('query' => $query, 'group-by' => 'studyIds')
                   );
@@ -137,7 +137,7 @@
                 <?php
                   print MicaClientAnchorHelper::ajax_friendly_anchor(
                     MicaClientPathProvider::COVERAGE,
-                    t('View Coverage'),
+                    t(variable_get_value('variable_coverage_label')),
                     array('class' => 'btn btn-primary indent'),
                     array('query' => $query, 'group-by' => 'studyIds')
                   );
