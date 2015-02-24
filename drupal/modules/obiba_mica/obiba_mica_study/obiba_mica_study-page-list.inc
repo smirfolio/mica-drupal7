@@ -54,7 +54,7 @@ function obiba_mica_study_page_list() {
     }
   }
   else {
-    $themed_studies = t('No study found');
+    $themed_studies = t(variable_get_value('studies_empty_label'));
   }
   return theme('obiba_mica_study_list-page', array(
     "form_search" => drupal_get_form('obiba_mica_study_create_form'),
@@ -124,7 +124,7 @@ function obiba_mica_study_studies_table($studies) {
     array(
       'header' => $headers,
       'rows' => empty($chunks) ? array() : $chunks[$current_page],
-      'empty' => t('No study found')
+      'empty' => t(variable_get_value('studies_empty_label'))
     )
   ) . theme('pager', $args);
 }

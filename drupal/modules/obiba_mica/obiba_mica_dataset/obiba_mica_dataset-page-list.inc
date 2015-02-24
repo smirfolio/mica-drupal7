@@ -61,7 +61,7 @@ function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
     }
   }
   else {
-    $list_datasets = t('No dataset found');
+    $list_datasets = t(variable_get_value('datasets_empty_label'));
   }
   return theme('obiba_mica_dataset-list', array(
     "form_search" => drupal_get_form('obiba_mica_dataset_create_form'),
@@ -158,7 +158,7 @@ function _obiba_mica_dataset_get_datasets_table($datasets, $type) {
     array(
       'header' => array(t('Name'), t('Description')),
       'rows' => $dataset_rows,
-      'empty' => t('No dataset found'),
+      'empty' => t(variable_get_value('datasets_empty_label')),
       'sticky' => FALSE,
       'attributes' => array('id' => 'variables_overview')
     )

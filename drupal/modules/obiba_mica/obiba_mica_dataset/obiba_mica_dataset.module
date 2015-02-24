@@ -347,7 +347,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
     array(
       'header' => array(t('Name'), t('Type'), t('Data Collection Events'), t('Variables')),
       'rows' => $dataset_rows,
-      'empty' => t('No dataset found'),
+      'empty' => t(variable_get_value('datasets_empty_label')),
       'sticky' => FALSE
     )
   );

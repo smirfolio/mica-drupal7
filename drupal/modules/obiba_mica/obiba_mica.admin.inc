@@ -161,6 +161,14 @@ function _obiba_mica_settings_networks_form(&$form) {
     '#default_value' => variable_get_value('networks_column_variables'),
     '#description' => $info['description'],
   );
+  $info = variable_get_info('networks_empty_label');
+  $form['search_display_settings']['networks_form']['networks_empty_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_empty_label'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
 }
 
 function _obiba_mica_settings_studies_form(&$form) {
@@ -255,6 +263,14 @@ function _obiba_mica_settings_studies_form(&$form) {
     '#default_value' => variable_get_value('studies_column_variables'),
     '#description' => $info['description'],
   );
+  $info = variable_get_info('studies_empty_label');
+  $form['search_display_settings']['studies_form']['studies_empty_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_empty_label'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
 }
 
 function _obiba_mica_settings_datasets_form(&$form) {
@@ -307,6 +323,14 @@ function _obiba_mica_settings_datasets_form(&$form) {
     '#default_value' => variable_get_value('datasets_column_variables'),
     '#description' => $info['description'],
   );
+  $info = variable_get_info('datasets_empty_label');
+  $form['search_display_settings']['datasets_form']['datasets_empty_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('datasets_empty_label'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
 }
 
 function _obiba_mica_settings_variables_form(&$form) {
@@ -343,6 +367,14 @@ function _obiba_mica_settings_variables_form(&$form) {
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('variables_column_dataset'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('variables_empty_label');
+  $form['search_display_settings']['variables_form']['variables_empty_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('variables_empty_label'),
+    '#maxlength' => 255,
     '#description' => $info['description'],
   );
 }

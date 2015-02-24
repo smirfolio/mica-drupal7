@@ -229,7 +229,7 @@ function obiba_mica_variable_get_harmonizations($variable) {
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t('No variable found'),
+      'empty' => t(variable_get_value('variables_empty_label')),
       'sticky' => FALSE,
       'attributes' => array('id' => 'variables_overview')
     ));

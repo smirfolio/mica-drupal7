@@ -519,7 +519,7 @@ function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
     array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t('No study found'),
+      'empty' => t(variable_get_value('studies_empty_label')),
       'sticky' => FALSE
     )
   );
