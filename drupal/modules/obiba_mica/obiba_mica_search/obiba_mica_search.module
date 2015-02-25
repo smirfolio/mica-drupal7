@@ -364,15 +364,25 @@ function _obiba_mica_search_get_search_display_param() {
 
 function obiba_mica_search_variable_page_search() {
   //drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
-  $output = theme('obiba_mica_search_search', _get_search_data());
 
-  if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    // AJAX request
-    return drupal_json_output(array('facets' => _get_facets_theme(), 'searchResult' => $output));
+  if (!obiba_mica_commons_is_ajax()) {
+    $url_param = explode('?', request_uri());
+
+    if (!empty($url_param[1])) {
+      return drupal_goto(request_path(), array(
+        'fragment' => '!' . $url_param[1]
+      ), 302);
+    }
+
+    obiba_mica_search_load_libs();
+
+    return theme('obiba_mica_search_search', array());
   }
 
-  obiba_mica_search_load_libs();
-  return $output;
+  return drupal_json_output(array(
+    'facets' => _get_facets_theme(),
+    'searchResult' => theme('obiba_mica_search_search', _get_search_data())
+  ));
 }
 
 function _get_search_data() {
@@ -477,15 +487,23 @@ function obiba_mica_search_coverage_page() {
 //    'template' => 'obiba_mica_search_fixed_sidebar'
 //  ), 'setting');
 
-  $output = theme('obiba_mica_search_coverage', _get_coverage_data());
+  if (!obiba_mica_commons_is_ajax()) {
+    $url_param = explode('?', request_uri());
 
-  if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    // AJAX request
-    return drupal_json_output(array('facets' => _get_facets_theme(), 'searchResult' => $output));
+    if (!empty($url_param[1])) {
+      return drupal_goto(request_path(), array(
+        'fragment' => '!' . $url_param[1]
+      ), 302);
+    }
+
+    obiba_mica_search_load_libs();
+    return theme('obiba_mica_search_coverage', array());
   }
 
-  obiba_mica_search_load_libs();
-  return $output;
+  return drupal_json_output(array(
+    'facets' => _get_facets_theme(),
+    'searchResult' => theme('obiba_mica_search_coverage', _get_coverage_data())
+  ));
 }
 
 function _get_coverage_data() {

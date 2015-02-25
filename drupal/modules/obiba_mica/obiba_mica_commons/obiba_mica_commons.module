@@ -476,3 +476,7 @@ function obiba_mica_commons_markdown($text) {
   }
   return $text;
 }
+
+function obiba_mica_commons_is_ajax() {
+  return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+}
