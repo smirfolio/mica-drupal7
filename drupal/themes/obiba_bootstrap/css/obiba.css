@@ -6224,7 +6224,7 @@ div.charts {
 .facet-bar .block-obiba-mica-search h2 {
   font-size: 13px;
   margin: 0;
-  padding: 5px 5px;
+  padding: 5px 10px;
   background-color: #FAFAFA;
 }
 .facet-bar .block-obiba-mica-search h2 a {
@@ -6307,7 +6307,7 @@ div.charts {
 .facet-bar .block-obiba-mica-search div.block-content td.term-default span {
   position: relative;
   float: right;
-  padding-right: 5px;
+  padding-right: 10px;
   padding-top: 7px;
   font-weight: normal;
   font-family: monospace;
@@ -6532,7 +6532,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 .region-facets .block-obiba-mica-search h2 {
   font-size: 13px;
   margin: 0;
-  padding: 5px 5px;
+  padding: 5px 10px;
   background-color: #FAFAFA;
 }
 .region-facets .block-obiba-mica-search h2 a {
@@ -6615,7 +6615,7 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
 .region-facets .block-obiba-mica-search div.block-content td.term-default span {
   position: relative;
   float: right;
-  padding-right: 5px;
+  padding-right: 10px;
   padding-top: 7px;
   font-weight: normal;
   font-family: monospace;
@@ -6837,7 +6837,11 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
   border: 1px solid #dddddd !important;
 }
 .panel-group {
-  margin-bottom: 5px;
+  margin-bottom: 0;
+  border-bottom: 1px solid #dddddd;
+}
+.panel-group:last-child {
+  border-bottom: 0;
 }
 .panel-group .panel {
   border-radius: 0 !important;
@@ -6845,9 +6849,41 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 }
 .panel-group .panel-heading {
   border-radius: 0 !important;
+  padding: 10px 10px;
+}
+.panel-group .panel-heading .accordion-toggle:after {
+  /* symbol for "opening" panels */
+  font-family: 'Glyphicons Halflings';
+  /* essential for enabling glyphicon */
+  content: "\e114";
+  /* adjust as needed, taken from bootstrap.css */
+  float: right;
+  /* adjust as needed */
+  color: #02a676;
+  /* adjust as needed */
+}
+.panel-group .panel-heading .accordion-toggle.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\e080";
+  /* adjust as needed, taken from bootstrap.css */
+}
+.panel-group .panel-title {
+  font-size: 13px;
+  color: #02a676;
+}
+.panel-group .panel-title .monospace > span {
+  font-family: monospace;
 }
 .facets {
   list-style-type: none;
+}
+.facets span {
+  margin-left: 0 !important;
+  padding-left: 15px !important;
+}
+.facets span i {
+  margin-left: 0 !important;
+  padding-left: 15px !important;
 }
 .nav-tabs > .active > a,
 .nav .nonactive a:hover {
@@ -7264,12 +7300,15 @@ div.scroll-content-tab {
 /*Search page see more/less control**/
 .expand-control {
   text-align: right;
-  margin: 3px 0px 4px 0px;
+  margin: 3px 10px 4px 0px;
 }
 .expand-control .link-expand {
   cursor: pointer;
   font-size: 0.8em;
   margin-right: 5px;
+}
+.expand-control .btn-xs {
+  font-size: 0.8em;
 }
 .form-autocomplete {
   margin: 5px;
@@ -7633,6 +7672,9 @@ div.dataTables_processing {
   font-size: 14px;
   font-weight: bold;
   color: #333;
+}
+form.autocomplete {
+  padding: 0 5px 0 17px !important;
 }
 form.autocomplete div.dropdown {
   position: absolute;

@@ -2,7 +2,9 @@
   <div class="panel panel-default">
     <div class="panel-heading no-border-radius">
       <div class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#<?php print $name?>"><?php print $title; ?></a>
+        <a class="accordion-toggle" data-toggle="collapse" href="#<?php print $name?>">
+          <span><?php print $title; ?></span>
+        </a>
       </div>
     </div>
     <div id="<?php print $name?>" class="panel-collapse collapse in">
