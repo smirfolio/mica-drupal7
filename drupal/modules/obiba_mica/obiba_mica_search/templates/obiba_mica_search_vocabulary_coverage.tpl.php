@@ -44,15 +44,20 @@
           <?php foreach ($vocabulary_coverage->buckets as $bucket) : ?>
             <th style="text-align: center;
               min-width: 100%;
+              vertical-align: top;
               width: <?php print 100 / (count($vocabulary_coverage->buckets) + 1) ?>%;">
               <?php
                 print MicaClientAnchorHelper::ajax_friendly_anchor(
                   MicaClientPathProvider::SEARCH,
-                  $bucket->value,
+                  isset($bucket->title) ?
+                    ($group_by == 'dceIds' ?
+                      (isset($bucket->description) ? str_replace(':', ': ', $bucket->description) : $bucket->title)
+                      : $bucket->title)
+                    : $bucket->value,
                   array(
                     'data-toggle' => 'tooltip',
                     'data-placement' => 'top',
-                    'title' => isset($bucket->description) ? $bucket->description : $bucket->value,
+                    'title' => isset($bucket->description) ? $bucket->description : $bucket->value
                   ),
                   array(
                     'type' => 'variables',
