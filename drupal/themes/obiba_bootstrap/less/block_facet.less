@@ -54,7 +54,7 @@
     h2 {
       font-size: @facet_font_size;
       margin: 0;
-      padding: 5px 5px;
+      padding: 5px 10px;
       background-color: #FAFAFA;
 
       a {
@@ -151,7 +151,7 @@
       td.term-count span, td.term-default span {
         position: relative;
         float: right;
-        padding-right: 5px;
+        padding-right: 10px;
         padding-top: 7px;
         font-weight: normal;
         font-family: monospace;
@@ -329,7 +329,11 @@
 }
 
 .panel-group {
-  margin-bottom: 5px;
+  margin-bottom: 0;
+  border-bottom: 1px solid #dddddd;
+  &:last-child {
+    border-bottom: 0;
+  }
 
   .panel {
     border-radius: 0 !important;
@@ -338,5 +342,27 @@
 
   .panel-heading {
     border-radius: 0 !important;
+    padding: 10px 10px;
+  }
+
+  .panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: #02a676;         /* adjust as needed */
+  }
+  .panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+  }
+
+  .panel-title {
+    font-size: 13px;
+    color: #02a676;
+
+    .monospace > span {
+      font-family: monospace;
+    }
   }
 }
