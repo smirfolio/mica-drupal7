@@ -6,7 +6,6 @@
 (function ($) {
   Drupal.behaviors.obiba_mica_search_collapse_tab = {
     attach: function (context, settings) {
-      var isAjax = context !== document;
       var activeTabCookie = $.getCookieDataTabs('activeFacetTab');
 
       if (jQuery.isEmptyObject(activeTabCookie)) {
@@ -46,7 +45,7 @@
         $('#result-search a[href$="#' + type + '"]').tab('show');
       }
 
-      var type = $.getParameterByName(isAjax ? window.location.hash : window.location.search, 'type');
+      var type = $.getParameterByName(window.location.hash, 'type');
 
       if (type) {
         setActiveTab(type);

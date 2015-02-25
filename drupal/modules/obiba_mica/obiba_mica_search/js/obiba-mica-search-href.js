@@ -518,15 +518,18 @@
           loadSearchResult(window.location.hash.replace(/^#/, ''));
         });
 
-        if (window.location.hash) { //load bookmarked hash
-          loadSearchResult(window.location.hash.replace(/^#/, ''));
-        }
+        loadSearchResult(window.location.hash.replace(/^#/, ''));
       }
 
       $('form[id^=facet-search-query-form]', context).on('submit', function (e) {
         e.preventDefault();
         var el = $(this).find('input[id*="matches:facet-search-query"]')[0];
         formClickHandler($(el).attr('id'));
+      });
+
+      $('#search-result .pagination a', context).on('click', function(e) {
+         e.preventDefault();
+         window.location.hash = '!' + $(this).attr('href').split('?')[1];
       });
 
       initSearchTerms();
