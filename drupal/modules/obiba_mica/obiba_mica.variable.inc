@@ -47,7 +47,7 @@ function obiba_mica_variable_info($options) {
 
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures'),
-    'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Coverage figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
+    'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Classification figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
     'type' => 'string',
     'default' => '',
   );
@@ -246,10 +246,10 @@ function _obiba_mica_variable_info_variables(&$variable) {
     'default' => TRUE,
   );
   $variable['variable_coverage_label'] = array(
-    'title' => t('Variable coverage label'),
-    'description' => t('Text to be displayed in links to variable coverage.'),
+    'title' => t('Variable classification label'),
+    'description' => t('Text to be displayed in links to variable classification.'),
     'type' => 'string',
-    'default' => 'Variable Coverage',
+    'default' => 'Variable Classification',
   );
   $variable['variables_search_label'] = array(
     'title' => t('Variables search label'),

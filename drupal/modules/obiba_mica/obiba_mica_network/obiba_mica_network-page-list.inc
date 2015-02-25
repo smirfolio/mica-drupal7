@@ -136,7 +136,6 @@ function obiba_mica_network_networks_table_rows($networks) {
 function obiba_mica_network_retrieve_networks($query, $sort = NULL, $sort_order = NULL) {
   $list_networks = obiba_mica_network_get_networks(NULL, $query, $sort, $sort_order);
   $list_networks_rendered = '';
-  //dpm($list_networks);
   foreach ($list_networks->getSummaries() as $network) {
     $list_networks_rendered .= theme('obiba_mica_network-list-page-block', array(
       'network' => $network
@@ -149,7 +148,7 @@ function obiba_mica_network_retrieve_networks($query, $sort = NULL, $sort_order 
 
 function obiba_mica_network_networks_table_headers() {
   return array(
-    t('Short Name'),
+    t('Acronym'),
     t('Name'),
     t('Studies'),
   );

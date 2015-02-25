@@ -22,8 +22,8 @@ function obiba_mica_search_menu() {
   );
 
   $items['mica/coverage'] = array(
-    'title' => 'Coverage',
-    'description' => 'Variable Coverage',
+    'title' => 'Classification',
+    'description' => 'Variable Classification',
     'page callback' => 'obiba_mica_search_coverage_page',
     'menu_name' => 'main-menu',
     'weight' => 11,
@@ -31,8 +31,8 @@ function obiba_mica_search_menu() {
   );
 
   $items['mica/coverage/download/%'] = array(
-    'title' => 'Variable Coverage',
-    'description' => 'Variable Coverage',
+    'title' => 'Variable Classification',
+    'description' => 'Variable Classification',
     'page callback' => 'obiba_mica_search_coverage_download',
     'access callback' => TRUE,
     'page arguments' => array(3)

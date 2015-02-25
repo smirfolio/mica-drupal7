@@ -25,7 +25,7 @@ class VariableStatistics {
     if (!empty($this->variable_stat->frequencies)) {
       return $this->as_frequencies_table();
     }
-    return '<div class="alert alert-info">No statistics found for this variable (nature is "' . strtolower($this->variable_stat->nature) . '").</div>';
+    return '<div class="alert alert-info">No statistics found for this variable (which nature is "' . strtolower($this->variable->nature) . '").</div>';
   }
 
   /**
