@@ -49,7 +49,11 @@
                 print MicaClientAnchorHelper::ajax_friendly_anchor(
                   MicaClientPathProvider::SEARCH,
                   $bucket->value,
-                  array(),
+                  array(
+                    'data-toggle' => 'tooltip',
+                    'data-placement' => 'top',
+                    'title' => isset($bucket->description) ? $bucket->description : $bucket->value,
+                  ),
                   array(
                     'type' => 'variables',
                     'query' => MicaClient::add_parameter_dto_query_link(array(
