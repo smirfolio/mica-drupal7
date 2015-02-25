@@ -511,6 +511,7 @@ function _get_coverage_data() {
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
   }
+  $group_by = !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds';
   $bucket_names = array();
   $vocabulary_coverage_outputs = array();
   $vocabulary_coverage_output = array();
@@ -561,7 +562,8 @@ function _get_coverage_data() {
             'chart' => obiba_mica_search_vocabulary_chart($vocabulary_coverage_merged),
           )),
           'bucket_names' => $bucket_names,
-          'vocabulary_attribute' => 'attributes-' . $taxonomy_coverage->taxonomy->name . '__' . $vocabulary_coverage_merged->vocabulary->name . '-und'
+          'vocabulary_attribute' => 'attributes-' . $taxonomy_coverage->taxonomy->name . '__' . $vocabulary_coverage_merged->vocabulary->name . '-und',
+          'bucket_type' => $group_by == 'studyIds' ? 'studies' : 'variables'
         ));
       }
       $vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name] = $vocabulary_coverage_output;
@@ -573,7 +575,7 @@ function _get_coverage_data() {
     'coverages' => $coverages,
     'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,
     'query' => !empty($parts['query']) ? $parts['query'] : NULL,
-    'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
+    'group_by' => $group_by,
   );
 }
 

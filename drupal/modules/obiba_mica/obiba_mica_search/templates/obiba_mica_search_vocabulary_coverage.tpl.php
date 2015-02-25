@@ -57,7 +57,7 @@
                   array(
                     'type' => 'variables',
                     'query' => MicaClient::add_parameter_dto_query_link(array(
-                      'variables' => array(
+                      $bucket_type => array(
                         'terms' => array(
                           $bucket->field => $bucket->value
                         )
@@ -106,14 +106,23 @@
                     array(),
                     array(
                       'type' => 'variables',
-                      'query' => MicaClient::add_parameter_dto_query_link(array(
-                        'variables' => array(
-                          'terms' => array(
-                            $bucket->field => $bucket->value,
-                            $vocabulary_attribute => $term_names,
+                      'query' => MicaClient::add_parameter_dto_query_link(array_merge_recursive(
+                          array(
+                            $bucket_type => array(
+                              'terms' => array(
+                                $bucket->field => $bucket->value
+                              )
+                            )
+                          ),
+                          array(
+                            'variables' => array(
+                              'terms' => array(
+                                $vocabulary_attribute => $term_names
+                              )
+                            )
                           )
                         )
-                      ))
+                      )
                     )
                   );
                 ?>
@@ -177,14 +186,23 @@
                             array(),
                             array(
                               'type' => 'variables',
-                              'query' => MicaClient::add_parameter_dto_query_link(array(
-                                'variables' => array(
-                                  'terms' => array(
-                                    $vocabulary_attribute => $term_coverage->term->name,
-                                    $bucket->field => $bucket->value
+                              'query' => MicaClient::add_parameter_dto_query_link(array_merge_recursive(
+                                  array(
+                                    $bucket_type => array(
+                                      'terms' => array(
+                                        $bucket->field => $bucket->value
+                                      )
+                                    )
+                                  ),
+                                  array(
+                                    'variables' => array(
+                                      'terms' => array(
+                                        $vocabulary_attribute => $term_coverage->term->name
+                                      )
+                                    )
                                   )
                                 )
-                              ))
+                              )
                             )
                           );
                         ?>
