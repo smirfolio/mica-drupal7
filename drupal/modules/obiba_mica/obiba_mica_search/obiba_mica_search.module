@@ -262,8 +262,6 @@ function obiba_mica_search_load_libs() {
     'ErrorMessage' => t('An error occurred when parsing url query, Please make sure to use facet search tools
        to perform your search. <br>This page will be refeshed in 3s ')
   ), 'setting');
-  $facet_conf["studies"] = obiba_mica_search_resource_return_facets('facet_conf_study');
-  $facet_conf["variables"] = obiba_mica_search_resource_return_facets('facet_conf_variable');
   $facet_conf["general"] = //
     array( //
       'matches' => t('matches'), //
@@ -279,34 +277,45 @@ function obiba_mica_search_load_libs() {
   drupal_add_js($module_path_ . '/js/obiba-mica-search-query-renderer.js');
   drupal_add_js(array(
     'obiba_mica_facet' => array('facet_conf' => $facet_conf),
-    'terms_dictionary' => obiba_mica_search_create_terms_dictionary()
+    'aggs_dictionary' => obiba_mica_search_create_aggs_dictionary()
   ), 'setting');
 
 }
 
-function obiba_mica_search_create_terms_dictionary() {
+function obiba_mica_search_create_aggs_dictionary() {
   $dictionary = array();
-  if (!empty($_SESSION['variables'])) {
-    foreach ($_SESSION['variables']['aggregations'] as $aggregation) {
-      if (empty($aggregation->aggregation)) {
-        continue;
-      }
-      $type = "studyIds" !== $aggregation->aggregation ? "variables" : "studies";
 
-      if (!empty($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'})) {
-        foreach ($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
-          $dictionary[sprintf("$type:%s:%s", $aggregation->aggregation, $term->key)] = $term->title;
-        }
-      }
-    }
+  if (!empty($_SESSION['variables'])) {
+    $dictionary = _obiba_mica_search_create_aggs_dictionary(
+      $_SESSION['variables']['aggregations'],
+      function($value) {return "studyIds" === $value ? "studies" : "variables";}
+    );
   }
 
   if (!empty($_SESSION['studies'])) {
-    foreach ($_SESSION['studies']['aggregations'] as $aggregation) {
-      if (empty($aggregation->aggregation)) {
+
+    $dictionary = array_merge($dictionary, _obiba_mica_search_create_aggs_dictionary(
+      $_SESSION['studies']['aggregations'],
+      function($value) {return "networkId" === $value ? "networks" : "studies";}
+    ));
+  }
+  return $dictionary;
+}
+
+function _obiba_mica_search_create_aggs_dictionary($aggregations, $filter_callback) {
+  $dictionary = array();
+  if (!empty($aggregations)) {
+    foreach ($aggregations as $aggregation) {
+      if (empty($aggregation->aggregation)) continue;
+
+      if (!empty($aggregation->children)) {
+        $dictionary = array_merge($dictionary, _obiba_mica_search_create_aggs_dictionary($aggregation->children, $filter_callback));
         continue;
       }
-      $type = "networkId" !== $aggregation->aggregation ? "studies" : "networks";
+
+      $type = $filter_callback($aggregation->aggregation);
+      $dictionary[$aggregation->aggregation] = obiba_mica_commons_get_localized_field($aggregation, 'title');
+
       if (!empty($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'})) {
         foreach ($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
           $dictionary[sprintf("$type:%s:%s", $aggregation->aggregation, $term->key)] = $term->title;
