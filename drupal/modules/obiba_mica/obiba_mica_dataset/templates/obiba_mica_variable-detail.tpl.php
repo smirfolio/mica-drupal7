@@ -30,12 +30,12 @@
         <?php if (!empty($variable_dto->studySummaries)): ?>
           <tr>
             <th>
-                <?php if ($variable_dto->variableType == 'Dataschema') {
-                  print t('Studies');
-                }
-                else {
-                  print t('Study');
-                }?>
+              <?php if ($variable_dto->variableType == 'Dataschema') {
+                print t('Studies');
+              }
+              else {
+                print t('Study');
+              }?>
             </th>
             <td>
               <?php if ($variable_dto->variableType == 'Dataschema'): ?>
@@ -101,32 +101,35 @@
       <!-- Taxonomy terms -->
       <?php if (!empty($variable_dto->termAttributes)): ?>
         <h2><?php print t('Classification') ?></h2>
-        <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
-          <h3>
-            <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
-          </h3>
-          <p class="help-block">
-            <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>
-          </p>
-
-          <table class="table table-striped">
-            <tbody>
+        <table class="table table-striped">
+          <tbody>
+          <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
+            <tr>
+              <td colspan="2" data-toggle="tooltip"
+                  title="<?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>">
+                <p class="help-block">
+                  <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
+                </p>
+              </td>
+            </tr>
             <?php foreach ($termAttributes->vocabularyTerms as $termAttribute) : ?>
               <tr>
-                <th data-toggle="tooltip" title="<?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>">
+
+                <th data-toggle="tooltip"
+                    title="<?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>">
                   <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
                 </th>
                 <td>
                   <?php if (count($termAttribute->terms == 1)): ?>
                     <p data-toggle="tooltip"
-                      title="<?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
+                       title="<?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
                       <?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
                     </p>
                   <?php else: ?>
                     <ul>
                       <?php foreach ($termAttribute->terms as $term) : ?>
                         <li data-toggle="tooltip"
-                          title="<?php print obiba_mica_commons_get_localized_field($term, 'descriptions'); ?>">
+                            title="<?php print obiba_mica_commons_get_localized_field($term, 'descriptions'); ?>">
                           <?php print obiba_mica_commons_get_localized_field($term, 'titles'); ?>
                         </li>
                       <?php endforeach; ?>
@@ -135,10 +138,11 @@
                 </td>
               </tr>
             <?php endforeach; ?>
-            </tbody>
-          </table>
-          <!--    --><?php //endif; ?>
-        <?php endforeach; ?>
+            <!--    --><?php //endif; ?>
+          <?php endforeach; ?>
+
+          </tbody>
+        </table>
       <?php endif; ?>
 
     </div>
@@ -155,23 +159,23 @@
 <?php endif; ?>
 
 <!-- STATISTICS -->
-<?php if(variable_get_value('mica_statistics')): ?>
-<section>
-  <h2><?php print t('Statistics') ?></h2>
+<?php if (variable_get_value('mica_statistics')): ?>
+  <section>
+    <h2><?php print t('Statistics') ?></h2>
 
-  <div class="scroll-content-tab">
-    <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
-      <div id="toempty">
-        <img
-          src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif">
+    <div class="scroll-content-tab">
+      <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
+        <div id="toempty">
+          <img
+            src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif">
+        </div>
       </div>
-    </div>
 
-    <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
-      <div id="toemptychart">
+      <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
+        <div id="toemptychart">
+        </div>
       </div>
-    </div>
-</section>
+  </section>
 <?php endif; ?>
 
 <?php if ($variable_dto->variableType != 'Study'): ?>
@@ -185,13 +189,13 @@
       <?php if (!empty($variable_harmonization_algorithms)): ?>
 
         <button id="harmo-algo" data-loading-text="<?php print t('Loading...') ?>"
-          type="button"
-          class="btn btn-success"
-          data-toggle="collapse"
-          data-target="#harmo-algo"
-          aria-expanded="true"
-          aria-controls="harmo-algo"
-          var-id="<?php print $variable_dto->id; ?>">
+                type="button"
+                class="btn btn-success"
+                data-toggle="collapse"
+                data-target="#harmo-algo"
+                aria-expanded="true"
+                aria-controls="harmo-algo"
+                var-id="<?php print $variable_dto->id; ?>">
 
           <?php print t('Harmonization Algorithms') ?>
         </button>
@@ -210,17 +214,17 @@
               <td>
                 <?php if (empty($variable_harmonization['status'])): ?>
                   <span class="glyphicon glyphicon-question-sign alert-danger"
-                    title="<?php print t('No status') ?>"></span>
+                        title="<?php print t('No status') ?>"></span>
                 <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
                   <span class="glyphicon glyphicon-ok alert-success" title="<?php print t('Complete') ?>"></span>
                 <?php
                 elseif ($variable_harmonization['status'] == 'impossible'): ?>
                   <span class="glyphicon glyphicon-remove alert-danger"
-                    title="<?php print t('Impossible') ?>"></span>
+                        title="<?php print t('Impossible') ?>"></span>
                 <?php
                 elseif ($variable_harmonization['status'] == 'undetermined'): ?>
                   <span class="glyphicon glyphicon-question-sign alert-warning"
-                    title="<?php print t('Undetermined') ?>"></span>
+                        title="<?php print t('Undetermined') ?>"></span>
                 <?php endif ?>
               </td>
             </tr>
