@@ -30,12 +30,10 @@ function obiba_mica_search_menu() {
     'access callback' => TRUE
   );
 
-  $items['mica/coverage/download/%'] = array(
-    'title' => 'Variable Classification',
-    'description' => 'Variable Classification',
+  $items['mica/coverage/download'] = array(
     'page callback' => 'obiba_mica_search_coverage_download',
     'access callback' => TRUE,
-    'page arguments' => array(3)
+    'type' => MENU_CALLBACK
   );
 
   $items['mica/studies_search/%'] = array(
@@ -593,18 +591,26 @@ function _get_coverage_data() {
   );
 }
 
-function obiba_mica_search_coverage_download($query_params) {
-  parse_str($query_params, $query_param_parts);
+function obiba_mica_search_coverage_download() {
+  $content_mime = 'text/csv';
+  $content_disposition = 'attachment; filename="coverage.csv"';
+  $output = '';
+
   $search_resources = new MicaSearchResource();
-  $response = $search_resources->download_taxonomies_coverage($query_param_parts, array('group-by' => 'studyIds'));
+  $response = $search_resources->download_taxonomies_coverage(drupal_get_query_parameters(), array('group-by' => 'studyIds'));
+
   if (!empty($response)) {
     $headers = $search_resources->getLastResponseHeaders();
-    drupal_add_http_header('Content-Type', $headers['Content-Type'][0] . '; utf-8');
-    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
-    ob_clean();
-    print $response->body;
-    exit;
+    $content_mime = $headers['Content-Type'][0];
+    $content_disposition = $headers['Content-Disposition'][0];
+    $output = $response->body;
   }
+
+  drupal_add_http_header('Content-Type', $content_mime . '; utf-8');
+  drupal_add_http_header('Content-Disposition', $content_disposition);
+  ob_clean();
+  print $output;
+  exit;
 }
 
 function obiba_mica_search_study_page_search() {
