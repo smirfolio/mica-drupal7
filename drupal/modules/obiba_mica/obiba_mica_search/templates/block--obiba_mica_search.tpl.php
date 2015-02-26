@@ -6,7 +6,8 @@
     <h2<?php print $title_attributes; ?>>
       <a data-toggle="collapse"
         data-parent="<?php print $block_html_id; ?>"
-        href="#collapse-<?php print $block_html_id; ?>">
+        href="#collapse-<?php print $block_html_id; ?>"
+        class="collapsed">
         <?php print $title; ?>
       </a>
     </h2>
