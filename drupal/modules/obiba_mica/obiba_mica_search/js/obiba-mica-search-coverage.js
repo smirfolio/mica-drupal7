@@ -3,10 +3,10 @@
     attach: function (context, settings) {
       $('#download-coverage > a', context).on('click', function(event){
         event.preventDefault();
+        $('iframe.coverage-download-helper').remove();
         var $url = 'coverage/download?' + window.location.hash.replace(/#!/, '');
-        var form = $("<form action="+$url+" method='get'>");
-        $(this).after(form);
-        form.submit().remove();
+        var iframe = $('<iframe src=' + $url + ' style="display: none;" class="coverage-download-helper">');
+        $(this).after(iframe);
       });
     }
   }
