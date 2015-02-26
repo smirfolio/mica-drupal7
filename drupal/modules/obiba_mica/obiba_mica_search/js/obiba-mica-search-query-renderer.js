@@ -163,7 +163,7 @@
 
   function renderAggregate(type, typeValues, aggType, name) {
     var aggregate = $("<span class='aggregate-field' title='" + Drupal.t('Click to remove') + "'></span>")
-      .text(name)
+      .text(aggsDictionary[name] || name)
       .click(function (e) {
         delete jsonQuery[type][aggType][name];
         update();
@@ -309,7 +309,7 @@
                 type,
                 typeValues,
                 aggType,
-                aggsDictionary[name] || name,
+                name,
                 getOperation(agg.op),
                 i === last,
                 aggValueContainer
