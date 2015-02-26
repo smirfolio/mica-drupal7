@@ -69,12 +69,10 @@
 
       function setupDomEventHandlers(newst) {
         $('#facets-expand-collapse', context).on('click', function (e) {
-          console.log("Collapse clicked");
           e.preventDefault();
           $(this).blur();
           var st = $.getCookieDataTabs('activeAccordionGroup');
           if ($.isEmptyObject(st)) {
-            console.log();
             expandAll();
           } else {
             collapseAll();
@@ -83,7 +81,6 @@
 
         $('.block', context).on('shown.bs.collapse', function () {
           $(".block-content").each(function (id, state) {
-            //var id_active = $(".panel-collapse .in").attr('id');
             var current_id = this.id;
 
             if ($("#" + current_id).hasClass("in")) {
@@ -147,7 +144,10 @@
         $(".block-content").each(function (id, state) {
           var current_id = this.id;
           if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") return true;
-          if (firstTime && $("form[class='autocomplete']", $("#" + current_id)).length > 0) return true;
+          if (firstTime && $("form[class='autocomplete']", $("#" + current_id)).length > 0) {
+            $("#" + current_id).collapse("show");
+            return true;
+          }
 
           $("#" + current_id).collapse("hide");
           addCollapsedIcon(current_id, 'collapsed');
