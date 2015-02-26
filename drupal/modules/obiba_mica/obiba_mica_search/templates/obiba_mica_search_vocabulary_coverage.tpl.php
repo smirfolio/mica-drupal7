@@ -1,7 +1,6 @@
 <?php
 //dpm($vocabulary_coverage);
 //dpm($vocabulary_attribute);
-//dpm($chart);
 //dpm($all_buckets);
 ?>
 
@@ -22,8 +21,6 @@
     <?php print obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'descriptions'); ?>
   </p>
 
-
-
   <div class="coverage-table">
 
   <table class="table table-striped fix-first-column ">
@@ -35,7 +32,7 @@
     <th style="text-align: center;
       min-width: 100%;
     <?php !empty($vocabulary_coverage->buckets) ?
-      print 'width: ' . (100 / (count($vocabulary_coverage->buckets) + 1)) . '%;' : ''; ?>
+      print 'width: ' . (100 / (count($all_buckets) + 1)) . '%;' : ''; ?>
       " data-toggle="tooltip" data-placement="top"
         title="<?php print t('Total number of variables per term'); ?>">
       <?php print t('Total'); ?>
@@ -45,7 +42,7 @@
         <th style="text-align: center;
           min-width: 100%;
           vertical-align: top;
-          width: <?php print 100 / (count($vocabulary_coverage->buckets) + 1) ?>%;">
+          width: <?php print 100 / (count($all_buckets) + 1) ?>%;">
           <?php
           print MicaClientAnchorHelper::ajax_friendly_anchor(
             MicaClientPathProvider::SEARCH,
