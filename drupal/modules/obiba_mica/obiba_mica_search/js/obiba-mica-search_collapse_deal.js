@@ -20,7 +20,7 @@
 
       if (!page_ready) {
         setupDomEventHandlers(newst);
-        collapseAll();
+        collapseAllFirstTime();
         return;
       }
 
@@ -134,11 +134,21 @@
         updateExpandCollapsecon(newst1);
       }
 
+      function collapseAllFirstTime() {
+        collapseAllInternal(true);
+      }
+
       function collapseAll() {
+        collapseAllInternal(false);
+      }
+
+      function collapseAllInternal(firstTime) {
 
         $(".block-content").each(function (id, state) {
           var current_id = this.id;
           if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") return true;
+          if (firstTime && $("form[class='autocomplete']", $("#" + current_id)).length > 0) return true;
+
           $("#" + current_id).collapse("hide");
           addCollapsedIcon(current_id, 'collapsed');
         });
