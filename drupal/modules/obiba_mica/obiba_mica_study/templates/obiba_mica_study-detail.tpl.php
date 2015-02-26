@@ -389,6 +389,11 @@
           </div>
         </div>
       </div>
+      <?php foreach ($populations as $key => $population): ?>
+        <?php if (!empty($population['data']) && !empty($population['data']['dce-modal'])): ?>
+          <div><?php print $population['data']['dce-modal']; ?></div>
+        <?php endif; ?>
+      <?php endforeach ?>
     <?php endif ?>
   </section>
 <?php endif; ?>

@@ -6,7 +6,3 @@
     <?php print $population['dce-tab']; ?>
   </div>
 <?php endif; ?>
-
-<?php if (!empty($population['dce-modal'])): ?>
-  <div><?php print $population['dce-modal']; ?></div>
-<?php endif; ?>
