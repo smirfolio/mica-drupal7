@@ -301,9 +301,6 @@
             var aggValueContainer = renderValuesContainer();
             var valuesContainer = $("<span></span>");
             $(aggValueContainer).append(valuesContainer);
-
-            console.log(">>>>", aggsDictionary);
-
             typeContentQuery.append(
               renderAggregationContainer(
                 type,
