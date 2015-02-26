@@ -388,9 +388,11 @@ function obiba_mica_search_variable_page_search() {
     return theme('obiba_mica_search_search', array());
   }
 
+  $output = theme('obiba_mica_search_search', _get_search_data()); //populates facets session values
+
   return drupal_json_output(array(
     'facets' => _get_facets_theme(),
-    'searchResult' => theme('obiba_mica_search_search', _get_search_data())
+    'searchResult' => $output
   ));
 }
 
@@ -509,9 +511,11 @@ function obiba_mica_search_coverage_page() {
     return theme('obiba_mica_search_coverage', array());
   }
 
+  $output = theme('obiba_mica_search_coverage', _get_coverage_data()); //populates facets session values
+
   return drupal_json_output(array(
     'facets' => _get_facets_theme(),
-    'searchResult' => theme('obiba_mica_search_coverage', _get_coverage_data())
+    'searchResult' => $output
   ));
 }
 

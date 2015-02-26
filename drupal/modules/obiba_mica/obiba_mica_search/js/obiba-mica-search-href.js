@@ -488,11 +488,20 @@
         var sections = $('#collapse-block-obiba-mica-search-facet-search').find('section');
         var temp = $('<div></div>').html(facetsHtml);
 
-        sections.each(function () {
-          $(this).find('.checkedterms').html('');
-          var termsBlock = $(this).find('.block-content');
-          $(termsBlock[0]).html(temp.find('#' + $(this).attr('id') + ' .block-content').html());
-        });
+        if (sections.length) {  //This is a workaround to avoid blinking collapsed section
+          sections.each(function () {
+            $(this).find('.checkedterms').html('');
+            var termsBlock = $(this).find('.block-content');
+            $(termsBlock[0]).html(temp.find('#' + $(this).attr('id') + ' .block-content').html());
+          });
+        } else { //first page load does not have facet sections
+          $('#collapse-block-obiba-mica-search-facet-search')
+            .find('#variable-facet')
+            .html(temp.find('#variable-facet').html());
+          $('#collapse-block-obiba-mica-search-facet-search')
+            .find('#study-facet')
+            .html(temp.find('#study-facet').html());
+        }
       }
 
       function loadSearchResult(url) {
@@ -502,7 +511,7 @@
           url: '?' + url.replace(/^!/, ''),
           success: function (data) {
             $('#block-system-main>.block-content').html(data.searchResult);
-            populateFacetTabs(data.facets); //TODO: this is a workaround to collapse problems.
+            populateFacetTabs(data.facets);
             Drupal.attachBehaviors($('.main-container')[0], settings);
             $('html, body').animate({scrollTop: 0}, 'fast');
           },
