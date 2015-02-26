@@ -18,6 +18,12 @@ if (empty($query)) {
     </span>
   </div>
   <div id="search-query"></div>
+  <div id="query-help" style="display:none;" class="md-top-margin help-inline">
+    <i class="glyphicon glyphicon-question-sign"></i>
+    <span class="indent">
+      <?php print t('Tips: click on a criteria to remove it, click on AND/OR to switch it.'); ?>
+    </span>
+  </div>
 </div>
 
 <div>

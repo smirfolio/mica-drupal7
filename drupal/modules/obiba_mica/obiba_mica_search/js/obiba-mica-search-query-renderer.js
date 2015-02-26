@@ -370,6 +370,7 @@
 
       $('#search-query').append(view);
       $('#search-help').hide();
+      $('#query-help').show();
     }
   };
 })(jQuery);
