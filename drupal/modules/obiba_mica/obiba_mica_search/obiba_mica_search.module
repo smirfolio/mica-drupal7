@@ -200,7 +200,9 @@ function _obiba_mica_search_get_facets_block_by_dto_type($dto_type, $type) {
         $rendered_group = "";
 
         foreach ($facet['children'] as $key_child_facet => $child_facet) {
-          if (!MicaClient::has_entity_aggregations($child_facet['dto'])) continue;
+          if (!MicaClient::has_entity_aggregations($child_facet['dto'])) {
+            continue;
+          }
           $content_block = obiba_mica_search_process_block_theme('search-' . $child_facet['aggs'], $type, $facet['dto']->children);
           if (!empty($content_block)) {
             $rendered_group .= theme('obiba_mica_search_cloned_block', array(
@@ -219,7 +221,8 @@ function _obiba_mica_search_get_facets_block_by_dto_type($dto_type, $type) {
           ));
         }
 
-      } else {
+      }
+      else {
         $has_terms = MicaClient::has_entity_by_id_aggregation($facet['aggs']);
         // aggs that are from studies but must be displayed as variable aggregations
         $source_type = preg_match("/^(studyIds|dceIds)$/", $key_facet) ? "variables" : $type;
@@ -286,7 +289,9 @@ function obiba_mica_search_create_aggs_dictionary() {
   if (!empty($_SESSION['variables'])) {
     $dictionary = _obiba_mica_search_create_aggs_dictionary(
       $_SESSION['variables']['aggregations'],
-      function($value) {return "studyIds" === $value ? "studies" : "variables";}
+      function ($value) {
+        return "studyIds" === $value ? "studies" : "variables";
+      }
     );
   }
 
@@ -294,7 +299,9 @@ function obiba_mica_search_create_aggs_dictionary() {
 
     $dictionary = array_merge($dictionary, _obiba_mica_search_create_aggs_dictionary(
       $_SESSION['studies']['aggregations'],
-      function($value) {return "networkId" === $value ? "networks" : "studies";}
+      function ($value) {
+        return "networkId" === $value ? "networks" : "studies";
+      }
     ));
   }
   return $dictionary;
@@ -304,7 +311,9 @@ function _obiba_mica_search_create_aggs_dictionary($aggregations, $filter_callba
   $dictionary = array();
   if (!empty($aggregations)) {
     foreach ($aggregations as $aggregation) {
-      if (empty($aggregation->aggregation)) continue;
+      if (empty($aggregation->aggregation)) {
+        continue;
+      }
 
       if (!empty($aggregation->children)) {
         $dictionary = array_merge($dictionary, _obiba_mica_search_create_aggs_dictionary($aggregation->children, $filter_callback));
@@ -463,38 +472,7 @@ function _get_search_data() {
   );
 }
 
-Function obiba_mica_search_get_buckets($vocabulary_coverage, $all_bucket) {
-  if (!empty($vocabulary_coverage->buckets)) {
-    foreach ($vocabulary_coverage->terms as $term) {
-      if (!empty($term->buckets)) {
-        foreach ($term->buckets as $bucket) {
-          if ((string) $bucket->value == (string) $all_bucket->value) {
-            return $bucket;
-          }
-        }
-      }
-    }
-  }
-  return FALSE;
-}
-
-Function obiba_mica_search_get_terms($terms_buckets, $all_bucket) {
-  if (!empty($terms_buckets->buckets)) {
-    foreach ($terms_buckets->buckets as $bucket) {
-      if ((string) $bucket->value == (string) $all_bucket->value) {
-        return $bucket;
-      }
-    }
-  }
-  return FALSE;
-}
-
 function obiba_mica_search_coverage_page() {
-//  $module_path_commons = drupal_get_path('module', 'obiba_mica_commons');
-//  drupal_add_js($module_path_commons . '/js/obiba-mica-commons-fixed-sidebar.js');
-//  drupal_add_js(array(
-//    'template' => 'obiba_mica_search_fixed_sidebar'
-//  ), 'setting');
 
   if (!obiba_mica_commons_is_ajax()) {
     $url_param = explode('?', request_uri());
@@ -509,7 +487,7 @@ function obiba_mica_search_coverage_page() {
     return theme('obiba_mica_search_coverage', array());
   }
 
-  $output = theme('obiba_mica_search_coverage', _get_coverage_data()); //populates facets session values
+  $output = theme('obiba_mica_search_coverage', _obiba_mica_search_get_coverage_data()); //populates facets session values
 
   return drupal_json_output(array(
     'facets' => _get_facets_theme(),
@@ -517,63 +495,84 @@ function obiba_mica_search_coverage_page() {
   ));
 }
 
-function _get_coverage_data() {
+/**
+ * Extract from the given coverage (can be term or vocabulary or taxonomy coverage) the bucket with the specified value.
+ * @param $coverage
+ * @param $bucket_name
+ * @return bool
+ */
+function _obiba_mica_search_get_coverage_bucket($coverage, $bucket_value) {
+  if (!empty($coverage->buckets)) {
+    foreach ($coverage->buckets as $bucket) {
+      if ($bucket->value == $bucket_value) {
+        return $bucket;
+      }
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Merge buckets from all taxonomies.
+ * @param $coverages
+ * @return array
+ */
+function _obiba_mica_search_get_all_buckets($coverages) {
+  $all_buckets = array();
+  if (empty($coverages->taxonomies)) {
+    return $all_buckets;
+  }
+
+  foreach ($coverages->taxonomies as $taxonomy_coverage) {
+    if (!empty($taxonomy_coverage->buckets)) {
+      foreach ($taxonomy_coverage->buckets as $bucket) {
+        $found = FALSE;
+        foreach ($all_buckets as $merged_bucket) {
+          if ($merged_bucket->value == $bucket->value) {
+            // increment hits and count
+            $merged_bucket->hits = $merged_bucket->hits + $bucket->hits;
+            $merged_bucket->count = $merged_bucket->count + $bucket->count;
+            $found = TRUE;
+            break;
+          }
+        }
+        if (!$found) {
+          // make a copy
+          $merged_bucket = new stdClass();
+          $merged_bucket->field = $bucket->field;
+          $merged_bucket->value = $bucket->value;
+          $merged_bucket->hits = $bucket->hits;
+          $merged_bucket->count = $bucket->count;
+          $merged_bucket->title = $bucket->title;
+          $merged_bucket->description = $bucket->description;
+          $all_buckets[] = $merged_bucket;
+        }
+      }
+    }
+  }
+
+  return $all_buckets;
+}
+
+function _obiba_mica_search_get_coverage_data() {
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
   }
   $group_by = !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds';
-  $bucket_names = array();
   $vocabulary_coverage_outputs = array();
   $vocabulary_coverage_output = array();
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage(NULL, array('group-by' => 'studyIds'));
+  $all_buckets = _obiba_mica_search_get_all_buckets($coverages);
   if (!empty($coverages->taxonomies)) {
     foreach ($coverages->taxonomies as $taxonomy_coverage) {
-      $formatted_vocabulary_coverage = new stdClass();
       foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
-        if (!empty($taxonomy_coverage->buckets)) {
-          foreach ($vocabulary_coverage->terms as $term) {
-            if (!empty($term->buckets)) {
-              foreach ($term->buckets as $key_bucket => $all_bucket) {
-                $formatted_bucket = new stdClass();
-                $formatted_bucket->field = $all_bucket->field;
-                $formatted_bucket->value = $all_bucket->value;
-                $formatted_bucket->hits = 0;
-                $formatted_bucket->count = 0;
-                $bucket_returned = obiba_mica_search_get_buckets($vocabulary_coverage, $all_bucket);
-                if (!empty($bucket_returned)) {
-                  $formatted_vocabulary_coverage->buckets[$key_bucket] = $bucket_returned;
-                  $bucket_names[$key_bucket] = $bucket_returned->value;
-                }
-                else {
-                  $formatted_vocabulary_coverage->buckets[$key_bucket] = $formatted_bucket;
-                  $bucket_names[$key_bucket] = $formatted_bucket->value;
-                }
-                foreach ($vocabulary_coverage->terms as $key_term => $term) {
-                  $returned_term_bucket = obiba_mica_search_get_terms($term, $all_bucket);
-                  if (!empty($returned_term_bucket)) {
-                    $formatted_vocabulary_coverage->terms[$key_term]->buckets[$key_bucket] = $returned_term_bucket;
-                  }
-                  else {
-                    $formatted_vocabulary_coverage->terms[$key_term]->buckets[$key_bucket] = $formatted_bucket;
-                  }
-                }
-              }
-            }
-          }
-        }
-        unset($vocabulary_coverage->buckets);
-        $vocabulary_coverage_merged = (object) array_merge((array) $formatted_vocabulary_coverage, (array) $vocabulary_coverage);
-        $vocabulary_coverage_output[$vocabulary_coverage_merged->vocabulary->name] = theme('obiba_mica_search_vocabulary_coverage', array(
+        $vocabulary_coverage_output[$vocabulary_coverage->vocabulary->name] = theme('obiba_mica_search_vocabulary_coverage', array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
-          'vocabulary_coverage' => $vocabulary_coverage_merged,
-          'chart' => theme('obiba_mica_search_vocabulary_charts', array(
-            'vocabulary_coverage' => $vocabulary_coverage_merged,
-            'chart' => obiba_mica_search_vocabulary_chart($vocabulary_coverage_merged),
-          )),
-          'bucket_names' => $bucket_names,
-          'vocabulary_attribute' => 'attributes-' . $taxonomy_coverage->taxonomy->name . '__' . $vocabulary_coverage_merged->vocabulary->name . '-und',
+          'vocabulary_coverage' => $vocabulary_coverage,
+          'all_buckets' => $all_buckets,
+          'vocabulary_attribute' => 'attributes-' . $taxonomy_coverage->taxonomy->name . '__' . $vocabulary_coverage->vocabulary->name . '-und',
           'bucket_type' => $group_by == 'studyIds' ? 'studies' : 'variables',
           'group_by' => $group_by
         ));
