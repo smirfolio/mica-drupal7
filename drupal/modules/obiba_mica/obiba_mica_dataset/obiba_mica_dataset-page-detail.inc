@@ -121,7 +121,7 @@ function obiba_mica_dataset_get_population_dce_modals($studyId, $data, $variable
         $study_dto = $data['study'];
         if (!empty($study_dto->attachments)) {
           foreach ($study_dto->attachments as $attachment) {
-            $themed_attachment .= obiba_mica_study_get_attachment_file($study_dto->id, $attachment);
+            $themed_attachment .= theme('obiba_mica_study_attachments', array('study_id' => $study_dto->id, 'attachment' => $attachment));
           }
         }
         $dce_variables_nbr[obiba_mica_commons_get_localized_field($dce, 'name')] = $variables_dataset->total;
