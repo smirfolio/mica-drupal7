@@ -30,8 +30,8 @@
             case 13: // Enter.
               e.preventDefault();
               var selectedValue = $(this.selected).data('autocompleteValue');
-              var selectorCheckbox = 'span#checkthebox[data-value="' + selectedValue + '"]';
-              updateCheckboxesByChekbox($(selectorCheckbox));
+              updateCheckboxesByChekbox(
+                $(this.input).closest('section').find('span#checkthebox[data-value="' + selectedValue + '"]')[0]);
               return true;
             case 40: // down arrow.
               this.selectDown();
@@ -46,8 +46,8 @@
 
         Drupal.jsAC.prototype.select = function (node) {
           var selectedValue = $(node).data('autocompleteValue');
-          var selectorCheckbox = 'span#checkthebox[data-value="' + selectedValue + '"]';
-          updateCheckboxesByChekbox($(selectorCheckbox))
+          updateCheckboxesByChekbox(
+            $(this.input).closest('section').find('span#checkthebox[data-value="' + selectedValue + '"]')[0]);
         };
       }
 
