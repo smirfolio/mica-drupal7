@@ -51,11 +51,11 @@
           var datasets = $('#datasetsDisplay').data();
 
           if(datasets && datasets.totalVariables > 0) {
-            $('#study-actions').removeClass('disabled');
+            $('#study-actions').removeClass('hidden');
           }
 
           if($('#coverage').is(':visible')) {
-            $('.show-coverage').removeClass('disabled');
+            $('.show-coverage').removeClass('hidden');
           }
         });
       }
