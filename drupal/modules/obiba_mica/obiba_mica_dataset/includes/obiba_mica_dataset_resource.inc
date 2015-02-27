@@ -38,10 +38,10 @@ class MicaDatasetResource extends MicaClient {
    * @param null $order "asc" or "desc"
    * @return array
    */
-  public function get_datasets($resource = 'datasets', $study_id = NULL, $query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
+  public function get_datasets($resource = 'datasets', $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL) {
     $this->setLastResponse(NULL);
     $params = empty($from) ? 'from=0' : 'from=' . $from;
-    $params .= empty($limit) ? '&limit=5' : '&limit=' . $limit;
+    $params .= empty($limit) ? '&limit=50' : '&limit=' . $limit;
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
