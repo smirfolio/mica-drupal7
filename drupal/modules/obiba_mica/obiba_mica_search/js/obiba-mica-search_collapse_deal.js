@@ -118,6 +118,8 @@
       }
 
       function expandAll() {
+        expandGroups();
+
         var newst1 = {};
         $(".block-content").each(function (id, state) {
           var current_id = this.id;
@@ -140,6 +142,7 @@
       }
 
       function collapseAllInternal(firstTime) {
+        collapseGroups();
 
         $(".block-content").each(function (id, state) {
           var current_id = this.id;
@@ -155,6 +158,16 @@
 
         $.saveCookieDataTabs({}, 'activeAccordionGroup');
         updateExpandCollapsecon({});
+      }
+
+      function expandGroups() {
+        $("div[id^='taxonomy-']").collapse('show');
+        $("a#collapsible-taxonomy").removeClass('collapsed');
+      }
+
+      function collapseGroups() {
+        $("div[id^='taxonomy-']").collapse('hide');
+        $("a#collapsible-taxonomy").addClass('collapsed');
       }
 
       function removeCollapsedIcon(current_id, collapse) {
