@@ -20,7 +20,7 @@
 
   <?php if (!empty($network_dto->studyIds)): ?>
     <div class="btn-group pull-right md-bottom-margin">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+      <button type="button" class="btn btn-primary dropdown-toggle <?php print $has_variables ? '' : 'hidden'; ?>" data-toggle="dropdown" aria-expanded="false">
         <?php print t('Search') ?> <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">

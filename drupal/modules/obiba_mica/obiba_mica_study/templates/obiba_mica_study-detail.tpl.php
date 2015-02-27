@@ -19,7 +19,7 @@
   </p>
 
   <div class="btn-group pull-right md-bottom-margin">
-    <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle disabled" data-toggle="dropdown"
+    <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle hidden" data-toggle="dropdown"
             aria-expanded="false">
       <?php print t('Search') ?> <span class="caret"></span>
     </button>

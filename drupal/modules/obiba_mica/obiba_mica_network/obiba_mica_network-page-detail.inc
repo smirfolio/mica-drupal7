@@ -38,6 +38,7 @@ function obiba_mica_network_page_detail($network_id) {
       'investigators_modal' => obiba_mica_study_get_contact_detail('investigator', $network_dto->id, $network_dto->investigators),
       'contacts_modal' => obiba_mica_study_get_contact_detail('contact', $network_dto->id, $network_dto->contacts),
       'network_dto' => $network_dto,
+      'has_variables' => _obiba_mica_network_has_variables($network_dto->studySummaries),
       'coverage' => obiba_mica_network_coverage($network_dto->studyIds),
       'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
     ));
@@ -107,4 +108,13 @@ function obiba_mica_network_coverage($study_ids) {
     array('group-by' => 'studyIds'));
 }
 
+function _obiba_mica_network_has_variables($study_summaries) {
+  if (!empty($study_summaries)) {
+    foreach ($study_summaries as $study_summary) {
+        if (!empty($study_summary->variables)) return true;
+    }
+  }
+
+  return FALSE;
+}
 
