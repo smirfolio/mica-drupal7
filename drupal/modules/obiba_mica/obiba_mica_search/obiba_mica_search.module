@@ -782,14 +782,16 @@ function _obiba_mica_search_get_sub_header_studies_table() {
     $rows_column = NULL;
   }
   $headers_columns['headers'] = $headers;
-  $headers_columns['rows_column'] = $rows_column;
+  $headers_columns['rows_column'] =
+    empty($rows_column)
+      ? NULL
+      : array('data' => $rows_column, 'class' => array('table-secondary-header'));
+
   return $headers_columns;
 }
 
 function obiba_mica_search_studies_table($studies) {
   $rows = array();
-  $total_hits = 0;
-  $headers_columns = array();
 
   if (!empty($studies)) {
     $total_hits = $studies->getTotalHits();
@@ -1061,7 +1063,15 @@ function _obiba_mica_search_get_header_datasets_table() {
 }
 
 function _obiba_mica_search_get_sub_header_networks_table() {
-  $rows_column = array();
+  $rows_column = array(
+    0 => '',
+    1 => '',
+    2 => '',
+    3 => '',
+    4 => '',
+    5 => '',
+  );
+
   $headers = array();
   $column_networks_param = array(
     0 => '',
@@ -1073,46 +1083,40 @@ function _obiba_mica_search_get_sub_header_networks_table() {
   );
 
   $headers[] = t('Acronym');
-  $rows_column[] = '';
-
   $headers[] = t('Name');
-  $rows_column[] = '';
 
   if (!empty($column_networks_param[2])) {
     $headers[] = t('Studies');
-    $rows_column[] = '';
   }
 
-  if (!empty($column_networks_param[3]) && !empty($column_networks_param[4])) {
-    $headers[] = array('data' => t('Datasets'), 'colspan' => 2);
-    if (!empty($column_networks_param[3])) {
-      $rows_column[] = t('Study');
-    }
-    if (!empty($column_networks_param[4])) {
-      $rows_column[] = t('Harmonization');
-    }
+  $colspan = 0;
+
+  if (!empty($column_networks_param[3])) {
+    $rows_column[3+$colspan] = t('Study');
+    $colspan++;
   }
-  else {
-    if (!empty($column_networks_param[3]) || !empty($column_networks_param[4])) {
-      $headers[] = t('Datasets');
-      if (!empty($column_networks_param[3])) {
-        $rows_column[] = t('Study');
-      }
-      if (!empty($cheaders_columnsolumn_networks_param[4])) {
-        $rows_column[] = t('Harmonization');
-      }
-    }
+
+  if (!empty($column_networks_param[4])) {
+    $rows_column[3+$colspan] = t('Harmonization');
+    $colspan++;
+  }
+
+  if ($colspan > 0) {
+    $headers[] = array('data' => t('Datasets'), 'colspan' => $colspan);
+    // make sure headers and 2nd header have same # of columns
+    if ($colspan == 1) array_pop($rows_column);
   }
 
   if (!empty($column_networks_param[5])) {
     $headers[] = t('Variables');
-    $rows_column[] = '';
   }
-  if (empty($column_networks_param[3]) && empty($column_networks_param[4])) {
-    $rows_column = NULL;
-  }
+
   $headers_columns['headers'] = $headers;
-  $headers_columns['rows_column'] = $rows_column;
+  $headers_columns['rows_column'] =
+    empty($rows_column[3]) && empty($rows_column[4])
+      ? NULL
+      : array('data' => $rows_column, 'class' => array('table-secondary-header'));
+
   return $headers_columns;
 }
 
