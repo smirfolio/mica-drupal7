@@ -52,6 +52,13 @@ function obiba_mica_variable_info($options) {
     'default' => '',
   );
 
+  $variable['mica_taxonomy_order'] = array(
+    'title' => t('Taxonomy Order'),
+    'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI.'),
+    'type' => 'string',
+    'default' => '',
+  );
+
   return $variable;
 }
 

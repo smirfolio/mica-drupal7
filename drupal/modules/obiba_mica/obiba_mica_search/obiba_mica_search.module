@@ -582,6 +582,11 @@ function _obiba_mica_search_get_coverage_data() {
   }
   unset($_SESSION['fixed_menu']);
   $_SESSION['fixed_menu'] = array('coverages' => $coverages);
+
+  MicaClient::order_taxonomies($coverages->taxonomies, function($value){
+    return $value->taxonomy->name;
+  });
+
   return array(
     'coverages' => $coverages,
     'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,

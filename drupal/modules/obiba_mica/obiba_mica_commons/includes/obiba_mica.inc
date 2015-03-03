@@ -280,6 +280,9 @@ class MicaClient {
 
       if ($type_aggregations == 'variableResultDto') {
         if (!empty($aggregation->aggs)) {
+          self::order_taxonomies($aggregation->aggs, function($value){
+            return empty($value->aggregation) ? $value : $value->aggregation;
+          });
           $variable_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
         }
         $_SESSION['variables']['studies'] = array();
@@ -368,6 +371,45 @@ class MicaClient {
       }
     }
     return NULL;
+  }
+
+  /**
+   * Orders the matching taxonomies by based on the order defind in 'mica_taxonomy_order'
+   * @param $taxonomies
+   * @param $getter
+   */
+  public static function order_taxonomies(&$taxonomies, $getter) {
+    $order_taxonomy_variable = variable_get_value('mica_taxonomy_order');
+    if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
+      $ordered_taxonomies = explode(',', $order_taxonomy_variable);
+      $max_size = count($ordered_taxonomies);
+      $indexes = array_fill(0, $max_size, -9999);
+      $values = array_fill(0, $max_size, -9999);
+
+      foreach ($taxonomies as $index => $value) {
+        $position = array_search($getter($value), $ordered_taxonomies);
+        if ($position !== FALSE) {
+          $indexes[$position] = $index;
+          $values[$position] = $value;
+        }
+      }
+
+      // compact the index and value arrays by removing padding value -9999
+      $indexes = array_filter($indexes, function ($e) {
+        return $e != -9999;
+      });
+
+      $values = array_filter($values, function ($e) {
+        return $e != -9999;
+      });
+
+      asort($indexes);
+
+      // place the values at the proper position
+      while (count($indexes) > 0) {
+        $taxonomies[array_pop($indexes)] = array_pop($values);
+      }
+    }
   }
 
   static function get_name_entity_by_id_aggregation($type, $aggregation_facet, $id) {
