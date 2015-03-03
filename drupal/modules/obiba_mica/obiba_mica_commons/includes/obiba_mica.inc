@@ -280,10 +280,11 @@ class MicaClient {
 
       if ($type_aggregations == 'variableResultDto') {
         if (!empty($aggregation->aggs)) {
-          self::order_taxonomies($aggregation->aggs, function($value){
+          $filtered = self::filter_variable_aggregations($aggregation->aggs);
+          self::order_taxonomies($filtered, function($value){
             return empty($value->aggregation) ? $value : $value->aggregation;
           });
-          $variable_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
+          $variable_buckets = $this->session_facets_bucket_construction($filtered);
         }
         $_SESSION['variables']['studies'] = array();
         $study_result = isset($aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'}) ? $aggregations->studyResultDto->{'obiba.mica.StudyResultDto.result'} : NULL;
@@ -371,6 +372,22 @@ class MicaClient {
       }
     }
     return NULL;
+  }
+
+  /**
+   * Removes the flagged aggs from the UI only
+   * @param $aggs
+   * @return array
+   */
+  private static function filter_variable_aggregations($aggs) {
+    $filters = NULL;
+    if (!variable_get_value('search_datasets_autocomplete')) {
+      $filters[] = "datasetId";
+    }
+
+    return empty($filters) ? $aggs : array_filter($aggs, function ($agg) use($filters) {
+      return FALSE === array_search($agg->aggregation, $filters);
+    });
   }
 
   /**
