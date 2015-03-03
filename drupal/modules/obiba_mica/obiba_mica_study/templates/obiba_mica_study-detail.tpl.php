@@ -1,9 +1,14 @@
 <?php
-//dpm($study_dto);
 //dpm($study_variables_aggs);
 //dpm($coverage)
 ?>
-
+<?php if (!empty($populations)): ?>
+  <?php foreach ($populations as $key => $population): ?>
+    <?php if (!empty($population['data']) && !empty($population['data']['dce-modal'])): ?>
+      <div><?php print $population['data']['dce-modal']; ?></div>
+    <?php endif; ?>
+  <?php endforeach ?>
+<?php endif; ?>
 <div>
   <p class="md-top-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
@@ -389,11 +394,7 @@
           </div>
         </div>
       </div>
-      <?php foreach ($populations as $key => $population): ?>
-        <?php if (!empty($population['data']) && !empty($population['data']['dce-modal'])): ?>
-          <div><?php print $population['data']['dce-modal']; ?></div>
-        <?php endif; ?>
-      <?php endforeach ?>
+
     <?php endif ?>
   </section>
 <?php endif; ?>

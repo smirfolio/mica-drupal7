@@ -12,7 +12,7 @@ if (module_exists('obiba_mica_dataset')) {
 function obiba_mica_study_page_detail_coverage($study_id) {
   $coverage = obiba_mica_study_coverage($study_id);
 
-  if(empty($coverage['charts'])) {
+  if (empty($coverage['charts'])) {
     exit;
   }
 
@@ -26,7 +26,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
 
   $_SESSION['fixed_menu']['networks'] = $network_output;
 
-  if(empty($network_output)) {
+  if (empty($network_output)) {
     exit;
   }
 
@@ -36,7 +36,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
 function obiba_mica_study_page_detail_datasets($study_id) {
   $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
 
-  if(empty($dataset_output)) {
+  if (empty($dataset_output)) {
     exit;
   }
 
@@ -86,7 +86,7 @@ function obiba_mica_study_page_detail($study_id) {
       'datasets' => NULL,
       'study_variables_aggs' => NULL, //obiba_mica_study_get_variables($study_id),
     );
-
+    $populations = obiba_mica_study_get_populations_detail($study_dto);
     return theme('obiba_mica_study_detail',
       array(
         'investigators_modal' => obiba_mica_study_get_contact_detail('investigator', $study_dto->id, $study_dto->investigators),
@@ -94,7 +94,7 @@ function obiba_mica_study_page_detail($study_id) {
         'study_dto' => $study_dto,
         'study_attachements' => $themed_attachment,
         'timeline' => obiba_mica_study_get_timeline_detail($study_dto),
-        'populations' => obiba_mica_study_get_populations_detail($study_dto),
+        'populations' => $populations,
         'opal' => $opal_output,
         'study_variables_aggs' => NULL, //obiba_mica_study_get_variables($study_id),
         'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
@@ -181,6 +181,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
           $population->dataCollectionEvents,
           $dce_variables_nbr,
           $has_coverage);
+
         foreach ($population->dataCollectionEvents as $dce) {
           $dce_uids[] = $study_detail->id . ':' . $population->id . ':' . $dce->id;
         }
