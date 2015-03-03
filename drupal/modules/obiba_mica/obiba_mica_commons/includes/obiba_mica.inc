@@ -381,7 +381,7 @@ class MicaClient {
   public static function order_taxonomies(&$taxonomies, $getter) {
     $order_taxonomy_variable = variable_get_value('mica_taxonomy_order');
     if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
-      $ordered_taxonomies = explode(',', $order_taxonomy_variable);
+      $ordered_taxonomies = explode(',', preg_replace('/\s*,\s*/', ',', trim($order_taxonomy_variable)));
       $max_size = count($ordered_taxonomies);
       $indexes = array_fill(0, $max_size, -9999);
       $values = array_fill(0, $max_size, -9999);
