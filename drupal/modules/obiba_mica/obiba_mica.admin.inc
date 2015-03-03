@@ -5,6 +5,9 @@
  * Obiba Mica client module settings UI.
  */
 
+$path_module_commons = drupal_get_path('module', 'obiba_mica_commons');
+include_once($path_module_commons . '/includes/obiba_mica_commons_taxonomy_resource.inc');
+
 /**
  * Provides settings pages.
  */
@@ -102,6 +105,17 @@ function obiba_mica_admin_settings() {
     '#title' => $info['title'],
     '#required' => FALSE,
     '#default_value' => variable_get_value('mica_taxonomy_figures'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('mica_taxonomy_order');
+  $value = variable_get_value('mica_taxonomy_order');
+  $form['taxonomies']['mica_taxonomy_order'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => empty($value) ? _obiba_mica_admin_get_taxonomy_summaries() : $value,
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
@@ -435,4 +449,23 @@ function obiba_mica_default_password($form, &$form_state) {
 function obiba_mica_clear_images_cache() {
   cache_clear_all('images-cache-', 'cache', TRUE);
   drupal_set_message(t('The images cache cleared'));
+}
+
+/**
+ * Retrieves taxonomies
+ * TODO this should become a dragtable action callback so clients can always refresh the list when desired
+ * @return string
+ */
+function _obiba_mica_admin_get_taxonomy_summaries() {
+  $service = new MicaTaxonomyResource();
+  $taxonomies = $service->get_taxonomy_summaries();
+  $list = array();
+
+  if (!empty($taxonomies) && !empty($taxonomies->summaries)) {
+    foreach ($taxonomies->summaries as $summary) {
+      $list[] = $summary->name;
+    }
+  }
+
+  return implode(',', $list);
 }
