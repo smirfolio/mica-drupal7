@@ -6234,12 +6234,12 @@ div.charts {
   position: relative;
 }
 .facet-bar .block-obiba-mica-search h2 a:before {
-  content: url('../img/expanded.png') no-repeat scroll left center transparent;
+  content: url('../img/expanded.png');
   position: absolute;
   margin-left: -15px;
 }
 .facet-bar .block-obiba-mica-search h2 a.collapsed:before {
-  content: url('../img/collapsed.png') no-repeat scroll left center transparent;
+  content: url('../img/collapsed.png');
 }
 .facet-bar .block-obiba-mica-search .block-content {
   padding: 0;
@@ -6542,12 +6542,12 @@ fieldset[disabled] .facet-bar .facet_terms_range button.active {
   position: relative;
 }
 .region-facets .block-obiba-mica-search h2 a:before {
-  content: url('../img/expanded.png') no-repeat scroll left center transparent;
+  content: url('../img/expanded.png');
   position: absolute;
   margin-left: -15px;
 }
 .region-facets .block-obiba-mica-search h2 a.collapsed:before {
-  content: url('../img/collapsed.png') no-repeat scroll left center transparent;
+  content: url('../img/collapsed.png');
 }
 .region-facets .block-obiba-mica-search .block-content {
   padding: 0;
