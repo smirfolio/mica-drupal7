@@ -374,6 +374,13 @@ function _obiba_mica_settings_datasets_form(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+  $info = variable_get_info('search_datasets_autocomplete');
+  $form['search_display_settings']['datasets_form']['search_datasets_autocomplete'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('search_datasets_autocomplete'),
+    '#description' => $info['description'],
+  );
 }
 
 function _obiba_mica_settings_variables_form(&$form) {
