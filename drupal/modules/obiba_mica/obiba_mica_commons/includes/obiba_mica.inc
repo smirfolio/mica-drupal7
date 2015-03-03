@@ -200,7 +200,11 @@ class MicaClient {
    * @return HttpClient
    */
   protected function client() {
-    $client = new HttpClient($formatter = FALSE);
+    $default_headers_setter = function ($request) {
+      $request->setHeader('Accept-Encoding', 'gzip, deflate');
+    };
+
+    $client = new HttpClient(NULL, NULL, $default_headers_setter);
 
     if (!isset($client->options['curlopts'])) {
       $client->options['curlopts'] = array();
@@ -208,7 +212,8 @@ class MicaClient {
 
     $client->options['curlopts'] += array(
       CURLOPT_SSL_VERIFYHOST => FALSE,
-      CURLOPT_SSL_VERIFYPEER => FALSE
+      CURLOPT_SSL_VERIFYPEER => FALSE,
+      CURLOPT_ENCODING => TRUE
     );
 
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
