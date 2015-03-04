@@ -400,8 +400,8 @@ class MicaClient {
     if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
       $ordered_taxonomies = explode(',', preg_replace('/\s*,\s*/', ',', trim($order_taxonomy_variable)));
       $max_size = count($ordered_taxonomies);
-      $indexes = array_fill(0, $max_size, -9999);
-      $values = array_fill(0, $max_size, -9999);
+      $indexes = array_fill(0, $max_size, NULL);
+      $values = array_fill(0, $max_size, NULL);
 
       foreach ($taxonomies as $index => $value) {
         $position = array_search($getter($value), $ordered_taxonomies);
@@ -413,11 +413,11 @@ class MicaClient {
 
       // compact the index and value arrays by removing padding value -9999
       $indexes = array_filter($indexes, function ($e) {
-        return $e != -9999;
+        return $e != NULL;
       });
 
       $values = array_filter($values, function ($e) {
-        return $e != -9999;
+        return $e != NULL;
       });
 
       asort($indexes);
