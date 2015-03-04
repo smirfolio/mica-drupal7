@@ -92,9 +92,9 @@ function obiba_mica_network_study_table_rows($study_summaries) {
 function obiba_mica_network_study_table_headers() {
   return array(
     array("title" => t('Acronym')),
-    array("title" => t('Name')),
-    array("title" =>t('Study Design')),
-    array("title" => t('Participants')),
+    array("title" => t('Name'), 'width' => '45%'),
+    array("title" => t('Study Design'), 'width' => '20%'),
+    array("title" => t('Participants'), 'width' => '15%'),
     array("title" =>t('Country')),
     array("title" => t('Variables'))
   );
