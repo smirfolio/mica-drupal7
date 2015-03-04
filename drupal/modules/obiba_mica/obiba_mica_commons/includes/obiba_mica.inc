@@ -413,11 +413,11 @@ class MicaClient {
 
       // compact the index and value arrays by removing padding value -9999
       $indexes = array_filter($indexes, function ($e) {
-        return $e != NULL;
+        return $e !== NULL;
       });
 
       $values = array_filter($values, function ($e) {
-        return $e != NULL;
+        return $e !== NULL;
       });
 
       asort($indexes);
