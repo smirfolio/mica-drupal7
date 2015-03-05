@@ -21,7 +21,6 @@ function obiba_mica_search_resource_return_facets($dto_type = NULL) {
 }
 
 function obiba_mica_search_get_dto_facet_aggs($tab_block, $type, $source) {
-  $have_term = FALSE;
   if ($tab_block === 'search-datasetId') {
       $facet_build[$tab_block]['datasetId']['term'] = obiba_mica_search_get_datasets();
       return $facet_build[$tab_block];
@@ -29,14 +28,13 @@ function obiba_mica_search_get_dto_facet_aggs($tab_block, $type, $source) {
 
   if (!empty($source)) {
     foreach ($source as $key_tab => $facet) {
-
       if (is_int($key_tab)) {
         if (!empty($facet->aggregation) && $tab_block == 'search-' . $facet->aggregation) {
           if (!empty($facet->{'obiba.mica.TermsAggregationResultDto.terms'})) {
             foreach ($facet->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
               if (!empty($term->default)) {
                 $facet_build[$tab_block][$facet->aggregation]['term'][] = $term;
-                $have_term = TRUE;
+                $has_term = TRUE;
               }
             }
           }
@@ -48,16 +46,17 @@ function obiba_mica_search_get_dto_facet_aggs($tab_block, $type, $source) {
             $facet_build[$tab_block][$facet->aggregation]['range']['default']['count'] = $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->count;
             $facet_build[$tab_block][$facet->aggregation]['range']['default']['min'] = isset($facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->min) ? $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->min : NULL;
             $facet_build[$tab_block][$facet->aggregation]['range']['default']['max'] = isset($facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->max) ? $facet->{'obiba.mica.StatsAggregationResultDto.stats'}->default->max : NULL;
+            $has_range = TRUE;
           }
           else {
             $facet_build[$tab_block][$facet->aggregation] = NULL;
           }
-          if (!empty($facet_build) && !empty($have_term)) {
+
+          if (!empty($facet_build) && (!empty($has_term) || !empty($has_range))) {
             return $facet_build[$tab_block];
           }
         }
       }
-
     }
   }
 }
