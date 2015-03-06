@@ -94,7 +94,7 @@ function obiba_mica_study_create_form() {
 function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL, $study_limits = NULL) {
   $from = 0;
   $study_resource = new MicaStudyResource();
-  $size_response = !empty($study_limits) ? $study_limits : MicaClient::SIZE_RESPONSE_SM;
+  $size_response = intval($study_limits) > 0 ? $study_limits : MicaClient::SIZE_RESPONSE_SM;
   if (!empty($_GET['page'])) {
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'studies', $size_response);
   }
