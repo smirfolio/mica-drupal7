@@ -89,19 +89,19 @@
     return $("<div class='facet-query-list no-margin'></div>");
   }
 
-  function leftParenthesis() {
+  function renderLeftParenthesis() {
     return $("<span class='grouping-symbol'>(</span>");
   }
 
-  function rightParenthesis() {
+  function renderRightParenthesis() {
     return $("<span class='grouping-symbol'>)</span>");
   }
 
-  function leftBracket() {
+  function renderLeftBracket() {
     return $("<span class='grouping-symbol'>[</span>");
   }
 
-  function rightBracket() {
+  function renderRightBracket() {
     return $("<span class='grouping-symbol'>]</span>");
   }
 
@@ -117,16 +117,21 @@
     return type + ":" + aggType + ":" + name;
   }
 
+  function renderIs() {
+    return $("<span class='operation'>" + Drupal.t('is') + "</span>");
+  }
+
   function renderIn() {
     return $("<span class='operation'>" + Drupal.t('in') + "</span>");
   }
 
-  function renderAggregationContainer(type, typeValues, aggType, name, op, showOp, aggValueContainer) {
+  function renderAggregationContainer(type, typeValues, aggType, agg, name, op, showOp, aggValueContainer) {
     var htmlContainer = $("<div></div>");
     var aggContainer = renderAggregate(type, typeValues, aggType, name);
-    aggContainer
-      .append(renderIn())
-      .append(aggValueContainer);
+
+    agg.values.length == 1
+      ? aggContainer.append(renderIs()).append(aggValueContainer)
+      : aggContainer.append(renderIn()).append(renderLeftBracket()).append(aggValueContainer).append(renderRightBracket());
 
     htmlContainer.append(aggContainer);
     if (!showOp) htmlContainer.append(renderAndOrOperation(op, createOpMoniker(type, aggType, name)));
@@ -180,7 +185,7 @@
   }
 
   function renderRangeAggregationValue(value) {
-    return $("<span class='aggregate-value' title='" + Drupal.t('Click to remove') + "'></span>").text(value.min + " - " + value.max);
+    return $("<span class='aggregate-value' title='" + Drupal.t('Click to remove') + "'></span>").text('(' + value.min + " - " + value.max + ')');
   }
 
   function renderAggregateValue(aggType, agg, i, value, valuesContainer, hiddenValuesContainer) {
@@ -306,6 +311,7 @@
                 type,
                 typeValues,
                 aggType,
+                agg,
                 name,
                 getOperation(agg.op),
                 i === last,
