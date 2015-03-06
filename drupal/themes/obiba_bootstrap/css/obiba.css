@@ -6960,7 +6960,8 @@ div.facet-query > div {
   margin: 2px !important;
   border-radius: 5px;
   white-space: nowrap;
-  color: #3ac8f3;
+  font-weight: bold;
+  color: #3ab4f3;
 }
 .aggregate-field:hover,
 .aggregate-value:hover,
