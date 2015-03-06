@@ -8,11 +8,10 @@
     attach: function (context, settings) {
       /*******************/
       if (Drupal.settings.context) {
-        //console.log(Drupal.settings.context.url);
         $("#edit-search-query").on("keyup", function () {
           $.ajax({
             url: Drupal.settings.context.url + '/' + $(this).val() + '/' + $("#edit-search-sort").val()
-              + '/' + $("#edit-search-sort-order").val() + '/' + $("#edit-search-nbr-result").val(),
+              + '/' + $("#edit-search-sort-order").val() + '/0',
             success: function (data) {
               if (data) {
                 $('#refresh-list').empty().append(data.list);
@@ -22,17 +21,13 @@
           });
         });
       }
+
       $("#edit-search-query").on("blur", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
         window.location = '?' + data_url;
       });
 
       $("#edit-search-sort-order").on("change", function () {
-        var data_url = $('#obiba-mica-search-form').serialize();
-        window.location = '?' + data_url;
-      });
-
-      $("#edit-search-nbr-result").on("change", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
         window.location = '?' + data_url;
       });
