@@ -130,9 +130,9 @@ function obiba_mica_study_block_view($delta = '') {
 function obiba_mica_study_get_gender($gender_val) {
   switch ($gender_val) {
     case 0:
-      return t('Men');
+      return t('Men only');
     case 1:
-      return t('Women');
+      return t('Women only');
   }
 }
 
