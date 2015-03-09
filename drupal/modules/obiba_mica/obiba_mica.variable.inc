@@ -186,6 +186,12 @@ function _obiba_mica_variable_info_studies(&$variable) {
     'type' => 'string',
     'default' => 'No study found',
   );
+  $variable['search_studies_dce_autocomplete'] = array(
+    'title' => t('Show Data Collection Event auto-complete search filter'),
+    'description' => t('If selected, the auto-complete search filter will be displayed in the search page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 }
 
 function _obiba_mica_variable_info_datasets(&$variable) {
