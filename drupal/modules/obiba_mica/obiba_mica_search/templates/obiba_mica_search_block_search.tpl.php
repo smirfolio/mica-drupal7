@@ -9,7 +9,7 @@
   <form id="facet-search-<?php print $formId; ?>">
     <?php $nbr = 0 ?>
     <?php foreach ($items as $term => $term_count): ?>
-      <?php if ($nbr < 4): ?>
+      <?php if ($nbr <= 4): ?>
         <label class="span-checkbox">
           <?php print render($term_count); ?>
         </label>
