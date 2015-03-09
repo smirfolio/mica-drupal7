@@ -296,14 +296,12 @@
             <tr>
               <th><?php print t('Other'); ?></th>
               <td>
-                <p>
                   <?php if (in_array('other', $study_dto->access)): ?>
                     <span class="glyphicon glyphicon-ok right-indent"></span>
                   <?php endif; ?>
                   <?php if (!empty($study_dto->otherAccess)): ?>
-                    (<?php print obiba_mica_commons_get_localized_field($study_dto, 'otherAccess'); ?>)
+                    <?php print obiba_mica_commons_get_localized_field($study_dto, 'otherAccess'); ?>
                   <?php endif; ?>
-                </p>
               </td>
             </tr>
           <?php endif; ?>
