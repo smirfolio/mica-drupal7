@@ -530,8 +530,8 @@ function _obiba_mica_search_get_all_buckets($coverages) {
         foreach ($all_buckets as $merged_bucket) {
           if ($merged_bucket->value == $bucket->value) {
             // increment hits and count
-            $merged_bucket->hits = $merged_bucket->hits + $bucket->hits;
-            $merged_bucket->count = $merged_bucket->count + $bucket->count;
+            $merged_bucket->hits = $merged_bucket->hits + (!empty($bucket->hits) ? $bucket->hits : 0);
+            $merged_bucket->count = $merged_bucket->count + (!empty($bucket->count) ? $bucket->count : 0);
             $found = TRUE;
             break;
           }
@@ -541,8 +541,8 @@ function _obiba_mica_search_get_all_buckets($coverages) {
           $merged_bucket = new stdClass();
           $merged_bucket->field = $bucket->field;
           $merged_bucket->value = $bucket->value;
-          $merged_bucket->hits = $bucket->hits;
-          $merged_bucket->count = $bucket->count;
+          $merged_bucket->hits = !empty($bucket->hits) ? $bucket->hits : 0;
+          $merged_bucket->count = !empty($bucket->count) ? $bucket->count : 0;
           $merged_bucket->title = $bucket->title;
           $merged_bucket->description = $bucket->description;
           $all_buckets[] = $merged_bucket;
