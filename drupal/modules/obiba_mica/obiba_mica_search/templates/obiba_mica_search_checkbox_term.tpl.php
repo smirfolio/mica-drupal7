@@ -1,11 +1,17 @@
-<?php //dpm($aggregation_facet);?>
+<?php // dpm($aggregation_facet);?>
 <?php // dpm((((($term->count*200)/$totalhits))*100)/200);?>
 <li class="facets">
   <table>
     <tr>
       <td>
         <?php
-        $title = $term->title;
+        $mica_client = new MicaClient();
+        if ($aggregation_facet == 'populations-selectionCriteria-countriesIso') {
+          $title = countries_country_lookup(drupal_strtoupper($term->title), 'iso3')->name;
+        }
+        else {
+          $title = $term->title;
+        }
         $tooltip = empty($term->description) ? (strlen($title) < 30 ? '' : $title) : $term->description
         ?>
         <span id="checkthebox"
