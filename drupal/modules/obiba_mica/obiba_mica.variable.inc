@@ -192,6 +192,12 @@ function _obiba_mica_variable_info_studies(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['search_general_population_sources_autocomplete'] = array(
+    'title' => t('Show General Population Sources search filter'),
+    'description' => t('If selected, the search filter will be displayed in the search page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 }
 
 function _obiba_mica_variable_info_datasets(&$variable) {

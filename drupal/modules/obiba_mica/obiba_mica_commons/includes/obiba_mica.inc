@@ -308,7 +308,7 @@ class MicaClient {
         $_SESSION['variables']['aggregations']['total_count'] = $aggregation->totalCount;
       }
       if ($type_aggregations == 'studyResultDto') {
-        $study_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
+        $study_buckets = $this->session_facets_bucket_construction(self::filter_study_aggregations($aggregation->aggs));
         if (!empty($aggregations->networkResultDto)) {
           $network_result = isset($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}) ? $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'} : NULL;
           if (!empty($network_result) && (!empty($network_result->networks) || !empty($network_result->digests))) {
@@ -394,6 +394,21 @@ class MicaClient {
     });
   }
 
+  /**
+   * Removes the flagged aggs from the UI only
+   * @param $aggs
+   * @return array
+   */
+  private static function filter_study_aggregations($aggs) {
+    $filters = NULL;
+    if (!variable_get_value('search_general_population_sources_autocomplete')) {
+      $filters[] = "populations-recruitment-generalPopulationSources";
+    }
+
+    return empty($filters) ? $aggs : array_filter($aggs, function ($agg) use($filters) {
+      return FALSE === array_search($agg->aggregation, $filters);
+    });
+  }
   /**
    * Orders the matching taxonomies by based on the order defind in 'mica_taxonomy_order'
    * @param $taxonomies
