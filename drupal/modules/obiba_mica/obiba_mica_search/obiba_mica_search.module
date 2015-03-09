@@ -598,7 +598,7 @@ function _obiba_mica_search_get_coverage_data() {
 function obiba_mica_search_coverage_download() {
   $content_mime = 'text/csv';
   $content_disposition = 'attachment; filename="coverage.csv"';
-  $output = '';
+  $output = '"' . chr(169) . '2015 All rights reserved - Maelstrom Research. For more information contact us at inf@maelstrom-research.org","","","","","","","","","","","","","" ';
 
   $search_resources = new MicaSearchResource();
   $response = $search_resources->download_taxonomies_coverage(drupal_get_query_parameters(), array('group-by' => 'studyIds'));
@@ -607,7 +607,7 @@ function obiba_mica_search_coverage_download() {
     $headers = $search_resources->getLastResponseHeaders();
     $content_mime = $headers['Content-Type'][0];
     $content_disposition = $headers['Content-Disposition'][0];
-    $output = $response->body;
+    $output .= $response->body;
   }
 
   drupal_add_http_header('Content-Type', $content_mime . '; utf-8');
