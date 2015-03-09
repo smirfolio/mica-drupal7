@@ -385,6 +385,10 @@ class MicaClient {
       $filters[] = "datasetId";
     }
 
+    if (!variable_get_value('search_studies_dce_autocomplete')) {
+      $filters[] = "dceIds";
+    }
+
     return empty($filters) ? $aggs : array_filter($aggs, function ($agg) use($filters) {
       return FALSE === array_search($agg->aggregation, $filters);
     });

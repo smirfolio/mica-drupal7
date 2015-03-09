@@ -304,6 +304,13 @@ function _obiba_mica_settings_studies_form(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+  $info = variable_get_info('search_studies_dce_autocomplete');
+  $form['search_display_settings']['studies_form']['search_studies_dce_autocomplete'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('search_studies_dce_autocomplete'),
+    '#description' => $info['description'],
+  );
 }
 
 function _obiba_mica_settings_datasets_form(&$form) {
