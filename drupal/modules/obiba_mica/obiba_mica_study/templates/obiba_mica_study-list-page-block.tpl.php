@@ -5,7 +5,7 @@
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-           class="listImageThumb img-responsive"/>
+        class="listImageThumb img-responsive"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-S"></span>
@@ -21,11 +21,11 @@
       <p class="md-top-margin">
         <small>
           <?php
-            print MicaClientAnchorHelper::ellipses(
-              t('Read more'),
-              obiba_mica_commons_get_localized_field($study, 'objectives'),
-              MicaClientPathProvider::study($study->id)
-            );
+          print MicaClientAnchorHelper::ellipses(
+            t('Read more'),
+            obiba_mica_commons_get_localized_field($study, 'objectives'),
+            MicaClientPathProvider::study($study->id)
+          );
           ?>
         </small>
       </p>
@@ -42,13 +42,16 @@
         }
         ?>
       </li>
-
-      <li>
-        <?php print empty($study->designs) ? '' : t('Study design') ?>:
-        <span><?php print implode(', ', obiba_mica_commons_clean_string($study->designs)) ?></span>
-        <?php print empty($study->targetNumber) ? '' : t('; Target number of participants') ?>:
-        <span><?php print $study->targetNumber->noLimit ? t('No limits') : $study->targetNumber->number ?></span>
-      </li>
+      <?php if (!empty($study->designs) || $study->targetNumber) : ?>
+        <li>
+          <?php if (!empty($study->designs)): t('Study design') ?>:
+            <span><?php print implode(', ', obiba_mica_commons_clean_string($study->designs)) ?></span>
+          <?php endif; ?>
+          <?php if (!empty($study->targetNumber)):  t('; Target number of participants') ?>:
+            <span><?php print $study->targetNumber->noLimit ? t('No limits') : $study->targetNumber->number ?></span>
+          <?php endif; ?>
+        </li>
+      <?php endif; ?>
     </ul>
     <div class="sm-top-margin">
       <?php
