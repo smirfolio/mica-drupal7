@@ -349,12 +349,13 @@ class MicaClient {
 
     // move some facets
     $_SESSION['variables']['facets-buckets'] = array_merge($dataset_buckets, $variable_buckets);
-    $moved_facets = array(
-      'studyIds' => $_SESSION['variables']['facets-buckets']['studyIds'],
-      'dceIds' => $_SESSION['variables']['facets-buckets']['dceIds'],
-    );
-    unset($_SESSION['variables']['facets-buckets']['dceIds']);
-    unset($_SESSION['variables']['facets-buckets']['studyIds']);
+    $moved_facets = array_filter($_SESSION['variables']['facets-buckets'], function($facet){
+      return $facet['key'] === 'studyIds' || $facet['key'] === 'dceIds';
+    });
+
+    foreach ($moved_facets as $key => $facet) {
+      unset($_SESSION['variables']['facets-buckets'][$key]);
+    }
     $_SESSION['studies']['facets-buckets'] = array_merge(array_merge($network_buckets, $moved_facets), $study_buckets);
 
     if (!empty($networkAggregations)) {
