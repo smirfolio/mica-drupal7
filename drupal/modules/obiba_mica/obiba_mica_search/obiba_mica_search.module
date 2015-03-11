@@ -597,7 +597,7 @@ function _obiba_mica_search_get_coverage_data() {
 
 function obiba_mica_search_coverage_download() {
   $content_mime = 'text/csv';
-  $content_disposition = 'attachment; filename="coverage.csv"';
+  $content_disposition = 'attachment; filename="classification.csv"';
   $output = '"' . chr(169) . '2015 All rights reserved - Maelstrom Research. For more information contact us at inf@maelstrom-research.org","","","","","","","","","","","","",""' . chr(13) . '';
 
   $search_resources = new MicaSearchResource();
