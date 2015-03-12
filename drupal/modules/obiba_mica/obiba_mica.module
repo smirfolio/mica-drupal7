@@ -54,8 +54,14 @@ function obiba_mica_theme_registry_alter(&$theme_registry) {
 function obiba_mica_user_view($account, $view_mode, $langcode) {
   // Set the page title of the user profile page to the user's full name.
   $wrapper = entity_metadata_wrapper('user', $account);
-  $user_name = $wrapper->field_contact_name->value();
-  if ($user_name) {
-    drupal_set_title($user_name);
+  try {
+    $user_name = $wrapper->field_contact_name->value();
+    if ($user_name) {
+      drupal_set_title($user_name);
+    }
   }
+  catch (Exception $e) {
+
+  }
+
 }
