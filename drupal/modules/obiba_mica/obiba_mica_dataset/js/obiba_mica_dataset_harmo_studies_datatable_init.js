@@ -12,7 +12,7 @@
           "responsive": true,
           "scrollX": true,
           "scrollCollapse": true,
-          "sDom": '<"table-var-wrapper" <"md-top-margin pull-left" i><"pull-right" f>rt<"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
+          "sDom": '<"table-var-wrapper" <<"md-top-margin pull-left" i><"pull-right" f>><"clear-fix" ><"no-float-tab" rt><"clear-fix" ><"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
           "language": {
             "url": Drupal.settings.basePath + 'mica/datatable-international'
           },
