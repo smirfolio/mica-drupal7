@@ -45,6 +45,8 @@ function obiba_mica_variable_info($options) {
   _obiba_mica_variable_info_datasets($variable);
   _obiba_mica_variable_info_variables($variable);
 
+  _obiba_mica_variable_info_study($variable);
+
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures'),
     'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Classification figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
@@ -196,6 +198,27 @@ function _obiba_mica_variable_info_studies(&$variable) {
     'title' => t('Show General Population Sources search filter'),
     'description' => t('If selected, the search filter will be displayed in the search page.'),
     'type' => 'boolean',
+    'default' => TRUE,
+  );
+}
+
+function _obiba_mica_variable_info_study(&$variable) {
+  $variable['study_show_networks'] = array(
+    'title' => t('Show networks'),
+    'description' => t('If selected the Networks section will be displayed'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
+  $variable['study_show_datasets'] = array(
+    'title' => t('Show datasets'),
+    'description' => t('If selected the Datasets section will be displayed'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
+  $variable['study_show_coverage_graphs'] = array(
+    'title' => t('Show classification graphics'),
+    'description' => t('If selected the variable classification graphics will be displayed'),
+    'type' => 'string',
     'default' => TRUE,
   );
 }

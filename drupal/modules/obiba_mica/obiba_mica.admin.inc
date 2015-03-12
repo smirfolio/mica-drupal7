@@ -93,6 +93,14 @@ function obiba_mica_admin_settings() {
   _obiba_mica_settings_datasets_form($form);
   _obiba_mica_settings_variables_form($form);
 
+  $form['content_display_settings'] = array(
+    '#type' => 'vertical_tabs',
+    '#title' => t('Content page display settings'),
+    '#collapsible' => FALSE,
+  );
+
+  _obiba_mica_settings_study_form($form);
+
   $form['taxonomies'] = array(
     '#type' => 'fieldset',
     '#title' => t('Taxonomies'),
@@ -287,6 +295,15 @@ function _obiba_mica_settings_studies_form(&$form) {
     '#description' => $info['description'],
   );
 
+  // content details
+  $info = variable_get_info('studies_column_variables');
+  $form['search_display_settings']['studies_form']['studies_column']['studies_column_variables'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_variables'),
+    '#description' => $info['description'],
+  );
+
   // labels
   $info = variable_get_info('studies_search_label');
   $form['search_display_settings']['studies_form']['studies_search_label'] = array(
@@ -316,6 +333,39 @@ function _obiba_mica_settings_studies_form(&$form) {
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('search_general_population_sources_autocomplete'),
+    '#description' => $info['description'],
+  );
+}
+
+function _obiba_mica_settings_study_form(&$form)
+{
+  $form['content_display_settings']['study_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Study Content'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('study_show_networks');
+  $form['content_display_settings']['study_form']['study_show_networks'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_show_networks'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('study_show_datasets');
+  $form['content_display_settings']['study_form']['study_show_datasets'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_show_datasets'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('study_show_coverage_graphs');
+  $form['content_display_settings']['study_form']['study_show_coverage_graphs'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_show_coverage_graphs'),
     '#description' => $info['description'],
   );
 }
