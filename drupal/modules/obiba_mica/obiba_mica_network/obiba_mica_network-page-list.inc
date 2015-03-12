@@ -10,7 +10,8 @@ function obiba_mica_network_page_list() {
   drupal_add_js(array('context' => $context), 'setting');
 
   $node_view = node_view(node_load(variable_get('networks_page')));
-  $node_view['#node']->title = '';
+  drupal_set_title($node_view['#node']->title);
+
   $query = NULL;
   $sort = NULL;
   $sort_by = NULL;

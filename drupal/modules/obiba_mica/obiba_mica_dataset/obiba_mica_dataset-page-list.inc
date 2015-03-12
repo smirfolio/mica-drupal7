@@ -8,19 +8,19 @@ include_once('includes/obiba_mica_dataset_resource.inc');
 
 function obiba_mica_dataset_get_datasets_list() {
   $node_view = node_view(node_load(variable_get('dataset_page')));
-  $node_view['#node']->title = '';
+  drupal_set_title($node_view['#node']->title);
   return _obiba_mica_dataset_get_datasets_page($node_view, 'datasets');
 }
 
 function obiba_mica_dataset_get_harmonization_datasets_list() {
   $node_view = node_view(node_load(variable_get('harmo_dataset_page')));
-  $node_view['#node']->title = '';
+  drupal_set_title($node_view['#node']->title);
   return _obiba_mica_dataset_get_datasets_page($node_view, 'harmonization_datasets');
 }
 
 function obiba_mica_dataset_get_study_datasets_list() {
   $node_view = node_view(node_load(variable_get('study_dataset_page')));
-  $node_view['#node']->title = '';
+  drupal_set_title($node_view['#node']->title);
   return _obiba_mica_dataset_get_datasets_page($node_view, 'study_datasets');
 }
 
