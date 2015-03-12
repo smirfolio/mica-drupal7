@@ -106,9 +106,10 @@ function obiba_mica_search_process_block_theme($block_delta, $type, $source) {
 
 function obiba_mica_search_autocomplete_form_field($form, &$form_state, $aggregation_facet) {
   switch ($aggregation_facet) {
+    case 'datasetId' :
+      if (variable_get_value('search_datasets_autocomplete') == ObibaDatasetConstants::FACET_TYPE_CHECKBOX) break;
     case 'studyIds' :
     case 'dceIds' :
-    case 'datasetId' :
       $entity_search = explode('Id', $aggregation_facet);
       $entity_name = $entity_search[0] == 'dce' ? 'data collection event' : $entity_search[0];
       $title = t('Search a @entity...', array('@entity' => $entity_name));
