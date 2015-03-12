@@ -10,6 +10,8 @@ if (module_exists('obiba_mica_dataset')) {
 }
 
 function obiba_mica_study_page_detail_coverage($study_id) {
+  if (!variable_get_value('study_show_coverage_graphs')) exit;
+
   $coverage = obiba_mica_study_coverage($study_id);
 
   if (empty($coverage['charts'])) {
@@ -21,6 +23,8 @@ function obiba_mica_study_page_detail_coverage($study_id) {
 }
 
 function obiba_mica_study_page_detail_networks($study_id) {
+  if (!variable_get_value('study_show_networks')) exit;
+
   $network_output = (module_exists('obiba_mica_network')) ?
     obiba_mica_network_networks_list($study_id) : NULL;
 
@@ -34,6 +38,8 @@ function obiba_mica_study_page_detail_networks($study_id) {
 }
 
 function obiba_mica_study_page_detail_datasets($study_id) {
+  if (!variable_get_value('study_show_datasets')) exit;
+
   $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
 
   if (empty($dataset_output)) {
