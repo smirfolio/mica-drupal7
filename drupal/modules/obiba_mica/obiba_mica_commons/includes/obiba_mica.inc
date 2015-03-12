@@ -382,7 +382,7 @@ class MicaClient {
    */
   private static function filter_variable_aggregations($aggs) {
     $filters = NULL;
-    if (!variable_get_value('search_datasets_autocomplete')) {
+    if (variable_get_value('search_datasets_autocomplete') == ObibaDatasetConstants::FACET_TYPE_HIDE) {
       $filters[] = "datasetId";
     }
 
@@ -426,7 +426,7 @@ class MicaClient {
       $ordered_taxonomies = self::get_taxonomies_as_array($order_taxonomy_variable);
 
       $taxonomies = array_filter($taxonomies, function($taxonomy) use($ordered_taxonomies, $getter) {
-        return FALSE !== array_search($getter($taxonomy), $ordered_taxonomies);
+        return empty($taxonomy->children) || FALSE !== array_search($getter($taxonomy), $ordered_taxonomies);
       });
 
       $max_size = count($ordered_taxonomies);

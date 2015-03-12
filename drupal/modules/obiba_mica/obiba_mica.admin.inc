@@ -456,7 +456,12 @@ function _obiba_mica_settings_datasets_form(&$form) {
   );
   $info = variable_get_info('search_datasets_autocomplete');
   $form['search_display_settings']['datasets_form']['search_datasets_autocomplete'] = array(
-    '#type' => 'checkbox',
+    '#type' => 'select',
+    '#options' => array(
+      ObibaDatasetConstants::FACET_TYPE_HIDE => t('Hide'),
+      ObibaDatasetConstants::FACET_TYPE_AUTOCOMPLETE => t('Autocomplete'),
+      ObibaDatasetConstants::FACET_TYPE_CHECKBOX => t('Checkbox')
+    ),
     '#title' => $info['title'],
     '#default_value' => variable_get_value('search_datasets_autocomplete'),
     '#description' => $info['description'],
