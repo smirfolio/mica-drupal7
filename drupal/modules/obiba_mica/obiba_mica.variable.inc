@@ -32,6 +32,12 @@ function obiba_mica_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['mica_statistics_coverage'] = array(
+    'title' => t('Show statistics coverage'),
+    'description' => t('If show statistics coverage is selected, the statics coverage section will be available.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 
   $variable['image_cache_time_out'] = array(
     'title' => t('The image cache timeout'),

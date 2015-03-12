@@ -61,6 +61,14 @@ function obiba_mica_admin_settings() {
     '#description' => $info['description'],
   );
 
+  $info = variable_get_info('mica_statistics_coverage');
+  $form['statistics']['mica_statistics_coverage'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_statistics_coverage'),
+    '#description' => $info['description'],
+  );
+
   $form['image_cache'] = array(
     '#type' => 'fieldset',
     '#title' => t('Cache images settings'),
