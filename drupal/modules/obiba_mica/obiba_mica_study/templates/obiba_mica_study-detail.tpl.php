@@ -24,14 +24,19 @@
   </p>
 
   <div class="btn-group pull-right md-bottom-margin">
-    <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle hidden" data-toggle="dropdown"
-            aria-expanded="false">
-      <?php print t('Search') ?> <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-      <li><?php print MicaClientAnchorHelper::coverage_study($study_dto->id) ?></li>
-      <li><?php print MicaClientAnchorHelper::study_variables(NULL, $study_dto->id) ?></li>
-    </ul>
+    <?php if (variable_get_value('mica_statistics_coverage')): ?>
+      <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle hidden" data-toggle="dropdown"
+              aria-expanded="false">
+        <?php print t('Search') ?> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><?php print MicaClientAnchorHelper::coverage_study($study_dto->id) ?></li>
+        <li><?php print MicaClientAnchorHelper::study_variables(NULL, $study_dto->id) ?></li>
+      </ul>
+    <?php else:
+      print MicaClientAnchorHelper::study_variables(NULL, $study_dto->id, true);
+      ?>
+    <?php endif; ?>
   </div>
 </div>
 

@@ -52,6 +52,7 @@ function obiba_mica_variable_info($options) {
   _obiba_mica_variable_info_variables($variable);
 
   _obiba_mica_variable_info_study($variable);
+  _obiba_mica_variable_info_dataset($variable);
 
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures'),
@@ -230,6 +231,15 @@ function _obiba_mica_variable_info_study(&$variable) {
   $variable['study_show_coverage_graphs'] = array(
     'title' => t('Show classification graphics'),
     'description' => t('If selected the variable classification graphics will be displayed'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
+}
+
+function _obiba_mica_variable_info_dataset(&$variable) {
+  $variable['dataset_show_studies'] = array(
+    'title' => t('Show studies'),
+    'description' => t('If selected the Studies section will be displayed'),
     'type' => 'string',
     'default' => TRUE,
   );
