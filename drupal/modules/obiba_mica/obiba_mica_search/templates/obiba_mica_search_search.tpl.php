@@ -62,13 +62,15 @@
               <?php print render($variable_search_form) ?>
               <p>
                 <?php
+                if (variable_get_value('mica_statistics_coverage')) {
                   print MicaClientAnchorHelper::ajax_friendly_anchor(
                     MicaClientPathProvider::COVERAGE,
                     t(variable_get_value('variable_coverage_label')),
                     array('class' => 'btn btn-primary indent'),
                     array('query' => $query, 'group-by' => 'studyIds')
                   );
-                 ?>
+                }
+                ?>
               </p>
             </div>
             <div class="clearfix"/>
@@ -88,12 +90,14 @@
               <?php print render($dataset_search_form) ?>
               <p>
                 <?php
+                if (variable_get_value('mica_statistics_coverage')) {
                   print MicaClientAnchorHelper::ajax_friendly_anchor(
                     MicaClientPathProvider::COVERAGE,
                     t(variable_get_value('variable_coverage_label')),
                     array('class' => 'btn btn-primary indent'),
                     array('query' => $query, 'group-by' => 'datasetId')
                   );
+                }
                 ?>
               </p>
             </div>
@@ -115,12 +119,14 @@
               <?php print render($study_search_form) ?>
               <p>
                 <?php
+                if (variable_get_value('mica_statistics_coverage')) {
                   print MicaClientAnchorHelper::ajax_friendly_anchor(
                     MicaClientPathProvider::COVERAGE,
                     t(variable_get_value('variable_coverage_label')),
                     array('class' => 'btn btn-primary indent'),
                     array('query' => $query, 'group-by' => 'studyIds')
                   );
+                }
                 ?>
               </p>
             </div>
@@ -141,12 +147,14 @@
               <?php print render($network_search_form) ?>
               <p>
                 <?php
+                if (variable_get_value('mica_statistics_coverage')) {
                   print MicaClientAnchorHelper::ajax_friendly_anchor(
                     MicaClientPathProvider::COVERAGE,
                     t(variable_get_value('variable_coverage_label')),
                     array('class' => 'btn btn-primary indent'),
                     array('query' => $query, 'group-by' => 'studyIds')
                   );
+                }
                 ?>
               </p>
             </div>
