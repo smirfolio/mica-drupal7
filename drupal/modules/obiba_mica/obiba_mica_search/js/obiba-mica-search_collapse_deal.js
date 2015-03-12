@@ -7,7 +7,12 @@
   Drupal.behaviors.obiba_mica_facet_search_collapse_block = {
     attach: function (context, settings) {
       if (context === document) {
-        collapseAllFirstTime();
+        if (settings.expand_strategy && settings.expand_strategy === 'expand_groups') {
+          collapseAll();
+          expandGroups();
+        } else {
+          collapseAllFirstTime();
+        }
         setupDomEventHandlers();
         return;
       }

@@ -116,6 +116,12 @@ function _obiba_mica_variable_info_studies(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['studies_facet_search'] = array(
+    'title' => t('Show studies search filter'),
+    'description' => t('If selected, the studies search filters tab will be displayed.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
   $variable['studies_column_design'] = array(
     'title' => t('Show design'),
     'description' => t('Show design column in the studies table.'),

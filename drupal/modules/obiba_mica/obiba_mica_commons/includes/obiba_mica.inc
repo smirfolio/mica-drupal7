@@ -410,6 +410,11 @@ class MicaClient {
       return FALSE === array_search($agg->aggregation, $filters);
     });
   }
+
+  public static function get_taxonomies_count() {
+    return count(self::get_taxonomies_as_array(variable_get_value('mica_taxonomy_order')));
+  }
+
   /**
    * Orders the matching taxonomies by based on the order defind in 'mica_taxonomy_order'
    * @param $taxonomies
@@ -418,7 +423,12 @@ class MicaClient {
   public static function order_taxonomies(&$taxonomies, $getter) {
     $order_taxonomy_variable = variable_get_value('mica_taxonomy_order');
     if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
-      $ordered_taxonomies = explode(',', preg_replace('/\s*,\s*/', ',', trim($order_taxonomy_variable)));
+      $ordered_taxonomies = self::get_taxonomies_as_array($order_taxonomy_variable);
+
+      $taxonomies = array_filter($taxonomies, function($taxonomy) use($ordered_taxonomies, $getter) {
+        return FALSE !== array_search($getter($taxonomy), $ordered_taxonomies);
+      });
+
       $max_size = count($ordered_taxonomies);
       $indexes = array_fill(0, $max_size, NULL);
       $values = array_fill(0, $max_size, NULL);
@@ -447,6 +457,10 @@ class MicaClient {
         $taxonomies[array_pop($indexes)] = array_pop($values);
       }
     }
+  }
+
+  static private function get_taxonomies_as_array($taxonomies) {
+    return empty($taxonomies) ? array() : explode(',', preg_replace('/\s*,\s*/', ',', trim($taxonomies)));
   }
 
   static function get_name_entity_by_id_aggregation($type, $aggregation_facet, $id) {

@@ -187,7 +187,9 @@ function _get_facets_theme() {
     'obiba_mica_variable' =>
       _obiba_mica_search_get_facets_block_by_dto_type('facet_conf_variable', 'variables'),
     'obiba_mica_study' =>
-      _obiba_mica_search_get_facets_block_by_dto_type('facet_conf_study', 'studies')
+      variable_get_value('studies_facet_search')
+        ? _obiba_mica_search_get_facets_block_by_dto_type('facet_conf_study', 'studies')
+        : NULL
   ));
 }
 
@@ -256,6 +258,7 @@ function obiba_mica_search_load_libs() {
   drupal_add_js($module_path_ . '/js/obiba-mica-search-coverage.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-search-query-serializer.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-search_collapse_deal.js');
+  drupal_add_js(array('expand_strategy' => _obiba_mica_search_facet_expand_strategy()), 'setting');
   drupal_add_js($module_path_ . '/js/obiba-mica-search_tab_deal.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-search-href.js');
   drupal_add_js(array(
@@ -1255,6 +1258,12 @@ function obiba_mica_search_get_variables_count_from_studies_dto($studies) {
       return $varcount;
     }
   }
+}
+
+function _obiba_mica_search_facet_expand_strategy() {
+  // count of zero signifies all taxonomies are included
+  $taxonomies_count = MicaClient::get_taxonomies_count();
+  return !variable_get_value('studies_facet_search') &&  $taxonomies_count > 0 && $taxonomies_count < 2 ? 'expand_groups' : NULL;
 }
 
 
