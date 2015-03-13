@@ -243,6 +243,12 @@ function _obiba_mica_variable_info_dataset(&$variable) {
     'type' => 'string',
     'default' => TRUE,
   );
+  $variable['dataset_detailed_var_stats'] = array(
+    'title' => t('Show detailed variable statistics'),
+    'description' => t('If selected, data schema variable statistics will include each study.'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
 }
 
 function _obiba_mica_variable_info_datasets(&$variable) {
