@@ -352,7 +352,7 @@ class VariableStatistics {
     $aggregations = array();
 
     // headers
-    if ($this->variable->variableType == 'Dataschema') {
+    if (variable_get_value('dataset_detailed_var_stats') && $this->variable->variableType == 'Dataschema') {
       if (!empty($this->variable_stat->aggregations)) {
         $aggregations = $this->variable_stat->aggregations;
         foreach ($aggregations as $aggregation) {
