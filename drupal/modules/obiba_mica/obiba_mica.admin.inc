@@ -439,6 +439,14 @@ function _obiba_mica_settings_dataset_form(&$form)
     '#default_value' => variable_get_value('dataset_detailed_var_stats'),
     '#description' => $info['description'],
   );
+
+  $info = variable_get_info('dataset_description_overview_field');
+  $form['content_display_settings']['dataset_form']['dataset_description_overview_field'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('dataset_description_overview_field'),
+    '#description' => $info['description'],
+  );
 }
 
 function _obiba_mica_settings_datasets_form(&$form) {
