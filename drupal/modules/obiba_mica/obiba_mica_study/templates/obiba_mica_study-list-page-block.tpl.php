@@ -47,8 +47,16 @@
           <?php if (!empty($study->designs)): print t('Study design') ?>:
             <span><?php print implode(', ', obiba_mica_commons_clean_string($study->designs)) ?></span>
           <?php endif; ?>
-          <?php if (!empty($study->targetNumber)):  print t('; Target number of participants') ?>:
-            <span><?php print $study->targetNumber->noLimit ? t('No limits') : $study->targetNumber->number ?></span>
+          <?php
+            if (!empty($study->targetNumber)):
+              print (empty($study->designs) ? '' : '; ') . t('Target number of participants');
+          ?>:
+            <span>
+              <?php print $study->targetNumber->noLimit === true
+                ? t('No limits')
+                : (empty($study->targetNumber->number) ? t('n/a') : $study->targetNumber->number)
+              ?>
+            </span>
           <?php endif; ?>
         </li>
       <?php endif; ?>
