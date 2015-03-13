@@ -7,7 +7,8 @@
         <?php
         $mica_client = new MicaClient();
         if ($aggregation_facet == 'populations-selectionCriteria-countriesIso') {
-          $title = countries_country_lookup(drupal_strtoupper($term->title), 'iso3')->name;
+          $title = countries_country_lookup(drupal_strtoupper($term->title), 'iso' . strlen($term->title))->name;
+          if (empty($title)) $title = $term->title;
         }
         else {
           $title = $term->title;
