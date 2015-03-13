@@ -164,8 +164,9 @@
     <h2><?php print t('Statistics') ?></h2>
 
     <div class="scroll-content-tab">
-      <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>">
-        <div id="toempty">
+      <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>"
+        <?php if (!variable_get('dataset_detailed_var_stats')) : ?> class="statistic-tab"<?php endif; ?> >
+      <div id="toempty">
           <img
             src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif">
         </div>
