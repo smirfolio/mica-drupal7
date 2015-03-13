@@ -362,8 +362,14 @@ function _obiba_mica_settings_study_form(&$form)
     '#collapsible' => FALSE,
   );
 
+  $form['content_display_settings']['study_form']['study_details'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Study details page'),
+    '#collapsible' => FALSE,
+  );
+
   $info = variable_get_info('study_show_networks');
-  $form['content_display_settings']['study_form']['study_show_networks'] = array(
+  $form['content_display_settings']['study_form']['study_details']['study_show_networks'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('study_show_networks'),
@@ -371,7 +377,7 @@ function _obiba_mica_settings_study_form(&$form)
   );
 
   $info = variable_get_info('study_show_datasets');
-  $form['content_display_settings']['study_form']['study_show_datasets'] = array(
+  $form['content_display_settings']['study_form']['study_details']['study_show_datasets'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('study_show_datasets'),
@@ -379,12 +385,35 @@ function _obiba_mica_settings_study_form(&$form)
   );
 
   $info = variable_get_info('study_show_coverage_graphs');
-  $form['content_display_settings']['study_form']['study_show_coverage_graphs'] = array(
+  $form['content_display_settings']['study_form']['study_details']['study_show_coverage_graphs'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('study_show_coverage_graphs'),
     '#description' => $info['description'],
   );
+
+  $form['content_display_settings']['study_form']['studies_list'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Studies list page'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('studies_list_show_search_form');
+  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_search_form'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_search_form'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_search_button');
+  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_search_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_search_button'),
+    '#description' => $info['description'],
+  );
+
 }
 
 function _obiba_mica_settings_dataset_form(&$form)
