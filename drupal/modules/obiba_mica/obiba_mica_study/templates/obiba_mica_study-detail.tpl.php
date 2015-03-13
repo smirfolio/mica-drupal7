@@ -13,8 +13,8 @@
   <p class="md-top-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
       <a href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-         class="fancybox-button">
-        <img
+        class="fancybox-button">
+      <img
           src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
           class="imageThumb">
       </a>
@@ -26,15 +26,21 @@
   <div class="btn-group pull-right md-bottom-margin">
     <?php if (variable_get_value('mica_statistics_coverage')): ?>
       <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle hidden" data-toggle="dropdown"
-              aria-expanded="false">
-        <?php print t('Search') ?> <span class="caret"></span>
+        aria-expanded="false">
+      <?php print t('Search') ?> <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <li><?php print MicaClientAnchorHelper::coverage_study($study_dto->id) ?></li>
-        <li><?php print MicaClientAnchorHelper::study_variables(NULL, $study_dto->id) ?></li>
+
+        <?php if (variable_get_value('studies_list_show_search_button')): ?>
+          <li><?php print MicaClientAnchorHelper::study_variables(NULL, $study_dto->id) ?></li>
+        <?php endif; ?>
       </ul>
-    <?php else:
-      print MicaClientAnchorHelper::study_variables(NULL, $study_dto->id, true);
+    <?php
+    else:
+      if (variable_get_value('studies_list_show_search_button')):
+        print MicaClientAnchorHelper::study_variables(NULL, $study_dto->id, TRUE);
+      endif;
       ?>
     <?php endif; ?>
   </div>
@@ -81,8 +87,8 @@
             <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
               <li>
                 <a href="#" data-toggle="modal"
-                   data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
-                  <?php print $investigator->title; ?>
+                  data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
+                <?php print $investigator->title; ?>
                   <?php print $investigator->firstName; ?>
                   <?php print $investigator->lastName; ?>
                   <?php if (!empty($investigator->academicLevel)) {
@@ -105,8 +111,8 @@
             <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
               <li>
                 <a href="#" data-toggle="modal"
-                   data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
-                  <?php print $contact->title; ?>
+                  data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
+                <?php print $contact->title; ?>
                   <?php print $contact->firstName; ?>
                   <?php print $contact->lastName; ?>
                   <?php if (!empty($contact->academicLevel)) {
@@ -301,12 +307,12 @@
             <tr>
               <th><?php print t('Other'); ?></th>
               <td>
-                  <?php if (in_array('other', $study_dto->access)): ?>
-                    <span class="glyphicon glyphicon-ok right-indent"></span>
-                  <?php endif; ?>
-                  <?php if (!empty($study_dto->otherAccess)): ?>
-                    <?php print obiba_mica_commons_get_localized_field($study_dto, 'otherAccess'); ?>
-                  <?php endif; ?>
+                <?php if (in_array('other', $study_dto->access)): ?>
+                  <span class="glyphicon glyphicon-ok right-indent"></span>
+                <?php endif; ?>
+                <?php if (!empty($study_dto->otherAccess)): ?>
+                  <?php print obiba_mica_commons_get_localized_field($study_dto, 'otherAccess'); ?>
+                <?php endif; ?>
               </td>
             </tr>
           <?php endif; ?>
@@ -390,8 +396,8 @@
               <div class="tab-pane  <?php if ($key == array_keys($populations)[0]) {
                 print 'active';
               } ?>"
-                   id="population-<?php print $key; ?>">
-                <?php print $population['html']; ?>
+                id="population-<?php print $key; ?>">
+              <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
           </div>

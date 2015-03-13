@@ -234,6 +234,19 @@ function _obiba_mica_variable_info_study(&$variable) {
     'type' => 'string',
     'default' => TRUE,
   );
+  $variable['studies_list_show_search_form'] = array(
+    'title' => t('Show the rapid search/sort form in list studies page '),
+    'description' => t('If selected the the rapid search/sort form will be displayed in list studies page'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
+  $variable['studies_list_show_search_button'] = array(
+    'title' => t('Show the search studies button  in list studies page '),
+    'description' => t('If selected the search studies button will be displayed in list studies page'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
+
 }
 
 function _obiba_mica_variable_info_dataset(&$variable) {

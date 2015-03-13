@@ -22,16 +22,20 @@
         <?php print render($form_search); ?>
       </div>
       <div class="btn-group pull-right">
-        <?php if (variable_get_value('mica_statistics_coverage')): ?>
+        <?php if (variable_get_value('mica_statistics_coverage') || variable_get_value('studies_list_show_search_button')): ?>
           <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
             <?php print t('Search') ?> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
             <li><?php print MicaClientAnchorHelper::coverage_studies() ?></li>
-            <li><?php print MicaClientAnchorHelper::search_studies() ?></li>
+            <?php if (variable_get_value('studies_list_show_search_button')): ?>
+              <li><?php print MicaClientAnchorHelper::search_studies() ?></li>
+            <?php endif; ?>
           </ul>
         <?php else:
+          if (variable_get_value('studies_list_show_search_button')):
           print MicaClientAnchorHelper::search_studies(true);
+          endif;
           ?>
         <?php endif; ?>
       </div>

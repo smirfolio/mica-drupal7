@@ -56,8 +56,9 @@ function obiba_mica_study_page_list() {
   else {
     $themed_studies = t(variable_get_value('studies_empty_label'));
   }
+  $show_rapid_search_form = variable_get_value('studies_list_show_search_form');
   return theme('obiba_mica_study_list-page', array(
-    "form_search" => drupal_get_form('obiba_mica_study_create_form'),
+    "form_search" => !empty($show_rapid_search_form) ? drupal_get_form('obiba_mica_study_create_form') : '',
     "node_page" => $node_rendred,
     "total_items" => $total_studies,
     "list_studies" => $themed_studies,
