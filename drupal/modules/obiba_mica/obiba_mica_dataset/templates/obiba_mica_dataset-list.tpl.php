@@ -21,13 +21,18 @@
         <?php print render($form_search); ?>
       </div>
       <div class="btn-group pull-right">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-          <?php print t('Search') ?> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><?php print MicaClientAnchorHelper::coverage_datasets() ?></li>
-          <li><?php print MicaClientAnchorHelper::search_datasets() ?></li>
-        </ul>
+        <?php if (variable_get_value('mica_statistics_coverage')): ?>
+          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <?php print t('Search') ?> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li><?php print MicaClientAnchorHelper::coverage_datasets() ?></li>
+            <li><?php print MicaClientAnchorHelper::search_datasets() ?></li>
+          </ul>
+        <?php else:
+          print MicaClientAnchorHelper::search_datasets(true);
+        ?>
+        <?php endif; ?>
       </div>
     </div>
 

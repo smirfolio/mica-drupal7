@@ -12,13 +12,18 @@
   <?php endif; ?>
 
   <div class="btn-group pull-right md-bottom-margin">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-      <?php print t('Search') ?> <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-      <li><?php print MicaClientAnchorHelper::coverage_dataset($dataset_dto->id) ?></li>
-      <li><?php print MicaClientAnchorHelper::dataset_variables(NULL, $dataset_dto->id) ?></li>
-    </ul>
+    <?php if (variable_get_value('mica_statistics_coverage')): ?>
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <?php print t('Search') ?> <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><?php print MicaClientAnchorHelper::coverage_dataset($dataset_dto->id) ?></li>
+        <li><?php print MicaClientAnchorHelper::dataset_variables(NULL, $dataset_dto->id) ?></li>
+      </ul>
+    <?php else:
+      print MicaClientAnchorHelper::dataset_variables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary indent'));
+    ?>
+    <?php endif; ?>
   </div>
 </div>
 
@@ -78,7 +83,7 @@
 </section>
 
 <!-- STUDIES -->
-<?php if ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables)): ?>
+<?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
   <section>
     <h3>
       <?php
