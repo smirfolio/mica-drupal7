@@ -262,6 +262,12 @@ function _obiba_mica_variable_info_dataset(&$variable) {
     'type' => 'string',
     'default' => TRUE,
   );
+  $variable['dataset_description_overview_field'] = array(
+    'title' => t('Show description inside overview'),
+    'description' => t('If selected, dataset description is shown as a plain text inside the overview section.'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
 }
 
 function _obiba_mica_variable_info_datasets(&$variable) {

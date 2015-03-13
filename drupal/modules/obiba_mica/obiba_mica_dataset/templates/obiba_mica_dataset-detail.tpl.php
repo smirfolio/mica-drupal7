@@ -1,14 +1,12 @@
 <?php
-//dpm($dataset_dto);
-//dpm($dataset_type_dto);
-//dpm($variables_dataset);
-//dpm($dataset_variables_aggs);
+  $description = empty($dataset_dto->description)
+    ? NULL
+    : obiba_mica_commons_get_localized_field($dataset_dto, 'description');
 ?>
 
 <div>
-  <?php if (!empty($dataset_dto->description)): ?>
-    <p
-      class="md-top-margin"><?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($dataset_dto, 'description')); ?></p>
+  <?php if (!variable_get_value('dataset_description_overview_field') && !empty($description)): ?>
+    <p class="md-top-margin"><?php print obiba_mica_commons_markdown($description); ?></p>
   <?php endif; ?>
 
   <div class="btn-group pull-right md-bottom-margin">
@@ -44,6 +42,13 @@
           <tr>
             <th><?php print t('Acronym') ?></th>
             <td><p><?php print obiba_mica_commons_get_localized_field($dataset_dto, 'acronym'); ?></p></td>
+          </tr>
+        <?php endif; ?>
+
+        <?php if (variable_get_value('dataset_description_overview_field') && !empty($description)): ?>
+          <tr>
+            <th><?php print t('Description') ?></th>
+            <td><p><?php print strip_tags($description); ?></p></td>
           </tr>
         <?php endif; ?>
 
