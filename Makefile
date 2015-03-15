@@ -1,6 +1,7 @@
 mica_version=1.0-dev
 mica_branch=7.x-1.x
 drupal_org_mica=git.drupal.org:project/obiba_mica.git
+obiba-progressbar-version=1.0.0
 
 drupal_version = 7.32
 
@@ -21,7 +22,7 @@ help:
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
 
-all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update datatables cc
+all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update datatables obiba-progressbar cc
 
 clean:
 	rm -rf target
@@ -110,6 +111,14 @@ datatables-download:
 datatables-plugins-download:
 	cd target/drupal && \
 	drush datatables-plugins-download
+
+obiba-progressbar:
+	cd target/drupal && \
+	drush vset -y obiba-progressbar-lib obiba-progressbar-$(obiba-progressbar-version) && \
+	drush vset -y obiba-progressbar-file "dist/obiba-progressbar" && \
+	wget -P sites/all/libraries 'https://github.com/obiba/obiba-progressbar/archive/$(obiba-progressbar-version).zip' && \
+	unzip -qo sites/all/libraries/$(obiba-progressbar-version).zip -d sites/all/libraries && \
+	rm -f sites/all/libraries/$(obiba-progressbar-version).zip
 
 
 cc:

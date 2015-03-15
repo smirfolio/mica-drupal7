@@ -65,3 +65,38 @@ function obiba_mica_user_view($account, $view_mode, $langcode) {
   }
 
 }
+
+/**
+ * Adds the obiba progressbar JS file
+ * @param $javascript
+ */
+function obiba_mica_js_alter(&$javascript) {
+  $js_file = _get_progressbar_path('.js');
+  if (!empty($js_file)) {
+    $javascript[$js_file] = drupal_js_defaults($js_file);
+  }
+}
+
+/**
+ * Adds the obiba progressbar reltated CSS file
+ * @param $javascript
+ */
+function obiba_mica_css_alter(&$css) {
+  $css_file = _get_progressbar_path('.css');
+  if (!empty($css_file)) {
+    $css = drupal_add_css($css_file, array('every_page' => TRUE));
+  }
+}
+
+/**
+ * Helper assembling the resource files setup in the Makefile
+ * @param $extension
+ * @return null|string
+ */
+function _get_progressbar_path($extension) {
+  $obiba_progressbar_lib = libraries_get_path(variable_get_value('obiba-progressbar-lib'));
+  $obiba_progressbar_file = variable_get_value('obiba-progressbar-file');
+  return empty($extension) || empty($obiba_progressbar_lib) || empty($obiba_progressbar_file)
+    ? NULL
+    : $obiba_progressbar_lib . '/' . $obiba_progressbar_file . $extension;
+}

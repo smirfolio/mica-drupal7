@@ -17,3 +17,5 @@ dependencies[] = obiba_mica_dataset
 dependencies[] = obiba_mica_network
 
 files[] = obiba_mica.constants.inc
+
+scripts[] = js/obiba-mica-progressbar-controller.js
