@@ -126,7 +126,11 @@
       }
 
       function expandGroups() {
-        $("div[id^='taxonomy-']").collapse('show');
+        var taxonomies = $("div[id^='taxonomy-']");
+        taxonomies.collapse('show');
+        if (taxonomies.length === 1) {
+          $("a#collapsible-taxonomy").removeClass("accordion-toggle").attr("data-toggle", null).attr("href", null);
+        }
         $("a#collapsible-taxonomy").removeClass('collapsed');
       }
 
