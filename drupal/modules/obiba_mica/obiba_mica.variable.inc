@@ -53,6 +53,7 @@ function obiba_mica_variable_info($options) {
 
   _obiba_mica_variable_info_study($variable);
   _obiba_mica_variable_info_dataset($variable);
+  _obiba_mica_variable_info_variable($variable);
 
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures'),
@@ -265,6 +266,15 @@ function _obiba_mica_variable_info_dataset(&$variable) {
   $variable['dataset_description_overview_field'] = array(
     'title' => t('Show description inside overview'),
     'description' => t('If selected, dataset description is shown as a plain text inside the overview section.'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
+}
+
+function _obiba_mica_variable_info_variable(&$variable) {
+  $variable['variable_show_studies'] = array(
+    'title' => t('Show studies'),
+    'description' => t('If selected the Studies section will be displayed'),
     'type' => 'string',
     'default' => TRUE,
   );

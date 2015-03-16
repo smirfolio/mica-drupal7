@@ -27,7 +27,7 @@
           </tr>
         <?php endif; ?>
 
-        <?php if (!empty($variable_dto->studySummaries)): ?>
+        <?php if (variable_get_value('variable_show_studies') && !empty($variable_dto->studySummaries)): ?>
           <tr>
             <th>
               <?php if ($variable_dto->variableType == 'Dataschema') {
