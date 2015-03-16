@@ -381,7 +381,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                 $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($study_table, 'name') . ')';
               }
               if (empty($status)) {
-                $icon_alert_no_status = '<span class="glyphicon glyphicon-question-sign alert-danger" title="' . t('No status') . '"></span>';
+                $icon_alert_no_status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('No status') . '"></span>';
                 $row[$key_row] = l($icon_alert_no_status, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
@@ -429,7 +429,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
             }
           }
           if (!$found) {
-            $row[$key_row] = '<span class="glyphicon glyphicon-question-sign alert-danger" title="' . t('No status') . '"></span>';
+            $row[$key_row] = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('No status') . '"></span>';
           }
         }
 
