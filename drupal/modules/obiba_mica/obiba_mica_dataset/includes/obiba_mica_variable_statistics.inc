@@ -249,7 +249,7 @@ class VariableStatistics {
     $rows = array();
     $aggregations = array();
 
-    if ($this->variable->variableType == 'Dataschema') {
+    if (variable_get_value('dataset_detailed_var_stats') && $this->variable->variableType == 'Dataschema') {
       if (!empty($this->variable_stat->aggregations)) {
         $aggregations = $this->variable_stat->aggregations;
       }
@@ -271,7 +271,7 @@ class VariableStatistics {
     // statistics
     foreach ($aggregations as $aggregation) {
       $row = array();
-      if ($this->variable->variableType == 'Dataschema') {
+      if (variable_get_value('dataset_detailed_var_stats') && $this->variable->variableType == 'Dataschema') {
         $study_id = $aggregation->studyTable->studyId;
         $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
         if (!empty($aggregation->studyTable->name)) {
@@ -299,7 +299,7 @@ class VariableStatistics {
     }
 
     // combined statistics
-    if ($this->variable->variableType == 'Dataschema') {
+    if (variable_get_value('dataset_detailed_var_stats') && $this->variable->variableType == 'Dataschema') {
       $row = array(
         array(
           'data' => '<strong>' . t('All') . '</strong>',
@@ -327,7 +327,7 @@ class VariableStatistics {
 
     // headers
     $headers = array();
-    if ($this->variable->variableType == 'Dataschema') {
+    if (variable_get_value('dataset_detailed_var_stats') && $this->variable->variableType == 'Dataschema') {
       $headers = array(t('Study'));
     }
     array_push($headers, t('Min'), t('Max'), t('Mean'), t('Std. Dev'), t('N'));
