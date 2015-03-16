@@ -109,6 +109,7 @@ function obiba_mica_admin_settings() {
 
   _obiba_mica_settings_study_form($form);
   _obiba_mica_settings_dataset_form($form);
+  _obiba_mica_settings_variable_form($form);
 
   $form['taxonomies'] = array(
     '#type' => 'fieldset',
@@ -445,6 +446,23 @@ function _obiba_mica_settings_dataset_form(&$form)
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('dataset_description_overview_field'),
+    '#description' => $info['description'],
+  );
+}
+
+function _obiba_mica_settings_variable_form(&$form)
+{
+  $form['content_display_settings']['variable_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Variable Content'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('variable_show_studies');
+  $form['content_display_settings']['variable_form']['variable_show_studies'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('variable_show_studies'),
     '#description' => $info['description'],
   );
 }
