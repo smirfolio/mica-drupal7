@@ -275,7 +275,7 @@
         <p><?php print t('Access to external researchers or third parties neither provided nor foreseen.'); ?></p>
       <?php endif; ?>
       <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped valign-table-column">
           <tbody>
           <tr>
             <th><?php print t('Data (questionnaire-derived, measured...)'); ?></th>
