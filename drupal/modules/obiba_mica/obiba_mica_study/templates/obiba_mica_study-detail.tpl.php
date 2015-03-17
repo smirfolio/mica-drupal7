@@ -83,7 +83,7 @@
       <tr>
         <th><?php print t('Investigators') ?></th>
         <td>
-          <ul>
+          <ul class="list-unstyled">
             <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
               <li>
                 <a href="#" data-toggle="modal"
@@ -107,7 +107,7 @@
       <tr>
         <th><?php print t('Contacts') ?></th>
         <td>
-          <ul>
+          <ul class="list-unstyled">
             <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
               <li>
                 <a href="#" data-toggle="modal"
@@ -167,7 +167,7 @@
       <tr>
         <th><?php print t('Study Design') ?></th>
         <td>
-          <ul>
+          <ul class="list-unstyled">
             <?php foreach ($study_dto->methods->designs as $design): ?>
               <li>
                 <?php print t(obiba_mica_commons_clean_string($design)); ?>
@@ -193,7 +193,7 @@
       <tr>
         <th><?php print t('Recruitment Target') ?></th>
         <td>
-          <ul>
+          <ul class="list-unstyled">
             <?php foreach ($study_dto->methods->recruitments as $recruitment): ?>
               <li>
                 <?php print t(obiba_mica_commons_clean_string($recruitment)) ?>

@@ -39,7 +39,7 @@
             </th>
             <td>
               <?php if ($variable_dto->variableType == 'Dataschema'): ?>
-                <ul>
+                <ul class="list-unstyled">
                   <?php foreach ($variable_dto->studySummaries as $studySummary): ?>
                     <li><?php print MicaClientAnchorHelper::study($studySummary); ?></li>
                   <?php endforeach ?>
@@ -126,7 +126,7 @@
                       <?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
                     </p>
                   <?php else: ?>
-                    <ul>
+                    <ul class="list-unstyled">
                       <?php foreach ($termAttribute->terms as $term) : ?>
                         <li data-toggle="tooltip"
                           title="<?php print obiba_mica_commons_get_localized_field($term, 'descriptions'); ?>">
