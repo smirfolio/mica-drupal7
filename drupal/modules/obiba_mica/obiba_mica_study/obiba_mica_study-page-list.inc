@@ -16,6 +16,7 @@ function obiba_mica_study_page_list() {
   $node_rendred = node_view(node_load(variable_get('study_list_page')));
   drupal_set_title($node_rendred['#node']->title);
   $themed_studies = '';
+  $node_rendred['#node']->title = '';
 
   if (!empty($_GET['search-query'])) {
     $study_query = $_GET['search-query'];

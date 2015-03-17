@@ -220,53 +220,66 @@ function _obiba_mica_variable_info_study(&$variable) {
   $variable['study_show_networks'] = array(
     'title' => t('Show networks'),
     'description' => t('If selected the Networks section will be displayed'),
-    'type' => 'string',
+    'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['study_show_datasets'] = array(
     'title' => t('Show datasets'),
     'description' => t('If selected the Datasets section will be displayed'),
-    'type' => 'string',
+    'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['study_show_coverage_graphs'] = array(
     'title' => t('Show classification graphics'),
     'description' => t('If selected the variable classification graphics will be displayed'),
-    'type' => 'string',
+    'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_list_show_search_form'] = array(
     'title' => t('Show the rapid search/sort form in list studies page '),
     'description' => t('If selected the the rapid search/sort form will be displayed in list studies page'),
-    'type' => 'string',
+    'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_list_show_search_button'] = array(
     'title' => t('Show the search studies button  in list studies page '),
     'description' => t('If selected the search studies button will be displayed in list studies page'),
-    'type' => 'string',
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['studies_list_show_study_sup_info'] = array(
+    'title' => t('Show supplementary details study in list studies page '),
+    'description' => t('If selected the supplementary details study badges will be displayed in list studies page'),
+    'type' => 'boolean',
     'default' => TRUE,
   );
 
 }
 
 function _obiba_mica_variable_info_dataset(&$variable) {
+
+  $variable['dataset_title_acronym_setup'] = array(
+    'title' => t('Show acronym on the title'),
+    'description' => t('If selected, the acronym is shown in the title page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
   $variable['dataset_show_studies'] = array(
     'title' => t('Show studies'),
     'description' => t('If selected the Studies section will be displayed'),
-    'type' => 'string',
+    'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['dataset_detailed_var_stats'] = array(
     'title' => t('Show detailed variable statistics'),
-    'description' => t('If selected, data schema variable statistics will include each study.'),
-    'type' => 'string',
+    'description' => t('If selected, data schema variable statistics will be displayed in variable detail page'),
+    'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['dataset_description_overview_field'] = array(
     'title' => t('Show description inside overview'),
     'description' => t('If selected, dataset description is shown as a plain text inside the overview section.'),
-    'type' => 'string',
+    'type' => 'boolean',
     'default' => TRUE,
   );
 }
