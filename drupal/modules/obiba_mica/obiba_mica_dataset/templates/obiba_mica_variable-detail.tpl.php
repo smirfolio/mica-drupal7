@@ -106,8 +106,8 @@
           <?php foreach ($variable_dto->termAttributes as $termAttributes) : ?>
             <tr>
               <td colspan="2" data-toggle="tooltip"
-                title="<?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>">
-              <p class="help-block">
+                  title="<?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>">
+                <p class="help-block">
                   <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
                 </p>
               </td>
@@ -116,21 +116,21 @@
               <tr>
 
                 <th data-toggle="tooltip"
-                  title="<?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>">
-                <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
+                    title="<?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>">
+                  <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
                 </th>
                 <td>
                   <?php if (count($termAttribute->terms == 1)): ?>
                     <p data-toggle="tooltip"
-                      title="<?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
-                    <?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
+                       title="<?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
+                      <?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
                     </p>
                   <?php else: ?>
                     <ul>
                       <?php foreach ($termAttribute->terms as $term) : ?>
                         <li data-toggle="tooltip"
-                          title="<?php print obiba_mica_commons_get_localized_field($term, 'descriptions'); ?>">
-                        <?php print obiba_mica_commons_get_localized_field($term, 'titles'); ?>
+                            title="<?php print obiba_mica_commons_get_localized_field($term, 'descriptions'); ?>">
+                          <?php print obiba_mica_commons_get_localized_field($term, 'titles'); ?>
                         </li>
                       <?php endforeach; ?>
                     </ul>
@@ -154,7 +154,11 @@
 <?php if (!empty($variable_dto->categories)): ?>
   <section>
     <h2><?php print t('Categories') ?></h2>
-    <?php print obiba_mica_variable_get_categories($variable_dto->categories); ?>
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <?php print obiba_mica_variable_get_categories($variable_dto->categories); ?>
+      </div>
+    </div>
   </section>
 <?php endif; ?>
 
@@ -179,10 +183,10 @@
           </div>
         </div>
       </div>
-        <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
-          <div id="toemptychart">
-          </div>
+      <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
+        <div id="toemptychart">
         </div>
+      </div>
     <?php else: ?>
       <div class="row">
         <div
@@ -218,15 +222,15 @@
       <?php if (!empty($variable_harmonization_algorithms)): ?>
 
         <button id="harmo-algo" data-loading-text="<?php print t('Loading...') ?>"
-          type="button"
-          class="btn btn-success"
-          data-toggle="collapse"
-          data-target="#harmo-algo"
-          aria-expanded="true"
-          aria-controls="harmo-algo"
-          var-id="<?php print $variable_dto->id; ?>">
+                type="button"
+                class="btn btn-success"
+                data-toggle="collapse"
+                data-target="#harmo-algo"
+                aria-expanded="true"
+                aria-controls="harmo-algo"
+                var-id="<?php print $variable_dto->id; ?>">
 
-        <?php print t('Harmonization Algorithms') ?>
+          <?php print t('Harmonization Algorithms') ?>
         </button>
         <div id="harmo-algo" class="collapse">
 
@@ -243,17 +247,17 @@
               <td>
                 <?php if (empty($variable_harmonization['status'])): ?>
                   <span class="glyphicon glyphicon-question-sign alert-warning"
-                    title="<?php print t('No status') ?>"></span>
+                        title="<?php print t('No status') ?>"></span>
                 <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
                   <span class="glyphicon glyphicon-ok alert-success" title="<?php print t('Complete') ?>"></span>
                 <?php
                 elseif ($variable_harmonization['status'] == 'impossible'): ?>
                   <span class="glyphicon glyphicon-remove alert-danger"
-                    title="<?php print t('Impossible') ?>"></span>
+                        title="<?php print t('Impossible') ?>"></span>
                 <?php
                 elseif ($variable_harmonization['status'] == 'undetermined'): ?>
                   <span class="glyphicon glyphicon-question-sign alert-warning"
-                    title="<?php print t('Undetermined') ?>"></span>
+                        title="<?php print t('Undetermined') ?>"></span>
                 <?php endif ?>
               </td>
             </tr>
