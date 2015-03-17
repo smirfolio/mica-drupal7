@@ -7540,7 +7540,6 @@ div.dataTables_processing {
   color: #222222;
 }
 .block-content article section td ul {
-  list-style: none;
   padding-left: 0;
 }
 .block-content article section td ul li {
@@ -7735,4 +7734,7 @@ table.dataTable tbody > tr > td {
   font-size: small;
   box-shadow: 1px 1px 2px rgba(204, 204, 204, 0.55);
   border: solid 1px #ccc;
+}
+table.valign-table-column tbody > tr > td {
+  vertical-align: middle;
 }
