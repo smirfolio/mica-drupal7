@@ -223,7 +223,7 @@
 
         <button id="harmo-algo" data-loading-text="<?php print t('Loading...') ?>"
                 type="button"
-                class="btn btn-success"
+                class="btn btn-success md-bottom-margin"
                 data-toggle="collapse"
                 data-target="#harmo-algo"
                 aria-expanded="true"
@@ -238,7 +238,7 @@
       <?php endif; ?>
     <?php else: ?>
       <div class="row">
-        <div class="col-lg-12 col-xs-12 ">
+        <div class="col-md-6 col-xs-12 ">
 
           <table class="table table-striped">
             <tbody>
@@ -276,7 +276,11 @@
       <?php if ($variable_harmonization['status'] == 'complete'): ?>
         <?php if (!empty($variable_harmonization['algorithm'])): ?>
           <h2><?php print t('Algorithm') ?></h2>
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
           <?php print $variable_harmonization['algorithm']; ?>
+        </div>
+      </div>
         <?php else: ?>
           <h4><?php print t('Script'); ?></h4>
           <pre class="prettyprint lang-js">

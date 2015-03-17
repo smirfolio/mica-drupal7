@@ -7634,7 +7634,6 @@ div.dataTables_processing {
   width: 100%;
   max-width: 100%;
   margin-bottom: 21px;
-  width: inherit;
 }
 .markdown table > thead > tr > th,
 .markdown table > tbody > tr > th,
@@ -7683,11 +7682,6 @@ form.autocomplete div.dropdown {
 }
 form.autocomplete .dropdown-menu {
   position: relative;
-}
-div.algo-list {
-  border-left: solid 3px #cccccc;
-  padding-left: 20px;
-  margin-bottom: 20px;
 }
 .refresh-list {
   max-height: 39px;
