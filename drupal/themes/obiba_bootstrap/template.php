@@ -113,7 +113,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/block--obiba_mica_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['block__obiba_mica_search.tpl.php'] = array(
+    $theme_array['block__obiba_mica_search'] = array(
       'variables' => array('block' => array()),
       'template' => 'block--obiba_mica_search',
       'path' => $path . '/templates'
@@ -122,7 +122,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_search.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_search.tpl.php'] = array(
+    $theme_array['obiba_mica_search_search'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_search_search',
       'path' => $path . '/templates'
@@ -131,7 +131,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_coverage.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_coverage.tpl.php'] = array(
+    $theme_array['obiba_mica_search_coverage'] = array(
       'template' => 'obiba_mica_search_coverage',
       'path' => $path . '/templates'
     );
@@ -139,7 +139,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_vocabulary_coverage.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_vocabulary_coverage.tpl.php'] = array(
+    $theme_array['obiba_mica_search_vocabulary_coverage'] = array(
       'template' => 'obiba_mica_search_vocabulary_coverage',
       'path' => $path . '/templates'
     );
@@ -147,7 +147,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_input_text_range.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_input_text_range.tpl.php'] = array(
+    $theme_array['obiba_mica_search_input_text_range'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_search_input_text_range',
       'path' => $path . '/templates'
@@ -156,7 +156,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_checkbox_term.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_checkbox_term.tpl.php'] = array(
+    $theme_array['obiba_mica_search_checkbox_term'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_search_checkbox_term',
       'path' => $path . '/templates'
@@ -165,7 +165,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_tab_block.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_tab_block.tpl.php'] = array(
+    $theme_array['obiba_mica_search_tab_block'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_search_tab_block',
       'path' => $path . '/templates'
@@ -174,7 +174,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_charts.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_charts.tpl.php'] = array(
+    $theme_array['obiba_mica_search_charts'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_search_charts',
       'path' => $path . '/templates'
@@ -183,7 +183,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_vocabulary_charts.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_vocabulary_charts.tpl.php'] = array(
+    $theme_array['obiba_mica_search_vocabulary_charts'] = array(
       'template' => 'obiba_mica_search_vocabulary_charts',
       'path' => $path . '/templates'
     );
@@ -191,7 +191,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_network-detail.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_network-detail.tpl.php'] = array(
+    $theme_array['obiba_mica_network-detail'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_network-detail',
       'path' => $path . '/templates'
@@ -208,7 +208,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_network-list.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_network-list.tpl.php'] = array(
+    $theme_array['obiba_mica_network-list'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_network-list',
       'path' => $path . '/templates'
@@ -217,7 +217,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_fixed_sidebar.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_fixed_sidebar.tpl.php'] = array(
+    $theme_array['obiba_mica_search_fixed_sidebar'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_search_fixed_sidebar',
       'path' => $path . '/templates'
@@ -226,7 +226,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_study_fixed_sidebar.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_study_fixed_sidebar.tpl.php'] = array(
+    $theme_array['obiba_mica_study_fixed_sidebar'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_study_fixed_sidebar',
       'path' => $path . '/templates'
@@ -235,16 +235,25 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_variable_harmonization_algorithm.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_variable_harmonization_algorithm.tpl.php'] = array(
+    $theme_array['obiba_mica_variable_harmonization_algorithm'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_variable_harmonization_algorithm',
       'path' => $path . '/templates'
     );
   }
 
+  $destination_path = file_exists($path . '/templates/obiba_mica_variable-detail.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_mica_variable-detail'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_mica_variable-detail',
+      'path' => $path . '/templates'
+    );
+  }
+
   $destination_path = file_exists($path . '/templates/obiba_mica_search_cloned_block.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_cloned_block.tpl.php'] = array(
+    $theme_array['obiba_mica_search_cloned_block'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_search_cloned_block',
       'path' => $path . '/templates'
@@ -253,7 +262,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
 
   $destination_path = file_exists($path . '/templates/obiba_mica_search_aggregation_group.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_mica_search_aggregation_group.tpl.php'] = array(
+    $theme_array['obiba_mica_search_aggregation_group'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_search_aggregation_group',
       'path' => $path . '/templates'
