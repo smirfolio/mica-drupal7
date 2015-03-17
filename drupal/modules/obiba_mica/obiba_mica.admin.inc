@@ -456,14 +456,6 @@ function _obiba_mica_settings_dataset_form(&$form)
     '#description' => $info['description'],
   );
 
-  $info = variable_get_info('dataset_detailed_var_stats');
-  $form['content_display_settings']['dataset_form']['dataset_details']['dataset_detailed_var_stats'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('dataset_detailed_var_stats'),
-    '#description' => $info['description'],
-  );
-
   $info = variable_get_info('dataset_description_overview_field');
   $form['content_display_settings']['dataset_form']['dataset_details']['dataset_description_overview_field'] = array(
     '#type' => 'checkbox',
@@ -489,6 +481,14 @@ function _obiba_mica_settings_variable_form(&$form)
     '#default_value' => variable_get_value('variable_show_studies'),
     '#description' => $info['description'],
   );
+  $info = variable_get_info('dataset_detailed_var_stats');
+  $form['content_display_settings']['variable_form']['dataset_detailed_var_stats'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('dataset_detailed_var_stats'),
+    '#description' => $info['description'],
+  );
+
 }
 
 function _obiba_mica_settings_datasets_form(&$form) {

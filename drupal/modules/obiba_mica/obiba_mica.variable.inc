@@ -272,7 +272,7 @@ function _obiba_mica_variable_info_dataset(&$variable) {
   );
   $variable['dataset_detailed_var_stats'] = array(
     'title' => t('Show detailed variable statistics'),
-    'description' => t('If selected, data schema variable statistics will include each study.'),
+    'description' => t('If selected, data schema variable statistics will be displayed in variable detail page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
