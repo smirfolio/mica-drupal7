@@ -74,17 +74,17 @@
           </tr>
         <?php endif; ?>
 
-        <tr>
-          <th><?php print t('Variable Type'); ?></th>
-          <td>
-            <p>
-              <?php print t('@type variable', array('@type' => t($variable_dto->variableType))); ?>
-              <?php if ($variable_dto->variableType == 'Harmonized'): ?>
-                <?php print '(' . MicaClientAnchorHelper::variable_harmonized($variable_dto) . ')'; ?>
-              <?php endif; ?>
-            </p>
-          </td>
-        </tr>
+        <!--        <tr>-->
+        <!--          <th>--><?php //print t('Variable Type'); ?><!--</th>-->
+        <!--          <td>-->
+        <!--            <p>-->
+        <!--              --><?php //print t('@type variable', array('@type' => t($variable_dto->variableType))); ?>
+        <!--              --><?php //if ($variable_dto->variableType == 'Harmonized'): ?>
+        <!--                --><?php //print '(' . MicaClientAnchorHelper::variable_harmonized($variable_dto) . ')'; ?>
+        <!--              --><?php //endif; ?>
+        <!--            </p>-->
+        <!--          </td>-->
+        <!--        </tr>-->
 
         <?php if (!empty($variable_dto->comment)): ?>
           <tr>
@@ -107,8 +107,8 @@
             <tr>
               <td colspan="2" data-toggle="tooltip"
                 title="<?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>">
-              <p class="help-block">
-                  <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
+                <p class="help-block">
+                <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
                 </p>
               </td>
             </tr>
@@ -117,20 +117,20 @@
 
                 <th data-toggle="tooltip"
                   title="<?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'descriptions'); ?>">
-                <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
+                  <?php print obiba_mica_commons_get_localized_field($termAttribute->vocabulary, 'titles'); ?>
                 </th>
                 <td>
                   <?php if (count($termAttribute->terms == 1)): ?>
                     <p data-toggle="tooltip"
                       title="<?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'descriptions'); ?>">
-                    <?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
+                      <?php print obiba_mica_commons_get_localized_field($termAttribute->terms[0], 'titles'); ?>
                     </p>
                   <?php else: ?>
                     <ul>
                       <?php foreach ($termAttribute->terms as $term) : ?>
                         <li data-toggle="tooltip"
                           title="<?php print obiba_mica_commons_get_localized_field($term, 'descriptions'); ?>">
-                        <?php print obiba_mica_commons_get_localized_field($term, 'titles'); ?>
+                          <?php print obiba_mica_commons_get_localized_field($term, 'titles'); ?>
                         </li>
                       <?php endforeach; ?>
                     </ul>
@@ -154,7 +154,12 @@
 <?php if (!empty($variable_dto->categories)): ?>
   <section>
     <h2><?php print t('Categories') ?></h2>
-    <?php print obiba_mica_variable_get_categories($variable_dto->categories); ?>
+
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <?php print obiba_mica_variable_get_categories($variable_dto->categories); ?>
+      </div>
+    </div>
   </section>
 <?php endif; ?>
 
@@ -165,7 +170,7 @@
     <?php
     $column_for_detail_statistics = 6;
     if (!variable_get('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema') : ?>
-      <p><?php print t('Cumulative result of all studies:') ?></p>
+      <p><?php print t('Cumulative summary of all studies:') ?></p>
     <?php endif; ?>
     <div class="scroll-content-tab">
       <div class="table-statistic-var">
@@ -215,14 +220,14 @@
 
         <button id="harmo-algo" data-loading-text="<?php print t('Loading...') ?>"
           type="button"
-          class="btn btn-success"
+          class="btn btn-success md-bottom-margin"
           data-toggle="collapse"
           data-target="#harmo-algo"
           aria-expanded="true"
           aria-controls="harmo-algo"
           var-id="<?php print $variable_dto->id; ?>">
 
-        <?php print t('Harmonization Algorithms') ?>
+          <?php print t('Harmonization Algorithms') ?>
         </button>
         <div id="harmo-algo" class="collapse">
 
@@ -230,9 +235,9 @@
       <?php endif; ?>
     <?php else: ?>
       <div class="row">
-        <div class="col-lg-12 col-xs-12 ">
+        <div class="col-md-6 col-xs-12 ">
 
-          <table class="table table-striped">
+        <table class="table table-striped">
             <tbody>
             <tr>
               <th><?php print t('Status'); ?></th>
