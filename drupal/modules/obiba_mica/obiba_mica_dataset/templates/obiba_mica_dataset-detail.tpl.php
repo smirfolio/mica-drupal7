@@ -48,7 +48,7 @@
         <?php if (variable_get_value('dataset_description_overview_field') && !empty($description)): ?>
           <tr>
             <th><?php print t('Description') ?></th>
-            <td><p><?php print strip_tags($description); ?></p></td>
+            <td><p><?php print obiba_mica_commons_markdown($description); ?></p></td>
           </tr>
         <?php endif; ?>
 
