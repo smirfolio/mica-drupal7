@@ -73,7 +73,7 @@
             <tr>
               <th><?php print t('Investigators') ?></th>
               <td>
-                <ul>
+                <ul class="list-unstyled">
                   <?php foreach ($network_dto->investigators as $key_investigator => $investigator) : ?>
                     <li>
                       <a href="#" data-toggle="modal"
@@ -97,7 +97,7 @@
             <tr>
               <th><?php print t('Contacts') ?></th>
               <td>
-                <ul>
+                <ul class="list-unstyled">
                   <?php foreach ($network_dto->contacts as $key_contact => $contact) : ?>
                     <li>
                       <a href="#" data-toggle="modal"
