@@ -82,7 +82,7 @@
               <?php if ($variable_dto->variableType == 'Harmonized'): ?>
                 <?php print '(' . MicaClientAnchorHelper::variable_harmonized($variable_dto) . ')'; ?>
               <?php endif; ?>
-            </p>-->
+            </p>
           </td>
         </tr>
 
@@ -172,40 +172,43 @@
     if (!variable_get('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema') : ?>
       <p><?php print t('Cumulative summary of all studies:') ?></p>
     <?php endif; ?>
-    <div class="scroll-content-tab">
-      <div class="table-statistic-var">
-        <div class="row">
-          <div
-            class="col-md-<?php print (!variable_get('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema') ? $column_for_detail_statistics : 12; ?> col-sm-12">
-            <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>"
-              <?php if (!variable_get('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema') : ?> class="statistic-tab"<?php endif; ?> >
-              <div id="toempty">
-                <img
-                  src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif">
-              </div>
+    <?php if ($variable_dto->variableType == 'Dataschema' && variable_get('dataset_detailed_var_stats')): ?>
+      <div class="scroll-content-tab">
+        <div class="table-statistic-var">
+          <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>"
+            <?php if (!variable_get('dataset_detailed_var_stats')) : ?> class="statistic-tab"<?php endif; ?> >
+            <div id="toempty">
+              <img
+                src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif">
             </div>
-          </div>
-          <div class="col-md-6 col-sm-12">
-            <?php if (!variable_get_value('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema'): ?>
-              <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
-                <div id="toemptychart">
-                </div>
-              </div>
-            <?php endif; ?>
           </div>
         </div>
       </div>
-
-
-      <?php if (variable_get_value('dataset_detailed_var_stats')): ?>
-        <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
-          <div id="toemptychart">
+      <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
+        <div id="toemptychart">
+        </div>
+      </div>
+    <?php else: ?>
+      <div class="row">
+        <div
+          class="col-md-6 col-sm-12">
+          <div id="param-statistics" var-id="<?php print $variable_dto->id; ?>"
+            <?php if (!variable_get('dataset_detailed_var_stats')) : ?> class="statistic-tab"<?php endif; ?> >
+            <div id="toempty">
+              <img
+                src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif">
+            </div>
           </div>
         </div>
-      <?php endif; ?>
-    </div>
+        <div class="col-md-6 col-sm-12">
+          <div id="param-statistics-chart" var-id="<?php print $variable_dto->id; ?>">
+            <div id="toemptychart">
+            </div>
+          </div>
+        </div>
+      </div>
+    <?php endif; ?>
   </section>
-
 <?php endif; ?>
 
 <?php if ($variable_dto->variableType != 'Study'): ?>
