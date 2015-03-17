@@ -248,8 +248,9 @@ class VariableStatistics {
   private function as_descriptive_table() {
     $rows = array();
     $aggregations = array();
+    $show_detail_stats = variable_get_value('dataset_detailed_var_stats');
 
-    if (variable_get_value('dataset_detailed_var_stats') && $this->variable->variableType == 'Dataschema') {
+    if ($show_detail_stats && $this->variable->variableType == 'Dataschema') {
       if (!empty($this->variable_stat->aggregations)) {
         $aggregations = $this->variable_stat->aggregations;
       }
@@ -268,41 +269,38 @@ class VariableStatistics {
       }
     }
 
-    $show_detail_stats = variable_get_value('dataset_detailed_var_stats');
-
-    if ($show_detail_stats) {
-      // statistics
-      foreach ($aggregations as $aggregation) {
-        $row = array();
-        if ($this->variable->variableType == 'Dataschema') {
-          $study_id = $aggregation->studyTable->studyId;
-          $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
-          if (!empty($aggregation->studyTable->name)) {
-            $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
-          }
-          $row[] = $header;
+    // statistics
+    foreach ($aggregations as $aggregation) {
+      $row = array();
+      if ($show_detail_stats && $this->variable->variableType == 'Dataschema') {
+        $study_id = $aggregation->studyTable->studyId;
+        $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
+        if (!empty($aggregation->studyTable->name)) {
+          $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
         }
-        $row = array_merge($row, $this->statistics_to_row($aggregation));
-        foreach ($missings as $missing) {
-          $count = 0;
-          if (!empty($aggregation->frequencies)) {
-            foreach ($aggregation->frequencies as $frequency) {
-              if ($frequency->value == $missing) {
-                $count = $frequency->count;
-                $pct = empty($aggregation->total) ? 0 : round(($count / $aggregation->total) * 100, 1);
-                $count .= '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
-                break;
-              }
+        $row[] = $header;
+      }
+      $row = array_merge($row, $this->statistics_to_row($aggregation));
+      foreach ($missings as $missing) {
+        $count = 0;
+        if (!empty($aggregation->frequencies)) {
+          foreach ($aggregation->frequencies as $frequency) {
+            if ($frequency->value == $missing) {
+              $count = $frequency->count;
+              $pct = empty($aggregation->total) ? 0 : round(($count / $aggregation->total) * 100, 1);
+              $count .= '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
+              break;
             }
           }
-          $row[] = $count;
         }
-        $row[] = empty($aggregation->total) ? '-' : $aggregation->total;
-        $rows[] = $row;
+        $row[] = $count;
       }
+      $row[] = empty($aggregation->total) ? '-' : $aggregation->total;
+      $rows[] = $row;
     }
+
     // combined statistics
-    if ($this->variable->variableType == 'Dataschema') {
+    if ($show_detail_stats && $this->variable->variableType == 'Dataschema') {
       $row = array();
       if ($show_detail_stats) {
         $row[] = array('data' => '<strong>' . t('All') . '</strong>');
