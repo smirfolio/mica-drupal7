@@ -74,17 +74,17 @@
           </tr>
         <?php endif; ?>
 
-        <!--        <tr>-->
-        <!--          <th>--><?php //print t('Variable Type'); ?><!--</th>-->
-        <!--          <td>-->
-        <!--            <p>-->
-        <!--              --><?php //print t('@type variable', array('@type' => t($variable_dto->variableType))); ?>
-        <!--              --><?php //if ($variable_dto->variableType == 'Harmonized'): ?>
-        <!--                --><?php //print '(' . MicaClientAnchorHelper::variable_harmonized($variable_dto) . ')'; ?>
-        <!--              --><?php //endif; ?>
-        <!--            </p>-->
-        <!--          </td>-->
-        <!--        </tr>-->
+        <tr>
+          <th><?php print t('Variable Type'); ?></th>
+          <td>
+            <p>
+              <?php print t('@type variable', array('@type' => t($variable_dto->variableType))); ?>
+              <?php if ($variable_dto->variableType == 'Harmonized'): ?>
+                <?php print '(' . MicaClientAnchorHelper::variable_harmonized($variable_dto) . ')'; ?>
+              <?php endif; ?>
+            </p>-->
+          </td>
+        </tr>
 
         <?php if (!empty($variable_dto->comment)): ?>
           <tr>
@@ -108,7 +108,7 @@
               <td colspan="2" data-toggle="tooltip"
                 title="<?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'descriptions'); ?>">
                 <p class="help-block">
-                <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
+                  <?php print obiba_mica_commons_get_localized_field($termAttributes->taxonomy, 'titles'); ?>
                 </p>
               </td>
             </tr>
@@ -237,8 +237,8 @@
       <div class="row">
         <div class="col-md-6 col-xs-12 ">
 
-        <table class="table table-striped">
-            <tbody>
+          <table class="table table-striped">
+          <tbody>
             <tr>
               <th><?php print t('Status'); ?></th>
               <td>
