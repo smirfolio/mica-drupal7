@@ -168,8 +168,8 @@
     <h2><?php print t('Statistics') ?></h2>
     <?php
     $column_for_detail_statistics = 6;
-    if (!variable_get('dataset_detailed_var_stats')) : ?>
-      <p><?php print t('Cumulative result of all studies:') ?></p>
+    if (!variable_get('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema') : ?>
+      <p><?php print t('Cumulative summary of all studies:') ?></p>
     <?php endif; ?>
     <?php if ($variable_dto->variableType == 'Dataschema' && variable_get('dataset_detailed_var_stats')): ?>
       <div class="scroll-content-tab">
