@@ -71,6 +71,9 @@ METHOD 1: Bootstrap Source Files
 ; scripts[] = 'bootstrap/js/scrollspy.js'
 ; scripts[] = 'bootstrap/js/tab.js'
 ; scripts[] = 'bootstrap/js/transition.js'
+scripts[] = js/obiba-bootstrap-progressbar-controller.js
+
+
 ;
 ; ; Disable BootstrapCDN if using Bootstrap source files in your sub-theme.
 ; settings[bootstrap_cdn] = ''

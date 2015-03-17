@@ -1,37 +1,38 @@
 (function ($) {
-
   var hasAjax = false;
   var ready = false;
+  $.ObibaProgressBarController = (function() {
+    var bar = new $.ObibaProgressBar();
+
+    return {
+      start: bar.start,
+      pause: bar.pause,
+      inc: bar.inc,
+      update: bar.update,
+      finish: bar.finish
+    };
+  });
 
   $(document).ready(function () {
-    if (!hasAjax) bar.finish();
+    if (!hasAjax) $.ObibaProgressBarController().finish();
     ready = true;
   });
 
   $(document).ajaxStart(function () {
     hasAjax = true;
-    if (ready) bar.start();
+    if (ready) $.ObibaProgressBarController().start();
   });
 
   $(document).ajaxSend(function () {
   });
 
   $(document).ajaxComplete(function () {
-    bar.inc(5);
+    $.ObibaProgressBarController().inc(5);
   });
 
   $(document).ajaxStop(function () {
-    hasAjax = false
-    bar.finish();
+    hasAjax = false;
+    $.ObibaProgressBarController().finish();
   });
-
-  Drupal.behaviors.progress_bar = {
-    attach: function (context, settings) {
-      if (document === context) {
-        bar = new $.ObibaProgressBar();
-        bar.start();
-      }
-    }
-  }
 
 })(jQuery);
