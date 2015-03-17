@@ -156,7 +156,7 @@ function obiba_mica_search_term_chart($term_coverage) {
  * @param null $bucket_filter_arg argument to be passed to the bucket filter closure
  * @return array
  */
-function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, $bucket_filter_arg = NULL, $default_dto_search = NULL) {
+function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, $bucket_filter_arg = NULL, $default_dto_search = NULL, $chart_title = NULL) {
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search);
   //dpm($coverages);
@@ -190,6 +190,9 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
             'datasetId' => t('dataset'),
           );
           $title = $title . ' (' . t('group by') . ' ' . $group_by_names[$default_dto_search['group-by']] . ')';
+        }
+        if (!empty($chart_title)) {
+          $title = $chart_title;
         }
         $taxonomy_charts[] = array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
