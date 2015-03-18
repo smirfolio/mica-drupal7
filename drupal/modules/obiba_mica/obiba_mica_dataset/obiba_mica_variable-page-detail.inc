@@ -29,13 +29,13 @@ function obiba_mica_variable_page_detail($variable_id) {
 
   $variable_resource = new MicaDatasetResource();
   $variable = $variable_resource->get_variable($variable_id);
-  if ($variable->variableType == "Dataschema") {
-    // $algos = obiba_mica_dataset_get_variable_algorithm($variable_id);
-    $algos = TRUE;
-  }
   if (empty($variable)) {
     drupal_set_title(t('Variable not found'));
     return '';
+  }
+  if ($variable->variableType == "Dataschema") {
+    // $algos = obiba_mica_dataset_get_variable_algorithm($variable_id);
+    $algos = TRUE;
   }
   $variable->label = _obiba_mica_variable_attributes_detail($variable, 'label');
   $variable->description = _obiba_mica_variable_attributes_detail($variable, 'description');
