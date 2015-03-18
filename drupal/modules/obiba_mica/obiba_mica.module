@@ -51,6 +51,43 @@ function obiba_mica_theme_registry_alter(&$theme_registry) {
   }
 }
 
+/**
+ * Implements hook_chart_definition_alter().
+ */
+function obiba_mica_chart_definition_alter(&$definition, $chart, $chart_id) {
+  if (!empty($chart['#raw_options'])) {
+    $definition = obiba_mica_drupal_array_merge_deep_array(array($definition, array('options' => $chart['#raw_options'])));
+  }
+}
+
+/**
+ * Override drupal_array_merge_deep_array
+ *
+ * @param $arrays
+ *
+ * @return array
+ */
+function obiba_mica_drupal_array_merge_deep_array($arrays) {
+  $result = array();
+
+  foreach ($arrays as $array) {
+    foreach ($array as $key => $value) {
+      // Renumber integer keys as array_merge_recursive() does. Note that PHP
+      // automatically converts array keys that are integer strings (e.g., '1')
+      // to integers.
+      if (isset($result[$key]) && is_array($result[$key]) && is_array($value)) {
+        $result[$key] = obiba_mica_drupal_array_merge_deep_array(array($result[$key], $value));
+      }
+      // Otherwise, use the latter value, overriding any previous value.
+      else {
+        $result[$key] = $value;
+      }
+    }
+  }
+
+  return $result;
+}
+
 function obiba_mica_user_view($account, $view_mode, $langcode) {
   // Set the page title of the user profile page to the user's full name.
   $wrapper = entity_metadata_wrapper('user', $account);
@@ -59,8 +96,7 @@ function obiba_mica_user_view($account, $view_mode, $langcode) {
     if ($user_name) {
       drupal_set_title($user_name);
     }
-  }
-  catch (Exception $e) {
+  } catch (Exception $e) {
 
   }
 

@@ -222,6 +222,7 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
 
 function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart_param = variable_get('charts_default_settings');
+
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
@@ -287,6 +288,9 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
   if (empty($width) && count($labels) < 10) {
     $chart_width = count($labels) * 20 + $height;
   }
+  $raw_options['vAxis']['logScale'] = FALSE;
+  $raw_options['vAxis']['minorGridlines']['count'] = 0;
+
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
@@ -298,6 +302,7 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
     '#legend_position' => $legend_position,
     '#legend' => $legend_position != 'none',
     '#chart_library' => $chart_param['library'],
+    '#raw_options' => $raw_options,
   );
   foreach ($data as $key => $datum) {
     $chart[$key] = array(
