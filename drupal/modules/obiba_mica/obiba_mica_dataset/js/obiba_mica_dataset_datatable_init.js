@@ -66,6 +66,10 @@
           "stateSave": true,
           "language": {
             "url": Drupal.settings.basePath + 'mica/datatable-international'
+          },
+          "initComplete": function (settings, json) {
+            var thHeaderSort = $(".DTFC_LeftBodyLiner .sorting_desc");
+            thHeaderSort.removeClass("sorting_desc");
           }
         });
 
@@ -73,9 +77,9 @@
           leftColumns: 2
         });
       }
-
       /*******************************/
     }
+
   }
 }(jQuery));
 
