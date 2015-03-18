@@ -68,8 +68,9 @@
             "url": Drupal.settings.basePath + 'mica/datatable-international'
           },
           "initComplete": function (settings, json) {
-            var thHeaderSort = $(".DTFC_LeftBodyLiner .sorting_desc,.DTFC_LeftBodyLiner .sorting");
+            var thHeaderSort = $(".DTFC_LeftBodyLiner .sorting_desc,.DTFC_LeftBodyLiner .sorting,.DTFC_LeftBodyLiner .sorting_asc");
             thHeaderSort.removeClass("sorting_desc");
+            thHeaderSort.removeClass("sorting_asc");
             thHeaderSort.removeClass("sorting");
           }
         });
