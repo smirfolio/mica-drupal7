@@ -40,11 +40,9 @@
         $btn.button('reset')
       });
       $('.collapse').on('hidden.bs.collapse', function () {
-        console.log('col col ');
         $('#harmo-algo-toggle').text(Drupal.t('Show Harmonization Algorithms'));
       });
       $('.collapse').on('shown.bs.collapse', function () {
-        console.log('col col ');
         $('#harmo-algo-toggle').text(Drupal.t('Hide Harmonization Algorithms'));
       });
       /***************************/
