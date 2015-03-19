@@ -67,7 +67,7 @@
       function updateExpandCollapseIcon(firsttime) {
         var allCollapsed = true;
 
-        $('#search-facets .tab-pane.active .accordion-toggle').each(function () {
+        $('#search-facets .tab-pane.active #collapsible-taxonomy').each(function () {
           allCollapsed &= $(this).hasClass('collapsed');
         });
 
