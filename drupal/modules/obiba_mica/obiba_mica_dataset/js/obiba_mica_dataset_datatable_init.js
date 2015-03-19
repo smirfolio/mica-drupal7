@@ -7,6 +7,7 @@
   Drupal.behaviors.micaDataset_Datatable_init = {
 
     attach: function (context, settings) {
+
       /***********AjaxTable*******************/
       var divDataTableVar = $('#variables-table');
       var idDataset = divDataTableVar.attr('id-dataset');
@@ -14,6 +15,7 @@
       var headerTable = null;
       /*****************/
 
+      /***************/
       $.ajax({
         'async': false,
         'url': Drupal.settings.basePath + 'mica/variables-tab-header/' + typeDataset,
@@ -29,6 +31,21 @@
 
       function setHeaderTab(data) {
         headerTable = data["header"];
+      }
+
+      function hideSortIcon() {
+        var thHeaderSort = $(".DTFC_LeftBodyLiner .sorting");
+        var thHeaderSortAsc = $(".DTFC_LeftBodyLiner .sorting_asc");
+        var thHeaderSortDesc = $(".DTFC_LeftBodyLiner .sorting_desc");
+        if (thHeaderSort.length) {
+          thHeaderSort.removeClass("sorting");
+        }
+        if (thHeaderSortAsc.length) {
+          thHeaderSortAsc.removeClass("sorting_asc");
+        }
+        if (thHeaderSortDesc.length) {
+          thHeaderSortDesc.removeClass("sorting_desc");
+        }
       }
 
       /**********************/
@@ -66,17 +83,16 @@
           "stateSave": true,
           "language": {
             "url": Drupal.settings.basePath + 'mica/datatable-international'
-          },
-          "initComplete": function (settings, json) {
-            var thHeaderSort = $(".DTFC_LeftBodyLiner .sorting_desc,.DTFC_LeftBodyLiner .sorting,.DTFC_LeftBodyLiner .sorting_asc");
-            thHeaderSort.removeClass("sorting_desc");
-            thHeaderSort.removeClass("sorting_asc");
-            thHeaderSort.removeClass("sorting");
           }
         });
 
         new $.fn.dataTable.FixedColumns(dataTable, {
           leftColumns: 2
+        });
+
+        divTableVariable.on('init.dt', function () {
+          console.log('hii haa');
+          hideSortIcon();
         });
       }
       /*******************************/
