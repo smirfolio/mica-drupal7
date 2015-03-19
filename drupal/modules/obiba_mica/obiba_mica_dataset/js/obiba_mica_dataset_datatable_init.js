@@ -91,7 +91,6 @@
         });
 
         divTableVariable.on('init.dt', function () {
-          console.log('hii haa');
           hideSortIcon();
         });
       }
