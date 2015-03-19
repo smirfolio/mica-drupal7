@@ -1,6 +1,19 @@
 <?php //dvm('search var',$studies);
+
+$show_tabs = TRUE;
+if (!empty($search_param)) {
+  $count = 0;
+  foreach($search_param as $param) {
+    $count += !empty($param);
+  }
+
+  $show_tabs = $count > 1;
+  $border_style = $show_tabs ? '' : 'no-border';
+  $padding_style = $show_tabs ? '' : 'no-padding';
+}
+
 ?>
-<div class="alert alert-info">
+<div class="alert alert-info" xmlns="http://www.w3.org/1999/html">
   <div id="search-help">
     <i class="glyphicon glyphicon-arrow-left"></i>
     <span class="indent">
@@ -17,46 +30,56 @@
 </div>
 
 <div id="search-result">
-  <ul class="nav nav-tabs" role="tablist" id="result-search">
+  <?php if ($show_tabs): ?>
+    <ul class="nav nav-tabs" role="tablist" id="result-search">
 
-    <?php if (!empty($search_param['search_networks'])): ?>
-      <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
-          (<?php print !empty($network_total_hits) ? $network_total_hits : 0; ?>)
-        </a>
-      </li>
-    <?php endif; ?>
+      <?php if (!empty($search_param['search_networks'])): ?>
+        <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
+            (<?php print !empty($network_total_hits) ? $network_total_hits : 0; ?>)
+          </a>
+        </li>
+      <?php endif; ?>
 
-    <?php if (!empty($search_param['search_studies'])): ?>
-      <li><a href="#studies" role="tab"> <?php print t('Studies') ?>
-          (<?php print !empty($study_total_hits) ? $study_total_hits : 0; ?>)
-        </a>
-      </li>
-    <?php endif; ?>
+      <?php if (!empty($search_param['search_studies'])): ?>
+        <li><a href="#studies" role="tab"> <?php print t('Studies') ?>
+            (<?php print !empty($study_total_hits) ? $study_total_hits : 0; ?>)
+          </a>
+        </li>
+      <?php endif; ?>
 
-    <?php if (!empty($search_param['search_datasets'])): ?>
-      <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
-          (<?php print !empty($dataset_total_hits) ? $dataset_total_hits : 0; ?>)
-        </a>
-      </li>
-    <?php endif; ?>
+      <?php if (!empty($search_param['search_datasets'])): ?>
+        <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
+            (<?php print !empty($dataset_total_hits) ? $dataset_total_hits : 0; ?>)
+          </a>
+        </li>
+      <?php endif; ?>
 
-    <?php if (!empty($search_param['search_variables'])): ?>
-      <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
-          (<?php print !empty($variable_total_hits) ? $variable_total_hits : 0; ?>)
-        </a>
-      </li>
-    <?php endif; ?>
+      <?php if (!empty($search_param['search_variables'])): ?>
+        <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
+            (<?php print !empty($variable_total_hits) ? $variable_total_hits : 0; ?>)
+          </a>
+        </li>
+      <?php endif; ?>
 
-  </ul>
+    </ul>
+  <?php endif; ?>
 
   <!-- Tab panes -->
   <div class="tab-content search-result">
 
     <?php if (!empty($search_param['search_variables'])): ?>
       <div class="tab-pane active" id="variables">
-        <article>
-          <section>
-            <h2 class="pull-left"><?php print t('Variables') ?></h2>
+        <article class="<?php print $border_style?>">
+          <section class="<?php print $border_style . ' ' . $padding_style?>">
+            <div>
+            <?php if ($show_tabs): ?>
+              <h2 class="pull-left"><?php print t('Variables') ?></h2>
+            <?php else: ?>
+              <h3 class="pull-left">
+                <?php print t('Variables') ?>
+                <span style="color: lightgray"><?php print  ' (' . (!empty($variable_total_hits) ? $variable_total_hits : 0) . ')'; ?></span>
+              </h3>
+            <?php endif; ?>
 
             <div class="pull-right lg-top-margin facet-search-form">
               <?php print render($variable_search_form) ?>
@@ -72,6 +95,7 @@
                 }
                 ?>
               </p>
+            </div>
             </div>
             <div class="clearfix"/>
             <?php print $variables_result['data']; ?>
