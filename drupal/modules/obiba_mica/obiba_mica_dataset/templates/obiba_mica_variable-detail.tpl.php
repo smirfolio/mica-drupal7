@@ -230,7 +230,7 @@
           aria-controls="harmo-algo"
           var-id="<?php print $variable_dto->id; ?>">
 
-          <?php print t('Harmonization Algorithms') ?>
+          <?php print t('Show Harmonization Algorithms') ?>
         </button>
         <div id="harmo-algo" class="collapse">
 

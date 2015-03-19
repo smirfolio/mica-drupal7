@@ -31,6 +31,21 @@
         headerTable = data["header"];
       }
 
+      function hideSortIcon() {
+        var thHeaderSort = $(".DTFC_LeftBodyLiner .sorting");
+        var thHeaderSortAsc = $(".DTFC_LeftBodyLiner .sorting_asc");
+        var thHeaderSortDesc = $(".DTFC_LeftBodyLiner .sorting_desc");
+        if (thHeaderSort.length) {
+          thHeaderSort.removeClass("sorting");
+        }
+        if (thHeaderSortAsc.length) {
+          thHeaderSortAsc.removeClass("sorting_asc");
+        }
+        if (thHeaderSortDesc.length) {
+          thHeaderSortDesc.removeClass("sorting_desc");
+        }
+      }
+
       /**********************/
       if (headerTable) {
         $("#download-btn").show();
@@ -66,17 +81,15 @@
           "stateSave": true,
           "language": {
             "url": Drupal.settings.basePath + 'mica/datatable-international'
-          },
-          "initComplete": function (settings, json) {
-            var thHeaderSort = $(".DTFC_LeftBodyLiner .sorting_desc,.DTFC_LeftBodyLiner .sorting,.DTFC_LeftBodyLiner .sorting_asc");
-            thHeaderSort.removeClass("sorting_desc");
-            thHeaderSort.removeClass("sorting_asc");
-            thHeaderSort.removeClass("sorting");
           }
         });
 
         new $.fn.dataTable.FixedColumns(dataTable, {
           leftColumns: 2
+        });
+
+        divTableVariable.on('init.dt', function () {
+          hideSortIcon();
         });
       }
       /*******************************/
