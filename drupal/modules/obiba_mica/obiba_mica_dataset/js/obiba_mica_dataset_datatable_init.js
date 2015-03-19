@@ -7,7 +7,6 @@
   Drupal.behaviors.micaDataset_Datatable_init = {
 
     attach: function (context, settings) {
-
       /***********AjaxTable*******************/
       var divDataTableVar = $('#variables-table');
       var idDataset = divDataTableVar.attr('id-dataset');
@@ -15,7 +14,6 @@
       var headerTable = null;
       /*****************/
 
-      /***************/
       $.ajax({
         'async': false,
         'url': Drupal.settings.basePath + 'mica/variables-tab-header/' + typeDataset,
