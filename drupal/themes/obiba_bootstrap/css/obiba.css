@@ -8579,6 +8579,429 @@ ul.facet-query-list > li:last-child {
   content: "\e000";
 }
 
+@media (max-width: 604px) {
+  /******pages : list network, datasets, studies*****/
+  .main-container {
+    margin: 25px;
+  }
+
+  div.search-count {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  div.search-count span {
+    font-size: 125%;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #777777;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h1 span.t_badge {
+    /* padding-left: 3px; */
+    display: inline-block;
+    height: 60px;
+    width: 60px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50% !important;
+    color: #ffffff;
+    padding-top: 10px;
+    /* padding-left: 3px; */
+    font-size: 40px;
+    margin-right: 10px;
+    height: 30px;
+    width: 30px;
+    padding-top: 5px;
+    font-size: 20px;
+  }
+
+  .block-content article {
+    border: none !important;
+  }
+
+  .block-content article section {
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .region-facets {
+    font-size: 13px;
+    line-height: 15px;
+    padding: 0;
+    margin-right: 20px;
+    /* current search */
+    /* regular facets */
+    /* range facets */
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    margin-right: 0px;
+  }
+
+  .region-facets .block-current-search {
+    padding-bottom: 10px;
+  }
+
+  .region-facets .block-current-search h2 {
+    margin: 5px;
+  }
+
+  .region-facets .block-current-search .block-content {
+    padding-left: 7px;
+  }
+
+  .region-facets .block-current-search h3 {
+    margin: 0;
+    font-size: 13px;
+    line-height: 15px;
+    font-weight: normal;
+    padding-left: 5px;
+    display: inline;
+  }
+
+  .region-facets .block-current-search h4.current-search-group-title {
+    line-height: 15px;
+    margin: 0;
+    padding-left: 5px;
+    font-weight: normal;
+  }
+
+  .region-facets .block-current-search .current-search-group ul {
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+
+  .region-facets .block-current-search .current-search-group ul li {
+    line-height: 15px;
+  }
+
+  .region-facets .block-obiba-mica-search {
+    /************checkbox******/
+  }
+
+  .region-facets .block-obiba-mica-search .selected_item {
+    color: gray;
+  }
+
+  .region-facets .block-obiba-mica-search h2 {
+    font-size: 13px;
+    margin: 0;
+    padding: 5px 10px;
+    background-color: #FAFAFA;
+  }
+
+  .region-facets .block-obiba-mica-search h2 a {
+    padding-left: 15px;
+    color: #2c3e50;
+    display: inline-block;
+    position: relative;
+  }
+
+  .region-facets .block-obiba-mica-search h2 a:before {
+    content: url('../img/expanded.png');
+    position: absolute;
+    margin-left: -15px;
+  }
+
+  .region-facets .block-obiba-mica-search h2 a.collapsed:before {
+    content: url('../img/collapsed.png');
+  }
+
+  .region-facets .block-obiba-mica-search .block-content {
+    padding: 0;
+  }
+
+  .region-facets .block-obiba-mica-search .checkedterms {
+    position: relative;
+  }
+
+  .region-facets .block-obiba-mica-search a.facetapi-limit-link {
+    margin-left: 10px;
+  }
+
+  .region-facets .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links {
+    margin-bottom: 0;
+    margin-left: 10px;
+  }
+
+  .region-facets .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links li {
+    list-style: none;
+  }
+
+  .region-facets .block-obiba-mica-search ul.facetapi-facetapi-checkbox-links li input {
+    margin-right: 5px;
+    margin-top: -2px;
+  }
+
+  .region-facets .block-obiba-mica-search label.terms_checkbox {
+    display: inline;
+    margin-bottom: -3px;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+
+  .region-facets .block-obiba-mica-search .regular-checkbox {
+    display: none;
+  }
+
+  .region-facets .block-obiba-mica-search .regular-checkbox + label.terms_checkbox {
+    background-color: #fafafa;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 6px;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+  }
+
+  .region-facets .block-obiba-mica-search .regular-checkbox + label.terms_checkbox:active,
+  .region-facets .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .region-facets .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox {
+    background-color: #e9ecee;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+    color: #99a1a7;
+  }
+
+  .region-facets .block-obiba-mica-search .regular-checkbox:checked + label.terms_checkbox:after {
+    content: '\2714';
+    font-size: 14px;
+    position: absolute;
+    top: -3px;
+    left: 0px;
+    color: #99a1a7;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content li {
+    margin-bottom: -10px;
+    padding-left: 5px;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content table {
+    border: none;
+    width: 100%;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content td.term-count span,
+  .region-facets .block-obiba-mica-search div.block-content td.term-default span {
+    position: relative;
+    float: right;
+    padding-right: 10px;
+    padding-top: 7px;
+    font-weight: normal;
+    font-family: monospace;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content td.term-count {
+    color: #000000;
+    font-size: 10px;
+    width: 50px;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content td.term-default {
+    color: rgba(0, 0, 0, 0.3);
+    font-size: 10px;
+    width: 50px;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content span.term-field {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    padding-top: 7px;
+    font-weight: normal;
+    cursor: pointer;
+    margin-left: -5px;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content span.term-field i {
+    position: absolute !important;
+    left: 5px;
+    top: 7px;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content div.tilte-term {
+    display: inline-block;
+    position: relative;
+    margin-left: 24px;
+    margin-top: -5px;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content div.stat-container {
+    height: 25px;
+    width: 200px;
+    position: absolute;
+    transition: width 1s;
+    right: 0;
+    background-color: transparent;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content span.terms_stat {
+    max-width: 200px;
+    position: absolute;
+    height: 25px;
+    transition: width 1s;
+    right: 0;
+    background-color: #8aa4be;
+  }
+
+  .region-facets .block-obiba-mica-search div.block-content label.span-checkbox {
+    position: relative;
+    display: block;
+    min-height: 25px;
+    margin-bottom: 0;
+  }
+
+  .region-facets .facet_terms_range {
+    font-weight: normal;
+  }
+
+  .region-facets .facet_terms_range input.form-submit,
+  .region-facets .facet_terms_range .yui3-g,
+  .region-facets .facet_terms_range .range-box {
+    display: inline-block;
+  }
+
+  .region-facets .facet_terms_range .form-item-range-from,
+  .region-facets .facet_terms_range .form-item-range-to {
+    margin: 0;
+  }
+
+  .region-facets .facet_terms_range .yui3-g {
+    margin-bottom: 0;
+    padding-left: 10px;
+  }
+
+  .region-facets .facet_terms_range input[type="text"] {
+    margin: 5px;
+    width: 60px;
+    padding: 2px 3px;
+    font-size: 13px;
+  }
+
+  .region-facets .facet_terms_range label {
+    font-weight: normal;
+    margin-left: 5px;
+    margin-bottom: 0;
+    font-size: 13px;
+  }
+
+  .region-facets .facet_terms_range button {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 5px 10px;
+    font-size: 15px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #ffffff;
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+    padding: 2px 6px;
+    font-size: 13px;
+  }
+
+  .region-facets .facet_terms_range button:focus,
+  .region-facets .facet_terms_range button:active:focus,
+  .region-facets .facet_terms_range button.active:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+  }
+
+  .region-facets .facet_terms_range button:hover,
+  .region-facets .facet_terms_range button:focus {
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .region-facets .facet_terms_range button:active,
+  .region-facets .facet_terms_range button.active {
+    outline: 0;
+    background-image: none;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  }
+
+  .region-facets .facet_terms_range button.disabled,
+  .region-facets .facet_terms_range button[disabled],
+  fieldset[disabled] .region-facets .facet_terms_range button {
+    cursor: not-allowed;
+    pointer-events: none;
+    opacity: 0.65;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .region-facets .facet_terms_range button:hover,
+  .region-facets .facet_terms_range button:focus,
+  .region-facets .facet_terms_range button:active,
+  .region-facets .facet_terms_range button.active,
+  .open > .dropdown-toggle .region-facets .facet_terms_range button {
+    color: #ffffff;
+    background-color: #1a242f;
+    border-color: #161f29;
+  }
+
+  .region-facets .facet_terms_range button:active,
+  .region-facets .facet_terms_range button.active,
+  .open > .dropdown-toggle .region-facets .facet_terms_range button {
+    background-image: none;
+  }
+
+  .region-facets .facet_terms_range button.disabled,
+  .region-facets .facet_terms_range button[disabled],
+  fieldset[disabled] .region-facets .facet_terms_range button,
+  .region-facets .facet_terms_range button.disabled:hover,
+  .region-facets .facet_terms_range button[disabled]:hover,
+  fieldset[disabled] .region-facets .facet_terms_range button:hover,
+  .region-facets .facet_terms_range button.disabled:focus,
+  .region-facets .facet_terms_range button[disabled]:focus,
+  fieldset[disabled] .region-facets .facet_terms_range button:focus,
+  .region-facets .facet_terms_range button.disabled:active,
+  .region-facets .facet_terms_range button[disabled]:active,
+  fieldset[disabled] .region-facets .facet_terms_range button:active,
+  .region-facets .facet_terms_range button.disabled.active,
+  .region-facets .facet_terms_range button[disabled].active,
+  fieldset[disabled] .region-facets .facet_terms_range button.active {
+    background-color: #2c3e50;
+    border-color: #2c3e50;
+  }
+
+  .region-facets .facet_terms_range button .badge {
+    color: #2c3e50;
+    background-color: #ffffff;
+  }
+
+  .region-facets #search-facets .tab-content {
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+  }
+}
+
+@media (min-width: 768px) {
+  .nav-tabs > li > a {
+    padding: 10px 10px;
+  }
+}
+
 @font-face {
   font-family: 'obiba';
   src: url('../fonts/obiba.eot?7u6h79');
@@ -8902,57 +9325,6 @@ table.dataTable {
 
 div.padding-left-15 {
   padding-left: 15px;
-}
-
-@media (max-width: 604px) {
-  /******pages : list network, datasets, studies*****/
-  .main-container {
-    margin: 25px;
-  }
-
-  div.search-count {
-    text-align: center;
-    margin-bottom: 5px;
-  }
-
-  div.search-count span {
-    font-size: 125%;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #777777;
-  }
-
-  h1 {
-    font-size: 30px;
-  }
-
-  h1 span.t_badge {
-    /* padding-left: 3px; */
-    display: inline-block;
-    height: 60px;
-    width: 60px;
-    text-align: center;
-    vertical-align: middle;
-    border-radius: 50% !important;
-    color: #ffffff;
-    padding-top: 10px;
-    /* padding-left: 3px; */
-    font-size: 40px;
-    margin-right: 10px;
-    height: 30px;
-    width: 30px;
-    padding-top: 5px;
-    font-size: 20px;
-  }
-
-  .block-content article {
-    border: none !important;
-  }
-
-  .block-content article section {
-    border: none !important;
-    padding: 0 !important;
-  }
 }
 
 /******Studies list pages***********/
@@ -9329,12 +9701,6 @@ form.autocomplete .dropdown-menu {
 
 .nav-tabs > li > a {
   padding: 10px 15px;
-}
-
-@media (min-width: 768px) {
-  .nav-tabs > li > a {
-    padding: 10px 10px;
-  }
 }
 
 .inline-form > form > div {
