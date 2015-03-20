@@ -7,12 +7,12 @@
   Drupal.behaviors.obiba_mica_facet_search_collapse_block = {
     attach: function (context, settings) {
       if (context === document) {
+        collapseAllFirstTime();
         if (settings.expand_strategy && settings.expand_strategy === 'expand_groups') {
-          collapseAll();
           expandGroups();
-        } else {
-          collapseAllFirstTime();
         }
+
+        updateExpandCollapseIconParent();
         setupDomEventHandlers();
         return;
       }
@@ -32,7 +32,6 @@
         var linkSelector = '.expand-control-link-' + $(this).attr('id');
 
         $(controlSelector).on('shown.bs.collapse', function () {
-          console.log($(this).attr('id'));
           $(linkSelector).html(Drupal.t('Less'));
         });
 
@@ -40,6 +39,16 @@
           $(linkSelector).html(Drupal.t('More'));
         });
       });
+
+      /**
+       * When there is only one taxomomy group and no other facet filters, place the icon inside the group
+       */
+      function updateExpandCollapseIconParent() {
+        if ($('#search-facets .tab-pane.active #collapsible-taxonomy').length === 1
+          && $('#search-facets .tab-pane.active>section>.block-content').length === 0) {
+          $("a#collapsible-taxonomy").parent().append($("#facets-expand-collapse").addClass("pull-right").detach());
+        }
+      }
 
       function setupDomEventHandlers() {
         $('#facets-expand-collapse', context).on('click', function (e) {
