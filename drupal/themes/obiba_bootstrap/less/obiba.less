@@ -5,6 +5,7 @@
 @import "terms_block_facets.less";
 @import "facet_query.less";
 @import "flaticon.less";
+@import "responsive_rules.less";
 
 @font-face {
   font-family: 'obiba';
@@ -335,41 +336,7 @@ div.padding-left-15 {
   padding-left: 15px;
 }
 
-@media (max-width: 604px) {
-  /******pages : list network, datasets, studies*****/
-  .main-container {
-    margin: 25px;
-  }
 
-  div.search-count {
-    text-align: center;
-    margin-bottom: 5px;
-    span {
-      .searchCount();
-    }
-  }
-
-  h1 {
-    span.t_badge {
-      .t_badge();
-      height: 30px;
-      width: 30px;
-      padding-top: 5px;
-      font-size: 20px;
-    }
-    font-size: 30px;
-  }
-
-  .block-content {
-    article {
-      border: none !important;
-      section {
-        border: none !important;
-        padding: 0 !important;
-      }
-    }
-  }
-}
 
 /******Studies list pages***********/
 img.imageThumb {
@@ -672,12 +639,6 @@ form.autocomplete {
 
 .nav-tabs > li > a {
   padding: 10px 15px;
-}
-
-@media (min-width: 768px) {
-  .nav-tabs > li > a {
-    padding: 10px 10px;
-  }
 }
 
 .inline-form > form > div {
