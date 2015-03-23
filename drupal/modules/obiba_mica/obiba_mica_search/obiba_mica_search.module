@@ -586,7 +586,7 @@ function _obiba_mica_search_get_coverage_data() {
   unset($_SESSION['fixed_menu']);
   $_SESSION['fixed_menu'] = array('coverages' => $coverages);
 
-  MicaClient::order_taxonomies($coverages->taxonomies, function($value){
+  MicaClient::order_taxonomies($coverages->taxonomies, function ($value) {
     return $value->taxonomy->name;
   });
 
@@ -601,7 +601,7 @@ function _obiba_mica_search_get_coverage_data() {
 function obiba_mica_search_coverage_download() {
   $content_mime = 'text/csv';
   $content_disposition = 'attachment; filename="classification.csv"';
-  $output = '"(C) 2015 All rights reserved - Maelstrom Research. For more information contact us at info@maelstrom-research.org"' . chr(13);
+  $output = '"' . variable_get_value('mica_copyright_notice') . '"' . chr(13);
 
   $search_resources = new MicaSearchResource();
   $response = $search_resources->download_taxonomies_coverage(drupal_get_query_parameters(), array('group-by' => 'studyIds'));
@@ -1100,19 +1100,21 @@ function _obiba_mica_search_get_sub_header_networks_table() {
   $colspan = 0;
 
   if (!empty($column_networks_param[3])) {
-    $rows_column[3+$colspan] = t('Study');
+    $rows_column[3 + $colspan] = t('Study');
     $colspan++;
   }
 
   if (!empty($column_networks_param[4])) {
-    $rows_column[3+$colspan] = t('Harmonization');
+    $rows_column[3 + $colspan] = t('Harmonization');
     $colspan++;
   }
 
   if ($colspan > 0) {
     $headers[] = array('data' => t('Datasets'), 'colspan' => $colspan);
     // make sure headers and 2nd header have same # of columns
-    if ($colspan == 1) array_pop($rows_column);
+    if ($colspan == 1) {
+      array_pop($rows_column);
+    }
   }
 
   if (!empty($column_networks_param[5])) {
@@ -1263,7 +1265,7 @@ function obiba_mica_search_get_variables_count_from_studies_dto($studies) {
 function _obiba_mica_search_facet_expand_strategy() {
   // count of zero signifies all taxonomies are included
   $taxonomies_count = MicaClient::get_taxonomies_count();
-  return !variable_get_value('studies_facet_search') &&  $taxonomies_count > 0 && $taxonomies_count < 2 ? 'expand_groups' : NULL;
+  return !variable_get_value('studies_facet_search') && $taxonomies_count > 0 && $taxonomies_count < 2 ? 'expand_groups' : NULL;
 }
 
 

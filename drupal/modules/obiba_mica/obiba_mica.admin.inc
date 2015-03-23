@@ -47,6 +47,15 @@ function obiba_mica_admin_settings() {
     '#description' => $info['description'],
   );
 
+  $info = variable_get_info('mica_copyright_notice');
+  $form['server']['mica_copyright_notice'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_copyright_notice'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
   $form['statistics'] = array(
     '#type' => 'fieldset',
     '#title' => t('Statistics settings'),
