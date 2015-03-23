@@ -253,6 +253,12 @@ function _obiba_mica_variable_info_study(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['studies_list_show_trimmed_description_study'] = array(
+    'title' => t('Show trimmed description details study, with \'Read more\' link in list studies page '),
+    'description' => t('If selected the description details study will be displayed in list studies page with a \'Read more\' link'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 
 }
 
