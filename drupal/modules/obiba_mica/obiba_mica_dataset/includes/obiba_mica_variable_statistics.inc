@@ -125,7 +125,7 @@ class VariableStatistics {
       }
     }
 
-    if (!empty($data)) {
+    if (!empty($data) && count($data) > 1) {
       $to_render = obiba_mica_search_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right');
       return render($to_render);
     }
