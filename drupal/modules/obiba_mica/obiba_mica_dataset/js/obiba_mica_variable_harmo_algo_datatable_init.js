@@ -8,11 +8,13 @@
 
     attach: function (context, settings) {
       /**************************/
-
+      var TitleButtonVar = $('#harmo-algo').attr('title-button-var');
       $('#harmo-algo').on('click', function () {
         var idHarmonizationVariable = $(this).attr('var-id');
+
+
         var sectionContainer = $('div#harmo-algo');
-        $(this).text(Drupal.t('Hide Harmonization Algorithms'));
+        $(this).text(Drupal.t('Hide') + ' ' + TitleButtonVar);
         var $btn = $(this).button('loading');
         $('.collapse').collapse();
         $.ajax({
@@ -40,10 +42,12 @@
         $btn.button('reset')
       });
       $('.collapse').on('hidden.bs.collapse', function () {
-        $('#harmo-algo-toggle').text(Drupal.t('Show Harmonization Algorithms'));
+        console.log('Show');
+        $('#harmo-algo-toggle').text(Drupal.t('Show') + ' ' + TitleButtonVar);
       });
       $('.collapse').on('shown.bs.collapse', function () {
-        $('#harmo-algo-toggle').text(Drupal.t('Hide Harmonization Algorithms'));
+        console.log('Hide');
+        $('#harmo-algo-toggle').text(Drupal.t('Hide') + ' ' + TitleButtonVar);
       });
       /***************************/
     }

@@ -223,12 +223,14 @@
 
         <button id="harmo-algo" data-loading-text="<?php print t('Loading...') ?>"
           type="button"
-          class="btn btn-success md-bottom-margin"
+          class="btn btn-success md-bottom-margin margin-top-20"
           data-toggle="collapse"
           data-target="#harmo-algo"
           aria-expanded="true"
           aria-controls="harmo-algo"
-          var-id="<?php print $variable_dto->id; ?>">
+          var-id="<?php print $variable_dto->id; ?>"
+          title-button-var="<?php print t('Harmonization Algorithms'); ?>"
+          >
 
           <?php print t('Show Harmonization Algorithms') ?>
         </button>
