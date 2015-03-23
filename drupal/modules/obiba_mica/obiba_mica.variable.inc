@@ -69,8 +69,8 @@ function obiba_mica_variable_info($options) {
     'default' => '',
   );
   $variable['mica_copyright_notice'] = array(
-    'title' => t('Copy Right Notice'),
-    'description' => t('Text of copy right notice displayed in some section in the site and in downloadable content'),
+    'title' => t('Copyright notice text'),
+    'description' => t('Copyright notice displayed in the site and downloaded documents.'),
     'type' => 'string',
     'default' => '',
   );

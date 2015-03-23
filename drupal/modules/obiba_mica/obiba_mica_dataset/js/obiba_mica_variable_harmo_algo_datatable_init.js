@@ -42,11 +42,11 @@
         $btn.button('reset')
       });
       $('.collapse').on('hidden.bs.collapse', function () {
-        console.log('Show');
+
         $('#harmo-algo-toggle').text(Drupal.t('Show') + ' ' + TitleButtonVar);
       });
       $('.collapse').on('shown.bs.collapse', function () {
-        console.log('Hide');
+
         $('#harmo-algo-toggle').text(Drupal.t('Hide') + ' ' + TitleButtonVar);
       });
       /***************************/
