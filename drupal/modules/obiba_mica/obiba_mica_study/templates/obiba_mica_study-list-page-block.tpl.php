@@ -21,11 +21,16 @@
       <p class="md-top-margin">
         <small>
           <?php
-          print MicaClientAnchorHelper::ellipses(
+          if (variable_get_value('studies_list_show_trimmed_description_study')) {
+            print MicaClientAnchorHelper::ellipses(
             t('Read more'),
             obiba_mica_commons_get_localized_field($study, 'objectives'),
             MicaClientPathProvider::study($study->id)
           );
+          }
+          else {
+            print obiba_mica_commons_get_localized_field($study, 'objectives');
+          }
           ?>
         </small>
       </p>

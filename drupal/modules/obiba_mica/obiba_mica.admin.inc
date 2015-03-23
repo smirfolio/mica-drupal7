@@ -423,6 +423,14 @@ function _obiba_mica_settings_study_form(&$form)
     '#description' => $info['description'],
   );
 
+  $info = variable_get_info('studies_list_show_trimmed_description_study');
+  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_trimmed_description_study'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_trimmed_description_study'),
+    '#description' => $info['description'],
+  );
+
 }
 
 function _obiba_mica_settings_dataset_form(&$form)
