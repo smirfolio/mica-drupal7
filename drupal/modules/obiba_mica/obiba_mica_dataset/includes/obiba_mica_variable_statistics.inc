@@ -398,7 +398,8 @@ class VariableStatistics {
         $row = array(
           array(
             'data' => $category->name . '<p class="help-inline">' . $category_label . '</p>',
-            'title' => $category_label,
+            'data-toggle' => 'tooltip' ,
+            'data-original-title' => $category_label,
           )
         );
         $value = $category_name;
@@ -507,9 +508,9 @@ class VariableStatistics {
     $percent = $subtotal > 0 ? round(($count / $subtotal) * 100, 1) : 0;
     $total_title = t('Percentage over total count');
     if (!empty($title)) {
-      return $count . '<div class="help-inline" title="' . $total_title . '">' . $percent_total . '%</div><div class="help-inline" title="' . t($title) . '"><i>(' . $percent . '%)</i></div>';
+      return $count . '<div class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' . $percent_total . '%</div><div class="help-inline" data-toggle="tooltip" title="" data-original-title="' . t($title) . '"><i>(' . $percent . '%)</i></div>';
     }
-    return $count . '<p class="help-inline" title="' . $total_title . '">' . $percent_total . '%</p>';
+    return $count . '<p class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' . $percent_total . '%</p>';
   }
 
   private function statistics_to_row($aggregation) {

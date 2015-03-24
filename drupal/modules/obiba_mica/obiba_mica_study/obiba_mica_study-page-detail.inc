@@ -154,7 +154,7 @@ function obiba_mica_study_get_timeline_detail($study_detail) {
   drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/d3.min.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/mica-study-timeline.js', 'file');
   $page_render_timeline = '<div id="vis" style="width=100%"></div>';
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/example.js', 'file');
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/obiba-mica-study-timeline.js', 'file');
   drupal_add_js(array('obiba_mica_study' => array('study_json' => $study_json)), 'setting');
 
   return $page_render_timeline;

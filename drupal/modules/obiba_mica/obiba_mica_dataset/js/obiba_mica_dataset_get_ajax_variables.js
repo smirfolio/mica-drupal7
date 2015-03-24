@@ -7,7 +7,7 @@
 
   Drupal.behaviors.obiba_mica_variable = {
     attach: function (context, settings) {
-      GetAjaxTable();
+      if (context === document) getAjaxTable();
       /************************************/
       var alertMEssage = '<div class="alert alert-warning alert-dismissible" role="alert">' +
         '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>' +
@@ -15,7 +15,7 @@
 
 
       /***********************************/
-      function GetAjaxTable() {
+      function getAjaxTable() {
         var message_div_stat_tab = $('#toempty');
         var param_stat_tab = $('#param-statistics');
 
@@ -66,6 +66,8 @@
               else {
                 message_div_stat_chart.empty();
               }
+
+              Drupal.attachBehaviors(param_stat_tab, settings);
             }
           },
           'error': function (data) {

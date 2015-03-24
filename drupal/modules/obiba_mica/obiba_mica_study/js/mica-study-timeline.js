@@ -1,9 +1,11 @@
-/**
- * @file
- * code timeline configuration
- * ! mica-study-timeline - v1.0.0-SNAPSHOT
- *  License: GNU Public License version 3
- *  Date: 2014-06-26
+/*Copyright (c) 2015 OBiBa. All rights reserved.
+ * This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see  <http://www.gnu.org/licenses>
+
+ * mica-study-timeline - v1.0.0-SNAPSHOT
+ * Date: 2015-03-23
  */
 (function () {
 
@@ -12,12 +14,9 @@
   d3.timeline = function () {
     var DISPLAY_TYPES = ["circle", "rect"];
 
-    var hover = function () {
-      },
-      click = function () {
-      },
-      scroll = function () {
-      },
+    var hover = function () {},
+      click = function () {},
+      scroll = function () {},
       orient = "bottom",
       width = null,
       height = null,
@@ -181,16 +180,13 @@
             height = gSize.height + gSize.top - gParentSize.top;
             // set bounding rectangle height
             d3.select(gParent[0][0]).attr("height", height);
-          }
-          else {
+          } else {
             throw "height of the timeline is not set";
           }
-        }
-        else {
+        } else {
           if (!height) {
             height = gParentItem.attr("height");
-          }
-          else {
+          } else {
             gParentItem.attr("height", height);
           }
         }
@@ -199,12 +195,10 @@
       function setWidth() {
         if (!width && !gParentSize.width) {
           throw "width of the timeline is not set";
-        }
-        else if (!(width && gParentSize.width)) {
+        } else if (!(width && gParentSize.width)) {
           if (!width) {
             width = gParentItem.attr("width");
-          }
-          else {
+          } else {
             gParentItem.attr("width", width);
           }
         }
@@ -224,113 +218,85 @@
     }
 
     timeline.margin = function (p) {
-      if (!arguments.length) {
-        return margin;
-      }
+      if (!arguments.length) return margin;
       margin = p;
       return timeline;
     };
 
     timeline.orient = function (orientation) {
-      if (!arguments.length) {
-        return orient;
-      }
+      if (!arguments.length) return orient;
       orient = orientation;
       return timeline;
     };
 
     timeline.itemHeight = function (h) {
-      if (!arguments.length) {
-        return itemHeight;
-      }
+      if (!arguments.length) return itemHeight;
       itemHeight = h;
       return timeline;
     };
 
     timeline.itemMargin = function (h) {
-      if (!arguments.length) {
-        return itemMargin;
-      }
+      if (!arguments.length) return itemMargin;
       itemMargin = h;
       return timeline;
     };
 
     timeline.height = function (h) {
-      if (!arguments.length) {
-        return height;
-      }
+      if (!arguments.length) return height;
       height = h;
       return timeline;
     };
 
     timeline.width = function (w) {
-      if (!arguments.length) {
-        return width;
-      }
+      if (!arguments.length) return width;
       width = w;
       return timeline;
     };
 
     timeline.display = function (displayType) {
-      if (!arguments.length || (DISPLAY_TYPES.indexOf(displayType) == -1)) {
-        return display;
-      }
+      if (!arguments.length || (DISPLAY_TYPES.indexOf(displayType) == -1)) return display;
       display = displayType;
       return timeline;
     };
 
     timeline.tickFormat = function (format) {
-      if (!arguments.length) {
-        return tickFormat;
-      }
+      if (!arguments.length) return tickFormat;
       tickFormat = format;
       return timeline;
     };
 
     timeline.hover = function (hoverFunc) {
-      if (!arguments.length) {
-        return hover;
-      }
+      if (!arguments.length) return hover;
       hover = hoverFunc;
       return timeline;
     };
 
     timeline.click = function (clickFunc) {
-      if (!arguments.length) {
-        return click;
-      }
+      if (!arguments.length) return click;
       click = clickFunc;
       return timeline;
     };
 
     timeline.colors = function (colorFormat) {
-      if (!arguments.length) {
-        return colorCycle;
-      }
+      if (!arguments.length) return colorCycle;
       colorCycle = colorFormat;
       return timeline;
     };
 
     timeline.startYear = function (b) {
-      if (!arguments.length) {
-        return startYear;
-      }
+      if (!arguments.length) return startYear;
       startYear = b;
       return timeline;
     };
 
     timeline.beginning = function (b) {
-      if (!arguments.length) {
-        return beginning;
-      }
+      if (!arguments.length) return beginning;
       beginning = b;
       return timeline;
     };
 
     timeline.ending = function (e) {
-      if (!arguments.length) {
-        return ending;
-      }
+      if (!arguments.length) return ending;
       ending = e;
       return timeline;
     };
@@ -410,9 +376,7 @@
    */
   function parseStudy(studyDto, bounds) {
     var populations = parsePopulations(studyDto, bounds);
-    if (populations.length === 0) {
-      return null;
-    }
+    if (populations.length === 0) return null;
     var timelineData = {start: bounds.start, min: 0, max: bounds.max, data: populations};
     return timelineData;
   }
@@ -423,9 +387,7 @@
    * @param bounds
    */
   function parsePopulations(studyDto, bounds) {
-    if (studyDto === null || !studyDto.hasOwnProperty('populations')) {
-      return;
-    }
+    if (studyDto === null || !studyDto.hasOwnProperty('populations')) return;
 
     var colors = new $.ColorGenerator();
     var populations = [];
@@ -451,7 +413,7 @@
         if (populationDto.hasOwnProperty('dataCollectionEvents') && populationDto.dataCollectionEvents.length > 0) {
           parseEvents(lines, populationData, populationDto.dataCollectionEvents, bounds);
           // use a loop instead of array.concat() in order to add lines to the same populations variable (same instance)
-          $.each(lines, function (i, line) {
+          $.each(lines, function(i,  line) {
             populations.push(line);
           });
         }
@@ -465,9 +427,7 @@
      * @param field
      */
     function setId(obj, dto, field) {
-      if (dto.hasOwnProperty(field)) {
-        obj[field] = dto[field];
-      }
+      if (dto.hasOwnProperty(field)) obj[field] = dto[field];
     }
 
     /**
@@ -477,9 +437,7 @@
      * @param field
      */
     function setTitle(obj, dto, field) {
-      if (dto.hasOwnProperty(field)) {
-        obj.title = dto[field][0].value;
-      }
+      if (dto.hasOwnProperty(field)) obj.title = dto[field][0].value;
     }
 
     /**
@@ -490,16 +448,12 @@
      * @param bounds
      */
     function parseEvents(lines, populationData, dto, bounds) {
-      if (jQuery.isEmptyObject(dto)) {
-        return;
-      }
+      if (jQuery.isEmptyObject(dto)) return;
 
       lines.push(createPopulationItem(populationData, dto[0], bounds));
 
       $.each(dto, function (i, dceDto) {
-        if (i === 0) {
-          return true;
-        } // first line is altreay populated
+        if (i === 0) return true; // first line is altreay populated
         var addLine = true;
         $.each(lines, function (j, line) {
           var last = line.population.events[line.population.events.length - 1];
@@ -634,9 +588,7 @@
       // TODO need a better alternation algorithm
       var color = shadeColor(this.colorPalette[this.index], ((this.rotation % 10) === 0 ? -1 : 1) * (this.rotation) / 70);
       this.index = (this.index + 1) % this.colorPalette.length;
-      if (this.index === 0) {
-        this.rotation++;
-      }
+      if (this.index === 0) this.rotation++;
       return color;
     }
   };
@@ -668,8 +620,9 @@
    * Constructor
    * @constructor
    */
-  $.MicaTimeline = function (dtoParser) {
+  $.MicaTimeline = function (dtoParser, popupIdFormatter) {
     this.parser = dtoParser;
+    this.popupIdFormatter = popupIdFormatter;
   };
 
   /**
@@ -679,11 +632,10 @@
   $.MicaTimeline.prototype = {
 
     create: function (selectee, studyDto) {
-      if (this.parser === null || studyDto === null) {
-        return;
-      }
+      if (this.parser === null || studyDto === null) return;
       var timelineData = this.parser.parse(studyDto);
       var width = $(selectee).width();
+      var that = this;
       var chart = d3.timeline()
         .startYear(timelineData.start)
         .beginning(timelineData.min)
@@ -699,7 +651,10 @@
         .margin({left: 15, right: 15, top: 0, bottom: 20})
         .rotateTicks(timelineData.max > $.MicaTimeline.defaultOptions.maxMonths ? 45 : 0)
         .click(function (d, i, datum) {
-          $('#event-' + d.id).modal();
+          if (that.popupIdFormatter) {
+            var popup = $(that.popupIdFormatter(studyDto, datum.population, d));
+            if (popup.length > 0) popup.modal();
+          }
         });
 
       d3.select(selectee).append("svg").attr("width", width).datum(timelineData.data).call(chart);
@@ -711,15 +666,13 @@
     },
 
     addLegend: function () {
-      if (!this.timelineData.hasOwnProperty('data') || this.timelineData.data.length === 0) {
-        return;
-      }
+      if (!this.timelineData.hasOwnProperty('data') || this.timelineData.data.length === 0) return;
       var ul = $("<ul id='legend' class='timeline-legend'>");
 
       $(this.selectee).after(ul);
 
       var processedPopulations = {};
-      $.each(this.timelineData.data, function (i, item) {
+      $.each(this.timelineData.data, function(i, item) {
         if (!processedPopulations.hasOwnProperty(item.population.title)) {
           processedPopulations[item.population.title] = true;
           var li = $(createLegendRow(item.population.color, item.population.title));
@@ -737,8 +690,8 @@
    * @returns {*|HTMLElement}
    */
   function createLegendRow(color, title) {
-    var rect = "<rect width='20' height='20' x='2' y='2' rx='5' ry='5' style='fill:COLOR;'>".replace(/COLOR/, color);
-    return $("<li><svg width='25' height='25'>" + rect + "</svg>" + title + "</li>");
+    var rect ="<rect width='20' height='20' x='2' y='2' rx='5' ry='5' style='fill:COLOR;'>".replace(/COLOR/, color);
+    return $("<li><svg width='25' height='25'>"+rect+"</svg>"+title+"</li>");
   }
 
   /**
