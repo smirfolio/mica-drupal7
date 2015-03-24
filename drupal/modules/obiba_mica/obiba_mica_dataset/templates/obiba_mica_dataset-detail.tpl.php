@@ -31,7 +31,7 @@
 
 <!-- OVERVIEW -->
 <section>
-  <h3><?php print t('Overview') ?></h3>
+  <h2><?php print t('Overview') ?></h2>
 
   <div class="row">
     <div class="col-lg-6 col-xs-12 lg-right-indent">
@@ -79,7 +79,7 @@
     </div>
     <div class="col-lg-6 col-xs-12">
       <?php if (!empty($dataset_dto->attributes)): ?>
-        <h5><?php print t('Attributes') ?></h5>
+        <h4><?php print t('Attributes') ?></h4>
         <p><?php print obiba_mica_dataset_attributes_tab($dataset_dto->attributes, 'maelstrom'); ?></p>
       <?php endif; ?>
     </div>
@@ -90,15 +90,15 @@
 <!-- STUDIES -->
 <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
   <section>
-    <h3>
-      <?php
+    <h2>
+    <?php
       if (!empty($dataset_type_dto->project)):
         echo t('Studies');
       else:
         echo t('Study');
       endif;
       ?>
-    </h3>
+    </h2>
     <?php if (!empty($dataset_type_dto->project)): ?>
       <div id="studies-table">
         <div class="row">
@@ -201,9 +201,9 @@
 <!-- COVERAGE -->
 <?php if (!empty($coverage)): ?>
   <section>
-    <h3><?php print t('Variable Classification') ?></h3>
+    <h2><?php print t('Variable Classification') ?></h2>
     <?php foreach ($coverage as $taxonomy_coverage): ?>
-      <h4><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h4>
+      <h3><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h3>
       <p class="help-block">
         <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
       </p>
@@ -217,7 +217,7 @@
 <!-- VARIABLES -->
 <?php if ($dataset_type != "study-dataset"): ?>
   <section class="table-variables">
-    <h3><?php print t('Harmonization') ?></h3>
+    <h2><?php print t('Harmonization') ?></h2>
     <?php print render($harmonization_table_legend); ?>
     <div id="download-btn">
       <a href="" class="btn btn-success pull-right"><i
