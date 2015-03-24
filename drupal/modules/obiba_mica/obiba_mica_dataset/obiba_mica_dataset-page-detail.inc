@@ -120,7 +120,10 @@ function obiba_mica_dataset_get_population_dce_modals($studyId, $data, $variable
         $study_dto = $data['study'];
         if (!empty($study_dto->attachments)) {
           foreach ($study_dto->attachments as $attachment) {
-            $themed_attachment .= theme('obiba_mica_study_attachments', array('study_id' => $study_dto->id, 'attachment' => $attachment));
+            $themed_attachment .= theme('obiba_mica_study_attachments', array(
+              'study_id' => $study_dto->id,
+              'attachment' => $attachment
+            ));
           }
         }
         $dce_variables_nbr[obiba_mica_commons_get_localized_field($dce, 'name')] = $variables_dataset->total;
@@ -540,7 +543,8 @@ function obiba_mica_dataset_page_detail_download($dataset_id) {
     drupal_add_http_header('Content-Type', $headers['Content-Type'][0] . '; utf-8');
     drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
     ob_clean();
-    $csv_response = '"' . variable_get_value('mica_copyright_notice') . '"' . chr(13);
+    $copyright_notice = variable_get_value('mica_copyright_notice');
+    $csv_response = !empty($copyright_notice) ? '"' . $copyright_notice . '"' . chr(13) : '';
     $csv_response .= $response->body;
     print $csv_response;
     exit;
