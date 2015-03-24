@@ -328,6 +328,9 @@ function _obiba_mica_search_create_aggs_dictionary($aggregations, $filter_callba
 
       if (!empty($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'})) {
         foreach ($aggregation->{'obiba.mica.TermsAggregationResultDto.terms'} as $term) {
+          if (empty($term->title)) {
+            $term->title = $term->key;
+          }
           $dictionary[sprintf("$type:%s:%s", $aggregation->aggregation, $term->key)] = $term->title;
         }
       }
