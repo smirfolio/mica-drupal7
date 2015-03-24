@@ -154,7 +154,6 @@ function obiba_mica_study_study_summaries_table_rows($study_summaries) {
 
 function obiba_mica_study_study_summaries_table_row($study_summary) {
   $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
-
   return array(
     l(obiba_mica_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id),
     $name,
