@@ -601,7 +601,6 @@ function _obiba_mica_search_get_coverage_data() {
 function obiba_mica_search_coverage_download() {
   $content_mime = 'text/csv';
   $content_disposition = 'attachment; filename="classification.csv"';
-  $output = '"' . variable_get_value('mica_copyright_notice') . '"' . chr(13);
 
   $search_resources = new MicaSearchResource();
   $response = $search_resources->download_taxonomies_coverage(drupal_get_query_parameters(), array('group-by' => 'studyIds'));
@@ -610,6 +609,8 @@ function obiba_mica_search_coverage_download() {
     $headers = $search_resources->getLastResponseHeaders();
     $content_mime = $headers['Content-Type'][0];
     $content_disposition = $headers['Content-Disposition'][0];
+    $copyright_notice = variable_get_value('mica_copyright_notice');
+    $output = !empty($copyright_notice) ? '"' . $copyright_notice . '"' . chr(13) : '';
     $output .= $response->body;
   }
 
