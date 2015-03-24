@@ -10,12 +10,10 @@
       if (context === document) getAjaxTable();
 
       function getAjaxTable() {
-        /***********AjaxTable*******************/
         var divDataTableVar = $('#variables-table');
         var idDataset = divDataTableVar.attr('id-dataset');
         var typeDataset = divDataTableVar.attr('type-dataset');
         var headerTable = null;
-        /*****************/
 
         $.ajax({
           'async': false,
@@ -49,7 +47,6 @@
           }
         }
 
-        /**********************/
         if (headerTable) {
           $("#download-btn").show();
           var divTableVariable = $('#table-variables');
@@ -82,6 +79,13 @@
             "ordering": true,
             "iDisplayLength": 25,
             "stateSave": true,
+            "fnInitComplete": function () {
+              $('span', this.fnGetNodes() ).tooltip( {
+                "delay": 0,
+                "track": true,
+                "fade": 250
+              } );
+            },
             "language": {
               "url": Drupal.settings.basePath + 'mica/datatable-international'
             }
@@ -94,9 +98,7 @@
           divTableVariable.on('init.dt', function () {
             hideSortIcon();
           });
-
         }
-        /*******************************/
       }
     }
 

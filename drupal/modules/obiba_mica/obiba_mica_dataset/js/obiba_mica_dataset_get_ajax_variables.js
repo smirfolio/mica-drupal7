@@ -8,14 +8,12 @@
   Drupal.behaviors.obiba_mica_variable = {
     attach: function (context, settings) {
       if (context === document) getAjaxTable();
-      /************************************/
-      var alertMEssage = '<div class="alert alert-warning alert-dismissible" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>' +
-        '<span class="sr-only">Close</span></button> ' + Drupal.t('Unable to retrieve statistics...') + '</div>';
 
-
-      /***********************************/
       function getAjaxTable() {
+        var alertMEssage = '<div class="alert alert-warning alert-dismissible" role="alert">' +
+          '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span>' +
+          '<span class="sr-only">Close</span></button> ' + Drupal.t('Unable to retrieve statistics...') + '</div>';
+
         var message_div_stat_tab = $('#toempty');
         var param_stat_tab = $('#param-statistics');
 

@@ -5,7 +5,7 @@
  * along with this program.  If not, see  <http://www.gnu.org/licenses>
 
  * mica-study-timeline - v1.0.0-SNAPSHOT
- * Date: 2015-03-23
+ * Date: 2015-03-24
  */
 (function () {
 
@@ -20,10 +20,12 @@
       orient = "bottom",
       width = null,
       height = null,
-      tickFormat = { format: d3.format("d"),
+      tickFormat = {
+        format: d3.format("d"),
         tickTime: 1,
         tickNumber: 1,
-        tickSize: 10 },
+        tickSize: 10
+      },
       colorCycle = d3.scale.category20(),
       display = "rect",
       startYear = 0,
@@ -113,6 +115,7 @@
           var hasLabel = (typeof(datum.label) != "undefined");
           g.selectAll("svg").data(data).enter()
             .append("path")
+            .attr('id', 'line-path')
             .attr("d", function drawRect(d, i) {
               var rectX = getXPos(d, i);
               var rectY = getStackPosition(d, i);
@@ -620,9 +623,10 @@
    * Constructor
    * @constructor
    */
-  $.MicaTimeline = function (dtoParser, popupIdFormatter) {
+  $.MicaTimeline = function (dtoParser, popupIdFormatter, useBootstrapTooltip) {
     this.parser = dtoParser;
     this.popupIdFormatter = popupIdFormatter;
+    this.useBootstrapTooltip = useBootstrapTooltip;
   };
 
   /**
@@ -658,6 +662,16 @@
         });
 
       d3.select(selectee).append("svg").attr("width", width).datum(timelineData.data).call(chart);
+
+      if (this.useBootstrapTooltip === true) {
+        d3.select(selectee).selectAll('#line-path')
+          .attr('data-placement', 'top')
+          .attr('data-toggle', 'tooltip')
+          .attr('data-original-title', function(d){
+            return d.title;
+          })
+          .selectAll('title').remove(); // remove default tooltip
+      }
 
       this.timelineData = timelineData;
       this.selectee = selectee;

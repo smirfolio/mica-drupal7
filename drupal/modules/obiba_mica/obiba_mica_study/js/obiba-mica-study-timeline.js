@@ -8,7 +8,11 @@
     attach: function (context, settings) {
       if (context === document) {
         if (Drupal.settings.obiba_mica_study.study_json) {
-          new $.MicaTimeline(new $.StudyDtoParser(), timelinePopupIdFormatter).create("#vis", JSON.parse(Drupal.settings.obiba_mica_study.study_json)).addLegend();
+          new $.MicaTimeline(
+            new $.StudyDtoParser(),
+            timelinePopupIdFormatter,
+            true
+          ).create("#vis", JSON.parse(Drupal.settings.obiba_mica_study.study_json)).addLegend();
         }
       }
 
