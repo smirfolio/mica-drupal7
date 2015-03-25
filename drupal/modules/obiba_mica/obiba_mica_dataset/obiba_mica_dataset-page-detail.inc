@@ -544,7 +544,7 @@ function obiba_mica_dataset_page_detail_download($dataset_id) {
     drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
     ob_clean();
     $copyright_notice = variable_get_value('mica_copyright_notice');
-    $csv_response = !empty($copyright_notice) ? '"' . $copyright_notice . '"' . chr(13) : '';
+    $csv_response = !empty($copyright_notice) ? '"' . t($copyright_notice) . '"' . chr(13) : '';
     $csv_response .= $response->body;
     print $csv_response;
     exit;

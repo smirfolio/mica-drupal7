@@ -10,9 +10,7 @@
 
       if (jQuery.isEmptyObject(activeTabCookie)) {
         $(".facets-tab>li").each(function (id, state) {
-          console.log($(this).attr('class'));
           if ($(this).attr('class') == 'active') {
-            console.log($(this).find('a').attr('href'));
             activeTabCookie['active'] = $(this).find('a').attr('href');
           }
         });
@@ -35,7 +33,7 @@
         e.preventDefault();
         var targetPanel = e.target.hash.replace('#', '');
         var current_page = $.getCookieDataTabs('page_' + targetPanel) ? 'page=' + $.getCookieDataTabs('page_' + targetPanel) : '';
-        window.location.hash = '!' + ['type=' + targetPanel, $.urlParamToAdd(), current_page].filter(function(x) {return x;}).join('&');
+        window.location.hash = '!' + ['type=' + targetPanel, $.urlParamToAdd(), current_page].filter(function (x) {return x;}).join('&');
       });
 
       function setActiveTab(type) {

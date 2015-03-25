@@ -154,11 +154,10 @@ function obiba_mica_study_study_summaries_table_rows($study_summaries) {
 
 function obiba_mica_study_study_summaries_table_row($study_summary) {
   $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
-
   return array(
     l(obiba_mica_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id),
     $name,
-    implode(', ', t(obiba_mica_commons_clean_string($study_summary->designs))),
+    implode(', ', obiba_mica_commons_clean_string($study_summary->designs)),
     isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
       isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
     obiba_mica_commons_countries($study_summary->countries),

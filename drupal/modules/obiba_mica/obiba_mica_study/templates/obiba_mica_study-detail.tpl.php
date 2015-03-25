@@ -170,7 +170,7 @@
           <ul class="list-unstyled">
             <?php foreach ($study_dto->methods->designs as $design): ?>
               <li>
-                <?php print t(obiba_mica_commons_clean_string($design)); ?>
+                <?php print obiba_mica_commons_clean_string($design); ?>
                 <?php if ($design == 'other'): ?>
                   : <?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherDesign'); ?>
                 <?php endif; ?>
@@ -196,7 +196,7 @@
           <ul class="list-unstyled">
             <?php foreach ($study_dto->methods->recruitments as $recruitment): ?>
               <li>
-                <?php print t(obiba_mica_commons_clean_string($recruitment)) ?>
+                <?php print obiba_mica_commons_clean_string($recruitment) ?>
                 <?php if ($recruitment == 'other'): ?>
                   : <?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherRecruitment'); ?>
                 <?php endif; ?>

@@ -181,7 +181,7 @@ function obiba_mica_commons_clean_string($str) {
   if (is_array($str)) {
     $nstr = array();
     foreach ($str as $k => $v) {
-      $nstr[$k] = obiba_mica_commons_clean_string($v);
+      $nstr[$k] = t(obiba_mica_commons_clean_string($v));
     }
     return $nstr;
   }

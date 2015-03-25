@@ -487,11 +487,17 @@
       function populateFacetTabs(facetsHtml) {
         var sections = $('#collapse-block-obiba-mica-search-facet-search').find('section');
         var temp = $('<div></div>').html(facetsHtml);
-
+        $.each($('div.panel-title>a', temp), function (i, anchor) {
+          var newText = $('span', anchor).text();
+          $('a[href="' + $(anchor).attr('href') + '"]', document).find('span').text(newText);
+        });
         if (sections.length) {  //This is a workaround to avoid blinking collapsed section
           sections.each(function () {
             $(this).find('.checkedterms').html('');
+            var termsBlockTitles = $(this).find('.block-titles');
             var termsBlock = $(this).find('.block-content');
+
+            $(termsBlockTitles[0]).html(temp.find('#' + $(this).attr('id') + ' .block-titles').html());
             $(termsBlock[0]).html(temp.find('#' + $(this).attr('id') + ' .block-content').html());
           });
         } else { //first page load does not have facet sections
@@ -506,9 +512,8 @@
 
       function loadSearchResult(url) {
         $('#block-system-main').fadeTo(300, 0.5);
-
         $.ajax({
-          url: '?' + url.replace(/^!/, ''),
+          url: '?' + url.replace(/^!/, '') + '&' + event.timeStamp,
           success: function (data) {
             $('#block-system-main>.block-content').html(data.searchResult);
             populateFacetTabs(data.facets);

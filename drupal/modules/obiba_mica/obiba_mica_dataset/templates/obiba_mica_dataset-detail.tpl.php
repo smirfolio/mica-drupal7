@@ -165,7 +165,7 @@
           <tr>
             <th><?php print t('Study Design') ?></th>
             <td>
-              <?php print implode(', ', t(obiba_mica_commons_clean_string($dataset_type_dto->studyTable->studySummary->designs))); ?>
+              <?php print implode(', ', obiba_mica_commons_clean_string($dataset_type_dto->studyTable->studySummary->designs)); ?>
             </td>
           </tr>
           <tr>
