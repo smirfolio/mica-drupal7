@@ -613,7 +613,7 @@ function obiba_mica_search_coverage_download() {
     $content_mime = $headers['Content-Type'][0];
     $content_disposition = $headers['Content-Disposition'][0];
     $copyright_notice = variable_get_value('mica_copyright_notice');
-    $output = !empty($copyright_notice) ? '"' . $copyright_notice . '"' . chr(13) : '';
+    $output = !empty($copyright_notice) ? '"' . t($copyright_notice) . '"' . chr(13) : '';
     $output .= $response->body;
   }
 
@@ -851,7 +851,7 @@ function obiba_mica_search_studies_table($studies) {
       $column_row[] = $name;
       $study_column_design = variable_get_value('studies_column_design');
       if (!empty($study_column_design)) {
-        $column_row[] = implode(', ', t(obiba_mica_commons_clean_string($study->designs)));
+        $column_row[] = implode(', ', obiba_mica_commons_clean_string($study->designs));
       }
 
       $study_column_quest = variable_get_value('studies_column_questionnaire');

@@ -60,7 +60,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                   <ul>
                     <?php foreach ($dce->dataSources as $dataSource): ?>
                       <li>
-                        <?php print t(obiba_mica_commons_clean_string($dataSource)); ?>
+                        <?php print obiba_mica_commons_clean_string($dataSource); ?>
                       </li>
                     <?php endforeach; ?>
                     <?php if (!empty($dce->otherDataSources)): ?>
@@ -80,7 +80,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                   <ul>
                     <?php foreach ($dce->administrativeDatabases as $database): ?>
                       <li>
-                        <?php print t(obiba_mica_commons_clean_string($database)); ?>
+                        <?php print obiba_mica_commons_clean_string($database); ?>
                       </li>
                     <?php endforeach; ?>
                   </ul>
@@ -95,7 +95,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                   <ul>
                     <?php foreach ($dce->bioSamples as $samples): ?>
                       <li>
-                        <?php print t(obiba_mica_commons_clean_string($samples)); ?>
+                        <?php print obiba_mica_commons_clean_string($samples); ?>
                       </li>
                     <?php endforeach; ?>
                     <?php if (!empty($dce->otherBioSamples)): ?>
