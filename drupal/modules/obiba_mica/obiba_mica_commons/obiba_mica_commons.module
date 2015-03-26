@@ -186,7 +186,7 @@ function obiba_mica_commons_clean_string($str) {
     return $nstr;
   }
 
-  return ucwords(str_replace('_', ' ', $str));
+  return t(ucwords(str_replace('_', ' ', $str)));
 }
 
 /**
@@ -248,7 +248,7 @@ function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters
         try {
           $user_func = call_user_func_array($callback, array($field, $parameters));
           if (!empty($user_func->{$method})) {
-            print $user_func->{$method};
+            print t($user_func->{$method});
           }
           else {
             print $field;
@@ -266,7 +266,7 @@ function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters
 
     }
     else {
-      print t(obiba_mica_commons_clean_string($field));
+      print obiba_mica_commons_clean_string($field);
     }
     if ($i + 1 < $total_item) {
       print ', ';
