@@ -485,12 +485,23 @@
       }
 
       function populateFacetTabs(facetsHtml) {
-        var sections = $('#collapse-block-obiba-mica-search-facet-search').find('section');
+        var sections = $('#search-facets').find('section');
         var temp = $('<div></div>').html(facetsHtml);
+
+        $('#search-facets').addClass('hide');
         $.each($('div.panel-title>a', temp), function (i, anchor) {
           var newText = $('span', anchor).text();
           $('a[href="' + $(anchor).attr('href') + '"]', document).find('span').text(newText);
         });
+
+        if (!Drupal.settings.ShowStudiesFacets) {
+          // Removme study related facet TAB and content
+          $('#study-facet').remove();
+          $('li>a[href="#study-facet"]').remove();
+          $('li>a[href="#variable-facet"]').remove();
+          $('#variable-facet').addClass('active');
+        }
+
         if (sections.length) {  //This is a workaround to avoid blinking collapsed section
           sections.each(function () {
             $(this).find('.checkedterms').html('');
@@ -501,13 +512,19 @@
             $(termsBlock[0]).html(temp.find('#' + $(this).attr('id') + ' .block-content').html());
           });
         } else { //first page load does not have facet sections
-          $('#collapse-block-obiba-mica-search-facet-search')
+          $('#search-facets')
             .find('#variable-facet')
             .html(temp.find('#variable-facet').html());
-          $('#collapse-block-obiba-mica-search-facet-search')
-            .find('#study-facet')
-            .html(temp.find('#study-facet').html());
+
+          if (Drupal.settings.ShowStudiesFacets) {
+            // add study related facet TAB and content
+            $('#search-facets')
+              .find('#study-facet')
+              .html(temp.find('#study-facet').html());
+          }
         }
+
+        $('#search-facets').removeClass('hide');
       }
 
       function loadSearchResult(url) {
@@ -517,7 +534,7 @@
           success: function (data) {
             $('#block-system-main>.block-content').html(data.searchResult);
             populateFacetTabs(data.facets);
-            Drupal.attachBehaviors($('.main-container')[0], settings);
+            Drupal.attachBehaviors($('div.main-container.container')[0], settings);
             $('html, body').animate({scrollTop: 0}, 'fast');
           },
           complete : function () {
