@@ -14,9 +14,9 @@
   </div>
   <div class="col-md-10  col-sm-12 col-xs-12">
     <div>
-      <h4>
-        <?php print MicaClientAnchorHelper::study_list_item($study); ?>
-      </h4>
+      <h3>
+      <?php print MicaClientAnchorHelper::study_list_item($study); ?>
+      </h3>
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>

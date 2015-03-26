@@ -223,6 +223,12 @@ function _obiba_mica_variable_info_studies(&$variable) {
 }
 
 function _obiba_mica_variable_info_study(&$variable) {
+  $variable['study_title_acronym_display'] = array(
+    'title' => t('Show acronym/title study order display'),
+    'description' => t('Select the order of acronym,  title that will be displayed in the title study page'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
   $variable['study_show_networks'] = array(
     'title' => t('Show networks'),
     'description' => t('If selected the Networks section will be displayed'),

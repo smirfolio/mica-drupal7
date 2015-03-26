@@ -378,6 +378,15 @@ function _obiba_mica_settings_study_form(&$form)
     '#collapsible' => FALSE,
   );
 
+  $info = variable_get_info('study_title_acronym_display');
+  $form['content_display_settings']['study_form']['study_details']['study_title_acronym_display'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_title_acronym_display'),
+    '#options' => array(0 => t('Study Title - Acronym'), 1 => t('Acronym - Study Title')),
+    '#description' => $info['description'],
+  );
+
   $info = variable_get_info('study_show_networks');
   $form['content_display_settings']['study_form']['study_details']['study_show_networks'] = array(
     '#type' => 'checkbox',
