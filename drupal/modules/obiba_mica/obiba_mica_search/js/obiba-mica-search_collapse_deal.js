@@ -7,38 +7,17 @@
   Drupal.behaviors.obiba_mica_facet_search_collapse_block = {
     attach: function (context, settings) {
       if (context === document) {
+        updateUI();
+        updateExpandCollapseIconParent();
+        setupDomEventHandlers();
+      }
+
+      function updateUI() {
         collapseAllFirstTime();
         if (settings.expand_strategy && settings.expand_strategy === 'expand_groups') {
           expandGroups();
         }
-
-        updateExpandCollapseIconParent();
-        setupDomEventHandlers();
-        return;
       }
-
-      /********** Show more show less on search page********/
-      $('.charts', context).on('shown.bs.collapse', function () {
-        $('.text-button-field').html(Drupal.t('Show less'));
-      });
-
-      $('.charts', context).on('hidden.bs.collapse', function () {
-        $('.text-button-field').html(Drupal.t('Show all'));
-      });
-
-      /********* More/Less in search block ********/
-      $(".expand-control").each(function () {
-        var controlSelector = '.expand-control-div-' + $(this).attr('id');
-        var linkSelector = '.expand-control-link-' + $(this).attr('id');
-
-        $(controlSelector).on('shown.bs.collapse', function () {
-          $(linkSelector).html(Drupal.t('Less'));
-        });
-
-        $(controlSelector).on('hidden.bs.collapse', function () {
-          $(linkSelector).html(Drupal.t('More'));
-        });
-      });
 
       /**
        * When there is only one taxomomy group and no other facet filters, place the icon inside the group
@@ -71,6 +50,29 @@
         $('.block', context).on('hidden.bs.collapse', function () {
           updateExpandCollapseIcon();
         });
+
+        /********** Show more show less on search page********/
+        $('.charts', context).on('shown.bs.collapse', function () {
+          $('.text-button-field').html(Drupal.t('Show less'));
+        });
+
+        $('.charts', context).on('hidden.bs.collapse', function () {
+          $('.text-button-field').html(Drupal.t('Show all'));
+        });
+
+        /********* More/Less in search block ********/
+        $(".expand-control").each(function () {
+          var controlSelector = '.expand-control-div-' + $(this).attr('id');
+          var linkSelector = '.expand-control-link-' + $(this).attr('id');
+
+          $(controlSelector).on('shown.bs.collapse', function () {
+            $(linkSelector).html(Drupal.t('Less'));
+          });
+
+          $(controlSelector).on('hidden.bs.collapse', function () {
+            $(linkSelector).html(Drupal.t('More'));
+          });
+        });
       }
 
       function updateExpandCollapseIcon(firsttime) {
@@ -92,7 +94,6 @@
       }
 
       function expandAll() {
-        expandGroups();
 
         $(".block-content").each(function (id, state) {
           var current_id = this.id;
@@ -101,6 +102,7 @@
           removeCollapsedIcon(current_id, "collapsed");
         });
 
+        expandGroups();
         updateExpandCollapseIcon();
       }
 
@@ -113,8 +115,6 @@
       }
 
       function collapseAllInternal(firstTime) {
-        collapseGroups();
-
         $(".block-content").each(function (id, state) {
           var current_id = this.id;
 
@@ -131,6 +131,7 @@
           addCollapsedIcon(current_id, 'collapsed');
         });
 
+        collapseGroups();
         updateExpandCollapseIcon(firstTime);
       }
 
