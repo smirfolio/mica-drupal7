@@ -363,7 +363,12 @@ class MicaClientAnchorHelper {
   static function list_item($dto, $url) {
     $acronym = obiba_mica_commons_get_localized_field($dto, 'acronym');
     $name = obiba_mica_commons_get_localized_field($dto, 'name');
-    return l($acronym == $name ? $acronym : $acronym . '  -  ' . $name, $url);
+    $title_order_option = variable_get_value('study_title_acronym_display');
+    if (!empty($title_order_option)) {
+      return l($acronym == $name ? $acronym : $acronym . '  -  ' . $name, $url);
+    }
+    return l($acronym == $name ? $acronym : $name . '  -  ' . $acronym, $url);
+
   }
 
   static function ajax_friendly_anchor($url, $text, array $attributes, array $query_params) {
