@@ -73,8 +73,8 @@ function obiba_mica_variable_page_detail($variable_id) {
   ));
 }
 
-function obiba_mica_dataset_get_variable_algorithm($variable_id) {
-  $algos = array();
+function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variable_names) {
+  $sorted_variables = json_decode($sorted_variable_names, true);
   $variable_resource = new MicaDatasetResource();
   $harmonization_variables = $variable_resource->get_variable_harmonizations($variable_id);
   foreach ($harmonization_variables->datasetVariableSummaries as $harmonization_variable) {
@@ -90,17 +90,21 @@ function obiba_mica_dataset_get_variable_algorithm($variable_id) {
       'Mlstr_harmo'
     ));
     if (!empty($algorithm)) {
-      $algos[$variable_title] =
-        array(
+      if (array_key_exists($variable_title, $sorted_variables)) {
+        $sorted_variables[$variable_title] = array(
           'var_id' => $variable_resolver->id,
           'var_detail' => obiba_mica_commons_markdown($algorithm)
-        )//
-      ;
+        );
+      }
     }
   }
-  $themed_algo['algo'] = theme('obiba_mica_variable_harmonization_algorithm', array('variable_harmonization_algorithms' => $algos));
+
+  $themed_algo['algo'] = theme(
+    'obiba_mica_variable_harmonization_algorithm',
+    array('variable_harmonization_algorithms' => $sorted_variables)
+  );
+
   drupal_json_output($themed_algo);
-  // return  $themed_algo['algo'];
 }
 
 function _obiba_mica_dataset_remove_harmonization_taxonomy($variable) {
@@ -197,8 +201,10 @@ function obiba_mica_variable_get_harmonization_table_rows($variable) {
       $study_summary = _obiba_mica_variable_study_summary($variable, $study_id);
       $study_acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
       $variable_title = $variable->name . ' -- ' . $study_acronym;
+      $variable_title_key = $variable->name . ' -- ' . $study_id;
       if (!empty($variable_harmonization->studyTable->name)) {
         $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
+        $variable_title_key .= ' (' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
       }
 
       $status = trim(strtolower(_obiba_mica_variable_attributes_detail($variable_harmonization, 'status', array(
@@ -243,7 +249,9 @@ function obiba_mica_variable_get_harmonization_table_rows($variable) {
             'maelstrom',
             'Mlstr_harmo'
           )), t('comment'), 200, FALSE),
+        $variable_title_key
       );
+
     }
   }
 
