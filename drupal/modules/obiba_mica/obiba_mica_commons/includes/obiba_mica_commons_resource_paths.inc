@@ -79,7 +79,7 @@ class MicaClientAnchorHelper {
 
   static function study($study) {
     $name = obiba_mica_commons_get_localized_field($study, 'name');
-    return l( $name, MicaClientPathProvider::study($study->id), array());
+    return l($name, MicaClientPathProvider::study($study->id), array());
   }
 
   static function study_population_modal($population) {
@@ -156,7 +156,7 @@ class MicaClientAnchorHelper {
 
   static function network($network) {
     $name = obiba_mica_commons_get_localized_field($network, 'name');
-    return l( $name, MicaClientPathProvider::network($network->id), array());
+    return l($name, MicaClientPathProvider::network($network->id), array());
   }
 
   static function study_networks($text, $study_id) {
@@ -365,7 +365,13 @@ class MicaClientAnchorHelper {
     $name = obiba_mica_commons_get_localized_field($dto, 'name');
     $title_order_option = variable_get_value('study_title_acronym_display');
     if (!empty($title_order_option)) {
-      return l($acronym == $name ? $acronym : $acronym . '  -  ' . $name, $url);
+      if ($title_order_option == 1) {
+        return l($acronym == $name ? $acronym : $acronym . '  -  ' . $name, $url);
+      }
+      if ($title_order_option == 2) {
+        return l($name, $url);
+      }
+
     }
     return l($acronym == $name ? $acronym : $name . '  -  ' . $acronym, $url);
 
@@ -379,9 +385,13 @@ class MicaClientAnchorHelper {
       $attributes['class'] = self::format_class_as_array($attributes['class']);
     }
 
-    if (!empty($attributes)) $options['attributes'] = $attributes;
+    if (!empty($attributes)) {
+      $options['attributes'] = $attributes;
+    }
     if (!empty($query_params)) {
-      if (empty($query_params['query'])) unset($query_params['query']);
+      if (empty($query_params['query'])) {
+        unset($query_params['query']);
+      }
       $options['fragment'] = '!' . http_build_query($query_params);
     }
 

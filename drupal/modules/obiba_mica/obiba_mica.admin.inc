@@ -383,7 +383,7 @@ function _obiba_mica_settings_study_form(&$form)
     '#type' => 'radios',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('study_title_acronym_display'),
-    '#options' => array(0 => t('Study Title - Acronym'), 1 => t('Acronym - Study Title')),
+    '#options' => array(0 => t('Study Title - Acronym'), 1 => t('Acronym - Study Title'), 2 => t('Study Title only')),
     '#description' => $info['description'],
   );
 

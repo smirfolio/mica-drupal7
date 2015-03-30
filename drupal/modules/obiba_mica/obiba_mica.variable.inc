@@ -346,13 +346,13 @@ function _obiba_mica_variable_info_datasets(&$variable) {
     'title' => t('Datasets search label'),
     'description' => t('Text to be displayed in links to dataset search.'),
     'type' => 'string',
-    'default' => 'Search Datasets',
+    'default' => t('Search Datasets'),
   );
   $variable['datasets_empty_label'] = array(
     'title' => t('No dataset label'),
     'description' => t('Text to be displayed when no dataset is found.'),
     'type' => 'string',
-    'default' => 'No dataset found',
+    'default' => t('No dataset found'),
   );
   $variable['search_datasets_autocomplete'] = array(
     'title' => t('Show dataset auto-complete search filter'),
@@ -385,18 +385,18 @@ function _obiba_mica_variable_info_variables(&$variable) {
     'title' => t('Variable classification label'),
     'description' => t('Text to be displayed in links to variable classification.'),
     'type' => 'string',
-    'default' => 'Variable Classification',
+    'default' => t('Variable Classification'),
   );
   $variable['variables_search_label'] = array(
     'title' => t('Variables search label'),
     'description' => t('Text to be displayed in links to variable search.'),
     'type' => 'string',
-    'default' => 'Search Variables',
+    'default' => t('Search Variables'),
   );
   $variable['variables_empty_label'] = array(
     'title' => t('No variable label'),
     'description' => t('Text to be displayed when no variable is found.'),
     'type' => 'string',
-    'default' => 'No variable found',
+    'default' => t('No variable found'),
   );
 }
