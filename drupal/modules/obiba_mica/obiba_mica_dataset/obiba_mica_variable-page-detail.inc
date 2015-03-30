@@ -14,7 +14,7 @@ function obiba_mica_variable_page_detail($variable_id) {
     '/modules/charts_' . $library_chart .
     '/charts_' . $library_chart . '.js', 'file');
   if ($library_chart == 'google') {
-    drupal_add_js('http://www.google.com/jsapi', 'file');
+    drupal_add_js('//www.google.com/jsapi', 'file');
   }
 
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_variable_harmo_algo_datatable_init.js', 'file');
