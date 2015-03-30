@@ -73,8 +73,8 @@ function obiba_mica_variable_page_detail($variable_id) {
   ));
 }
 
-function obiba_mica_dataset_get_variable_algorithm($variable_id) {
-  $algos = array();
+function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variable_names) {
+  $sorted_variables = json_decode($sorted_variable_names, true);
   $variable_resource = new MicaDatasetResource();
   $harmonization_variables = $variable_resource->get_variable_harmonizations($variable_id);
   foreach ($harmonization_variables->datasetVariableSummaries as $harmonization_variable) {
@@ -90,17 +90,21 @@ function obiba_mica_dataset_get_variable_algorithm($variable_id) {
       'Mlstr_harmo'
     ));
     if (!empty($algorithm)) {
-      $algos[$variable_title] =
-        array(
+      if (array_key_exists($variable_title, $sorted_variables)) {
+        $sorted_variables[$variable_title] = array(
           'var_id' => $variable_resolver->id,
           'var_detail' => obiba_mica_commons_markdown($algorithm)
-        )//
-      ;
+        );
+      }
     }
   }
-  $themed_algo['algo'] = theme('obiba_mica_variable_harmonization_algorithm', array('variable_harmonization_algorithms' => $algos));
+
+  $themed_algo['algo'] = theme(
+    'obiba_mica_variable_harmonization_algorithm',
+    array('variable_harmonization_algorithms' => $sorted_variables)
+  );
+
   drupal_json_output($themed_algo);
-  // return  $themed_algo['algo'];
 }
 
 function _obiba_mica_dataset_remove_harmonization_taxonomy($variable) {
@@ -160,7 +164,30 @@ function obiba_mica_variable_prepare_prettify() {
 }
 
 function obiba_mica_variable_get_harmonizations($variable) {
-  obiba_mica_variable_prepare_prettify();
+  if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
+    drupal_add_library('obiba_mica_dataset', 'datatables');
+  } else {
+    obiba_mica_commons_datatables_external_source();
+  }
+
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_variable_harmo_datatable_init.js', 'file');
+  drupal_add_js(array(
+    'table_headers' => obiba_mica_variable_get_harmonization_table_headers(),
+    'table_data' => obiba_mica_variable_get_harmonization_table_rows($variable)
+  ), 'setting');
+}
+
+function obiba_mica_variable_get_harmonization_table_headers() {
+  return array(
+    array("title" => t('Harmonized Variable'), 'width' => '20%'),
+    array("title" => t('Study')),
+    array("title" => t('Data Collection Event'), 'width' => '40%'),
+    array("title" => t('Status'), 'width' => '15%'),
+    array("title" =>t('Comment'))
+  );
+}
+
+function obiba_mica_variable_get_harmonization_table_rows($variable) {
   $rows = array();
   $variable_resource = new MicaDatasetResource();
 
@@ -174,8 +201,10 @@ function obiba_mica_variable_get_harmonizations($variable) {
       $study_summary = _obiba_mica_variable_study_summary($variable, $study_id);
       $study_acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
       $variable_title = $variable->name . ' -- ' . $study_acronym;
+      $variable_title_key = $variable->name . ' -- ' . $study_id;
       if (!empty($variable_harmonization->studyTable->name)) {
         $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
+        $variable_title_key .= ' (' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
       }
 
       $status = trim(strtolower(_obiba_mica_variable_attributes_detail($variable_harmonization, 'status', array(
@@ -220,21 +249,13 @@ function obiba_mica_variable_get_harmonizations($variable) {
             'maelstrom',
             'Mlstr_harmo'
           )), t('comment'), 200, FALSE),
+        $variable_title_key
       );
+
     }
   }
 
-  if (!empty($rows)) {
-    $headers = array(t('Harmonized Variable'), t('Study'), t('Data Collection Event'), t('Status'), t('Comment'));
-    return theme('table', array(
-      'header' => $headers,
-      'rows' => $rows,
-      'empty' => t(variable_get_value('variables_empty_label')),
-      'sticky' => FALSE,
-      'attributes' => array('id' => 'variables_overview')
-    ));
-  }
-
+  return $rows;
 }
 
 function obiba_mica_variable_get_harmonization($harmonized_variable) {

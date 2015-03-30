@@ -216,6 +216,15 @@
     <h2><?php print t('Harmonization') ?></h2>
     <?php print render($harmonization_table_legend); ?>
     <?php if ($variable_dto->variableType == 'Dataschema'): ?>
+
+      <div id="variable-harmonization-table">
+        <div class="row">
+          <div class="col-lg-12 col-xs-12">
+            <table class="table table-striped" id="table-variable-harmonization"></table>
+          </div>
+        </div>
+      </div>
+
       <div class="scroll-content-tab">
         <?php print obiba_mica_variable_get_harmonizations($variable_dto); ?>
       </div>

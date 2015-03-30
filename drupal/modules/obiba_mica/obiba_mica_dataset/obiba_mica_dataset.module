@@ -93,12 +93,12 @@ function obiba_mica_dataset_menu() {
     'page arguments' => array(2),
   );
 
-  $items['mica/variables-harmonization-algo/%'] = array(
+  $items['mica/variables-harmonization-algo/%/%'] = array(
     'title' => 'Dataset',
     'page callback' => 'obiba_mica_dataset_get_variable_algorithm',
     'file' => 'obiba_mica_variable-page-detail.inc',
     'access callback' => TRUE,
-    'page arguments' => array(2),
+    'page arguments' => array(2, 3),
   );
 
   $items['mica/harmonization-dataset/%/download'] = array(
