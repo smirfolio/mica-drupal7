@@ -89,7 +89,10 @@ function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variabl
       'maelstrom',
       'Mlstr_harmo'
     ));
-    if (!empty($algorithm)) {
+    if (empty($algorithm)) {
+      // no need to render
+      unset($sorted_variables[$variable_title]);
+    } else {
       if (array_key_exists($variable_title, $sorted_variables)) {
         $sorted_variables[$variable_title] = array(
           'var_id' => $variable_resolver->id,
