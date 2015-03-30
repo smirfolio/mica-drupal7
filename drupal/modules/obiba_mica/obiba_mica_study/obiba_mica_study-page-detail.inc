@@ -73,7 +73,12 @@ function obiba_mica_study_page_detail($study_id) {
     $name = obiba_mica_commons_get_localized_field($study_dto, 'name');
     $title_order_option = variable_get_value('study_title_acronym_display');
     if (!empty($title_order_option)) {
-      drupal_set_title($acronym . ' - ' . $name);
+      if ($title_order_option == 1) {
+        drupal_set_title($acronym . ' - ' . $name);
+      }
+      if ($title_order_option == 2) {
+        drupal_set_title($name);
+      }
     }
     else {
       drupal_set_title($name . ' - ' . $acronym);
