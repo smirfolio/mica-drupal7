@@ -530,7 +530,7 @@
       function loadSearchResult(url) {
         $('#block-system-main').fadeTo(300, 0.5);
         $.ajax({
-          url: '?' + url.replace(/^!/, '') + '&' + event.timeStamp,
+          url: '?' + url.replace(/^!/, '') + '&rnd=' + new Date().getTime(),
           success: function (data) {
             $('#block-system-main>.block-content').html(data.searchResult);
             populateFacetTabs(data.facets);
