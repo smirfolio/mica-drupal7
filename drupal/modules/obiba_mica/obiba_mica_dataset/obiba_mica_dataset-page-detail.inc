@@ -404,7 +404,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                   ));
               }
               elseif ($status == 'impossible') {
-                $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon glyphicon-remove alert-danger" data-original-title="' . t('Impossible') . '"></span>';
+                $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon glyphicon-minus alert-black" data-original-title="' . t('Impossible') . '"></span>';
                 $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
