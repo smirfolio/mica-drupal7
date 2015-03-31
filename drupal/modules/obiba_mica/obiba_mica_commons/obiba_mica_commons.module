@@ -423,7 +423,12 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
   return $form;
 }
 
-function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type) {
+function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type, $link_to = FALSE) {
+  if ($link_to) {
+    if (!strstr(drupal_get_js(), 'fancybox')) {
+      return '#';
+    }
+  }
   $attached_resource = & drupal_static(__FUNCTION__);
   if (!isset($attached_resource)) {
     $cached_attached_resources = cache_get('images-cache-' . $entity_id . '-' . $file_resource->id);
