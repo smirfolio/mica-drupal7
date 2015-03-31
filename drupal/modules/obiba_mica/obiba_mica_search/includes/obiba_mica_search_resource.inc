@@ -59,7 +59,7 @@ class MicaSearchResource extends MicaClient {
   }
 
   private function _get_dto_query_param_from_url($parts = NULL, $type, $parameters = NULL) {
-    $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, $this::SIZE_RESPONSE);
+    $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, MicaClient::getResponsePageSize());
     $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
     $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
     return $this->dto_filter_construct($type, $q, $from, $group_by);

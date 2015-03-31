@@ -33,7 +33,7 @@ function obiba_mica_network_page_list() {
 
   $response = obiba_mica_network_get_networks(NULL, $query, $sort, $sort_by, $network_limits);
   $total_networks = empty($response) ? 0 : $response->getTotalHits();
-  $network_limits = !empty($network_limits) ? $network_limits : MicaClient::SIZE_RESPONSE_SM;
+  $network_limits = !empty($network_limits) ? $network_limits : MicaClient::getResponsePageSizeSmall();
   pager_default_initialize($total_networks, $network_limits);
   $pager_output = theme('pager', array('quantity' => $network_limits));
   $summaries = empty($response) ? array() : $response->getSummaries();
@@ -69,7 +69,7 @@ function obiba_mica_network_page_list() {
 function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL, $sort_by = NULL, $network_limits = NULL) {
   $from = 0;
   $study_resource = new MicaNetworkResource();
-  $size_response = !empty($network_limits) ? $network_limits : MicaClient::SIZE_RESPONSE_SM;
+  $size_response = !empty($network_limits) ? $network_limits : MicaClient::getResponsePageSizeSmall();
   if (!empty($_GET['page'])) {
     $from = $study_resource->pagination_list_search_parameters($_GET['page'], 'networks', $size_response);
   }

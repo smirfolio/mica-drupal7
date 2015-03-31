@@ -8,24 +8,8 @@
  * Implements hook_variable_info().
  */
 function obiba_mica_variable_info($options) {
-  $variable['mica_url'] = array(
-    'title' => t('Mica address'),
-    'description' => t('URL of the Mica server. Example: https://mica.example.org:8445'),
-    'type' => 'string',
-    'default' => 'https://localhost:8445',
-  );
-  $variable['mica_anonymous_name'] = array(
-    'title' => t('Anonymous user name'),
-    'description' => t('The name under which an anonymous user is known by Mica.'),
-    'type' => 'string',
-    'default' => 'anonymous',
-  );
-  $variable['mica_anonymous_password'] = array(
-    'title' => t('Anonymous user password'),
-    'description' => t('The password used by the Drupal server when issuing requests to Mica.'),
-    'type' => 'string',
-    'default' => 'password',
-  );
+  _obiba_mica_variable_info_mica_server($variable);
+
   $variable['mica_statistics'] = array(
     'title' => t('Show statistics'),
     'description' => t('If show statistics is selected, variable pages will include a statistics summary section, contingency tables and queries for entity counts features will be available.'),
@@ -68,14 +52,47 @@ function obiba_mica_variable_info($options) {
     'type' => 'string',
     'default' => '',
   );
+
+  return $variable;
+}
+
+function _obiba_mica_variable_info_mica_server(&$variable) {
+  $variable['mica_url'] = array(
+    'title' => t('Mica address'),
+    'description' => t('URL of the Mica server. Example: https://mica.example.org:8445'),
+    'type' => 'string',
+    'default' => 'https://localhost:8445',
+  );
+  $variable['mica_anonymous_name'] = array(
+    'title' => t('Anonymous user name'),
+    'description' => t('The name under which an anonymous user is known by Mica.'),
+    'type' => 'string',
+    'default' => 'anonymous',
+  );
+  $variable['mica_anonymous_password'] = array(
+    'title' => t('Anonymous user password'),
+    'description' => t('The password used by the Drupal server when issuing requests to Mica.'),
+    'type' => 'string',
+    'default' => 'password',
+  );
   $variable['mica_copyright_notice'] = array(
     'title' => t('Copyright notice text'),
     'description' => t('Copyright notice displayed in the site and downloaded documents.'),
     'type' => 'string',
     'default' => '',
   );
-
-  return $variable;
+  $variable['mica_response_page_size'] = array(
+    'title' => t('Number of items per server response page'),
+    'description' => t('Determines the how many items that must be displayed in a server response page.'),
+    'type' => 'number',
+    'default' => 20,
+  );
+  $variable['mica_response_page_size_small'] = array(
+    'title' => t('Minimum number of items per server response page'),
+    'description' => t('Determines the minimum number of items that must to be displayed in a server response page.'),
+    'type' => 'number',
+    'default' => 10,
+  );
 }
 
 function _obiba_mica_variable_info_networks(&$variable) {
