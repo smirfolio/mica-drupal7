@@ -12,7 +12,8 @@
 <div>
   <p class="md-top-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
-      <a href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
+      <a
+        href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study', TRUE) ?>"
         class="fancybox-button">
       <img
           src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"

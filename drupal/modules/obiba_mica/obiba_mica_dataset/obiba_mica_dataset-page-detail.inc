@@ -21,7 +21,9 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
   $variables_dataset = NULL;
   $variables_table_output = NULL;
   $modals = NULL;
-  unset($_SESSION['ajax']);
+  if (!empty($_SESSION['ajax'])) {
+    unset($_SESSION['ajax']);
+  }
   $dataset_dto = $dataset_resource->get_dataset($dataset_type, $dataset_id);
   $_SESSION['ajax']['variable'] = serialize($dataset_dto);
   $coverage = obiba_mica_dataset_coverage($dataset_dto->id);

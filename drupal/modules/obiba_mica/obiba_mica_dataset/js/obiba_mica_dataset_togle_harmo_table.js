@@ -18,7 +18,7 @@
           // WORKAROUND: When the harmonization table is a child, the DataTable is not drawn properly
           Drupal.behaviors.micaDataset_Datatable_init.invalidate(context, $('#harmo-table'));
 
-          //  $("#harmo-table-btn").unbind("click");
+          $("#harmo-table-btn").unbind("click");
           $(this).removeAttr('id');
           $(this).attr('id', 'harmo-table-toggle');
 
