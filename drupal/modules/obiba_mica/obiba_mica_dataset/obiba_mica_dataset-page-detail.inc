@@ -14,6 +14,7 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
   }
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_datatable_init.js', 'file');
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_togle_harmo_table.js', 'file');
   $dataset_resource = new MicaDatasetResource();
   $dataset_dto = NULL;
   $dataset_type_dto = NULL;

@@ -6,6 +6,16 @@
 (function ($) {
   Drupal.behaviors.micaDataset_Datatable_init = {
 
+    invalidate: function (context, parent) {
+      if (context === document && $('#table-variables').parents(parent.selector).length > 0) {
+        var table = $('#table-variables').dataTable();
+        if (table) {
+          table.fnAdjustColumnSizing();
+        }
+      }
+    },
+
+
     attach: function (context, settings) {
       if (context === document) getAjaxTable();
 
@@ -100,6 +110,8 @@
           });
         }
       }
+
+
     }
 
   }
