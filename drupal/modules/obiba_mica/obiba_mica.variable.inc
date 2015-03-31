@@ -317,6 +317,30 @@ function _obiba_mica_variable_info_dataset(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['dataset_harmonization_impossible_icon'] = array(
+    'title' => t('Icon to show for the \'Impossible\' status '),
+    'description' => t('Select,the Icon to show for \'Impossible\' harmonization status'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
+  $variable['dataset_harmonization_impossible_label'] = array(
+    'title' => t('Label to show for the \'Impossible\' status '),
+    'description' => t('Text to display, for the label to show for \'Impossible\' harmonization status'),
+    'type' => 'string',
+    'default' => t('Impossible'),
+  );
+  $variable['dataset_harmonization_undetermined_icon'] = array(
+    'title' => t('Icon to show for the \'Undetermined\' status '),
+    'description' => t('Select,the Icon to show for \'Undetermined\' harmonization status'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
+  $variable['dataset_harmonization_undetermined_label'] = array(
+    'title' => t('Label to show for the \'Undetermined\' status '),
+    'description' => t('Text to display, for the label to show for \'Undetermined\' harmonization status'),
+    'type' => 'string',
+    'default' => t('Undetermined'),
+  );
 }
 
 function _obiba_mica_variable_info_variable(&$variable) {
