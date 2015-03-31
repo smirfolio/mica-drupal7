@@ -1,6 +1,15 @@
 (function ($) {
   Drupal.behaviors.micaNetwork_studies_datatable_init = {
 
+    invalidate: function (context, parent) {
+      if (context === document && $('#table-variable-harmonization').parents(parent.selector).length > 0) {
+        var table = $('#table-variable-harmonization').dataTable();
+        if (table) {
+          table.fnAdjustColumnSizing();
+        }
+      }
+    },
+
     attach: function (context, settings) {
 
       if (context === document) {
@@ -12,18 +21,20 @@
             "iDisplayLength": 25,
             "responsive": true,
             "scrollX": true,
+            "bFilter": false,
+            "bInfo": false,
             "scrollCollapse": true,
-            "order": [[ 1, "asc" ]],
+            "order": [[1, "asc"]],
             "sDom": '<"table-var-wrapper" <<"md-top-margin pull-left" i><"pull-right" f>><"clear-fix" ><"no-float-tab" rt><"clear-fix" ><"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
             "language": {
               "url": Drupal.settings.basePath + 'mica/datatable-international'
             },
             "fnInitComplete": function () {
-              $('span', this.fnGetNodes() ).tooltip( {
+              $('span', this.fnGetNodes()).tooltip({
                 "delay": 0,
                 "track": true,
                 "fade": 250
-              } );
+              });
             },
             "fnDrawCallback": function (oSettings) {
               if (oSettings._iDisplayLength > oSettings.aoData.length) {
