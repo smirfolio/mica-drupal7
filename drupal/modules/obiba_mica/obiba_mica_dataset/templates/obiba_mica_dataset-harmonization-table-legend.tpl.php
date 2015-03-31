@@ -15,8 +15,8 @@
     <?php print ' - ' . t('the study assessment item(s) (e.g. survey question, physical measure, biochemical measure) allow construction of the variable as defined in the dataset.') ?>
   </div>
   <div>
-    <i class="glyphicon glyphicon-remove alert-danger"></i>
-    <h6><?php print t('Impossible') ?></h6>
+    <i class="glyphicon glyphicon-minus alert-black"></i>
+    <h6><?php print t('Incomplete') ?></h6>
     <?php print ' - ' . t('there is no information or insufficient information collected by this study to allow the construction of the variable as defined in the dataset.') ?>
   </div>
 </div>
