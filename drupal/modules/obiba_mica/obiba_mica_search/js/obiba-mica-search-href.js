@@ -495,10 +495,15 @@
         });
 
         if (!Drupal.settings.ShowStudiesFacets) {
-          // Removme study related facet TAB and content
-          $('#study-facet').remove();
-          $('li>a[href="#study-facet"]').remove();
-          $('li>a[href="#variable-facet"]').remove();
+          if (Drupal.settings.ConfigTaxonomiesCount === 1) {
+            $('#search-facets #facet-search').remove();
+          } else {
+            // Removme study related facet TAB and content
+            $('#study-facet').remove();
+            $('li>a[href="#study-facet"]').remove();
+            $('li>a[href="#variable-facet"]').remove();
+          }
+
           $('#variable-facet').addClass('active');
         }
 
@@ -535,6 +540,7 @@
             $('#block-system-main>.block-content').html(data.searchResult);
             populateFacetTabs(data.facets);
             Drupal.attachBehaviors($('div.main-container.container')[0], settings);
+            Drupal.behaviors.obiba_mica_facet_search_collapse_block.updateUI(context, Drupal.settings);
             $('html, body').animate({scrollTop: 0}, 'fast');
           },
           complete : function () {

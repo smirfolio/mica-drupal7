@@ -25,25 +25,13 @@ include_once("obiba_mica_commons_resource_paths.inc");
  */
 class MicaClient {
   const AUTHORIZATION_HEADER = 'Authorization';
-
   const COOKIE_HEADER = 'Cookie';
-
   const SET_COOKIE_HEADER = 'Set-Cookie';
-
   const OBIBA_COOKIE = 'obibaid';
-
   const MICA_COOKIE = 'micasid';
-
   const HEADER_BINARY = 'application/x-protobuf';
-
   const HEADER_JSON = 'application/json';
-
   const HEADER_CSV = 'text/csv';
-
-  const SIZE_RESPONSE_SM = 10;
-
-  const SIZE_RESPONSE = 20;
-
   const PAGINATE_studies = 0;
   const PAGINATE_variables = 1;
   const PAGINATE_datasets = 2;
@@ -52,6 +40,9 @@ class MicaClient {
   protected $mica_url;
 
   private $lastResponse;
+  private static $response_page_size_small = 10;
+  private static $response_page_size = 20;
+
 
   /**
    * Mica client from a given url or from the one retrieved from 'mica_url' variable.
@@ -59,6 +50,8 @@ class MicaClient {
    */
   public function __construct($mica_url = NULL) {
     $this->micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
+    self::$response_page_size = variable_get_value('mica_response_page_size');
+    self::$response_page_size_small = variable_get_value('mica_response_page_size_small');
   }
 
   /**
@@ -387,6 +380,14 @@ class MicaClient {
     return NULL;
   }
 
+  public static function getResponsePageSizeSmall() {
+    return self::$response_page_size_small;
+  }
+
+  public static function getResponsePageSize() {
+    return self::$response_page_size;
+  }
+
   /**
    * Removes the flagged aggs from the UI only
    * @param $aggs
@@ -531,15 +532,15 @@ class MicaClient {
     return NULL;
   }
 
-  public function pagination_list_search_parameters($current_page = 0, $type = NULL, $size = self::SIZE_RESPONSE) {
+  public function pagination_list_search_parameters($current_page = 0, $type = NULL, $size = NULL) {
     return self::next_page_offset( //
       empty($current_page) ? 0 : $current_page, //
-      $size, //
+      empty($size) ? MicaClient::getResponsePageSize() : $size, //
       $_SESSION[strtolower($type)]['aggregations']['total_hits'] //
     );
   }
 
-  static function next_page_offset($current_page = 0, $size = self::SIZE_RESPONSE, $total) {
+  static function next_page_offset($current_page = 0, $size, $total) {
     $nb_pages = ceil($total / $size);
 
     $from = 0;
@@ -578,10 +579,11 @@ class MicaClient {
 
     global $language;
     $lang = $language->language;
-    $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $this::SIZE_RESPONSE, $lang);
+    $page_size = MicaClient::getResponsePageSize();
+    $queryDtoBuilder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $page_size, $lang);
     Protobuf::setDefaultCodec(new Protobuf\Codec\Json);
     $json_query_encoded = //
-      Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $this::SIZE_RESPONSE, $group_by)->build());
+      Protobuf::encode($queryDtoBuilder->documentQuery($type, $from, $page_size, $group_by)->build());
 
     return $json_query_encoded;
   }

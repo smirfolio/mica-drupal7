@@ -9,9 +9,10 @@
 
     <h2 class="block-titles">
       <a data-toggle="collapse"
-        data-parent="<?php print $block_html_id; ?>"
-        href="#collapse-<?php print $block_html_id; ?>"
-        class="collapsed">
+         data-all-collapsed="true"
+         data-parent="<?php print $block_html_id; ?>"
+         href="#collapse-<?php print $block_html_id; ?>"
+         class="collapsed">
         <?php print $title; ?>
       </a>
     </h2>

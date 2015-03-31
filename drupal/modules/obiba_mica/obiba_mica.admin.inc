@@ -18,43 +18,7 @@ function obiba_mica_admin_settings() {
     '#collapsible' => FALSE,
   );
 
-  $info = variable_get_info('mica_url');
-  $form['server']['mica_url'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#required' => TRUE,
-    '#default_value' => variable_get_value('mica_url'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('mica_anonymous_name');
-  $form['server']['mica_anonymous_name'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#required' => TRUE,
-    '#default_value' => variable_get_value('mica_anonymous_name'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('mica_anonymous_password');
-  $form['server']['mica_anonymous_password'] = array(
-    '#type' => 'password',
-    '#title' => $info['title'],
-    //  '#default_value' => variable_get_value('mica_anonymous_password'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('mica_copyright_notice');
-  $form['server']['mica_copyright_notice'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('mica_copyright_notice'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
+  _obiba_mica_settings_server_form($form);
 
   $form['statistics'] = array(
     '#type' => 'fieldset',
@@ -149,6 +113,69 @@ function obiba_mica_admin_settings() {
 
   $form['#submit'] = array('obiba_mica_default_password');
   return system_settings_form($form);
+}
+
+function _obiba_mica_settings_server_form(&$form) {
+  $info = variable_get_info('mica_url');
+  $form['server']['mica_url'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#required' => TRUE,
+    '#default_value' => variable_get_value('mica_url'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('mica_anonymous_name');
+  $form['server']['mica_anonymous_name'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#required' => TRUE,
+    '#default_value' => variable_get_value('mica_anonymous_name'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('mica_anonymous_password');
+  $form['server']['mica_anonymous_password'] = array(
+    '#type' => 'password',
+    '#title' => $info['title'],
+    //  '#default_value' => variable_get_value('mica_anonymous_password'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('mica_copyright_notice');
+  $form['server']['mica_copyright_notice'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_copyright_notice'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('mica_response_page_size');
+  $form['server']['mica_response_page_size'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_response_page_size'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('mica_response_page_size');
+  $form['server']['mica_response_page_size'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_response_page_size'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('mica_response_page_size_small');
+  $form['server']['mica_response_page_size_small'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_response_page_size_small'),
+    '#description' => $info['description'],
+  );
 }
 
 function _obiba_mica_settings_networks_form(&$form) {

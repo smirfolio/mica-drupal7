@@ -97,7 +97,7 @@ class MicaStudyResource extends MicaClient {
 
   public function studies_search($spec_dto_params = NULL) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/studies/_search/?' . 'size=' . parent::SIZE_RESPONSE;
+    $url = $this->micaUrl . '/studies/_search/?' . 'size=' . MicaClient::getResponsePageSize();
     $url_parm = explode('?', request_uri());
     if (empty($url_parm[1])) {
       $dto_param = $this->dto_filter_construct('studies', NULL, NULL, $spec_dto_params);
@@ -126,7 +126,7 @@ class MicaStudyResource extends MicaClient {
     else {
       $dto_param = $this->dto_filter_construct($url_parm[1], array('child' => 'Variable'), 'study', $spec_dto_params);
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
-        $url = $this->micaUrl . '/studies/_search/?from=' . json_decode($dto_param)->from . '&size=' . parent::SIZE_RESPONSE;
+        $url = $this->micaUrl . '/studies/_search/?from=' . json_decode($dto_param)->from . '&size=' . MicaClient::getResponsePageSize();
 
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,

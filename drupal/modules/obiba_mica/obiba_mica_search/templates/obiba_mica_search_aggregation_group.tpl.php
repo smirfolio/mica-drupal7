@@ -2,7 +2,7 @@
   <div class="panel panel-default">
     <div class="panel-heading no-border-radius">
       <div class="panel-title">
-        <a id="collapsible-taxonomy" class="accordion-toggle" data-toggle="collapse" href="#taxonomy-<?php print $name?>">
+        <a id="collapsible-taxonomy" class="accordion-toggle" data-all-collapsed="true" data-toggle="collapse" href="#taxonomy-<?php print $name?>">
           <span><?php print $title; ?></span>
         </a>
       </div>

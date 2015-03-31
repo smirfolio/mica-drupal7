@@ -265,7 +265,8 @@ function obiba_mica_search_load_libs() {
     'ShowStudiesFacets' => variable_get_value('studies_facet_search'),
     'UrlErrorsQuery' => !empty($_SESSION['errorsQuery']) ? $_SESSION['errorsQuery'] : NULL,
     'ErrorMessage' => t('An error occurred when parsing url query, Please make sure to use facet search tools
-       to perform your search. <br>This page will be refeshed in 3s ')
+       to perform your search. <br>This page will be refeshed in 3s '),
+    'ConfigTaxonomiesCount' => MicaClient::get_taxonomies_count()
   ), 'setting');
   $facet_conf["general"] = //
     array( //
@@ -687,7 +688,7 @@ function obiba_mica_search_variables_table($variables) {
   $headers_param = _obiba_mica_search_get_header_variables_table($has_study);
   $headers = $headers_param['header'];
 
-  pager_default_initialize($total_hits, MicaSearchResource::SIZE_RESPONSE);
+  pager_default_initialize($total_hits, MicaClient::getResponsePageSize());
   return '<div class="scroll-content-tab">' . theme(
     'table',
     array(
@@ -936,7 +937,7 @@ function obiba_mica_search_studies_table($studies) {
       $rows[] = $column_row;
     }
     $headers = $headers_columns['headers'];
-    pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
+    pager_default_initialize($total_hits, MicaClient::getResponsePageSize());
     return '<div class="scroll-content-tab">' . theme(
       'table',
       array(
@@ -1037,7 +1038,7 @@ function obiba_mica_search_datasets_table($datasets) {
 
   $headers = _obiba_mica_search_get_header_datasets_table();
 
-  pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
+  pager_default_initialize($total_hits, MicaClient::getResponsePageSize());
   return '<div class="scroll-content-tab">' . theme(
     'table',
     array(
@@ -1225,7 +1226,7 @@ function obiba_mica_search_networks_table($networks) {
     }
     $headers = $headers_columns['headers'];
 
-    pager_default_initialize($total_hits, MicaClient::SIZE_RESPONSE);
+    pager_default_initialize($total_hits, MicaClient::getResponsePageSize());
 
     return '<div class="scroll-content-tab">' . theme(
       'table',
@@ -1270,7 +1271,9 @@ function obiba_mica_search_get_variables_count_from_studies_dto($studies) {
 function _obiba_mica_search_facet_expand_strategy() {
   // count of zero signifies all taxonomies are included
   $taxonomies_count = MicaClient::get_taxonomies_count();
-  return !variable_get_value('studies_facet_search') && $taxonomies_count > 0 && $taxonomies_count < 2 ? 'expand_groups' : NULL;
+  return !variable_get_value('studies_facet_search') && MicaClient::get_taxonomies_count() === 1
+    ? ObibaFacetSearchBlockConstants::EXPAND_ALL
+    : NULL;
 }
 
 

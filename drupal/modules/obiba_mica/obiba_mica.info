@@ -3,6 +3,8 @@ description = "Mica Client"
 package = Obiba
 core = 7.x
 
+files[] = obiba_mica.constants.inc
+
 dependencies[] = charts
 dependencies[] = collapsiblock
 dependencies[] = countries
@@ -15,7 +17,5 @@ dependencies[] = obiba_mica_study
 dependencies[] = obiba_mica_search
 dependencies[] = obiba_mica_dataset
 dependencies[] = obiba_mica_network
-
-files[] = obiba_mica.constants.inc
 
 scripts[] = js/obiba-mica-progressbar-controller.js

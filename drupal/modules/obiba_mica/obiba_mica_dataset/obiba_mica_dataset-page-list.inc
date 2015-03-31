@@ -49,7 +49,7 @@ function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
   $resource_dataset = obiba_mica_dataset_correct_resource_server($dataset_resource);
   $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset, $dataset_limits);
   $total_hits = empty($response) ? 0 : $response->getTotalHits();
-  $dataset_limits = !empty($dataset_limits) ? $dataset_limits : MicaClient::SIZE_RESPONSE_SM;
+  $dataset_limits = !empty($dataset_limits) ? $dataset_limits : MicaClient::getResponsePageSizeSmall();
   pager_default_initialize($total_hits, $dataset_limits);
   $pager_output = theme('pager', array('quantity' => $dataset_limits));
   $summaries = empty($response) ? array() : $response->getSummaries();
@@ -85,7 +85,7 @@ function obiba_mica_dataset_correct_resource_server($dataset_resource) {
 function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resource, $dataset_limits = NULL) {
   $from = 0;
   $resource = new MicaDatasetResource();
-  $size_response = !empty($dataset_limits) ? $dataset_limits : MicaClient::SIZE_RESPONSE_SM;
+  $size_response = !empty($dataset_limits) ? $dataset_limits : variable_get_value('mica_response_page_size_small');
   if (!empty($_GET['page'])) {
     $from = $resource->pagination_list_search_parameters($_GET['page'], 'datasets', $size_response);
   }
