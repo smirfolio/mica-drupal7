@@ -15,23 +15,34 @@
   <div class="col-md-10  col-sm-12 col-xs-12">
     <div>
       <h4>
-      <?php print MicaClientAnchorHelper::study_list_item($study); ?>
+        <?php print MicaClientAnchorHelper::study_list_item($study); ?>
       </h4>
       <hr class="no-margin">
       <p class="md-top-margin">
         <small>
-          <?php
-          if (variable_get_value('studies_list_show_trimmed_description_study')) {
-            print MicaClientAnchorHelper::ellipses(
-            t('Read more'),
-            obiba_mica_commons_get_localized_field($study, 'objectives'),
-            MicaClientPathProvider::study($study->id)
-          );
-          }
-          else {
-            print obiba_mica_commons_get_localized_field($study, 'objectives');
-          }
-          ?>
+          <?php if (variable_get_value('studies_list_show_trimmed_description_study')): ?>
+            <?php  print MicaClientAnchorHelper::ellipses(
+              t('Read more'),
+              obiba_mica_commons_get_localized_field($study, 'objectives'),
+              MicaClientPathProvider::study($study->id)
+            ); ?>
+          <?php else: ?>
+            <div class="objectives-studies">
+
+              <?php $first_paragraph = explode('</p>', obiba_mica_commons_get_localized_field($study, 'objectives')); ?>
+              <div><?php print $first_paragraph['0'] ?></div>
+              <div class="objectives-trimed collapse"
+                id="objectives-<?php print $study->id; ?>"><?php print $first_paragraph['1'] ?></div>
+              <?php if (count($first_paragraph) > 2): ?>
+                <button class="btn btn-primary btn-xs 5-top-margin trim-studies" type="button" data-toggle="collapse"
+                  data-target="#objectives-<?php print $study->id; ?>" aria-expanded="false"
+                  aria-controls="collapseExample" id="btn-objectives-<?php print $study->id; ?>">
+                  <?php print t('Read more'); ?>
+                </button>
+              <?php endif; ?>
+
+            </div>
+          <?php  endif; ?>
         </small>
       </p>
     </div>
