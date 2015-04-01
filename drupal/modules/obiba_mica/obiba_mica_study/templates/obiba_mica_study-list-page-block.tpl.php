@@ -34,7 +34,7 @@
               <div class="objectives-trimed collapse"
                 id="objectives-<?php print $study->id; ?>"><?php print $first_paragraph['1'] ?></div>
               <?php if (count($first_paragraph) > 2): ?>
-                <button class="btn btn-primary btn-xs trim-studies" type="button" data-toggle="collapse"
+                <button class="btn btn-primary btn-xs 5-top-margin trim-studies" type="button" data-toggle="collapse"
                   data-target="#objectives-<?php print $study->id; ?>" aria-expanded="false"
                   aria-controls="collapseExample" id="btn-objectives-<?php print $study->id; ?>">
                   <?php print t('Read more'); ?>
