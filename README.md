@@ -16,3 +16,7 @@ Run `make all` to:
 Use **administrator** / **password** to login into your new Drupal:
 [http://localhost/drupal](http://localhost/drupal)
 
+## Sponsors
+
+Tested with [![BrowserStack](https://cdn2.browserstack.com/production/images/layout/logo-header.png)](http://www.browserstack.com)
+
