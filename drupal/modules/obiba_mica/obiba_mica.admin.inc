@@ -391,8 +391,7 @@ function _obiba_mica_settings_studies_form(&$form) {
   );
 }
 
-function _obiba_mica_settings_study_form(&$form)
-{
+function _obiba_mica_settings_study_form(&$form) {
   $form['content_display_settings']['study_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Study Content'),
@@ -478,9 +477,8 @@ function _obiba_mica_settings_study_form(&$form)
 
 }
 
-function _obiba_mica_settings_dataset_form(&$form)
-{
-
+function _obiba_mica_settings_dataset_form(&$form) {
+  $bootstrap_theme_path = base_path() . '/' . drupal_get_path('theme', 'obiba_bootstrap');
   $form['content_display_settings']['dataset_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Dataset Content'),
@@ -517,10 +515,36 @@ function _obiba_mica_settings_dataset_form(&$form)
     '#description' => $info['description'],
   );
 
+  $form['content_display_settings']['dataset_form']['harmonization_status'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Harmonization status display'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('dataset_harmonization_impossible_icon');
+  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_impossible_icon'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('dataset_harmonization_impossible_icon'),
+    '#options' => array(
+      ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON => '<img src="' . $bootstrap_theme_path . '/glyphicon-remove.png" > Remove',
+      ObibaDatasetConstants::INCOMPLETE_HARMO_ICON => '<img src="' . $bootstrap_theme_path . '/glyphicon-minus.png" > Minus'
+    ),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('dataset_harmonization_impossible_label');
+  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_impossible_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#maxlength' => 255,
+    '#default_value' => variable_get_value('dataset_harmonization_impossible_label'),
+    '#description' => $info['description'],
+  );
+
 }
 
-function _obiba_mica_settings_variable_form(&$form)
-{
+function _obiba_mica_settings_variable_form(&$form) {
   $form['content_display_settings']['variable_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Variable Content'),
