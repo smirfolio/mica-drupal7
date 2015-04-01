@@ -7,6 +7,15 @@
 
 function obiba_mica_study_page_list() {
   $context['url'] = 'refresh_list_studies';
+  if (!variable_get_value('studies_list_show_trimmed_description_study')) {
+    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/obiba-mica-commons-list-shorten-text.js', 'file');
+    drupal_add_js(array(
+      'linkRead' => array(
+        'more' => t('Read more'),
+        'less' => t('Read less'),
+      )
+    ), 'setting');
+  }
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
   $study_query = NULL;
