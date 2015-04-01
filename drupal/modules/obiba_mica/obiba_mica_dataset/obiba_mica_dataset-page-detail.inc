@@ -346,7 +346,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
 
 function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $dataset_harmonizations_dto) {
   $rows = array();
-  $impossible_icon = variable_get_value('dataset_harmonization_impossible_icon');
+
   if (!empty($dataset_type_dto->studyTables)) {
 
     if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
@@ -407,11 +407,10 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                   ));
               }
               elseif ($status == 'impossible') {
-                $color_icon = (!empty($impossible_icon) && $impossible_icon != ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON) ?
-                  ' alert-black' : ' alert-danger';
+
                 $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
-                  (!empty($impossible_icon) ? ($impossible_icon . $color_icon) : (ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON . $color_icon))
-                  . '" data-original-title="' . t('Impossible') . '"></span>';
+                  ObibaDatasetConstants::get_icon()
+                  . '" data-original-title="' . variable_get('dataset_harmonization_impossible_label') . '"></span>';
                 $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
