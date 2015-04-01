@@ -18,5 +18,5 @@ Use **administrator** / **password** to login into your new Drupal:
 
 ## Sponsors
 
-Tested with [![BrowserStack](https://cdn2.browserstack.com/production/images/layout/logo-header.png)](http://www.browserstack.com)
+Tested with [BrowserStack](http://www.browserstack.com)
 
