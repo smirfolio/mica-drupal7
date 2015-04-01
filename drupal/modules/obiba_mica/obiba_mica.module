@@ -136,3 +136,11 @@ function _get_progressbar_path($extension) {
     ? NULL
     : $obiba_progressbar_lib . '/' . $obiba_progressbar_file . $extension;
 }
+
+/**
+ * Increase the length of the slogan.
+ * Implements hook_form_FORM_ID_alter.
+ */
+function obiba_mica_form_system_site_information_settings_alter(&$form, &$form_state, $form_id) {
+  $form['site_information']['site_slogan']['#maxlength'] = 500;
+}
