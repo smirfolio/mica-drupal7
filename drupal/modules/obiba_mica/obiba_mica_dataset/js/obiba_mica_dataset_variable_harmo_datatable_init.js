@@ -1,5 +1,5 @@
 (function ($) {
-  Drupal.behaviors.micaNetwork_studies_datatable_init = {
+  Drupal.behaviors.micaDataset_variable_harmo_datatable_init = {
 
     invalidate: function (context, parent) {
       if (context === document && $('#table-variable-harmonization').parents(parent.selector).length > 0) {

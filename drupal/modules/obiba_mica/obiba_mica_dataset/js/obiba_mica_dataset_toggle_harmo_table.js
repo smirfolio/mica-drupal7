@@ -4,7 +4,7 @@
  */
 
 (function ($) {
-  Drupal.behaviors.obiba_mica_dataset_togle_harmo_table = {
+  Drupal.behaviors.obiba_mica_dataset_toggle_harmo_table = {
 
     attach: function (context, settings) {
 

@@ -36,7 +36,7 @@
           });
 
           // WORKAROUND: When the harmonization table is a child, the DataTable is not drawn properly
-          Drupal.behaviors.micaNetwork_studies_datatable_init.invalidate(context, $('#harmo-algo'));
+          Drupal.behaviors.micaDataset_variable_harmo_datatable_init.invalidate(context, $('#harmo-algo'));
 
           $("#harmo-algo").unbind("click");
           $(this).removeAttr('id');

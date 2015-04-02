@@ -14,7 +14,7 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
   }
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_datatable_init.js', 'file');
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_togle_harmo_table.js', 'file');
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_toggle_harmo_table.js', 'file');
   $dataset_resource = new MicaDatasetResource();
   $dataset_dto = NULL;
   $dataset_type_dto = NULL;
@@ -191,10 +191,10 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
   $dataset_sort_by = NULL;
   $dataset_query = NULL;
 
-  if (!empty($_GET['iDisplayStart'])) {
+  if (isset($_GET['iDisplayStart'])) {
     $from = $_GET['iDisplayStart'];
   }
-  if (!empty($_GET['iDisplayLength'])) {
+  if (isset($_GET['iDisplayLength'])) {
     $size = $_GET['iDisplayLength'];
   }
 
