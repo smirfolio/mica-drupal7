@@ -84,7 +84,6 @@
         "iDisplayLength": 25,
         "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
         "aoColumns": headerTable,
-        "stateSave": true,
         "searching": true,
         "ordering": true,
         "fnDrawCallback": function (oSettings) {
