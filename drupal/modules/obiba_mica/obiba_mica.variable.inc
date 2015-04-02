@@ -398,8 +398,8 @@ function _obiba_mica_variable_info_datasets(&$variable) {
   $variable['search_datasets_autocomplete'] = array(
     'title' => t('Show dataset auto-complete search filter'),
     'description' => t('If selected, the auto-complete search filter will be displayed in the search page.'),
-    'type' => 'boolean',
-    'default' => TRUE,
+    'type' => 'number',
+    'default' => ObibaDatasetConstants::FACET_TYPE_AUTOCOMPLETE,
   );
 }
 
