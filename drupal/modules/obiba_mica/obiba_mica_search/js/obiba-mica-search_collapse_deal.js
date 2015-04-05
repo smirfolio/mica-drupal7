@@ -12,7 +12,7 @@
     attach: function (context, settings) {
       // do nothing here since these DOM elements are injected, things start to happen in updateUI
     }
-  }
+  };
 
   /**
    * Updates the search facet blocks UI and setups the event handlers
@@ -22,6 +22,7 @@
   function updateUI(context, settings) {
     if (context === document) {
       initCollapsibles();
+      initGroups();
 
       switch (settings.expand_strategy) {
         case 'expand_groups':
@@ -49,6 +50,21 @@
       }
 
       updateExpandCollapseIcon();
+    });
+
+    $('[id^="group-expand-collapse"]', context).on('click', function (e) {
+      var group = $(this);
+      var groupParent = group.parent();
+      e.preventDefault();
+      group.blur();
+
+      if(group.data('allCollapsed')) {
+        expandBlocks(groupParent);
+      } else {
+        collapseBlocks(groupParent);
+      }
+
+      updateGroupExpandCollapseIcon(group, groupParent);
     });
 
     $('.block', context).on('shown.bs.collapse', function () {
@@ -83,6 +99,32 @@
     });
   }
 
+  function updateGroupExpandCollapseIcon(group, parent) {
+    var allCollapsed = true;
+
+    $(".block-content", parent).each(function (id, state) {
+      return allCollapsed &= ($(this).hasClass('collapse') || $(this).hasClass('collapsing'));
+    });
+
+    toggleIcon(group, allCollapsed);
+  }
+
+  function toggleIcon(anchor, allCollapsed) {
+    var dataId = anchor.data('id');
+    if (dataId) {
+      var span = $('span#panel-title-icon[data-id="'+dataId+'"]');
+      var collapsed = span.find('a#collapsible-taxonomy').hasClass('collapsed');
+      span.find('i')
+        .addClass(collapsed ? 'glyphicon-chevron-right' : 'glyphicon-chevron-down')
+        .removeClass(collapsed ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right');
+    }
+
+    anchor.data('allCollapsed', allCollapsed)
+      .find('i')
+      .addClass(allCollapsed ? 'glyphicon-plus' : ' glyphicon-minus')
+      .removeClass(allCollapsed ? 'glyphicon-minus' : ' glyphicon-plus');
+  }
+
   function updateExpandCollapseIcon(firsttime) {
     var allCollapsed = true;
 
@@ -90,7 +132,7 @@
       allCollapsed &= $(this).hasClass('collapsed');
     });
 
-    $('#search-facets .tab-pane.active>section>.block-content').each(function () {
+    $('#search-facets section>.block-content').each(function () {
       if ($(this).find('form.autocomplete').length && firsttime) {
         return;
       }
@@ -98,18 +140,15 @@
       allCollapsed &= ($(this).hasClass('collapse') || $(this).hasClass('collapsing'));
     });
 
-    $("#facets-expand-collapse").data('allCollapsed', allCollapsed).text(allCollapsed ? "[+]" : "[-]");
+    $('[id^="group-expand-collapse"]').each(function () {
+      updateGroupExpandCollapseIcon($(this), $(this).parent());
+    });
+
+    toggleIcon($("#facets-expand-collapse"), allCollapsed);
   }
 
   function expandAll() {
-
-    $(".block-content").each(function (id, state) {
-      var current_id = this.id;
-      if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") return true;
-      $("#" + current_id).collapse("show");
-      removeCollapsedIcon(current_id, "collapsed");
-    });
-
+    expandBlocks(null, false);
     expandGroups();
     updateExpandCollapseIcon();
   }
@@ -123,7 +162,44 @@
   }
 
   function collapseAllInternal(firstTime) {
+    collapseBlocks(null);
+    collapseGroups();
+    updateExpandCollapseIcon(firstTime);
+  }
+
+  function initCollapsibles() {
+    $("div[id^='taxonomy-']").collapse({toggle: false});
     $(".block-content").each(function (id, state) {
+      $("#" + this.id).collapse({toggle: false})
+    });
+  }
+
+  function initGroups() {
+    if ($("div[id^='taxonomy-']").length === 1) {
+      $("a#collapsible-taxonomy").removeClass("accordion-toggle").attr("data-toggle", null).attr("href", null);
+      $('span#panel-title-icon i.glyphicon').css('opacity', 0);
+    }
+  }
+
+  function expandBlocks(parent) {
+    var blocks = parent ? $(".block-content", parent) : $(".block-content");
+    blocks.each(function (id, state) {
+      var current_id = this.id;
+      if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") return true;
+      $("#" + current_id).collapse("show");
+      removeCollapsedIcon(current_id, "collapsed");
+    });
+  }
+
+  function expandGroups() {
+    var taxonomies = $("div[id^='taxonomy-']");
+    taxonomies.collapse('show');
+    $("a#collapsible-taxonomy").removeClass('collapsed');
+  }
+
+  function collapseBlocks(parent, firstTime) {
+    var blocks = parent ? $(".block-content", parent) : $(".block-content");
+    blocks.each(function (id, state) {
       var current_id = this.id;
 
       if (!current_id || current_id === "collapse-block-obiba-mica-search-facet-search") {
@@ -138,25 +214,6 @@
       $("#" + current_id).collapse("hide");
       addCollapsedIcon(current_id, 'collapsed');
     });
-
-    collapseGroups();
-    updateExpandCollapseIcon(firstTime);
-  }
-
-  function initCollapsibles() {
-    $("div[id^='taxonomy-']").collapse({toggle: false});
-    $(".block-content").each(function (id, state) {
-      $("#" + this.id).collapse({toggle: false})
-    });
-  }
-
-  function expandGroups() {
-    var taxonomies = $("div[id^='taxonomy-']");
-    taxonomies.collapse('show');
-    if (taxonomies.length === 1) {
-      $("a#collapsible-taxonomy").removeClass("accordion-toggle").attr("data-toggle", null).attr("href", null);
-    }
-    $("a#collapsible-taxonomy").removeClass('collapsed');
   }
 
   function collapseGroups() {

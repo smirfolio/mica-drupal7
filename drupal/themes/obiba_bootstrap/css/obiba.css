@@ -6849,30 +6849,44 @@ fieldset[disabled] .region-facets .facet_terms_range button.active {
 }
 .panel-group .panel-heading {
   border-radius: 0 !important;
-  padding: 10px 10px;
-}
-.panel-group .panel-heading .accordion-toggle:after {
-  /* symbol for "opening" panels */
-  font-family: 'Glyphicons Halflings';
-  /* essential for enabling glyphicon */
-  content: "\e114";
-  /* adjust as needed, taken from bootstrap.css */
-  float: right;
-  /* adjust as needed */
+  padding: 10px 5px;
   color: #02a676;
-  /* adjust as needed */
-}
-.panel-group .panel-heading .accordion-toggle.collapsed:after {
-  /* symbol for "collapsed" panels */
-  content: "\e080";
-  /* adjust as needed, taken from bootstrap.css */
 }
 .panel-group .panel-title {
   font-size: 13px;
   color: #02a676;
 }
-.panel-group .panel-title .monospace > span {
-  font-family: monospace;
+.panel-group .panel-title a#collapsible-taxonomy {
+  display: inline-flex;
+  display: -ms-flexbox;
+  display: -webkit-inline-flex;
+}
+.panel-group .panel-title span#panel-title-icon {
+  display: inline-flex;
+  display: -webkit-inline-flex;
+  display: -ms-flexbox;
+  padding-left: 5px;
+}
+.panel-group .panel-title span#panel-title-icon i {
+  font-size: xx-small;
+  padding-top: 2px;
+}
+.panel-group .panel-title a > span:nth-child(2) {
+  display: inline-flex;
+  display: -webkit-inline-flex;
+  display: -ms-flexbox;
+  padding-right: 32px;
+  padding-left: 7px;
+  word-wrap: break-word;
+}
+.panel-group a[id^='group-expand-collapse'] {
+  position: relative;
+  padding-right: 19px;
+  top: -26px;
+  font-size: xx-small;
+}
+.panel-group a[id^='group-expand-collapse'] i {
+  padding-right: 10px;
 }
 .facets {
   list-style-type: none;

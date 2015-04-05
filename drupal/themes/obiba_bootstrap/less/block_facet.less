@@ -342,27 +342,51 @@
 
   .panel-heading {
     border-radius: 0 !important;
-    padding: 10px 10px;
-  }
-
-  .panel-heading .accordion-toggle:after {
-    /* symbol for "opening" panels */
-    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
-    float: right;        /* adjust as needed */
-    color: #02a676;         /* adjust as needed */
-  }
-  .panel-heading .accordion-toggle.collapsed:after {
-    /* symbol for "collapsed" panels */
-    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+    padding: 10px 5px;
+    color: #02a676;
   }
 
   .panel-title {
     font-size: 13px;
     color: #02a676;
 
-    .monospace > span {
-      font-family: monospace;
+    a#collapsible-taxonomy {
+      display: inline-flex;
+      display: -ms-flexbox;
+      display: -webkit-inline-flex;
+    }
+
+    span#panel-title-icon {
+      display: inline-flex;
+      display: -webkit-inline-flex;
+      display: -ms-flexbox;
+      padding-left: 5px;
+
+      i {
+        font-size: xx-small;
+        padding-top: 2px;
+      }
+    }
+
+    a>span:nth-child(2) {
+      display: inline-flex;
+      display: -webkit-inline-flex;
+      display: -ms-flexbox;
+      padding-right: 32px;
+      padding-left: 7px;
+      word-wrap: break-word;
+    }
+  }
+
+  a[id^='group-expand-collapse'] {
+    position: relative;
+    padding-right: 19px;
+    top:-26px;
+
+    font-size: xx-small;
+
+    i {
+      padding-right: 10px;
     }
   }
 }

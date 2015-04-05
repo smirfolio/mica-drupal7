@@ -4,7 +4,9 @@
   <ul class="nav nav-tabs facets-tab no-border" role="tablist" id="facet-search">
     <li class="active"><a href="#study-facet" role="tab" data-toggle="tab"> <?php print t('Studies') ?> </a></li>
     <li><a href="#variable-facet" role="tab" data-toggle="tab"><?php print t('Variables') ?> </a></li>
-    <li class="pull-right nonactive monospace"><a href="" data-all-collapsed="true" id="facets-expand-collapse">[+]</a></li>
+    <li class="pull-right nonactive monospace">
+      <a href="" data-all-collapsed="true" id="facets-expand-collapse"><i class="glyphicon glyphicon-plus"></i></a>
+    </li>
   </ul>
 
   <!-- Tab panes -->
