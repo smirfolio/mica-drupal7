@@ -32,7 +32,13 @@
               <?php $first_paragraph = explode('</p>', obiba_mica_commons_get_localized_field($study, 'objectives')); ?>
               <div><?php print $first_paragraph['0'] ?></div>
               <div class="objectives-trimed collapse"
-                id="objectives-<?php print $study->id; ?>"><?php print $first_paragraph['1'] ?></div>
+                id="objectives-<?php print $study->id; ?>">
+                <?php if (!empty($first_paragraph['1'])): ?>
+                  <?php print $first_paragraph['1'] ?>
+                <?php else: ?>
+                  <?php print obiba_mica_commons_get_localized_field($study, 'objectives'); ?>
+                <?php endif; ?>
+              </div>
               <?php if (count($first_paragraph) > 2): ?>
                 <button class="btn btn-primary btn-xs 5-top-margin trim-studies" type="button" data-toggle="collapse"
                   data-target="#objectives-<?php print $study->id; ?>" aria-expanded="false"

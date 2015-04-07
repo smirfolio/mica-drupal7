@@ -50,6 +50,7 @@
       <?php print render($list_studies); ?>
     <?php endif; ?>
   </div>
+  <div class="clearfix"></div>
   <div><?php print $pager_wrap; ?></div>
 
 </div>
