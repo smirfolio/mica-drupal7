@@ -164,8 +164,7 @@ function obiba_mica_dataset_library() {
         $lib_path_datatables . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.js' => array(),
       ),
       'css' => array(
-        $lib_path_datatables . '/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.css' => array(),
-        $lib_path_datatables . '/extensions/FixedColumns/css/dataTables.fixedColumns.min.css' => array()
+        $lib_path_datatables . '/extensions/FixedColumns/css/dataTables.fixedColumns.css' => array()
       )
     );
   }
