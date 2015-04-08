@@ -310,7 +310,8 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
       "data" => "variable",
       "name" => "name",
       "mDataProp" => "name",
-      "width" => "25%"
+      "width" => "25%",
+      "class" => "study-title"
     );
     foreach ($dataset_type_dto->studyTables as $study_table) {
       $study_summary = $study_table->studySummary;
@@ -326,7 +327,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
           "name" => str_replace(' ', '_', $acronym . obiba_mica_commons_get_localized_field($study_table, 'name')),
           "orderable" => FALSE,
           "width" => $witdh_column_study . "%",
-          "class" => "text-center"
+          "class" => "text-center study-title"
         );
       }
       else {
@@ -336,7 +337,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
           "name" => $acronym,
           "orderable" => FALSE,
           "width" => $witdh_column_study . "%",
-          "class" => "text-center"
+          "class" => "text-center study-title"
         );
       }
     }
