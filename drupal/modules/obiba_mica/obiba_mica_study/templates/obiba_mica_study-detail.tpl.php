@@ -330,8 +330,8 @@
         <?php endif; ?>
         <?php if (!empty($study_dto->pubmedId)): ?>
           <p>
-            <a href="http://www.ncbi.nlm.nih.gov/pubmed/<?php print $study_dto->pubmedId; ?>">
-              PUBMED <?php print $study_dto->pubmedId; ?>
+            <a href="http://www.ncbi.nlm.nih.gov/pubmed/<?php print $study_dto->pubmedId; ?>" target="_blank">
+            PUBMED <?php print $study_dto->pubmedId; ?>
             </a>
           </p>
         <?php endif; ?>
