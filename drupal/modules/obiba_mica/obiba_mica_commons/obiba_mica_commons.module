@@ -492,6 +492,6 @@ function obiba_mica_commons_format_number($number) {
     case 'fr':
       return number_format($number, 0, '', ' ');
     default :
-      return number_format($number, 0, '', ',');
+      return number_format($number);
   }
 }
