@@ -52,11 +52,11 @@ function obiba_mica_network_page_detail($network_id) {
 /**
  * @param $network_dto
  */
-function obiba_mica_network_studies_datatable_init($studySummaries)
-{
+function obiba_mica_network_studies_datatable_init($studySummaries) {
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
-  } else {
+  }
+  else {
     obiba_mica_commons_datatables_external_source();
   }
 
@@ -74,17 +74,16 @@ function obiba_mica_network_study_table_rows($study_summaries) {
       $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
       $rows[] = array(
         obiba_mica_commons_get_localized_field($study_summary, 'acronym'),
-        $study_summary->getPublished() ? MicaClientAnchorHelper::study($study_summary)  : t($name),
+        $study_summary->getPublished() ? MicaClientAnchorHelper::study($study_summary) : t($name),
         implode(', ', obiba_mica_commons_clean_string($study_summary->designs)),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
-          isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
+          isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL,
         obiba_mica_commons_countries($study_summary->countries),
         empty($study_summary->variables)
-          ? '-' : MicaClientAnchorHelper::study_variables($study_summary->variables, $study_summary->id)
+          ? '-' : MicaClientAnchorHelper::study_variables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id)
       );
 
-
-}
+    }
   }
   return $rows;
 }
@@ -95,7 +94,7 @@ function obiba_mica_network_study_table_headers() {
     array("title" => t('Name'), 'width' => '45%'),
     array("title" => t('Study Design'), 'width' => '20%'),
     array("title" => t('Participants'), 'width' => '15%'),
-    array("title" =>t('Country')),
+    array("title" => t('Country')),
     array("title" => t('Variables'))
   );
 }
@@ -111,7 +110,9 @@ function obiba_mica_network_coverage($study_ids) {
 function _obiba_mica_network_has_variables($study_summaries) {
   if (!empty($study_summaries)) {
     foreach ($study_summaries as $study_summary) {
-        if (!empty($study_summary->variables)) return true;
+      if (!empty($study_summary->variables)) {
+        return TRUE;
+      }
     }
   }
 

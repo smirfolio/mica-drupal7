@@ -836,7 +836,7 @@ function obiba_mica_search_studies_table($studies) {
             array('terms' => array('studyIds' => $study->id, 'variableType' => 'study'))
         ));
 
-      $number_variables = $study->{'obiba.mica.CountStatsDto.studyCountStats'}->variables;
+      $number_variables = obiba_mica_commons_format_number($study->{'obiba.mica.CountStatsDto.studyCountStats'}->variables);
       //MicaClient::obiba_mica_search_get_item_count('studies', 'variables', $study->id);
 
       $number_tables_study_harmo = $study->{'obiba.mica.CountStatsDto.studyCountStats'}->harmonizationDatasets;
@@ -891,7 +891,7 @@ function obiba_mica_search_studies_table($studies) {
       $study_column_participant = variable_get_value('studies_column_participants');
       if (!empty($study_column_participant)) {
         $column_row[] = isset($study->targetNumber->noLimit) ? t('No Limit') :
-          isset($study->targetNumber->number) ? $study->targetNumber->number : NULL;
+          isset($study->targetNumber->number) ? obiba_mica_commons_format_number($study->targetNumber->number) : NULL;
       }
       $study_column_networks = variable_get_value('studies_column_networks');
       if (!empty($study_column_networks)) {
@@ -981,7 +981,7 @@ function obiba_mica_search_datasets_table($datasets) {
         $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->studies : NULL;
 
       $count_variables = !empty($dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables) ?
-        $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables : NULL;
+        obiba_mica_commons_format_number($dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables) : NULL;
 
       if (!empty($dataset->{'obiba.mica.StudyDatasetDto.type'})) {
         $type_dataset_link = 'study-dataset';
@@ -1177,7 +1177,7 @@ function obiba_mica_search_networks_table($networks) {
         $network->{'obiba.mica.CountStatsDto.networkCountStats'}->harmonizationDatasets : NULL;
 
       $variables_count = !empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->variables) ?
-        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->variables : NULL;
+        obiba_mica_commons_format_number($network->{'obiba.mica.CountStatsDto.networkCountStats'}->variables) : NULL;
 
       $name = obiba_mica_commons_get_localized_field($network, 'name');
 

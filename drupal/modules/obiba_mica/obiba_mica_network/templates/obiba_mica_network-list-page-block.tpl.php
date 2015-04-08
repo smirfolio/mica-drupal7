@@ -4,7 +4,7 @@
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-           class="listImageThumb"/>
+        class="listImageThumb"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-N"></span>
@@ -20,11 +20,11 @@
       <p class="md-top-margin">
         <small>
           <?php
-            print MicaClientAnchorHelper::ellipses(
-              t('Read more'),
-              obiba_mica_commons_get_localized_field($network, 'description'),
-              MicaClientPathProvider::NETWORK($network->id)
-            );
+          print MicaClientAnchorHelper::ellipses(
+            t('Read more'),
+            obiba_mica_commons_get_localized_field($network, 'description'),
+            MicaClientPathProvider::NETWORK($network->id)
+          );
           ?>
         </small>
       </p>
@@ -51,7 +51,8 @@
       <?php endif ?>
       <?php if (!empty($variables) && variable_get_value('networks_column_variables')): ?>
         <span class="label label-default rounded">
-            <?php print MicaClientAnchorHelper::network_variables(t('@count ' . $vars_caption, array('@count' => $variables)), $network->id) ?>
+            <?php print MicaClientAnchorHelper::network_variables(t('@count ' . $vars_caption,
+              array('@count' => obiba_mica_commons_format_number($variables))), $network->id) ?>
           </span>
       <?php endif ?>
     </div>

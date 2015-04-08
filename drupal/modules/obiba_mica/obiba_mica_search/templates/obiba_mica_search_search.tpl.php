@@ -3,7 +3,7 @@
 $show_tabs = TRUE;
 if (!empty($search_param)) {
   $count = 0;
-  foreach($search_param as $param) {
+  foreach ($search_param as $param) {
     $count += !empty($param);
   }
 
@@ -56,7 +56,7 @@ if (!empty($search_param)) {
 
       <?php if (!empty($search_param['search_variables'])): ?>
         <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
-            (<?php print !empty($variable_total_hits) ? $variable_total_hits : 0; ?>)
+            (<?php print !empty($variable_total_hits) ? obiba_mica_commons_format_number($variable_total_hits) : 0; ?>)
           </a>
         </li>
       <?php endif; ?>
@@ -69,33 +69,36 @@ if (!empty($search_param)) {
 
     <?php if (!empty($search_param['search_variables'])): ?>
       <div class="tab-pane active" id="variables">
-        <article class="<?php print $border_style?>">
-          <section class="<?php print $border_style . ' ' . $padding_style?>">
+        <article class="<?php print $border_style ?>">
+          <section class="<?php print $border_style . ' ' . $padding_style ?>">
             <div>
-            <?php if ($show_tabs): ?>
-              <h2 class="pull-left"><?php print t('Variables') ?></h2>
-            <?php else: ?>
-              <h3 class="pull-left">
-                <?php print t('Variables') ?>
-                <span style="color: lightgray"><?php print  ' (' . (!empty($variable_total_hits) ? $variable_total_hits : 0) . ')'; ?></span>
-              </h3>
-            <?php endif; ?>
+              <?php if ($show_tabs): ?>
+                <h2 class="pull-left"><?php print t('Variables') ?></h2>
+              <?php else: ?>
+                <h3 class="pull-left">
+                  <?php print t('Variables') ?>
+                  <span style="color: lightgray">
+                  <?php print  ' (' . (!empty($variable_total_hits) ?
+                      obiba_mica_commons_format_number($variable_total_hits) : 0) . ')'; ?>
+                </span>
+                </h3>
+              <?php endif; ?>
 
-            <div class="pull-right lg-top-margin facet-search-form">
-              <?php print render($variable_search_form) ?>
-              <p>
-                <?php
-                if (variable_get_value('mica_statistics_coverage')) {
-                  print MicaClientAnchorHelper::ajax_friendly_anchor(
-                    MicaClientPathProvider::COVERAGE,
-                    t(variable_get_value('variable_coverage_label')),
-                    array('class' => 'btn btn-primary indent'),
-                    array('query' => $query, 'group-by' => 'studyIds')
-                  );
-                }
-                ?>
-              </p>
-            </div>
+              <div class="pull-right lg-top-margin facet-search-form">
+                <?php print render($variable_search_form) ?>
+                <p>
+                  <?php
+                  if (variable_get_value('mica_statistics_coverage')) {
+                    print MicaClientAnchorHelper::ajax_friendly_anchor(
+                      MicaClientPathProvider::COVERAGE,
+                      t(variable_get_value('variable_coverage_label')),
+                      array('class' => 'btn btn-primary indent'),
+                      array('query' => $query, 'group-by' => 'studyIds')
+                    );
+                  }
+                  ?>
+                </p>
+              </div>
             </div>
             <div class="clearfix"/>
             <?php print $variables_result['data']; ?>

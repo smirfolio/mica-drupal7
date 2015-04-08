@@ -296,7 +296,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
 
       if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
         $variable_nbr_row = $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;;
-        $nb_variables = l($variable_nbr_row, 'mica/search',
+        $nb_variables = l(obiba_mica_commons_format_number($variable_nbr_row), 'mica/search',
           array(
             'query' => array(
               'type' => 'variables',

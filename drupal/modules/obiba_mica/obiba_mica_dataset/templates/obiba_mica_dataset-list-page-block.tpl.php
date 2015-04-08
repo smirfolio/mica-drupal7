@@ -3,7 +3,7 @@
     <div class="col-md-12  col-sm-12 col-xs-12">
       <h4>
         <?php
-          print MicaClientAnchorHelper::dataset_list_item($dataset);
+        print MicaClientAnchorHelper::dataset_list_item($dataset);
         ?>
       </h4>
       <hr class="no-margin">
@@ -40,7 +40,8 @@
         <?php endif ?>
         <?php if (!empty($variables) && variable_get_value('datasets_column_variables')): ?>
           <span class="label label-default rounded">
-            <?php print MicaClientAnchorHelper::dataset_variables(t('@count ' . $vars_caption, array('@count' => $variables)), $dataset->id) ?>
+            <?php print MicaClientAnchorHelper::dataset_variables(t('@count ' . $vars_caption,
+              array('@count' => obiba_mica_commons_format_number($variables))), $dataset->id) ?>
           </span>
         <?php endif ?>
       </div>

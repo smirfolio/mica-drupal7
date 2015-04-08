@@ -1,7 +1,7 @@
 <?php
-  $description = empty($dataset_dto->description)
-    ? NULL
-    : obiba_mica_commons_get_localized_field($dataset_dto, 'description');
+$description = empty($dataset_dto->description)
+  ? NULL
+  : obiba_mica_commons_get_localized_field($dataset_dto, 'description');
 ?>
 
 <div>
@@ -18,9 +18,10 @@
         <li><?php print MicaClientAnchorHelper::coverage_dataset($dataset_dto->id) ?></li>
         <li><?php print MicaClientAnchorHelper::dataset_variables(NULL, $dataset_dto->id) ?></li>
       </ul>
-    <?php else:
+    <?php
+    else:
       print MicaClientAnchorHelper::dataset_variables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary indent'));
-    ?>
+      ?>
     <?php endif; ?>
   </div>
 </div>
@@ -70,7 +71,8 @@
           <th><?php print t('Number of variables') ?></th>
           <td>
             <p>
-              <?php print MicaClientAnchorHelper::dataset_variables(empty($variables_dataset->total) ? 0 : $variables_dataset->total, $dataset_dto->id); ?>
+              <?php print MicaClientAnchorHelper::dataset_variables(empty($variables_dataset->total) ? 0 :
+                obiba_mica_commons_format_number($variables_dataset->total), $dataset_dto->id); ?>
             </p>
           </td>
         </tr>
@@ -91,7 +93,7 @@
 <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
   <section>
     <h2>
-    <?php
+      <?php
       if (!empty($dataset_type_dto->project)):
         echo t('Studies');
       else:
@@ -172,7 +174,8 @@
             <th><?php print t('Target number of participants') ?></th>
             <td>
               <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
-                isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ? $dataset_type_dto->studyTable->studySummary->targetNumber->number : NULL; ?>
+                isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ?
+                  obiba_mica_commons_format_number($dataset_type_dto->studyTable->studySummary->targetNumber->number) : NULL; ?>
             </td>
           </tr>
           <tr>
@@ -226,10 +229,10 @@
     <div class="clearfix">
     </div>
     <div id="variables-table"
-         type-dataset="<?php print $dataset_type; ?>"
-         id-dataset="<?php print $dataset_dto->id; ?>">
+      type-dataset="<?php print $dataset_type; ?>"
+      id-dataset="<?php print $dataset_dto->id; ?>">
 
-      <div class="row">
+    <div class="row">
         <div class="col-lg-12 col-xs-12">
           <table class="table table-striped" id="table-variables"></table>
         </div>

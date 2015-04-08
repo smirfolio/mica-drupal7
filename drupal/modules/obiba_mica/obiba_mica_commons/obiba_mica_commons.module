@@ -485,3 +485,13 @@ function obiba_mica_commons_markdown($text) {
 function obiba_mica_commons_is_ajax() {
   return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }
+
+function obiba_mica_commons_format_number($number) {
+  global $language;
+  switch ($language->language) {
+    case 'fr':
+      return number_format($number, 0, '', ' ');
+    default :
+      return number_format($number, 0, '', ',');
+  }
+}

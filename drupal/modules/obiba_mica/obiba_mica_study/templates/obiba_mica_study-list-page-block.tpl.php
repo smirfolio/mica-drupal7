@@ -77,7 +77,7 @@
               <span>
               <?php print $study->targetNumber->noLimit === TRUE
                 ? t('No limits')
-                : (empty($study->targetNumber->number) ? t('n/a') : $study->targetNumber->number)
+                : (empty($study->targetNumber->number) ? t('n/a') : obiba_mica_commons_format_number($study->targetNumber->number))
               ?>
             </span>
             <?php endif; ?>
