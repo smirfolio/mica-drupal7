@@ -311,7 +311,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
       "name" => "name",
       "mDataProp" => "name",
       "width" => "25%",
-      "class" => "study-title"
+      "class" => "study-title",
     );
     foreach ($dataset_type_dto->studyTables as $study_table) {
       $study_summary = $study_table->studySummary;
