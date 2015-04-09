@@ -15,7 +15,7 @@
       <a
         href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study', TRUE) ?>"
         class="fancybox-button">
-      <img
+        <img
           src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
           class="imageThumb">
       </a>
@@ -28,7 +28,7 @@
     <?php if (variable_get_value('mica_statistics_coverage')): ?>
       <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle hidden" data-toggle="dropdown"
         aria-expanded="false">
-      <?php print t('Search') ?> <span class="caret"></span>
+        <?php print t('Search') ?> <span class="caret"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <li><?php print MicaClientAnchorHelper::coverage_study($study_dto->id) ?></li>
@@ -89,7 +89,7 @@
               <li>
                 <a href="#" data-toggle="modal"
                   data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
-                <?php print $investigator->title; ?>
+                  <?php print $investigator->title; ?>
                   <?php print $investigator->firstName; ?>
                   <?php print $investigator->lastName; ?>
                   <?php if (!empty($investigator->academicLevel)) {
@@ -113,7 +113,7 @@
               <li>
                 <a href="#" data-toggle="modal"
                   data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
-                <?php print $contact->title; ?>
+                  <?php print $contact->title; ?>
                   <?php print $contact->firstName; ?>
                   <?php print $contact->lastName; ?>
                   <?php if (!empty($contact->academicLevel)) {
@@ -213,7 +213,7 @@
         <th><?php print t('Target number of participants') ?></th>
         <td>
           <p>
-            <?php print $study_dto->numberOfParticipants->participant->number; ?>
+            <?php print obiba_mica_commons_format_number($study_dto->numberOfParticipants->participant->number); ?>
             <?php if (!empty($study_dto->numberOfParticipants->participant->noLimit)): ?>
               (<?php print t('No limit'); ?>)
             <?php endif; ?>
@@ -227,7 +227,7 @@
         <th><?php print t('Target number of participants with biological samples') ?></th>
         <td>
           <p>
-            <?php print $study_dto->numberOfParticipants->sample->number; ?>
+            <?php print obiba_mica_commons_format_number($study_dto->numberOfParticipants->sample->number); ?>
             <?php if (!empty($study_dto->numberOfParticipants->sample->noLimit)): ?>
               (<?php print t('No limit'); ?>)
             <?php endif; ?>
@@ -331,7 +331,7 @@
         <?php if (!empty($study_dto->pubmedId)): ?>
           <p>
             <a href="http://www.ncbi.nlm.nih.gov/pubmed/<?php print $study_dto->pubmedId; ?>" target="_blank">
-            PUBMED <?php print $study_dto->pubmedId; ?>
+              PUBMED <?php print $study_dto->pubmedId; ?>
             </a>
           </p>
         <?php endif; ?>
@@ -398,7 +398,7 @@
                 print 'active';
               } ?>"
                 id="population-<?php print $key; ?>">
-              <?php print $population['html']; ?>
+                <?php print $population['html']; ?>
               </div>
             <?php endforeach ?>
           </div>

@@ -6,6 +6,8 @@
 include_once('includes/obiba_mica_dataset_resource.inc');
 
 function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
+  global $language;
+
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
   }

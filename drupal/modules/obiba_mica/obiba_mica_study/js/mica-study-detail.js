@@ -2,7 +2,8 @@
   Drupal.behaviors.obiba_mica_study_detail = {
     attach: function (context, settings) {
       if(context === document) {
-        var qCoverage = $.ajax(settings.study_url + '/coverage')
+        console.log(settings.study_url);
+        var qCoverage = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/coverage')
           .done(function (data) {
             if (!data) {
               $('#coverage').remove();
@@ -16,7 +17,7 @@
             $('#coverage').remove();
           });
 
-        var qNetworks = $.ajax(settings.study_url + '/networks')
+        var qNetworks = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/networks')
           .done(function(data) {
             if (!data) {
               $('#networks').remove();
@@ -29,7 +30,7 @@
             $('#networks').remove();
           });
 
-        var qDatasets = $.ajax(settings.study_url + '/datasets')
+        var qDatasets = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/datasets')
           .done(function(data) {
             if (!data) {
               $('#datasets').remove();

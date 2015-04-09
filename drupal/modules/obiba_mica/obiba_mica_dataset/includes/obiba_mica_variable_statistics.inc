@@ -288,14 +288,15 @@ class VariableStatistics {
             if ($frequency->value == $missing) {
               $count = $frequency->count;
               $pct = empty($aggregation->total) ? 0 : round(($count / $aggregation->total) * 100, 1);
-              $count .= '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
+              $count = obiba_mica_commons_format_number($count) .
+                '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
               break;
             }
           }
         }
         $row[] = $count;
       }
-      $row[] = empty($aggregation->total) ? '-' : $aggregation->total;
+      $row[] = empty($aggregation->total) ? '-' : obiba_mica_commons_format_number($aggregation->total);
       $rows[] = $row;
     }
 
@@ -315,14 +316,14 @@ class VariableStatistics {
             if ($frequency->value == $missing) {
               $count = $frequency->count;
               $pct = empty($aggregation->total) ? NULL : round(($count / $aggregation->total) * 100, 1);
-              $count = empty($pct) ? '0' : $count . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
+              $count = empty($pct) ? '0' : obiba_mica_commons_format_number($count) . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
               break;
             }
           }
         }
         $row[] = $count;
       }
-      $row[] = empty($aggregation->total) ? '-' : $aggregation->total;
+      $row[] = empty($aggregation->total) ? '-' : obiba_mica_commons_format_number($aggregation->total);
       $rows[] = $row;
     }
 
@@ -398,7 +399,7 @@ class VariableStatistics {
         $row = array(
           array(
             'data' => $category->name . '<p class="help-inline">' . $category_label . '</p>',
-            'data-toggle' => 'tooltip' ,
+            'data-toggle' => 'tooltip',
             'data-original-title' => $category_label,
           )
         );
@@ -494,7 +495,7 @@ class VariableStatistics {
 
     foreach ($aggregations as $aggregation) {
       $row[] = array(
-        'data' => $aggregation->total,
+        'data' => obiba_mica_commons_format_number($aggregation->total),
         'class' => array('active')
       );
     }
@@ -508,9 +509,14 @@ class VariableStatistics {
     $percent = $subtotal > 0 ? round(($count / $subtotal) * 100, 1) : 0;
     $total_title = t('Percentage over total count');
     if (!empty($title)) {
-      return $count . '<div class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' . $percent_total . '%</div><div class="help-inline" data-toggle="tooltip" title="" data-original-title="' . t($title) . '"><i>(' . $percent . '%)</i></div>';
+      return obiba_mica_commons_format_number($count)
+      . '<div class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' .
+      $percent_total . '%</div><div class="help-inline" data-toggle="tooltip" title="" data-original-title="' .
+      t($title) . '"><i>(' . $percent . '%)</i></div>';
     }
-    return $count . '<p class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' . $percent_total . '%</p>';
+    return obiba_mica_commons_format_number($count) .
+    '<p class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' .
+    $percent_total . '%</p>';
   }
 
   private function statistics_to_row($aggregation) {
@@ -523,7 +529,7 @@ class VariableStatistics {
         property_exists($statistics, 'max') ? round($statistics->max, 1) : '-',
         property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ? round($statistics->mean, 1) : '-',
         property_exists($statistics, 'stdDeviation') ? round($statistics->stdDeviation, 1) : '-',
-        $n
+        obiba_mica_commons_format_number($n)
       );
     }
     else {

@@ -168,7 +168,7 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
     $name,
     implode(', ', obiba_mica_commons_clean_string($study_summary->designs)),
     isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
-      isset($study_summary->targetNumber->number) ? $study_summary->targetNumber->number : NULL,
+      isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL,
     obiba_mica_commons_countries($study_summary->countries),
   );
 }

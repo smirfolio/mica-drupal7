@@ -54,7 +54,7 @@ function obiba_mica_study_page_detail($study_id) {
   obiba_mica_study_load_libs();
   global $base_url;
   drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/mica-study-detail.js', 'file');
-  drupal_add_js(array('study_url' => $base_url . '/'.MicaClientPathProvider::study($study_id)), 'setting');
+  drupal_add_js(array('study_url' => $study_id), 'setting');
 
   drupal_add_js('https://www.google.com/jsapi', 'external');
   drupal_add_js(drupal_get_path('module', 'charts_google') . '/charts_google.js', 'file');

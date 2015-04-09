@@ -17,7 +17,7 @@
           var $btn = $(this).button('loading');
           $('.collapse').collapse();
           $.ajax({
-            'url': Drupal.settings.basePath + 'mica/variables-harmonization-algo/' + idHarmonizationVariable + '/' + JSON.stringify(getSortedVariableNames()),
+            'url': Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variables-harmonization-algo/' + idHarmonizationVariable + '/' + JSON.stringify(getSortedVariableNames()),
             'type': 'GET',
             'dataType': 'html',
             'data': '',

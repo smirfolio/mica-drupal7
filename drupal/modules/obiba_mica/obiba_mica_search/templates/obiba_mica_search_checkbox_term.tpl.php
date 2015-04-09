@@ -8,7 +8,9 @@
         $mica_client = new MicaClient();
         if ($aggregation_facet == 'populations-selectionCriteria-countriesIso') {
           $title = countries_country_lookup(drupal_strtoupper($term->title), 'iso' . strlen($term->title))->name;
-          if (empty($title)) $title = $term->title;
+          if (empty($title)) {
+            $title = $term->title;
+          }
         }
         else {
           $title = $term->title;
@@ -29,19 +31,19 @@
       <?php if ($query_request && ($_SESSION['request-search-response'] == 'no-empty') && $term->count != 0) : ?>
         <td class='term-count'>
           <span data-toggle="tooltip" data-placement="top" title="Filtered">
-            <?php print $term->count; ?>
+            <?php print obiba_mica_commons_format_number($term->count); ?>
           </span>
         </td>
       <?php endif; ?>
       <?php if (!$query_request): ?>
         <td class='term-count'>
           <span data-toggle="tooltip" data-placement="top"
-            title="All"><?php print $term->default; ?></span>
+            title="All"><?php print obiba_mica_commons_format_number($term->default); ?></span>
         </td>
       <?php elseif (($term->count != $term->default) || ($_SESSION['request-search-response'] == 'empty')) : ?>
         <td class='term-default'>
           <span data-toggle="tooltip" data-placement="top" title="All">
-            <?php print $term->default; ?>
+            <?php print obiba_mica_commons_format_number($term->default); ?>
           </span>
         </td>
       <?php endif; ?>
