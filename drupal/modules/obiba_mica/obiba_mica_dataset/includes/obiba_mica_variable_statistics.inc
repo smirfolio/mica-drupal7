@@ -289,7 +289,7 @@ class VariableStatistics {
               $count = $frequency->count;
               $pct = empty($aggregation->total) ? 0 : round(($count / $aggregation->total) * 100, 1);
               $count = obiba_mica_commons_format_number($count) .
-                '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
+                '<p class="help-inline" title="Percentage over total count">' . obiba_mica_commons_format_number($pct, 1) . '%</p>';
               break;
             }
           }
@@ -316,7 +316,8 @@ class VariableStatistics {
             if ($frequency->value == $missing) {
               $count = $frequency->count;
               $pct = empty($aggregation->total) ? NULL : round(($count / $aggregation->total) * 100, 1);
-              $count = empty($pct) ? '0' : obiba_mica_commons_format_number($count) . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
+              $count = empty($pct) ? '0' : obiba_mica_commons_format_number($count) .
+                '<p class="help-inline" title="Percentage over total count">' . obiba_mica_commons_format_number($pct, 1) . '%</p>';
               break;
             }
           }
@@ -511,8 +512,9 @@ class VariableStatistics {
     if (!empty($title)) {
       return obiba_mica_commons_format_number($count)
       . '<div class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' .
-      $percent_total . '%</div><div class="help-inline" data-toggle="tooltip" title="" data-original-title="' .
-      t($title) . '"><i>(' . $percent . '%)</i></div>';
+      obiba_mica_commons_format_number($percent_total, 1) . '%</div><div class="help-inline" data-toggle="tooltip" title="" data-original-title="' .
+
+      t($title) . '"><i>(' . obiba_mica_commons_format_number($percent, 1) . '%)</i></div>';
     }
     return obiba_mica_commons_format_number($count) .
     '<p class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' .
@@ -525,10 +527,11 @@ class VariableStatistics {
       $pct = empty($aggregation->total) ? 0 : round(($aggregation->n / $aggregation->total) * 100, 1);
       $n = $aggregation->n . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
       return array(
-        property_exists($statistics, 'min') ? round($statistics->min, 1) : '-',
-        property_exists($statistics, 'max') ? round($statistics->max, 1) : '-',
-        property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ? round($statistics->mean, 1) : '-',
-        property_exists($statistics, 'stdDeviation') ? round($statistics->stdDeviation, 1) : '-',
+        property_exists($statistics, 'min') ? obiba_mica_commons_format_number(round($statistics->min, 1), 1) : '-',
+        property_exists($statistics, 'max') ? obiba_mica_commons_format_number(round($statistics->max, 1), 1) : '-',
+        property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ?
+          obiba_mica_commons_format_number(round($statistics->mean, 1), 1) : '-',
+        property_exists($statistics, 'stdDeviation') ? obiba_mica_commons_format_number(round($statistics->stdDeviation, 1), 1) : '-',
         obiba_mica_commons_format_number($n)
       );
     }
