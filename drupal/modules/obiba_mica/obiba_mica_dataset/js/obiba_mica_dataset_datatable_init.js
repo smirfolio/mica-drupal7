@@ -25,10 +25,11 @@
     var idDataset = divDataTableVar.attr('id-dataset');
     var typeDataset = divDataTableVar.attr('type-dataset');
     var headerTable = null;
-
+    console.log(Drupal.settings.basePath);
+    console.log(Drupal.settings.pathPrefix);
     $.ajax({
       'async': false,
-      'url': Drupal.settings.basePath + 'mica/variables-tab-header/' + typeDataset,
+      'url': Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variables-tab-header/' + typeDataset,
       'type': 'GET',
       'success': function (data) {
         setHeaderTab(data);
@@ -67,7 +68,7 @@
         "sDom": '<"table-var-wrapper" <"md-top-margin" i>rt<"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
         "bServerSide": true,
         "iDisplayLength": 25,
-        "sAjaxSource": Drupal.settings.basePath + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
+        "sAjaxSource": Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
         "aoColumns": headerTable,
         "searching": true,
         "ordering": true,
@@ -78,7 +79,7 @@
           updateTooltip();
         },
         "language": {
-          "url": Drupal.settings.basePath + 'mica/datatable-international'
+          "url": Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/datatable-international'
         }
       });
 

@@ -14,7 +14,7 @@
 
       $.ajax({
         'async': false,
-        'url': Drupal.settings.basePath + 'mica/get_fixed_sidebar/' + template,
+        'url': Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/get_fixed_sidebar/' + template,
         'type': 'GET',
         'success': function (data) {
           // console.log("DATA", JSON.stringify(data));

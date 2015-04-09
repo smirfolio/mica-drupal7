@@ -486,12 +486,14 @@ function obiba_mica_commons_is_ajax() {
   return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 }
 
-function obiba_mica_commons_format_number($number) {
+function obiba_mica_commons_format_number($number, $nbr_decimals = 0) {
+  ;
   global $language;
   switch ($language->language) {
     case 'fr':
-      return number_format($number, 0, '', ' ');
+      return number_format($number, $nbr_decimals, ',', ' ');
     default :
-      return number_format($number);
+      return number_format($number, $nbr_decimals, '.', ',');
   }
+
 }
