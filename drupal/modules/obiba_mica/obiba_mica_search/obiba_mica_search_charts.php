@@ -204,7 +204,9 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
 
   // filter and order the named taxonomies
   $mica_taxonomy_figures = trim(variable_get_value('mica_taxonomy_figures'));
-  if(empty($mica_taxonomy_figures)) return $taxonomy_charts;
+  if (empty($mica_taxonomy_figures)) {
+    return $taxonomy_charts;
+  }
 
   $taxonomy_figures = explode(',', $mica_taxonomy_figures);
   $filtered_coverages = array();
@@ -220,7 +222,7 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
   return $filtered_coverages;
 }
 
-function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none', $raw_options = array()) {
   $chart_param = variable_get('charts_default_settings');
 
   $chart = array(
@@ -235,12 +237,13 @@ function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $heig
     '#data_labels' => FALSE,
     '#legend' => $legend_position != 'none',
     '#tooltips' => TRUE,
+    '#raw_options' => $raw_options
   );
   $chart['pie_data'] = array(
     '#type' => 'chart_data',
     '#title' => empty($title) ? ' ' : $title,
     '#labels' => $labels,
-    '#data' => $data,
+    '#data' => $data
   );
 
   return $chart;
