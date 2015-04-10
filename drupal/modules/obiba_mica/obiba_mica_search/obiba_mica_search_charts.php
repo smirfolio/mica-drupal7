@@ -224,7 +224,6 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
 
 function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart_param = variable_get('charts_default_settings');
-  //$raw_options = array();
   $raw_options = array(
     'chartArea' => array(
       'left' => "0",
