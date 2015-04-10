@@ -10,8 +10,8 @@ include_once('includes/obiba_mica_variable_statistics.inc');
 function obiba_mica_variable_page_detail($variable_id) {
   $library_chart = obiba_mica_variable_load_chart_libraries();
   drupal_add_js(
-    drupal_get_path('module', 'charts') .
-    '/modules/charts_' . $library_chart .
+    drupal_get_path('module', 'obiba_mica_dataset') .
+    '/js/charts_' . $library_chart .
     '/charts_' . $library_chart . '.js', 'file');
   if ($library_chart == 'google') {
     drupal_add_js('https://www.google.com/jsapi', 'file');
