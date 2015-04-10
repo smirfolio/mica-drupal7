@@ -102,7 +102,7 @@
 
             var selectedItem = wrap.getChart().getSelection()[0].row + 1;
             if (selectedItem) {
-              console.log(config.data[selectedItem]);
+              console.log(config.data[selectedItem][0]);
 //            var topping = config.data.getValue(selectedItem.row, 0);
 //            alert('The user selected ' + topping);
             }

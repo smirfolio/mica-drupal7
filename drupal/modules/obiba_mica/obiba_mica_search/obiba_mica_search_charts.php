@@ -293,7 +293,7 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
   }
   $raw_options['vAxis']['logScale'] = FALSE;
   $raw_options['vAxis']['minorGridlines']['count'] = 0;
-
+  dpm($labels);
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
@@ -308,6 +308,7 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
     '#raw_options' => $raw_options,
   );
   foreach ($data as $key => $datum) {
+    dpm($datum);
     $chart[$key] = array(
       '#type' => 'chart_data',
       '#title' => ' ' . $key, // google chart has a bug when title is a number
