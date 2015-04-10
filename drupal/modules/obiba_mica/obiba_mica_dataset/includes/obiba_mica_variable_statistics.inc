@@ -9,9 +9,12 @@ class VariableStatistics {
 
   private $variable_stat;
 
+  private $dataset_detailed_var_stats;
+
   function __construct($variable, $variable_stat) {
     $this->variable = $variable;
     $this->variable_stat = $variable_stat;
+    $this->dataset_detailed_var_stats = variable_get_value('dataset_detailed_var_stats');
   }
 
   /**
@@ -108,6 +111,12 @@ class VariableStatistics {
    */
   private function as_pie_chart() {
     $aggregation = $this->variable_stat;
+    $raw_options = array(
+      'chartArea' => array(
+        'left' => "0",
+        'width' => "100%"
+      )
+    );
     if (empty($aggregation->frequencies)) {
       return FALSE;
     }
@@ -126,7 +135,11 @@ class VariableStatistics {
     }
 
     if (!empty($data) && count($data) > 1) {
-      $to_render = obiba_mica_search_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right');
+      if (!empty($this->dataset_detailed_var_stats) && $this->variable->variableType == 'Dataschema') {
+        $raw_options = array();
+      }
+
+      $to_render = obiba_mica_search_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right', $raw_options);
       return render($to_render);
     }
     else {
@@ -248,9 +261,8 @@ class VariableStatistics {
   private function as_descriptive_table() {
     $rows = array();
     $aggregations = array();
-    $show_detail_stats = variable_get_value('dataset_detailed_var_stats');
 
-    if ($show_detail_stats && $this->variable->variableType == 'Dataschema') {
+    if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
       if (!empty($this->variable_stat->aggregations)) {
         $aggregations = $this->variable_stat->aggregations;
       }
@@ -272,7 +284,7 @@ class VariableStatistics {
     // statistics
     foreach ($aggregations as $aggregation) {
       $row = array();
-      if ($show_detail_stats && $this->variable->variableType == 'Dataschema') {
+      if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
         $study_id = $aggregation->studyTable->studyId;
         $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
         if (!empty($aggregation->studyTable->name)) {
@@ -301,9 +313,9 @@ class VariableStatistics {
     }
 
     // combined statistics
-    if ($show_detail_stats && $this->variable->variableType == 'Dataschema') {
+    if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
       $row = array();
-      if ($show_detail_stats) {
+      if ($this->dataset_detailed_var_stats) {
         $row[] = array('data' => '<strong>' . t('All') . '</strong>');
       }
 
@@ -330,7 +342,7 @@ class VariableStatistics {
 
     // headers
     $headers = array();
-    if ($show_detail_stats && $this->variable->variableType == 'Dataschema') {
+    if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
       $headers = array(t('Study'));
     }
     array_push($headers, t('Min'), t('Max'), t('Mean'), t('Std. Dev'), t('N'));
@@ -354,7 +366,7 @@ class VariableStatistics {
     $missing_rows = array();
     $aggregations = array();
     // headers
-    if (variable_get_value('dataset_detailed_var_stats') && $this->variable->variableType == 'Dataschema') {
+    if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
       if (!empty($this->variable_stat->aggregations)) {
         $aggregations = $this->variable_stat->aggregations;
         foreach ($aggregations as $aggregation) {

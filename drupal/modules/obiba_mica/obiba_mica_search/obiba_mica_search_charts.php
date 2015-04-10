@@ -222,14 +222,9 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
   return $filtered_coverages;
 }
 
-function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
+function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none', $raw_options = array()) {
   $chart_param = variable_get('charts_default_settings');
-  $raw_options = array(
-    'chartArea' => array(
-      'left' => "0",
-      'width' => "100%"
-    )
-  );
+
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
