@@ -556,7 +556,7 @@ function obiba_mica_dataset_page_detail_download($dataset_id) {
     $copyright_notice = variable_get_value('mica_copyright_notice');
     $csv_response = !empty($copyright_notice) ? '"' . t($copyright_notice) . '"' . chr(13) : '';
     $csv_response .= $response->body;
-    print $csv_response;
+    print module_invoke_all('harmonization_csv_alter', $csv_response)[0];
     exit;
   }
 }
