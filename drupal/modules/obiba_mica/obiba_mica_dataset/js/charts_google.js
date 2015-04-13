@@ -100,11 +100,12 @@
           function selectHandler() {
             var selectedItem = wrap.getChart().getSelection()[0].row + 1;
             if (selectedItem) {
-              console.log(config.data[selectedItem][0]);
-              console.log(config.options.links[wrap.getChart().getSelection()[0].row + 1]);
+              console.log(wrap.getChart().getSelection());
+              // console.log(config.options.links[wrap.getChart().getSelection()[0].row + 1]);
 //            var topping = config.data.getValue(selectedItem.row, 0);
 //            alert('The user selected ' + topping);
-              window.location.href = 'http://localhost/drupal/mica/search#!query=' + config.options.links[wrap.getChart().getSelection()[0].row ];
+              //window.location.href = 'http://localhost/drupal/mica/search#!query=' +
+              // config.options.links[ wrap.getChart().getSelection()[0].row ][ wrap.getChart().getSelection()[0].column ];
             }
           }
 

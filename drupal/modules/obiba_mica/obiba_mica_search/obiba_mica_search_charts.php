@@ -166,44 +166,69 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
       $labels = array();
       $data = array();
       foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
-        if (!empty($vocabulary_coverage->count)) {
-          $labels[] = obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
-          if (!empty($vocabulary_coverage->buckets)) {
-            foreach ($vocabulary_coverage->buckets as $bucket) {
-              if (empty($bucket_filter) || $bucket_filter($bucket, $bucket_filter_arg)) {
-                $data[$bucket->value][] = $bucket->count;
-              }
-            }
-          }
-          else {
-            $data[t('Variables')][] = $vocabulary_coverage->count;
-          }
-        }
         foreach ($vocabulary_coverage->terms as $term) {
-          dpm($term);
           $terms[] = $term->term->name;
 //          foreach($term->buckets as $term_bucket){
 //            $buckets
 //          }
 
         }
-        if (!empty($terms)) {
-
-          $links[] = MicaClient::add_parameter_dto_query_link(
-            array(
-              'variables' => array(
-                'terms' => array(
-                  'attributes-'
-                  . $taxonomy_coverage->taxonomy->name . '__' .
-                  $vocabulary_coverage->vocabulary->name . '-und' => $terms,
-
-                )
-              )
-            )
-          );
+        if (!empty($vocabulary_coverage->count)) {
+          $labels[] = obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
+          if (!empty($vocabulary_coverage->buckets)) {
+            foreach ($vocabulary_coverage->buckets as $key => $bucket) {
+              dpm($bucket);
+              if (empty($bucket_filter) || $bucket_filter($bucket, $bucket_filter_arg)) {
+                $data[$bucket->value][] = $bucket->count;
+//                $term_param =  (!empty($terms)) ?
+//
+//                   MicaClient::add_parameter_dto_query_link(
+//                    array(
+//                      'variables' => array(
+//                        'terms' => array(
+//                          'attributes-'
+//                          . $taxonomy_coverage->taxonomy->name . '__' .
+//                          $vocabulary_coverage->vocabulary->name . '-und' => $terms
+//                        ),
+//                        $bucket->field => $bucket->value
+//                      )
+//                    )
+//                  )
+//                :'';
+//                $link[$key] = MicaClient::concatenate_parameter_terms(json_decode($query),json_decode($term_param, true));
+//                $link[$key] =  json_encode($link[$key]);
+//                dpm($link[$key]);
+              }
+            }
+          }
+          else { //dpm(json_decode($query));
+            $data[t('Variables')][] = $vocabulary_coverage->count;
+//            if(!empty($terms)){
+//              $term_param = MicaClient::add_parameter_dto_query_link(
+//                array(
+//                  'variables' => array(
+//                    'terms' => array(
+//                      'attributes-'
+//                      . $taxonomy_coverage->taxonomy->name . '__' .
+//                      $vocabulary_coverage->vocabulary->name . '-und' => $terms
+//                    )
+//                  )
+//                )
+//              );
+//           //   dpm(json_decode($term_param));
+//           //   dpm(json_decode($query));
+//              $link = MicaClient::concatenate_parameter_terms(json_decode($query),json_decode($term_param, true));
+//              $link =  json_encode($link);
+//              $link = MicaClient::add_parameter_dto_query_link($link);
+//            }
+          }
+          if (!empty($link)) {
+            $links[] = $link;
+          }
         }
       }
       if (!empty($data)) {
+        dpm($links);
         $parser_data['data'] = $data;
         $parser_data['links'] = !empty($links) ? $links : NULL;
         $title = t('Number of variables');

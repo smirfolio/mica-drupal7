@@ -647,4 +647,31 @@ class MicaClient {
       }
     }
   }
+
+  public static function concatenate_parameter_terms($array_query, $param_to_add) {
+    foreach ($param_to_add as $entity_name => $entity) {
+      foreach ($entity['terms'] as $term_name => $term_value) {
+        $term_values = array($term_value);
+        if (is_array($term_value)) {
+          $term_values = $term_value;
+        }
+        foreach ($term_values as $value) {
+          if (empty($array_query->{$entity_name}->terms->{$term_name}) //
+            || !in_array($value, $array_query->{$entity_name}->terms->{$term_name}->values)
+          ) { //
+
+            $array_query->{$entity_name}->terms->{$term_name}->values[] = $value;
+          }
+        }
+
+        if (!empty($array_query->{$entity_name}->terms->{$term_name}) &&
+          empty($array_query->{$entity_name}->terms->{$term_name}->{'op'})
+        ) {
+          $array_query->{$entity_name}->terms->{$term_name}->{'op'} = 'and';
+        }
+      }
+    }
+    return $array_query;
+  }
+
 }
