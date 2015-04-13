@@ -115,7 +115,7 @@
        * @returns {*}
        */
       function extractAggValue(value) {
-        var entry = /\[\+([+-]*\d+)\+to\+([+-]*\d+)\+\]/.exec(value);
+        var entry = /\[\+([+-]?(?:\d+(?:\.\d*)?|\.\d+))\+to\+([+-]?(?:\d+(?:\.\d*)?|\.\d+))\+\]/.exec(value);
         if (entry !== null) return {min: entry[1], max: entry[2]};
         return value;
       }
