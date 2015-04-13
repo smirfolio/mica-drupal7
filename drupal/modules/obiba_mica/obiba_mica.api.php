@@ -17,3 +17,12 @@ function hook_mica_override_templates_alter(&$themes_to_override) {
   );
 
 }
+
+/**
+ * Given a harmonization csv file, this hook can alter the content as required
+ * @param $csv
+ * @return mixed
+ */
+function hook_harmonization_csv_alter($csv) {
+  return $csv;
+}
