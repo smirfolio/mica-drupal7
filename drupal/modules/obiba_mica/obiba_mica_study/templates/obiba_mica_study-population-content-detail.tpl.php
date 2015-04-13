@@ -150,7 +150,7 @@
           <th><?php print t('Age') ?></th>
           <td>
             <?php !empty($population->selectionCriteria->ageMin) ? print t('Minimum') . ' '
-              . $population->selectionCriteria->ageMin : NULL; ?>,
+              . $population->selectionCriteria->ageMin . ', ' : NULL; ?>
             <?php !empty($population->selectionCriteria->ageMax) ? print t('Maximum') . ' '
               . $population->selectionCriteria->ageMax : NULL; ?>
           </td>
