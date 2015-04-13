@@ -287,7 +287,7 @@
       function getValuesRangeTerms(valueWrapper) {
         var values = valueWrapper.match(/\[([^}]+)\]/);
         if (values) {
-          var numbers = values[1].match(/\d+(?:\.\d*)?|\.\d+/g);
+          var numbers = values[1].match(/\d+/g);
           return numbers;
         }
         return null;
@@ -371,7 +371,7 @@
 
       function validateRangeValues(input) {
         var value = $(input).val();
-        var matches = value &&value.match(/\[\s*(\d+(?:\.\d*)?|\.\d+)\s*to\s*(\d+(?:\.\d*)?|\.\d+)\s*\]/);
+        var matches = value &&value.match(/\[\s*(\d*)\s*to\s*(\d*)\s*\]/);
 
         if (matches) {
           var id = $(input).attr("id");
