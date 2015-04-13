@@ -1270,7 +1270,6 @@ function obiba_mica_search_get_variables_count_from_studies_dto($studies) {
 
 function _obiba_mica_search_facet_expand_strategy() {
   // count of zero signifies all taxonomies are included
-  $taxonomies_count = MicaClient::get_taxonomies_count();
   return !variable_get_value('studies_facet_search') && MicaClient::get_taxonomies_count() === 1
     ? ObibaFacetSearchBlockConstants::EXPAND_ALL
     : NULL;

@@ -178,6 +178,7 @@
     if ($("div[id^='taxonomy-']").length === 1) {
       $("a#collapsible-taxonomy").removeClass("accordion-toggle").attr("data-toggle", null).attr("href", null);
       $('span#panel-title-icon i.glyphicon').css('opacity', 0);
+      expandGroups();
     }
   }
 
