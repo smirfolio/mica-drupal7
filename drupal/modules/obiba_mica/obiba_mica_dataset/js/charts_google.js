@@ -34,7 +34,7 @@
           wrap.setChartType(config.visualization);
           wrap.setDataTable(config.data);
           wrap.setOptions(config.options);
-
+          console.log(config);
           // Apply data formatters. This only affects tooltips. The same format is
           // already applied via the hAxis/vAxis.format option.
           var dataTable = wrap.getDataTable();
@@ -98,13 +98,13 @@
           }
 
           function selectHandler() {
-            console.log(wrap.getChart().getSelection()[0].row + 1);
-
             var selectedItem = wrap.getChart().getSelection()[0].row + 1;
             if (selectedItem) {
               console.log(config.data[selectedItem][0]);
+              console.log(config.options.links[wrap.getChart().getSelection()[0].row + 1]);
 //            var topping = config.data.getValue(selectedItem.row, 0);
 //            alert('The user selected ' + topping);
+              window.location.href = 'http://localhost/drupal/mica/search#!query=' + config.options.links[wrap.getChart().getSelection()[0].row ];
             }
           }
 

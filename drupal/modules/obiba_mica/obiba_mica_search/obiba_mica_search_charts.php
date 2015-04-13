@@ -159,9 +159,8 @@ function obiba_mica_search_term_chart($term_coverage) {
 function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, $bucket_filter_arg = NULL, $default_dto_search = NULL, $chart_title = NULL) {
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search);
-  //dpm($coverages);
   $taxonomy_charts = array();
-
+  $terms = array();
   if (!empty($coverages->taxonomies)) {
     foreach ($coverages->taxonomies as $taxonomy_coverage) {
       $labels = array();
@@ -180,8 +179,33 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
             $data[t('Variables')][] = $vocabulary_coverage->count;
           }
         }
+        foreach ($vocabulary_coverage->terms as $term) {
+          dpm($term);
+          $terms[] = $term->term->name;
+//          foreach($term->buckets as $term_bucket){
+//            $buckets
+//          }
+
+        }
+        if (!empty($terms)) {
+
+          $links[] = MicaClient::add_parameter_dto_query_link(
+            array(
+              'variables' => array(
+                'terms' => array(
+                  'attributes-'
+                  . $taxonomy_coverage->taxonomy->name . '__' .
+                  $vocabulary_coverage->vocabulary->name . '-und' => $terms,
+
+                )
+              )
+            )
+          );
+        }
       }
       if (!empty($data)) {
+        $parser_data['data'] = $data;
+        $parser_data['links'] = !empty($links) ? $links : NULL;
         $title = t('Number of variables');
         if (!empty($default_dto_search['group-by'])) {
           $group_by_names = array(
@@ -196,7 +220,7 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
         }
         $taxonomy_charts[] = array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
-          'chart' => obiba_mica_search_stacked_column_chart($labels, $data, $title, NULL, 450, 'none')
+          'chart' => obiba_mica_search_stacked_column_chart($labels, $parser_data, $title, NULL, 450, 'none')
         );
       }
     }
@@ -293,7 +317,7 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
   }
   $raw_options['vAxis']['logScale'] = FALSE;
   $raw_options['vAxis']['minorGridlines']['count'] = 0;
-  dpm($labels);
+  $raw_options['links'] = $data['links'];
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
@@ -307,13 +331,13 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
     '#chart_library' => $chart_param['library'],
     '#raw_options' => $raw_options,
   );
-  foreach ($data as $key => $datum) {
-    dpm($datum);
+  foreach ($data['data'] as $key => $datum) {
     $chart[$key] = array(
       '#type' => 'chart_data',
       '#title' => ' ' . $key, // google chart has a bug when title is a number
-      '#data' => $datum,
+      '#data' => $datum
     );
+
   }
   $chart['xaxis'] = array(
     '#type' => 'chart_xaxis',
