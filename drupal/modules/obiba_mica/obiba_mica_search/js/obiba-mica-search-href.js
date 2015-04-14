@@ -3,6 +3,12 @@
  * JScript code for dealing with checkboxes facet
  */
 (function ($) {
+  var updateCollapsibleUI = false;
+
+  $(document).ready(function () {
+    updateCollapsibleUI = true;
+  });
+
   Drupal.behaviors.query_href = {
     attach: function (context, settings) {
       var isAjax = context !== document;
@@ -510,10 +516,10 @@
         if (sections.length) {  //This is a workaround to avoid blinking collapsed section
           sections.each(function () {
             $(this).find('.checkedterms').html('');
-            var termsBlockTitles = $(this).find('.block-titles');
+            var termsBlockTitles = $(this).find('.block-titles > a');
             var termsBlock = $(this).find('.block-content');
 
-            $(termsBlockTitles[0]).html(temp.find('#' + $(this).attr('id') + ' .block-titles').html());
+            $(termsBlockTitles[0]).text(temp.find('#' + $(this).attr('id') + ' .block-titles > a').text());
             $(termsBlock[0]).html(temp.find('#' + $(this).attr('id') + ' .block-content').html());
           });
         } else { //first page load does not have facet sections
@@ -540,7 +546,10 @@
             $('#block-system-main>.block-content').html(data.searchResult);
             populateFacetTabs(data.facets);
             Drupal.attachBehaviors($('div.main-container.container')[0], settings);
-            Drupal.behaviors.obiba_mica_facet_search_collapse_block.updateUI(context, Drupal.settings);
+            if (updateCollapsibleUI) {
+              Drupal.behaviors.obiba_mica_facet_search_collapse_block.updateUI(context, Drupal.settings);
+              updateCollapsibleUI = false // do this only once the page is loaded to preserve the collapsible UI state
+            }
             $('html, body').animate({scrollTop: 0}, 'fast');
           },
           complete : function () {
