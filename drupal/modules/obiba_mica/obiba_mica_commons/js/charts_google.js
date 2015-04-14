@@ -101,9 +101,7 @@
           function selectHandler() {
             var selectedItem = wrap.getChart().getSelection()[0].row + 1;
             if (selectedItem) {
-              console.log(wrap.getChart().getSelection());
-
-              window.location.href = 'http://localhost/drupal/mica/search#!query=' +
+              window.location.href = Drupal.settings.basePath + 'mica/search#!query=' +
                 config.options.links[ wrap.getChart().getSelection()[0].row ][ wrap.getChart().getSelection()[0].column ];
             }
           }

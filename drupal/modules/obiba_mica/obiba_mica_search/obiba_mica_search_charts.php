@@ -186,7 +186,6 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
                 );
                 $i++;
               }
-
             }
           }
           else {
@@ -209,7 +208,6 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
         }
       }
       if (!empty($data)) {
-        dpm($links);
         $parser_data['data'] = $data;
         $parser_data['links'] = !empty($links) ? $links : NULL;
         $title = t('Number of variables');
