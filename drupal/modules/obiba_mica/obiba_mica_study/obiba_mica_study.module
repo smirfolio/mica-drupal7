@@ -189,12 +189,17 @@ function obiba_mica_study_load_libs() {
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-affix.js');
   drupal_add_js($module_path_ . '/js/obiba_mica_commons_attachment_download.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-got-top.js');
-}
 
-function obiba_mica_study_library_alter(&$libraries, $module) {
-  $mica_common_chart_js = drupal_get_path('module', 'obiba_mica_commons');
-  drupal_add_js($mica_common_chart_js . '/js/charts_google.js');
+  $charts_info = variable_get('charts_default_settings');
+  if ($charts_info['library'] == 'google') {
+    drupal_add_js('https://www.google.com/jsapi', 'external');
+    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_google.js', 'file');
+  }
+  elseif ($charts_info['library'] == 'highcharts') {
+    $module_path_ = libraries_get_path('highcharts');
+    drupal_add_js($module_path_ . '/js/highcharts.js', 'file');
+    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_highcharts.js', 'file');
+  }
 }
-
 
 

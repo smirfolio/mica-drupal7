@@ -6,7 +6,6 @@
 
   Drupal.behaviors.chartsGoogle = {};
   Drupal.behaviors.chartsGoogle.attach = function (context, settings) {
-    console.log('hiihaa');
     // First time loading in Views preview may not work because the Google JS
     // API may not yet be loaded.
     if (typeof google !== 'undefined') {
@@ -88,7 +87,7 @@
                 if (columnsToAdd[columnIndex].hasOwnProperty(role)) {
                   dataTable.insertColumn(columnIndex + 1, {
                     type: 'string',
-                    role: role,
+                    role: role
                   });
                   for (var rowIndex in columnsToAdd[columnIndex][role]) {
                     dataTable.setCell(parseInt(rowIndex) - 1, columnIndex + 1, columnsToAdd[columnIndex][role][rowIndex]);
