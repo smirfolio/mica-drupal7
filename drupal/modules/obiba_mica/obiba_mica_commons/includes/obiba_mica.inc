@@ -140,7 +140,8 @@ class MicaClient {
       // authenticate by cookies coming from request (case of regular user logged in via Agate)
       watchdog('obiba_mica', 'Auth by cookies from request');
       $headers = $this->addCookieHeader($headers, $_COOKIE[self::OBIBA_COOKIE], isset($_COOKIE[self::MICA_COOKIE]) ? $_COOKIE[self::MICA_COOKIE] : NULL);
-    } else {
+    }
+    else {
       watchdog('obiba_mica', 'Auth by anonymous credentials');
 
       if (isset($_SESSION[self::MICA_COOKIE])) {
@@ -159,7 +160,8 @@ class MicaClient {
 
     if (isset($headers[self::COOKIE_HEADER])) {
       array_push($headers[self::COOKIE_HEADER], $cookie);
-    } else {
+    }
+    else {
       $headers[self::COOKIE_HEADER] = array($cookie);
     }
 
@@ -286,7 +288,7 @@ class MicaClient {
       if ($type_aggregations == 'variableResultDto') {
         if (!empty($aggregation->aggs)) {
           $filtered = self::filter_variable_aggregations($aggregation->aggs);
-          self::order_taxonomies($filtered, function($value){
+          self::order_taxonomies($filtered, function ($value) {
             return empty($value->aggregation) ? $value : $value->aggregation;
           });
           $variable_buckets = $this->session_facets_bucket_construction($filtered);
@@ -354,7 +356,7 @@ class MicaClient {
 
     // move some facets
     $_SESSION['variables']['facets-buckets'] = array_merge($dataset_buckets, $variable_buckets);
-    $moved_facets = array_filter($_SESSION['variables']['facets-buckets'], function($facet){
+    $moved_facets = array_filter($_SESSION['variables']['facets-buckets'], function ($facet) {
       return $facet['key'] === 'studyIds' || $facet['key'] === 'dceIds';
     });
 
@@ -403,7 +405,7 @@ class MicaClient {
       $filters[] = "dceIds";
     }
 
-    return empty($filters) ? $aggs : array_filter($aggs, function ($agg) use($filters) {
+    return empty($filters) ? $aggs : array_filter($aggs, function ($agg) use ($filters) {
       return FALSE === array_search($agg->aggregation, $filters);
     });
   }
@@ -419,7 +421,7 @@ class MicaClient {
       $filters[] = "populations-recruitment-generalPopulationSources";
     }
 
-    return empty($filters) ? $aggs : array_filter($aggs, function ($agg) use($filters) {
+    return empty($filters) ? $aggs : array_filter($aggs, function ($agg) use ($filters) {
       return FALSE === array_search($agg->aggregation, $filters);
     });
   }
@@ -438,7 +440,7 @@ class MicaClient {
     if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
       $ordered_taxonomies = self::get_taxonomies_as_array($order_taxonomy_variable);
 
-      $taxonomies = array_filter($taxonomies, function($taxonomy) use($ordered_taxonomies, $getter) {
+      $taxonomies = array_filter($taxonomies, function ($taxonomy) use ($ordered_taxonomies, $getter) {
         return empty($taxonomy->children) || FALSE !== array_search($getter($taxonomy), $ordered_taxonomies);
       });
 
@@ -488,7 +490,7 @@ class MicaClient {
 
   static function has_entity_aggregations($entity) {
     return !empty($entity->{'obiba.mica.TermsAggregationResultDto.terms'})
-            || !empty($entity->{'obiba.mica.StatsAggregationResultDto.stats'});
+    || !empty($entity->{'obiba.mica.StatsAggregationResultDto.stats'});
   }
 
   static function has_entity_by_id_aggregation($facet) {
@@ -672,6 +674,47 @@ class MicaClient {
       }
     }
     return $array_query;
+  }
+
+  public static function chart_query_builders($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, $terms = NULL) {
+    $parameters = array();
+    $current_path_alias = drupal_get_path_alias();
+    $common_param =
+      array(
+        'variables' => array(
+          'terms' => array(
+            'attributes-'
+            . $taxonomy_name . '__' .
+            $vocabulary_name . '-und' => $terms
+          )
+        )
+      );
+
+    if (!empty($query)) {
+      return json_encode(MicaClient::concatenate_parameter_terms(json_decode($query), $common_param));
+    }
+
+    if (strpos($current_path_alias, 'network')) {
+      $parameters = array(
+        'studies' => array(
+          'terms' => array(
+            $bucket->field => $bucket->value
+          )
+        )
+      );
+    }
+    if (strpos($current_path_alias, 'study')) {
+      $parameters = array(
+        'studies' => array(
+          'terms' => array(
+            'studyIds' => arg(2, $current_path_alias)
+          )
+        )
+      );
+    }
+    $term_param = array_merge($parameters, $common_param);
+    return MicaClient::add_parameter_dto_query_link($term_param);
+
   }
 
 }

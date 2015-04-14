@@ -8,7 +8,6 @@ function obiba_mica_search_get_facets_chart($type = NULL, $data, $library = NULL
   else {
     $charts_info = charts_info();
   }
-
   foreach ($charts_info as $library => $chart_library_info) {
     $table['header'][] = array(
       'width' => (1 / count($charts_info) * 100) . '%',
@@ -166,61 +165,43 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
       $labels = array();
       $data = array();
       foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
-        foreach ($vocabulary_coverage->terms as $term) {
-          $terms[] = $term->term->name;
-//          foreach($term->buckets as $term_bucket){
-//            $buckets
-//          }
+        foreach ($vocabulary_coverage->terms as $key => $term) {
+          $terms[$key] = $term->term->name;
 
         }
         if (!empty($vocabulary_coverage->count)) {
           $labels[] = obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
           if (!empty($vocabulary_coverage->buckets)) {
-            foreach ($vocabulary_coverage->buckets as $key => $bucket) {
-              dpm($bucket);
-              if (empty($bucket_filter) || $bucket_filter($bucket, $bucket_filter_arg)) {
+            $i = 1;
+            foreach ($vocabulary_coverage->buckets as $bucket) {
+
+              if (empty($bucket_filter) || $bucket_filter($bucket, $bucket_filter_arg)) { //dpm($vocabulary_coverage->vocabulary);
                 $data[$bucket->value][] = $bucket->count;
-//                $term_param =  (!empty($terms)) ?
-//
-//                   MicaClient::add_parameter_dto_query_link(
-//                    array(
-//                      'variables' => array(
-//                        'terms' => array(
-//                          'attributes-'
-//                          . $taxonomy_coverage->taxonomy->name . '__' .
-//                          $vocabulary_coverage->vocabulary->name . '-und' => $terms
-//                        ),
-//                        $bucket->field => $bucket->value
-//                      )
-//                    )
-//                  )
-//                :'';
-//                $link[$key] = MicaClient::concatenate_parameter_terms(json_decode($query),json_decode($term_param, true));
-//                $link[$key] =  json_encode($link[$key]);
-//                dpm($link[$key]);
+                $link[$i] = MicaClient::chart_query_builders(
+                  NULL,
+                  $bucket,
+                  $taxonomy_coverage->taxonomy->name,
+                  $vocabulary_coverage->vocabulary->name,
+                  $terms
+                );
+                $i++;
               }
+
             }
           }
-          else { //dpm(json_decode($query));
+          else {
             $data[t('Variables')][] = $vocabulary_coverage->count;
-//            if(!empty($terms)){
-//              $term_param = MicaClient::add_parameter_dto_query_link(
-//                array(
-//                  'variables' => array(
-//                    'terms' => array(
-//                      'attributes-'
-//                      . $taxonomy_coverage->taxonomy->name . '__' .
-//                      $vocabulary_coverage->vocabulary->name . '-und' => $terms
-//                    )
-//                  )
-//                )
-//              );
-//           //   dpm(json_decode($term_param));
-//           //   dpm(json_decode($query));
-//              $link = MicaClient::concatenate_parameter_terms(json_decode($query),json_decode($term_param, true));
-//              $link =  json_encode($link);
-//              $link = MicaClient::add_parameter_dto_query_link($link);
-//            }
+            if (!empty($terms)) {
+
+              $link[1] = MicaClient::chart_query_builders(
+                $query,
+                NULL,
+                $taxonomy_coverage->taxonomy->name,
+                $vocabulary_coverage->vocabulary->name,
+                $terms
+              );
+
+            }
           }
           if (!empty($link)) {
             $links[] = $link;

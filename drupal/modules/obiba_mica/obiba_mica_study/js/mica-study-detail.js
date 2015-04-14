@@ -1,8 +1,7 @@
 (function ($) {
   Drupal.behaviors.obiba_mica_study_detail = {
     attach: function (context, settings) {
-      if(context === document) {
-        console.log(settings.study_url);
+      if (context === document) {
         var qCoverage = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/coverage')
           .done(function (data) {
             if (!data) {
@@ -18,7 +17,7 @@
           });
 
         var qNetworks = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/networks')
-          .done(function(data) {
+          .done(function (data) {
             if (!data) {
               $('#networks').remove();
               return;
@@ -31,31 +30,31 @@
           });
 
         var qDatasets = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/datasets')
-          .done(function(data) {
+          .done(function (data) {
             if (!data) {
               $('#datasets').remove();
               return;
             }
             $('#datasets').html(data).show();
             var datasets = $('#datasetsDisplay').data();
-            $('.dce-actions').each(function(){
-              if(datasets && ($(this).data().dceName in datasets.dceVariables)) {
+            $('.dce-actions').each(function () {
+              if (datasets && ($(this).data().dceName in datasets.dceVariables)) {
                 $(this).show();
               }
             });
           })
-          .fail(function() {
+          .fail(function () {
             $('#datasets').remove();
           });
 
-        $.when(qCoverage, qDatasets).then(function() {
+        $.when(qCoverage, qDatasets).then(function () {
           var datasets = $('#datasetsDisplay').data();
 
-          if(datasets && datasets.totalVariables > 0) {
+          if (datasets && datasets.totalVariables > 0) {
             $('#study-actions').removeClass('hidden');
           }
 
-          if($('#coverage').is(':visible')) {
+          if ($('#coverage').is(':visible')) {
             $('.show-coverage').removeClass('hidden');
           }
         });

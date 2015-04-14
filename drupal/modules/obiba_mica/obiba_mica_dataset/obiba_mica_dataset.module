@@ -171,16 +171,6 @@ function obiba_mica_dataset_library() {
   return $libraries;
 }
 
-function obiba_mica_dataset_library_alter(&$libraries, $module) {
-  if (!empty($libraries['charts_google'])) {
-    foreach ($libraries['charts_google']['js'] as $key => $js) {
-      if (strpos($js['data'], 'charts_google')) {
-        $libraries['charts_google']['js'][$key]['data'] = drupal_get_path('module', 'obiba_mica_dataset') . '/js/charts_google.js';
-      }
-    }
-  }
-}
-
 /**
  * Implements hook_theme().
  *

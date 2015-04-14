@@ -191,5 +191,10 @@ function obiba_mica_study_load_libs() {
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-got-top.js');
 }
 
+function obiba_mica_study_library_alter(&$libraries, $module) {
+  $mica_common_chart_js = drupal_get_path('module', 'obiba_mica_commons');
+  drupal_add_js($mica_common_chart_js . '/js/charts_google.js');
+}
+
 
 

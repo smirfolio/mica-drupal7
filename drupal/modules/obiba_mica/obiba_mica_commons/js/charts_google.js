@@ -6,6 +6,7 @@
 
   Drupal.behaviors.chartsGoogle = {};
   Drupal.behaviors.chartsGoogle.attach = function (context, settings) {
+    console.log('hiihaa');
     // First time loading in Views preview may not work because the Google JS
     // API may not yet be loaded.
     if (typeof google !== 'undefined') {
@@ -101,11 +102,9 @@
             var selectedItem = wrap.getChart().getSelection()[0].row + 1;
             if (selectedItem) {
               console.log(wrap.getChart().getSelection());
-              // console.log(config.options.links[wrap.getChart().getSelection()[0].row + 1]);
-//            var topping = config.data.getValue(selectedItem.row, 0);
-//            alert('The user selected ' + topping);
-              //window.location.href = 'http://localhost/drupal/mica/search#!query=' +
-              // config.options.links[ wrap.getChart().getSelection()[0].row ][ wrap.getChart().getSelection()[0].column ];
+
+              window.location.href = 'http://localhost/drupal/mica/search#!query=' +
+                config.options.links[ wrap.getChart().getSelection()[0].row ][ wrap.getChart().getSelection()[0].column ];
             }
           }
 
