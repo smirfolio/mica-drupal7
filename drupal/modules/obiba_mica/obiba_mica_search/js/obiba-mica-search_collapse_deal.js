@@ -5,6 +5,37 @@
 
 (function ($) {
 
+  $(document).ready(function() {
+    $('#search-facets').on('click', '#facets-expand-collapse', function (e) {
+      e.preventDefault();
+      $(this).blur();
+
+      if($(this).data('allCollapsed')) {
+        expandAll();
+      } else {
+        collapseAll();
+      }
+
+      updateExpandCollapseIcon();
+    });
+
+    $('#search-facets').on('click', '[id^="group-expand-collapse"]', function (e) {
+      var group = $(this);
+      var groupParent = group.parent();
+      e.preventDefault();
+      group.blur();
+
+      if(group.data('allCollapsed')) {
+        expandBlocks(groupParent);
+      } else {
+        collapseBlocks(groupParent);
+      }
+
+      updateGroupExpandCollapseIcon(group, groupParent);
+    });
+
+  });
+
   Drupal.behaviors.obiba_mica_facet_search_collapse_block = {
 
     updateUI: updateUI,
@@ -39,33 +70,6 @@
   }
 
   function setupDomEventHandlers(context) {
-    $('#facets-expand-collapse', context).on('click', function (e) {
-      e.preventDefault();
-      $(this).blur();
-
-      if($(this).data('allCollapsed')) {
-        expandAll();
-      } else {
-        collapseAll();
-      }
-
-      updateExpandCollapseIcon();
-    });
-
-    $('[id^="group-expand-collapse"]', context).on('click', function (e) {
-      var group = $(this);
-      var groupParent = group.parent();
-      e.preventDefault();
-      group.blur();
-
-      if(group.data('allCollapsed')) {
-        expandBlocks(groupParent);
-      } else {
-        collapseBlocks(groupParent);
-      }
-
-      updateGroupExpandCollapseIcon(group, groupParent);
-    });
 
     $('.block', context).on('shown.bs.collapse', function () {
       updateExpandCollapseIcon();
