@@ -159,11 +159,11 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search);
   $taxonomy_charts = array();
-  $terms = array();
   if (!empty($coverages->taxonomies)) {
     foreach ($coverages->taxonomies as $taxonomy_coverage) {
       $labels = array();
       $data = array();
+      $links = array();
       foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
         $terms = array();
         foreach ($vocabulary_coverage->terms as $key => $term) {
@@ -178,13 +178,13 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
                 $data[$bucket->value][] = $bucket->count;
                 if (!empty($terms)) {
                   $link[$i] = MicaClient::chart_query_builders(
-                  NULL,
-                  $bucket,
-                  $taxonomy_coverage->taxonomy->name,
-                  $vocabulary_coverage->vocabulary->name,
-                  $terms
-                );
-                $i++;
+                    NULL,
+                    $bucket,
+                    $taxonomy_coverage->taxonomy->name,
+                    $vocabulary_coverage->vocabulary->name,
+                    $terms
+                  );
+                  $i++;
                 }
               }
             }

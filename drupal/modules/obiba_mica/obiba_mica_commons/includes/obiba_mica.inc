@@ -689,16 +689,14 @@ class MicaClient {
           )
         )
       );
-
     if (!empty($query)) {
       return json_encode(MicaClient::concatenate_parameter_terms(json_decode($query), $common_param));
     }
-
     if (strpos($current_path_alias, 'network')) {
       $parameters = array(
         'studies' => array(
           'terms' => array(
-            $bucket->field => $bucket->value
+            $bucket->field => $bucket->value,
           )
         )
       );
