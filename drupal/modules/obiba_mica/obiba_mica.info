@@ -18,4 +18,7 @@ dependencies[] = obiba_mica_search
 dependencies[] = obiba_mica_dataset
 dependencies[] = obiba_mica_network
 
-scripts[] = js/obiba-mica-progressbar-controller.js
+; Information added by obiba.org packaging script on 
+version = 7.32-1.0.x
+project = obiba_mica
+datestamp = 1429134570
