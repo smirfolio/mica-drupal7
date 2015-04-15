@@ -5,7 +5,6 @@
 datestamp=$(shell date +%s)
 release_date=$(shell date -R)
 
-
 inject-version-info:
 	$(call inject-version-info,modules/,obiba_mica,$(mica_version))
 	$(call inject-version-info,modules/obiba_mica,obiba_mica_commons,$(mica_version))
@@ -16,10 +15,6 @@ inject-version-info:
 	$(call inject-version-info,modules/obiba_mica,obiba_mica_study,$(mica_version))
 	$(call inject-version-info,themes/,obiba_bootstrap,$(mica_version)) && \
 	git commit -a -m "version updated to $(mica_current_tag)"
-
-
-
-
 
 # inject-version-info-version function: remove (if present) and add specified version number to project info file
 inject-version-info = cd drupal/$(1) && \
