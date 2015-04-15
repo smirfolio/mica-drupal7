@@ -35,7 +35,7 @@
             }
 
             if (typeof data_decoded == 'object') {
-              console.log(data_decoded);
+              //   console.log(data_decoded);
             }
             if (!data_decoded) {
               param_stat_tab.empty();
