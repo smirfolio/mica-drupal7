@@ -1,7 +1,7 @@
 mica_current_tag = 1.0.0
-mica_modules_version=1.0.x
+mica_branch_version=1.0.x
 drupal_version = 7.32
-mica_version=$(drupal_version)-$(mica_modules_version)
+mica_version=$(drupal_version)-$(mica_current_tag)
 drupal_org_mica=git.drupal.org:project/obiba_mica.git
 obiba-progressbar-version=1.0.0
 

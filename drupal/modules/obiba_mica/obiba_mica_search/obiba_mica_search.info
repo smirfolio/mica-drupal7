@@ -8,7 +8,7 @@ core = 7.x
 dependencies[] = obiba_mica_commons
 dependencies[] = obiba_mica_model
 dependencies[] = charts_google
-; Information added by obiba.org packaging script on 
-version = 7.32-1.0.x
+; Information added by obiba.org packaging script on Wed, 15 Apr 2015 18:06:58 -0400
+version = 7.32-1.0.0
 project = obiba_mica_search
-datestamp = 1429134570
+datestamp = 1429135618

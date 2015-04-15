@@ -3,7 +3,7 @@
 #
 #
 datestamp=$(shell date +%s)
-
+release_date=$(shell date -R)
 
 
 inject-version-info:
@@ -27,7 +27,7 @@ inject-version-info = cd drupal/$(1) && \
 	sed -i "/^project/d" $2/$2.info && \
 	sed -i "/^datestamp/d" $2/$2.info && \
 	sed -i "/Information added by obiba.org packaging script/d" $2/$2.info && \
-	echo "; Information added by obiba.org packaging script on $(deb_date)" >> $2/$2.info && \
+	echo "; Information added by obiba.org packaging script on $(release_date)" >> $2/$2.info && \
 	echo "version = $(3)" >> $2/$2.info && \
 	echo "project = $2" >> $2/$2.info && \
 	echo "datestamp = $(datestamp)" >> $2/$2.info
