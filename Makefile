@@ -1,9 +1,9 @@
-mica_version=1.0-dev
-mica_branch=7.x-1.x
+mica_current_tag = 1.0.0
+mica_branch_version=1.0.x
+drupal_version = 7.32
+mica_version=$(drupal_version)-$(mica_current_tag)
 drupal_org_mica=git.drupal.org:project/obiba_mica.git
 obiba-progressbar-version=1.0.0
-
-drupal_version = 7.32
 
 #
 # Mysql db access
@@ -21,6 +21,8 @@ help:
 	@echo "  all          : Clean & setup Drupal with a symlink to Mica modules in target directory and import drupal.sql"
 	@echo "  setup-drupal : Setup Drupal with Mica modules in target directory"
 	@echo
+
+include make-perform-release.mk
 
 all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update datatables obiba-progressbar cc
 
@@ -123,38 +125,3 @@ obiba-progressbar:
 
 cc:
 	cd target/drupal && drush cc all
-
-#
-# Push to Drupal.org
-#
-git-push-mica:
-	$(call clear-version-info,drupal/modules,obiba_mica) && \
-	$(call clear-version-info,drupal/modules/obiba_mica,obiba_mica_study) && \
-	$(call clear-version-info,drupal/modules/obiba_mica,obiba_mica_commons) && \
-	$(call clear-version-info,drupal/modules/obiba_mica,obiba_mica_network) && \
-	$(call clear-version-info,drupal/modules/obiba_mica,obiba_mica_model) && \
-	$(call git-prepare,$(drupal_org_mica),obiba_mica,$(mica_branch)) . && \
-	cp -r drupal/modules/obiba_mica/* target/drupal.org/obiba_mica && \
-	$(call git-finish,obiba_mica,$(mica_branch))
-
-clear-version-info = sed -i "/^version/d" $(1)/$2/$2.info && \
-	sed -i "/^project/d" $(1)/$2/$2.info && \
-	sed -i "/^datestamp/d" $(1)/$2/$2.info && \
-	sed -i "/Information added by obiba.org packaging script/d" $(1)/$2/$2.info
-
-git-prepare = rm -rf target/drupal.org/$(2) && \
-	mkdir -p target/drupal.org && \
-	echo "Enter Drupal username?" && \
-	read git_username && \
-	git clone --recursive --branch $(branch) $$git_username@git.drupal.org:project/$(2) target/drupal.org/$(2) && \
-	cd target/drupal.org/$(2) && \
-	git rm -rf * && \
-	cd ../../..
-
-git-finish = cd target/drupal.org/$(1) && \
-	git add . && \
-	git status && \
-	echo "Enter a message for this commit?" && \
-	read git_commit_msg && \
-	git commit -m "$$git_commit_msg" && \
-	git log

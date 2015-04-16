@@ -3,4 +3,7 @@ description = "Mica Client -- Model"
 package = Obiba
 core = 7.x
 
-dependencies[] = obiba_protobuf
+; Information added by obiba.org packaging script on Wed, 15 Apr 2015 18:06:58 -0400
+version = 7.32-1.0.0
+project = obiba_mica_model
+datestamp = 1429135618
