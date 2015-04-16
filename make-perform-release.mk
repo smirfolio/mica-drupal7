@@ -21,3 +21,4 @@ github-release:
 	read git_push_msg && \
 	git tag -a $(mica_current_tag) -m "$$git_push_msg" && \
 	git push upstream $(mica_current_tag)
+
