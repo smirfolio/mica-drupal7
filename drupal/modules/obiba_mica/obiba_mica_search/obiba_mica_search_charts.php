@@ -159,29 +159,57 @@ function obiba_mica_search_term_chart($term_coverage) {
 function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, $bucket_filter_arg = NULL, $default_dto_search = NULL, $chart_title = NULL) {
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search);
-  //dpm($coverages);
   $taxonomy_charts = array();
-
   if (!empty($coverages->taxonomies)) {
     foreach ($coverages->taxonomies as $taxonomy_coverage) {
       $labels = array();
       $data = array();
+      $links = array();
       foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
+        $terms = array();
+        foreach ($vocabulary_coverage->terms as $key => $term) {
+          $terms[$key] = $term->term->name;
+        }
         if (!empty($vocabulary_coverage->count)) {
           $labels[] = obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
           if (!empty($vocabulary_coverage->buckets)) {
+            $i = 1;
             foreach ($vocabulary_coverage->buckets as $bucket) {
               if (empty($bucket_filter) || $bucket_filter($bucket, $bucket_filter_arg)) {
                 $data[$bucket->value][] = $bucket->count;
+                if (!empty($terms)) {
+                  $link[$i] = MicaClient::chart_query_builders(
+                    NULL,
+                    $bucket,
+                    $taxonomy_coverage->taxonomy->name,
+                    $vocabulary_coverage->vocabulary->name,
+                    $terms
+                  );
+                  $i++;
+                }
               }
             }
           }
           else {
             $data[t('Variables')][] = $vocabulary_coverage->count;
+            if (!empty($terms)) {
+              $link[1] = MicaClient::chart_query_builders(
+                $query,
+                NULL,
+                $taxonomy_coverage->taxonomy->name,
+                $vocabulary_coverage->vocabulary->name,
+                $terms
+              );
+            }
+          }
+          if (!empty($link)) {
+            $links[] = $link;
           }
         }
       }
       if (!empty($data)) {
+        $parser_data['data'] = $data;
+        $parser_data['links'] = !empty($links) ? $links : NULL;
         $title = t('Number of variables');
         if (!empty($default_dto_search['group-by'])) {
           $group_by_names = array(
@@ -196,7 +224,7 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
         }
         $taxonomy_charts[] = array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
-          'chart' => obiba_mica_search_stacked_column_chart($labels, $data, $title, NULL, 450, 'none')
+          'chart' => obiba_mica_search_stacked_column_chart($labels, $parser_data, $title, NULL, 450, 'none')
         );
       }
     }
@@ -293,7 +321,7 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
   }
   $raw_options['vAxis']['logScale'] = FALSE;
   $raw_options['vAxis']['minorGridlines']['count'] = 0;
-
+  $raw_options['links'] = $data['links'];
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
@@ -307,12 +335,13 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
     '#chart_library' => $chart_param['library'],
     '#raw_options' => $raw_options,
   );
-  foreach ($data as $key => $datum) {
+  foreach ($data['data'] as $key => $datum) {
     $chart[$key] = array(
       '#type' => 'chart_data',
       '#title' => ' ' . $key, // google chart has a bug when title is a number
-      '#data' => $datum,
+      '#data' => $datum
     );
+
   }
   $chart['xaxis'] = array(
     '#type' => 'chart_xaxis',

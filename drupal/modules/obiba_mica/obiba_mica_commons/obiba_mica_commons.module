@@ -49,6 +49,35 @@ function obiba_mica_commons_menu() {
   return $items;
 }
 
+function obiba_mica_commons_library_alter(&$libraries, $module) {
+
+  $charts_info = variable_get('charts_default_settings');
+
+  $mica_common_chart_js = drupal_get_path('module', 'obiba_mica_commons');
+  if (!empty($libraries['charts_google']) && $charts_info['library'] == 'google') {
+    foreach ($libraries['charts_google']['js'] as $key => $js) {
+      if (strpos($js['data'], 'charts_google')) {
+        $libraries['charts_google']['js'][$key]['data'] = $mica_common_chart_js . '/js/charts_google.js';
+      }
+    }
+  }
+  elseif (!empty($libraries['charts_highcharts']) && $charts_info['library'] == 'highcharts') {
+    foreach ($libraries['charts_highcharts']['js'] as $key => $js) {
+      if (strpos($js['data'], 'charts_highcharts')) {
+        $libraries['charts_highcharts']['js'][$key]['data'] = $mica_common_chart_js . '/js/charts_highcharts.js';
+      }
+    }
+  }
+  else {
+    $libraries['charts_google']['title'] = 'Google Charts integration';
+    $libraries['charts_google']['version'] = '1.0';
+    $libraries['charts_google']['js'][0]['data'] = $mica_common_chart_js . '/js/charts_google.js';
+    $libraries['charts_google']['js'][0]['type'] = 'file | (Callback) file();';
+    $libraries['charts_google']['dependencies'][0][0] = 'charts_google';
+    $libraries['charts_google']['dependencies'][0][1] = 'visualization';
+  }
+}
+
 function obiba_mica_commons_fixed_sidebar($template) {
   $output['fixed_menu'] = theme($template, $_SESSION['fixed_menu']);
   drupal_json_output($output);
