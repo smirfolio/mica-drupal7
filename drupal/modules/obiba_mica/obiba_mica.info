@@ -21,7 +21,7 @@ dependencies[] = obiba_mica_network
 scripts[] = js/obiba-mica-progressbar-controller.js
 
 
-; Information added by obiba.org packaging script on Fri, 17 Apr 2015 13:32:34 -0400
-version = 7.34-1.0.1
+; Information added by obiba.org packaging script on Fri, 17 Apr 2015 13:32:54 -0400
+version = 7.34-1.0.0-dev
 project = obiba_mica
-datestamp = 1429291954
+datestamp = 1429291974
