@@ -4,6 +4,12 @@
  * @file class definition path server resources
  * */
 
+class MicaClientPathHelpers {
+  static function replace_plus_in_url($path) {
+    return preg_replace('/\+/', '-', $path, 1);
+  }
+}
+
 class MicaClientPathProvider {
   const STUDIES = 'mica/studies';
   const STUDY = 'mica/study/{id}';

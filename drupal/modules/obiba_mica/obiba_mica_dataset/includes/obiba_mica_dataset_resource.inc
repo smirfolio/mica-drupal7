@@ -45,7 +45,7 @@ class MicaDatasetResource extends MicaClient {
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
-    $params .= empty($study_id) ? '' : '&study=' . $study_id;
+    $params .= empty($study_id) ? '' : '&study=' . rawurlencode($study_id);
     $url_datasets = $this->micaUrl . (empty($resource) ? '' : '/' . $resource) . '/_search?' . $params;
     $request = new HttpClientRequest($url_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -181,7 +181,7 @@ class MicaDatasetResource extends MicaClient {
 
   public function download_variables_harmonizations($dataset_id, $locale) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/harmonization-dataset/' . $dataset_id . '/variables/harmonizations/_export';
+    $url = $this->micaUrl . '/harmonization-dataset/' . rawurlencode($dataset_id) . '/variables/harmonizations/_export';
     if (!empty($locale)) {
       $url .= '?locale=' . $locale;
     }

@@ -44,7 +44,7 @@ class MicaNetworkResource extends MicaClient {
     $params .= empty($sort) ? '' : '&sort=' . $sort;
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
-    $params .= empty($study_id) ? '' : '&study=' . $study_id;
+    $params .= empty($study_id) ? '' : '&study=' . rawurlencode($study_id);
     $url_networks = $this->micaUrl . '/networks/_search?' . $params;
 
     $request = new HttpClientRequest($url_networks, array(
@@ -75,7 +75,7 @@ class MicaNetworkResource extends MicaClient {
    */
   public function get_network($network_id) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/network/' . $network_id;
+    $url = $this->micaUrl . '/network/' . rawurlencode($network_id);
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
