@@ -17,9 +17,9 @@ git-mica-release: github-release
 
 github-release:
 	git checkout mica-drupal7-client-$(mica_branch_version) && \
-	make make inject-version-info && \
+	make inject-version-info && \
 	echo "Enter a message for this tag push release?" && \
 	read git_push_msg && \
 	git tag -a $(mica_current_tag) -m "$$git_push_msg" && \
-	git push upstream $(mica_current_tag)
+	//git push upstream $(mica_current_tag)
 
