@@ -8,6 +8,7 @@ function obiba_mica_search_get_facets_chart($type = NULL, $data, $library = NULL
   else {
     $charts_info = charts_info();
   }
+
   foreach ($charts_info as $library => $chart_library_info) {
     $table['header'][] = array(
       'width' => (1 / count($charts_info) * 100) . '%',

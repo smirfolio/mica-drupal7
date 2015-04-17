@@ -265,7 +265,7 @@ function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collec
       'study_id' => $study_id,
       'population_id' => $population_id,
       'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
-      'dce_id_target' =>  MicaClientPathHelpers::replace_plus_in_url($study_id . '-' . $population_id . '-' . $dce->id),
+      'dce_id_target' => MicaClientPathHelpers::replace_plus_in_url($study_id . '-' . $population_id . '-' . $dce->id),
       'dce' => $dce,
       'attachements' => $themed_attachment
     ));
