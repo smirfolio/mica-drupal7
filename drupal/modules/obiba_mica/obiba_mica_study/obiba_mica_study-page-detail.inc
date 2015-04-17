@@ -54,7 +54,7 @@ function obiba_mica_study_page_detail($study_id) {
   obiba_mica_study_load_libs();
   global $base_url;
   drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/mica-study-detail.js', 'file');
-  drupal_add_js(array('study_url' => $study_id), 'setting');
+  drupal_add_js(array('study_url' => rawurlencode($study_id)), 'setting');
 
   drupal_add_js('https://www.google.com/jsapi', 'external');
   drupal_add_js(drupal_get_path('module', 'charts_google') . '/charts_google.js', 'file');
@@ -262,7 +262,7 @@ function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collec
       'study_id' => $study_id,
       'population_id' => $population_id,
       'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
-      'dce_id_target' => $study_id . '-' . $population_id . '-' . $dce->id,
+      'dce_id_target' =>  MicaClientPathHelpers::replace_plus_in_url($study_id . '-' . $population_id . '-' . $dce->id),
       'dce' => $dce,
       'attachements' => $themed_attachment
     ));
@@ -288,7 +288,7 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
           'external' => TRUE,
           'attributes' => array(
             'data-toggle' => 'modal',
-            'data-target' => '#dce-' . $study_id . '-' . $population_id . '-' . $dce_wrapper->id
+            'data-target' => MicaClientPathHelpers::replace_plus_in_url('#dce-' . $study_id . '-' . $population_id . '-' . $dce_wrapper->id)
           )
         )),
         'desc' => $dce_description,

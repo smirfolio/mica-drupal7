@@ -72,7 +72,7 @@ class MicaStudyResource extends MicaClient {
    */
   public function get_study($study_id) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/study/' . $study_id;
+    $url = $this->micaUrl . '/study/' . rawurlencode($study_id);
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
