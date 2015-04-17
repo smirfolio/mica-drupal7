@@ -9,6 +9,7 @@ $path_module_study = drupal_get_path('module', 'obiba_mica_study');
 include_once($path_module_study . '/obiba_mica_study-page-detail.inc');
 
 function obiba_mica_network_page_detail($network_id) {
+  obiba_mica_network_load_charts_libs();
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);

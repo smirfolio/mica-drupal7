@@ -75,12 +75,27 @@ function obiba_mica_study_theme($existing, $type, $theme, $path) {
       'path' => $path_theme
     ),
     'obiba_mica_study_detail' => array('template' => 'obiba_mica_study-detail', 'path' => $path_theme),
-    'obiba_mica_study_detail_coverage' => array('template' => 'obiba_mica_study_detail_coverage', 'path' => $path_theme),
-    'obiba_mica_study_detail_networks' => array('template' => 'obiba_mica_study_detail_networks', 'path' => $path_theme),
-    'obiba_mica_study_detail_datasets' => array('template' => 'obiba_mica_study_detail_datasets', 'path' => $path_theme),
+    'obiba_mica_study_detail_coverage' => array(
+      'template' => 'obiba_mica_study_detail_coverage',
+      'path' => $path_theme
+    ),
+    'obiba_mica_study_detail_networks' => array(
+      'template' => 'obiba_mica_study_detail_networks',
+      'path' => $path_theme
+    ),
+    'obiba_mica_study_detail_datasets' => array(
+      'template' => 'obiba_mica_study_detail_datasets',
+      'path' => $path_theme
+    ),
     'mica_population_detail' => array('template' => 'obiba_mica_study-population-detail', 'path' => $path_theme),
-    'mica_population_content_detail' => array('template' => 'obiba_mica_study-population-content-detail', 'path' => $path_theme),
-    'mica_population_content_detail_modal' => array('template' => 'obiba_mica_study-population-content-detail-modal', 'path' => $path_theme),
+    'mica_population_content_detail' => array(
+      'template' => 'obiba_mica_study-population-content-detail',
+      'path' => $path_theme
+    ),
+    'mica_population_content_detail_modal' => array(
+      'template' => 'obiba_mica_study-population-content-detail-modal',
+      'path' => $path_theme
+    ),
     'mica_dce_detail' => array('template' => 'obiba_mica_study-dce-detail', 'path' => $path_theme),
     'mica_contact_detail' => array('template' => 'obiba_mica_study-contact-detail', 'path' => $path_theme),
     'obiba_mica_study_attachments' => array('template' => 'obiba_mica_study_attachments', 'path' => $path_theme),
@@ -191,14 +206,14 @@ function obiba_mica_study_load_libs() {
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-got-top.js');
 
   $charts_info = variable_get('charts_default_settings');
-  if ($charts_info['library'] == 'google') {
-    drupal_add_js('https://www.google.com/jsapi', 'external');
-    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_google.js', 'file');
-  }
-  elseif ($charts_info['library'] == 'highcharts') {
+  if ($charts_info['library'] == 'highcharts') {
     $module_path_ = libraries_get_path('highcharts');
     drupal_add_js($module_path_ . '/js/highcharts.js', 'file');
     drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_highcharts.js', 'file');
+  }
+  else {
+    drupal_add_js('https://www.google.com/jsapi', 'external');
+    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_google.js', 'file');
   }
 }
 

@@ -30,6 +30,7 @@
       $('.charts-google').once('charts-google', function () {
         if ($(this).attr('data-chart')) {
           var config = $.parseJSON($(this).attr('data-chart'));
+          console.log(config);
           var wrap = new google.visualization.ChartWrapper();
           wrap.setChartType(config.visualization);
           wrap.setDataTable(config.data);
