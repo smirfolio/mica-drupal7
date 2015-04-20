@@ -71,10 +71,11 @@ function obiba_mica_commons_library_alter(&$libraries, $module) {
   else {
     $libraries['charts_google']['title'] = 'Google Charts integration';
     $libraries['charts_google']['version'] = '1.0';
-    $libraries['charts_google']['js'][0]['data'] = $mica_common_chart_js . '/js/charts_google.js';
+    $libraries['charts_google']['js'][0]['data'] = NULL;
     $libraries['charts_google']['js'][0]['type'] = 'file | (Callback) file();';
     $libraries['charts_google']['dependencies'][0][0] = 'charts_google';
     $libraries['charts_google']['dependencies'][0][1] = 'visualization';
+    drupal_add_js($mica_common_chart_js . '/js/charts_google.js', 'file');
   }
 }
 
