@@ -38,6 +38,16 @@ function obiba_mica_drush_command() {
     ),
   );
 
+  $items['obiba-progressbar-download'] = array(
+    'callback' => 'obiba_mica_drush_obiba_progressbar',
+    'aliases' => 'opblib',
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Downloads the  obiba-progressbar library from Obiba repository .'),
+    'arguments' => array(
+      'path' => dt('Optional. The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries/obiba-progressbar-1.0.0</code>).'),
+    ),
+  );
+
   return $items;
 }
 
@@ -178,6 +188,56 @@ function obiba_mica_drush_datatable_bootstrap_plugins_download() {
     }
     else {
       drush_log(dt('Drush was unable to download DataTables Plugins to !path.', array('!path' => ' ' . $path)) . '<br/>' . dt('Attempted command: !git.', array('!git' => '<code>' . $get_cmd . '</code>')), 'error');
+    }
+  }
+}
+
+function obiba_mica_drush_obiba_progressbar() {
+  $args = func_get_args();
+  if ($args[1]) {
+    $path = $args[1];
+  }
+  else {
+    // $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries';
+    $path = drush_get_context('DRUSH_DRUPAL_ROOT');
+  }
+
+  if ($args[0]) {
+    $version_progress_bar = $args[0];
+  }
+  else {
+    $version_progress_bar = '1.0.0';
+  }
+  print_r($args);
+  // Create the libraries path if it does not exist.
+  if (!is_dir($path . '/sites/all/libraries')) {
+    drush_op('mkdir', $path . '/sites/all/libraries');
+  }
+  if (!is_dir($path . "/sites/all/libraries/obiba-progressbar-$version_progress_bar")) {
+    drush_op('mkdir', $path . "/sites/all/libraries/obiba-progressbar-$version_progress_bar");
+  }
+  $path = $path . "/sites/all/libraries/obiba-progressbar-$version_progress_bar";
+  drush_op('mkdir', $path . '/obiba-progressbar-master');
+  chdir($path . '/obiba-progressbar-master');
+
+  $get_cmd = "wget https://github.com/obiba/obiba-progressbar/archive/$version_progress_bar.zip";
+  if (drush_shell_exec($get_cmd)) {
+    drush_log(dt('Obiba Progressbar  was downloaded to !path.', array('!path' => ' ' . $path)), 'success');
+
+    $unzip_cmd = "unzip $version_progress_bar.zip -d " . $path . '/obiba-progressbar-master';
+    if (drush_shell_exec($unzip_cmd)) {
+      drush_log(dt('Obiba Progressbar Unzipped  to !path.', array('!path' => ' ' . $path)), 'success');
+      $path_to_del = $path . "/obiba-progressbar-master/";
+      chdir($path_to_del);
+      $mv_cmd = "mv obiba-progressbar-$version_progress_bar/* ../";
+      if (drush_shell_exec($mv_cmd)) {
+        drush_log(dt('Obiba Progressbar archive moved to   !path.', array('!path' => ' ' . $path)), 'success');
+        chdir($path);
+        $rm_cmd = "rm " . '-rf ' . $path . '/obiba-progressbar-master';
+        if (drush_shell_exec($rm_cmd)) {
+          drush_log(dt('Obiba Progressbar archive deleted !path.', array('!path' => ' ' . $path)), 'success');
+        }
+      }
     }
   }
 }
