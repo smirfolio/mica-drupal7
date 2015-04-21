@@ -118,7 +118,7 @@ obiba-progressbar:
 	cd target/drupal && \
 	drush vset -y obiba-progressbar-lib obiba-progressbar-$(obiba-progressbar-version) && \
 	drush vset -y obiba-progressbar-file "dist/obiba-progressbar" && \
-	drush obiba-progressbar-download $(obiba-progressbar-version);
+	drush obiba-progressbar-download $(obiba-progressbar-version)
 
 
 cc:
