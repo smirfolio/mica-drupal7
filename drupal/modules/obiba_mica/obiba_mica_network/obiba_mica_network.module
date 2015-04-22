@@ -27,6 +27,13 @@ function obiba_mica_network_menu() {
     'page arguments' => array(2),
   );
 
+  $items['mica/network/%/coverage'] = array(
+    'page callback' => 'obiba_mica_network_page_detail_coverage',
+    'file' => 'obiba_mica_network-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
   $items['mica/refresh_list_networks/%/%/%'] = array(
     //'title' => t('AutoComp Menu'),
     'page callback' => 'obiba_mica_network_retrieve_networks',
@@ -50,6 +57,10 @@ function obiba_mica_network_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
   return array(
     'obiba_mica_network-detail' => array('template' => 'obiba_mica_network-detail', 'path' => $path_theme),
+    'obiba_mica_network_detail_coverage' => array(
+      'template' => 'obiba_mica_network_detail_coverage',
+      'path' => $path_theme
+    ),
     'obiba_mica_network-list' => array('template' => 'obiba_mica_network-list', 'path' => $path_theme),
     'obiba_mica_network-list-page-block' => array(
       'template' => 'obiba_mica_network-list-page-block',

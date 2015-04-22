@@ -10,14 +10,15 @@ include_once($path_module_study . '/obiba_mica_study-page-detail.inc');
 
 function obiba_mica_network_page_detail($network_id) {
   obiba_mica_network_load_charts_libs();
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/mica-network-detail.js', 'file');
+  drupal_add_js(array('network_url' => rawurlencode($network_id)), 'setting');
+
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
   }
 
   $network_resource = new MicaNetworkResource();
-  $network_dto = NULL;
-
   $network_dto = $network_resource->get_network($network_id);
 
   if (!empty($network_dto)) {
@@ -40,7 +41,6 @@ function obiba_mica_network_page_detail($network_id) {
       'contacts_modal' => obiba_mica_study_get_contact_detail('contact', $network_dto->id, $network_dto->contacts),
       'network_dto' => $network_dto,
       'has_variables' => _obiba_mica_network_has_variables($network_dto->studySummaries),
-      'coverage' => obiba_mica_network_coverage($network_dto->studyIds),
       'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
     ));
   }
@@ -48,6 +48,18 @@ function obiba_mica_network_page_detail($network_id) {
     drupal_set_title(t('Network not found'));
     return '';
   }
+}
+
+function obiba_mica_network_page_detail_coverage($network_id) {
+  $network_resource = new MicaNetworkResource();
+  $network_dto = $network_resource->get_network($network_id);
+  $coverage = obiba_mica_network_coverage($network_dto->studyIds);
+
+  if (empty($coverage)) {
+    exit;
+  }
+
+  print theme('obiba_mica_network_detail_coverage', array('coverage' => $coverage));
 }
 
 /**

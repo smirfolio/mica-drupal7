@@ -149,23 +149,10 @@
     </section>
   <?php endif; ?>
 
-  <!-- COVERAGE -->
-  <?php if (!empty($coverage)): ?>
-    <section>
-      <h2 id="coverage"><?php print t('Variable Classification') ?></h2>
-
-      <?php foreach ($coverage as $taxonomy_coverage): ?>
-        <h3><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h3>
-        <p class="help-block">
-          <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
-        </p>
-        <div class="scroll-content-tab">
-          <?php print render($taxonomy_coverage['chart']); ?>
-        </div>
-      <?php endforeach ?>
-    </section>
-  <?php endif; ?>
-
+  <!-- COVERAGE placeholder -->
+  <section id="coverage">
+    <div><?php print t('Loading ...') ?></div>
+  </section>
 
   <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
   <div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
