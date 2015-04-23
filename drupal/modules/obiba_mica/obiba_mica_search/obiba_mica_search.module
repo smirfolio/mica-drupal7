@@ -390,6 +390,7 @@ function obiba_mica_search_variable_page_search() {
   //drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
 
   if (!obiba_mica_commons_is_ajax()) {
+    _get_search_data();
     $url_param = explode('?', request_uri());
 
     if (!empty($url_param[1])) {
