@@ -8,7 +8,7 @@
              data-all-collapsed="true"
              data-toggle="collapse"
              href="#taxonomy-<?php print $name?>">
-            <span><i class="glyphicon glyphicon-chevron-right"></i></span><span id=""><?php print $title; ?></span>
+            <span><i class="glyphicon glyphicon-chevron-right"></i></span><span id=""><?php print t($title); ?></span>
           </a>
         </span>
       </div>

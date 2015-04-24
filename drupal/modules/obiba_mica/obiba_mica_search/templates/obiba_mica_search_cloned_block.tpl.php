@@ -13,7 +13,7 @@
          data-parent="<?php print $block_html_id; ?>"
          href="#collapse-<?php print $block_html_id; ?>"
          class="collapsed">
-        <?php print $title; ?>
+        <?php print t($title); ?>
       </a>
     </h2>
     <div class="checkedterms clearfix"></div>
