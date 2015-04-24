@@ -88,28 +88,28 @@
               var aggregation = Hidden_input_form.attr('id');
               var input_range_val_to_reset = input_form_container.find('.form-item-range-from');
               var defaultMinvalue, defaultMaxvalue;
-              if ($(this).val()) {
-                  var current_undo_icon = undoIcon.clone().appendTo(content_icon);
-                  current_undo_icon.attr('aggregation', aggregation);
-                  current_undo_icon.on("click", function () {
-                      var clearButton = $(this);
+              if ($(this).val() && content_icon.find('span.remove-icon').length === 0) {
+                var current_undo_icon = undoIcon.clone().appendTo(content_icon);
+                current_undo_icon.attr('aggregation', aggregation);
+                current_undo_icon.off('click').on("click", function () {
+                    var clearButton = $(this);
 
-                      input_range_val_to_reset.each(function () {
-                          $(this).val('');
-                          if ($(this).attr('term') == aggregation + '-min') {
-                              defaultMinvalue = $(this).attr('placeholder');
+                    input_range_val_to_reset.each(function () {
+                        $(this).val('');
+                        if ($(this).attr('term') == aggregation + '-min') {
+                            defaultMinvalue = $(this).attr('placeholder');
 
-                          }
-                          if ($(this).attr('term') == aggregation + '-max') {
-                              defaultMaxvalue = $(this).attr('placeholder');
-                          }
-                      });
+                        }
+                        if ($(this).attr('term') == aggregation + '-max') {
+                            defaultMaxvalue = $(this).attr('placeholder');
+                        }
+                    });
 
-                      Hidden_input_form.attr("value", '');
-                      Hidden_input_form.val('');
+                    Hidden_input_form.attr("value", '');
+                    Hidden_input_form.val('');
 
-                      formClickHandler($(clearButton).attr('aggregation'));
-                  });
+                    formClickHandler($(clearButton).attr('aggregation'));
+                });
               }
           });
 
@@ -125,7 +125,7 @@
                   delIcon.remove();
               }
 
-              $(this).on("keyup", function () {
+              $(this).off('keyup').on('keyup', function () {
                   if ($(this).val()) {
                       inputHaveValue($(this));
                   } else {
@@ -139,9 +139,15 @@
         return attrAgg.replace("[]", "-terms[]") + value;
       }
 
-      function checkthebox(obj_span) {
+      /**
+       * Checks the element
+       * @param obj_span
+       * @param delayChecked - used for elements with no server-side clones
+       */
+      function checkthebox(obj_span, delayChecked) {
         obj_span.removeClass("unchecked");
         obj_span.addClass("checked");
+        obj_span.data('delayChecked', delayChecked ? true : undefined);
         obj_span.children(":first").removeClass();
         obj_span.children(":first").addClass("glyphicon glyphicon-ok");
       }
@@ -173,7 +179,7 @@
           '<a class="close" data-dismiss="alert" href="#">×</a>' +
           '<h3 class="element-invisible">Warning message</h3> ' + Drupal.settings.ErrorMessage +
           ' </div>';
-        var qs = isAjax ?  window.location.hash.replace(/^#!/, '') :
+        var qs = window.location.search.length === 0 ?  window.location.hash.replace(/^#!/, '') :
           window.location.search.replace(/^\?/, '');
         var jsonParam = (qs.split("&")
             .map(
@@ -267,18 +273,17 @@
           if (selectedVar) {
             var $current_width_percent = $(this).parent().find('.terms_stat:first').attr('witdh-val');
 
-            if ($(this).hasClass("unchecked")) {
+            if ($(this).hasClass("unchecked") || $(this).data('delayChecked')) {
               $(this).parents("label.span-checkbox").css("display", "inline");
               $(this).parents("label.span-checkbox").removeClass();
 
               checkthebox($(this));
 
-              var copy_chekbox = $(this).parents("li.facets").clone();
-              var divtofind = $(this).parents("section:first").find(".checkedterms:first");
+              var checkbox = $(this).parents("li.facets");
               $("input[id=" + getAggregationMoniker(this) + "]").val($(this).attr('value')).attr('data-value', $(this).attr("data-value"));
-              copy_chekbox.find('.terms_stat').width($current_width_percent);
-              divtofind.append(copy_chekbox);
-              $(this).parents("li.facets").remove();
+              checkbox.find('.terms_stat').width($current_width_percent);
+              var divtofind = $(this).parents("section:first").find(".checkedterms:first");
+              checkbox.appendTo(divtofind);
             }
           }
           else {
@@ -324,7 +329,7 @@
         var aggregation_name = getAggregationMoniker(this);
         var input = $("input[id=" + aggregation_name + "]")
         if ($(this).hasClass("unchecked")) {
-          checkthebox($(this));
+          checkthebox($(this), true);
           input.val($(this).attr('value'));
           input.attr('data-value', $(this).attr("data-value"));
           $.query_serializer.addItem(json, decodeURIComponent(serializeElement(input)));
@@ -434,16 +439,16 @@
           processRangeAggregationInputs(selectedVars);
         }
 
-        $("span#checkthebox", context).on("click", updateCheckboxes);
+        $("span#checkthebox", context).off('click').on('click', updateCheckboxes);
 
-        $("span#checkthebox", context).on('mouseover', function () {
+        $("span#checkthebox", context).off('mouseover').on('mouseover', function () {
           if ($(this).hasClass("checked")) {
             rollover($(this));
             return false;
           }
         });
 
-        $("span#checkthebox", context).on('mouseout', function () {
+        $("span#checkthebox", context).off('mouseout').on('mouseout', function () {
           if ($(this).hasClass("checked")) {
             rollout($(this));
             return false;
@@ -451,11 +456,11 @@
         });
 
         /*send request search on checking the box or on click go button */
-        $("div#checkthebox, button#facet-search-submit", context).on("click", function () {
+        $("div#checkthebox, button#facet-search-submit", context).off('click').on('click', function () {
           formClickHandler($(this).attr('aggregation'));
         });
 
-        $("input[id='range-auto-fill']", context).on("blur", function () {
+        $("input[id='range-auto-fill']", context).off('blur').on('blur', function () {
           var term = $(this).attr('termselect');
           var minid = term + '-min';
           var maxid = term + '-max';
@@ -484,7 +489,7 @@
       }
 
       function bindOnClikIcone(icon, inputSearch) {
-        icon.on("click", function () {
+        icon.off('click').on("click", function () {
           inputSearch.val('');
           formClickHandler(inputSearch.attr('id'));
         });
@@ -514,13 +519,43 @@
         }
 
         if (sections.length) {  //This is a workaround to avoid blinking collapsed section
+          var selectedVars = getUrlVars();
           sections.each(function () {
-            $(this).find('.checkedterms').html('');
-            var termsBlockTitles = $(this).find('.block-titles > a');
-            var termsBlock = $(this).find('.block-content');
+            var section = $(this);
+            var termsBlockTitles = section.find('.block-titles > a');
+            var termsBlock = section.find('.block-content');
+            var newTermsBlockTitle = temp.find('#' + section.attr('id') + ' .block-titles > a').text();
+            var newTermsBlock = temp.find('#' + section.attr('id') + ' .block-content');
 
-            $(termsBlockTitles[0]).text(temp.find('#' + $(this).attr('id') + ' .block-titles > a').text());
-            $(termsBlock[0]).html(temp.find('#' + $(this).attr('id') + ' .block-content').html());
+            section.find('.checkedterms li.facets') .each(function() {
+              // upon the server response, especially when there are no data returned, elements that were checked or
+              // unchecked must get cleaned up
+
+              var span = $(this).find('span#checkthebox');
+              var data_value = span.data('value');
+              var unchecked = span.hasClass('unchecked');
+
+              if (newTermsBlock.length > 0) {
+                if (newTermsBlock.find('span#checkthebox[data-value="' + data_value + '"]').length > 0) {
+                  // server has provided a clone of this element, remove it from the previous checked elements
+                  $(this).remove();
+                }
+              } else {
+                // there is no corresponding element from the server, reparent the element that was unchecked either
+                // via the facets search UI or the query renderer (will be missing from url query)
+                var selectedVar =
+                  selectedVars && selectedVars[getSelectedtermsAggSearchKey(span.attr('aggregation'), data_value)];
+
+                if (unchecked || !selectedVar) {
+                  $(this).appendTo($('form[id="'+$(this).data('formId')+'"]'));
+                }
+              }
+            });
+
+            if (newTermsBlockTitle.length > 0) {
+              $(termsBlockTitles[0]).text(newTermsBlockTitle);
+              $(termsBlock[0]).html(newTermsBlock.html());
+            }
           });
         } else { //first page load does not have facet sections
           $('#search-facets')
@@ -567,13 +602,13 @@
         loadSearchResult(window.location.hash.replace(/^#/, ''));
       }
 
-      $('form[id^=facet-search-query-form]', context).on('submit', function (e) {
+      $('form[id^=facet-search-query-form]', context).off('submit').on('submit', function (e) {
         e.preventDefault();
         var el = $(this).find('input[id*="matches:facet-search-query"]')[0];
         formClickHandler($(el).attr('id'));
       });
 
-      $('#search-result .pagination a', context).on('click', function(e) {
+      $('#search-result .pagination a', context).off('click').on('click', function(e) {
          e.preventDefault();
          window.location.hash = '!' + $(this).attr('href').split('?')[1];
       });

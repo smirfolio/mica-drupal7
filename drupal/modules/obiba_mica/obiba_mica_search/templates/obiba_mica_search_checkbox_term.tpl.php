@@ -1,6 +1,6 @@
 <?php // dpm($aggregation_facet);?>
 <?php // dpm((((($term->count*200)/$totalhits))*100)/200);?>
-<li class="facets">
+<li class="facets" data-form-id="facet-search-<?php print $aggregation_facet?>">
   <table>
     <tr>
       <td>

@@ -63,6 +63,8 @@
         case 'expand_all':
           expandAll();
           break
+        default:
+          expandAutoCompleteBlocks();
       }
 
       setupDomEventHandlers(context);
@@ -184,6 +186,14 @@
       $('span#panel-title-icon i.glyphicon').css('opacity', 0);
       expandGroups();
     }
+  }
+
+  function expandAutoCompleteBlocks() {
+    $.each($("form[class='autocomplete']"), function(i, e){
+      var id = $(this).attr('id').replace(/^auto_/, '');
+      $('div[id="collapse-'+id+'"]').collapse('show');
+      removeCollapsedIcon(id, 'collapsed');
+    });
   }
 
   function expandBlocks(parent) {
