@@ -1,21 +1,25 @@
 <?php // dpm($aggregation_facet);?>
 <?php // dpm((((($term->count*200)/$totalhits))*100)/200);?>
-<li class="facets" data-form-id="facet-search-<?php print $aggregation_facet?>">
+<li class="facets" data-form-id="facet-search-<?php print $aggregation_facet ?>">
   <table>
     <tr>
       <td>
         <?php
         // $mica_client = new MicaClient();
         if ($aggregation_facet == 'populations-selectionCriteria-countriesIso') {
-          $title = countries_country_lookup(drupal_strtoupper($term->title), 'iso' . strlen($term->title))->name;
+          $title = t(countries_country_lookup(drupal_strtoupper($term->title), 'iso' . strlen($term->title))->name);
           if (empty($title)) {
-            $title = $term->title;
+            $title = t($term->title);
           }
         }
         else {
-
           if (!empty($term->key)) {
-            $title = t($term->title);
+            if (!empty($term->title)) {
+              $title = t($term->title);
+            }
+            else {
+              $title = $term->key;
+            }
           }
         }
         $tooltip = empty($term->description) ? (strlen($title) < 30 ? '' : $title) : $term->description
