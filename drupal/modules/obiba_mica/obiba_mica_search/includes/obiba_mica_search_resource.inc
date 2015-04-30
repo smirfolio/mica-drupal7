@@ -62,7 +62,9 @@ class MicaSearchResource extends MicaClient {
     $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, MicaClient::getResponsePageSize());
     $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
     $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
-    return $this->dto_filter_construct($type, $q, $from, $group_by);
+    $withFacets = empty($parts['with-facets']) ? TRUE : strtolower($parts['with-facets']) === "true";
+
+    return $this->dto_filter_construct($type, $q, $from, $group_by, $withFacets);
   }
 
   /*

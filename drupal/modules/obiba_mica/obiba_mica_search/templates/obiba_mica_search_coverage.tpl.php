@@ -60,7 +60,7 @@ if (empty($query)) {
           MicaClientPathProvider::COVERAGE,
           t('Study'),
           array('class' => 'group-by'),
-          array('group-by' => 'studyIds', 'query' => $query)
+          array('group-by' => 'studyIds', 'query' => $query, 'with-facets' => 'false')
         );
       ?>
     </li>
@@ -71,7 +71,7 @@ if (empty($query)) {
           MicaClientPathProvider::COVERAGE,
           t('Data Collection Event'),
           array('class' => 'group-by'),
-          array('group-by' => 'dceIds', 'query' => $query)
+          array('group-by' => 'dceIds', 'query' => $query, 'with-facets' => 'false')
         );
       ?>
     </li>
@@ -82,7 +82,7 @@ if (empty($query)) {
           MicaClientPathProvider::COVERAGE,
           t('Dataset'),
           array('class' => 'group-by'),
-          array('group-by' => 'datasetId', 'query' => $query)
+          array('group-by' => 'datasetId', 'query' => $query, 'with-facets' => 'false')
         );
       ?>
     </li>

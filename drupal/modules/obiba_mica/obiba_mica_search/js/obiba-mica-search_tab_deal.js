@@ -33,7 +33,13 @@
         e.preventDefault();
         var targetPanel = e.target.hash.replace('#', '');
         var current_page = $.getCookieDataTabs('page_' + targetPanel) ? 'page=' + $.getCookieDataTabs('page_' + targetPanel) : '';
-        window.location.hash = '!' + ['type=' + targetPanel, $.urlParamToAdd(), current_page].filter(function (x) {return x;}).join('&');
+        var url = ['type=' + targetPanel, $.urlParamToAdd(), current_page].filter(function (x) {return x;}).join('&');
+
+        if (url.indexOf('with-facets') < 0) {
+          url += '&with-facets=false'
+        }
+
+        window.location.hash = '!' + url;
       });
 
       function setActiveTab(type) {
