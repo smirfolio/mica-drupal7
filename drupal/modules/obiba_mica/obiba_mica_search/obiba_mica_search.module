@@ -291,7 +291,7 @@ function obiba_mica_search_load_libs() {
 function obiba_mica_search_create_aggs_dictionary() {
   $dictionary = array();
 
-  if (!empty($_SESSION['variables'])) {
+  if (!empty($_SESSION['variables']) && !empty($_SESSION['variables']['aggregations'])) {
     $dictionary = _obiba_mica_search_create_aggs_dictionary(
       $_SESSION['variables']['aggregations'],
       function ($value) {
@@ -300,8 +300,7 @@ function obiba_mica_search_create_aggs_dictionary() {
     );
   }
 
-  if (!empty($_SESSION['studies'])) {
-
+  if (!empty($_SESSION['studies']) && !empty($_SESSION['studies']['aggregations'])) {
     $dictionary = array_merge($dictionary, _obiba_mica_search_create_aggs_dictionary(
       $_SESSION['studies']['aggregations'],
       function ($value) {
@@ -309,6 +308,7 @@ function obiba_mica_search_create_aggs_dictionary() {
       }
     ));
   }
+
   return $dictionary;
 }
 

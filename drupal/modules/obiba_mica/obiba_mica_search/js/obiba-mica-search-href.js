@@ -354,6 +354,8 @@
 
       function updateWindowLocation(jsonQuery) {
         var searchUrl = $.queryParamToJson();
+        delete searchUrl['with-facets']; //only used when the query does not change
+
         if (tabparam) {
           searchUrl.type = tabparam;
         }
@@ -573,10 +575,16 @@
         $('#search-facets').removeClass('hide');
       }
 
-      function loadSearchResult(url) {
+      function loadSearchResult(url, forceFacets) {
         $('#block-system-main').fadeTo(300, 0.5);
+        var url = url.replace(/^!/, '');
+
+        if (forceFacets) {
+          url = url.replace(/with-facets=false/, '');
+        }
+
         $.ajax({
-          url: '?' + url.replace(/^!/, '') + '&rnd=' + new Date().getTime(),
+          url: '?' + url + '&rnd=' + new Date().getTime(),
           success: function (data) {
             $('#block-system-main>.block-content').html(data.searchResult);
             populateFacetTabs(data.facets);
@@ -596,10 +604,10 @@
 
       if(!isAjax) { //events attached when page is first loaded
         $(window).bind('hashchange', function () {
-          loadSearchResult(window.location.hash.replace(/^#/, ''));
+          loadSearchResult(window.location.hash.replace(/^#/, ''), false);
         });
 
-        loadSearchResult(window.location.hash.replace(/^#/, ''));
+        loadSearchResult(window.location.hash.replace(/^#/, ''), true);
       }
 
       $('form[id^=facet-search-query-form]', context).off('submit').on('submit', function (e) {
@@ -610,7 +618,13 @@
 
       $('#search-result .pagination a', context).off('click').on('click', function(e) {
          e.preventDefault();
-         window.location.hash = '!' + $(this).attr('href').split('?')[1];
+         var url = '!' + $(this).attr('href').split('?')[1];
+
+        if ($.getParameterByName(url, 'with-facets') !== 'false') {
+          url += '&with-facets=false';
+        }
+
+         window.location.hash = url;
       });
 
       initSearchTerms();
