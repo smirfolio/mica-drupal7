@@ -6,7 +6,7 @@
 (function ($) {
   Drupal.behaviors.obiba_mica_search_collapse_tab = {
     attach: function (context, settings) {
-      var activeTabCookie = $.getCookieDataTabs('activeFacetTab');
+      var activeTabCookie = $.getState('activeFacetTab', {});
 
       if (jQuery.isEmptyObject(activeTabCookie)) {
         $(".facets-tab>li").each(function (id, state) {
@@ -15,7 +15,7 @@
           }
         });
 
-        $.saveCookieDataTabs(activeTabCookie, 'activeFacetTab');
+        $.setState('activeFacetTab', activeTabCookie);
       }
       else {
         $('#facet-search a[href$="' + activeTabCookie["active"] + '"]').tab('show');
@@ -24,15 +24,14 @@
       $('div#search-facets a[data-toggle="tab"]', context).on('shown.bs.tab', function (e) {
         e.preventDefault();
         var targetPanel = e.target.hash;
-        $.saveCookieDataTabs('', 'activeFacetTab');
         activeTabCookie['active'] = targetPanel;
-        $.saveCookieDataTabs(activeTabCookie, 'activeFacetTab');
+        $.setState('activeFacetTab', activeTabCookie);
       });
 
       $('#block-system-main a[role="tab"]', context).on('click', function (e) {
         e.preventDefault();
         var targetPanel = e.target.hash.replace('#', '');
-        var current_page = $.getCookieDataTabs('page_' + targetPanel) ? 'page=' + $.getCookieDataTabs('page_' + targetPanel) : '';
+        var current_page = $.getState('page_' + targetPanel) ? 'page=' + $.getState('page_' + targetPanel) : '';
         var url = ['type=' + targetPanel, $.urlParamToAdd(), current_page].filter(function (x) {return x;}).join('&');
 
         if (url.indexOf('with-facets') < 0) {
@@ -40,6 +39,7 @@
         }
 
         window.location.hash = '!' + url;
+        return false;
       });
 
       function setActiveTab(type) {

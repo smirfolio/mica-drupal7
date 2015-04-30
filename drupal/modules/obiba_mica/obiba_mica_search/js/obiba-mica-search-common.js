@@ -15,34 +15,6 @@
     attach: function (context, settings) {
       var isAjax = context !== document;
 
-      $.saveCookieDataTabs = function (newst, cookieName) {
-
-        // Stringify the object in JSON format for saving in the cookie.
-        var cookieString = '{ ';
-        var cookieParts = [];
-
-        $.each(newst, function (id, setting) {
-          cookieParts[cookieParts.length] = '"' + id + '": "' + setting + '"';
-        });
-
-        cookieString += cookieParts.join(', ') + ' }';
-        // console.log(cookieString);
-        $.cookie(cookieName, cookieString, {
-          time: 1,
-          path: window.location.pathname
-        });
-      }
-
-      $.getCookieDataTabs = function (nameCookie) {
-        if ($.cookie) {
-          var cookieString = $.cookie(nameCookie);
-          return cookieString ? $.parseJSON(cookieString) : '';
-        }
-        else {
-          return '';
-        }
-      }
-
       $.urlParam = function (name) {
         var results = isAjax ? new RegExp('[!&]' + name + '=([^&#]*)').exec(window.location.hash):
           new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.search);
@@ -123,11 +95,28 @@
 
       $.getParameterByName = function(query, name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = isAjax ? new RegExp('[!&]' + name + '=([^&#]*)') : new RegExp('[\\?&]' + name + '=([^&#]*)'),
+        var regex = isAjax ? new RegExp('[!&]?' + name + '=([^&#]*)') : new RegExp('[\\?&]?' + name + '=([^&#]*)'),
           results = regex.exec(query);
 
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-      }
+      };
+
+      $.setState = function (key, data) {
+        try {
+          localStorage.setItem(key, JSON.stringify(data));
+        } catch (e) {
+          //ignore
+        }
+      };
+
+      $.getState = function (key, def) {
+        try {
+          return JSON.parse(localStorage.getItem(key)) || def;
+        } catch (e) {
+          //ignore
+          return def;
+        }
+      };
     }
 
   }

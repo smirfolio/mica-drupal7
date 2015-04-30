@@ -355,6 +355,7 @@
       function updateWindowLocation(jsonQuery) {
         var searchUrl = $.queryParamToJson();
         delete searchUrl['with-facets']; //only used when the query does not change
+        delete searchUrl['page'];
 
         if (tabparam) {
           searchUrl.type = tabparam;
@@ -575,6 +576,18 @@
         $('#search-facets').removeClass('hide');
       }
 
+      function cleanupPagingState() {
+        try {
+          for(var k in localStorage) {
+            if (k.startsWith('page_')) {
+              localStorage.removeItem(k);
+            }
+          }
+        } catch (e) {
+          //ignore
+        }
+      };
+
       function loadSearchResult(url, forceFacets) {
         $('#block-system-main').fadeTo(300, 0.5);
         var url = url.replace(/^!/, '');
@@ -583,9 +596,22 @@
           url = url.replace(/with-facets=false/, '');
         }
 
+        if (url.indexOf('with-facets') < 0) {
+          cleanupPagingState();
+        }
+
+        url = '?' + url;
+
         $.ajax({
-          url: '?' + url + '&rnd=' + new Date().getTime(),
+          url: url,
           success: function (data) {
+            var searchType = $.getParameterByName(url, 'type'),
+              searchPage = $.getParameterByName(url, 'page');
+
+            if ( searchType!== '' &&  searchPage!== '') {
+              $.setState('page_' + searchType, searchPage);
+            }
+
             $('#block-system-main>.block-content').html(data.searchResult);
             populateFacetTabs(data.facets);
             Drupal.attachBehaviors($('div.main-container.container')[0], settings);
