@@ -571,14 +571,6 @@ class MicaClient {
    * @return string
    */
   protected function dto_filter_construct($type, $request_param = NULL, $from = 0, $group_by = NULL, $withFacets = TRUE) {
-    if ($from == 0) {
-      unset($_COOKIE['page_' . $type]);
-      setcookie('page_' . $type, 0, time() - 3600); // empty value and old timestamp
-    }
-    else {
-      setcookie('page_' . $type, $_GET['page'], time() + 3600 * 24 * 180);
-    }
-
     global $language;
     $lang = $language->language;
     $page_size = MicaClient::getResponsePageSize();
