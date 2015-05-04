@@ -586,7 +586,21 @@
         } catch (e) {
           //ignore
         }
-      };
+      }
+
+      function loadCoverageTaxonomies(url, taxonomies) {
+        if (taxonomies.length) {
+          $.ajax({
+            url: url + '&taxonomy=' + taxonomies[0],
+            success: function (data) {
+              var e = $('<div>').html(data.coverageTaxonomyResult);
+              $('#coverages').append(e);
+              taxonomies.splice(0, 1);
+              loadCoverageTaxonomies(url, taxonomies);
+            }
+          });
+        }
+      }
 
       function loadSearchResult(url, forceFacets) {
         $('#block-system-main').fadeTo(300, 0.5);
@@ -613,13 +627,23 @@
             }
 
             $('#block-system-main>.block-content').html(data.searchResult);
-            populateFacetTabs(data.facets);
+
+            if(data.facets) {
+              populateFacetTabs(data.facets);
+            }
+
             Drupal.attachBehaviors($('div.main-container.container')[0], settings);
+
             if (updateCollapsibleUI) {
               Drupal.behaviors.obiba_mica_facet_search_collapse_block.updateUI(context, Drupal.settings);
               updateCollapsibleUI = false // do this only once the page is loaded to preserve the collapsible UI state
             }
+
             $('html, body').animate({scrollTop: 0}, 'fast');
+
+            if (data.coverageTaxonomies) {
+              loadCoverageTaxonomies(url, data.coverageTaxonomies);
+            }
           },
           complete : function () {
             $('div.tooltip').remove();

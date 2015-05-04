@@ -137,6 +137,14 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/obiba_mica_search_coverage_taxonomy.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_mica_search_coverage_taxonomy'] = array(
+      'template' => 'obiba_mica_search_coverage_taxonomy',
+      'path' => $path . '/templates'
+    );
+  }
+
   $destination_path = file_exists($path . '/templates/obiba_mica_search_vocabulary_coverage.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['obiba_mica_search_vocabulary_coverage'] = array(

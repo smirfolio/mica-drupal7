@@ -89,37 +89,11 @@ if (empty($query)) {
   </ul>
 </div>
 
-<?php $has_coverage = FALSE; ?>
+<?php
+$has_coverage = !empty($coverages->totalHits);
+?>
 
-<article class="pull-left">
-  <?php if (!empty($coverages->taxonomies)): ?>
-
-    <?php foreach ($coverages->taxonomies as $taxonomy_coverage) : ?>
-      <?php if (!empty($taxonomy_coverage->hits) && !empty($taxonomy_coverage->vocabularies)): ?>
-
-        <section>
-          <!--          <a href="#" class="btn btn-success md-top-margin pull-right"><i class="glyphicon glyphicon-download right-indent"></i>Download</a>-->
-
-          <div>
-            <h2 id="<?php print $taxonomy_coverage->taxonomy->name; ?>">
-              <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage->taxonomy, 'titles'); ?>
-            </h2>
-
-            <p class="help-block">
-              <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage->taxonomy, 'descriptions'); ?>
-            </p>
-          </div>
-
-          <?php foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) : ?>
-            <?php if (!empty($vocabulary_coverage->hits)): ?>
-              <?php $has_coverage = TRUE; ?>
-            <?php endif ?>
-            <?php print render($vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name][$vocabulary_coverage->vocabulary->name]); ?>
-          <?php endforeach; ?>
-        </section>
-      <?php endif ?>
-    <?php endforeach; ?>
-  <?php endif ?>
+<article id="coverages" class="pull-left">
 </article>
 
 <?php if (!$has_coverage): ?>
@@ -127,4 +101,5 @@ if (empty($query)) {
     <i><?php print t(variable_get_value('variables_empty_label')); ?></i>
   </p>
 <?php endif ?>
+
 <div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i></div>

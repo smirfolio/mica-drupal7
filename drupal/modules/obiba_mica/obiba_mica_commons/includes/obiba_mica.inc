@@ -288,7 +288,7 @@ class MicaClient {
       if ($type_aggregations == 'variableResultDto') {
         if (!empty($aggregation->aggs)) {
           $filtered = self::filter_variable_aggregations($aggregation->aggs);
-          self::order_taxonomies($filtered, function ($value) {
+          self::order_facet_taxonomies($filtered, function ($value) {
             return empty($value->aggregation) ? $value : $value->aggregation;
           });
           $variable_buckets = $this->session_facets_bucket_construction($filtered);
@@ -437,6 +437,27 @@ class MicaClient {
    */
   public static function order_taxonomies(&$taxonomies, $getter) {
     $order_taxonomy_variable = variable_get_value('mica_taxonomy_order');
+
+    if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
+      $ordered_taxonomies = self::get_taxonomies_as_array($order_taxonomy_variable);
+
+      $taxonomies = array_map(function ($n) use ($taxonomies, $getter) {
+        $tmp = array_filter($taxonomies, function ($t) use ($n, $getter)  {
+          return $getter($t) === $n;
+        });
+
+        return reset($tmp);
+      }, $ordered_taxonomies);
+
+      $taxonomies = array_filter($taxonomies, function($t) {
+        return !empty($t);
+      });
+    }
+  }
+
+  public static function order_facet_taxonomies(&$taxonomies, $getter) {
+    $order_taxonomy_variable = variable_get_value('mica_taxonomy_order');
+
     if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
       $ordered_taxonomies = self::get_taxonomies_as_array($order_taxonomy_variable);
 
