@@ -628,6 +628,12 @@
 
             $('#block-system-main>.block-content').html(data.searchResult);
 
+
+            if(data.aggsDictionary) {
+              Drupal.settings.aggs_dictionary = !Drupal.settings.aggs_dictionary.length ? {} : Drupal.settings.aggs_dictionary;
+              $.extend(Drupal.settings.aggs_dictionary, data.aggsDictionary);
+            }
+
             if(data.facets) {
               populateFacetTabs(data.facets);
             }
