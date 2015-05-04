@@ -84,6 +84,10 @@ function obiba_mica_search_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_search_coverage',
       'path' => $path_theme
     ),
+    'obiba_mica_search_coverage_taxonomy' => array(
+      'template' => 'obiba_mica_search_coverage_taxonomy',
+      'path' => $path_theme
+    ),
     'obiba_mica_search_vocabulary_coverage' => array(
       'template' => 'obiba_mica_search_vocabulary_coverage',
       'path' => $path_theme
@@ -222,7 +226,6 @@ function _obiba_mica_search_get_facets_block_by_dto_type($dto_type, $type) {
             'content' => $rendered_group
           ));
         }
-
       }
       else {
         $has_terms = MicaClient::has_entity_by_id_aggregation($facet['aggs']);
@@ -496,12 +499,32 @@ function obiba_mica_search_coverage_page() {
     return theme('obiba_mica_search_coverage', array());
   }
 
-  $output = theme('obiba_mica_search_coverage', _obiba_mica_search_get_coverage_data()); //populates facets session values
+  $url_param = explode('?', request_uri());
 
-  return drupal_json_output(array(
-    'facets' => _get_facets_theme(),
-    'searchResult' => $output
-  ));
+  if (!empty($url_param[1])) {
+    parse_str($url_param[1], $parts);
+  }
+
+  $group_by = !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds';
+  $taxonomy = $parts['taxonomy'];
+
+  $coverages_data = _obiba_mica_search_get_coverage_data(!empty($parts['query']) ? $parts['query'] : NULL, $group_by, $taxonomy);
+
+  if (empty($taxonomy)) {
+    $output = theme('obiba_mica_search_coverage', $coverages_data);
+
+    return drupal_json_output(array(
+      'facets' => empty($parts['with-facets']) || strtolower($parts['with-facets']) !== "false" ? _get_facets_theme() : NULL,
+      'searchResult' => $output,
+      'coverageTaxonomies' => array_values(array_map(function($c) {return $c->taxonomy->name;}, $coverages_data['coverages']->taxonomies))
+    ));
+  } else {
+    $output = theme('obiba_mica_search_coverage_taxonomy', $coverages_data);
+
+    return drupal_json_output(array(
+      'coverageTaxonomyResult' => $output
+    ));
+  }
 }
 
 /**
@@ -563,19 +586,32 @@ function _obiba_mica_search_get_all_buckets($coverages) {
   return $all_buckets;
 }
 
-function _obiba_mica_search_get_coverage_data() {
-  $url_param = explode('?', request_uri());
-  if (!empty($url_param[1])) {
-    parse_str($url_param[1], $parts);
-  }
-  $group_by = !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds';
-  $vocabulary_coverage_outputs = array();
+function _obiba_mica_search_get_coverage_data($query, $group_by, $taxonomy) {
   $vocabulary_coverage_output = array();
   $search_resources = new MicaSearchResource();
-  $coverages = $search_resources->taxonomies_coverage(NULL, array('group-by' => 'studyIds'));
-  $all_buckets = _obiba_mica_search_get_all_buckets($coverages);
-  if (!empty($coverages->taxonomies)) {
-    foreach ($coverages->taxonomies as $taxonomy_coverage) {
+
+  if(empty($taxonomy) || !isset($_SESSION['coverages'])) {
+    unset($_SESSION['coverages']);
+    $coverages = $search_resources->taxonomies_coverage(NULL, array('group-by' => 'studyIds'));
+    $_SESSION['coverages'] = $coverages;
+    $_SESSION['fixed_menu'] = array('coverages' => $coverages);
+  }
+
+  if(!empty($taxonomy)) {
+    $coverages = $_SESSION['coverages'];
+  }
+
+  if (!empty($coverages->taxonomies) && !empty($taxonomy)) {
+    foreach ($coverages->taxonomies as $t) {
+      if ($t->taxonomy->name === $taxonomy) {
+        $taxonomy_coverage = $t;
+        break;
+      }
+    }
+
+    if (!empty($taxonomy_coverage)) {
+      $all_buckets = _obiba_mica_search_get_all_buckets($coverages);
+
       foreach ($taxonomy_coverage->vocabularies as $vocabulary_coverage) {
         $vocabulary_coverage_output[$vocabulary_coverage->vocabulary->name] = theme('obiba_mica_search_vocabulary_coverage', array(
           'taxonomy' => $taxonomy_coverage->taxonomy,
@@ -586,11 +622,8 @@ function _obiba_mica_search_get_coverage_data() {
           'group_by' => $group_by
         ));
       }
-      $vocabulary_coverage_outputs[$taxonomy_coverage->taxonomy->name] = $vocabulary_coverage_output;
     }
   }
-  unset($_SESSION['fixed_menu']);
-  $_SESSION['fixed_menu'] = array('coverages' => $coverages);
 
   MicaClient::order_taxonomies($coverages->taxonomies, function ($value) {
     return $value->taxonomy->name;
@@ -598,8 +631,9 @@ function _obiba_mica_search_get_coverage_data() {
 
   return array(
     'coverages' => $coverages,
-    'vocabulary_coverage_outputs' => $vocabulary_coverage_outputs,
-    'query' => !empty($parts['query']) ? $parts['query'] : NULL,
+    'taxonomy_coverage' => $taxonomy_coverage,
+    'vocabulary_coverage_output' => $vocabulary_coverage_output,
+    'query' => $query,
     'group_by' => $group_by,
   );
 }
