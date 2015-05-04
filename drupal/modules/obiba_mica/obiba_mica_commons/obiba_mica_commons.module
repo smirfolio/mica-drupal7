@@ -517,13 +517,22 @@ function obiba_mica_commons_is_ajax() {
 }
 
 function obiba_mica_commons_format_number($number, $nbr_decimals = 0) {
-  ;
   global $language;
   switch ($language->language) {
     case 'fr':
-      return number_format($number, $nbr_decimals, ',', ' ');
+      if (is_float($number)) {
+        return number_format($number, $nbr_decimals, ',', ' ');
+      }
+      else {
+        return $number;
+      }
     default :
-      return number_format($number, $nbr_decimals, '.', ',');
+      if (is_float($number)) {
+        return number_format($number, $nbr_decimals, '.', ',');
+      }
+      else {
+        return $number;
+      }
   }
 
 }
