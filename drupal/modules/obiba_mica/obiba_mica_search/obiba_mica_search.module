@@ -630,6 +630,7 @@ function _obiba_mica_search_get_coverage_data($query, $group_by, $taxonomy) {
   });
 
   return array(
+    'variable_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'variables'),
     'coverages' => $coverages,
     'taxonomy_coverage' => $taxonomy_coverage,
     'vocabulary_coverage_output' => $vocabulary_coverage_output,
