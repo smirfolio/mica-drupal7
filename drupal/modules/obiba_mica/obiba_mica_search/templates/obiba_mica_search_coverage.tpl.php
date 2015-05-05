@@ -27,9 +27,11 @@ if (empty($query)) {
 </div>
 
 <div>
-  <p class="pull-left">
 
-    <?php if (!empty($coverages->totalHits)): ?>
+  <div class="pull-right facet-search-form"><?php print render($variable_search_form); ?></div>
+  <div class="clearfix"></div>
+  <p class="pull-left">
+  <?php if (!empty($coverages->totalHits)): ?>
       <?php print t('%hits variables', array(
         '%hits' => $coverages->totalHits,
       )) ?>
