@@ -23,7 +23,6 @@
       }
 
       var tabparam = '';
-
       /*override autocomplete Drupal function */
       if (Drupal.jsAC) {
 
@@ -352,11 +351,19 @@
         $.query_href.updateWindowLocation(JSON.stringify(jsonQuery));
       }
 
-      function updateWindowLocation(jsonQuery) {
+      function updateWindowLocation(jsonQuery, urlParam) {
         var searchUrl = $.queryParamToJson();
         delete searchUrl['with-facets']; //only used when the query does not change
         delete searchUrl['page'];
 
+        // merge passed parameters (urlParam) with searchUrl
+        if (urlParam) {
+          $.each(searchUrl, function (i, l) {
+            if (urlParam[i]) {
+              searchUrl[i] = urlParam[i];
+            }
+          });
+        }
         if (tabparam) {
           searchUrl.type = tabparam;
         }
@@ -366,7 +373,6 @@
         } else {
           searchUrl.query = jsonQuery;
         }
-
         window.location.hash = $.isEmptyObject(searchUrl) ? '' : '!' + decodeURIComponent($.param(searchUrl));
       }
 
@@ -665,6 +671,14 @@
 
         loadSearchResult(window.location.hash.replace(/^#/, ''), true);
       }
+
+      $('select[id^=edit-size]', context).off('change').on('change', function (e) {
+        e.preventDefault();
+        var json = getQueryFromUrl();
+        var urlParam = [];
+        urlParam['size'] = this.value;
+        updateWindowLocation(JSON.stringify(json), urlParam);
+      });
 
       $('form[id^=facet-search-query-form]', context).off('submit').on('submit', function (e) {
         e.preventDefault();
