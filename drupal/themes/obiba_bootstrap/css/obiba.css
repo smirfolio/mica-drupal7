@@ -9824,6 +9824,7 @@ table.dataTable thead .sorting_asc {
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  padding: 5px 5px !important;
   color: #000 !important;
 }
 
@@ -9860,7 +9861,7 @@ textarea.form-control {
 }
 
 .form-button-group .indent {
-  margin-left: -40px;
+  margin-left: -35px;
 }
 
 .form-button-group div[class^="col-md-"] {
