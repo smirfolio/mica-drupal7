@@ -516,7 +516,8 @@ function obiba_mica_search_coverage_page() {
     return drupal_json_output(array(
       'facets' => empty($parts['with-facets']) || strtolower($parts['with-facets']) !== "false" ? _get_facets_theme() : NULL,
       'searchResult' => $output,
-      'coverageTaxonomies' => array_values(array_map(function($c) {return $c->taxonomy->name;}, $coverages_data['coverages']->taxonomies))
+      'coverageTaxonomies' => array_values(array_map(function($c) {return $c->taxonomy->name;}, $coverages_data['coverages']->taxonomies)),
+      'aggsDictionary' => empty($parts['with-facets']) || strtolower($parts['with-facets']) !== "false" ? obiba_mica_search_create_aggs_dictionary() : NULL
     ));
   } else {
     $output = theme('obiba_mica_search_coverage_taxonomy', $coverages_data);
