@@ -387,8 +387,7 @@ class MicaClient {
   }
 
   public static function getResponsePageSize() {
-    $size = empty($_GET['size']) ? self::$response_page_size : $_GET['size'];
-    return $size;
+    return self::$response_page_size;
   }
 
   /**
@@ -443,14 +442,14 @@ class MicaClient {
       $ordered_taxonomies = self::get_taxonomies_as_array($order_taxonomy_variable);
 
       $taxonomies = array_map(function ($n) use ($taxonomies, $getter) {
-        $tmp = array_filter($taxonomies, function ($t) use ($n, $getter) {
+        $tmp = array_filter($taxonomies, function ($t) use ($n, $getter)  {
           return $getter($t) === $n;
         });
 
         return reset($tmp);
       }, $ordered_taxonomies);
 
-      $taxonomies = array_filter($taxonomies, function ($t) {
+      $taxonomies = array_filter($taxonomies, function($t) {
         return !empty($t);
       });
     }
