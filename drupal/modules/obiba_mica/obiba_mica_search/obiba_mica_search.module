@@ -493,10 +493,10 @@ function obiba_mica_search_size_select_form() {
     array(
       'options' => //
         array( //
-          10 => 10,
-          20 => 20,
-          50 => 50,
-          100 => 100
+          10 => 10, //
+          20 => 20, //
+          50 => 50, //
+          100 => 100 //
         ) //
     );
 
