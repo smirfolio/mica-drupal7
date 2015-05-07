@@ -729,8 +729,12 @@ class MicaClient {
 
   }
 
-
-  public function parse_headers($raw_headers) {
+  /**
+   * Parse a string header response and return an key/value array attributes
+   * @param $raw_headers
+   * @return array
+   */
+  private function parse_headers($raw_headers) {
     $headers = [];
 
     foreach (explode("\n", $raw_headers) as $i => $h) {
@@ -744,7 +748,13 @@ class MicaClient {
     return $headers;
   }
 
-  public function parse_header($attribute, $property) {
+  /**
+   * get property by given attribute
+   * @param $attribute
+   * @param $property
+   * @return bool|mixed
+   */
+  private function parse_header($attribute, $property) {
     $attributes_array = explode(';', $attribute);
     foreach ($attributes_array as $property_string) {
       if (strstr($property_string, $property)) {
@@ -754,7 +764,15 @@ class MicaClient {
     return FALSE;
   }
 
-  public function get_property_value_from_header_array($header, $property, $attribute = NULL) {
+  /**
+   * return the value of a given key header attribute  (filename, charset)
+   * ToDo may be need to be extended to retrieve more attributes (User-Agent, ...)
+   * @param $header
+   * @param $property
+   * @param null $attribute
+   * @return bool|mixed|null
+   */
+  private function get_property_value_from_header_array($header, $property, $attribute = NULL) {
     if (!empty($attribute)) {
       return $this->parse_header($header[$attribute], $property);
     }
@@ -769,8 +787,30 @@ class MicaClient {
     return NULL;
   }
 
-  public function download_files($url) {
+  /**
+   * @param $file_resource
+   * @return mixed
+   */
+  private function get_file_extension($file_resource) {
+    $file_array = explode('.', $file_resource);
+    $extension_file = count($file_array);
 
+    return $file_array[$extension_file - 1];
+  }
+
+  /**
+   * Deal with downloadable resources from server (Images, attachments)
+   * @param:  $entity_type, $entity_id, $file_id
+   * @return : an array containing :
+   *            data : The raw file to download
+   *            filename : The real file name of the file
+   *            raw_header_array : the raw of header response
+   *           or in case of error
+   *            code : the error code
+   *            message : the error message
+   * */
+  public function download_file($entity_type, $entity_id, $file_id) {
+    $url = $this->micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_id . "/_download";
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => self::authorizationHeader(array(
@@ -783,13 +823,13 @@ class MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-
       $file_name = $this->get_property_value_from_header_array($this->parse_headers($client->lastResponse->headers),
         'filename',
         'Content-Disposition'
       );
 
       $raw_data = array(
+        'extension' => $this->get_file_extension($file_name),
         'data' => $data,
         'filename' => $file_name,
         'raw_header_array' => $this->parse_headers($client->lastResponse->headers)
