@@ -387,7 +387,8 @@ class MicaClient {
   }
 
   public static function getResponsePageSize() {
-    return self::$response_page_size;
+    $size = empty($_GET['size']) ? self::$response_page_size : $_GET['size'];
+    return $size;
   }
 
   /**

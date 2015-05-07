@@ -23,7 +23,6 @@
       }
 
       var tabparam = '';
-
       /*override autocomplete Drupal function */
       if (Drupal.jsAC) {
 
@@ -366,7 +365,6 @@
         } else {
           searchUrl.query = jsonQuery;
         }
-
         window.location.hash = $.isEmptyObject(searchUrl) ? '' : '!' + decodeURIComponent($.param(searchUrl));
       }
 
@@ -665,6 +663,18 @@
 
         loadSearchResult(window.location.hash.replace(/^#/, ''), true);
       }
+
+      $('select[id^=edit-size]', context).off('change').on('change', function (e) {
+        var urlParam = {
+          size: this.value
+        };
+        var searchUrl = $.queryParamToJson();
+        if (searchUrl['with-facets'] !== 'false') {
+          searchUrl['with-facets'] = 'false';
+        }
+        $.extend(searchUrl, urlParam);
+        window.location.hash = $.isEmptyObject(searchUrl) ? '' : '!' + decodeURIComponent($.param(searchUrl));
+      });
 
       $('form[id^=facet-search-query-form]', context).off('submit').on('submit', function (e) {
         e.preventDefault();
