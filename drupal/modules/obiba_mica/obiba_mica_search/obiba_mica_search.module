@@ -495,7 +495,6 @@ function obiba_mica_search_size_select_form() {
         array( //
           10 => 10,
           20 => 20,
-          25 => 25,
           50 => 50,
           100 => 100
         ) //
@@ -536,10 +535,13 @@ function obiba_mica_search_coverage_page() {
     return drupal_json_output(array(
       'facets' => empty($parts['with-facets']) || strtolower($parts['with-facets']) !== "false" ? _get_facets_theme() : NULL,
       'searchResult' => $output,
-      'coverageTaxonomies' => array_values(array_map(function($c) {return $c->taxonomy->name;}, $coverages_data['coverages']->taxonomies)),
+      'coverageTaxonomies' => array_values(array_map(function ($c) {
+        return $c->taxonomy->name;
+      }, $coverages_data['coverages']->taxonomies)),
       'aggsDictionary' => empty($parts['with-facets']) || strtolower($parts['with-facets']) !== "false" ? obiba_mica_search_create_aggs_dictionary() : NULL
     ));
-  } else {
+  }
+  else {
     $output = theme('obiba_mica_search_coverage_taxonomy', $coverages_data);
 
     return drupal_json_output(array(
@@ -611,14 +613,14 @@ function _obiba_mica_search_get_coverage_data($query, $group_by, $taxonomy) {
   $vocabulary_coverage_output = array();
   $search_resources = new MicaSearchResource();
 
-  if(empty($taxonomy) || !isset($_SESSION['coverages'])) {
+  if (empty($taxonomy) || !isset($_SESSION['coverages'])) {
     unset($_SESSION['coverages']);
     $coverages = $search_resources->taxonomies_coverage(NULL, array('group-by' => 'studyIds'));
     $_SESSION['coverages'] = $coverages;
     $_SESSION['fixed_menu'] = array('coverages' => $coverages);
   }
 
-  if(!empty($taxonomy)) {
+  if (!empty($taxonomy)) {
     $coverages = $_SESSION['coverages'];
   }
 
