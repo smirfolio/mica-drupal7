@@ -673,19 +673,14 @@
       }
 
       $('select[id^=edit-size]', context).off('change').on('change', function (e) {
-        e.preventDefault();
-        var urlParam = [];
-        urlParam['size'] = this.value;
-        urlParam['with-facets'] = 'false';
+        var urlParam = {
+          size: this.value
+        };
         var searchUrl = $.queryParamToJson();
-        $.each(searchUrl, function (i, l) {
-          if (urlParam[i]) {
-            searchUrl[i] = urlParam[i];
-          }
-        });
         if (searchUrl['with-facets'] !== 'false') {
           searchUrl['with-facets'] = 'false';
         }
+        $.extend(searchUrl, urlParam);
         window.location.hash = $.isEmptyObject(searchUrl) ? '' : '!' + decodeURIComponent($.param(searchUrl));
       });
 

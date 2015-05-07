@@ -454,11 +454,9 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
 }
 
 function obiba_mica_commons_create_size_select_form($context) {
-
-  $default_size = empty($_GET['size'])
-    ? empty($context['size']) ? NULL : $context['size']
-    : $_GET['size'];
-
+  $default_size_parameter = MicaClient::getResponsePageSize();
+  $default_size = !empty($default_size_parameter)
+    ? $default_size_parameter : $context['options'];
   $form = array();
   $form['#id'] = 'obiba-mica-size-select-form';
   $form['#method'] = 'get';
