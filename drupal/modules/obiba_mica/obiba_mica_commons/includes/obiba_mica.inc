@@ -443,14 +443,14 @@ class MicaClient {
       $ordered_taxonomies = self::get_taxonomies_as_array($order_taxonomy_variable);
 
       $taxonomies = array_map(function ($n) use ($taxonomies, $getter) {
-        $tmp = array_filter($taxonomies, function ($t) use ($n, $getter)  {
+        $tmp = array_filter($taxonomies, function ($t) use ($n, $getter) {
           return $getter($t) === $n;
         });
 
         return reset($tmp);
       }, $ordered_taxonomies);
 
-      $taxonomies = array_filter($taxonomies, function($t) {
+      $taxonomies = array_filter($taxonomies, function ($t) {
         return !empty($t);
       });
     }
@@ -726,6 +726,84 @@ class MicaClient {
     }
     $term_param = array_merge($parameters, $common_param);
     return MicaClient::add_parameter_dto_query_link($term_param);
+
+  }
+
+
+  public function parse_headers($raw_headers) {
+    $headers = [];
+
+    foreach (explode("\n", $raw_headers) as $i => $h) {
+      $h = explode(':', $h, 2);
+
+      if (isset($h[1])) {
+        $headers[$h[0]] = trim($h[1]);
+      }
+    }
+
+    return $headers;
+  }
+
+  public function parse_header($attribute, $property) {
+    $attributes_array = explode(';', $attribute);
+    foreach ($attributes_array as $property_string) {
+      if (strstr($property_string, $property)) {
+        return $property_value = str_replace('"', '', explode('=', $property_string)[1]);
+      }
+    }
+    return FALSE;
+  }
+
+  public function get_property_value_from_header_array($header, $property, $attribute = NULL) {
+    if (!empty($attribute)) {
+      return $this->parse_header($header[$attribute], $property);
+    }
+    else {
+      foreach ($header as $attributes) {
+        $find_property_value = $this->parse_header($attributes, $property);
+        if (!empty($find_property_value)) {
+          return $find_property_value;
+        }
+      }
+    }
+    return NULL;
+  }
+
+  public function download_files($url) {
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => self::authorizationHeader(array(
+            'Accept' => array(self::HEADER_BINARY),
+          )
+        ),
+    ));
+
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+
+      $file_name = $this->get_property_value_from_header_array($this->parse_headers($client->lastResponse->headers),
+        'filename',
+        'Content-Disposition'
+      );
+
+      $raw_data = array(
+        'data' => $data,
+        'filename' => $file_name,
+        'raw_header_array' => $this->parse_headers($client->lastResponse->headers)
+      );
+      return $raw_data;
+    }
+    catch (HttpClientException $e) {
+      watchdog('MicaTaxonomyResource', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+      return $raw_data = array(
+        'code' => $e->getCode(),
+        'message' => $e->getMessage()
+      );
+    }
 
   }
 

@@ -88,21 +88,22 @@ function obiba_mica_commons_download_attachment($entity_type, $entity_id, $file_
   if (!empty($file_resource_id)) {
     $mica_url = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
     $url = $mica_url . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_resource_id . "/_download";
-    $resource_data = drupal_http_request($url);
-    $response_code = floor($resource_data->code / 100) * 100;
-    if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
-      drupal_add_http_header('Content-Type', $resource_data->headers['content-type']);
-      drupal_add_http_header('Content-Disposition', $resource_data->headers['content-disposition']);
+    $mica_client = new MicaClient();
+    $raw_data = $mica_client->download_files($url);
+
+    if (!empty($raw_data) && empty($raw_data['code'])) {
+      drupal_add_http_header('Content-Type', $raw_data['raw_header_array']['Content-Type']);
+      drupal_add_http_header('Content-Disposition', $raw_data['raw_header_array']['Content-Disposition']);
       ob_clean();
-      print $resource_data->data;
+      print $raw_data['data'];
       exit;
     }
     else {
       // dpm(drupal_get_destination());
       drupal_set_message(t('An error occurred downloading file, server response code : @code, Server message: "@message"',
           array(
-            '@code' => $response_code,
-            '@message' => $resource_data->error
+            '@code' => $raw_data['code'],
+            '@message' => $raw_data['message']
           )
         ),
         'error');
@@ -476,6 +477,7 @@ function obiba_mica_commons_create_size_select_form($context) {
 }
 
 function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type, $link_to = FALSE) {
+
   if ($link_to) {
     if (!strstr(drupal_get_js(), 'fancybox')) {
       return '#';
@@ -493,11 +495,11 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
         $mica_url = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
         $url = $mica_url . "/" . $entity_type . "/" . $entity_id . "/file/"
           . $file_resource->id . "/_download";
-        $resource_data = drupal_http_request($url);
-        $response_code = floor($resource_data->code / 100) * 100;
-        if ($response_code != 400 && $response_code != 500 && !empty($resource_data)) {
-          $extension_file = _obiba_mica_commons_get_file_extension($file_resource);
-          $file = file_unmanaged_save_data($resource_data->data, 'public://tmp' . $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
+        $mica_client = new MicaClient();
+        $raw_data = $mica_client->download_files($url);
+        if (!empty($raw_data) && empty($raw_data['code'])) {
+          $extension_file = _obiba_mica_commons_get_file_extension($raw_data['filename']);
+          $file = file_unmanaged_save_data($raw_data['data'], 'public://tmp' . $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
           $exposed_url = file_create_url($file);
           //Time out in second
           $time_out = variable_get_value('image_cache_time_out') * 60;
@@ -505,6 +507,14 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
           return $exposed_url;
         }
         else {
+          // dpm(drupal_get_destination());
+          drupal_set_message(t('An error occurred downloading images , server response code : @code, Server message: "@message"',
+              array(
+                '@code' => $raw_data['code'],
+                '@message' => $raw_data['message']
+              )
+            ),
+            'error');
           return NULL;
         }
       }
@@ -514,7 +524,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
 }
 
 function _obiba_mica_commons_get_file_extension($file_resource) {
-  $file_array = explode('.', $file_resource->fileName);
+  $file_array = explode('.', $file_resource);
   $extension_file = count($file_array);
 
   return $file_array[$extension_file - 1];
