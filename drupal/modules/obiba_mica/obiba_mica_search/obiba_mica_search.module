@@ -462,6 +462,7 @@ function _get_search_data() {
   }
 
   return array(
+    'variable_select_size_form' => drupal_get_form('obiba_mica_search_size_select_form'),
     'search_param' => _obiba_mica_search_get_search_display_param(),
     'noval' => '',
     'query' => empty($parts['query']) ? '' : $parts['query'],
@@ -472,16 +473,34 @@ function _get_search_data() {
     'datasets' => array('data' => obiba_mica_search_datasets_table($datasets)),
     'dataset_total_hits' => !empty($dataset_total_hits) ? $dataset_total_hits : NULL,
     'dataset_total_count' => !empty($dataset_total_count) ? $dataset_total_count : NULL,
+    'dataset_select_size_form' => drupal_get_form('obiba_mica_search_size_select_form'),
     'dataset_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'datasets'),
     'studies' => array('data' => obiba_mica_search_studies_table($studies)),
     'study_total_hits' => !empty($study_total_hits) ? $study_total_hits : NULL,
     'study_total_count' => !empty($study_total_count) ? $study_total_count : NULL,
+    'study_select_size_form' => drupal_get_form('obiba_mica_search_size_select_form'),
     'study_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'studies'),
     'networks' => array('data' => obiba_mica_search_networks_table($networks)),
     'network_total_hits' => !empty($network_total_hits) ? $network_total_hits : NULL,
     'network_total_count' => !empty($network_total_count) ? $network_total_count : NULL,
-    'network_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'networks')
+    'network_select_size_form' => drupal_get_form('obiba_mica_search_size_select_form'),
+    'network_search_form' => drupal_get_form('obiba_mica_commons_create_full_text_query_form', 'networks'),
   );
+}
+
+function obiba_mica_search_size_select_form() {
+  $context =
+    array(
+      'options' => //
+        array( //
+          10 => 10, //
+          20 => 20, //
+          50 => 50, //
+          100 => 100 //
+        ) //
+    );
+
+  return obiba_mica_commons_create_size_select_form($context);
 }
 
 function obiba_mica_search_coverage_page() {
