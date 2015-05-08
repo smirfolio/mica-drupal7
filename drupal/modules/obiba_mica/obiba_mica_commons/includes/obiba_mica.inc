@@ -800,7 +800,7 @@ class MicaClient {
 
   /**
    * Deal with downloadable resources from server (Images, attachments)
-   * @param:  $entity_type, $entity_id, $file_id
+   * @param:  $entity_type (study, dce, network ...), $entity_id, $file_id
    * @return : an array containing :
    *            data : The raw file to download
    *            filename : The real file name of the file
@@ -837,7 +837,7 @@ class MicaClient {
       return $raw_data;
     }
     catch (HttpClientException $e) {
-      watchdog('MicaTaxonomyResource', 'Connection to server fail,  Error serve code : @code, message: @message',
+      watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
         array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
       return $raw_data = array(
         'code' => $e->getCode(),
