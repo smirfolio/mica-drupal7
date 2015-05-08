@@ -230,29 +230,31 @@ class MicaClient {
 
   protected function session_facets_bucket_construction($facets_bucket) {
     $facets_buckets = array();
-    foreach ($facets_bucket as $bucket) {
-      $facets_buckets[$bucket->aggregation] = array(
-        'title' => obiba_mica_commons_get_localized_field($bucket, 'title'),
-        'key' => $bucket->aggregation,
-        'aggs' => $bucket->aggregation,
-        'dto' => $bucket
-      );
+    if (!empty($facets_bucket)) {
+      foreach ($facets_bucket as $bucket) {
+        $facets_buckets[$bucket->aggregation] = array(
+          'title' => obiba_mica_commons_get_localized_field($bucket, 'title'),
+          'key' => $bucket->aggregation,
+          'aggs' => $bucket->aggregation,
+          'dto' => $bucket
+        );
 
-      if (!empty($bucket->children)) {
-        $children = array();
-        foreach ($bucket->children as $child) {
-          array_push($children, array(
-            'title' => obiba_mica_commons_get_localized_field($child, 'title'),
-            'key' => $child->aggregation,
-            'aggs' => $child->aggregation,
-            'dto' => $child
-          ));
+        if (!empty($bucket->children)) {
+          $children = array();
+          foreach ($bucket->children as $child) {
+            array_push($children, array(
+              'title' => obiba_mica_commons_get_localized_field($child, 'title'),
+              'key' => $child->aggregation,
+              'aggs' => $child->aggregation,
+              'dto' => $child
+            ));
+          }
+
+          $facets_buckets[$bucket->aggregation]['children'] = $children;
         }
-
-        $facets_buckets[$bucket->aggregation]['children'] = $children;
       }
+      return $facets_buckets;
     }
-    return $facets_buckets;
   }
 
   protected function session_facets_builder($aggregations) {
@@ -264,16 +266,18 @@ class MicaClient {
     unset($_SESSION['studies']);
     unset($_SESSION['datasets']);
     unset($_SESSION['networks']);
-    $networkAggregations = NULL;
+    $network_aggregations = NULL;
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if ($type_aggregations == 'networkResultDto') {
-        $_SESSION['networks']['aggregations'] = $aggregation->aggs;
+        $_SESSION['networks']['aggregations'] = !empty($aggregation->aggs) ? $aggregation->aggs : array();
         $_SESSION['networks']['aggregations']['total_hits'] = $aggregation->totalHits;
         $_SESSION['networks']['aggregations']['total_count'] = $aggregation->totalCount;
-        $networkAggregations = array_filter($aggregation->aggs, function ($agg) {
-          return $agg->aggregation === "networkId";
-        });
-        $network_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
+        if (!empty($aggregation->aggs)) {
+          $network_aggregations = array_filter($aggregation->aggs, function ($agg) {
+            return $agg->aggregation === "networkId";
+          });
+          $network_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
+        }
       }
 
       if ($type_aggregations == 'datasetResultDto') {
@@ -310,12 +314,14 @@ class MicaClient {
               ? $dataset_result->digests
               : $dataset_result->datasets;
         }
-        $_SESSION['variables']['aggregations'] = $aggregation->aggs;
+        $_SESSION['variables']['aggregations'] = !empty($aggregation->aggs) ? $aggregation->aggs : array();
         $_SESSION['variables']['aggregations']['total_hits'] = $aggregation->totalHits;
         $_SESSION['variables']['aggregations']['total_count'] = $aggregation->totalCount;
       }
       if ($type_aggregations == 'studyResultDto') {
-        $study_buckets = $this->session_facets_bucket_construction(self::filter_study_aggregations($aggregation->aggs));
+        if (!empty($aggregation->aggs)) {
+          $study_buckets = $this->session_facets_bucket_construction(self::filter_study_aggregations($aggregation->aggs));
+        }
         if (!empty($aggregations->networkResultDto)) {
           $network_result = isset($aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'}) ? $aggregations->networkResultDto->{'obiba.mica.NetworkResultDto.result'} : NULL;
           if (!empty($network_result) && (!empty($network_result->networks) || !empty($network_result->digests))) {
@@ -327,14 +333,14 @@ class MicaClient {
           }
         }
 
-        if (!empty($aggregations->variableResultDto)) {
+        if (!empty($aggregations->variableResultDto->aggs)) {
           $variable_studies_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->variableResultDto->aggs, 'studyIds');
           $_SESSION['studies']['variables'] = !empty($variable_studies_id_aggregations) ?
             $variable_studies_id_aggregations : NULL;
         }
 
-        if (!empty($aggregations->networkResultDto)) {
+        if (!empty($aggregations->networkResultDto->aggs)) {
           $networks_studies_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->networkResultDto->aggs, 'studyIds');
           $_SESSION['studies']['networks-studyId'] = !empty($networks_studies_id_aggregations) ?
@@ -342,13 +348,13 @@ class MicaClient {
         }
 
         if (!empty($aggregations->datasetResultDto) && !empty($aggregations->datasetResultDto->aggs)) {
-          $datasets_studyTableSstudyIdstudies_id_aggregations =
+          $datasets_study_tables_study_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTable-studyId');
-          $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_studyTableSstudyIdstudies_id_aggregations) ?
-            $datasets_studyTableSstudyIdstudies_id_aggregations : NULL;
+          $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_study_tables_study_id_aggregations) ?
+            $datasets_study_tables_study_id_aggregations : NULL;
         }
 
-        $_SESSION['studies']['aggregations'] = $aggregation->aggs;
+        $_SESSION['studies']['aggregations'] = !empty($aggregation->aggs) ? $aggregation->aggs : array();
         $_SESSION['studies']['aggregations']['total_hits'] = $aggregation->totalHits;
         $_SESSION['studies']['aggregations']['total_count'] = $aggregation->totalCount;
       }
@@ -363,20 +369,25 @@ class MicaClient {
     foreach ($moved_facets as $key => $facet) {
       unset($_SESSION['variables']['facets-buckets'][$key]);
     }
-    $_SESSION['studies']['facets-buckets'] = array_merge(array_merge($network_buckets, $moved_facets), $study_buckets);
+    $network_moved_facets = array_merge($network_buckets, $moved_facets);
+    $_SESSION['studies']['facets-buckets'] = array_merge(
+      $network_moved_facets,
+      $study_buckets);
 
-    if (!empty($networkAggregations)) {
-      foreach ($networkAggregations as $networkAggregation) {
-        array_push($_SESSION['studies']['aggregations'], $networkAggregation);
+    if (!empty($network_aggregations)) {
+      foreach ($network_aggregations as $network_aggregation) {
+        array_push($_SESSION['studies']['aggregations'], $network_aggregation);
       }
     }
   }
 
   protected function _get_aggregations_by_entity_dto($entity_aggr, $aggregations_term) {
-    foreach ($entity_aggr as $agg) {
-      if ($agg->aggregation == $aggregations_term && !empty($agg->{'obiba.mica.TermsAggregationResultDto.terms'})) {
+    if (!empty($entity_aggr)) {
+      foreach ($entity_aggr as $agg) {
+        if ($agg->aggregation == $aggregations_term && !empty($agg->{'obiba.mica.TermsAggregationResultDto.terms'})) {
 
-        return $agg->{'obiba.mica.TermsAggregationResultDto.terms'};
+          return $agg->{'obiba.mica.TermsAggregationResultDto.terms'};
+        }
       }
     }
     return NULL;
@@ -560,7 +571,7 @@ class MicaClient {
     return self::next_page_offset( //
       empty($current_page) ? 0 : $current_page, //
       empty($size) ? MicaClient::getResponsePageSize() : $size, //
-      $_SESSION[strtolower($type)]['aggregations']['total_hits'] //
+      @$_SESSION[strtolower($type)]['aggregations']['total_hits'] //
     );
   }
 
