@@ -266,14 +266,14 @@ class MicaClient {
     unset($_SESSION['studies']);
     unset($_SESSION['datasets']);
     unset($_SESSION['networks']);
-    $networkAggregations = NULL;
+    $network_aggregations = NULL;
     foreach ($aggregations as $type_aggregations => $aggregation) {
       if ($type_aggregations == 'networkResultDto') {
         $_SESSION['networks']['aggregations'] = !empty($aggregation->aggs) ? $aggregation->aggs : array();
         $_SESSION['networks']['aggregations']['total_hits'] = $aggregation->totalHits;
         $_SESSION['networks']['aggregations']['total_count'] = $aggregation->totalCount;
         if (!empty($aggregation->aggs)) {
-          $networkAggregations = array_filter($aggregation->aggs, function ($agg) {
+          $network_aggregations = array_filter($aggregation->aggs, function ($agg) {
             return $agg->aggregation === "networkId";
           });
           $network_buckets = $this->session_facets_bucket_construction($aggregation->aggs);
@@ -348,10 +348,10 @@ class MicaClient {
         }
 
         if (!empty($aggregations->datasetResultDto) && !empty($aggregations->datasetResultDto->aggs)) {
-          $datasets_studyTableSstudyIdstudies_id_aggregations =
+          $datasets_study_tables_study_id_aggregations =
             $this->_get_aggregations_by_entity_dto($aggregations->datasetResultDto->aggs, 'studyTable-studyId');
-          $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_studyTableSstudyIdstudies_id_aggregations) ?
-            $datasets_studyTableSstudyIdstudies_id_aggregations : NULL;
+          $_SESSION['studies']['studyTable-studyId'] = !empty($datasets_study_tables_study_id_aggregations) ?
+            $datasets_study_tables_study_id_aggregations : NULL;
         }
 
         $_SESSION['studies']['aggregations'] = !empty($aggregation->aggs) ? $aggregation->aggs : array();
@@ -369,14 +369,14 @@ class MicaClient {
     foreach ($moved_facets as $key => $facet) {
       unset($_SESSION['variables']['facets-buckets'][$key]);
     }
-    $network_mouved_fecet = array_merge($network_buckets, $moved_facets);
+    $network_moved_facets = array_merge($network_buckets, $moved_facets);
     $_SESSION['studies']['facets-buckets'] = array_merge(
-      $network_mouved_fecet,
+      $network_moved_facets,
       $study_buckets);
 
-    if (!empty($networkAggregations)) {
-      foreach ($networkAggregations as $networkAggregation) {
-        array_push($_SESSION['studies']['aggregations'], $networkAggregation);
+    if (!empty($network_aggregations)) {
+      foreach ($network_aggregations as $network_aggregation) {
+        array_push($_SESSION['studies']['aggregations'], $network_aggregation);
       }
     }
   }
