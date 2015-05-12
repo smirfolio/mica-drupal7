@@ -277,6 +277,41 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/user-login.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['user_login'] = array(
+      'template' => 'user-login',
+      'path' => $path . '/templates',
+      'render element' => 'form',
+      'preprocess functions' => array(
+        'obiba_bootstrap_preprocess_user_login'
+      ),
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/user-register-form.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['user_register_form'] = array(
+      'template' => 'user-register-form',
+      'path' => $path . '/templates',
+      'render element' => 'form',
+      'preprocess functions' => array(
+        'obiba_bootstrap_preprocess_user_register_form'
+      ),
+    );
+  }
+  $destination_path = file_exists($path . '/templates/user-pass.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['user_pass'] = array(
+      'template' => 'user-pass',
+      'path' => $path . '/templates',
+      'render element' => 'form',
+      'preprocess functions' => array(
+        'obiba_bootstrap_preprocess_user_pass'
+      ),
+    );
+  }
+
   return $theme_array;
 
 }
@@ -358,6 +393,10 @@ function obiba_bootstrap_preprocess_page(&$variables) {
 
   else {
     $variables['content_column_class'] = ' class="col-sm-12"';
+  }
+  if (empty($variables['logged_in'])) {
+    //Hide tabs user menu if not logged user
+    unset($variables['tabs']);
   }
 }
 
