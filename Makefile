@@ -24,7 +24,7 @@ help:
 
 include make-perform-release.mk
 
-all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update datatables obiba-progressbar captcha cc
+all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update datatables angular-schema-form obiba-progressbar captcha cc
 
 clean:
 	rm -rf target
@@ -119,6 +119,10 @@ obiba-progressbar:
 	drush vset -y obiba-progressbar-lib obiba-progressbar-$(obiba-progressbar-version) && \
 	drush vset -y obiba-progressbar-file "dist/obiba-progressbar" && \
 	drush obiba-progressbar-download $(obiba-progressbar-version)
+
+angular-schema-form:
+	cd target/drupal && \
+	drush angular-schema-form-install
 
 captcha:
 	cd target/drupal && \

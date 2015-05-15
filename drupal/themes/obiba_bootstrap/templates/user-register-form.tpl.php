@@ -1,7 +1,3 @@
-<?php
-//dpm($variables);
-?>
-
 <div class="outer">
   <div class="innerdivs">
     <div class="row">
@@ -11,7 +7,7 @@
     <p><?php print render($intro_text); ?></p>
 
     <div class="obiba-bootstrap-user-register-form-wrapper">
-      <?php print drupal_render_children($form) ?>
+        <?php print drupal_render_children($form) ?>
     </div>
   </div>
 </div>
