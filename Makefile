@@ -53,7 +53,8 @@ import-sql: create-sql
 
 settings:
 	sed  's/@db_pass@/$(db_pass)/g' drupal/dev/settings.php > target/drupal/sites/default/settings.php
-	cp drupal/dev/.htaccess target/drupal
+	cp drupal/dev/.htaccess target/drupal && \
+	cp drupal/dev/bower.json target/drupal
 
 enable-mica:
 	cd target/drupal && \
@@ -122,6 +123,7 @@ obiba-progressbar:
 
 angular-schema-form:
 	cd target/drupal && \
+	rm -rf sites/all/libraries/angular-schema-form  && \
 	drush angular-schema-form-install
 
 captcha:

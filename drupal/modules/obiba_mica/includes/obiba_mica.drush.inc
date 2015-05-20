@@ -254,8 +254,8 @@ function obiba_mica_drush_obiba_progressbar() {
 
 function obiba_mica_drush_angular_schema_form_install() {
     //download lib by bower installer
-    $bower_install_cmd = "bower install angular-resource angular-bootstrap angular-schema-form";
-    if ($out = drush_shell_exec($bower_install_cmd)) {
+  $bower_install_cmd = "bower install";
+  if ($out = drush_shell_exec($bower_install_cmd)) {
         print($out);
         drush_log(dt('angular-schema-form dependecies downloded in /bower_components'), 'success');
 

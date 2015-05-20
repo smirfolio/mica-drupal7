@@ -6,8 +6,15 @@
     </div>
     <p><?php print render($intro_text); ?></p>
 
-    <div class="obiba-bootstrap-user-register-form-wrapper">
-      <?php print drupal_render_children($form) ?>
-    </div>
+    <?php if (!empty($form['obiba_auth']) && $form['obiba_auth']['#value'] == 'obiba_auth_user_register_form'): ?>
+      <div class="text-center">
+        <p><?php print t('Please use this following link to register') ?></p>
+        <?php print l('Create an account ', 'obiba_user/register') ?>
+      </div>
+    <?php else: ?>
+      <div class="obiba-bootstrap-user-register-form-wrapper">
+        <?php print drupal_render_children($form) ?>
+      </div>
+    <?php endif; ?>
   </div>
 </div>
