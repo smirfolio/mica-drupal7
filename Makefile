@@ -24,7 +24,7 @@ help:
 
 include make-perform-release.mk
 
-all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update datatables angular-schema-form obiba-progressbar captcha cc
+all: clean setup-drupal www import-sql settings bootstrap enable-mica angular-schema-form enable-obiba-auth devel less-css jquery_update datatables obiba-progressbar cc
 
 clean:
 	rm -rf target
@@ -125,11 +125,6 @@ angular-schema-form:
 	cd target/drupal && \
 	rm -rf sites/all/libraries/angular-schema-form  && \
 	drush angular-schema-form-install
-
-captcha:
-	cd target/drupal && \
-	drush dl -y recaptcha && \
-	drush en -y recaptcha
 
 cc:
 	cd target/drupal && drush cc all
