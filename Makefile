@@ -24,7 +24,7 @@ help:
 
 include make-perform-release.mk
 
-all: clean setup-drupal www import-sql settings bootstrap enable-mica angular-schema-form enable-obiba-auth devel less-css jquery_update datatables obiba-progressbar cc
+all: clean setup-drupal www import-sql settings bootstrap enable-mica angular-schema-form enable-obiba-auth devel enable-mica-data-access less-css jquery_update datatables obiba-progressbar cc
 
 clean:
 	rm -rf target
@@ -59,6 +59,10 @@ settings:
 enable-mica:
 	cd target/drupal && \
 	drush en -y obiba_mica
+
+enable-mica-data-access:
+	cd target/drupal && \
+	drush en -y obiba_mica_data_access_request
 
 enable-obiba-auth:
 	cd target/drupal && \
