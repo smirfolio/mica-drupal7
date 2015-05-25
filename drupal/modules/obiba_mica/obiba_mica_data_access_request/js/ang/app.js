@@ -25,6 +25,19 @@
           'mytest': "variable test"
         }
 
+
+        $scope.onSubmit = function (theForm) {
+          // First we broadcast an event so all fields validate themselves
+          $scope.$broadcast('schemaFormValidate');
+          // Then we check if the form is valid
+          if (theForm.$valid) {
+
+          }
+          $scope.closeAlert = function () {
+            $scope.alert = [];
+          };
+        };
+
       }]);
 
 

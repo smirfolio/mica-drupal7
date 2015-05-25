@@ -34,6 +34,10 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
     'obiba_mica_data_access_request-form-page' => array(
       'template' => 'obiba_mica_data_access_request-form-page',
       'path' => $path_theme
+    ),
+    'obiba_mica_data_access_request-page-data-access' => array(
+      'template' => 'obiba_mica_data_access_request-page-data-access',
+      'path' => $path_theme
     )
   );
 }
@@ -45,18 +49,36 @@ function obiba_mica_data_access_request_library() {
   return obiba_mica_load_angular_library();
 }
 
+/**
+ * Implements hook_library_alter().
+ * Angular library compatible with Jquery 1.10
+ *
+ */
 function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
-  if ($module = 'obiba_mica_data_access' && current_path() == 'data_access_request') {
+  if (($module == 'obiba_mica_data_access_request' || $module == 'system') && current_path() == 'data-access-request') {
     $path = drupal_get_path('module', 'jquery_update');
     jquery_update_jquery_replace($javascript, NULL, $path, NULL, '1.10');
   }
+
 }
 
 function obiba_mica_data_access_request_page() {
+  $data_access_form_display = FALSE;
+  $data_access_register_user = FALSE;
   $node_rendred = node_view(node_load(variable_get('access_request_page')));
   drupal_set_title($node_rendred['#node']->title);
   $node_rendred['#node']->title = '';
-  return $node_rendred;
+  if (user_is_logged_in()) {
+    $data_access_form_display = TRUE;
+  }
+  else {
+    $data_access_register_user = TRUE;
+  }
+  return theme('obiba_mica_data_access_request-page-data-access', array(
+    'node_content' => $node_rendred,
+    'data_access_form_display' => $data_access_form_display,
+    'data_access_register_user' => $data_access_register_user
+  ));
 }
 
 function obiba_mica_data_access_request_form_page() {
@@ -65,6 +87,7 @@ function obiba_mica_data_access_request_form_page() {
     dpm($form_attributes);
   }
   else {
+    dpm($form_attributes);
     obiba_mica_load_libraires_resources('obiba_mica_data_access_request');
     $module_path_ = drupal_get_path('module', 'obiba_mica_data_access_request');
     drupal_add_js($module_path_ . '/js/ang/app.js', array('type' => 'file', 'scope' => 'footer'));
@@ -82,3 +105,4 @@ function obiba_mica_data_access_request_form_get_config() {
   $config = $mica_client->get_form_definition();
   return $config;
 }
+
