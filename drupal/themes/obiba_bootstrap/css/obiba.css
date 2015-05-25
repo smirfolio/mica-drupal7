@@ -9889,3 +9889,16 @@ div.innerdivs {
 .obiba-bootstrap-user-register-form-wrapper {
   margin-top: 15px;
 }
+
+.form-control-feedback {
+  position: absolute;
+  top: 26px;
+  right: 0;
+  z-index: 2;
+  display: block;
+  width: 33px;
+  height: 33px;
+  line-height: 33px;
+  text-align: center;
+  right: 10px !important;
+}

@@ -1,0 +1,15 @@
+name = "Data Access Request"
+description = "Mica Client -- Data Access Request"
+package = Obiba
+core = 7.x
+
+
+files[] = includes/obiba_mica_data_access_request.inc
+dependencies[] = http_client
+
+
+; Information added by obiba.org packaging script on Wed, 20 May 2015 15:37:19 -0400
+version = 7.34-1.0.2-dev
+project = obiba_mica_data_access_request
+datestamp = 1432150639
+
