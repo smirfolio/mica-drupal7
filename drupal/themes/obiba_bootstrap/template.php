@@ -312,6 +312,24 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/obiba_auth_user-register-form.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_auth_user-register-form'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_auth_user-register-form',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/obiba_auth_user-pass-request-form.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_auth_user-pass-request-form'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_auth_user-pass-request-form',
+      'path' => $path . '/templates'
+    );
+  }
+
   return $theme_array;
 
 }

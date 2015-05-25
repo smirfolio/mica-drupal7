@@ -77,8 +77,9 @@
   <div class="container">
     <div class="navbar-header">
       <?php if ($logo): ?>
-        <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>">
-          <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>"/>
+        <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>"
+          title="<?php print t('Home'); ?>">
+        <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>"/>
         </a>
       <?php endif; ?>
 
@@ -112,6 +113,9 @@
       </div>
     <?php endif; ?>
   </div>
+  <?php if (empty($user->roles[1]) || $user->roles[1] !== 'anonymous user'): ?>
+    <div class="logout-class"><?php print $user->name . '-' . l('Logout', 'user/logout') ?></div>
+  <?php endif; ?>
 </header>
 
 <div class="main-container container">

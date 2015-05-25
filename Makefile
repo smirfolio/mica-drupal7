@@ -24,7 +24,7 @@ help:
 
 include make-perform-release.mk
 
-all: clean setup-drupal www import-sql settings bootstrap enable-mica enable-obiba-auth devel less-css jquery_update datatables obiba-progressbar captcha cc
+all: clean setup-drupal www import-sql settings bootstrap enable-mica angular-schema-form enable-obiba-auth devel less-css jquery_update datatables obiba-progressbar cc
 
 clean:
 	rm -rf target
@@ -53,7 +53,8 @@ import-sql: create-sql
 
 settings:
 	sed  's/@db_pass@/$(db_pass)/g' drupal/dev/settings.php > target/drupal/sites/default/settings.php
-	cp drupal/dev/.htaccess target/drupal
+	cp drupal/dev/.htaccess target/drupal && \
+	cp drupal/dev/bower.json target/drupal
 
 enable-mica:
 	cd target/drupal && \
@@ -120,10 +121,10 @@ obiba-progressbar:
 	drush vset -y obiba-progressbar-file "dist/obiba-progressbar" && \
 	drush obiba-progressbar-download $(obiba-progressbar-version)
 
-captcha:
+angular-schema-form:
 	cd target/drupal && \
-	drush dl -y recaptcha && \
-	drush en -y recaptcha
+	rm -rf sites/all/libraries/angular-schema-form  && \
+	drush angular-schema-form-install
 
 cc:
 	cd target/drupal && drush cc all
