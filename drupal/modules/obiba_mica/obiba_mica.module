@@ -97,7 +97,23 @@ function obiba_mica_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer'
         ),
+        $lib_path_schema_form . '/angular-route/angular-route.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/angular-translate/angular-translate.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/ng-obiba/dist/ng-obiba.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
         $lib_path_schema_form . '/angular-recaptcha/release/angular-recaptcha.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/angular-utils-pagination/dirPagination.js' => array(
           'type' => 'file',
           'scope' => 'footer'
         ),

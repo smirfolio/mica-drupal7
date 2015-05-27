@@ -346,6 +346,14 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
       'path' => $path . '/templates'
     );
   }
+  $destination_path = file_exists($path . '/templates/obiba_mica_data_access_request-list.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['oobiba_mica_data_access_request-list'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_mica_data_access_request-list',
+      'path' => $path . '/templates'
+    );
+  }
 
   return $theme_array;
 
