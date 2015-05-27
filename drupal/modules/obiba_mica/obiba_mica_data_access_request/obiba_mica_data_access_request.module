@@ -63,6 +63,7 @@ function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
 }
 
 function obiba_mica_data_access_request_page() {
+  global $user;
   $data_access_form_display = FALSE;
   $data_access_register_user = FALSE;
   $node_rendred = node_view(node_load(variable_get('access_request_page')));

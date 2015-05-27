@@ -14,9 +14,11 @@
     <p><?php print t('Or') ?></p>
 
     <p>
-      <a class='btn btn-primary' href='user/login'>
-        <?php print t('Login') ?>
-      </a>
+      <?php
+      print l('login', 'user/login', array(
+        'query' => array(current_path()),
+        'attributes' => array('class' => array('btn', 'btn-primary'))
+      ));?>
     </p>
 
   </div>

@@ -321,6 +321,15 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/obiba_auth_user-confirm-registration-password.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_auth_user-confirm-registration-password'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_auth_user-confirm-registration-password',
+      'path' => $path . '/templates'
+    );
+  }
+
   $destination_path = file_exists($path . '/templates/obiba_auth_user-pass-request-form.tpl.php');
   if (!empty($destination_path)) {
     $theme_array['obiba_auth_user-pass-request-form'] = array(
