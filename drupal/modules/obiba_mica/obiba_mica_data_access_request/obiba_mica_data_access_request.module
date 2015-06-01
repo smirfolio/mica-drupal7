@@ -12,6 +12,7 @@ function obiba_mica_data_access_request_menu() {
     'access callback' => TRUE,
 //    'page arguments' => array(2)
   );
+
   $items['data-access'] = array(
     'title' => 'Data Access',
     'description' => 'Data access page',
@@ -68,13 +69,16 @@ function obiba_mica_data_access_request_page() {
   $data_access_register_user = FALSE;
   $node_rendred = node_view(node_load(variable_get('access_request_page')));
   drupal_set_title($node_rendred['#node']->title);
+  obiba_mica_data_access_requests_datatable_init(array());
+
   $node_rendred['#node']->title = '';
+
   if (user_is_logged_in()) {
     $data_access_form_display = TRUE;
-  }
-  else {
+  } else {
     $data_access_register_user = TRUE;
   }
+
   return theme('obiba_mica_data_access_request-page-data-access', array(
     'node_content' => $node_rendred,
     'data_access_form_display' => $data_access_form_display,
@@ -107,3 +111,32 @@ function obiba_mica_data_access_request_form_get_config() {
   return $config;
 }
 
+function obiba_mica_data_access_requests_datatable_init($requests) {
+  if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
+    drupal_add_library('obiba_mica_dataset', 'datatables');
+  } else {
+    obiba_mica_commons_datatables_external_source();
+  }
+
+  $requests = (new MicaDataAccessRequestResource())->get_requests();
+
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_data_access_request') . '/js/obiba_mica_data_access_request_datatable_init.js', 'file');
+  drupal_add_js(array(
+    'table_headers' => array(
+    array("title" => t('Applicant')),
+    array("title" => t('Title'), 'width' => '45%'),
+    array("title" => t('Last Update'), 'width' => '20%'),
+    array("title" => t('Status'), 'width' => '15%'),
+    array("title" => t('Actions'))
+  ),
+    'table_data' => obiba_mica_data_access_request_table_rows($requests)
+  ), 'setting');
+}
+
+function obiba_mica_data_access_request_table_rows($requests) {
+  $res = array_map(function($r) {
+    return array($r->applicant, $r->title, date_format(date_create(empty($r->timestamps->lastUpdate) ? $r->timestamps->created : $r->timestamps->lastUpdate), "Y-m-d H:i:s"), $r->status, $r->actions, $r->id);
+  } , $requests);
+
+  return $res;
+}

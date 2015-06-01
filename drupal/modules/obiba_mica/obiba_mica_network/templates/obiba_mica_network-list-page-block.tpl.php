@@ -11,7 +11,7 @@
       </h1>
     <?php endif; ?>
   </div>
-  <div class="col-md-10  col-sm-12 col-xs-12">
+  <div class="col-md-10 col-sm-12 col-xs-12">
     <div>
       <h4>
         <?php print MicaClientAnchorHelper::network_list_item($network); ?>
