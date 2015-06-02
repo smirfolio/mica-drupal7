@@ -35,7 +35,9 @@ class MicaDataAccessRequestResource extends MicaClient {
           )
         )
     ));
+
     $client = $this->client();
+
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
@@ -47,4 +49,30 @@ class MicaDataAccessRequestResource extends MicaClient {
       return $e->getResponse();
     }
   }
+
+  public function get_requests() {
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-requests';
+
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      )
+    ));
+
+    $client = $this->client();
+
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return json_decode($data);
+    } catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+      return array();
+    }
+  }
+
 }
