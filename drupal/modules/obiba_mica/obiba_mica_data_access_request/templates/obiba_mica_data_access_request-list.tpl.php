@@ -8,17 +8,17 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div ng-app="DataAccessRequest" ng-controller="DataAccessRequestListController">
+<div ng-app="DataAccessRequest">
 
   <h2 class="voffset5">
-    <span translate>data-access-requests</span>
+    <?php print t('Data Access Request'); ?>
   </h2>
-  <a ng-href="#/data-access-request/new" class="btn btn-info">
-    <i class="fa fa-plus"></i> <span translate>data-access-request.add</span>
+  <a ng-href="{{drupalBaseUrl}}data-access-request/new" class="btn btn-info">
+    <i class="fa fa-plus"></i> <?php print t('Add Data Access Request'); ?>
   </a>
 
   <p class="voffset3" ng-hide="requests.length > 0">
-    <span translate>data-access-request.none</span>
+    <?php print t('None Data Access Request'); ?>
   </p>
 
   <div ng-hide="requests.length === 0">
@@ -40,8 +40,8 @@
       <table class="table table-striped">
         <thead>
         <tr>
-          <th translate>data-access-request.applicant</th>
-          <th translate>data-access-request.title</th>
+          <th translate><?php print t('Applicant'); ?></th>
+          <th translate><?php print t('Title'); ?></th>
           <th></th>
         </tr>
         </thead>
@@ -60,7 +60,7 @@
                 <a ng-href="#/data-access-request/{{request.id}}" translate><i class="glyphicon glyphicon-eye-open"></i></a>
               </li>
               <li ng-show="actions.canEdit(request)">
-                <a ng-href="#/data-access-request/{{request.id}}/edit" translate><i
+                <a ng-href="{{drupalBaseUrl}}data-access-request/{{request.id}}/edit" translate><i
                     class="glyphicon glyphicon-pencil"></i></a>
               </li>
               <li>

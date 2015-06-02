@@ -22,17 +22,9 @@
   Drupal.behaviors.obiba_mica_data_access_request = {
     attach: function (context, settings) {
 
-
       'use strict';
-
-      Drupal.settings.dataAccessRequest = angular.module('DataAccessRequest', [
-        'ngResource',
-        'ngRoute',
-        'ngSanitize',
-        'ui.bootstrap',
-        'schemaForm',
-        'obiba.notification',
-        'angularUtils.directives.dirPagination'
+      mica.dataAccessRequest = angular.module('mica.DataAccessRequest', [
+        'schemaForm'
       ]);
 
 

@@ -56,82 +56,10 @@ function obiba_mica_theme_registry_alter(&$theme_registry) {
  */
 function obiba_mica_chart_definition_alter(&$definition, $chart, $chart_id) {
   if (!empty($chart['#raw_options'])) {
-    $definition = obiba_mica_drupal_array_merge_deep_array(array($definition, array('options' => $chart['#raw_options'])));
-  }
-}
-
-/**
- *
- */
-function obiba_mica_load_angular_library() {
-  $libraries = array();
-  $lib_path_schema_form = libraries_get_path('angular-schema-form');
-  // Make sure we have a valid library path before returning library load info.
-  if (!empty($lib_path_schema_form)) {
-    $libraries['angular-schema-form'] = array(
-      'title' => 'Angular Schema Form',
-      'website' => 'http://schemaform.io',
-      'version' => 'Last Version',
-      'js' => array(
-
-        $lib_path_schema_form . '/angular/angular.min.js' => array('type' => 'file', 'scope' => 'footer'),
-        $lib_path_schema_form . '/angular-resource/angular-resource.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/angular-bootstrap/ui-bootstrap-tpls.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/angular-sanitize/angular-sanitize.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/tv4/tv4.js' => array('type' => 'file', 'scope' => 'footer'),
-        $lib_path_schema_form . '/objectpath/lib/ObjectPath.js' => array('type' => 'file', 'scope' => 'footer'),
-        $lib_path_schema_form . '/angular-schema-form/dist/schema-form.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/angular-schema-form/dist/bootstrap-decorator.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/angular-route/angular-route.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/angular-translate/angular-translate.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/ng-obiba/dist/ng-obiba.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/angular-recaptcha/release/angular-recaptcha.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/angular-utils-pagination/dirPagination.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-      ),
-//      'css' => array(
-//        $lib_path_schema_form . '/extensions/FixedColumns/css/dataTables.fixedColumns.css' => array()
-//      )
-    );
-  }
-  return $libraries;
-}
-
-function obiba_mica_load_libraires_resources($module_name) {
-  if (drupal_get_library($module_name, 'angular-schema-form')) {
-    drupal_add_library($module_name, 'angular-schema-form');
-  }
-  else {
-    watchdog($module_name, 'The library angular-schema-form not loaded', array(), WATCHDOG_WARNING);
+    $definition = obiba_mica_drupal_array_merge_deep_array(array(
+      $definition,
+      array('options' => $chart['#raw_options'])
+    ));
   }
 }
 
@@ -171,7 +99,8 @@ function obiba_mica_user_view($account, $view_mode, $langcode) {
     if ($user_name) {
       drupal_set_title($user_name);
     }
-  } catch (Exception $e) {
+  }
+  catch (Exception $e) {
 
   }
 

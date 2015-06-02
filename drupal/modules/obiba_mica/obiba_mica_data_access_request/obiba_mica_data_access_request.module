@@ -12,13 +12,20 @@
 function obiba_mica_data_access_request_menu() {
   $items = array();
 
-  $items['data-access-request'] = array(
-    'page callback' => 'obiba_mica_data_access_request_form_page',
+  $items['data-access-request-list'] = array(
+    'page callback' => 'obiba_mica_data_access_request_list_page',
     'access callback' => TRUE,
 //    'page arguments' => array(2)
   );
-  $items['data-access-request-list'] = array(
-    'page callback' => 'obiba_mica_data_access_request_list_page',
+
+  $items['data-access-requests/save'] = array(
+    'page callback' => 'obiba_mica_data_access_request_save',
+    'access callback' => TRUE,
+//    'page arguments' => array(2)
+  );
+
+  $items['data-access-form'] = array(
+    'page callback' => 'obiba_mica_data_access_request_form_get_config',
     'access callback' => TRUE,
 //    'page arguments' => array(2)
   );
@@ -46,20 +53,20 @@ function obiba_mica_data_access_request_menu() {
  * Implements hook_theme().
  */
 function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
-  $path_theme = $path . '/templates';
+  $path_theme = $path . '/js/views';
   return array(
     'obiba_mica_data_access_request-form-page' => array(
       'template' => 'obiba_mica_data_access_request-form-page',
       'path' => $path_theme
     ),
-    'obiba_mica_data_access_request-page-data-access' => array(
-      'template' => 'obiba_mica_data_access_request-page-data-access',
-      'path' => $path_theme
-    ),
-    'obiba_mica_data_access_request-list' => array(
-      'template' => 'obiba_mica_data_access_request-list',
-      'path' => $path_theme
-    )
+//    'obiba_mica_data_access_request-page-data-access' => array(
+//      'template' => 'obiba_mica_data_access_request-page-data-access',
+//      'path' => $path_theme
+//    ),
+//    'obiba_mica_data_access_request-list' => array(
+//      'template' => 'obiba_mica_data_access_request-list',
+//      'path' => $path_theme
+//    )
   );
 }
 
@@ -67,7 +74,7 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
  * Implements hook_library().
  */
 function obiba_mica_data_access_request_library() {
-  return obiba_mica_load_angular_library();
+  return obiba_main_app_angular_load_angular_library();
 }
 
 /**
@@ -83,6 +90,22 @@ function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
 
 }
 
+/**
+ * Implements hook_load_menus (obiba_main_app_angular_)
+ */
+function obiba_mica_data_access_request_load_menus() {
+  $items = array();
+
+  $items['data-access-request'] = array(
+    'access callback' => TRUE,
+//    'page arguments' => array(2)
+  );
+  return $items;
+}
+
+/**
+ * @return string
+ */
 function obiba_mica_data_access_request_page() {
   global $user;
   $data_access_form_display = FALSE;
@@ -103,33 +126,54 @@ function obiba_mica_data_access_request_page() {
   ));
 }
 
+/**
+ * Implementation of hook_get_ng_module_to_load()
+ */
+
+function obiba_mica_data_access_request_get_ng_module_to_load() {
+  return 'mica.DataAccessRequest';
+}
+
+/**
+ * Implements hook_get_js()
+ */
+function obiba_mica_data_access_request_get_js() {
+  $module_path = drupal_get_path('module', 'obiba_mica_data_access_request');
+  $js = file_scan_directory($module_path . '/js', '/.*\.js$/', array('key' => 'name'));
+  ksort($js);
+  foreach ($js as $file_js) {
+    drupal_add_js($file_js->uri, array('type' => 'file', 'scope' => 'footer'));
+  }
+}
+
 function obiba_mica_data_access_request_form_page() {
-  $form_attributes = obiba_mica_data_access_request_form_get_config();
-  if (!empty($form_attributes->responseCode) && $form_attributes->responseCode != 200) {
-    dpm($form_attributes);
-  }
-  else {
-    dpm($form_attributes);
-    obiba_mica_load_libraires_resources('obiba_mica_data_access_request');
-    $module_path_ = drupal_get_path('module', 'obiba_mica_data_access_request');
-    drupal_add_js($module_path_ . '/js/ang/app.js', array('type' => 'file', 'scope' => 'footer'));
-    drupal_add_js(array(
-        'form' => $form_attributes->definition,
-        'schema' => $form_attributes->schema
-      ),
-      'setting');
-  }
-  return theme('obiba_mica_data_access_request-form-page');
+  dpm('ex form page');
+//  $form_attributes = obiba_mica_data_access_request_form_get_config();
+//  if (!empty($form_attributes->responseCode) && $form_attributes->responseCode != 200) {
+//    dpm($form_attributes);
+//  }
+//  else {
+//    dpm($form_attributes);
+////    obiba_main_app_angular_load_libraires_resources('obiba_mica_data_access_request');
+//    $module_path_ = drupal_get_path('module', 'obiba_mica_data_access_request');
+//    drupal_add_js($module_path_ . '/js/ang/app.js', array('type' => 'file', 'scope' => 'footer'));
+//    drupal_add_js(array(
+//        'form' => $form_attributes->definition,
+//        'schema' => $form_attributes->schema
+//      ),
+//      'setting');
+//  }
+//  print theme('obiba_mica_data_access_request-form-page');
 }
 
 function obiba_mica_data_access_request_form_get_config() {
   $mica_client = new MicaDataAccessRequestResource();
   $config = $mica_client->get_form_definition();
-  return $config;
+  drupal_json_output($config);
 }
 
 function obiba_mica_data_access_request_list_page() {
-  obiba_mica_load_libraires_resources('obiba_mica_data_access_request');
+  obiba_main_app_angular_load_libraires_resources('obiba_mica_data_access_request');
   $module_path_ = drupal_get_path('module', 'obiba_mica_data_access_request');
   drupal_add_js($module_path_ . '/js/ang/data-access-request.js', array('type' => 'file', 'scope' => 'footer'));
   drupal_add_js($module_path_ . '/js/ang/data-access-request-controller.js', array(
@@ -140,6 +184,12 @@ function obiba_mica_data_access_request_list_page() {
   drupal_add_js($module_path_ . '/js/ang/data-access-request-service.js', array('type' => 'file', 'scope' => 'footer'));
 
   return theme('obiba_mica_data_access_request-list');
+
+}
+
+function obiba_mica_data_access_request_save() {
+  $mica_client = new MicaDataAccessRequestResource();
+  $mica_client->data_access_save(file_get_contents('php://input'), TRUE);
 
 }
 

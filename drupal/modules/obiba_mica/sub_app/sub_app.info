@@ -1,0 +1,4 @@
+name = "obiba angular sub app"
+description = "Obiba Angular sub app"
+package = Obiba
+core = 7.x

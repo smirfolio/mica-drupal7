@@ -348,7 +348,7 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
   }
   $destination_path = file_exists($path . '/templates/obiba_mica_data_access_request-list.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['oobiba_mica_data_access_request-list'] = array(
+    $theme_array['obiba_mica_data_access_request-list'] = array(
       'variables' => array('block' => array()),
       'template' => 'obiba_mica_data_access_request-list',
       'path' => $path . '/templates'
