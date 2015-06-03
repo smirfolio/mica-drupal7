@@ -42,7 +42,6 @@ class MicaDataAccessRequestResources extends MicaClient {
         ),
       'data' => $data,
     ));
-    dpm($request);
     $client = $this->client();
     try {
       $response = $client->execute($request);

@@ -21,7 +21,7 @@ function obiba_main_app_angular_menu() {
   $items['obiba-angular-app'] = array(
     'page callback' => 'obiba_main_app_angular_main_page',
     'access callback' => TRUE,
-//    'page arguments' => array(2)
+    'page arguments' => array(2)
   );
 
   $items['obiba_main_app_angular/%/%'] = array(
@@ -111,7 +111,6 @@ function obiba_main_app_angular_load_js_resources() {
   global $user;
   // Add CSRF token required by restWS.
   $js_settings = array(
-
     'angularjsApp' => array(
       'modules' => obiba_main_app_angular_load_ng_module(),
       //  'restws_csrf_token' => drupal_get_token('restws'),
@@ -128,16 +127,7 @@ function obiba_main_app_angular_main_page() {
 }
 
 function obiba_main_app_angular_get_angular_template($module, $angular_template) {
-//  $path = ($module=='obiba_main_app_angular')?'':$module.'/';
-//  $output = include_once($path.'js/views/'.$angular_template);
-//  dpm($angular_template);
-//  dpm(theme($angular_template));
   print theme($angular_template);
-}
-
-function obiba_main_app_angular_theme_registry_alter(&$registry) {
-
-  dpm($registry);
 }
 
 /**
