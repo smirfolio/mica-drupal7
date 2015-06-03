@@ -6,6 +6,7 @@ core = 7.x
 
 files[] = includes/obiba_mica_data_access_request.inc
 files[] = includes/obiba_mica_data_access_requests.inc
+files[] = includes/obiba_mica_data_access_request_comments.inc
 dependencies[] = http_client
 
 

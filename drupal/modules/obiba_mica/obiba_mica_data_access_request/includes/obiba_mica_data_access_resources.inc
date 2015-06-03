@@ -22,7 +22,7 @@ include_once($path_module_protos . '/protos/MicaSearch.php');
  */
 class MicaDataAccessRequestResources extends MicaClient {
 
-  private $method;
+  protected $method;
 
   public function __construct($mica_url = NULL, $method = 'METHOD_POST') {
     parent::__construct($mica_url);
@@ -42,6 +42,11 @@ class MicaDataAccessRequestResources extends MicaClient {
         ),
       'data' => $data,
     ));
+
+    return $this->execute($request);
+  }
+
+  protected function execute($request) {
     $client = $this->client();
     try {
       $response = $client->execute($request);
@@ -51,9 +56,10 @@ class MicaDataAccessRequestResources extends MicaClient {
     catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
         array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
-      dpm($url_data_access);
-      dpm($e->getMessage());
       return $e->getResponse();
     }
+
   }
+
+
 }
