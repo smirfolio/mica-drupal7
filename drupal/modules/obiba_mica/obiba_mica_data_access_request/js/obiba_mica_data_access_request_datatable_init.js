@@ -5,30 +5,31 @@
       var ACTIONS = { VIEW: 'glyphicon-eye-open',
         DELETE: 'glyphicon-trash',
         EDIT: 'glyphicon-edit'
-      }, HREF_ACTIONS = {VIEW: '/data-access-request/{}',
-        DELETE: '/data-access-request/{}',
-        EDIT: '/data-access-request/{}'
+      }, HREF_ACTIONS = {VIEW: 'data-access-request#/view/{}',
+        DELETE: 'data-access-request/{}',
+        EDIT: 'data-access-request#/edit/{}'
       };
 
-      var hrefBuilder = function(action, id) {
+      var hrefBuilder = function (action, id) {
         return HREF_ACTIONS[action].replace('{}', id);
       };
 
       if (context === document) {
         var divRequests = $('#table-requests'),
           colDefs = [
-          {
-            targets: -1,
-            render: function (data, type, row) {
-              return data.map(function (action) {
-                if (action in ACTIONS) {
-                  return '<a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a>';
-                }
+            {
+              targets: -1,
+              render: function (data, type, row) {
+                return data.map(function (action) {
+                  if (action in ACTIONS) {
+                    return '<a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a>';
+                  }
 
-                return '';
-              }).join(' ');
+                  return '';
+                }).join(' ');
+              }
             }
-          }];
+          ];
 
         divRequests.dataTable(
           {

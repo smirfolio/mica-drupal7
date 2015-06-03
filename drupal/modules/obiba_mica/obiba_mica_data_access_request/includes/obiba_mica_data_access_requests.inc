@@ -12,45 +12,22 @@ include_once($path_module_data_access . '/includes/obiba_mica_data_access_resour
 /**
  * Class MicaStudyResource
  */
-class MicaDataAccessRequest extends MicaDataAccessRequestResources {
+class MicaDataAccessRequests extends MicaDataAccessRequestResources {
+
   private $method;
 
   public function __construct($mica_url = NULL, $method = 'METHOD_POST') {
     parent::__construct($mica_url, $method);
     $this->method = $method;
-
-  }
-
-  public function get_form_definition() {
-    $url_studies = $this->micaUrl . '/config/data-access-form';
-    $request = new HttpClientRequest($url_studies, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        )
-    ));
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return json_decode($data);
-    }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
-      return $e->getResponse();
-    }
   }
 
 //
-  public function get_request($id) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
+  public function get_requests() {
     $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . '/data-access-request/' . $id;
+    $url_requests = $this->micaUrl . '/data-access-requests';
 
     $request = new HttpClientRequest($url_requests, array(
-      'method' => $constant_method,
+      'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_JSON),
           )

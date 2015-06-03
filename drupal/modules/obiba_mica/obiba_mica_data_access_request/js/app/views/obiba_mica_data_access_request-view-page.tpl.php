@@ -1,0 +1,88 @@
+<!--
+  ~ Copyright (c) 2015 OBiBa. All rights reserved.
+  ~
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the GNU Public License v3.0.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<div>
+  <h3>
+    <ul class="breadcrumb">
+      <li> <?php print l('Data Access Requestes list', 'data-access-request-list'); ?>
+      <li class="active">{{dataAccessRequest.title}}</li>
+    </ul>
+  </h3>
+
+  <obiba-alert id="DataAccessRequestViewController"></obiba-alert>
+
+  <p class="help-block pull-left"><span><?php print t('Created by'); ?>
+  </span> {{dataAccessRequest.applicant}} <span
+      class="label label-success">{{dataAccessRequest.status}}</span></p>
+
+
+  <div class="pull-right">
+
+    <a target="_self" ng-href="/ws/data-access-request/{{dataAccessRequest.id}}/_pdf" class="btn btn-default">
+      <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download'); ?></span>
+    </a>
+    <a ng-href="#/edit/{{dataAccessRequest.id}}"
+      ng-if="actions.canEdit(dataAccessRequest)"
+      class="btn btn-primary" title="<?php print t('Edit'); ?>
+      ">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+
+    <a ng-click="submit()"
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canSubmit(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Submit'); ?>
+
+    </a>
+    <a ng-click="reopen()"
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReopen(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Reopen'); ?>
+    </a>
+    <a ng-click="review()"
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReview(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Review'); ?>review
+    </a>
+    <a ng-click="approve()"
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canApprove(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Approve'); ?>
+    </a>
+    <a ng-click="reject()"
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReject(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Reject'); ?>
+    </a>
+    <a ng-click="delete()"
+      ng-if="actions.canDelete(dataAccessRequest)"
+      class="btn btn-danger" title="<?php print t('Delete'); ?>
+      ">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <tabset class="voffset5">
+    <div class="pull-right">
+    </div>
+    <tab heading="<?php print t('Application form'); ?>
+    ">
+      <form id="request-form" name="forms.requestForm">
+        <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema"></div>
+      </form>
+    </tab>
+    <tab heading="<?php print t('Attachments'); ?>">
+      <attachment-list files="dataAccessRequest.attachments"
+        href-builder="getDownloadHref(attachments, id)"></attachment-list>
+    </tab>
+    <tab heading="<?php print t('Comments'); ?>">
+    </tab>
+    <tab heading="<?php print t('History'); ?>
+    ">
+    </tab>
+  </tabset>
+
+</div>
