@@ -15,6 +15,7 @@ var mica;
         'ui.bootstrap',
         'obiba.notification',
         'obiba.form',
+        'obiba.comments',
         'angularUtils.directives.dirPagination'
       ];
 
@@ -25,13 +26,11 @@ var mica;
         function ($routeProvider) {
           $routeProvider
             .when('/', {
-              //   templateUrl: 'obiba_angular/obiba_angular/main.html',
               controller: 'MainController'
             });
         }]);
 
-      mica.controller('MainController', ['$location', function ($location) {
-        console.log('im loaded');
+      mica.controller('MainController', [ function () {
       }]);
     }
   }
