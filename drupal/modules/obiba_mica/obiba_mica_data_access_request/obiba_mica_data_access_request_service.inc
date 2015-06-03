@@ -31,10 +31,37 @@ function obiba_mica_data_access_requests_action() {
 
 function obiba_mica_data_access_request_comments_action($id_data_request) {
   dpm($id_data_request);
-  if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_GET');
-    $data_access_request = $mica_client->get_comments($id_data_request, '/data-access-request');
-    drupal_json_output($data_access_request);
+
+  switch ($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+      $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_GET');
+      $data_access_request = $mica_client->get_comments($id_data_request, '/data-access-request');
+      drupal_json_output($data_access_request);
+      break;
+
+    case 'POST':
+      $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_POST');
+      $data_access_request = $mica_client->save_comment(file_get_contents('php://input'), $id_data_request, '/data-access-request');
+      drupal_json_output($data_access_request);
+      break;
+  }
+
+}
+
+function obiba_mica_data_access_request_comment_action($id_data_request, $comment_id) {
+
+  switch ($_SERVER['REQUEST_METHOD']) {
+    case 'PUT':
+      $mica_client = new MicaDataAccessRequestComment(NULL, 'METHOD_PUT');
+      $data_access_request = $mica_client->save_comment($id_data_request, $comment_id, file_get_contents('php://input'), '/data-access-request');
+      drupal_json_output($data_access_request);
+      break;
+
+    case 'DELETE':
+      $mica_client = new MicaDataAccessRequestComment(NULL, 'METHOD_DELETE');
+      $data_access_request = $mica_client->delete_comment($id_data_request, $comment_id, '/data-access-request');
+      drupal_json_output($data_access_request);
+      break;
   }
 
 }

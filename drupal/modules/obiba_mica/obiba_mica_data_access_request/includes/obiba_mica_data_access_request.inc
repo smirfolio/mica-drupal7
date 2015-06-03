@@ -41,14 +41,11 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
     }
   }
 
-//
   public function get_request($id) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/data-access-request/' . $id;
-
     $request = new HttpClientRequest($url_requests, array(
-      'method' => $constant_method,
+      'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_JSON),
           )

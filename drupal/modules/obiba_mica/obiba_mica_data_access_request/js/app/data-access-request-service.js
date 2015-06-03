@@ -34,32 +34,32 @@
         .factory('DataAccessRequestCommentsResource', ['$resource',
           function ($resource) {
             return $resource(localPath + 'data-access-request-comments-action/:id/comments', {}, {
-              //'save': {
-              //  method: 'POST',
-              //  params: {id: '@id'},
-              //  headers: {'Content-Type': 'text/plain'},
-              //  errorHandler: true
-              //},
-              'get': {method: 'GET', params: {id: '@id'}, errorHandler: true}
+              'save': {
+                method: 'POST',
+                params: {id: '@id'},
+                headers: {'Content-Type': 'text/plain'},
+                errorHandler: true
+              },
+              'get': {method: 'GET', params: {id: '@id'}, isArray: true, errorHandler: true}
             });
           }])
 
-        //.factory('DataAccessRequestCommentResource', ['$resource',
-        //  function ($resource) {
-        //    return $resource('ws/data-access-request/:id/comment/:commentId', {}, {
-        //      'delete': {
-        //        method: 'DELETE',
-        //        params: {id: '@id', commentId: '@commentId'},
-        //        errorHandler: true
-        //      },
-        //      'update': {
-        //        method: 'PUT',
-        //        params: {id: '@id', commentId: '@commentId'},
-        //        headers: {'Content-Type': 'text/plain'},
-        //        errorHandler: true
-        //      }
-        //    });
-        //  }])
+        .factory('DataAccessRequestCommentResource', ['$resource',
+          function ($resource) {
+            return $resource(localPath + 'data-access-request-comment-action/:id/comment/:commentId', {}, {
+              'delete': {
+                method: 'DELETE',
+                params: {id: '@id', commentId: '@commentId'},
+                errorHandler: true
+              },
+              'update': {
+                method: 'PUT',
+                params: {id: '@id', commentId: '@commentId'},
+                headers: {'Content-Type': 'text/plain'},
+                errorHandler: true
+              }
+            });
+          }])
 
         .factory('DataAccessRequestResource', ['$resource',
           function ($resource) {

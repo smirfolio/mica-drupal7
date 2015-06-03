@@ -21,6 +21,7 @@
           'DataAccessRequestStatusResource',
           'DataAccessFormResource',
           'DataAccessRequestCommentsResource',
+          'DataAccessRequestCommentResource',
           'NOTIFICATION_EVENTS',
 
           function ($rootScope,
@@ -31,6 +32,7 @@
                     DataAccessRequestStatusResource,
                     DataAccessFormResource,
                     DataAccessRequestCommentsResource,
+                    DataAccessRequestCommentResource,
                     NOTIFICATION_EVENTS) {
 
             var onError = function (response) {
@@ -43,21 +45,21 @@
 
             var retrieveComments = function() {
               console.log('retrieveComments()');
-              $scope.form.comments = DataAccessRequestCommentsResource.query({id: $routeParams.id});
+              $scope.form.comments = DataAccessRequestCommentsResource.get({id: $routeParams.id});
             };
 
             var submitComment = function(comment) {
               console.log('submitComment()');
-              //DataAccessRequestCommentsResource.save({id: $routeParams.id}, comment.message, retrieveComments, onError);
+              DataAccessRequestCommentsResource.save({id: $routeParams.id}, comment.message, retrieveComments, onError);
             };
 
             var updateComment = function(comment) {
               console.log('updateComment()');
-              //DataAccessRequestCommentResource.update({id: $routeParams.id, commentId: comment.id}, comment.message, retrieveComments, onError);
+              DataAccessRequestCommentResource.update({id: $routeParams.id, commentId: comment.id}, comment.message, retrieveComments, onError);
             };
 
             var deleteComment = function(comment) {
-              console.log('deleteComment()');
+              console.log('deleteComment()', NOTIFICATION_EVENTS);
               $scope.commentToDelete = comment.id;
               $rootScope.$broadcast(NOTIFICATION_EVENTS.showConfirmDialog,
                 {
@@ -71,10 +73,9 @@
             $scope.$on(NOTIFICATION_EVENTS.confirmDialogAccepted, function (event, id) {
               if ($scope.commentToDelete === id) {
                 console.log('retrieveComments() EVENT');
-                //DataAccessRequestCommentResource.delete({id: $routeParams.id, commentId: id}, {}, retrieveComments, onError);
+                DataAccessRequestCommentResource.delete({id: $routeParams.id, commentId: id}, {}, retrieveComments, onError);
               }
             });
-
 
             $scope.form = {
               schema: {},
