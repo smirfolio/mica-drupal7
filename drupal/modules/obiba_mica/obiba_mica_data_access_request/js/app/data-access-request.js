@@ -23,7 +23,7 @@
     attach: function (context, settings) {
 
       'use strict';
-      mica.dataAccessRequest = angular.module('mica.DataAccessRequest', [
+      mica.DataAccessRequest = angular.module('mica.DataAccessRequest', [
         'schemaForm'
       ]);
 

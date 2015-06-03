@@ -14,7 +14,7 @@
       var localPath = Drupal.settings.basePath;
       'use strict';
 
-      mica.dataAccessRequest
+      mica.DataAccessRequest
         .factory('DataAccessFormResource', ['$resource',
           function ($resource) {
             return $resource('data-access-form', {}, {
@@ -24,7 +24,7 @@
           }])
         .factory('DataAccessRequestsResource', ['$resource',
           function ($resource) {
-            return $resource('data-access-requests/save', {}, {
+            return $resource(localPath + 'data-access-requests-action', {}, {
               'save': {method: 'POST', errorHandler: true},
               'get': {method: 'GET'}
             });
@@ -32,7 +32,7 @@
 
         .factory('DataAccessRequestResource', ['$resource',
           function ($resource) {
-            return $resource('ws/data-access-request/:id', {}, {
+            return $resource(localPath + 'data-access-request-action/:id', {}, {
               'save': {method: 'PUT', params: {id: '@id'}, errorHandler: true},
               'get': {method: 'GET'},
               'delete': {method: 'DELETE'}

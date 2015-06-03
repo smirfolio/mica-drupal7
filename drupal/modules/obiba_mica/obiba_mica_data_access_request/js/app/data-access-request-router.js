@@ -15,7 +15,7 @@
 
       'use strict';
 
-      mica.dataAccessRequest.config(['$routeProvider', '$locationProvider',
+      mica.DataAccessRequest.config(['$routeProvider', '$locationProvider',
         function ($routeProvider, $locationProvider) {
           $routeProvider
             .when('/data-access-request-list', {
@@ -26,13 +26,12 @@
               templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page',
               controller: 'DataAccessRequestEditController'
             })
-            .when('/data-access-request/:id/edit', {
-//                templateUrl: 'app/access/views/data-access-request-form.html',
+            .when('/edit/:id', {
+              templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page',
               controller: 'DataAccessRequestEditController'
             })
-            .when('/data-access-request/:id', {
-//                templateUrl: 'app/access/views/data-access-request-view.html',
-              template: '<div> hello word</div>',
+            .when('/view/:id', {
+              templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-view-page',
               controller: 'DataAccessRequestViewController'
             });
 

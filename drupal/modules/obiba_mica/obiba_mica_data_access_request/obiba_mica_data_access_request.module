@@ -15,24 +15,34 @@ function obiba_mica_data_access_request_menu() {
   $items['data-access-request-list'] = array(
     'page callback' => 'obiba_mica_data_access_request_list_page',
     'access callback' => TRUE,
-//    'page arguments' => array(2)
+//    'page arguments' => array(2),
+    'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
-  $items['data-access-requests/save'] = array(
-    'page callback' => 'obiba_mica_data_access_request_save',
+  $items['data-access-requests-action/%'] = array(
+    'page callback' => 'obiba_mica_data_access_requests_action',
     'access callback' => TRUE,
-//    'page arguments' => array(2)
+    'page arguments' => array(2),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+  $items['data-access-requests-action'] = array(
+    'page callback' => 'obiba_mica_data_access_requests_action',
+    'access callback' => TRUE,
+//    'page arguments' => array(2),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+
+  $items['data-access-request-action/%'] = array(
+    'page callback' => 'obiba_mica_data_access_request_action',
+    'access callback' => TRUE,
+    'page arguments' => array(1),
+    'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
   $items['data-access-form'] = array(
     'page callback' => 'obiba_mica_data_access_request_form_get_config',
     'access callback' => TRUE,
-//    'page arguments' => array(2)
-  );
-
-  $items['data-access-request-ng-list'] = array(
-    'page callback' => 'obiba_mica_data_access_request_ng_list',
-    'access callback' => TRUE,
+//    'page arguments' => array(2),
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
@@ -53,20 +63,25 @@ function obiba_mica_data_access_request_menu() {
  * Implements hook_theme().
  */
 function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
-  $path_theme = $path . '/js/views';
+  $path_views_theme = $path . '/js/app/views';
+  $path_theme = $path . '/templates';
   return array(
     'obiba_mica_data_access_request-form-page' => array(
       'template' => 'obiba_mica_data_access_request-form-page',
+      'path' => $path_views_theme
+    ),
+    'obiba_mica_data_access_request-view-page' => array(
+      'template' => 'obiba_mica_data_access_request-view-page',
+      'path' => $path_views_theme
+    ),
+    'obiba_mica_data_access_request-page-data-access' => array(
+      'template' => 'obiba_mica_data_access_request-page-data-access',
       'path' => $path_theme
     ),
-//    'obiba_mica_data_access_request-page-data-access' => array(
-//      'template' => 'obiba_mica_data_access_request-page-data-access',
-//      'path' => $path_theme
-//    ),
-//    'obiba_mica_data_access_request-list' => array(
-//      'template' => 'obiba_mica_data_access_request-list',
-//      'path' => $path_theme
-//    )
+    'obiba_mica_data_access_request-list' => array(
+      'template' => 'obiba_mica_data_access_request-list',
+      'path' => $path_theme
+    )
   );
 }
 
@@ -107,21 +122,23 @@ function obiba_mica_data_access_request_load_menus() {
  * @return string
  */
 function obiba_mica_data_access_request_page() {
-  global $user;
-  $data_access_form_display = FALSE;
+
+  $data_access_list_display = FALSE;
   $data_access_register_user = FALSE;
   $node_rendred = node_view(node_load(variable_get('access_request_page')));
   drupal_set_title($node_rendred['#node']->title);
+
   $node_rendred['#node']->title = '';
   if (user_is_logged_in()) {
-    $data_access_form_display = TRUE;
+    $data_access_list_display = TRUE;
   }
   else {
     $data_access_register_user = TRUE;
   }
+
   return theme('obiba_mica_data_access_request-page-data-access', array(
     'node_content' => $node_rendred,
-    'data_access_form_display' => $data_access_form_display,
+    'data_access_list_display' => $data_access_list_display,
     'data_access_register_user' => $data_access_register_user
   ));
 }
@@ -139,58 +156,50 @@ function obiba_mica_data_access_request_get_ng_module_to_load() {
  */
 function obiba_mica_data_access_request_get_js() {
   $module_path = drupal_get_path('module', 'obiba_mica_data_access_request');
-  $js = file_scan_directory($module_path . '/js', '/.*\.js$/', array('key' => 'name'));
+  $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
   ksort($js);
   foreach ($js as $file_js) {
     drupal_add_js($file_js->uri, array('type' => 'file', 'scope' => 'footer'));
   }
 }
 
-function obiba_mica_data_access_request_form_page() {
-  dpm('ex form page');
-//  $form_attributes = obiba_mica_data_access_request_form_get_config();
-//  if (!empty($form_attributes->responseCode) && $form_attributes->responseCode != 200) {
-//    dpm($form_attributes);
-//  }
-//  else {
-//    dpm($form_attributes);
-////    obiba_main_app_angular_load_libraires_resources('obiba_mica_data_access_request');
-//    $module_path_ = drupal_get_path('module', 'obiba_mica_data_access_request');
-//    drupal_add_js($module_path_ . '/js/ang/app.js', array('type' => 'file', 'scope' => 'footer'));
-//    drupal_add_js(array(
-//        'form' => $form_attributes->definition,
-//        'schema' => $form_attributes->schema
-//      ),
-//      'setting');
-//  }
-//  print theme('obiba_mica_data_access_request-form-page');
+function obiba_mica_data_access_requests_datatable_init($requests) {
+  if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
+    drupal_add_library('obiba_mica_dataset', 'datatables');
+  }
+  else {
+    obiba_mica_commons_datatables_external_source();
+  }
+
+  $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->get_requests();
+
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_data_access_request') .
+    '/js/obiba_mica_data_access_request_datatable_init.js', 'file');
+  drupal_add_js(array(
+    'table_headers' => array(
+      array("title" => t('Applicant')),
+      array("title" => t('Title'), 'width' => '45%'),
+      array("title" => t('Last Update'), 'width' => '20%'),
+      array("title" => t('Status'), 'width' => '15%'),
+      array("title" => t('Actions'))
+    ),
+    'table_data' => obiba_mica_data_access_request_table_rows($requests)
+  ), 'setting');
 }
 
-function obiba_mica_data_access_request_form_get_config() {
-  $mica_client = new MicaDataAccessRequestResource();
-  $config = $mica_client->get_form_definition();
-  drupal_json_output($config);
+function obiba_mica_data_access_request_table_rows($requests) {
+  $res = array_map(function ($r) {
+    return array(
+      $r->applicant,
+      $r->title,
+      date_format(date_create(empty($r->timestamps->lastUpdate) ?
+        $r->timestamps->created :
+        $r->timestamps->lastUpdate), "Y-m-d H:i:s"),
+      $r->status,
+      $r->actions,
+      $r->id
+    );
+  }, $requests);
+
+  return $res;
 }
-
-function obiba_mica_data_access_request_list_page() {
-  obiba_main_app_angular_load_libraires_resources('obiba_mica_data_access_request');
-  $module_path_ = drupal_get_path('module', 'obiba_mica_data_access_request');
-  drupal_add_js($module_path_ . '/js/ang/data-access-request.js', array('type' => 'file', 'scope' => 'footer'));
-  drupal_add_js($module_path_ . '/js/ang/data-access-request-controller.js', array(
-    'type' => 'file',
-    'scope' => 'footer'
-  ));
-  drupal_add_js($module_path_ . '/js/ang/data-access-request-router.js', array('type' => 'file', 'scope' => 'footer'));
-  drupal_add_js($module_path_ . '/js/ang/data-access-request-service.js', array('type' => 'file', 'scope' => 'footer'));
-
-  return theme('obiba_mica_data_access_request-list');
-
-}
-
-function obiba_mica_data_access_request_save() {
-  $mica_client = new MicaDataAccessRequestResource();
-  $mica_client->data_access_save(file_get_contents('php://input'), TRUE);
-
-}
-
-

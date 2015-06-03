@@ -9,9 +9,39 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function obiba_mica_data_access_request_ng_list() {
-  $mica_client = new MicaDataAccessRequestResource();
-  $data_access_list = $mica_client->get_data_access_list();
-  dpm($data_access_list);
-  drupal_json_output($data_access_list);
+function obiba_mica_data_access_request_list_page() {
+  obiba_mica_data_access_requests_datatable_init(array());
+  return theme('obiba_mica_data_access_request-list');
+}
+
+function obiba_mica_data_access_request_form_get_config() {
+  $mica_client = new MicaDataAccessRequest();
+  $config = $mica_client->get_form_definition();
+  drupal_json_output($config);
+}
+
+function obiba_mica_data_access_requests_action() {
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_POST');
+    $data_access_request = $mica_client->data_access_save(file_get_contents('php://input'));
+    drupal_json_output($data_access_request);
+  }
+
+}
+
+function obiba_mica_data_access_request_action($id_data_request) {
+
+  switch ($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+      $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+      $data_access_request = $mica_client->get_request($id_data_request);
+      drupal_json_output($data_access_request);
+      break;
+    case 'PUT':
+      $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
+      $data_access_request = $mica_client->data_access_save(file_get_contents('php://input'), $id_data_request, '/data-access-request');
+      drupal_json_output($data_access_request);
+      break;
+  }
+
 }

@@ -101,7 +101,7 @@ function obiba_main_app_angular_load_ng_module() {
 function obiba_main_app_angular_load_js_resources() {
   obiba_main_app_angular_load_libraires_resources('obiba_main_app_angular');
   $module_path = drupal_get_path('module', 'obiba_main_app_angular');
-  $js = file_scan_directory($module_path . '/js', '/.*\.js$/', array('key' => 'name'));
+  $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
   ksort($js);
   foreach ($js as $file_js) {
     drupal_add_js($file_js->uri, array('type' => 'file', 'scope' => 'footer'));
@@ -115,10 +115,7 @@ function obiba_main_app_angular_load_js_resources() {
     'angularjsApp' => array(
       'modules' => obiba_main_app_angular_load_ng_module(),
       //  'restws_csrf_token' => drupal_get_token('restws'),
-      'user' => $user,
-      'basePath' => url('', array(
-        'absolute' => TRUE
-      ))
+      'user' => $user
     )
   );
 
