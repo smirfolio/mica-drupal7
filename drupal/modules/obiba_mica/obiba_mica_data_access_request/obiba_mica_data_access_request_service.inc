@@ -23,7 +23,7 @@ function obiba_mica_data_access_request_form_get_config() {
 function obiba_mica_data_access_requests_action() {
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_POST');
-    $data_access_request = $mica_client->data_access_save(file_get_contents('php://input'));
+    $data_access_request = $mica_client->data_access_save(file_get_contents('php://input'), NULL, '/data-access-requests');
     drupal_json_output($data_access_request);
   }
 

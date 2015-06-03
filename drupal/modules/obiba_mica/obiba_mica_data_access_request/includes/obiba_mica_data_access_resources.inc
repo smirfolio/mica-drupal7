@@ -29,7 +29,7 @@ class MicaDataAccessRequestResources extends MicaClient {
     $this->method = $method;
   }
 
-  public function data_access_save($data, $id_data_access = NULL, $resource = '/data-access-requests') {
+  public function data_access_save($data, $id_data_access = NULL, $resource) {
     $constant_method = constant('HttpClientRequest::' . $this->method);
     $url_data_access = $this->micaUrl . $resource . ($id_data_access ? '/' . $id_data_access : '');
     $request = new HttpClientRequest($url_data_access, array(
