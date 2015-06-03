@@ -29,6 +29,16 @@ function obiba_mica_data_access_requests_action() {
 
 }
 
+function obiba_mica_data_access_request_comments_action($id_data_request) {
+  dpm($id_data_request);
+  if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_GET');
+    $data_access_request = $mica_client->get_comments($id_data_request, '/data-access-request');
+    drupal_json_output($data_access_request);
+  }
+
+}
+
 function obiba_mica_data_access_request_action($id_data_request) {
 
   switch ($_SERVER['REQUEST_METHOD']) {

@@ -19,7 +19,6 @@
         function ($routeProvider, $locationProvider) {
           $routeProvider
             .when('/data-access-request-list', {
-//                templateUrl: 'app/access/views/data-access-request-list.html',
               controller: 'DataAccessRequestListController'
             })
             .when('/new', {

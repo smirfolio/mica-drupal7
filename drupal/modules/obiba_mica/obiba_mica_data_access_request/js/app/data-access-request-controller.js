@@ -15,13 +15,23 @@
       'use strict';
       var user = Drupal.settings.angularjsApp.user;
       mica.DataAccessRequest
-        .controller('DataAccessRequestViewController', ['$scope', '$routeParams',
+        .controller('DataAccessRequestViewController', ['$rootScope', '$scope', '$routeParams',
           'DataAccessRequestResource',
           'DataAccessRequestService',
           'DataAccessRequestStatusResource',
           'DataAccessFormResource',
+          'DataAccessRequestCommentsResource',
+          'NOTIFICATION_EVENTS',
 
-          function ($scope, $routeParams, DataAccessRequestResource, DataAccessRequestService, DataAccessRequestStatusResource, DataAccessFormResource) {
+          function ($rootScope,
+                    $scope,
+                    $routeParams,
+                    DataAccessRequestResource,
+                    DataAccessRequestService,
+                    DataAccessRequestStatusResource,
+                    DataAccessFormResource,
+                    DataAccessRequestCommentsResource,
+                    NOTIFICATION_EVENTS) {
 
             var onError = function (response) {
               AlertService.alert({
@@ -31,16 +41,52 @@
               });
             };
 
+            var retrieveComments = function() {
+              console.log('retrieveComments()');
+              $scope.form.comments = DataAccessRequestCommentsResource.query({id: $routeParams.id});
+            };
+
+            var submitComment = function(comment) {
+              console.log('submitComment()');
+              //DataAccessRequestCommentsResource.save({id: $routeParams.id}, comment.message, retrieveComments, onError);
+            };
+
+            var updateComment = function(comment) {
+              console.log('updateComment()');
+              //DataAccessRequestCommentResource.update({id: $routeParams.id, commentId: comment.id}, comment.message, retrieveComments, onError);
+            };
+
+            var deleteComment = function(comment) {
+              console.log('deleteComment()');
+              $scope.commentToDelete = comment.id;
+              $rootScope.$broadcast(NOTIFICATION_EVENTS.showConfirmDialog,
+                {
+                  titleKey: 'comment.delete-dialog.title',
+                  messageKey:'comment.delete-dialog.message',
+                  messageArgs: [comment.createdBy]
+                }, comment.id
+              );
+            };
+
+            $scope.$on(NOTIFICATION_EVENTS.confirmDialogAccepted, function (event, id) {
+              if ($scope.commentToDelete === id) {
+                console.log('retrieveComments() EVENT');
+                //DataAccessRequestCommentResource.delete({id: $routeParams.id, commentId: id}, {}, retrieveComments, onError);
+              }
+            });
+
+
             $scope.form = {
               schema: {},
               definition: {},
-              model: {}
+              model: {},
+              comments: null
             };
 
-//            $scope.getDownloadHref = function(attachments, id) {
-//              return '/ws/data-access-request/' + $scope.dataAccessRequest.id + '/attachments/' + id + '/_download';
-//            };
-
+            $scope.retrieveComments = retrieveComments;
+            $scope.submitComment = submitComment;
+            $scope.updateComment = updateComment;
+            $scope.deleteComment = deleteComment;
             $scope.actions = DataAccessRequestService.actions;
             $scope.nextStatus = DataAccessRequestService.nextStatus;
             var getRequest = function () {
