@@ -55,7 +55,37 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
         )
     ));
 
-    $this->execute($request);
+    return $this->execute($request);
+  }
+
+
+  public function download_pdf($id) {
+    $constant_method = constant('HttpClientRequest::' . $this->method);
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/' . $id . '/_pdf';
+
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => $constant_method,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        )
+    ));
+    $client = $this->client();
+    try {
+      $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      $headers = $this->getLastResponseHeaders();
+      $responses['response'] = $this->getLastResponse();
+      $responses['headers'] = $headers;
+      return $responses;
+    }
+    catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+      return $e->getResponse();
+    }
+
   }
 
 }
