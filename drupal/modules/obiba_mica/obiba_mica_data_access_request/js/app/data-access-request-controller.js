@@ -99,7 +99,13 @@
                     $scope.form.definition = JSON.parse(dataAccessForm.definition);
                     $scope.form.schema = JSON.parse(dataAccessForm.schema);
                     $scope.form.schema.readonly = true;
-
+                    $("a.download-btn").on('click', function (event) {
+                      // create a form for the file upload
+                      var form = $("<form action='data-access-request/" + request.id + '/_pdf' + "' method='get'>");
+                      $(this).after(form);
+                      form.submit().remove();
+                      return false;
+                    });
                     // $scope.$broadcast('schemaFormRedraw');
                   },
                   onError

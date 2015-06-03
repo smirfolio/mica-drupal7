@@ -32,6 +32,14 @@ function obiba_mica_data_access_request_menu() {
     'page arguments' => array(1),
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
+
+  $items['data-access-request/%/_pdf'] = array(
+    'page callback' => 'obiba_mica_data_access_request_action',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 2),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+
   $items['data-access-requests-action'] = array(
     'page callback' => 'obiba_mica_data_access_requests_action',
     'access callback' => TRUE,

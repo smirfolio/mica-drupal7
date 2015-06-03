@@ -24,7 +24,7 @@
 
   <div class="pull-right">
 
-    <a target="_self" ng-href="/ws/data-access-request/{{dataAccessRequest.id}}/_pdf" class="btn btn-default">
+    <a target="_self" ng-href="" class="btn btn-default download-btn">
       <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download'); ?></span>
     </a>
     <a ng-href="#/edit/{{dataAccessRequest.id}}"
