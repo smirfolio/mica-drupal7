@@ -2,7 +2,7 @@
 
 /**
  * @file
- * MicaDataAccessRequestComments class
+ * MicaDataAccessRequestComment class
  */
 
 $path_module_data_access = drupal_get_path('module', 'obiba_mica_data_access_request');
@@ -12,19 +12,19 @@ include_once($path_module_data_access . '/includes/obiba_mica_data_access_resour
 /**
  * Class MicaDataAccessRequestComments
  */
-class MicaDataAccessRequestComments extends MicaDataAccessRequestResources {
+class MicaDataAccessRequestComment extends MicaDataAccessRequestResources {
 
-  const resource_path = '%s/%s/comments';
+  const resource_path = '%s/%s/comment/%s';
 
   public function __construct($mica_url = NULL, $method = 'METHOD_POST') {
     parent::__construct($mica_url, $method);
   }
 
-  public function save_comment($comment, $id, $resource) {
+  public function save_comment($id, $commentId, $comment, $resource) {
     $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . sprintf(self::resource_path, $resource, $id);
+    $url_requests = $this->micaUrl . sprintf(self::resource_path, $resource, $id, $commentId);
     $request = new HttpClientRequest($url_requests, array(
-      'method' => HttpClientRequest::METHOD_POST,
+      'method' => HttpClientRequest::METHOD_PUT,
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_JSON),
           'Content-Type' => array(parent::HEADER_TEXT)
@@ -36,11 +36,11 @@ class MicaDataAccessRequestComments extends MicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
-  public function get_comments($id, $resource) {
+  public function delete_comment($id, $commentId, $resource) {
     $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . sprintf(self::resource_path, $resource, $id);
+    $url_requests = $this->micaUrl . sprintf(self::resource_path, $resource, $id, $commentId);
     $request = new HttpClientRequest($url_requests, array(
-      'method' => HttpClientRequest::METHOD_GET,
+      'method' => HttpClientRequest::METHOD_DELETE,
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_JSON),
         )
@@ -49,5 +49,4 @@ class MicaDataAccessRequestComments extends MicaDataAccessRequestResources {
 
     return $this->execute($request);
   }
-
 }

@@ -29,6 +29,10 @@ function obiba_main_app_angular_menu() {
     'access callback' => TRUE,
     'page arguments' => array(1, 2)
   );
+  $items['obiba_main_app_angular/translation'] = array(
+    'page callback' => 'obiba_main_app_angular_get_angular_translation',
+    'access callback' => TRUE
+  );
   return $items + $external_items;
 }
 
@@ -130,6 +134,11 @@ function obiba_main_app_angular_get_angular_template($module, $angular_template)
   print theme($angular_template);
 }
 
+function obiba_main_app_angular_get_angular_translation() {
+  global $language;
+  print file_get_contents(sprintf('%s/i18n/%s.json', __DIR__ ,$language->language));
+}
+
 /**
  * Implement hook_Library
  *
@@ -172,7 +181,11 @@ function obiba_main_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer'
         ),
-        $lib_path_schema_form . '/angular-translate/angular-translate.min.js' => array(
+        $lib_path_schema_form . '/angular-translate/angular-translate.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/marked/lib/marked.js' => array(
           'type' => 'file',
           'scope' => 'footer'
         ),
@@ -180,11 +193,15 @@ function obiba_main_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer'
         ),
+        $lib_path_schema_form . '/moment/moment.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
         $lib_path_schema_form . '/angular-moment/angular-moment.js' => array(
           'type' => 'file',
           'scope' => 'footer'
         ),
-        $lib_path_schema_form . '/ng-obiba/dist/ng-obiba.min.js' => array(
+        $lib_path_schema_form . '/ng-obiba/dist/ng-obiba.js' => array(
           'type' => 'file',
           'scope' => 'footer'
         ),
@@ -197,9 +214,9 @@ function obiba_main_app_angular_load_angular_library() {
           'scope' => 'footer'
         ),
       ),
-//      'css' => array(
-//        $lib_path_schema_form . '/extensions/FixedColumns/css/dataTables.fixedColumns.css' => array()
-//      )
+      'css' => array(
+        $lib_path_schema_form . '/ng-obiba/dist/css/ng-obiba.css' => array()
+      )
     );
   }
   return $libraries;

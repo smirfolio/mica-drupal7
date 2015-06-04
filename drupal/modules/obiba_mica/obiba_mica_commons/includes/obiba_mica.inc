@@ -32,6 +32,7 @@ class MicaClient {
   const HEADER_BINARY = 'application/x-protobuf';
   const HEADER_JSON = 'application/json';
   const HEADER_CSV = 'text/csv';
+  const HEADER_TEXT = 'text/plain';
   const PAGINATE_studies = 0;
   const PAGINATE_variables = 1;
   const PAGINATE_datasets = 2;

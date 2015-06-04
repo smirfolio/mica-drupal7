@@ -20,18 +20,18 @@
             {
               targets: -1,
               render: function (data, type, row) {
-                return data.map(function (action) {
+                return '<ul class="list-inline pull-right no-margin">' + data.map(function (action) {
                   if (action in ACTIONS) {
                     if (action === 'DELETE') {
-                      return '<a  data-target="#delete-modal" id="' + action + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"data-access-title="' + row[1] + '" data-access-status="' + row[3] + '"> <i class="glyphicon ' + ACTIONS[action] + '"></i></a>';
+                      return '<li><a  data-target="#delete-modal" id="' + action + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"data-access-title="' + row[1] + '" data-access-status="' + row[3] + '"> <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
                     }
                     else {
-                      return '<a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a>';
+                      return '<li><a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
                     }
                   }
 
                   return '';
-                }).join(' ');
+                }).join(' ') + '</ul>';
               }
             }
           ];

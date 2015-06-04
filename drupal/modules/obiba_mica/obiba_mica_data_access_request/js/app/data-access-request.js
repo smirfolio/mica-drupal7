@@ -24,7 +24,13 @@
 
       'use strict';
       mica.DataAccessRequest = angular.module('mica.DataAccessRequest', [
-        'schemaForm'
+        'ui.bootstrap',
+        'obiba.notification',
+        'schemaForm',
+        'obiba.comments',
+        'hc.marked',
+        'pascalprecht.translate',
+        'angularMoment'
       ]);
 
 
