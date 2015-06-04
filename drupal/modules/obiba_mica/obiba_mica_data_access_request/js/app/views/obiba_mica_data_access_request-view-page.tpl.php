@@ -10,8 +10,8 @@
 <div>
   <h3>
     <ul class="breadcrumb">
-      <li> <?php print l('Data Access Requestes list', 'data-access-request-list'); ?>
-      <li class="active">{{dataAccessRequest.title}}</li>
+      <li><?php print l('Data Access Requests', 'data-access-request-list'); ?></li>
+      <li class="active">{{dataAccessRequest.id}}</li>
     </ul>
   </h3>
 
@@ -20,7 +20,6 @@
   <p class="help-block pull-left"><span><?php print t('Created by'); ?>
   </span> {{dataAccessRequest.applicant}} <span
       class="label label-success">{{dataAccessRequest.status}}</span></p>
-
 
   <div class="pull-right">
 
@@ -64,6 +63,8 @@
   </div>
 
   <div class="clearfix"></div>
+
+  <h3>{{dataAccessRequest.title}}</h3>
 
   <tabset class="voffset5">
     <div class="pull-right">
