@@ -83,9 +83,10 @@
       <obiba-comments comments="form.comments" on-update="updateComment" on-delete="deleteComment"></obiba-comments>
       <obiba-comment-editor on-submit="submitComment"></obiba-comment-editor>
     </tab>
-    <tab heading="<?php print t('History'); ?>
-    ">
+    <tab ng-click="selectTab('history')" heading="<?php print t('History'); ?>">
+      <div ng-include="'obiba_main_app_angular/obiba_mica_data_access_request/data-access-request-history-view'"></div>
     </tab>
+
   </tabset>
 
 </div>
