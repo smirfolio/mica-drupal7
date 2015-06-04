@@ -249,6 +249,7 @@
               model: {}
             };
 
+            $scope.requestId = $routeParams.id;
             $scope.newRequest = $routeParams.id ? false : true;
             $scope.cancel = cancel;
             $scope.save = save;

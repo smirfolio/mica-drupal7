@@ -11,15 +11,16 @@
 <div>
   <h3>
     <ul class="breadcrumb">
-      <li> <?php print l('Data Access Requestes list', 'data-access-request-list'); ?>
+      <li><?php print l('Data Access Requests', 'data-access-request-list'); ?></li>
+      <li ng-if="!newRequest"><a ng-click="cancel()">{{requestId}}</a></li>
       <li class="active">
-        <span ng-if="newRequest"><?php print t('Add Access Request'); ?>
+        <span ng-if="newRequest"><?php print t('add'); ?>
         </span>
-        <span ng-if="!newRequest"><?php print t('Edit'); ?>
+        <span ng-if="!newRequest"><?php print t('edit'); ?>
         </span>
         <small><span translate>or</span>
           <a ng-click="cancel()">
-            <span><?php print t('Cancel'); ?>
+            <span><?php print t('cancel'); ?>
             </span>
           </a></small>
       </li>
@@ -34,9 +35,9 @@
 
     <form name="requestForm" ng-submit="submit(requestForm)">
       <div ng-if="newRequest || canEdit" class="voffset2" form-input name="data-access-request.title"
-        model="dataAccessRequest.title"
-        label="<?php print t('Title'); ?>"
-        help="<?php print t('Short summary to help identifying the request.'); ?>"></div>
+           model="dataAccessRequest.title"
+           label="<?php print t('Title'); ?>"
+           help="<?php print t('Short summary to help identifying the request.'); ?>"></div>
 
       <tabset class="voffset5">
         <div class="pull-right">
