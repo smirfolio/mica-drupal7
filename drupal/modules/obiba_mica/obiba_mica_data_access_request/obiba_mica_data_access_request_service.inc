@@ -72,3 +72,9 @@ function obiba_mica_data_access_request_action($id_data_request, $action_item = 
   }
 
 }
+
+function obiba_mica_data_access_request_delete_request_access($id_request) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_DELETE');
+  $data_access_request = $mica_client->delete_request($id_request);
+  drupal_json_output($data_access_request);
+}
