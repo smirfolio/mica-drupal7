@@ -71,6 +71,13 @@ function obiba_mica_data_access_request_menu() {
     'weight' => 4
   );
 
+  $items['data-access-request/delete/%'] = array(
+    'page callback' => 'obiba_mica_data_access_request_delete_request_access',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+
   return $items;
 }
 

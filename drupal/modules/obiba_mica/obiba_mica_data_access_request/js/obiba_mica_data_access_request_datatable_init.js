@@ -6,7 +6,7 @@
         DELETE: 'glyphicon-trash',
         EDIT: 'glyphicon-edit'
       }, HREF_ACTIONS = {VIEW: 'data-access-request#/view/{}',
-        DELETE: 'data-access-request/{}',
+        DELETE: 'data-access-request/delete/{}',
         EDIT: 'data-access-request#/edit/{}'
       };
 
@@ -22,7 +22,12 @@
               render: function (data, type, row) {
                 return data.map(function (action) {
                   if (action in ACTIONS) {
-                    return '<a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a>';
+                    if (action === 'DELETE') {
+                      return '<a  data-target="#delete-modal" id="' + action + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"data-access-title="' + row[1] + '" data-access-status="' + row[3] + '"> <i class="glyphicon ' + ACTIONS[action] + '"></i></a>';
+                    }
+                    else {
+                      return '<a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a>';
+                    }
                   }
 
                   return '';
@@ -54,6 +59,34 @@
             }
           }
         );
+
+        /* Add events */
+        $("body").on("click", "#table-requests tbody #DELETE", function (e) {
+          e.preventDefault();
+          var modal = $('#delete-modal').modal('show');
+          modal.find('#data_access_title').text($(this).attr("data-access-title"));
+          modal.find('#data_access_status').text($(this).attr("data-access-status"));
+          modal.find('#clickedDelete').attr('data-delete-resource', $(this).attr("href"));
+          return false;
+        });
+
+
+        $('#clickedDelete').on("click", function () {
+          $.ajax({
+            'async': true,
+            'url': Drupal.settings.basePath + $(this).attr('data-delete-resource'),
+            'type': 'POST',
+            'success': function (data) {
+              $('#delete-modal').modal('toggle');
+              location.reload();
+
+            },
+            'error': function (data) {
+            }
+          });
+
+        });
+
       }
     }
   }

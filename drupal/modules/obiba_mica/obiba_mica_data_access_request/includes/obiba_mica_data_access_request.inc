@@ -58,7 +58,6 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
-
   public function download_pdf($id) {
     $constant_method = constant('HttpClientRequest::' . $this->method);
     $this->setLastResponse(NULL);
@@ -86,6 +85,22 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
       return $e->getResponse();
     }
 
+  }
+
+  public function delete_request($id) {
+    $constant_method = constant('HttpClientRequest::' . $this->method);
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/' . $id;
+
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => $constant_method,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        )
+    ));
+
+    return $this->execute($request);
   }
 
 }
