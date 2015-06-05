@@ -246,18 +246,20 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
 }
 
 function obiba_mica_data_access_request_table_rows($requests) {
-  $res = array_map(function ($r) {
-    return array(
-      $r->applicant,
-      $r->title,
-      date_format(date_create(empty($r->timestamps->lastUpdate) ?
-        $r->timestamps->created :
-        $r->timestamps->lastUpdate), "Y-m-d H:i:s"),
-      $r->status,
-      $r->actions,
-      $r->id
-    );
-  }, $requests);
-
-  return $res;
+  if (empty($requests->responseCode)) {
+    $res = array_map(function ($r) {
+      return array(
+        $r->applicant,
+        $r->title,
+        date_format(date_create(empty($r->timestamps->lastUpdate) ?
+          $r->timestamps->created :
+          $r->timestamps->lastUpdate), "Y-m-d H:i:s"),
+        $r->status,
+        $r->actions,
+        $r->id
+      );
+    }, $requests);
+    return $res;
+  }
+  return FALSE;
 }

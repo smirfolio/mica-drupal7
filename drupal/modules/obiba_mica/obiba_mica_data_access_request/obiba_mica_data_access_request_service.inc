@@ -30,8 +30,6 @@ function obiba_mica_data_access_requests_action() {
 }
 
 function obiba_mica_data_access_request_comments_action($id_data_request) {
-  dpm($id_data_request);
-
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
       $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_GET');
