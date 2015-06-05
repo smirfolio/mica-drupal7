@@ -22,7 +22,7 @@
               controller: 'DataAccessRequestListController'
             })
             .when('/new', {
-              templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page',
+              templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/data-access-request-histroy-view',
               controller: 'DataAccessRequestEditController'
             })
             .when('/edit/:id', {

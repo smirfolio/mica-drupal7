@@ -34,23 +34,29 @@
               });
             };
 
+            var selectTab = function (id) {
+              $scope.selectedTab = id;
+              switch (id) {
+                case 'form':
+                  break;
+                case 'comments':
+                  retrieveComments();
+                  break;
+              }
+            };
             var retrieveComments = function () {
-              console.log('retrieveComments()');
               $scope.form.comments = DataAccessRequestCommentsResource.get({id: $routeParams.id});
             };
 
             var submitComment = function (comment) {
-              console.log('submitComment()');
               DataAccessRequestCommentsResource.save({id: $routeParams.id}, comment.message, retrieveComments, onError);
             };
 
             var updateComment = function (comment) {
-              console.log('updateComment()');
               DataAccessRequestCommentResource.update({id: $routeParams.id, commentId: comment.id}, comment.message, retrieveComments, onError);
             };
 
             var deleteComment = function (comment) {
-              console.log('deleteComment()', NOTIFICATION_EVENTS);
               $scope.commentToDelete = comment.id;
               $rootScope.$broadcast(NOTIFICATION_EVENTS.showConfirmDialog,
                 {
@@ -63,7 +69,6 @@
 
             $scope.$on(NOTIFICATION_EVENTS.confirmDialogAccepted, function (event, id) {
               if ($scope.commentToDelete === id) {
-                console.log('retrieveComments() EVENT');
                 DataAccessRequestCommentResource.delete({id: $routeParams.id, commentId: id}, {}, retrieveComments, onError);
               }
             });
@@ -75,12 +80,15 @@
               comments: null
             };
 
-            $scope.retrieveComments = retrieveComments;
+            $scope.actions = DataAccessRequestService.actions;
+            $scope.nextStatus = DataAccessRequestService.nextStatus;
+            $scope.selectTab = selectTab;
             $scope.submitComment = submitComment;
             $scope.updateComment = updateComment;
             $scope.deleteComment = deleteComment;
-            $scope.actions = DataAccessRequestService.actions;
-            $scope.nextStatus = DataAccessRequestService.nextStatus;
+            $scope.getStatusHistoryInfoId = DataAccessRequestService.getStatusHistoryInfoId;
+            $scope.getStatusHistoryInfo = DataAccessRequestService.getStatusHistoryInfo();
+
             var getRequest = function () {
               return DataAccessRequestResource.get({id: $routeParams.id}, function onSuccess(request) {
                 $scope.form.model = request.content ? JSON.parse(request.content) : {};

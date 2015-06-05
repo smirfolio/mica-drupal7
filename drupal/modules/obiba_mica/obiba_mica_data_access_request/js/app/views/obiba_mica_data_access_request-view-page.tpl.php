@@ -79,12 +79,13 @@
       <attachment-list files="dataAccessRequest.attachments"
         href-builder="getDownloadHref(attachments, id)"></attachment-list>
     </tab>
-    <tab ng-click="retrieveComments()" heading="<?php print t('Comments'); ?>">
-      <obiba-comments comments="form.comments" on-update="updateComment" on-delete="deleteComment"></obiba-comments>
+    <tab ng-click="selectTab('comments')" heading="<?php print t('Comments'); ?>">
+    <obiba-comments comments="form.comments" on-update="updateComment" on-delete="deleteComment"></obiba-comments>
       <obiba-comment-editor on-submit="submitComment"></obiba-comment-editor>
     </tab>
-    <tab ng-click="selectTab('history')" heading="<?php print t('History'); ?>">
-      <div ng-include="'obiba_main_app_angular/obiba_mica_data_access_request/data-access-request-history-view'"></div>
+    <tab heading="<?php print t('History'); ?>">
+      <div
+        ng-include="'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-histroy-view'"></div>
     </tab>
 
   </tabset>
