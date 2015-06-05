@@ -72,7 +72,7 @@
 
         .factory('DataAccessRequestStatusResource', ['$resource',
           function ($resource) {
-            return $resource('ws/data-access-request/:id/_status?to=:status', {}, {
+            return $resource('data-access-request/:id/_status/:status', {}, {
               'update': {method: 'PUT', params: {id: '@id', status: '@status'}, errorHandler: true}
             });
           }])
