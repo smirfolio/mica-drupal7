@@ -47,6 +47,13 @@ function obiba_mica_data_access_request_menu() {
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
+  $items['data-access-request/%/_status/%'] = array(
+    'page callback' => 'obiba_mica_data_access_request_update_request',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 3),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+
   $items['data-access-requests-action'] = array(
     'page callback' => 'obiba_mica_data_access_requests_action',
     'access callback' => TRUE,
