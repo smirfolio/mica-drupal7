@@ -120,9 +120,31 @@
 
             $scope.dataAccessRequest = $routeParams.id ? getRequest() : {};
 
+//            $scope.delete = function () {
+//              DataAccessRequestResource.delete({id: $scope.dataAccessRequest.id});
+//              window.location = Drupal.settings.basePath + 'data-access-request-list';
+//            };
             $scope.delete = function () {
-              DataAccessRequestResource.delete({id: $scope.dataAccessRequest.id});
+              $scope.requestToDelete = $scope.dataAccessRequest.id;
+              $rootScope.$broadcast(NOTIFICATION_EVENTS.showConfirmDialog,
+                {
+                  titleKey: 'data-access-request.delete-dialog.title',
+                  messageKey: 'data-access-request.delete-dialog.message',
+                  messageArgs: [$scope.dataAccessRequest.title, $scope.dataAccessRequest.applicant]
+                }, $scope.requestToDelete
+              );
             };
+
+            $scope.$on(NOTIFICATION_EVENTS.confirmDialogAccepted, function (event, id) {
+              if ($scope.requestToDelete === id) {
+                DataAccessRequestResource.delete({id: $scope.requestToDelete},
+                  function () {
+                    window.location = Drupal.settings.basePath + 'data-access-request-list';
+                  });
+
+                delete $scope.requestToDelete;
+              }
+            });
 
             var onUpdatStatusSuccess = function () {
               $scope.dataAccessRequest = getRequest();
@@ -211,7 +233,6 @@
 
               if ($scope.newRequest) {
                 DataAccessRequestsResource.save($scope.dataAccessRequest, function () {
-                  console.log(Drupal.settings);
                   window.location = Drupal.settings.basePath + 'data-access-request-list'
                 }, onError);
               } else {
