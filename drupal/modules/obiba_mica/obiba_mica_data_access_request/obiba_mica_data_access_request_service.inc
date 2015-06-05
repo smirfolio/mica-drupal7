@@ -67,7 +67,6 @@ function obiba_mica_data_access_request_comment_action($id_data_request, $commen
 }
 
 function obiba_mica_data_access_request_action($id_data_request, $action_item = NULL) {
-
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
       //PDF download
@@ -95,6 +94,9 @@ function obiba_mica_data_access_request_action($id_data_request, $action_item = 
       $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
       $data_access_request = $mica_client->data_access_save(file_get_contents('php://input'), $id_data_request, '/data-access-request');
       drupal_json_output($data_access_request);
+      break;
+    case 'DELETE' :
+      obiba_mica_data_access_request_delete_request_access($id_data_request);
       break;
   }
 

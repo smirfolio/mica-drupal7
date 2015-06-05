@@ -24,16 +24,7 @@
           'DataAccessRequestCommentResource',
           'NOTIFICATION_EVENTS',
 
-          function ($rootScope,
-                    $scope,
-                    $routeParams,
-                    DataAccessRequestResource,
-                    DataAccessRequestService,
-                    DataAccessRequestStatusResource,
-                    DataAccessFormResource,
-                    DataAccessRequestCommentsResource,
-                    DataAccessRequestCommentResource,
-                    NOTIFICATION_EVENTS) {
+          function ($rootScope, $scope, $routeParams, DataAccessRequestResource, DataAccessRequestService, DataAccessRequestStatusResource, DataAccessFormResource, DataAccessRequestCommentsResource, DataAccessRequestCommentResource, NOTIFICATION_EVENTS) {
 
             var onError = function (response) {
               AlertService.alert({
@@ -43,28 +34,28 @@
               });
             };
 
-            var retrieveComments = function() {
+            var retrieveComments = function () {
               console.log('retrieveComments()');
               $scope.form.comments = DataAccessRequestCommentsResource.get({id: $routeParams.id});
             };
 
-            var submitComment = function(comment) {
+            var submitComment = function (comment) {
               console.log('submitComment()');
               DataAccessRequestCommentsResource.save({id: $routeParams.id}, comment.message, retrieveComments, onError);
             };
 
-            var updateComment = function(comment) {
+            var updateComment = function (comment) {
               console.log('updateComment()');
               DataAccessRequestCommentResource.update({id: $routeParams.id, commentId: comment.id}, comment.message, retrieveComments, onError);
             };
 
-            var deleteComment = function(comment) {
+            var deleteComment = function (comment) {
               console.log('deleteComment()', NOTIFICATION_EVENTS);
               $scope.commentToDelete = comment.id;
               $rootScope.$broadcast(NOTIFICATION_EVENTS.showConfirmDialog,
                 {
                   titleKey: 'comment.delete-dialog.title',
-                  messageKey:'comment.delete-dialog.message',
+                  messageKey: 'comment.delete-dialog.message',
                   messageArgs: [comment.createdBy]
                 }, comment.id
               );
@@ -121,8 +112,26 @@
             $scope.dataAccessRequest = $routeParams.id ? getRequest() : {};
 
             $scope.delete = function () {
-              DataAccessRequestResource.delete({id: $scope.dataAccessRequest.id});
+              $scope.requestToDelete = $scope.dataAccessRequest.id;
+              $rootScope.$broadcast(NOTIFICATION_EVENTS.showConfirmDialog,
+                {
+                  titleKey: 'data-access-request.delete-dialog.title',
+                  messageKey: 'data-access-request.delete-dialog.message',
+                  messageArgs: [$scope.dataAccessRequest.title, $scope.dataAccessRequest.applicant]
+                }, $scope.requestToDelete
+              );
             };
+
+            $scope.$on(NOTIFICATION_EVENTS.confirmDialogAccepted, function (event, id) {
+              if ($scope.requestToDelete === id) {
+                DataAccessRequestResource.delete({id: $scope.requestToDelete},
+                  function () {
+                    window.location = Drupal.settings.basePath + 'data-access-request-list';
+                  });
+
+                delete $scope.requestToDelete;
+              }
+            });
 
             var onUpdatStatusSuccess = function () {
               $scope.dataAccessRequest = getRequest();
@@ -211,7 +220,6 @@
 
               if ($scope.newRequest) {
                 DataAccessRequestsResource.save($scope.dataAccessRequest, function () {
-                  console.log(Drupal.settings);
                   window.location = Drupal.settings.basePath + 'data-access-request-list'
                 }, onError);
               } else {
