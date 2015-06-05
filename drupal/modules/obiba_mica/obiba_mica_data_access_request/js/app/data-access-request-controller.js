@@ -134,7 +134,6 @@
             });
 
             var onUpdatStatusSuccess = function () {
-              console.log('submited');
               $scope.dataAccessRequest = getRequest();
             };
 
