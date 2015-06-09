@@ -240,7 +240,6 @@
 
               if ($scope.newRequest) {
                 DataAccessRequestsResource.save($scope.dataAccessRequest, function () {
-                  console.log(Drupal.settings);
                   window.location = Drupal.settings.basePath + 'data-access-request-list'
                 }, onError);
               } else {
@@ -253,22 +252,32 @@
             // Retrieve form data
             DataAccessFormResource.get(
               function onSuccess(dataAccessForm) {
-                $scope.form.definition = JSON.parse(dataAccessForm.definition);
-                $scope.form.schema = JSON.parse(dataAccessForm.schema);
 
-                $scope.dataAccessRequest = $routeParams.id ?
-                  DataAccessRequestResource.get({id: $routeParams.id}, function onSuccess(request) {
-                    $scope.form.model = request.content ? JSON.parse(request.content) : {};
-                    $scope.canEdit = DataAccessRequestService.actions.canEdit(request);
-                    $scope.form.schema.readonly = !$scope.canEdit;
-                    $scope.$broadcast('schemaFormRedraw');
-                    request.attachments = request.attachments || [];
-                    return request;
-                  }) : {
-                  applicant: user.name,
-                  status: DataAccessRequestService.status.OPENED,
-                  attachments: []
-                };
+                if (dataAccessForm.definition) {
+                  $scope.form.definition = JSON.parse(dataAccessForm.definition);
+                  $scope.form.schema = JSON.parse(dataAccessForm.schema);
+
+                  $scope.dataAccessRequest = $routeParams.id ?
+                    DataAccessRequestResource.get({id: $routeParams.id}, function onSuccess(request) {
+                      $scope.form.model = request.content ? JSON.parse(request.content) : {};
+                      $scope.canEdit = DataAccessRequestService.actions.canEdit(request);
+                      $scope.form.schema.readonly = !$scope.canEdit;
+                      $scope.$broadcast('schemaFormRedraw');
+                      request.attachments = request.attachments || [];
+                      return request;
+                    }) : {
+                    applicant: user.name,
+                    status: DataAccessRequestService.status.OPENED,
+                    attachments: []
+                  };
+                }
+                else {
+                  var errorMessage = {
+                    status: '',
+                    statusText: dataAccessForm.message
+                  };
+                  onError(errorMessage);
+                }
               },
               onError
             );

@@ -18,9 +18,9 @@
       mica.DataAccessRequest.config(['$routeProvider', '$locationProvider',
         function ($routeProvider, $locationProvider) {
           $routeProvider
-            .when('/data-access-request-list', {
-              controller: 'DataAccessRequestListController'
-            })
+//            .when('/data-access-request-list', {
+//              controller: 'DataAccessRequestListController'
+//            })
             .when('/new', {
               templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page',
               controller: 'DataAccessRequestEditController'
