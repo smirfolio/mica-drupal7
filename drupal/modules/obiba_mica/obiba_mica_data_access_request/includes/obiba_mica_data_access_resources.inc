@@ -56,6 +56,8 @@ class MicaDataAccessRequestResources extends MicaClient {
     catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
         array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+      drupal_set_message(t('An error occurred and processing did not complete Mica Server error: @message',
+        array('@message' => $e->getMessage())), 'error');
       return $e->getResponse();
     }
 
