@@ -8,12 +8,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+'use strict';
+
 (function ($) {
   Drupal.behaviors.obiba_mica_data_access_request_router = {
     attach: function (context, settings) {
 
-
-      'use strict';
 
       mica.DataAccessRequest.config(['$routeProvider', '$locationProvider',
         function ($routeProvider, $locationProvider) {

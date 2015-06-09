@@ -61,12 +61,20 @@ function obiba_main_app_angular_library_alter(&$javascript, $module) {
  */
 function obiba_main_app_angular_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
-  //load external AngularJs app to implement their template folder
+  $path_view_template = $path . '/js/app/views';
   return array(
     'obiba_angular_main' => array(
       'template' => 'obiba_angular_main',
       'path' => $path_theme
-    )
+    ),
+    'obiba_main_app_angular_attachment-input-template' => array(
+      'template' => 'obiba_main_app_angular_attachment-input-template',
+      'path' => $path_view_template
+    ),
+    'obiba_main_app_angular_attachment-list-template' => array(
+      'template' => 'obiba_main_app_angular_attachment-list-template',
+      'path' => $path_view_template
+    ),
   );
 }
 
@@ -102,15 +110,21 @@ function obiba_main_app_angular_load_ng_module() {
   return $modules;
 }
 
-function obiba_main_app_angular_load_js_resources() {
-  obiba_main_app_angular_load_libraires_resources('obiba_main_app_angular');
+function obiba_main_app_angular_load_js_by_folder_app($folder = 'app') {
   $module_path = drupal_get_path('module', 'obiba_main_app_angular');
-  $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
+  $js = file_scan_directory($module_path . '/js/' . $folder, '/.*\.js$/', array('key' => 'name'));
+
   ksort($js);
   foreach ($js as $file_js) {
     drupal_add_js($file_js->uri, array('type' => 'file', 'scope' => 'footer'));
   }
+}
 
+function obiba_main_app_angular_load_js_resources() {
+  obiba_main_app_angular_load_libraires_resources('obiba_main_app_angular');
+  obiba_main_app_angular_load_js_by_folder_app();
+  obiba_main_app_angular_load_js_by_folder_app('attachment');
+  obiba_main_app_angular_load_js_by_folder_app('file');
   obiba_main_app_angular_load_external_app_js();
   global $user;
   // Add CSRF token required by restWS.
@@ -136,7 +150,7 @@ function obiba_main_app_angular_get_angular_template($module, $angular_template)
 
 function obiba_main_app_angular_get_angular_translation() {
   global $language;
-  print file_get_contents(sprintf('%s/i18n/%s.json', __DIR__ ,$language->language));
+  print file_get_contents(sprintf('%s/i18n/%s.json', __DIR__, $language->language));
 }
 
 /**
@@ -181,7 +195,15 @@ function obiba_main_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer'
         ),
+        $lib_path_schema_form . '/jquery-ui/jquery-ui.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
         $lib_path_schema_form . '/angular-translate/angular-translate.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/angular-ui/build/angular-ui.min.js' => array(
           'type' => 'file',
           'scope' => 'footer'
         ),
@@ -198,6 +220,14 @@ function obiba_main_app_angular_load_angular_library() {
           'scope' => 'footer'
         ),
         $lib_path_schema_form . '/angular-moment/angular-moment.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/filesize/lib/filesize.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/ng-file-upload/ng-file-upload-all.min.js' => array(
           'type' => 'file',
           'scope' => 'footer'
         ),
