@@ -64,6 +64,18 @@ function obiba_mica_data_access_request_comment_action($id_data_request, $commen
 
 }
 
+function obiba_mica_data_access_request_attachment($id_data_request, $id_file) {
+  $dataset_resource = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+  $responses = $dataset_resource->download_attachment($id_data_request, $id_file);
+  if (!empty($responses)) {
+    drupal_add_http_header('Content-Disposition', $responses['headers']['Content-Disposition'][0]);
+    echo $responses['response']->body;
+    flush();
+    //stop drupal execution error : 'Headers already sent'
+    die();
+  }
+}
+
 function obiba_mica_data_access_request_action($id_data_request, $action_item = NULL) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
@@ -110,4 +122,16 @@ function obiba_mica_data_access_request_update_request($id_request, $status) {
   $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
   $data_access_request = $mica_client->status_update_request($id_request, $status);
   drupal_json_output($data_access_request);
+}
+
+function obiba_mica_data_access_request_upload_attachment() {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_POST');
+  $response = $mica_client->upload_file($_FILES);
+  drupal_json_output($response);
+}
+
+function obiba_mica_data_access_request_get_attachment($id_file) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+  $response = $mica_client->get_file($id_file, 'files/temp');
+  drupal_json_output($response);
 }

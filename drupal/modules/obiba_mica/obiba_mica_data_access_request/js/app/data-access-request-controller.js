@@ -80,6 +80,10 @@
               comments: null
             };
 
+            $scope.getDownloadHref = function (attachments, id) {
+              return 'data-access-request/' + $scope.dataAccessRequest.id + '/attachments/' + id + '/_download';
+            };
+
             $scope.actions = DataAccessRequestService.actions;
             $scope.nextStatus = DataAccessRequestService.nextStatus;
             $scope.selectTab = selectTab;
@@ -88,7 +92,6 @@
             $scope.deleteComment = deleteComment;
             $scope.getStatusHistoryInfoId = DataAccessRequestService.getStatusHistoryInfoId;
             $scope.getStatusHistoryInfo = DataAccessRequestService.getStatusHistoryInfo();
-
             var getRequest = function () {
               return DataAccessRequestResource.get({id: $routeParams.id}, function onSuccess(request) {
                 $scope.form.model = request.content ? JSON.parse(request.content) : {};
@@ -106,6 +109,16 @@
                       form.submit().remove();
                       return false;
                     });
+                    angular.element("attachment-list").find('a').each(function () {
+                      $(this).on('click', function (event) {
+                        // create a form for the file upload
+                        var form = $("<form action='" + $(this).attr('href') + "' method='get'>");
+                        $(this).after(form);
+                        form.submit().remove();
+                        return false;
+                      });
+                    });
+
                     // $scope.$broadcast('schemaFormRedraw');
                   },
                   onError
@@ -129,7 +142,6 @@
                 }, $scope.requestToDelete
               );
             };
-
             $scope.$on(NOTIFICATION_EVENTS.confirmDialogAccepted, function (event, id) {
               if ($scope.requestToDelete === id) {
                 DataAccessRequestResource.delete({id: $scope.requestToDelete},
@@ -228,6 +240,7 @@
 
               if ($scope.newRequest) {
                 DataAccessRequestsResource.save($scope.dataAccessRequest, function () {
+                  console.log(Drupal.settings);
                   window.location = Drupal.settings.basePath + 'data-access-request-list'
                 }, onError);
               } else {
@@ -266,7 +279,6 @@
               model: {}
             };
 
-            $scope.requestId = $routeParams.id;
             $scope.newRequest = $routeParams.id ? false : true;
             $scope.cancel = cancel;
             $scope.save = save;
