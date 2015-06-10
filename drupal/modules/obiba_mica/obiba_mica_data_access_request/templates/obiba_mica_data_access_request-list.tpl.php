@@ -13,7 +13,7 @@
   <h2 class="voffset5">
     <?php print t('Data Access Requests'); ?>
   </h2>
-  <?php print l('<i class="fa fa-plus"></i>' . t('Add Data Access Request'), 'data-access-request#/new', array(
+  <?php print l('<i class="fa fa-plus"></i> ' . t('Add Data Access Request'), 'data-access-request#/new', array(
       'html' => TRUE,
       'external' => TRUE,
       'attributes' => array('class' => array('btn', 'btn-info'))

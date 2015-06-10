@@ -259,8 +259,9 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
     '/js/obiba_mica_data_access_request_datatable_init.js', 'file');
   drupal_add_js(array(
     'table_headers' => array(
+      array("title" => t('ID')),
       array("title" => t('Applicant')),
-      array("title" => t('Title'), 'width' => '45%'),
+      array("title" => t('Title'), 'width' => '35%'),
       array("title" => t('Last Update'), 'width' => '20%'),
       array("title" => t('Status'), 'width' => '15%'),
       array("title" => t('Actions'))
@@ -273,6 +274,7 @@ function obiba_mica_data_access_request_table_rows($requests) {
   if (empty($requests->responseCode) && !empty($requests)) {
     $res = array_map(function ($r) {
       return array(
+        $r->id,
         $r->applicant,
         $r->title,
         date_format(date_create(empty($r->timestamps->lastUpdate) ?

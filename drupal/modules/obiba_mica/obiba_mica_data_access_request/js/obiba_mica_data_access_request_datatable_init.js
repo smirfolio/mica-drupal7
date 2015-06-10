@@ -20,7 +20,7 @@
             {
               targets: -1,
               render: function (data, type, row) {
-                return '<ul class="list-inline pull-right no-margin">' + data.map(function (action) {
+                return '<ul class="list-inline no-margin">' + data.map(function (action) {
                   if (action in ACTIONS) {
                     if (action === 'DELETE') {
                       return '<li><a  data-target="#delete-modal" id="' + action + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"data-access-title="' + row[1] + '" data-access-status="' + row[3] + '"> <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
