@@ -34,7 +34,7 @@ setup-drupal:
 	chmod -R a+w target/drupal && \
 	ln -s $(CURDIR)/drupal/modules/obiba_mica $(CURDIR)/target/drupal/sites/all/modules/obiba_mica && \
 	ln -s $(CURDIR)/drupal/themes/obiba_bootstrap $(CURDIR)/target/drupal/sites/all/themes/obiba_bootstrap && \
-	git clone https://github.com/obiba/drupal7-auth.git $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
+	ln -s $(CURDIR)/../drupal7-auth $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
 	git clone https://github.com/obiba/drupal7-protobuf.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
 
 www:

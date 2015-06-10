@@ -83,14 +83,14 @@ if (arg(0) == "obiba_user") { /* check if the path is example.com/obiba_user */
     <div class="navbar-header">
       <?php if ($logo): ?>
         <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>"
-          title="<?php print t('Home'); ?>">
+           title="<?php print t('Home'); ?>">
           <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>"/>
         </a>
       <?php endif; ?>
 
       <?php if (!empty($site_name)): ?>
         <a class="name navbar-brand" href="<?php print $front_page; ?>"
-          title="<?php print t('Home'); ?>"><?php print $site_name; ?></a>
+           title="<?php print t('Home'); ?>"><?php print $site_name; ?></a>
       <?php endif; ?>
 
       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
@@ -101,9 +101,9 @@ if (arg(0) == "obiba_user") { /* check if the path is example.com/obiba_user */
         <span class="icon-bar"></span>
       </button>
     </div>
+    <div class="navbar-collapse collapse">
+      <?php if (!empty($primary_nav) || !empty($secondary_nav) || !empty($page['navigation'])): ?>
 
-    <?php if (!empty($primary_nav) || !empty($secondary_nav) || !empty($page['navigation'])): ?>
-      <div class="navbar-collapse collapse">
         <nav role="navigation">
           <?php if (!empty($primary_nav)): ?>
             <?php print render($primary_nav); ?>
@@ -115,12 +115,24 @@ if (arg(0) == "obiba_user") { /* check if the path is example.com/obiba_user */
             <?php print render($page['navigation']); ?>
           <?php endif; ?>
         </nav>
-      </div>
-    <?php endif; ?>
+      <?php endif; ?>
+      <?php if (empty($user->roles[1]) || $user->roles[1] !== 'anonymous user'): ?>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-user"></i>
+              <?php print $user->name ?>
+              <i class="fa fa-caret-down"></i></a>
+            <ul class="dropdown-menu pull-right">
+              <li><?php print l('<i class="fa fa-cog"></i> ' . t('My Profile'), 'user', array('html' => true)) ?></li>
+              <li class="divider"></li>
+              <li><?php print l('<i class="fa fa-sign-out"></i> ' . t('Sign Out'), 'user/logout', array('html' => true)) ?></li>
+            </ul>
+          </li>
+        </ul>
+      <?php endif; ?>
+    </div>
   </div>
-  <?php if (empty($user->roles[1]) || $user->roles[1] !== 'anonymous user'): ?>
-    <div class="logout-class"><?php print $user->name . '-' . l('Logout', 'user/logout') ?></div>
-  <?php endif; ?>
 </header>
 
 <div class="main-container container">
