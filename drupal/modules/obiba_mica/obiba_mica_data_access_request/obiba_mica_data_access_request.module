@@ -95,6 +95,12 @@ function obiba_mica_data_access_request_menu() {
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
+  $items['data-access-request/delete/%'] = array(
+    'page callback' => 'obiba_mica_data_access_request_delete_request_access',
+    'page arguments' => array(2),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+
   $items['data-access'] = array(
     'title' => 'Data Access',
     'description' => 'Data access page',
@@ -105,13 +111,18 @@ function obiba_mica_data_access_request_menu() {
     'weight' => 4
   );
 
-  $items['data-access-request/delete/%'] = array(
-    'page callback' => 'obiba_mica_data_access_request_delete_request_access',
-    'access callback' => TRUE,
-    'page arguments' => array(2),
-    'file' => 'obiba_mica_data_access_request_service.inc',
-  );
+  return $items;
+}
 
+/**
+ * Implements hook_load_menus (obiba_main_app_angular_)
+ */
+function obiba_mica_data_access_request_load_menus() {
+  $items = array();
+
+  $items['data-access-request'] = array(
+    'access callback' => TRUE,
+  );
   return $items;
 }
 
@@ -163,19 +174,6 @@ function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
     jquery_update_jquery_replace($javascript, NULL, $path, NULL, '1.10');
   }
 
-}
-
-/**
- * Implements hook_load_menus (obiba_main_app_angular_)
- */
-function obiba_mica_data_access_request_load_menus() {
-  $items = array();
-
-  $items['data-access-request'] = array(
-    'access callback' => TRUE,
-//    'page arguments' => array(2)
-  );
-  return $items;
 }
 
 /**

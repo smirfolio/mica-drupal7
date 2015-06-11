@@ -97,6 +97,9 @@ function obiba_mica_data_access_request_action($id_data_request, $action_item = 
       else {
         $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
         $data_access_request = $mica_client->get_request($id_data_request);
+        if (empty($data_access_request)) {
+          return FALSE;
+        }
         drupal_json_output($data_access_request);
       }
       break;
