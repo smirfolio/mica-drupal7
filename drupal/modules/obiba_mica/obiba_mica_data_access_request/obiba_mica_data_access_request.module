@@ -276,7 +276,7 @@ function obiba_mica_data_access_request_table_rows($requests) {
       return array(
         $r->id,
         $r->applicant,
-        $r->title,
+        empty($r->title) ? '' : $r->title,
         date_format(date_create(empty($r->timestamps->lastUpdate) ?
           $r->timestamps->created :
           $r->timestamps->lastUpdate), "Y-m-d H:i:s"),
