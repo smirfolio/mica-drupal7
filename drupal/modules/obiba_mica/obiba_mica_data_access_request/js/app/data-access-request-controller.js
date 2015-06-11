@@ -22,16 +22,21 @@
           'DataAccessFormResource',
           'DataAccessRequestCommentsResource',
           'DataAccessRequestCommentResource',
+          'AlertService',
+          'ServerErrorUtils',
+          'ErrorTemplate',
+          'ForbiddenDrupalRedirect',
           'NOTIFICATION_EVENTS',
 
-          function ($rootScope, $scope, $routeParams, DataAccessRequestResource, DataAccessRequestService, DataAccessRequestStatusResource, DataAccessFormResource, DataAccessRequestCommentsResource, DataAccessRequestCommentResource, NOTIFICATION_EVENTS) {
+          function ($rootScope, $scope, $routeParams, DataAccessRequestResource, DataAccessRequestService, DataAccessRequestStatusResource, DataAccessFormResource, DataAccessRequestCommentsResource, DataAccessRequestCommentResource, AlertService, ServerErrorUtils, ErrorTemplate, ForbiddenDrupalRedirect, NOTIFICATION_EVENTS) {
 
             var onError = function (response) {
               AlertService.alert({
                 id: 'DataAccessRequestViewController',
                 type: 'danger',
-                msg: ServerErrorUtils.buildMessage(response)
+                msg: ServerErrorUtils.buildMessage(ErrorTemplate.getServerError(response))
               });
+              ForbiddenDrupalRedirect.redirectDrupalMessage(response);
             };
 
             var selectTab = function (id) {
@@ -99,6 +104,7 @@
                 // Retrieve form data
                 DataAccessFormResource.get(
                   function onSuccess(dataAccessForm) {
+                    $scope.requestId = request.id;
                     $scope.form.definition = JSON.parse(dataAccessForm.definition);
                     $scope.form.schema = JSON.parse(dataAccessForm.schema);
                     $scope.form.schema.readonly = true;
@@ -127,7 +133,7 @@
                 request.attachments = request.attachments || [];
 
                 return request;
-              });
+              }, onError);
             };
 
             $scope.dataAccessRequest = $routeParams.id ? getRequest() : {};
@@ -207,11 +213,11 @@
           'DataAccessFormResource',
           'AlertService',
           'ServerErrorUtils',
-          //'Session',
+          'ErrorTemplate',
+          'ForbiddenDrupalRedirect',
           'DataAccessRequestService',
 
-          function ($log, $scope, $routeParams, $location, DataAccessRequestsResource, DataAccessRequestResource, DataAccessFormResource, AlertService, ServerErrorUtils, //Session,
-                    DataAccessRequestService) {
+          function ($log, $scope, $routeParams, $location, DataAccessRequestsResource, DataAccessRequestResource, DataAccessFormResource, AlertService, ServerErrorUtils, ErrorTemplate, ForbiddenDrupalRedirect, DataAccessRequestService) {
             var onSuccess = function (response, getResponseHeaders) {
 //              var parts = getResponseHeaders().location.split('/');
 //              $location.path('/view/' + parts[parts.length - 1]).replace();
@@ -220,11 +226,13 @@
             };
 
             var onError = function (response) {
+              console.log(response);
               AlertService.alert({
                 id: 'DataAccessRequestEditController',
                 type: 'danger',
-                msg: ServerErrorUtils.buildMessage(response)
+                msg: ServerErrorUtils.buildMessage(ErrorTemplate.getServerError(response))
               });
+              ForbiddenDrupalRedirect.redirectDrupalMessage(response);
             };
 
             var submit = function () {
@@ -265,7 +273,7 @@
                       $scope.$broadcast('schemaFormRedraw');
                       request.attachments = request.attachments || [];
                       return request;
-                    }) : {
+                    }, onError) : {
                     applicant: user.name,
                     status: DataAccessRequestService.status.OPENED,
                     attachments: []
@@ -287,7 +295,6 @@
               definition: {},
               model: {}
             };
-
             $scope.requestId = $routeParams.id;
             $scope.newRequest = $routeParams.id ? false : true;
             $scope.cancel = cancel;

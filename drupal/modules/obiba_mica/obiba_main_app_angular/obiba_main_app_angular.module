@@ -33,6 +33,10 @@ function obiba_main_app_angular_menu() {
     'page callback' => 'obiba_main_app_angular_get_angular_translation',
     'access callback' => TRUE
   );
+  $items['un-authorized-error'] = array(
+    'page callback' => 'obiba_main_app_angular_set_drupal_message_error',
+    'access callback' => TRUE
+  );
   return $items + $external_items;
 }
 
@@ -259,4 +263,14 @@ function obiba_main_app_angular_load_libraires_resources($module_name) {
   else {
     watchdog($module_name, 'The library angular-app not loaded', array(), WATCHDOG_WARNING);
   }
+}
+
+function obiba_main_app_angular_set_drupal_message_error() {
+  if (!user_is_logged_in()) {
+    drupal_set_message(t('Server rejected your request, please make sure you are logged in and try again.'), 'error');
+  }
+  else {
+    drupal_set_message(t('You are not authorized to access the page.'), 'error');
+  }
+  return TRUE;
 }
