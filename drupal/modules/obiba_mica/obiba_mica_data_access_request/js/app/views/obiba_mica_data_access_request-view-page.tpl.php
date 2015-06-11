@@ -44,7 +44,7 @@
     </a>
     <a ng-click="review()"
       ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReview(dataAccessRequest)"
-      class="btn btn-info"><?php print t('Review'); ?>review
+      class="btn btn-info"><?php print t('Review'); ?>
     </a>
     <a ng-click="approve()"
       ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canApprove(dataAccessRequest)"
