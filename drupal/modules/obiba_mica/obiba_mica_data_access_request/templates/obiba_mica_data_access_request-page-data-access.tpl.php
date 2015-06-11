@@ -11,36 +11,22 @@
 <?php print render($node_content); ?>
 
 <?php if ($data_access_register_user) : ?>
-<div class="text-center">
-  <p>
-    <a class='btn btn-primary' href='obiba_user/register'>
-      <?php print t('Please Create an Account to Start Your Application') ?>
-    </a>
+  <p class="md-top-margin">
+    <?php print t('You need to be authenticated to start an application') ?>
+    <?php print l(t('Sign Up'), 'obiba_user/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
+    <?php print l(t('Sign In'), 'user/login', array('attributes' => array('class' => 'btn btn-default'))) ?>
   </p>
+<?php endif; ?>
 
-  <p><?php print t('Or') ?></p>
-
-  <p>
-    <?php
-    print l('login', 'user/login', array(
-      'query' => array(current_path()),
-      'attributes' => array('class' => array('btn', 'btn-primary'))
-    ));?>
+<?php if ($data_access_list_display) : ?>
+  <p class="md-top-margin">
+    <?php print l('My Data Access Requests', 'data-access-request-list',
+      array(
+        'attributes' => array('class' => array('btn', 'btn-primary'))
+      )
+    ); ?>
   </p>
-  <?php endif; ?>
-
-  <?php if ($data_access_list_display) : ?>
-    <p>
-
-      <?php print l('My Data Access Requests', 'data-access-request-list',
-        array(
-          'attributes' => array('class' => array('btn', 'btn-primary'))
-        )
-      ); ?>
-
-    </p>
-  <?php endif; ?>
-</div>
+<?php endif; ?>
 
 
 

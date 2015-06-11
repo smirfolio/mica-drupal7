@@ -130,6 +130,11 @@ if (arg(0) == "obiba_user") { /* check if the path is example.com/obiba_user */
             </ul>
           </li>
         </ul>
+      <?php else: ?>
+        <form class="navbar-form navbar-right">
+          <?php print l(t('Sign Up'), 'obiba_user/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
+          <?php print l(t('Sign In'), 'user/login', array('attributes' => array('class' => 'btn btn-default'))) ?>
+        </form>
       <?php endif; ?>
     </div>
   </div>
