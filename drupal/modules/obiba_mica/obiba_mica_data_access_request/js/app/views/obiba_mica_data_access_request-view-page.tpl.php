@@ -64,9 +64,7 @@
 
   <div class="clearfix"></div>
 
-  <h3>{{dataAccessRequest.title}}</h3>
-
-  <tabset class="voffset5">
+  <tabset class="lg-top-margin">
     <div class="pull-right">
     </div>
     <tab heading="<?php print t('Application form'); ?>
@@ -80,8 +78,8 @@
         href-builder="getDownloadHref(attachments, id)"></attachment-list>
     </tab>
     <tab ng-click="selectTab('comments')" heading="<?php print t('Comments'); ?>">
-    <obiba-comments comments="form.comments" on-update="updateComment" on-delete="deleteComment"></obiba-comments>
-      <obiba-comment-editor on-submit="submitComment"></obiba-comment-editor>
+      <obiba-comments comments="form.comments" on-update="updateComment" on-delete="deleteComment"></obiba-comments>
+      <obiba-comment-editor on-submit="submitComment" class="md-top-margin"></obiba-comment-editor>
     </tab>
     <tab heading="<?php print t('History'); ?>">
       <div
