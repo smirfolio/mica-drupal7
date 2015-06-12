@@ -14,13 +14,18 @@
   <p class="md-top-margin">
     <?php print t('You need to be authenticated to start an application') ?>
     <?php print l(t('Sign Up'), 'obiba_user/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
-    <?php print l(t('Sign In'), 'user/login', array('attributes' => array('class' => 'btn btn-default'))) ?>
+    <?php print l(t('Sign In'), 'user/login', array(
+      'query' => array('destination' => 'data-access'),
+      'attributes' => array(
+        'class' => 'btn btn-default'
+      )
+    )) ?>
   </p>
 <?php endif; ?>
 
 <?php if ($data_access_list_display) : ?>
   <p class="md-top-margin">
-    <?php print l('My Data Access Requests', 'data-access-request-list',
+    <?php print l('See Data Access Requests', 'data-access-request-list',
       array(
         'attributes' => array('class' => array('btn', 'btn-primary'))
       )
