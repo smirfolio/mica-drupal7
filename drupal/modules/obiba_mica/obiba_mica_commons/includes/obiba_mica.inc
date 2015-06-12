@@ -2,7 +2,7 @@
 
 /**
  * @file
- * AgateClient class
+ * MicaClient class
  */
 
 $path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
@@ -93,6 +93,38 @@ class MicaClient {
       return $result;
     }
     return '';
+  }
+
+  /**
+   * Send a logout request to Mica and clean drupal client cookies.
+   */
+  public function logout() {
+    $url = $this->micaUrl . '/auth/session/_current';
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_DELETE,
+      'headers' => array(
+        'Accept' => array('application/json'),
+        'X-App-Auth' => array($this->authorizationHeader(array(
+          'Accept' => array(HEADER_JSON),
+        )))
+      ),
+    ));
+
+    $client = $this->client();
+    try {
+      $body = $client->execute($request);
+      $this->lastResponse = $client->lastResponse;
+      $this->setLastResponseCookies();
+      unset($_SESSION[self::MICA_COOKIE]);
+    }
+    catch (HttpClientException $e) {
+      // clear anyway
+      watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+      $this->lastResponse = $client->lastResponse;
+      $this->setLastResponseCookies();
+      unset($_SESSION[self::MICA_COOKIE]);
+    }
   }
 
   /**

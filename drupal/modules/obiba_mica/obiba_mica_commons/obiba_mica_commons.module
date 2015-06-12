@@ -23,6 +23,14 @@ const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
 include_once($path_module_protos . '/protos/Mica.php');
 
+/**
+ * Implements hook_user_logout().
+ */
+function obiba_mica_commons_user_logout() {
+  $mica_client = new MicaClient();
+  $mica_client->logout();
+}
+
 function obiba_mica_commons_menu() {
   $items = array();
 
