@@ -8,12 +8,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <div>
-  <h3>
-    <ul class="breadcrumb">
-      <li><?php print l('Data Access Requests', 'data-access-request-list'); ?></li>
-      <li class="active">{{dataAccessRequest.id}}</li>
-    </ul>
-  </h3>
+  <h1 class="page-header">
+    <?php print t('Data Access Request'); ?>: {{dataAccessRequest.id}}
+  </h1>
 
   <obiba-alert id="DataAccessRequestViewController"></obiba-alert>
 
@@ -72,10 +69,14 @@
       <form id="request-form" name="forms.requestForm">
         <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema"></div>
       </form>
-    </tab>
-    <tab heading="<?php print t('Attachments'); ?>">
+      <h3><?php print t('Attachments'); ?></h3>
+
+      <div ng-if="dataAccessRequest.attachments">
+        <?php print t('No attachments provided.'); ?>
+      </div>
+
       <attachment-list files="dataAccessRequest.attachments"
-        href-builder="getDownloadHref(attachments, id)"></attachment-list>
+                       href-builder="getDownloadHref(attachments, id)"></attachment-list>
     </tab>
     <tab ng-click="selectTab('comments')" heading="<?php print t('Comments'); ?>">
       <obiba-comments comments="form.comments" on-update="updateComment" on-delete="deleteComment"></obiba-comments>

@@ -25,7 +25,7 @@
 
 <?php if ($data_access_list_display) : ?>
   <p class="md-top-margin">
-    <?php print l('See Data Access Requests', 'data-access-request-list',
+    <?php print l('My Data Access Requests', 'data-access-request-list',
       array(
         'attributes' => array('class' => array('btn', 'btn-primary'))
       )

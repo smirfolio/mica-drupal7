@@ -9,58 +9,47 @@
   -->
 
 <div>
-  <h3>
-    <ul class="breadcrumb">
-      <li><?php print l('Data Access Requests', 'data-access-request-list'); ?></li>
-      <li ng-if="!newRequest"><a ng-click="cancel()">{{requestId}}</a></li>
-      <li class="active">
-        <span ng-if="newRequest"><?php print t('add'); ?>
-        </span>
-        <span ng-if="!newRequest"><?php print t('edit'); ?>
-        </span>
-        <small><span translate>or</span>
-          <a ng-click="cancel()">
-            <span><?php print t('cancel'); ?>
-            </span>
-          </a></small>
-      </li>
-    </ul>
-  </h3>
+  <h1 class="page-header">
+    <span ng-if="newRequest">
+      <?php print t('Add Data Access Request'); ?>
+    </span>
+    <span ng-if="!newRequest">
+      <?php print t('Edit Data Access Request'); ?>: {{requestId}}
+    </span>
+  </h1>
 
-  <div>
-    <obiba-alert id="DataAccessRequestEditController"></obiba-alert>
+  <div class="pull-right">
+    <?php print l(t('Cancel'), 'data-access-request-list', array(
+      'attributes' => array(
+        'class' => 'btn btn-default',
+        'ng-if' => 'newRequest'
+      )
+    )); ?>
 
-    <form name="requestForm" ng-submit="submit(requestForm)">
-      <tabset class="lg-top-margin">
-        <div class="pull-right"></div>
-        <tab heading="<?php print t('Application form'); ?>">
-          <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema" required="true"></div>
-        </tab>
-        <tab heading="<?php print t('Attachments'); ?>">
-          <div class="form-group md-top-margin">
-            <attachment-input files="dataAccessRequest.attachments" multiple="true"></attachment-input>
-          </div>
-        </tab>
-      </tabset>
+    <a ng-if="!newRequest" ng-click="cancel()" type="button" class="btn btn-default">
+      <?php print t('Cancel'); ?>
+    </a>
 
-      <div class="lg-top-margin">
-        <a ng-click="cancel()" type="button" class="btn btn-default">
-          <span><?php print t('Cancel'); ?></span>
-        </a>
+    <a ng-click="save()" type="button" class="btn btn-primary">
+      <?php print t('Save'); ?>
+    </a>
 
-        <a ng-click="save()" type="button" class="btn btn-primary">
-        <span><?php print t('Save'); ?>
-        </span>
-        </a>
-
-        <button type="submit" class="btn btn-info">
-          <span><?php print t('Validate'); ?></span>
-        </button>
-      </div>
-      
-    </form>
-
+    <a ng-click="validate()" type="button" class="btn btn-info">
+      <?php print t('Validate'); ?>
+    </a>
   </div>
+
+  <div class="clearfix"></div>
+
+  <obiba-alert id="DataAccessRequestEditController"></obiba-alert>
+  <form name="requestForm" ng-submit="submit(requestForm)">
+    <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema" required="true"></div>
+    <h3><?php print t('Attachments'); ?></h3>
+
+    <div class="form-group md-top-margin">
+      <attachment-input files="dataAccessRequest.attachments" multiple="true"></attachment-input>
+    </div>
+  </form>
 
 </div>
 

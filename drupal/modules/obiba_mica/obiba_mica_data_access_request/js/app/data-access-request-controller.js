@@ -235,7 +235,7 @@
               ForbiddenDrupalRedirect.redirectDrupalMessage(response);
             };
 
-            var submit = function () {
+            var validate = function () {
               $scope.$broadcast('schemaFormValidate');
             };
 
@@ -300,7 +300,7 @@
             $scope.cancel = cancel;
             $scope.save = save;
             $scope.editable = true;
-            $scope.submit = submit;
+            $scope.validate = validate;
 
           }]);
 
