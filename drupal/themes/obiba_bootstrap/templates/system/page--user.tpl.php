@@ -147,13 +147,13 @@
     endif; ?>
 
     <h1 class="page-header">
-
-          <span
-            class="t_badge color_ i-obiba-">
+      <?php if (!empty($classes_array['title_page'])) : ?>
+        <span
+          class="t_badge color_<?php print $classes_array['title_page']; ?> i-obiba-<?php print $classes_array['title_page']; ?>">
           </span>
-
+      <?php endif; ?>
+      <?php print $title; ?>
     </h1>
-
 
     <?php if (!empty($page['sidebar_first']) || !empty($page['facets'])): ?>
       <aside class="col-sm-4 col-lg-3" role="complementary">
