@@ -14,9 +14,11 @@
 
   <obiba-alert id="DataAccessRequestViewController"></obiba-alert>
 
-  <p class="help-block pull-left"><span><?php print t('Created by'); ?>
-  </span> {{dataAccessRequest.applicant}} <span
-      class="label label-success">{{dataAccessRequest.status}}</span></p>
+  <p class="help-block pull-left">
+    <span><?php print t('Created by'); ?></span> {{dataAccessRequest.applicant}},
+    <span>{{dataAccessRequest.timestamps.created | amCalendar}}</span>
+    <span class="label label-success">{{dataAccessRequest.status}}</span>
+  </p>
 
   <div class="pull-right">
 
