@@ -73,9 +73,9 @@
       </form>
       <h3><?php print t('Attachments'); ?></h3>
 
-      <div ng-if="dataAccessRequest.attachments">
+      <p ng-if="dataAccessRequest.attachments.length == 0">
         <?php print t('No attachments provided.'); ?>
-      </div>
+      </p>
 
       <attachment-list files="dataAccessRequest.attachments"
                        href-builder="getDownloadHref(attachments, id)"></attachment-list>
