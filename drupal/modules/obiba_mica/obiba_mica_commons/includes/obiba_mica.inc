@@ -56,6 +56,13 @@ class MicaClient {
   }
 
   /**
+   * Make sure we are not using previous session state.
+   */
+  public static function clear() {
+    unset($_SESSION[self::MICA_COOKIE]);
+  }
+
+  /**
    * Get the last response (if any).
    * @return mixed
    */
@@ -102,12 +109,9 @@ class MicaClient {
     $url = $this->micaUrl . '/auth/session/_current';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_DELETE,
-      'headers' => array(
-        'Accept' => array('application/json'),
-        'X-App-Auth' => array($this->authorizationHeader(array(
+      'headers' => $this->authorizationHeader(array(
           'Accept' => array(HEADER_JSON),
-        )))
-      ),
+        ))
     ));
 
     $client = $this->client();
@@ -150,16 +154,13 @@ class MicaClient {
       $keys = array_keys($cookie);
       $name = $keys[0];
       $value = $cookie[$name];
-      $expire = isset($cookie['Max-Age']) ? time() + intval($cookie['Max-Age']) : 0;
-      $path = isset($cookie['Path']) ? $cookie['Path'] : '/';
-      $domain = isset($cookie['Domstudyain']) ? $cookie['Domain'] : NULL;
-
-      if (isset($_COOKIE[self::OBIBA_COOKIE])) {
-        // forwards cookies to client if not anonymous user
-        setcookie($name, $value, $expire, $path, $domain);
+      watchdog('Mica Client', 'Cookie: name=@name, value=@value',
+        array('@name' => $name, '@value' => $value), WATCHDOG_DEBUG);
+      if(empty($value)) {
+        unset($_SESSION[$name]);
+      } else {
+        $_SESSION[$name] = $value;
       }
-
-      $_SESSION[$name] = $value;
     }
   }
 
@@ -169,10 +170,10 @@ class MicaClient {
    * @return array
    */
   protected function authorizationHeader(array $headers) {
-    if (isset($_COOKIE[self::OBIBA_COOKIE])) {
+    if (isset($_SESSION[self::OBIBA_COOKIE])) {
       // authenticate by cookies coming from request (case of regular user logged in via Agate)
       watchdog('obiba_mica', 'Auth by cookies from request');
-      $headers = $this->addCookieHeader($headers, $_COOKIE[self::OBIBA_COOKIE], isset($_COOKIE[self::MICA_COOKIE]) ? $_COOKIE[self::MICA_COOKIE] : NULL);
+      $headers = $this->addCookieHeader($headers, $_SESSION[self::OBIBA_COOKIE], isset($_SESSION[self::MICA_COOKIE]) ? $_SESSION[self::MICA_COOKIE] : NULL);
     }
     else {
       watchdog('obiba_mica', 'Auth by anonymous credentials');

@@ -31,6 +31,13 @@ function obiba_mica_commons_user_logout() {
   $mica_client->logout();
 }
 
+/**
+ * Implements hook_user_login().
+ */
+function obiba_mica_commons_user_login() {
+  MicaClient::clear();
+}
+
 function obiba_mica_commons_menu() {
   $items = array();
 
