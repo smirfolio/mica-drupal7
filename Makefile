@@ -24,7 +24,7 @@ help:
 
 include make-perform-release.mk
 
-all: clean setup-drupal www import-sql settings bootstrap enable-mica angular-app enable-obiba-auth devel enable-mica-data-access less-css jquery_update datatables obiba-progressbar cc
+all: clean setup-drupal www import-sql settings bootstrap enable-mica angular-app enable-obiba-agate devel enable-mica-data-access less-css jquery_update datatables obiba-progressbar cc
 
 clean:
 	rm -rf target
@@ -34,7 +34,7 @@ setup-drupal:
 	chmod -R a+w target/drupal && \
 	ln -s $(CURDIR)/drupal/modules/obiba_mica $(CURDIR)/target/drupal/sites/all/modules/obiba_mica && \
 	ln -s $(CURDIR)/drupal/themes/obiba_bootstrap $(CURDIR)/target/drupal/sites/all/themes/obiba_bootstrap && \
-	git clone https://github.com/obiba/drupal7-auth.git $(CURDIR)/target/drupal/sites/all/modules/obiba_auth && \
+	git clone https://github.com/obiba/agate-drupal7-client.git $(CURDIR)/target/drupal/sites/all/modules/obiba_agate && \
 	git clone https://github.com/obiba/drupal7-protobuf.git  $(CURDIR)/target/drupal/sites/all/modules/obiba_protobuf
 
 www:
@@ -64,9 +64,9 @@ enable-mica-data-access:
 	cd target/drupal && \
 	drush en -y obiba_mica_data_access_request
 
-enable-obiba-auth:
+enable-obiba-agate:
 	cd target/drupal && \
-	drush en -y obiba_auth
+	drush en -y obiba_agate
 
 cptp:
 	cd target/drupal && \
@@ -97,11 +97,6 @@ devel:
 	cd target/drupal && \
 	drush dl -y devel && \
 	drush en -y devel
-
-cas:
-	cd target/drupal && \
-	drush dl -y cas && \
-	drush en -y cas
 
 chart-enable:
 	cd target/drupal && \

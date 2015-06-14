@@ -51,7 +51,7 @@ function obiba_mica_drush_angular_app() {
 
     $mv_cmd = "mv $path_to_del* $path";
     if (drush_shell_exec($mv_cmd)) {
-      drush_log(dt('angular-schema-form dependecies moved to   !path.', array('!path' => ' ' . $path)), 'success');
+      drush_log(dt('angular-schema-form dependencies moved to !path.', array('!path' => ' ' . $path)), 'success');
 
       $rm_cmd = "rm " . '-rf ' . $path_to_del;
       if (drush_shell_exec($rm_cmd)) {

@@ -132,7 +132,7 @@ if (arg(0) == "obiba_user") { /* check if the path is example.com/obiba_user */
         </ul>
       <?php else: ?>
         <form class="navbar-form navbar-right">
-          <?php print l(t('Sign Up'), (module_exists('obiba_auth') ? 'obiba_user': 'user') . '/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
+          <?php print l(t('Sign Up'), (module_exists('obiba_agate') ? 'obiba_user': 'user') . '/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
           <?php print l(t('Sign In'), 'user/login', array('attributes' => array('class' => 'btn btn-default'))) ?>
         </form>
       <?php endif; ?>

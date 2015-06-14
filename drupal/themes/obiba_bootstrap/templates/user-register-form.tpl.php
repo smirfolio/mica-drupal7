@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <?php if (!empty($form['obiba_auth']) && $form['obiba_auth']['#value'] == 'obiba_auth_user_register_form'): ?>
+    <?php if (!empty($form['obiba_agate']) && $form['obiba_agate']['#value'] == 'obiba_agate_user_register_form'): ?>
       <div class="text-center">
         <p><?php print t('Please use this following link to register') ?></p>
         <?php print l('Sign Up ', 'obiba_user/register') ?>
