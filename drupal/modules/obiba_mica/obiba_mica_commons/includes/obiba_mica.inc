@@ -157,7 +157,7 @@ class MicaClient {
       watchdog('Mica Client', 'Cookie: name=@name, value=@value',
         array('@name' => $name, '@value' => $value), WATCHDOG_DEBUG);
       if(empty($value)) {
-        unset($_SESSION[$name]);
+        if(!empty($_SESSION[$name])) unset($_SESSION[$name]);
       } else {
         $_SESSION[$name] = $value;
       }

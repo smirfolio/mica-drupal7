@@ -13,7 +13,7 @@
 <?php if ($data_access_register_user) : ?>
   <p class="md-top-margin">
     <?php print t('You need to be authenticated to start an application') ?>
-    <?php print l(t('Sign Up'), 'obiba_user/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
+    <?php print l(t('Sign Up'), 'agate/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
     <?php print l(t('Sign In'), 'user/login', array(
       'query' => array('destination' => 'data-access'),
       'attributes' => array(
