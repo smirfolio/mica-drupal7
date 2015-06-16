@@ -9974,3 +9974,19 @@ div.innerdivs {
   text-align: center;
   right: 10px !important;
 }
+textarea.height-10,
+textarea.form-control.height-10 {
+  height: 10em;
+}
+textarea.height-20,
+textarea.form-control.height-20 {
+  height: 20em;
+}
+textarea.height-40,
+textarea.form-control.height-40 {
+  height: 40em;
+}
+textarea.height-60,
+textarea.form-control.height-60 {
+  height: 60em;
+}
