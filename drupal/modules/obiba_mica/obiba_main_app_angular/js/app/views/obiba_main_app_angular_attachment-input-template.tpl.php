@@ -17,9 +17,6 @@
       {{file.size | bytes}}
     </td>
     <td>
-      <small ng-show="file.md5">md5: {{file.md5}}</small>
-    </td>
-    <td>
       <a ng-show="file.id" ng-click="deleteFile(file.id)" class="action">
         <i class="fa fa-trash-o"></i>
       </a>
