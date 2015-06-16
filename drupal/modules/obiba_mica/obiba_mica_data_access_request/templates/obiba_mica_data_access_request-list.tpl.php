@@ -14,9 +14,9 @@
     <?php print t('My Data Access Requests'); ?>
   </h1>
 
-  <?php print l('<i class="fa fa-plus"></i> ' . t('Add Data Access Request'), 'request#/new', array(
+  <?php print l('<i class="fa fa-plus"></i> ' . t('New Data Access Request'), 'mica/data-access/request', array(
       'html' => TRUE,
-      'external' => TRUE,
+      'fragment' => '/new',
       'attributes' => array('class' => array('btn', 'btn-info'))
     )
   ); ?>

@@ -11,7 +11,7 @@
 <div>
   <h1 class="page-header">
     <span ng-if="newRequest">
-      <?php print t('Add Data Access Request'); ?>
+      <?php print t('New Data Access Request'); ?>
     </span>
     <span ng-if="!newRequest">
       <?php print t('Edit Data Access Request'); ?>: {{requestId}}
@@ -44,12 +44,37 @@
   <obiba-alert id="DataAccessRequestEditController"></obiba-alert>
   <form name="requestForm" ng-submit="submit(requestForm)">
     <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema" required="true"></div>
-    <h3><?php print t('Attachments'); ?></h3>
-
-    <div class="form-group md-top-margin">
-      <attachment-input files="dataAccessRequest.attachments" multiple="true"></attachment-input>
+    <h2><?php print t('Documents'); ?></h2>
+    <p><?php print t('Select one or several documents to be attached to the application form.'); ?></p>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group md-top-margin">
+          <attachment-input files="dataAccessRequest.attachments" multiple="true"></attachment-input>
+        </div>
+      </div>
     </div>
   </form>
+
+  <div class="lg-top-margin">
+    <?php print l(t('Cancel'), 'mica/data-access/requests', array(
+      'attributes' => array(
+        'class' => 'btn btn-default',
+        'ng-if' => 'newRequest'
+      )
+    )); ?>
+
+    <a ng-if="!newRequest" ng-click="cancel()" type="button" class="btn btn-default">
+      <?php print t('Cancel'); ?>
+    </a>
+
+    <a ng-click="save()" type="button" class="btn btn-primary">
+      <?php print t('Save'); ?>
+    </a>
+
+    <a ng-click="validate()" type="button" class="btn btn-info">
+      <?php print t('Validate'); ?>
+    </a>
+  </div>
 
 </div>
 
