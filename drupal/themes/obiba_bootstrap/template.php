@@ -321,11 +321,20 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
-  $destination_path = file_exists($path . '/templates/obiba_agate_user-form-password.tpl.php');
+  $destination_path = file_exists($path . '/templates/obiba_agate_user-form-password-confirm.tpl.php');
   if (!empty($destination_path)) {
-    $theme_array['obiba_agate_user-form-password'] = array(
+    $theme_array['obiba_agate_user-form-password-confirm'] = array(
       'variables' => array('block' => array()),
-      'template' => 'obiba_agate_user-form-password',
+      'template' => 'obiba_agate_user-form-password-confirm',
+      'path' => $path . '/templates'
+    );
+  }
+
+  $destination_path = file_exists($path . '/templates/obiba_agate_user-form-password-reset.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_agate_user-form-password-reset'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_agate_user-form-password-reset',
       'path' => $path . '/templates'
     );
   }
