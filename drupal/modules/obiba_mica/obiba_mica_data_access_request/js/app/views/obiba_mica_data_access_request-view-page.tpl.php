@@ -21,17 +21,12 @@
   </p>
 
   <div class="pull-right">
-
-    <a target="_self" ng-href="" class="btn btn-default download-btn">
-      <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download PDF'); ?></span>
-    </a>
     <a ng-href="#/edit/{{dataAccessRequest.id}}"
        ng-if="actions.canEdit(dataAccessRequest)"
        class="btn btn-primary">
       <i class="glyphicon glyphicon-edit"></i>
       <?php print t('Edit'); ?>
     </a>
-
     <a ng-click="submit()"
        ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canSubmit(dataAccessRequest)"
        class="btn btn-info"><?php print t('Submit'); ?>
@@ -52,6 +47,9 @@
     <a ng-click="reject()"
        ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReject(dataAccessRequest)"
        class="btn btn-info"><?php print t('Reject'); ?>
+    </a>
+    <a target="_self" ng-href="" class="btn btn-default download-btn">
+      <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download PDF'); ?></span>
     </a>
     <a ng-click="delete()"
        ng-if="actions.canDelete(dataAccessRequest)"
