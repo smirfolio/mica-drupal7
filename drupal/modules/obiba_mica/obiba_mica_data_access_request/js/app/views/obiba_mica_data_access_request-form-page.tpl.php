@@ -51,6 +51,27 @@
     </div>
   </form>
 
+  <div class="lg-top-margin">
+    <?php print l(t('Cancel'), 'mica/data-access/requests', array(
+      'attributes' => array(
+        'class' => 'btn btn-default',
+        'ng-if' => 'newRequest'
+      )
+    )); ?>
+
+    <a ng-if="!newRequest" ng-click="cancel()" type="button" class="btn btn-default">
+      <?php print t('Cancel'); ?>
+    </a>
+
+    <a ng-click="save()" type="button" class="btn btn-primary">
+      <?php print t('Save'); ?>
+    </a>
+
+    <a ng-click="validate()" type="button" class="btn btn-info">
+      <?php print t('Validate'); ?>
+    </a>
+  </div>
+
 </div>
 
 
