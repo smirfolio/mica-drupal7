@@ -6,7 +6,7 @@
         DELETE: 'glyphicon-trash',
         EDIT: 'glyphicon-edit'
       }, HREF_ACTIONS = {VIEW: 'request#/view/{}',
-        DELETE: 'request/delete/{}',
+        DELETE: 'mica/data-access/request/delete/{}/ws',
         EDIT: 'request#/edit/{}'
       };
 
