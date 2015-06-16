@@ -99,6 +99,7 @@ function obiba_mica_data_access_request_menu() {
     'page callback' => 'obiba_mica_data_access_request_delete_request_access',
     'page arguments' => array(2),
     'file' => 'obiba_mica_data_access_request_service.inc',
+    'access callback' => TRUE
   );
 
   $items['data-access'] = array(

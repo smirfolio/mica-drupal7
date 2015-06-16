@@ -23,7 +23,7 @@
                 return '<ul class="list-inline no-margin">' + data.map(function (action) {
                   if (action in ACTIONS) {
                     if (action === 'DELETE') {
-                      return '<li><a  data-target="#delete-modal" id="' + action + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"data-access-title="' + row[1] + '" data-access-status="' + row[3] + '"> <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
+                      return '<li><a  data-target="#delete-modal" id="' + action + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"data-access-applicant="' + row[1] + '" data-access-title="' + row[2] + '"> <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
                     }
                     else {
                       return '<li><a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
@@ -64,8 +64,8 @@
         $("body").on("click", "#table-requests tbody #DELETE", function (e) {
           e.preventDefault();
           var modal = $('#delete-modal').modal('show');
-          modal.find('#data_access_title').text($(this).attr("data-access-title"));
-          modal.find('#data_access_status').text($(this).attr("data-access-status"));
+          modal.find('#data-access-title').text($(this).attr("data-access-title"));
+          modal.find('#data-access-applicant').text($(this).attr("data-access-applicant"));
           modal.find('#clickedDelete').attr('data-delete-resource', $(this).attr("href"));
           return false;
         });

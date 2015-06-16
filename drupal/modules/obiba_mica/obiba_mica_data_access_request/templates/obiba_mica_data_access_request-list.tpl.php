@@ -31,14 +31,14 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
               aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel"><i
-              class="glyphicon glyphicon-info-sign"></i><?php print t('Delete Data Access Request'); ?>
+              class="fa fa-exclamation-triangle"></i><?php print t('Delete Data Access Request'); ?>
           </h4>
         </div>
         <div class="modal-body">
-          <p><?php print t('Are you sure you want to delete Data Access :'); ?><span id="data_access_title"></span> ?
+          <p><?php print t('Are you sure you want to delete Data Access :'); ?>'<span
+              id="data-access-title"></span>' <?php print t('requested by :'); ?>
+            <span id="data-access-applicant"></span> ?
           </p>
-
-          <p><?php print t('Status :'); ?><span id="data_access_status"></span></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><?php print t('Cancel'); ?>
