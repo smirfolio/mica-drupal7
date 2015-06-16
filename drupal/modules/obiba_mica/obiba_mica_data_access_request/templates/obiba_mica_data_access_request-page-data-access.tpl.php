@@ -15,7 +15,7 @@
     <?php print t('You need to be authenticated to start an application') ?>
     <?php print l(t('Sign Up'), 'agate/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
     <?php print l(t('Sign In'), 'user/login', array(
-      'query' => array('destination' => 'data-access'),
+      'query' => array('destination' => 'mica/data-access/home'),
       'attributes' => array(
         'class' => 'btn btn-default'
       )
