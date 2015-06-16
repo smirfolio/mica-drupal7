@@ -13,7 +13,6 @@
 (function ($) {
   Drupal.behaviors.obiba_mica_data_access_request_router = {
     attach: function (context, settings) {
-      console.log(Drupal.settings.basePath);
       mica.DataAccessRequest.config(['$routeProvider', '$locationProvider',
         function ($routeProvider, $locationProvider) {
           $routeProvider
