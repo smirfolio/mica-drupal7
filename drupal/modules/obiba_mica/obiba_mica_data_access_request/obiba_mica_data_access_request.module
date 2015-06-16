@@ -13,7 +13,7 @@ function obiba_mica_data_access_request_menu() {
   $items = array();
 
 
-  $items['mica/data_access/home'] = array(
+  $items['mica/data-access/home'] = array(
     'title' => 'Data Access',
     'description' => 'Data access page',
     'page callback' => 'obiba_mica_data_access_request_page',
