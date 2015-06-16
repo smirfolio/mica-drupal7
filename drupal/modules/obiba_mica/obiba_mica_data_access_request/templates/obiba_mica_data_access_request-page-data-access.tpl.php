@@ -24,17 +24,17 @@
 <?php endif; ?>
 
 <?php if ($data_access_list_display) : ?>
-  <p class="md-top-margin">
+  <p class="md-top-margin text-center">
     <?php print l(t('My Data Access Requests'), 'mica/data-access/requests',
       array(
         'attributes' => array('class' => array('btn', 'btn-primary'))
       )
     ); ?>
-
-    <?php print l(t('Create New Request'), 'mica/data-access/request',
+    <?php print l('<i class="fa fa-plus"></i> ' . t('New Data Access Request'), 'mica/data-access/request',
       array(
-        'attributes' => array('class' => array('btn', 'btn-primary')),
-        'fragment' => 'new'
+        'attributes' => array('class' => array('btn', 'btn-info', 'indent')),
+        'fragment' => 'new',
+        'html' => true
       )
     ); ?>
   </p>

@@ -11,7 +11,7 @@
 <div>
   <h1 class="page-header">
     <span ng-if="newRequest">
-      <?php print t('Add Data Access Request'); ?>
+      <?php print t('New Data Access Request'); ?>
     </span>
     <span ng-if="!newRequest">
       <?php print t('Edit Data Access Request'); ?>: {{requestId}}

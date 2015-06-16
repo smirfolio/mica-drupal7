@@ -27,9 +27,9 @@
     </a>
     <a ng-href="#/edit/{{dataAccessRequest.id}}"
       ng-if="actions.canEdit(dataAccessRequest)"
-      class="btn btn-primary" title="<?php print t('Edit'); ?>
-      ">
+      class="btn btn-primary">
       <i class="glyphicon glyphicon-edit"></i>
+      <?php print t('Edit'); ?>
     </a>
 
     <a ng-click="submit()"
