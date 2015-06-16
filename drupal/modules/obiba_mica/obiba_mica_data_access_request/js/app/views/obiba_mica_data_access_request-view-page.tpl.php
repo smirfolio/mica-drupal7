@@ -22,38 +22,38 @@
 
   <div class="pull-right">
     <a ng-href="#/edit/{{dataAccessRequest.id}}"
-       ng-if="actions.canEdit(dataAccessRequest)"
-       class="btn btn-primary">
+      ng-if="actions.canEdit(dataAccessRequest)"
+      class="btn btn-primary">
       <i class="glyphicon glyphicon-edit"></i>
       <?php print t('Edit'); ?>
     </a>
     <a ng-click="submit()"
-       ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canSubmit(dataAccessRequest)"
-       class="btn btn-info"><?php print t('Submit'); ?>
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canSubmit(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Submit'); ?>
 
     </a>
     <a ng-click="reopen()"
-       ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReopen(dataAccessRequest)"
-       class="btn btn-info"><?php print t('Reopen'); ?>
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReopen(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Reopen'); ?>
     </a>
     <a ng-click="review()"
-       ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReview(dataAccessRequest)"
-       class="btn btn-info"><?php print t('Review'); ?>
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReview(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Review'); ?>
     </a>
     <a ng-click="approve()"
-       ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canApprove(dataAccessRequest)"
-       class="btn btn-info"><?php print t('Approve'); ?>
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canApprove(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Approve'); ?>
     </a>
     <a ng-click="reject()"
-       ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReject(dataAccessRequest)"
-       class="btn btn-info"><?php print t('Reject'); ?>
+      ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReject(dataAccessRequest)"
+      class="btn btn-info"><?php print t('Reject'); ?>
     </a>
     <a target="_self" ng-href="" class="btn btn-default download-btn">
       <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download PDF'); ?></span>
     </a>
     <a ng-click="delete()"
-       ng-if="actions.canDelete(dataAccessRequest)"
-       class="btn btn-danger" title="<?php print t('Delete'); ?>
+      ng-if="actions.canDelete(dataAccessRequest)"
+      class="btn btn-danger" title="<?php print t('Delete'); ?>
       ">
       <i class="glyphicon glyphicon-trash"></i>
     </a>
@@ -78,18 +78,19 @@
       <div class="row">
         <div class="col-md-6">
           <attachment-list files="dataAccessRequest.attachments"
-                           href-builder="getDownloadHref(attachments, id)"></attachment-list>
+            href-builder="getDownloadHref(attachments, id)"></attachment-list>
         </div>
       </div>
     </tab>
     <tab ng-click="selectTab('comments')" heading="<?php print t('Comments'); ?>">
       <obiba-comments comments="form.comments" on-update="updateComment" on-delete="deleteComment" edit-action="EDIT"
-                      delete-action="DELETE"></obiba-comments>
+        delete-action="DELETE"></obiba-comments>
       <obiba-comment-editor on-submit="submitComment" class="md-top-margin"></obiba-comment-editor>
     </tab>
     <tab heading="<?php print t('History'); ?>">
       <div
-        ng-include="'/drupal/obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-histroy-view'"></div>
+        ng-include="'<?php ;
+        print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-histroy-view'"></div>
     </tab>
 
   </tabset>
