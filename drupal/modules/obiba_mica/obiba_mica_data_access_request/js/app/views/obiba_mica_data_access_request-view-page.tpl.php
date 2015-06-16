@@ -23,7 +23,7 @@
   <div class="pull-right">
 
     <a target="_self" ng-href="" class="btn btn-default download-btn">
-      <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download'); ?></span>
+      <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download PDF'); ?></span>
     </a>
     <a ng-href="#/edit/{{dataAccessRequest.id}}"
       ng-if="actions.canEdit(dataAccessRequest)"
