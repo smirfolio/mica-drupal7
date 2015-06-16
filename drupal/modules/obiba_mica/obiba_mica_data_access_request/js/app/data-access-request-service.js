@@ -18,7 +18,7 @@
       mica.DataAccessRequest
         .factory('DataAccessFormResource', ['$resource',
           function ($resource) {
-            return $resource('data-access-form', {}, {
+            return $resource('data-access-form/ws', {}, {
               'get': {method: 'GET', errorHandler: true},
               'save': {method: 'PUT', errorHandler: true}
             });
@@ -26,7 +26,7 @@
 
         .factory('DataAccessRequestsResource', ['$resource',
           function ($resource) {
-            return $resource(localPath + 'data-access-requests-action', {}, {
+            return $resource('requests/ws', {}, {
               'save': {method: 'POST', errorHandler: true},
               'get': {method: 'GET'}
             });
@@ -34,7 +34,7 @@
 
         .factory('DataAccessRequestCommentsResource', ['$resource',
           function ($resource) {
-            return $resource(localPath + 'data-access-request-comments-action/:id/comments', {}, {
+            return $resource('request/:id/comments/ws', {}, {
               'save': {
                 method: 'POST',
                 params: {id: '@id'},
@@ -47,7 +47,7 @@
 
         .factory('DataAccessRequestCommentResource', ['$resource',
           function ($resource) {
-            return $resource(localPath + 'data-access-request-comment-action/:id/comment/:commentId', {}, {
+            return $resource('request/:id/comment/:commentId/ws', {}, {
               'delete': {
                 method: 'DELETE',
                 params: {id: '@id', commentId: '@commentId'},
@@ -64,7 +64,7 @@
 
         .factory('DataAccessRequestResource', ['$resource',
           function ($resource) {
-            return $resource(localPath + 'data-access-request-action/:id', {}, {
+            return $resource('request/:id/ws', {}, {
               'save': {method: 'PUT', params: {id: '@id'}, errorHandler: true},
               'get': {method: 'GET'},
               'delete': {method: 'DELETE'}
@@ -73,7 +73,7 @@
 
         .factory('DataAccessRequestStatusResource', ['$resource',
           function ($resource) {
-            return $resource('data-access-request/:id/_status/:status', {}, {
+            return $resource('request/:id/_status/:status/ws', {}, {
               'update': {method: 'PUT', params: {id: '@id', status: '@status'}, errorHandler: true}
             });
           }])

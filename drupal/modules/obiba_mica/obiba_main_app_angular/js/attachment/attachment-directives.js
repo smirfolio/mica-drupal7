@@ -13,7 +13,7 @@
               hrefBuilder: '&',
               files: '='
             },
-            templateUrl: 'obiba_main_app_angular/obiba_main_app_angular/obiba_main_app_angular_attachment-list-template',
+            templateUrl: Drupal.settings.basePath + 'obiba_main_app_angular/obiba_main_app_angular/obiba_main_app_angular_attachment-list-template',
             link: function (scope) {
               scope.attachments = [];
               scope.hrefBuilder = scope.hrefBuilder || function (a) { return a.id; };
@@ -40,7 +40,7 @@
               accept: '@',
               files: '='
             },
-            templateUrl: 'obiba_main_app_angular/obiba_main_app_angular/obiba_main_app_angular_attachment-input-template',
+            templateUrl: Drupal.settings.basePath + 'obiba_main_app_angular/obiba_main_app_angular/obiba_main_app_angular_attachment-input-template',
             controller: 'AttachmentCtrl'
           };
         }])
@@ -70,7 +70,7 @@
               }
               $scope.upload = Upload
                 .upload({
-                  url: 'data-access-request-upload-file',
+                  url: 'request/upload-file',
                   method: 'POST',
                   file: file
                 })

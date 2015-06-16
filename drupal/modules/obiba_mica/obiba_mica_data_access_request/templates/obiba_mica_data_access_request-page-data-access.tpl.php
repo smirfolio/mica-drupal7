@@ -25,9 +25,16 @@
 
 <?php if ($data_access_list_display) : ?>
   <p class="md-top-margin">
-    <?php print l('My Data Access Requests', 'data-access-request-list',
+    <?php print l(t('My Data Access Requests'), 'mica/data-access/requests',
       array(
         'attributes' => array('class' => array('btn', 'btn-primary'))
+      )
+    ); ?>
+
+    <?php print l(t('Create New Request'), 'mica/data-access/request',
+      array(
+        'attributes' => array('class' => array('btn', 'btn-primary')),
+        'fragment' => 'new'
       )
     ); ?>
   </p>

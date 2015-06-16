@@ -86,7 +86,7 @@
             };
 
             $scope.getDownloadHref = function (attachments, id) {
-              return 'data-access-request/' + $scope.dataAccessRequest.id + '/attachments/' + id + '/_download';
+              return 'request/' + $scope.dataAccessRequest.id + '/attachments/' + id + '/_download/ws';
             };
 
             $scope.actions = DataAccessRequestService.actions;
@@ -110,7 +110,7 @@
                     $scope.form.schema.readonly = true;
                     $("a.download-btn").on('click', function (event) {
                       // create a form for the file upload
-                      var form = $("<form action='data-access-request/" + request.id + '/_pdf' + "' method='get'>");
+                      var form = $("<form action='request/" + request.id + '/_pdf/ws' + "' method='get'>");
                       $(this).after(form);
                       form.submit().remove();
                       return false;
@@ -152,7 +152,7 @@
               if ($scope.requestToDelete === id) {
                 DataAccessRequestResource.delete({id: $scope.requestToDelete},
                   function () {
-                    window.location = Drupal.settings.basePath + 'data-access-request-list';
+                    window.location = Drupal.settings.basePath + 'mica/data-access/requests';
                   });
 
                 delete $scope.requestToDelete;
@@ -248,7 +248,7 @@
 
               if ($scope.newRequest) {
                 DataAccessRequestsResource.save($scope.dataAccessRequest, function () {
-                  window.location = Drupal.settings.basePath + 'data-access-request-list'
+                  window.location = Drupal.settings.basePath + 'mica/data-access/requests'
                 }, onError);
               } else {
                 DataAccessRequestResource.save($scope.dataAccessRequest, function () {

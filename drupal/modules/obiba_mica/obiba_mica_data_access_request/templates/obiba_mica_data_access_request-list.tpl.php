@@ -14,7 +14,7 @@
     <?php print t('My Data Access Requests'); ?>
   </h1>
 
-  <?php print l('<i class="fa fa-plus"></i> ' . t('Add Data Access Request'), 'data-access-request#/new', array(
+  <?php print l('<i class="fa fa-plus"></i> ' . t('Add Data Access Request'), 'request#/new', array(
       'html' => TRUE,
       'external' => TRUE,
       'attributes' => array('class' => array('btn', 'btn-info'))
