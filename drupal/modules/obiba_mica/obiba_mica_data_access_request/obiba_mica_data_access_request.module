@@ -265,7 +265,7 @@ function obiba_mica_data_access_request_table_rows($requests) {
   if (empty($requests->responseCode) && !empty($requests)) {
     $res = array_map(function ($r) {
       return array(
-        $r->id,
+        l($r->id, 'mica/data-access/request', array('fragment' => '/view/' . $r->id)),
         $r->applicant,
         empty($r->title) ? '' : $r->title,
         date_format(date_create(empty($r->timestamps->lastUpdate) ?
