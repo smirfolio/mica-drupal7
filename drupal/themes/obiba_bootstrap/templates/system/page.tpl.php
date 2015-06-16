@@ -133,7 +133,10 @@ if (arg(0) == "agate") { /* check if the path is example.com/agate */
       <?php else: ?>
         <form class="navbar-form navbar-right">
           <?php print l(t('Sign Up'), (module_exists('obiba_agate') ? 'agate': 'user') . '/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
-          <?php print l(t('Sign In'), 'user/login', array('attributes' => array('class' => 'btn btn-default'))) ?>
+          <?php print l(t('Sign In'), 'user/login', array(
+            'attributes' => array('class' => 'btn btn-default'),
+            'query' => array('destination' => current_path())
+          )) ?>
         </form>
       <?php endif; ?>
     </div>
