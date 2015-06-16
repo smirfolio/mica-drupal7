@@ -19,7 +19,7 @@
   </h1>
 
   <div class="pull-right">
-    <?php print l(t('Cancel'), 'data-access-request-list', array(
+    <?php print l(t('Cancel'), 'mica/data-access/requests', array(
       'attributes' => array(
         'class' => 'btn btn-default',
         'ng-if' => 'newRequest'

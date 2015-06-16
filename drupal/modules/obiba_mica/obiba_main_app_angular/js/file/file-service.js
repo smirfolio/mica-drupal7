@@ -6,7 +6,7 @@
       mica.file
         .factory('TempFileResource', ['$resource',
           function ($resource) {
-            return $resource('data-access-request-file/:idRequest/:id', {}, {
+            return $resource('request/file/:idRequest/:id', {}, {
               'get': {method: 'GET'},
               'delete': {method: 'DELETE'}
             });

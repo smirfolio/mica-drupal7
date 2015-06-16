@@ -14,7 +14,6 @@
   Drupal.behaviors.obiba_mica_data_access_request_router = {
     attach: function (context, settings) {
 
-
       mica.DataAccessRequest.config(['$routeProvider', '$locationProvider',
         function ($routeProvider, $locationProvider) {
           $routeProvider
@@ -22,15 +21,15 @@
 //              controller: 'DataAccessRequestListController'
 //            })
             .when('/new', {
-              templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page',
+              templateUrl: Drupal.settings.basePath + '/obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page',
               controller: 'DataAccessRequestEditController'
             })
             .when('/edit/:id', {
-              templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page',
+              templateUrl: Drupal.settings.basePath + '/obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page',
               controller: 'DataAccessRequestEditController'
             })
             .when('/view/:id', {
-              templateUrl: 'obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-view-page',
+              templateUrl: Drupal.settings.basePath + '/obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-view-page',
               controller: 'DataAccessRequestViewController'
             });
 

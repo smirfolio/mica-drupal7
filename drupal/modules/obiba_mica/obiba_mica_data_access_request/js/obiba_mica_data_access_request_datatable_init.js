@@ -5,9 +5,9 @@
       var ACTIONS = { VIEW: 'glyphicon-eye-open',
         DELETE: 'glyphicon-trash',
         EDIT: 'glyphicon-edit'
-      }, HREF_ACTIONS = {VIEW: 'data-access-request#/view/{}',
-        DELETE: 'data-access-request/delete/{}',
-        EDIT: 'data-access-request#/edit/{}'
+      }, HREF_ACTIONS = {VIEW: 'request#/view/{}',
+        DELETE: 'request/delete/{}',
+        EDIT: 'request#/edit/{}'
       };
 
       var hrefBuilder = function (action, id) {

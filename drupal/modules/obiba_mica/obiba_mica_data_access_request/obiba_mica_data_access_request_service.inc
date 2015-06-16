@@ -76,32 +76,29 @@ function obiba_mica_data_access_request_attachment($id_data_request, $id_file) {
   }
 }
 
-function obiba_mica_data_access_request_action($id_data_request, $action_item = NULL) {
+function obiba_mica_data_access_request_download_pdf($id_data_request) {
+  if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $dataset_resource = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+    $responses = $dataset_resource->download_pdf($id_data_request);
+    if (!empty($responses)) {
+      drupal_add_http_header('Content-Disposition', $responses['headers']['Content-Disposition'][0]);
+      echo $responses['response']->body;
+      flush();
+      //stop drupal execution error : 'Headers already sent'
+      die();
+    }
+  }
+}
+
+function obiba_mica_data_access_request_action($id_data_request) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-      //PDF download
-      if (!empty($action_item)) {
-        if ($action_item == '_pdf') {
-          $dataset_resource = new MicaDataAccessRequest(NULL, 'METHOD_GET');
-          $responses = $dataset_resource->download_pdf($id_data_request);
-          if (!empty($responses)) {
-            drupal_add_http_header('Content-Disposition', $responses['headers']['Content-Disposition'][0]);
-            echo $responses['response']->body;
-            flush();
-            //stop drupal execution error : 'Headers already sent'
-            die();
-          }
-        }
-        break;
+      $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+      $data_access_request = $mica_client->get_request($id_data_request);
+      if (empty($data_access_request)) {
+        return FALSE;
       }
-      else {
-        $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
-        $data_access_request = $mica_client->get_request($id_data_request);
-        if (empty($data_access_request)) {
-          return FALSE;
-        }
-        drupal_json_output($data_access_request);
-      }
+      drupal_json_output($data_access_request);
       break;
     case 'PUT':
       $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
