@@ -9,11 +9,6 @@
   -->
 
 <div ng-app="DataAccessRequest">
-
-  <h1 class="page-header">
-    <?php print t('My Data Access Requests'); ?>
-  </h1>
-
   <?php print l('<i class="fa fa-plus"></i> ' . t('New Data Access Request'), 'mica/data-access/request', array(
       'html' => TRUE,
       'fragment' => '/new',

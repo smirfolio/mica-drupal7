@@ -8,9 +8,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <div>
-  <h1 class="page-header">
+  <h2 class="page-header">
     <?php print t('Data Access Request'); ?>: {{dataAccessRequest.id}}
-  </h1>
+  </h2>
 
   <obiba-alert id="DataAccessRequestViewController"></obiba-alert>
 
