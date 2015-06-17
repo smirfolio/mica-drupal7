@@ -254,8 +254,9 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
       array("title" => t('ID')),
       array("title" => t('Applicant')),
       array("title" => t('Title'), 'width' => '35%'),
-      array("title" => t('Last Update'), 'width' => '20%'),
-      array("title" => t('Status'), 'width' => '15%'),
+      array("title" => t('Last Update')),
+      array("title" => t('Submission Date')),
+      array("title" => t('Status')),
       array("title" => t('Actions'))
     ),
     'table_data' => obiba_mica_data_access_request_table_rows($requests)
@@ -265,6 +266,15 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
 function obiba_mica_data_access_request_table_rows($requests) {
   if (empty($requests->responseCode) && !empty($requests)) {
     $res = array_map(function ($r) {
+      $r->submission_date = NULL;
+      if ($r->status != 'OPENED') {
+        foreach($r->statusChangeHistory as $change) {
+          if ($change->to == 'SUBMITTED') {
+            $r->submission_date = $change->changedOn;
+          }
+        }
+      }
+
       return array(
         l($r->id, 'mica/data-access/request', array('fragment' => '/view/' . $r->id)),
         $r->applicant,
@@ -272,7 +282,8 @@ function obiba_mica_data_access_request_table_rows($requests) {
         date_format(date_create(empty($r->timestamps->lastUpdate) ?
           $r->timestamps->created :
           $r->timestamps->lastUpdate), "Y-m-d H:i:s"),
-        $r->status,
+        empty($r->submission_date) ? '' : date_format(date_create($r->submission_date), "Y-m-d H:i:s"),
+        t($r->status),
         $r->actions,
         $r->id
       );
