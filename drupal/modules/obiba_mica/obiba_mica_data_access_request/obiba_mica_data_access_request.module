@@ -266,13 +266,12 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
 function obiba_mica_data_access_request_table_rows($requests) {
   if (empty($requests->responseCode) && !empty($requests)) {
     $res = array_map(function ($r) {
-
       $r->submission_date = NULL;
-      $changes = $r->statusChangeHistory;
-
-      foreach($changes as $change) {
-        if ($change->to == 'SUBMITTED') {
-          $r->submission_date = $change->changedOn;
+      if ($r->status != 'OPENED') {
+        foreach($r->statusChangeHistory as $change) {
+          if ($change->to == 'SUBMITTED') {
+            $r->submission_date = $change->changedOn;
+          }
         }
       }
 
