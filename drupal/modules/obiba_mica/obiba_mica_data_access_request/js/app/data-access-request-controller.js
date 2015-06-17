@@ -140,11 +140,12 @@
 
             $scope.delete = function () {
               $scope.requestToDelete = $scope.dataAccessRequest.id;
+              var title = ($scope.dataAccessRequest.title) ? $scope.dataAccessRequest.title : $scope.requestToDelete;
               $rootScope.$broadcast(NOTIFICATION_EVENTS.showConfirmDialog,
                 {
                   titleKey: 'data-access-request.delete-dialog.title',
                   messageKey: 'data-access-request.delete-dialog.message',
-                  messageArgs: [$scope.dataAccessRequest.title, $scope.dataAccessRequest.applicant]
+                  messageArgs: [title, $scope.dataAccessRequest.applicant]
                 }, $scope.requestToDelete
               );
             };

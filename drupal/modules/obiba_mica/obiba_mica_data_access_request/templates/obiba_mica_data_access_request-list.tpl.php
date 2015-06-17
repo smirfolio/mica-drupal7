@@ -26,20 +26,20 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
               aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel"><i
-              class="fa fa-exclamation-triangle"></i><?php print t('Delete Data Access Request'); ?>
+              class="fa fa-exclamation-triangle"></i> <?php print t('Delete Data Access Request'); ?>
           </h4>
         </div>
         <div class="modal-body">
-          <p><?php print t('Are you sure you want to delete Data Access :'); ?>'<span
-              id="data-access-title"></span>' <?php print t('requested by :'); ?>
-            <span id="data-access-applicant"></span> ?
+          <p><?php print t('Are you sure you want to delete Data Access '); ?> '<span id="data-access-title"></span>'
+            <?php print t('request by'); ?>
+            '<span id="data-access-applicant"></span>'?
           </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal"><?php print t('Cancel'); ?>
           </button>
           <button id="clickedDelete" type="button" class="btn btn-primary"
-            data-delete-resource=""><?php print t('Delete'); ?>
+            data-delete-resource=""><?php print t('Ok'); ?>
           </button>
         </div>
       </div>

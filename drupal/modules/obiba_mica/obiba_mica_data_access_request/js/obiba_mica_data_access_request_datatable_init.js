@@ -23,7 +23,13 @@
                 return '<ul class="list-inline no-margin">' + data.map(function (action) {
                   if (action in ACTIONS) {
                     if (action === 'DELETE') {
-                      return '<li><a  data-target="#delete-modal" id="' + action + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"data-access-applicant="' + row[1] + '" data-access-title="' + row[2] + '"> <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
+                      var titleInMOdal = row[2] ? row[2] : row[row.length - 1];
+                      return '<li><a  data-target="#delete-modal" id="' + action +
+                        '" href="' + hrefBuilder(action, row[row.length - 1]) +
+                        '" data-action="' + action +
+                        '"data-access-applicant="' + row[1] +
+                        '" data-access-title="' + titleInMOdal + '">' +
+                        ' <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
                     }
                     else {
                       return '<li><a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
