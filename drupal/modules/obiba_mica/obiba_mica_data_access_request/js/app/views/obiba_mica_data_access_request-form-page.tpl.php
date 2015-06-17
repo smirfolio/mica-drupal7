@@ -9,14 +9,14 @@
   -->
 
 <div>
-  <h1 class="page-header">
+  <h2 class="page-header">
     <span ng-if="newRequest">
       <?php print t('New Data Access Request'); ?>
     </span>
     <span ng-if="!newRequest">
       <?php print t('Edit Data Access Request'); ?>: {{requestId}}
     </span>
-  </h1>
+  </h2>
 
   <div class="pull-right">
     <?php print l(t('Cancel'), 'mica/data-access/requests', array(

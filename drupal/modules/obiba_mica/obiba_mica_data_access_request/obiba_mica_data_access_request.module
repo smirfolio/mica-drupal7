@@ -114,6 +114,7 @@ function obiba_mica_data_access_request_load_menus() {
 
   $items['mica/data-access/request'] = array(
     'access callback' => TRUE,
+    'title' => 'Data Access Request',
   );
   return $items;
 }
