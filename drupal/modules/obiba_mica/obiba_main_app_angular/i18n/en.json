@@ -126,7 +126,7 @@
     },
     "delete-dialog": {
       "title": "Delete Data Access Request",
-      "message": "Are you sure you want to delete Data Access '{{arg0}}' request by '{{arg1}}'?"
+      "message": "Are you sure you want to delete Data Access '{{arg0}}' requested by '{{arg1}}'?"
     },
     "submit": {
       "invalid": "The request cannot be submitted because of an incomplete application form."

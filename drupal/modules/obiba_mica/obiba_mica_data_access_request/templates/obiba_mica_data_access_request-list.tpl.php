@@ -31,7 +31,7 @@
         </div>
         <div class="modal-body">
           <p><?php print t('Are you sure you want to delete Data Access '); ?> '<span id="data-access-title"></span>'
-            <?php print t('request by'); ?>
+            <?php print t('requested by'); ?>
             '<span id="data-access-applicant"></span>'?
           </p>
         </div>
