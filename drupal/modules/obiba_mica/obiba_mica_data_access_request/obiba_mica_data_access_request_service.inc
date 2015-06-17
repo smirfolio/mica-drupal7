@@ -119,6 +119,13 @@ function obiba_mica_data_access_request_delete_request_access($id_request) {
   drupal_json_output($data_access_request);
 }
 
+function obiba_mica_data_access_request_redirect($operation, $id_request) {
+  global $base_url;
+  $url = $base_url . '/'. 'mica/data-access/request#/' . $operation . '/'. $id_request;
+  header('Location: ' . $url, TRUE);
+  drupal_exit($url);
+}
+
 function obiba_mica_data_access_request_update_request($id_request, $status) {
   $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
   $data_access_request = $mica_client->status_update_request($id_request, $status);

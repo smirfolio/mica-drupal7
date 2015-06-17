@@ -253,7 +253,7 @@
                 }, onError);
               } else {
                 DataAccessRequestResource.save($scope.dataAccessRequest, function () {
-                  $location.path('/view' + ($scope.dataAccessRequest.id ? '/' + $scope.dataAccessRequest.id : 's')).replace();
+                  $location.path('/' + ($scope.dataAccessRequest.id ? 'view/' + $scope.dataAccessRequest.id : 'requests')).replace();
                 }, onError);
               }
             };
