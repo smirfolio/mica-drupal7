@@ -121,7 +121,7 @@ function obiba_mica_data_access_request_load_menus() {
 
   $items['mica/data-access/request'] = array(
     'access callback' => TRUE,
-    'title' => 'Data Access Request',
+    'title' => t(variable_get_value('access_request_page_title')),
   );
   return $items;
 }
@@ -192,7 +192,7 @@ function obiba_mica_data_access_request() {
 the our Access Office. Prior to submitting a Data Access Application Form, we strongly recommend that you consult the
 our Policy documents, that will provide you with detailed information about the process and our's access, publication
 and intellectual property policies.</p> </div>";
-    $access_request_node_page = obiba_mica_commons_add_page(t('Data Access Request'), $my_body_content);
+    $access_request_node_page = obiba_mica_commons_add_page(t(variable_get('access_request_page')), $my_body_content);
     variable_set('access_request_page', $access_request_node_page->nid);
     return node_view(node_load(variable_get('access_request_page')));
   }
@@ -207,7 +207,7 @@ function obiba_mica_data_access_request_page() {
   $data_access_register_user = FALSE;
 
   $node_rendred = obiba_mica_data_access_request();
-  drupal_set_title($node_rendred['#node']->title);
+  drupal_set_title(t(variable_get_value('access_home_page_title')));
 
   $node_rendred['#node']->title = '';
   if (user_is_logged_in()) {

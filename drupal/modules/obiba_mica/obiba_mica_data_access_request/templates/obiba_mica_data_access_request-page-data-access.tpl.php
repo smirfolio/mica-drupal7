@@ -13,8 +13,8 @@
 <?php if ($data_access_register_user) : ?>
   <p class="md-top-margin">
     <?php print t('You need to be authenticated to start an application') ?>
-    <?php print l(t('Sign Up'), 'agate/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
-    <?php print l(t('Sign In'), 'user/login', array(
+    <?php print l(t(variable_get_value('access_signup_button')), 'agate/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
+    <?php print l(t(variable_get_value('access_signin_button')), 'user/login', array(
       'query' => array('destination' => 'mica/data-access/home'),
       'attributes' => array(
         'class' => 'btn btn-default'
@@ -25,12 +25,12 @@
 
 <?php if ($data_access_list_display) : ?>
   <p class="md-top-margin text-center">
-    <?php print l(t('My Data Access Requests'), 'mica/data-access/requests',
+    <?php print l(t(variable_get_value('access_my_requests_button')), 'mica/data-access/requests',
       array(
         'attributes' => array('class' => array('btn', 'btn-primary'))
       )
     ); ?>
-    <?php print l('<i class="fa fa-plus"></i> ' . t('New Data Access Request'), 'mica/data-access/request',
+    <?php print l('<i class="fa fa-plus"></i> ' . t(variable_get_value('access_new_request_button')), 'mica/data-access/request',
       array(
         'attributes' => array('class' => array('btn', 'btn-info', 'indent')),
         'fragment' => 'new',

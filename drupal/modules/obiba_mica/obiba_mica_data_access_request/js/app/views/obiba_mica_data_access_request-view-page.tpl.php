@@ -9,7 +9,7 @@
   -->
 <div>
   <h2 class="page-header">
-    <?php print t('Data Access Request'); ?>: {{dataAccessRequest.id}}
+    <?php print t(variable_get_value('access_request_page_title')); ?>: {{dataAccessRequest.id}}
   </h2>
 
   <obiba-alert id="DataAccessRequestViewController"></obiba-alert>

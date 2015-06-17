@@ -11,7 +11,7 @@
 
 function obiba_mica_data_access_request_list_page() {
   obiba_mica_data_access_requests_datatable_init(array());
-  drupal_set_title(t('My Data Access Requests'));
+  drupal_set_title(t(variable_get_value('access_requests_page_title')));
   return theme('obiba_mica_data_access_request-list');
 }
 

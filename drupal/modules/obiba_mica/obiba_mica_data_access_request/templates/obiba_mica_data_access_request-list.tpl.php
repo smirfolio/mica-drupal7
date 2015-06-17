@@ -9,7 +9,7 @@
   -->
 
 <div ng-app="DataAccessRequest">
-  <?php print l('<i class="fa fa-plus"></i> ' . t('New Data Access Request'), 'mica/data-access/request', array(
+  <?php print l('<i class="fa fa-plus"></i> ' . t(variable_get_value('access_new_request_button')), 'mica/data-access/request', array(
       'html' => TRUE,
       'fragment' => '/new',
       'attributes' => array('class' => array('btn', 'btn-info'))
