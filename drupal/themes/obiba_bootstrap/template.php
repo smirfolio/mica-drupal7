@@ -364,6 +364,22 @@ function obiba_bootstrap_theme($existing, $type, $theme, $path) {
     );
   }
 
+  $destination_path = file_exists($path . '/templates/views/obiba_mica_data_access_request-form-page.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_mica_data_access_request-form-page'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_mica_data_access_request-form-page',
+      'path' => $path . '/templates/views'
+    );
+  }
+  $destination_path = file_exists($path . '/templates/views/obiba_mica_data_access_request-view-page.tpl.php');
+  if (!empty($destination_path)) {
+    $theme_array['obiba_mica_data_access_request-view-page'] = array(
+      'variables' => array('block' => array()),
+      'template' => 'obiba_mica_data_access_request-view-page',
+      'path' => $path . '/templates/views'
+    );
+  }
   return $theme_array;
 
 }
