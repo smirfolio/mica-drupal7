@@ -103,6 +103,13 @@ function obiba_mica_data_access_request_menu() {
     'access callback' => TRUE
   );
 
+  $items['mica/data-access/request/redirect/%/%'] = array(
+    'page callback' => 'obiba_mica_data_access_request_redirect',
+    'page arguments' => array(4, 5),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+    'access callback' => TRUE
+  );
+
   return $items;
 }
 
