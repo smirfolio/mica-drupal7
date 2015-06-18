@@ -69,7 +69,7 @@
       <form id="request-form" name="forms.requestForm">
         <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema"></div>
       </form>
-      <h2><?php print t('Documents'); ?></h2>
+      <h2><?php print t(variable_get_value('access_documents_section_title')); ?></h2>
 
       <p ng-if="dataAccessRequest.attachments.length == 0">
         <?php print t('No documents provided.'); ?>
