@@ -204,6 +204,24 @@
               }, onUpdatStatusSuccess, onError);
             };
 
+            var getAttributeValue = function(attributes, key) {
+              var result = attributes.filter(function (attribute) {
+                return attribute.key === key;
+              });
+
+              return result && result.length > 0 ? result[0].value : null;
+            };
+
+            $scope.getFullName = function (profile) {
+              if (profile) {
+                if (profile.attributes) {
+                  return getAttributeValue(profile.attributes, 'firstName') + ' ' + getAttributeValue(profile.attributes, 'lastName');
+                }
+                return profile.username;
+              }
+              return null;
+            };
+
             $scope.forms = {};
 
           }])
