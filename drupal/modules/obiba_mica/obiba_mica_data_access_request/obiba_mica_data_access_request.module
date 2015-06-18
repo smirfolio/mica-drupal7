@@ -275,16 +275,18 @@ function obiba_mica_data_access_request_table_rows($requests) {
     $res = array_map(function ($r) {
       $r->submission_date = NULL;
       if ($r->status != 'OPENED') {
-        foreach($r->statusChangeHistory as $change) {
+        foreach ($r->statusChangeHistory as $change) {
           if ($change->to == 'SUBMITTED') {
             $r->submission_date = $change->changedOn;
           }
         }
       }
 
+      $r->full_name = _obiba_mica_data_access_request_profile_full_name($r);
+
       return array(
         l($r->id, 'mica/data-access/request', array('fragment' => '/view/' . $r->id)),
-        $r->applicant,
+        $r->full_name,
         empty($r->title) ? '' : $r->title,
         date_format(date_create(empty($r->timestamps->lastUpdate) ?
           $r->timestamps->created :
@@ -298,4 +300,33 @@ function obiba_mica_data_access_request_table_rows($requests) {
     return $res;
   }
   return FALSE;
+}
+
+function _obiba_mica_data_access_request_profile_attribute($request, $key) {
+  $attributes = $request->profile->attributes;
+  foreach ($attributes as $attr) {
+    if ($attr->key == $key) {
+      return $attr->value;
+    }
+  }
+  return NULL;
+}
+
+function _obiba_mica_data_access_request_profile_full_name($request) {
+  $full_name = $request->applicant;
+  $first_name = _obiba_mica_data_access_request_profile_attribute($request, 'firstName');
+  if (!empty($first_name)) {
+    $full_name = $first_name;
+  }
+  $last_name = _obiba_mica_data_access_request_profile_attribute($request, 'lastName');
+  if (!empty($last_name)) {
+    $full_name = $full_name . ' ' . $last_name;
+  }
+  $email = _obiba_mica_data_access_request_profile_attribute($request, 'email');
+  if (!empty($email)) {
+    // cannot do this because it breaks the delete action
+    //$full_name = l($full_name, 'mailto:' . $email, array('absolute' => TRUE));
+  }
+  return $full_name;
+
 }
