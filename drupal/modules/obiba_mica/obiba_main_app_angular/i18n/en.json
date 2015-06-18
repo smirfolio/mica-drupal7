@@ -92,7 +92,9 @@
   "or": "or",
   "server": {
     "error": {
-      "403": "Server rejected your request, please make sure you are logged in and try again."
+      "403": "You do not have the permission to access this page.",
+      "404": "Access request was not found. Make sure the ID is valid.",
+      "data-access-request.not-found": "Access request '{{arg0}}' was not found. Make sure the ID is valid."
     }
   },
   "file": {

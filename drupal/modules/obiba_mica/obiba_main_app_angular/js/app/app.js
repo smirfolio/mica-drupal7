@@ -96,7 +96,7 @@ var mica;
 
         return {
           redirectDrupalMessage: function (response) {
-            if (response.status && response.status == 403) {
+            if (response.status && response.status == 403 && !Drupal.settings.angularjsApp.authenticated) {
               $.post('un-authorized-error');
               $(window).delay(200).queue(function () {
                 window.location = Drupal.settings.basePath + 'user/login' + createDestinationPath(window.location.hash);

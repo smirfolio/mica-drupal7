@@ -34,7 +34,9 @@
   },
   "errors": {
     "title": "Page d'erreur!",
-    "403": "Vous n'avez pas les droits pour accéder à cette page."
+    "403": "Vous n'avez pas les droits pour accéder à cette page.",
+    "404": "Demande d'accès n'a pas été trouvé. Assurez-vous que le ID est valide.",
+    "data-access-request.not-found": "Demande d'accès '{{arg0}}' n'a pas été trouvé. Assurez-vous que le ID est valide."
   },
   "all": "All",
   "name": "Name",

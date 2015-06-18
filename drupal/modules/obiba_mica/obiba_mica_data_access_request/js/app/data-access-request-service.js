@@ -77,6 +77,33 @@
               'update': {method: 'PUT', params: {id: '@id', status: '@status'}, errorHandler: true}
             });
           }])
+
+        .service('ServerErrorAlertService', ['AlertService', 'ServerErrorUtils', 'ErrorTemplate',
+          function(AlertService, ServerErrorUtils, ErrorTemplate) {
+            this.alert = function(id, response) {
+              if (angular.isDefined(response.data)) {
+                var errorDto = JSON.parse(response.data);
+                if (angular.isDefined(errorDto) && angular.isDefined(errorDto.messageTemplate)) {
+                  AlertService.alert({
+                    id: id,
+                    type: 'danger',
+                    msgKey: errorDto.messageTemplate,
+                    msgArgs: errorDto.arguments
+                  });
+                  return;
+                }
+              }
+
+              AlertService.alert({
+                id: id,
+                type: 'danger',
+                msg: ServerErrorUtils.buildMessage(ErrorTemplate.getServerError(response))
+              });
+            };
+
+            return this;
+          }])
+
         .service('DataAccessRequestService', ['LocaleStringUtils', 'moment', '$filter',
           function (LocaleStringUtils, moment, $filter) {
             var statusList = {
