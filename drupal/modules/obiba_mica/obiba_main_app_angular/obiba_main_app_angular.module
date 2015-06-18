@@ -145,6 +145,11 @@ function obiba_main_app_angular_load_js_resources() {
 
 function obiba_main_app_angular_main_page() {
   obiba_main_app_angular_load_js_resources();
+  $current_menu_item = menu_get_item(current_path());
+  if (!empty($current_menu_item['title'])) {
+    drupal_set_title($current_menu_item['title']);
+  }
+
   return theme('obiba_angular_main');
 }
 

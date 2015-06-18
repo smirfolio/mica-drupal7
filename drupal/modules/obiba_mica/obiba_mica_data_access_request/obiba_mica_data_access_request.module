@@ -12,7 +12,6 @@
 function obiba_mica_data_access_request_menu() {
   $items = array();
 
-
   $items['mica/data-access/home'] = array(
     'title' => 'Data Access',
     'description' => 'Data access page',
@@ -303,10 +302,11 @@ function obiba_mica_data_access_request_table_rows($requests) {
 }
 
 function _obiba_mica_data_access_request_profile_attribute($request, $key) {
-  $attributes = $request->profile->attributes;
-  foreach ($attributes as $attr) {
-    if ($attr->key == $key) {
-      return $attr->value;
+  if (!empty($request->profile->attributes)) {
+    foreach ($request->profile->attributes as $attr) {
+      if ($attr->key == $key) {
+        return $attr->value;
+      }
     }
   }
   return NULL;
