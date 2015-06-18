@@ -19,6 +19,7 @@ function obiba_mica_admin_settings() {
   );
 
   _obiba_mica_settings_server_form($form);
+  _obiba_mica_settings_access_settings($form);
 
   $form['statistics'] = array(
     '#type' => 'fieldset',
@@ -176,6 +177,72 @@ function _obiba_mica_settings_server_form(&$form) {
     '#default_value' => variable_get_value('mica_response_page_size_small'),
     '#description' => $info['description'],
   );
+}
+
+function _obiba_mica_settings_access_settings(&$form) {
+  $form['access'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Data Access Request'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('access_home_page_title');
+  $form['access']['access_home_page_title'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_home_page_title'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('access_requests_page_title');
+  $form['access']['my_requests']['access_requests_page_title'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_requests_page_title'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('access_request_page_title');
+  $form['access']['my_requests']['access_request_page_title'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_request_page_title'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('access_my_requests_button');
+  $form['access']['access_my_requests_button'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_my_requests_button'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('access_new_request_button');
+  $form['access']['access_new_request_button'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_new_request_button'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('access_signup_button');
+  $form['access']['access_signup_button'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_signup_button'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('access_signin_button');
+  $form['access']['access_signin_button'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_signin_button'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
 }
 
 function _obiba_mica_settings_networks_form(&$form) {

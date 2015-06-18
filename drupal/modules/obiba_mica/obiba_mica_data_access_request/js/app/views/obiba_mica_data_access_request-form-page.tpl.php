@@ -11,10 +11,10 @@
 <div>
   <h2 class="page-header">
     <span ng-if="newRequest">
-      <?php print t('New Data Access Request'); ?>
+      <?php print t('New') . ' '  .t(variable_get_value('access_request_page_title')); ?>
     </span>
     <span ng-if="!newRequest">
-      <?php print t('Edit Data Access Request'); ?>: {{requestId}}
+      <?php print t('Edit') . ' ' . t(variable_get_value('access_request_page_title')); ?>: {{requestId}}
     </span>
   </h2>
 
