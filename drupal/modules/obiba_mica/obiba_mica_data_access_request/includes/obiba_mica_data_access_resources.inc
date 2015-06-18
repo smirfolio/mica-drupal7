@@ -59,7 +59,7 @@ class MicaDataAccessRequestResources extends MicaClient {
 //      drupal_set_message(t('An error occurred and processing did not complete Mica Server error: @message',
 //        array('@message' => $e->getMessage())), 'error');
       drupal_add_http_header('Status', $e->getCode());
-      return FALSE;
+      return empty($client->lastResponse->body) ? FALSE : $client->lastResponse->body;
     }
 
   }

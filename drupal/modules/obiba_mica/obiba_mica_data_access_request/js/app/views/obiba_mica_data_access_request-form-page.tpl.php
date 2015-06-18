@@ -18,62 +18,65 @@
     </span>
   </h2>
 
+  <obiba-alert id="DataAccessRequestEditController"></obiba-alert>
+
+  <div ng-hide="serverError">
   <div class="pull-right">
     <?php print l(t('Cancel'), 'mica/data-access/requests', array(
-      'attributes' => array(
-        'class' => 'btn btn-default',
-        'ng-if' => 'newRequest'
-      )
-    )); ?>
+        'attributes' => array(
+          'class' => 'btn btn-default',
+          'ng-if' => 'newRequest'
+        )
+      )); ?>
 
-    <a ng-if="!newRequest" ng-click="cancel()" type="button" class="btn btn-default">
-      <?php print t('Cancel'); ?>
-    </a>
+      <a ng-if="!newRequest" ng-click="cancel()" type="button" class="btn btn-default">
+        <?php print t('Cancel'); ?>
+      </a>
 
-    <a ng-click="save()" type="button" class="btn btn-primary">
-      <?php print t('Save'); ?>
-    </a>
+      <a ng-click="save()" type="button" class="btn btn-primary">
+        <?php print t('Save'); ?>
+      </a>
 
-    <a ng-click="validate()" type="button" class="btn btn-info">
-      <?php print t('Validate'); ?>
-    </a>
-  </div>
+      <a ng-click="validate()" type="button" class="btn btn-info">
+        <?php print t('Validate'); ?>
+      </a>
+    </div>
 
-  <div class="clearfix"></div>
+    <div class="clearfix"></div>
 
-  <obiba-alert id="DataAccessRequestEditController"></obiba-alert>
-  <form name="requestForm" ng-submit="submit(requestForm)">
-    <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema" required="true"></div>
-    <h2><?php print t(variable_get_value('access_documents_section_title')); ?></h2>
-    <p><?php print t('Select one or several documents to be attached to the application form.'); ?></p>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group md-top-margin">
-          <attachment-input files="dataAccessRequest.attachments" multiple="true"></attachment-input>
+    <form name="requestForm" ng-submit="submit(requestForm)">
+      <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema" required="true"></div>
+      <h2><?php print t(variable_get_value('access_documents_section_title')); ?></h2>
+      <p><?php print t('Select one or several documents to be attached to the application form.'); ?></p>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group md-top-margin">
+            <attachment-input files="dataAccessRequest.attachments" multiple="true"></attachment-input>
+          </div>
         </div>
       </div>
+    </form>
+
+    <div class="lg-top-margin">
+      <?php print l(t('Cancel'), 'mica/data-access/requests', array(
+        'attributes' => array(
+          'class' => 'btn btn-default',
+          'ng-if' => 'newRequest'
+        )
+      )); ?>
+
+      <a ng-if="!newRequest" ng-click="cancel()" type="button" class="btn btn-default">
+        <?php print t('Cancel'); ?>
+      </a>
+
+      <a ng-click="save()" type="button" class="btn btn-primary">
+        <?php print t('Save'); ?>
+      </a>
+
+      <a ng-click="validate()" type="button" class="btn btn-info">
+        <?php print t('Validate'); ?>
+      </a>
     </div>
-  </form>
-
-  <div class="lg-top-margin">
-    <?php print l(t('Cancel'), 'mica/data-access/requests', array(
-      'attributes' => array(
-        'class' => 'btn btn-default',
-        'ng-if' => 'newRequest'
-      )
-    )); ?>
-
-    <a ng-if="!newRequest" ng-click="cancel()" type="button" class="btn btn-default">
-      <?php print t('Cancel'); ?>
-    </a>
-
-    <a ng-click="save()" type="button" class="btn btn-primary">
-      <?php print t('Save'); ?>
-    </a>
-
-    <a ng-click="validate()" type="button" class="btn btn-info">
-      <?php print t('Validate'); ?>
-    </a>
   </div>
 
 </div>

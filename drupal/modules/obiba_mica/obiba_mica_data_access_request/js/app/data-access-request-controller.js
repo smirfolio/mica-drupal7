@@ -10,6 +10,7 @@
 
 (function ($) {
   Drupal.behaviors.obiba_mica_data_access_request_controller = {
+
     attach: function (context, settings) {
 
       'use strict';
@@ -23,19 +24,25 @@
           'DataAccessRequestCommentsResource',
           'DataAccessRequestCommentResource',
           'AlertService',
-          'ServerErrorUtils',
-          'ErrorTemplate',
+          'ServerErrorAlertService',
           'ForbiddenDrupalRedirect',
           'NOTIFICATION_EVENTS',
 
-          function ($rootScope, $scope, $routeParams, DataAccessRequestResource, DataAccessRequestService, DataAccessRequestStatusResource, DataAccessFormResource, DataAccessRequestCommentsResource, DataAccessRequestCommentResource, AlertService, ServerErrorUtils, ErrorTemplate, ForbiddenDrupalRedirect, NOTIFICATION_EVENTS) {
+          function ($rootScope, $scope, $routeParams,
+                    DataAccessRequestResource,
+                    DataAccessRequestService,
+                    DataAccessRequestStatusResource,
+                    DataAccessFormResource,
+                    DataAccessRequestCommentsResource,
+                    DataAccessRequestCommentResource,
+                    AlertService,
+                    ServerErrorAlertService,
+                    ForbiddenDrupalRedirect,
+                    NOTIFICATION_EVENTS) {
 
             var onError = function (response) {
-              AlertService.alert({
-                id: 'DataAccessRequestViewController',
-                type: 'danger',
-                msg: ServerErrorUtils.buildMessage(ErrorTemplate.getServerError(response))
-              });
+              $scope.serverError = true;
+              ServerErrorAlertService.alert('DataAccessRequestViewController', response);
               ForbiddenDrupalRedirect.redirectDrupalMessage(response);
             };
 
@@ -89,6 +96,7 @@
               return 'request/' + $scope.dataAccessRequest.id + '/attachments/' + id + '/_download/ws';
             };
 
+            $scope.serverError = false;
             $scope.actions = DataAccessRequestService.actions;
             $scope.nextStatus = DataAccessRequestService.nextStatus;
             $scope.selectTab = selectTab;
@@ -231,26 +239,22 @@
           'DataAccessRequestResource',
           'DataAccessFormResource',
           'AlertService',
-          'ServerErrorUtils',
-          'ErrorTemplate',
+          'ServerErrorAlertService',
           'ForbiddenDrupalRedirect',
           'DataAccessRequestService',
 
-          function ($log, $scope, $routeParams, $location, DataAccessRequestsResource, DataAccessRequestResource, DataAccessFormResource, AlertService, ServerErrorUtils, ErrorTemplate, ForbiddenDrupalRedirect, DataAccessRequestService) {
-            var onSuccess = function (response, getResponseHeaders) {
-//              var parts = getResponseHeaders().location.split('/');
-//              $location.path('/view/' + parts[parts.length - 1]).replace();
-
-              console.log(getResponseHeaders());
-            };
+          function ($log, $scope, $routeParams, $location,
+                    DataAccessRequestsResource,
+                    DataAccessRequestResource,
+                    DataAccessFormResource,
+                    AlertService,
+                    ServerErrorAlertService,
+                    ForbiddenDrupalRedirect,
+                    DataAccessRequestService) {
 
             var onError = function (response) {
-              console.log(response);
-              AlertService.alert({
-                id: 'DataAccessRequestEditController',
-                type: 'danger',
-                msg: ServerErrorUtils.buildMessage(ErrorTemplate.getServerError(response))
-              });
+              $scope.serverError = true;
+              ServerErrorAlertService.alert('DataAccessRequestEditController', response);
               ForbiddenDrupalRedirect.redirectDrupalMessage(response);
             };
 
@@ -314,6 +318,7 @@
               definition: {},
               model: {}
             };
+            $scope.serverError = false;
             $scope.requestId = $routeParams.id;
             $scope.newRequest = $routeParams.id ? false : true;
             $scope.cancel = cancel;

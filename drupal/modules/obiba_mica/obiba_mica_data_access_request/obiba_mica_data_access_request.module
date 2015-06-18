@@ -120,7 +120,7 @@ function obiba_mica_data_access_request_load_menus() {
 
   $items['mica/data-access/request'] = array(
     'access callback' => TRUE,
-    'title' => t(variable_get_value('access_request_page_title')),
+    'title' => t(variable_get('access_request_page_title', 'Data Access Request')),
   );
   return $items;
 }
