@@ -3,6 +3,7 @@
 <div class="list-page">
 
   <div class="row">
+    <?php if (!empty($total_items) && $total_items >= MicaClient::getResponsePageSizeSmall()): ?>
     <?php $count = empty($total_items) ? 0 : $total_items;
     $caption = $count < 2 ? t('Study') : t('Studies');
     ?>
@@ -14,7 +15,7 @@
          <?php print $caption ?>
         </span>
     </div>
-
+    <?php endif; ?>
     <div class="col-md-10  col-sm-10 col-xs-8 min-height-align pull-right">
       <div class="hidden-xs inline pull-left">
         <?php print render($form_search); ?>
