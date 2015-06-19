@@ -234,7 +234,7 @@
 
           }])
 
-        .controller('DataAccessRequestEditController', ['$log', '$scope', '$routeParams', '$location',
+        .controller('DataAccessRequestEditController', ['$log', '$scope', '$routeParams', '$location', '$modal',
           'DataAccessRequestsResource',
           'DataAccessRequestResource',
           'DataAccessFormResource',
@@ -243,7 +243,7 @@
           'ForbiddenDrupalRedirect',
           'DataAccessRequestService',
 
-          function ($log, $scope, $routeParams, $location,
+          function ($log, $scope, $routeParams, $location, $modal,
                     DataAccessRequestsResource,
                     DataAccessRequestResource,
                     DataAccessFormResource,
@@ -260,6 +260,11 @@
 
             var validate = function () {
               $scope.$broadcast('schemaFormValidate');
+
+              $modal.open({
+                scope: $scope,
+                templateUrl: Drupal.settings.basePath + 'obiba_main_app_angular/obiba_mica_data_access_request/data-access-request-validation-modal'
+              });
             };
 
             var cancel = function () {
