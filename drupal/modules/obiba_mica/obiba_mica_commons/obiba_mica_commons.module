@@ -116,11 +116,11 @@ function obiba_mica_commons_download_attachment($entity_type, $entity_id, $file_
     else {
       // dpm(drupal_get_destination());
       drupal_set_message(t('An error occurred downloading file, server response code : @code, Server message: "@message"',
-          array(
-            '@code' => $raw_data['code'],
-            '@message' => $raw_data['message']
-          )
-        ),
+        array(
+          '@code' => $raw_data['code'],
+          '@message' => $raw_data['message']
+        )
+      ),
         'error');
       drupal_goto('mica/' . $entity_type . '/' . $entity_id);
 
@@ -292,7 +292,10 @@ function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters
       }
       else {
         try {
-          $user_func = call_user_func_array($callback, array($field, $parameters));
+          $user_func = call_user_func_array($callback, array(
+            $field,
+            $parameters
+          ));
           if (!empty($user_func->{$method})) {
             print t($user_func->{$method});
           }
@@ -410,7 +413,10 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
   }
   if ($no_acronym) {
     $sort_acronym = 'acronym.' . $language->language;
-    $options = array_merge(array($sort_name => t('Name'), $sort_acronym => t('Acronym')), $context['options']);
+    $options = array_merge(array(
+      $sort_name => t('Name'),
+      $sort_acronym => t('Acronym')
+    ), $context['options']);
   }
   else {
     $options = array_merge(array($sort_name => t('Name')), $context['options']);
@@ -498,7 +504,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
       return '#';
     }
   }
-  $attached_resource = & drupal_static(__FUNCTION__);
+  $attached_resource = &drupal_static(__FUNCTION__);
   if (!isset($attached_resource)) {
     $cached_attached_resources = cache_get('images-cache-' . $entity_id . '-' . $file_resource->id);
 
@@ -521,11 +527,11 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
         else {
           // dpm(drupal_get_destination());
           drupal_set_message(t('An error occurred downloading images , server response code : @code, Server message: "@message"',
-              array(
-                '@code' => $raw_data['code'],
-                '@message' => $raw_data['message']
-              )
-            ),
+            array(
+              '@code' => $raw_data['code'],
+              '@message' => $raw_data['message']
+            )
+          ),
             'error');
           return NULL;
         }
@@ -571,5 +577,26 @@ function obiba_mica_commons_format_number($number, $nbr_decimals = 0) {
         return $number;
       }
   }
+}
 
+function obiba_mica_commons_get_translated_node($nid) {
+  $loaded_node = (node_load(variable_get('study_list_page')));
+  if (module_exists('locale')) {
+    global $language;
+    $translations = translation_node_get_translations($nid);
+    if (!empty($translations)) {
+      $loaded_node = (node_load($translations[$language->language]->nid));
+    }
+  }
+  $node_rendered = node_view($loaded_node);
+  return $node_rendered;
+}
+
+function obiba_mica_commons_is_authorized_agate_user() {
+  global $user;
+
+  if (!empty($user->session) && strstr($user->session, 'obibaid')) {
+    return TRUE;
+  }
+  return FALSE;
 }

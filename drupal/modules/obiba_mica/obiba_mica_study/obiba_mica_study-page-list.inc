@@ -22,10 +22,12 @@ function obiba_mica_study_page_list() {
   $study_sort = NULL;
   $study_sort_by = NULL;
   $study_limits = NULL;
-  $node_rendred = node_view(node_load(variable_get('study_list_page')));
-  drupal_set_title($node_rendred['#node']->title);
+
+  $node_rendered = obiba_mica_commons_get_translated_node(variable_get('study_list_page'));
+  drupal_set_title($node_rendered['#node']->title);
+
   $themed_studies = '';
-  $node_rendred['#node']->title = '';
+  $node_rendered['#node']->title = '';
 
   if (!empty($_GET['search-query'])) {
     $study_query = $_GET['search-query'];
@@ -69,7 +71,7 @@ function obiba_mica_study_page_list() {
   $show_rapid_search_form = variable_get_value('studies_list_show_search_form');
   return theme('obiba_mica_study_list-page', array(
     "form_search" => !empty($show_rapid_search_form) ? drupal_get_form('obiba_mica_study_create_form') : '',
-    "node_page" => $node_rendred,
+    "node_page" => $node_rendered,
     "total_items" => $total_studies,
     "list_studies" => $themed_studies,
     "pager_wrap" => $pager_output

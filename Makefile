@@ -4,6 +4,7 @@ drupal_version = 7.34
 mica_version=$(drupal_version)-$(mica_current_tag)
 drupal_org_mica=git.drupal.org:project/obiba_mica.git
 obiba-progressbar-version=1.0.0
+smartmenus-version=0.9.7
 
 #
 # Mysql db access

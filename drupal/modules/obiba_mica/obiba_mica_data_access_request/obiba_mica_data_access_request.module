@@ -12,20 +12,25 @@
 function obiba_mica_data_access_request_menu() {
   $items = array();
 
-  $items['mica/data-access/home'] = array(
+  $items['mica/data-access'] = array(
     'title' => 'Data Access',
     'description' => 'Data access page',
     'page callback' => 'obiba_mica_data_access_request_page',
     'access callback' => TRUE,
+    'expanded' => TRUE,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
     'weight' => 4
   );
 
   $items['mica/data-access/requests'] = array(
+    'title' => 'My Data Access Requests',
+    'description' => 'List Data Access Requests',
     'page callback' => 'obiba_mica_data_access_request_list_page',
-    'access callback' => TRUE,
     'file' => 'obiba_mica_data_access_request_service.inc',
+    'access callback' => 'obiba_mica_data_access_request_permission_check',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 2
   );
 
   $items['mica/data-access/requests/ws'] = array(
@@ -112,6 +117,9 @@ function obiba_mica_data_access_request_menu() {
   return $items;
 }
 
+function obiba_mica_data_access_request_permission_check() {
+  return obiba_mica_commons_is_authorized_agate_user();
+}
 /**
  * Implements hook_load_menus (obiba_main_app_angular_)
  */

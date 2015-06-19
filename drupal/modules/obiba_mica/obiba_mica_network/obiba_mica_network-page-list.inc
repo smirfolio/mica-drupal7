@@ -9,8 +9,9 @@ function obiba_mica_network_page_list() {
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
 
-  $node_view = node_view(node_load(variable_get('networks_page')));
-  drupal_set_title($node_view['#node']->title);
+  $node_rendered = obiba_mica_commons_get_translated_node(variable_get('networks_page'));
+
+  drupal_set_title($node_rendered['#node']->title);
 
   $query = NULL;
   $sort = NULL;
@@ -59,7 +60,7 @@ function obiba_mica_network_page_list() {
 
   return theme('obiba_mica_network-list', array(
     "form_search" => drupal_get_form('obiba_mica_network_create_form'),
-    'node_page' => $node_view,
+    'node_page' => $node_rendered,
     "total_items" => $total_networks,
     'list_networks' => $list_networks,
     'pager_wrap' => $pager_output
