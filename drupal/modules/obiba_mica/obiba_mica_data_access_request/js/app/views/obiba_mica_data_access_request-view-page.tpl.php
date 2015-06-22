@@ -9,7 +9,12 @@
   -->
 <div>
   <h2 class="page-header">
-    <?php print t(variable_get_value('access_request_page_title')); ?>: {{dataAccessRequest.id}}
+    <a href="<?php print url('mica/data-access/requests'); ?>"
+      title="<?php print t(variable_get_value('access_my_requests_button')); ?>">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+    </a>
+    <?php print t(variable_get_value('access_request_page_title')); ?>:
+    {{dataAccessRequest.id}}
   </h2>
 
   <obiba-alert id="DataAccessRequestViewController"></obiba-alert>
@@ -17,7 +22,8 @@
 
   <div ng-hide="serverError">
     <p class="help-block pull-left">
-      <span><?php print t('Created by'); ?></span> {{getFullName(dataAccessRequest.profile) || dataAccessRequest.applicant}},
+      <span><?php print t('Created by'); ?></span>
+      {{getFullName(dataAccessRequest.profile) || dataAccessRequest.applicant}},
       <span>{{dataAccessRequest.timestamps.created | amCalendar}}</span>
       <span class="label label-success">{{dataAccessRequest.status}}</span>
     </p>
@@ -69,7 +75,8 @@
       <tab heading="<?php print t('Application form'); ?>
       ">
         <form id="request-form" name="forms.requestForm">
-          <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema"></div>
+          <div sf-model="form.model" sf-form="form.definition"
+            sf-schema="form.schema"></div>
         </form>
         <h2><?php print t(variable_get_value('access_documents_section_title')); ?></h2>
 
@@ -84,10 +91,13 @@
           </div>
         </div>
       </tab>
-      <tab ng-click="selectTab('comments')" heading="<?php print t('Comments'); ?>">
-        <obiba-comments comments="form.comments" on-update="updateComment" on-delete="deleteComment" edit-action="EDIT"
+      <tab ng-click="selectTab('comments')"
+        heading="<?php print t('Comments'); ?>">
+        <obiba-comments comments="form.comments" on-update="updateComment"
+          on-delete="deleteComment" edit-action="EDIT"
           delete-action="DELETE"></obiba-comments>
-        <obiba-comment-editor on-submit="submitComment" class="md-top-margin"></obiba-comment-editor>
+        <obiba-comment-editor on-submit="submitComment"
+          class="md-top-margin"></obiba-comment-editor>
       </tab>
       <tab heading="<?php print t('History'); ?>">
         <div

@@ -89,7 +89,11 @@ function obiba_main_app_angular_theme($existing, $type, $theme, $path) {
 function obiba_angular_load_external_menus_definitions() {
   $external_items = array();
   foreach (module_implements('load_menus') as $module) {
-    $external_items += module_invoke($module, 'load_menus');
+    $external_loaded_menu = module_invoke($module, 'load_menus');
+    if (!empty($external_loaded_menu)) {
+      $external_items += $external_loaded_menu;
+    }
+
   }
   return $external_items;
 }
