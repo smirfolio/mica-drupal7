@@ -226,6 +226,14 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+  $info = variable_get_info('access_download_button');
+  $form['access']['access_download_button'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_download_button'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
   $info = variable_get_info('access_new_request_button');
   $form['access']['access_new_request_button'] = array(
     '#type' => 'textfield',
@@ -250,7 +258,6 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
-
 }
 
 function _obiba_mica_settings_networks_form(&$form) {
