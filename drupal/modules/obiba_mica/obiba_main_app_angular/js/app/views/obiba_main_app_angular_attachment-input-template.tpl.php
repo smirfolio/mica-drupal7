@@ -18,7 +18,7 @@
     </td>
     <td>
       <a ng-show="file.id" ng-click="deleteFile(file.id)" class="action">
-        <i class="fa fa-trash-o"></i>
+        <i class="fa fa-trash-o fa-lg"></i>
       </a>
       <a ng-show="file.tempId" ng-click="deleteTempFile(file.tempId)" class="action">
         <i class="fa fa-trash-o"></i>
