@@ -51,7 +51,7 @@
         class="btn btn-info"><?php print t('Reject'); ?>
       </a>
       <a target="_self" ng-href="" class="btn btn-default download-btn">
-        <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download PDF'); ?></span>
+        <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t(variable_get_value('access_download_button')); ?></span>
       </a>
       <a ng-click="delete()"
         ng-if="actions.canDelete(dataAccessRequest)"

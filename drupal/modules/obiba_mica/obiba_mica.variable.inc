@@ -118,31 +118,37 @@ function _obiba_mica_variable_info_access(&$variable)
   );
   $variable['access_my_requests_button'] = array(
     'title' => t('My requests button'),
-    'description' => t('Data access my requests button caption'),
+    'description' => t('Data access my requests button caption.'),
     'type' => 'string',
     'default' => 'My Data Access Requests',
   );
   $variable['access_new_request_button'] = array(
     'title' => t('New request button'),
-    'description' => t('Data access new request button caption'),
+    'description' => t('Data access new request button caption.'),
     'type' => 'string',
     'default' => 'New Data Access Request',
   );
   $variable['access_documents_section_title'] = array(
     'title' => t('Documents section title'),
-    'description' => t('Data access request "Documents" section title'),
+    'description' => t('Data access request "Documents" section title.'),
     'type' => 'string',
     'default' => 'Documents',
   );
+  $variable['access_download_button'] = array(
+    'title' => t('Download button caption'),
+    'description' => t('Data access download button caption.'),
+    'type' => 'string',
+    'default' => 'Download PDF',
+  );
   $variable['access_signup_button'] = array(
     'title' => t('Sign up button'),
-    'description' => t('Data access sign up button caption'),
+    'description' => t('Data access sign up button caption.'),
     'type' => 'string',
     'default' => 'Sign Up',
   );
   $variable['access_signin_button'] = array(
     'title' => t('Sign in button'),
-    'description' => t('Data access sign in button caption'),
+    'description' => t('Data access sign in button caption.'),
     'type' => 'string',
     'default' => 'Sign In',
   );
