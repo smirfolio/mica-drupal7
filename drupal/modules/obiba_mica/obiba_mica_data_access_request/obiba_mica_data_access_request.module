@@ -14,13 +14,22 @@ function obiba_mica_data_access_request_menu() {
 
   $items['mica/data-access'] = array(
     'title' => 'Data Access',
-    'description' => 'Data access page',
+    'description' => 'Data access',
     'page callback' => 'obiba_mica_data_access_request_page',
     'access callback' => TRUE,
     'expanded' => TRUE,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
     'weight' => 4
+  );
+
+  $items['mica/data-access/home'] = array(
+    'title' => t(variable_get('access_request_page_title', 'Data Access Request')),
+    'page callback' => 'obiba_mica_data_access_request_page',
+    'description' => 'Data access page',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 2
   );
 
   $items['mica/data-access/requests'] = array(
@@ -30,7 +39,7 @@ function obiba_mica_data_access_request_menu() {
     'file' => 'obiba_mica_data_access_request_service.inc',
     'access callback' => 'obiba_mica_data_access_request_permission_check',
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 2
+    'weight' => 3
   );
 
   $items['mica/data-access/requests/ws'] = array(
@@ -192,11 +201,10 @@ function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
  * Create/Update data access request node content page
  */
 function obiba_mica_data_access_request() {
-  $data_access_node_node = node_load(variable_get('access_request_page'));
+  $data_access_node_node = obiba_mica_commons_get_translated_node(variable_get('access_request_page'));
 
   if (!empty($data_access_node_node)) {
-    $node_rendered = node_view($data_access_node_node);
-    return $node_rendered;
+    return $data_access_node_node;
   }
   else {
     $my_body_content = "<div> <p>Requests for further information on the datasets and requests for access are received by
