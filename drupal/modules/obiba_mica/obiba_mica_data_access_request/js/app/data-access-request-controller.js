@@ -138,7 +138,6 @@
                     // $scope.$broadcast('schemaFormRedraw');
 
                     $scope.$on('sf-render-finished', function () {
-                      console.log('views form finished');
                       $.ObibaProgressBarController().finish();
                     });
                   },
