@@ -152,6 +152,12 @@ function _obiba_mica_variable_info_access(&$variable)
     'type' => 'string',
     'default' => 'Sign In',
   );
+  $variable['access_comments_enabled'] = array(
+    'title' => t('Enable commenting'),
+    'description' => t('If checked, data access request commenting is enabled.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 }
 
 function _obiba_mica_variable_info_networks(&$variable) {

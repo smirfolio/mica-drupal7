@@ -258,6 +258,14 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+  $info = variable_get_info('access_comments_enabled');
+  $form['access']['access_comments_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_comments_enabled'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
 }
 
 function _obiba_mica_settings_networks_form(&$form) {
