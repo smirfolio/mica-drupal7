@@ -582,7 +582,7 @@ function obiba_mica_commons_format_number($number, $nbr_decimals = 0) {
 function obiba_mica_commons_get_translated_node($nid) {
   $loaded_node = (node_load(variable_get('study_list_page')));
   if (!empty($loaded_node)) {
-    if (module_exists('locale')) {
+    if (module_exists('locale') && module_exists('translation')) {
       global $language;
       $translations = translation_node_get_translations($nid);
       if (!empty($translations)) {
