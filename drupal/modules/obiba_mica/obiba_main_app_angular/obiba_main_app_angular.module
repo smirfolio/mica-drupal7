@@ -237,6 +237,18 @@ function obiba_main_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer'
         ),
+        $lib_path_schema_form . '/angular-strap/dist/angular-strap.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/angular-strap/dist/angular-strap.tpl.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/angular-schema-form-datetimepicker/schema-form-date-time-picker.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
         $lib_path_schema_form . '/filesize/lib/filesize.min.js' => array(
           'type' => 'file',
           'scope' => 'footer'

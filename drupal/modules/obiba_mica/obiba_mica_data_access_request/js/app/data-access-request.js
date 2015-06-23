@@ -27,6 +27,7 @@
         'ui.bootstrap',
         'obiba.notification',
         'schemaForm',
+        'schemaForm-datepicker',
         'mica.attachment',
         'obiba.comments',
         'hc.marked',
