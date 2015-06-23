@@ -39,11 +39,13 @@
                     ServerErrorAlertService,
                     ForbiddenDrupalRedirect,
                     NOTIFICATION_EVENTS) {
-
+            $.ObibaProgressBarController().start();
+            $.ObibaProgressBarController().setPercentage(65, true);
             var onError = function (response) {
               $scope.serverError = true;
               ServerErrorAlertService.alert('DataAccessRequestViewController', response);
               ForbiddenDrupalRedirect.redirectDrupalMessage(response);
+              $.ObibaProgressBarController().finish();
             };
 
             var selectTab = function (id) {
@@ -134,6 +136,11 @@
                     });
 
                     // $scope.$broadcast('schemaFormRedraw');
+
+                    $scope.$on('sf-render-finished', function () {
+                      console.log('views form finished');
+                      $.ObibaProgressBarController().finish();
+                    });
                   },
                   onError
                 );
@@ -284,11 +291,13 @@
                     ServerErrorAlertService,
                     ForbiddenDrupalRedirect,
                     DataAccessRequestService) {
-
+            $.ObibaProgressBarController().start();
+            $.ObibaProgressBarController().setPercentage(65, true);
             var onError = function (response) {
               $scope.serverError = true;
               ServerErrorAlertService.alert('DataAccessRequestEditController', response);
               ForbiddenDrupalRedirect.redirectDrupalMessage(response);
+              $.ObibaProgressBarController().finish();
             };
 
             var validate = function () {
@@ -356,6 +365,9 @@
               definition: {},
               model: {}
             };
+            $scope.$on('sf-render-finished', function () {
+              $.ObibaProgressBarController().finish();
+            });
             $scope.serverError = false;
             $scope.requestId = $routeParams.id;
             $scope.newRequest = $routeParams.id ? false : true;
