@@ -9,7 +9,8 @@
       pause: bar.pause,
       inc: bar.inc,
       update: bar.update,
-      finish: bar.finish
+      finish: bar.finish,
+      setPercentage: bar.set
     };
   });
 
