@@ -581,15 +581,18 @@ function obiba_mica_commons_format_number($number, $nbr_decimals = 0) {
 
 function obiba_mica_commons_get_translated_node($nid) {
   $loaded_node = (node_load(variable_get('study_list_page')));
-  if (module_exists('locale')) {
-    global $language;
-    $translations = translation_node_get_translations($nid);
-    if (!empty($translations)) {
-      $loaded_node = (node_load($translations[$language->language]->nid));
+  if (!empty($loaded_node)) {
+    if (module_exists('locale')) {
+      global $language;
+      $translations = translation_node_get_translations($nid);
+      if (!empty($translations)) {
+        $loaded_node = (node_load($translations[$language->language]->nid));
+      }
     }
+    $node_rendered = node_view($loaded_node);
+    return $node_rendered;
   }
-  $node_rendered = node_view($loaded_node);
-  return $node_rendered;
+  return FALSE;
 }
 
 function obiba_mica_commons_is_authorized_agate_user() {
