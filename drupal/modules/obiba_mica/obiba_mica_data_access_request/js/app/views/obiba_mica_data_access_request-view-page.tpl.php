@@ -91,7 +91,7 @@
           </div>
         </div>
       </tab>
-      <tab ng-click="selectTab('comments')"
+      <tab ng-if="<?php print variable_get_value('access_comments_enabled') ? 'true': 'false'?>" ng-click="selectTab('comments')"
         heading="<?php print t('Comments'); ?>">
         <obiba-comments comments="form.comments" on-update="updateComment"
           on-delete="deleteComment" edit-action="EDIT"
