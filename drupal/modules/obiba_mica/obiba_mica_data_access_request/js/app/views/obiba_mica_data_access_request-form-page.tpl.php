@@ -51,7 +51,7 @@
     <form name="requestForm" ng-submit="submit(requestForm)">
       <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema" required="true"></div>
       <h2><?php print t(variable_get_value('access_documents_section_title')); ?></h2>
-      <p><?php print t('Select one or several documents to be attached to the application form.'); ?></p>
+      <?php print t(variable_get_value('access_documents_section_help_text')); ?>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group md-top-margin">

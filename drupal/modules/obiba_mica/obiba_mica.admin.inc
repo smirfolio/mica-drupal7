@@ -218,6 +218,15 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+
+  $info = variable_get_info('access_documents_section_help_text');
+  $form['access']['my_requests']['access_documents_section_help_text'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_documents_section_help_text'),
+    //  '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
   $info = variable_get_info('access_my_requests_button');
   $form['access']['access_my_requests_button'] = array(
     '#type' => 'textfield',
