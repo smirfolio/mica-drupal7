@@ -288,8 +288,16 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
 }
 
 function obiba_mica_data_access_request_table_rows($requests) {
+
+  // Reuse the same translation as the angular app code
+  global $language;
+  $js_dictionary_file = drupal_get_path('module', 'obiba_main_app_angular') . '/i18n/' . $language->language . '.json';
+  $js_dictionary = json_decode(file_get_contents($js_dictionary_file), true);
+  $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->get_requests();
+
+
   if (empty($requests->responseCode) && !empty($requests)) {
-    $res = array_map(function ($r) {
+    $res = array_map(function ($r) use($js_dictionary) {
       $r->submission_date = NULL;
       if ($r->status != 'OPENED') {
         foreach ($r->statusChangeHistory as $change) {
@@ -309,7 +317,7 @@ function obiba_mica_data_access_request_table_rows($requests) {
           $r->timestamps->created :
           $r->timestamps->lastUpdate), "Y-m-d H:i:s"),
         empty($r->submission_date) ? '' : date_format(date_create($r->submission_date), "Y-m-d H:i:s"),
-        t($r->status),
+        $js_dictionary[$r->status],
         $r->actions,
         $r->id
       );
