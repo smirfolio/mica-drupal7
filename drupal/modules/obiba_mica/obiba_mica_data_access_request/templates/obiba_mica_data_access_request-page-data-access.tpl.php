@@ -25,7 +25,7 @@
 
 <?php if ($data_access_list_display) : ?>
   <p class="md-top-margin text-center">
-    <?php print l(t(variable_get_value('access_my_requests_button')), 'mica/data-access/requests',
+    <?php print l(t(variable_get_value('access_my_requests_button')), 'mica/data_access/requests',
       array(
         'attributes' => array('class' => array('btn', 'btn-primary'))
       )
