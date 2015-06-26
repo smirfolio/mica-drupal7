@@ -12,9 +12,8 @@
 function obiba_mica_data_access_request_menu() {
   $items = array();
 
-  $items['mica/data_access/home'] = array(
+  $items['mica/data_access'] = array(
     'title' => t(variable_get('access_request_page_title', 'Data Access Request')),
-    'description' => 'Data access',
     'page callback' => 'obiba_mica_data_access_request_page',
     'access callback' => TRUE,
     'expanded' => TRUE,
@@ -23,18 +22,22 @@ function obiba_mica_data_access_request_menu() {
     'weight' => 4
   );
 
-  $items['mica/data-access/requests'] = array(
-    'page callback' => 'obiba_mica_data_access_request_list_page',
+  $items['mica/data_access/home'] = array(
+    'title' => t(variable_get('access_request_page_title', 'Data Access Request')),
+    'description' => 'Data access',
     'access callback' => TRUE,
-    'file' => 'obiba_mica_data_access_request_service.inc',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 2
   );
 
-  $items['mica/data-access/requests'] = array(
-    'title' => 'My Data Access Requests',
+  $items['mica/data_access/requests'] = array(
+    'title' => t('My Data Access Requests'),
     'description' => 'List Data Access Requests',
     'page callback' => 'obiba_mica_data_access_request_list_page',
     'file' => 'obiba_mica_data_access_request_service.inc',
     'access callback' => 'obiba_mica_data_access_request_permission_check',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 3
   );
 
   $items['mica/data-access/requests/ws'] = array(
