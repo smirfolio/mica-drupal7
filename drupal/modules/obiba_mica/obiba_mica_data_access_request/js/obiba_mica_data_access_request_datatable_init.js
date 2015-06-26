@@ -2,7 +2,7 @@
   Drupal.behaviors.mica_data_access_request_datatable_init = {
 
     attach: function (context, settings) {
-      var basePath = Drupal.settings.basePath + '/mica/data-access/request';
+      var basePath = Drupal.settings.basePath + 'mica/data-access/request';
       var ACTIONS = { VIEW: 'glyphicon-eye-open',
         DELETE: 'glyphicon-trash',
         EDIT: 'glyphicon-edit'
@@ -81,7 +81,7 @@
         $('#clickedDelete').on("click", function () {
           $.ajax({
             'async': true,
-            'url': Drupal.settings.basePath + $(this).attr('data-delete-resource'),
+            'url': $(this).attr('data-delete-resource'),
             'type': 'POST',
             'success': function (data) {
               $('#delete-modal').modal('toggle');

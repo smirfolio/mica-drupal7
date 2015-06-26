@@ -10,7 +10,7 @@
 
 <div>
   <h2 class="page-header">
-    <a href="<?php print url('mica/data-access/requests'); ?>"
+    <a href="<?php print url('mica/data_access/requests'); ?>"
       title="<?php print t(variable_get_value('access_my_requests_button')); ?>">
       <i class="glyphicon glyphicon-chevron-left"></i>
     </a>
@@ -26,7 +26,7 @@
 
   <div ng-hide="serverError">
   <div class="pull-right">
-    <?php print l(t('Cancel'), 'mica/data-access/requests', array(
+    <?php print l(t('Cancel'), 'mica/data_access/requests', array(
         'attributes' => array(
           'class' => 'btn btn-default',
           'ng-if' => 'newRequest'

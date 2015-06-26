@@ -112,6 +112,32 @@ function obiba_mica_admin_settings() {
     '#description' => $info['description'],
   );
 
+  $form['translation'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Translations'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('mica_disable_translation');
+  $form['translation']['mica_disable_translation'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('mica_disable_translation'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('mica_disabled_path_translation');
+  $form['translation']['mica_disabled_path_translation'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('mica_disabled_path_translation'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+
   $form['#submit'] = array('obiba_mica_default_password');
   return system_settings_form($form);
 }

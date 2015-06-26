@@ -26,6 +26,7 @@ function obiba_mica_data_access_request_menu() {
     'title' => t(variable_get('access_request_page_title', 'Data Access Request')),
     'description' => 'Data access',
     'access callback' => TRUE,
+    'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
     'weight' => 2
   );
@@ -36,6 +37,7 @@ function obiba_mica_data_access_request_menu() {
     'page callback' => 'obiba_mica_data_access_request_list_page',
     'file' => 'obiba_mica_data_access_request_service.inc',
     'access callback' => 'obiba_mica_data_access_request_permission_check',
+    'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
     'weight' => 3
   );
