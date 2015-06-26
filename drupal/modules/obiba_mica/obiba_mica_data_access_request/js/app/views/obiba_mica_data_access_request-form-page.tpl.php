@@ -26,7 +26,7 @@
 
   <div ng-hide="serverError">
   <div class="pull-right">
-    <?php print l(t('Cancel'), 'mica/data-access/requests', array(
+    <?php print l(t('Cancel'), 'mica/data_access/requests', array(
         'attributes' => array(
           'class' => 'btn btn-default',
           'ng-if' => 'newRequest'
