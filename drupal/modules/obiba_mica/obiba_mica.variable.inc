@@ -54,6 +54,20 @@ function obiba_mica_variable_info($options) {
     'default' => '',
   );
 
+  $variable['mica_disable_translation'] = array(
+    'title' => t('Disable Translation'),
+    'description' => t('Disable translation in selected pages'),
+    'type' => 'boolean',
+    'default' => '',
+  );
+
+  $variable['mica_disabled_path_translation'] = array(
+    'title' => t('Disables Path  Translation'),
+    'description' => t('List of selected pages where translation must be disabled separated by comma (,)'),
+    'type' => 'boolean',
+    'default' => '',
+  );
+
   return $variable;
 }
 
