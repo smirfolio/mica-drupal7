@@ -19,13 +19,12 @@
 
   <obiba-alert id="DataAccessRequestViewController"></obiba-alert>
 
-
   <div ng-hide="serverError">
     <p class="help-block pull-left">
       <span><?php print t('Created by'); ?></span>
       {{getFullName(dataAccessRequest.profile) || dataAccessRequest.applicant}},
       <span>{{dataAccessRequest.timestamps.created | amCalendar}}</span>
-      <span class="label label-success">{{dataAccessRequest.status}}</span>
+      <span class="label label-success">{{dataAccessRequest.status | translate | uppercase}}</span>
     </p>
 
     <div class="pull-right">

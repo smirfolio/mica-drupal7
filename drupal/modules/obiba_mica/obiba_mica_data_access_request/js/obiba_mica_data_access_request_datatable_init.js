@@ -2,12 +2,13 @@
   Drupal.behaviors.mica_data_access_request_datatable_init = {
 
     attach: function (context, settings) {
+      var basePath = Drupal.settings.basePath + '/mica/data-access/request';
       var ACTIONS = { VIEW: 'glyphicon-eye-open',
         DELETE: 'glyphicon-trash',
         EDIT: 'glyphicon-edit'
-      }, HREF_ACTIONS = {VIEW: 'request#/view/{}',
-        DELETE: 'mica/data-access/request/delete/{}/ws',
-        EDIT: 'request#/edit/{}'
+      }, HREF_ACTIONS = {VIEW: basePath + '#/view/{}',
+        DELETE: basePath + '/delete/{}/ws',
+        EDIT: basePath + '#/edit/{}'
       };
 
       var hrefBuilder = function (action, id) {
