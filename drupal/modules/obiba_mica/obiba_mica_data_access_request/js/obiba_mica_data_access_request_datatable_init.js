@@ -49,6 +49,7 @@
             "columns": settings.table_headers,
             "columnDefs": colDefs,
             "iDisplayLength": 25,
+            "order": [[4, "asc"]],
             "responsive": true,
             "scrollX": true,
             "sDom": '<"table-var-wrapper" <<"md-top-margin pull-left" i><"pull-right" f>><"clear-fix" ><"no-float-tab" rt><"clear-fix" ><"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
