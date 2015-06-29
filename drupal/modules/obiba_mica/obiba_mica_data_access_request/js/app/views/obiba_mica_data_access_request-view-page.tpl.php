@@ -9,10 +9,10 @@
   -->
 <div>
   <h2 class="page-header">
-    <a href="<?php print url(MicaClientPathProvider::DATA_ACCESS_LIST); ?>"
-      title="<?php print t(variable_get_value('access_my_requests_button')); ?>">
-      <i class="glyphicon glyphicon-chevron-left"></i>
-    </a>
+    <?php print l('<i class="glyphicon glyphicon-chevron-left"></i>',
+      MicaClientPathProvider::DATA_ACCESS_LIST,
+      array('title' => t(variable_get_value('access_my_requests_button')))); ?>
+
     <?php print t(variable_get_value('access_request_page_title')); ?>:
     {{dataAccessRequest.id}}
   </h2>
