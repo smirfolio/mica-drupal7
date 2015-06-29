@@ -16,7 +16,7 @@
       'use strict';
       var user = Drupal.settings.angularjsApp.user;
       mica.DataAccessRequest
-        .controller('DataAccessRequestViewController', ['$rootScope', '$scope', '$routeParams', '$filter',
+        .controller('DataAccessRequestViewController', ['$rootScope', '$scope', '$routeParams', '$filter', '$modal',
           'DataAccessRequestResource',
           'DataAccessRequestService',
           'DataAccessRequestStatusResource',
@@ -28,7 +28,7 @@
           'ForbiddenDrupalRedirect',
           'NOTIFICATION_EVENTS',
 
-          function ($rootScope, $scope, $routeParams, $filter,
+          function ($rootScope, $scope, $routeParams, $filter, $modal,
                     DataAccessRequestResource,
                     DataAccessRequestService,
                     DataAccessRequestStatusResource,
@@ -203,7 +203,13 @@
                 DataAccessRequestStatusResource.update({
                   id: $scope.dataAccessRequest.id,
                   status: "SUBMITTED"
-                }, onUpdatStatusSuccess, onError);
+                }, function onSubmitted() {
+                  $modal.open({
+                    scope: $scope,
+                    templateUrl: Drupal.settings.basePath + 'obiba_main_app_angular/obiba_mica_data_access_request/data-access-request-submitted-modal'
+                  });
+                  onUpdatStatusSuccess();
+                }, onError);
               } else {
                 AlertService.alert({
                   id: 'DataAccessRequestViewController',

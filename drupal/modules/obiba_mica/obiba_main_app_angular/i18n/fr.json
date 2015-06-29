@@ -143,6 +143,10 @@
       "title": "Status Change Confirmation",
       "message": "Are you sure you want to {{arg0}} this access request?",
       "message-review": "Are you sure you want to put this access request under review?"
+    },
+    "submit-confirmation": {
+      "title": "Form Submitted",
+      "message": "Your access form was successfully submitted."
     }
   },
   "data-access-config": {

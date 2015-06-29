@@ -166,6 +166,10 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
       'template' => 'data-access-request-validation-modal',
       'path' => $path_views_theme
     ),
+    'data-access-request-submitted-modal' => array(
+      'template' => 'data-access-request-submitted-modal',
+      'path' => $path_views_theme
+    ),
     'obiba_mica_data_access_request-page-data-access' => array(
       'template' => 'obiba_mica_data_access_request-page-data-access',
       'path' => $path_theme
