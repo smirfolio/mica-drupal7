@@ -24,6 +24,7 @@ class MicaClientPathProvider {
   const SEARCH = 'mica/search';
   const COVERAGE = 'mica/coverage';
   const DATA_ACCESS_HOME = 'mica/data_access/home';
+  const DATA_ACCESS_LIST = 'mica/data_access/requests';
 
   static function study($id) {
     return preg_replace('/\\{id\\}/', $id, self::STUDY, 1);
