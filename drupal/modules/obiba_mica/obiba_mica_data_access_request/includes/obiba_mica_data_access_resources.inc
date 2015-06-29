@@ -35,15 +35,21 @@ class MicaDataAccessRequestResources extends MicaClient {
     $request = new HttpClientRequest($url_data_access, array(
       'method' => $constant_method,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-            'Content-Type' => array(parent::HEADER_JSON),
+          'Accept' => array(parent::HEADER_JSON),
+          'Content-Type' => array(parent::HEADER_JSON),
 
-          )
-        ),
+        )
+      ),
       'data' => $data,
     ));
 
-    return $this->execute($request);
+    $this->execute($request);
+    $headers  = $this->getLastResponseHeaders();
+    if (!empty($headers) && !empty($headers['Location'])) {
+      return array('location' => $headers['Location'][0]);
+    }
+
+    return FALSE;
   }
 
   protected function execute($request) {
@@ -52,8 +58,7 @@ class MicaDataAccessRequestResources extends MicaClient {
       $response = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return json_decode($response);
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
         array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
 //      drupal_set_message(t('An error occurred and processing did not complete Mica Server error: @message',
