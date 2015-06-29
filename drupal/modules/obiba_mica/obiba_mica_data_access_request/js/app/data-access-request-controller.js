@@ -316,8 +316,14 @@
               $scope.dataAccessRequest.content = JSON.stringify($scope.form.model);
 
               if ($scope.newRequest) {
-                DataAccessRequestsResource.save($scope.dataAccessRequest, function () {
-                  window.location = Drupal.settings.basePath + Drupal.settings.angularjsApp.requests_url;
+                DataAccessRequestsResource.save($scope.dataAccessRequest, function (response) {
+                  if (response && response.location) {
+                    var parts = response.location.split('/');
+                    $location.path('/view/' + parts[parts.length - 1]).replace();
+                  } else {
+                    window.location = Drupal.settings.basePath + Drupal.settings.angularjsApp.requests_url;
+                  }
+
                 }, onError);
               } else {
                 DataAccessRequestResource.save($scope.dataAccessRequest, function () {
