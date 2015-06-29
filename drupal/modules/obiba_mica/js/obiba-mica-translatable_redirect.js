@@ -9,8 +9,9 @@
       /*******************/
       if (Drupal.settings.obiba_mica) {
         var disabledPathTranslation = window.location.pathname.replace(Drupal.settings.basePath, '').replace(Drupal.settings.obiba_mica.currentLang, '');
-        //check if current path must be not translated
-        if ($.inArray(disabledPathTranslation, Drupal.settings.obiba_mica.paths) > -1) {
+        var redirectionUrl = window.location.href.replace(Drupal.settings.obiba_mica.currentLang, '');
+//check if current path must be not translated and not the same of current address url (to prevent loop redirection)
+        if ($.inArray(disabledPathTranslation, Drupal.settings.obiba_mica.paths) > -1 && redirectionUrl != window.location.href) {
           var warning = "Veuillez noter que les pages d'inscription et de demande d'accès ne sont disponibles qu'en anglais seulement. La traduction française sera disponible plus tard en 2015-2016.";
           $('.main-container').empty();
           $('body').append('<div id="myModal" class="modal fade"> <div class="modal-dialog"> <div class="modal-content"><div class="modal-header"><h4 class="modal-title">Attention</h4> </div><div class="modal-body">' + warning + '</div> <!-- dialog buttons --> <div class="modal-footer"><button id="ok" type="button" class="btn btn-primary">OK</button></div> </div> </div> </div>');
