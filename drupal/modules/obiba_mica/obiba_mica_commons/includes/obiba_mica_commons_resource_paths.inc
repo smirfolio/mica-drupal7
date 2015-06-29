@@ -23,7 +23,7 @@ class MicaClientPathProvider {
   const HARMONIZATION_VARIABLE = 'mica/variable/{id}:{name}:Dataschema';
   const SEARCH = 'mica/search';
   const COVERAGE = 'mica/coverage';
-
+  const DATA_ACCESS_HOME = 'mica/data_access/home';
 
   static function study($id) {
     return preg_replace('/\\{id\\}/', $id, self::STUDY, 1);
