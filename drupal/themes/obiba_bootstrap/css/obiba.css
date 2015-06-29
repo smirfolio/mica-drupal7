@@ -9993,3 +9993,7 @@ textarea.form-control.height-60 {
 .ng-scope h2.page-header {
   border-bottom: none;
 }
+li.next.last,
+li.prev.first {
+  text-transform: capitalize;
+}
