@@ -361,7 +361,7 @@ class VariableStatistics {
    * @return string
    */
   private function as_frequencies_table() {
-    $headers = array('Value');
+    $headers = array(t('Value'));
     $rows = array();
     $missing_rows = array();
     $aggregations = array();

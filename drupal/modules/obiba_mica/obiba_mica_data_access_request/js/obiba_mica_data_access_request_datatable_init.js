@@ -25,7 +25,8 @@
                   if (action in ACTIONS) {
                     if (action === 'DELETE') {
                       var titleInMOdal = row[2] ? row[2] : row[row.length - 1];
-                      return '<li><a  data-target="#delete-modal" id="' + action +
+                      return '<li><a  title="' + Drupal.t(action) + '"' +
+                        'data-target="#delete-modal" id="' + action +
                         '" href="' + hrefBuilder(action, row[row.length - 1]) +
                         '" data-action="' + action +
                         '"data-access-applicant="' + row[1] +
@@ -33,7 +34,7 @@
                         ' <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
                     }
                     else {
-                      return '<li><a href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
+                      return '<li><a title="' + Drupal.t(action) + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
                     }
                   }
 
@@ -55,6 +56,13 @@
             "sDom": '<"table-var-wrapper" <<"md-top-margin pull-left" i><"pull-right" f>><"clear-fix" ><"no-float-tab" rt><"clear-fix" ><"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
             "language": {
               "url": Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/datatable-international'
+            },
+            "fnInitComplete": function () {
+              $('a', this.fnGetNodes()).tooltip({
+                "delay": 0,
+                "track": true,
+                "fade": 250
+              });
             },
             "fnDrawCallback": function (oSettings) {
               if (oSettings._iDisplayLength > oSettings.aoData.length) {
