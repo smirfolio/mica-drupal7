@@ -16,7 +16,7 @@
   </div>
   <div>
     <i class="glyphicon <?php print  ObibaDatasetConstants::get_icon(); ?> "></i>
-    <h6><?php print variable_get('dataset_harmonization_impossible_label'); ?></h6>
+    <h6><?php print t(variable_get('dataset_harmonization_impossible_label')); ?></h6>
     <?php print ' - ' . t('there is no information or insufficient information collected by this study to allow the construction of the variable as defined in the dataset.') ?>
   </div>
 </div>
