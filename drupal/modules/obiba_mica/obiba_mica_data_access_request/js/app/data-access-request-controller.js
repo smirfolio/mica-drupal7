@@ -167,7 +167,7 @@
               if ($scope.requestToDelete === id) {
                 DataAccessRequestResource.delete({id: $scope.requestToDelete},
                   function () {
-                    window.location = Drupal.settings.basePath + 'mica/data-access/requests';
+                    window.location = Drupal.settings.basePath + Drupal.settings.angularjsApp.requests_url;
                   });
 
                 delete $scope.requestToDelete;
@@ -317,7 +317,7 @@
 
               if ($scope.newRequest) {
                 DataAccessRequestsResource.save($scope.dataAccessRequest, function () {
-                  window.location = Drupal.settings.basePath + 'mica/data-access/requests'
+                  window.location = Drupal.settings.basePath + Drupal.settings.angularjsApp.requests_url;
                 }, onError);
               } else {
                 DataAccessRequestResource.save($scope.dataAccessRequest, function () {
