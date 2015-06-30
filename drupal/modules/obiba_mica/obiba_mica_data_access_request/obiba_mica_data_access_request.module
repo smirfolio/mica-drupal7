@@ -32,7 +32,7 @@ function obiba_mica_data_access_request_menu() {
   );
 
   $items[MicaClientPathProvider::DATA_ACCESS_LIST] = array(
-    'title' => t(variable_get_value('access_requests_page_title')),
+    'title' => t(variable_get('access_requests_page_title', 'My Data Access Requests')),
     'description' => 'List Data Access Requests',
     'page callback' => 'obiba_mica_data_access_request_list_page',
     'file' => 'obiba_mica_data_access_request_service.inc',
