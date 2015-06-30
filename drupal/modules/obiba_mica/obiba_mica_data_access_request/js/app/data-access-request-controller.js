@@ -139,6 +139,7 @@
 
                     $scope.$on('sf-render-finished', function () {
                       $.ObibaProgressBarController().finish();
+                      $scope.loading = false;
                     });
                   },
                   onError
@@ -275,6 +276,7 @@
               return null;
             };
 
+            $scope.loading = true;
             $scope.forms = {};
 
           }])
@@ -378,7 +380,9 @@
             };
             $scope.$on('sf-render-finished', function () {
               $.ObibaProgressBarController().finish();
+              $scope.loading = false;
             });
+            $scope.loading = true;
             $scope.serverError = false;
             $scope.requestId = $routeParams.id;
             $scope.newRequest = $routeParams.id ? false : true;
