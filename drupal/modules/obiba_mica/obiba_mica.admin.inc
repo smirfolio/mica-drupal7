@@ -603,7 +603,7 @@ function _obiba_mica_settings_study_form(&$form) {
 }
 
 function _obiba_mica_settings_dataset_form(&$form) {
-  $bootstrap_theme_path = base_path() . '/' . drupal_get_path('theme', 'obiba_bootstrap');
+  $bootstrap_theme_path = base_path() . drupal_get_path('theme', 'obiba_bootstrap');
   $form['content_display_settings']['dataset_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Dataset Content'),
