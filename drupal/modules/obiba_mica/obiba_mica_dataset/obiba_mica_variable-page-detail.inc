@@ -279,37 +279,11 @@ function obiba_mica_variable_get_harmonization($harmonized_variable) {
 }
 
 function _obiba_mica_variable_html_truncated($text, $label, $size = 200, $is_code = FALSE, $pre_class = '') {
-  $html_truncate = '';
   if (!empty($text)) {
-
-    // split to respect line size
-    if ($is_code) {
-      $html_truncate = "<pre class='prettyprint $pre_class'>";
-      // split at ).
-      $lines = explode(").", $text);
-      $text = implode(")\n.", $lines);
-    }
-    else {
-      $lines = str_split($text, 60);
-      $text = implode("\n", $lines);
-    }
-
-    if (strlen($text) > $size) {
-      $html_truncate .= check_markup(truncate_utf8($text, $size, FALSE));
-
-      if ($is_code) {
-        $html_truncate .= "</pre>";
-      }
-
-      $html_truncate .= "[" . $label . " " . t("truncated") . "]";
-    }
-    else {
-      $html_truncate .= check_markup($text);
-
-      if ($is_code) {
-        $html_truncate .= "</pre>";
-      }
-    }
+    $truncate = strlen($text) > $size;
+    $html_truncate = $truncate //
+      ? check_markup(truncate_utf8($text, $size, FALSE)) . "[" . $label . " " . t("truncated") . "]" //
+      : check_markup($text); //
   }
   else {
     $html_truncate = '-';
