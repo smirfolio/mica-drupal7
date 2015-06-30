@@ -22,7 +22,7 @@ function obiba_mica_data_access_request_menu() {
     'weight' => 4
   );
 
-  $items['mica/data_access/home'] = array(
+  $items[MicaClientPathProvider::DATA_ACCESS_HOME] = array(
     'title' => t(variable_get('access_request_page_title', 'Data Access Request')),
     'description' => 'Data access',
     'access callback' => TRUE,
@@ -31,8 +31,8 @@ function obiba_mica_data_access_request_menu() {
     'weight' => 2
   );
 
-  $items['mica/data_access/requests'] = array(
-    'title' => t('My Data Access Requests'),
+  $items[MicaClientPathProvider::DATA_ACCESS_LIST] = array(
+    'title' => t(variable_get_value('access_requests_page_title')),
     'description' => 'List Data Access Requests',
     'page callback' => 'obiba_mica_data_access_request_list_page',
     'file' => 'obiba_mica_data_access_request_service.inc',
