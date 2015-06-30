@@ -48,6 +48,9 @@
 
     <div class="clearfix"></div>
 
+    <img
+      src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif"
+      ng-if="loading">
     <form name="requestForm" ng-submit="submit(requestForm)">
       <div sf-model="form.model" sf-form="form.definition" sf-schema="form.schema" required="true"></div>
       <h2><?php print t(variable_get_value('access_documents_section_title')); ?></h2>

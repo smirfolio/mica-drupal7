@@ -73,6 +73,9 @@
       </div>
       <tab heading="<?php print t('Application form'); ?>
       ">
+        <img
+          src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif"
+          ng-if="loading" class="lg-top-margin">
         <form id="request-form" name="forms.requestForm">
           <div sf-model="form.model" sf-form="form.definition"
             sf-schema="form.schema"></div>
