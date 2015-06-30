@@ -51,7 +51,16 @@ function obiba_mica_study_page_list() {
   $pager_output = theme('pager', array('quantity' => $study_limits));
   $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
+    $i = 0;
+    $close_div = FALSE;
     foreach ($summaries as $study) {
+      //Group 2 studies within a row div
+      if ($i % 2 == 0) {
+        $themed_studies .= '<div class="row">';
+      }
+      else {
+        $close_div = TRUE;
+      }
       if (!empty($study->logo->id)) {
         $logo_url = obiba_mica_commons_safe_expose_server_url($study->id, $study->logo, 'study');
       }
@@ -63,6 +72,11 @@ function obiba_mica_study_page_list() {
         'logo_url' => $logo_url,
         'network_digests' => $response->getNetworkDigests($study->id)
       ));
+      if ($close_div) {
+        $themed_studies .= "</div>";
+      }
+      $close_div = FALSE;
+      $i++;
     }
   }
   else {
