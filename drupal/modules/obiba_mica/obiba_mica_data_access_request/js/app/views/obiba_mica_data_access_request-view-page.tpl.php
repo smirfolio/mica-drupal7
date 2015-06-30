@@ -9,10 +9,10 @@
   -->
 <div>
   <h2 class="page-header">
-    <?php print l('<i class="glyphicon glyphicon-chevron-left"></i>',
-      MicaClientPathProvider::DATA_ACCESS_LIST,
-      array('title' => t(variable_get_value('access_my_requests_button')))); ?>
-
+    <a href="<?php print url(MicaClientPathProvider::DATA_ACCESS_LIST); ?>"
+       title="<?php print t(variable_get_value('access_my_requests_button')); ?>">
+      <i class="glyphicon glyphicon-chevron-left"></i>
+    </a>
     <?php print t(variable_get_value('access_request_page_title')); ?>:
     {{dataAccessRequest.id}}
   </h2>
@@ -28,12 +28,6 @@
     </p>
 
     <div class="pull-right">
-      <a ng-href="#/edit/{{dataAccessRequest.id}}"
-        ng-if="actions.canEdit(dataAccessRequest)"
-        class="btn btn-primary">
-        <i class="glyphicon glyphicon-edit"></i>
-        <?php print t('Edit'); ?>
-      </a>
       <a ng-click="submit()"
         ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canSubmit(dataAccessRequest)"
         class="btn btn-info"><?php print t('Submit'); ?>
@@ -54,6 +48,12 @@
       <a ng-click="reject()"
         ng-if="actions.canEditStatus(dataAccessRequest) && nextStatus.canReject(dataAccessRequest)"
         class="btn btn-info"><?php print t('Reject'); ?>
+      </a>
+      <a ng-href="#/edit/{{dataAccessRequest.id}}"
+         ng-if="actions.canEdit(dataAccessRequest)"
+         class="btn btn-primary">
+        <i class="glyphicon glyphicon-edit"></i>
+        <?php print t('Edit'); ?>
       </a>
       <a target="_self" ng-href="" class="btn btn-default download-btn">
         <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t(variable_get_value('access_download_button')); ?></span>
