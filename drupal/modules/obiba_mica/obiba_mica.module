@@ -9,7 +9,6 @@
  * Implements hook_menu().
  */
 function obiba_mica_menu() {
-  global $user;
   $items = array();
 
   $items['admin/config/system/obiba'] = array(

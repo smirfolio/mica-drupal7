@@ -12,7 +12,7 @@
   <?php print l('<i class="fa fa-plus"></i> ' . t(variable_get_value('access_new_request_button')), 'mica/data-access/request', array(
       'html' => TRUE,
       'fragment' => '/new',
-      'attributes' => array('class' => array('btn', 'btn-info'))
+      'attributes' => array('class' => array('btn', 'btn-info'), 'id' => 'new-data-access-request')
     )
   ); ?>
 
