@@ -275,11 +275,13 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
     obiba_mica_commons_datatables_external_source();
   }
 
+  global $user;
   $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->get_requests();
 
   drupal_add_js(drupal_get_path('module', 'obiba_mica_data_access_request') .
     '/js/obiba_mica_data_access_request_datatable_init.js', 'file');
   drupal_add_js(array(
+    'user' => $user,
     'table_headers' => array(
       array("title" => t('ID')),
       array("title" => t('Applicant')),

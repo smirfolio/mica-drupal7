@@ -2,6 +2,7 @@
   Drupal.behaviors.mica_data_access_request_datatable_init = {
 
     attach: function (context, settings) {
+      var user = Drupal.settings.user;
       var basePath = Drupal.settings.basePath + 'mica/data-access/request';
       var ACTIONS = { VIEW: 'glyphicon-eye-open',
         DELETE: 'glyphicon-trash',
@@ -16,6 +17,15 @@
       };
 
       if (context === document) {
+        if (user && user.roles) {
+          $.each(user.roles, function(key, role){
+            if (role === 'mica-data-access-officer') {
+              $('a#new-data-access-request').remove();
+              return;
+            }
+          });
+        }
+
         var divRequests = $('#table-requests'),
           colDefs = [
             {
