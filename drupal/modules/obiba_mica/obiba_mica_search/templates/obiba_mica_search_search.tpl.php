@@ -101,8 +101,10 @@ if (!empty($search_param)) {
                     </div>
                   <?php else: ?>
                     <div class="pull-right no-padding">
-                      <div class="col-md-3"><?php print render($variable_select_size_form); ?></div>
-                      <div class="col-md-9 no-padding"><?php print render($variable_search_form) ?> </div>
+                      <div
+                        class="col-md-4"><?php print render($variable_select_size_form); ?></div>
+                      <div
+                        class="col-md-8 no-padding"><?php print render($variable_search_form) ?> </div>
                     </div>
                   <?php endif; ?>
                 </div>
