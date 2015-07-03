@@ -4,7 +4,7 @@ package = Obiba
 core = 7.x
 
 
-; Information added by obiba.org packaging script on Fri, 03 Jul 2015 14:54:07 -0400
+; Information added by obiba.org packaging script on Fri, 03 Jul 2015 15:18:59 -0400
 version = 7.34-1.0.3-dev
 project = obiba_main_app_angular
-datestamp = 1435949647
+datestamp = 1435951139

@@ -91,7 +91,7 @@ scripts[] = js/obiba-bootstrap-progressbar-controller.js
 ; --------------
 settings[bootstrap_region_well-facets] = 'well'
 
-; Information added by obiba.org packaging script on Fri, 03 Jul 2015 14:54:07 -0400
+; Information added by obiba.org packaging script on Fri, 03 Jul 2015 15:18:59 -0400
 version = 7.34-1.0.3-dev
 project = obiba_bootstrap
-datestamp = 1435949647
+datestamp = 1435951139

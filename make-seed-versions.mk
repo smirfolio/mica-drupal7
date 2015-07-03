@@ -14,6 +14,7 @@ inject-version-info:
 	$(call inject-version-info,modules/obiba_mica,obiba_mica_search,$(mica_version))
 	$(call inject-version-info,modules/obiba_mica,obiba_mica_study,$(mica_version))
 	$(call inject-version-info,modules/obiba_mica,obiba_main_app_angular,$(mica_version))
+	$(call inject-version-info,modules/obiba_mica,obiba_mica_data_access_request,$(mica_version))
 	$(call inject-version-info,themes/,obiba_bootstrap,$(mica_version))
 	git commit -a -m "version updated to $(mica_current_tag)"
 
