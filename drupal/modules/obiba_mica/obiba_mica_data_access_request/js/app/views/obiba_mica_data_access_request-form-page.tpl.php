@@ -25,13 +25,13 @@
   <obiba-alert id="DataAccessRequestEditController"></obiba-alert>
 
   <div ng-hide="serverError">
-  <div class="pull-right">
-    <?php print l(t('Cancel'), MicaClientPathProvider::DATA_ACCESS_LIST, array(
-        'attributes' => array(
-          'class' => 'btn btn-default',
-          'ng-if' => 'newRequest'
-        )
-      )); ?>
+    <div class="pull-right">
+      <?php print l(t('Cancel'), MicaClientPathProvider::DATA_ACCESS_LIST, array(
+          'attributes' => array(
+            'class' => 'btn btn-default',
+            'ng-if' => 'newRequest'
+          )
+        )); ?>
 
       <a ng-if="!newRequest" ng-click="cancel()" type="button" class="btn btn-default">
         <?php print t('Cancel'); ?>
