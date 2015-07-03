@@ -1,4 +1,4 @@
-mica_current_tag = 1.0.3
+mica_current_tag = 1.0.3-dev
 mica_branch_version=1.0.x
 drupal_version = 7.34
 mica_version=$(drupal_version)-$(mica_current_tag)
