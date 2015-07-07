@@ -25,18 +25,26 @@
 
 <?php if ($data_access_list_display) : ?>
   <p class="md-top-margin text-center">
-    <?php print l(t(variable_get_value('access_my_requests_button')), 'mica/data_access/requests',
+    <?php
+    $can_access = obiba_mica_data_access_request_user_permission(MicaDataAccessRequest::LIST_DATA_ACCESS);
+    if ($can_access) {
+      print l(t(variable_get_value('access_my_requests_button')), 'mica/data_access/requests',
       array(
         'attributes' => array('class' => array('btn', 'btn-primary'))
       )
-    ); ?>
-    <?php print l('<i class="fa fa-plus"></i> ' . t(variable_get_value('access_new_request_button')), 'mica/data-access/request',
-      array(
-        'attributes' => array('class' => array('btn', 'btn-info', 'indent')),
-        'fragment' => 'new',
-        'html' => true
-      )
-    ); ?>
+      );
+    } ?>
+    <?php
+    $can_access = obiba_mica_data_access_request_user_permission(MicaDataAccessRequest::NEW_DATA_ACCESS);
+    if ($can_access) {
+      print l('<i class="fa fa-plus"></i> ' . t(variable_get_value('access_new_request_button')), 'mica/data-access/request',
+        array(
+          'attributes' => array('class' => array('btn', 'btn-info', 'indent')),
+          'fragment' => 'new',
+          'html' => TRUE
+        )
+      );
+    } ?>
   </p>
 <?php endif; ?>
 

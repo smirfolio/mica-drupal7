@@ -129,6 +129,7 @@ function obiba_mica_data_access_request_menu() {
 function obiba_mica_data_access_request_permission_check() {
   return obiba_mica_commons_is_authorized_agate_user();
 }
+
 /**
  * Implements hook_load_menus (obiba_main_app_angular_)
  */
@@ -295,17 +296,43 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
   ), 'setting');
 }
 
+/**
+ * Implements hook_permission().
+ */
+function obiba_mica_data_access_request_permission() {
+  $perms = array();
+  foreach (array(
+             MicaDataAccessRequest::LIST_DATA_ACCESS,
+             MicaDataAccessRequest::NEW_DATA_ACCESS
+           ) as $type) {
+    $perms += array(
+      "can_see_$type" => array(
+        'title' => t('Can see %type_name ', array('%type_name' => $type)),
+      )
+    );
+  }
+  return $perms;
+}
+
+/*
+ * Function to deal with permitted action
+ * @param : $action :
+ * */
+
+function obiba_mica_data_access_request_user_permission($action) {
+  return user_access('can_see_' . $action);
+}
+
 function obiba_mica_data_access_request_table_rows($requests) {
 
   // Reuse the same translation as the angular app code
   global $language;
   $js_dictionary_file = drupal_get_path('module', 'obiba_main_app_angular') . '/i18n/' . $language->language . '.json';
-  $js_dictionary = json_decode(file_get_contents($js_dictionary_file), true);
+  $js_dictionary = json_decode(file_get_contents($js_dictionary_file), TRUE);
   $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->get_requests();
 
-
   if (empty($requests->responseCode) && !empty($requests)) {
-    $res = array_map(function ($r) use($js_dictionary) {
+    $res = array_map(function ($r) use ($js_dictionary) {
       $r->submission_date = NULL;
       if ($r->status != 'OPENED') {
         foreach ($r->statusChangeHistory as $change) {
