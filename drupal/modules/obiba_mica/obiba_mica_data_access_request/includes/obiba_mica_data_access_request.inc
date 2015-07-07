@@ -13,7 +13,8 @@ include_once($path_module_data_access . '/includes/obiba_mica_data_access_resour
  * Class MicaStudyResource
  */
 class MicaDataAccessRequest extends MicaDataAccessRequestResources {
-
+  const LIST_DATA_ACCESS = 'list-data-access';
+  const NEW_DATA_ACCESS = 'new-data-access';
   public function __construct($mica_url = NULL, $method = 'METHOD_POST') {
     parent::__construct($mica_url, $method);
   }

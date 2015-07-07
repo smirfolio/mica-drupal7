@@ -4,10 +4,12 @@
     attach: function (context, settings) {
       var user = Drupal.settings.user;
       var basePath = Drupal.settings.basePath + 'mica/data-access/request';
-      var ACTIONS = { VIEW: 'glyphicon-eye-open',
+      var ACTIONS = {
+        VIEW: 'glyphicon-eye-open',
         DELETE: 'glyphicon-trash',
         EDIT: 'glyphicon-edit'
-      }, HREF_ACTIONS = {VIEW: basePath + '#/view/{}',
+      }, HREF_ACTIONS = {
+        VIEW: basePath + '#/view/{}',
         DELETE: basePath + '/delete/{}/ws',
         EDIT: basePath + '#/edit/{}'
       };
@@ -17,39 +19,30 @@
       };
 
       if (context === document) {
-        if (user && user.roles) {
-          $.each(user.roles, function(key, role){
-            if (role === 'mica-data-access-officer') {
-              $('a#new-data-access-request').remove();
-              return;
-            }
-          });
-        }
-
         var divRequests = $('#table-requests'),
           colDefs = [
             {
               targets: -1,
               render: function (data, type, row) {
                 return '<ul class="list-inline no-margin">' + data.map(function (action) {
-                  if (action in ACTIONS) {
-                    if (action === 'DELETE') {
-                      var titleInMOdal = row[2] ? row[2] : row[row.length - 1];
-                      return '<li><a  title="' + Drupal.t(action) + '"' +
-                        'data-target="#delete-modal" id="' + action +
-                        '" href="' + hrefBuilder(action, row[row.length - 1]) +
-                        '" data-action="' + action +
-                        '"data-access-applicant="' + row[1] +
-                        '" data-access-title="' + titleInMOdal + '">' +
-                        ' <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
+                    if (action in ACTIONS) {
+                      if (action === 'DELETE') {
+                        var titleInMOdal = row[2] ? row[2] : row[row.length - 1];
+                        return '<li><a  title="' + Drupal.t(action) + '"' +
+                          'data-target="#delete-modal" id="' + action +
+                          '" href="' + hrefBuilder(action, row[row.length - 1]) +
+                          '" data-action="' + action +
+                          '"data-access-applicant="' + row[1] +
+                          '" data-access-title="' + titleInMOdal + '">' +
+                          ' <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
+                      }
+                      else {
+                        return '<li><a title="' + Drupal.t(action) + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
+                      }
                     }
-                    else {
-                      return '<li><a title="' + Drupal.t(action) + '" href="' + hrefBuilder(action, row[row.length - 1]) + '" data-action="' + action + '"><i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
-                    }
-                  }
 
-                  return '';
-                }).join(' ') + '</ul>';
+                    return '';
+                  }).join(' ') + '</ul>';
               }
             }
           ];
