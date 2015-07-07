@@ -116,6 +116,14 @@
 
             this.status = statusList;
 
+            this.parseJsonSafely = function(json, defaultValue) {
+              try {
+                return JSON.parse(json);
+              } catch (e) {
+                return defaultValue;
+              }
+            };
+
             this.getStatusFilterData = function () {
               return Object.keys(statusList).map(function (key) {
                 return $filter('translate')(statusList[key]);

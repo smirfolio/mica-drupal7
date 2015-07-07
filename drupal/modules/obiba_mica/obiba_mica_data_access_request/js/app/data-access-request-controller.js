@@ -109,14 +109,45 @@
             $scope.getStatusHistoryInfo = DataAccessRequestService.getStatusHistoryInfo();
             var getRequest = function () {
               return DataAccessRequestResource.get({id: $routeParams.id}, function onSuccess(request) {
-                $scope.form.model = request.content ? JSON.parse(request.content) : {};
+                try {
+                  $scope.form.model = request.content ? JSON.parse(request.content) : {};
+                } catch (e) {
+                  $scope.serverError = true;
+                  $scope.form.model = {};
+                  AlertService.alert({
+                    id: 'DataAccessRequestViewController',
+                    type: 'danger',
+                    msgKey: 'data-access-request.parse-error'
+                  });
+                }
 
                 // Retrieve form data
                 DataAccessFormResource.get(
                   function onSuccess(dataAccessForm) {
+
                     $scope.requestId = request.id;
-                    $scope.form.definition = JSON.parse(dataAccessForm.definition);
-                    $scope.form.schema = JSON.parse(dataAccessForm.schema);
+                    $scope.form.definition = DataAccessRequestService.parseJsonSafely(dataAccessForm.definition, []);
+                    $scope.form.schema = DataAccessRequestService.parseJsonSafely(dataAccessForm.schema, {});
+
+                    if ($scope.form.definition.length === 0) {
+                      $scope.serverError = true;
+                      $scope.form.definition = [];
+                      AlertService.alert({
+                        id: 'DataAccessRequestViewController',
+                        type: 'danger',
+                        msgKey: 'data-access-config.parse-error.definition'
+                      });
+                    }
+                    if (Object.getOwnPropertyNames($scope.form.schema).length === 0) {
+                      $scope.serverError = true;
+                      $scope.form.schema = {readonly: true};
+                      AlertService.alert({
+                        id: 'DataAccessRequestViewController',
+                        type: 'danger',
+                        msgKey: 'data-access-config.parse-error.schema'
+                      });
+                    }
+
                     $scope.form.schema.readonly = true;
                     $("a.download-btn").on('click', function (event) {
                       // create a form for the file upload
@@ -345,22 +376,53 @@
               function onSuccess(dataAccessForm) {
 
                 if (dataAccessForm.definition) {
-                  $scope.form.definition = JSON.parse(dataAccessForm.definition);
-                  $scope.form.schema = JSON.parse(dataAccessForm.schema);
+                  $scope.form.definition = DataAccessRequestService.parseJsonSafely(dataAccessForm.definition, []);
+                  $scope.form.schema = DataAccessRequestService.parseJsonSafely(dataAccessForm.schema, {});
 
-                  $scope.dataAccessRequest = $routeParams.id ?
-                    DataAccessRequestResource.get({id: $routeParams.id}, function onSuccess(request) {
-                      $scope.form.model = request.content ? JSON.parse(request.content) : {};
-                      $scope.canEdit = DataAccessRequestService.actions.canEdit(request);
-                      $scope.form.schema.readonly = !$scope.canEdit;
-                      $scope.$broadcast('schemaFormRedraw');
-                      request.attachments = request.attachments || [];
-                      return request;
-                    }, onError) : {
-                    applicant: user.name,
-                    status: DataAccessRequestService.status.OPENED,
-                    attachments: []
-                  };
+                  if ($scope.form.definition.length === 0) {
+                    $scope.serverError = true;
+                    $scope.form.definition = [];
+                    AlertService.alert({
+                      id: 'DataAccessRequestEditController',
+                      type: 'danger',
+                      msgKey: 'data-access-config.parse-error.definition'
+                    });
+                  }
+                  if (Object.getOwnPropertyNames($scope.form.schema).length === 0) {
+                    $scope.serverError = true;
+                    $scope.form.schema = {readonly: true};
+                    AlertService.alert({
+                      id: 'DataAccessRequestEditController',
+                      type: 'danger',
+                      msgKey: 'data-access-config.parse-error.schema'
+                    });
+                  }
+
+                  if (!$scope.serverError) {
+                    $scope.dataAccessRequest = $routeParams.id ?
+                      DataAccessRequestResource.get({id: $routeParams.id}, function onSuccess(request) {
+                        try {
+                          $scope.form.model = request.content ? JSON.parse(request.content) : {};
+                        } catch (e) {
+                          $scope.form.model = {};
+                          AlertService.alert({
+                            id: 'DataAccessRequestEditController',
+                            type: 'danger',
+                            msgKey: 'data-access-request.parse-error'
+                          });
+                        }
+
+                        $scope.canEdit = DataAccessRequestService.actions.canEdit(request);
+                        $scope.form.schema.readonly = !$scope.canEdit;
+                        $scope.$broadcast('schemaFormRedraw');
+                        request.attachments = request.attachments || [];
+                        return request;
+                      }, onError) : {
+                      applicant: user.name,
+                      status: DataAccessRequestService.status.OPENED,
+                      attachments: []
+                    };
+                  }
                 }
                 else {
                   var errorMessage = {

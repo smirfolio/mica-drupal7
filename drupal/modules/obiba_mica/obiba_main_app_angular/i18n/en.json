@@ -34,7 +34,9 @@
   },
   "errors": {
     "title": "Error page!",
-    "403": "You are not authorized to access the page."
+    "403": "You are not authorized to access the page.",
+    "404": "Demande d'accès n'a pas été trouvé. Assurez-vous que le ID est valide.",
+    "data-access-request.not-found": "Demande d'accès '{{arg0}}' n'a pas été trouvé. Assurez-vous que le ID est valide."
   },
   "all": "All",
   "name": "Name",
@@ -147,7 +149,8 @@
     "submit-confirmation": {
       "title": "Form Submitted",
       "message": "Your access form was successfully submitted."
-    }
+    },
+    "parse-error": "Form content is not a valid document, please contact your administrator for more help."
   },
   "data-access-config": {
     "menu": "Data Access",
@@ -174,6 +177,14 @@
     "model": {
       "tab": "Model",
       "info": "The form model stores the valid input data, invalid values are excluded."
+    },
+    "syntax-error": {
+      "definition": "Form definition is not a valid document, please revise and correct the errors.",
+      "schema": "Form schema is not a valid document, please revise and correct the errors."
+    },
+    "parse-error": {
+      "definition": "Form definition is not a valid document, please contact your administrator to configure the form definition.",
+      "schema": "Form schema is not a valid document, please contact your administrator to configure the form schema."
     }
   },
   "comment": {
