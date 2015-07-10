@@ -23,7 +23,7 @@ function obiba_main_app_angular_drush_command() {
 
 function obiba_mica_drush_angular_app() {
   //download lib by bower installer
-  $bower_install_cmd = "bower install";
+  $bower_install_cmd = "cd sites/all/modules/obiba_mica && bower install";
   if ($out = drush_shell_exec($bower_install_cmd)) {
     print($out);
     drush_log(dt('Angular-js dependencies downloaded in /bower_components'), 'success');
@@ -43,19 +43,15 @@ function obiba_mica_drush_angular_app() {
     }
     if (!is_dir($path . '/sites/all/libraries/angular-app')) {
       drush_op('mkdir', $path . '/sites/all/libraries/angular-app');
-
     }
     $path = $path . '/sites/all/libraries/angular-app';
-
-    $path_to_del = 'bower_components/';
-
-    $mv_cmd = "mv $path_to_del* $path";
+    $bower_components_dir = 'sites/all/modules/obiba_mica/bower_components/';
+    $mv_cmd = "mv $bower_components_dir* $path";
     if (drush_shell_exec($mv_cmd)) {
       drush_log(dt('angular-schema-form dependencies moved to !path.', array('!path' => ' ' . $path)), 'success');
-
-      $rm_cmd = "rm " . '-rf ' . $path_to_del;
+      $rm_cmd = "rm " . '-rf ' . $bower_components_dir;
       if (drush_shell_exec($rm_cmd)) {
-        drush_log(dt('angular-schema-form downloaded folder deleted !path.', array('!path' => ' ' . $path_to_del)), 'success');
+        drush_log(dt('angular-schema-form downloaded folder deleted !path.', array('!path' => ' ' . $bower_components_dir)), 'success');
       }
     }
   }
