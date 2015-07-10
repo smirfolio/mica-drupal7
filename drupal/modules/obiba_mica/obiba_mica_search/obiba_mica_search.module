@@ -170,6 +170,22 @@ function obiba_mica_search_block_info() {
     'weight' => 10,
     'custom' => 1,
   );
+
+  $blocks['search_help_info'] = array(
+    'info' => t('Search Help information'),
+    'status' => 0,
+    'region' => 'obiba_help',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/search*'
+  );
+  $blocks['coverage_help_info'] = array(
+    'info' => t('Coverage Help information'),
+    'status' => 0,
+    'region' => 'obiba_help',
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '*mica/coverage*'
+  );
+
   return $blocks;
 }
 
@@ -177,13 +193,23 @@ function obiba_mica_search_block_info() {
  * Implements hook_block_view().
  */
 function obiba_mica_search_block_view($delta = '') {
+  $block = array();
   switch ($delta) {
     case 'facet-search':
       $output = _get_facets_theme();
       $block['subject'] = t('Facet search');
       $block['content'] = $output;
-      return $block;
+      break;
+    case 'search_help_info':
+      $block['subject'] = '';
+      $block['content'] = variable_get_value('help_text_search_page');
+      break;
+    case 'coverage_help_info':
+      $block['subject'] = '';
+      $block['content'] = variable_get_value('help_text_harmonization_potential_page');
+      break;
   }
+  return $block;
 }
 
 function _get_facets_theme() {

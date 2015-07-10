@@ -31,6 +31,7 @@ function obiba_mica_variable_info($options) {
     'default' => 1440,
   );
 
+  _obiba_mica_variable_settings_search_page($variable);
   _obiba_mica_variable_info_networks($variable);
   _obiba_mica_variable_info_studies($variable);
   _obiba_mica_variable_info_datasets($variable);
@@ -69,6 +70,23 @@ function obiba_mica_variable_info($options) {
   );
 
   return $variable;
+}
+
+function _obiba_mica_variable_settings_search_page(&$variable) {
+  $variable['help_text_search_page'] = array(
+    'title' => t('Help text'),
+    'description' => t('Help text to display on the search page'),
+    'type' => 'string',
+    'default' => '<i class="glyphicon glyphicon-info-sign"></i> Search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.',
+  );
+
+  $variable['help_text_harmonization_potential_page'] = array(
+    'title' => t('Help text'),
+    'description' => t('Help text to display on the harmonization potential page'),
+    'type' => 'string',
+    'default' => '<i class="glyphicon glyphicon-info-sign"></i> The Repository search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.',
+  );
+
 }
 
 function _obiba_mica_variable_info_mica_server(&$variable) {

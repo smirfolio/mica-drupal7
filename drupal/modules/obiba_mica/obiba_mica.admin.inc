@@ -70,6 +70,7 @@ function obiba_mica_admin_settings() {
     '#collapsible' => FALSE,
   );
 
+  _obiba_mica_settings_search_page($form);
   _obiba_mica_settings_networks_form($form);
   _obiba_mica_settings_studies_form($form);
   _obiba_mica_settings_datasets_form($form);
@@ -140,6 +141,40 @@ function obiba_mica_admin_settings() {
 
   $form['#submit'] = array('obiba_mica_default_password');
   return system_settings_form($form);
+}
+
+/**
+ * settings of search page
+ * @param $form
+ */
+function _obiba_mica_settings_search_page(&$form) {
+  $form['search_display_settings']['page_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Search Page Settings'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('help_text_search_page');
+  $form['search_display_settings']['page_settings']['help_text_search_page'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('help_text_search_page'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  // tab
+  $info = variable_get_info('help_text_harmonization_potential_page');
+  $form['search_display_settings']['page_settings']['help_text_harmonization_potential_page'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('help_text_harmonization_potential_page'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
 }
 
 function _obiba_mica_settings_server_form(&$form) {

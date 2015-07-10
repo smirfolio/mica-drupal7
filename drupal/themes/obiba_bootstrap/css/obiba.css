@@ -9997,3 +9997,8 @@ li.next.last,
 li.prev.first {
   text-transform: capitalize;
 }
+
+.help-info-box {
+  margin-left: 15px;
+  margin-right: 15px;
+}
