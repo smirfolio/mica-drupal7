@@ -83,18 +83,19 @@ if (arg(0) == "agate") { /* check if the path is example.com/agate */
     <div class="navbar-header">
       <?php if ($logo): ?>
         <a class="logo navbar-btn pull-left" href="<?php print $front_page; ?>"
-           title="<?php print t('Home'); ?>">
+          title="<?php print t('Home'); ?>">
           <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>"/>
         </a>
       <?php endif; ?>
 
       <?php if (!empty($site_name)): ?>
         <a class="name navbar-brand" href="<?php print $front_page; ?>"
-           title="<?php print t('Home'); ?>"><?php print $site_name; ?></a>
+          title="<?php print t('Home'); ?>"><?php print $site_name; ?></a>
       <?php endif; ?>
 
       <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <button type="button" class="navbar-toggle" data-toggle="collapse"
+        data-target=".navbar-collapse">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -124,9 +125,9 @@ if (arg(0) == "agate") { /* check if the path is example.com/agate */
               <?php print $user->name ?>
               <i class="fa fa-caret-down"></i></a>
             <ul class="dropdown-menu pull-right">
-              <li><?php print l('<i class="fa fa-cog"></i> ' . t('My Profile'), 'user', array('html' => true)) ?></li>
+              <li><?php print l('<i class="fa fa-cog"></i> ' . t('My Profile'), 'user', array('html' => TRUE)) ?></li>
               <li class="divider"></li>
-              <li><?php print l('<i class="fa fa-sign-out"></i> ' . t('Sign Out'), 'user/logout', array('html' => true)) ?></li>
+              <li><?php print l('<i class="fa fa-sign-out"></i> ' . t('Sign Out'), 'user/logout', array('html' => TRUE)) ?></li>
             </ul>
           </li>
         </ul>
@@ -167,7 +168,16 @@ if (arg(0) == "agate") { /* check if the path is example.com/agate */
         <?php print $title; ?>
       </h1>
     <?php endif; ?>
-
+    <?php if (!empty($page['obiba_help'])): ?>
+      <div class="row ">
+        <div class="help-info-box alert alert-info alert-dismissible"
+          role="alert">
+          <button type="button" class="close" data-dismiss="alert"
+            aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <?php print render($page['obiba_help']); ?>
+        </div>
+      </div>
+    <?php endif; ?>
     <?php if (!empty($page['sidebar_first']) || !empty($page['facets'])): ?>
       <aside class="col-sm-4 col-lg-3" role="complementary">
         <?php if (!empty($page['facets'])): ?>
@@ -181,7 +191,8 @@ if (arg(0) == "agate") { /* check if the path is example.com/agate */
 
     <section<?php print $content_column_class; ?>>
       <?php if (!empty($page['highlighted'])): ?>
-        <div class="highlighted jumbotron"><?php print render($page['highlighted']); ?></div>
+        <div
+          class="highlighted jumbotron"><?php print render($page['highlighted']); ?></div>
       <?php endif; ?>
 
       <a id="main-content"></a>
@@ -210,7 +221,8 @@ if (arg(0) == "agate") { /* check if the path is example.com/agate */
 
     <!-- Fixed side -->
     <div id="fixed-sidebar">
-      <div id="sidebar-wrapper" class="side-bar-content sidebar-untoggled"></div>
+      <div id="sidebar-wrapper"
+        class="side-bar-content sidebar-untoggled"></div>
     </div>
     <!-- /#Fixed side -->
 
