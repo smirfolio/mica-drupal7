@@ -11,5 +11,5 @@ files[] = includes/obiba_mica_data_access_request_comment.inc
 dependencies[] = http_client
 dependencies[] = obiba_agate
 
-version = 7.34-1.0.3
+version = 7.34-1.0-dev
 project = obiba_mica_data_access_request
