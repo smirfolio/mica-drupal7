@@ -5,7 +5,6 @@
 
 <article>
 <section>
-
   <div class="row">
     <div class="col-lg-6 col-xs-12 ">
       <h2><?php print t('Overview') ?></h2>
@@ -166,7 +165,14 @@
 <!-- STATISTICS -->
 <?php if (variable_get_value('mica_statistics')): ?>
   <section>
-    <h2><?php print t('Statistics') ?></h2>
+    <h2><?php print t('Statistics') ?>
+      <?php if (strcasecmp($variable_dto->nature, 'categorical') === 0): ?>
+        <span class="pull-right">
+        <?php if (variable_get_value('mica_statistics')) print MicaClientAnchorHelper::variable_crosstab($variable_dto, TRUE) ?>
+      </span>
+      <?php endif;?>
+
+    </h2>
     <?php
     $column_for_detail_statistics = 6;
     if (!variable_get_value('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema') : ?>
