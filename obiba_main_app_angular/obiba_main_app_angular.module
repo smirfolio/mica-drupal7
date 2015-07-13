@@ -134,7 +134,7 @@ function obiba_main_app_angular_load_js_resources() {
   obiba_main_app_angular_load_js_by_folder_app('attachment');
   obiba_main_app_angular_load_js_by_folder_app('file');
   obiba_main_app_angular_load_external_app_js();
-  global $user;
+  global $user, $language;
   // Add CSRF token required by restWS.
   $js_settings = array(
     'angularjsApp' => array(
@@ -142,7 +142,8 @@ function obiba_main_app_angular_load_js_resources() {
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
       'authenticated' => AgateClient::hasTicket() || user_is_logged_in(),
       //  'restws_csrf_token' => drupal_get_token('restws'),
-      'user' => $user
+      'user' => $user,
+      'locale' => $language->language
     )
   );
 
@@ -270,9 +271,14 @@ function obiba_main_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer'
         ),
+        $lib_path_schema_form . '/angular-ui-select/dist/select.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
       ),
       'css' => array(
-        $lib_path_schema_form . '/ng-obiba/dist/css/ng-obiba.css' => array()
+        $lib_path_schema_form . '/ng-obiba/dist/css/ng-obiba.css' => array(),
+        $lib_path_schema_form . '/angular-ui-select/dist/select.css' => array()
       )
     );
   }

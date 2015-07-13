@@ -576,3 +576,25 @@ function obiba_mica_dataset_get_variables($dataset_id) {
     )
   ), 0);
 }
+
+function obiba_mica_dataset_variables_search($dataset_type, $dataset_id, $query = NULL, $nature = NULL) {
+  $dataset_resource = new MicaDatasetResource();
+  $nature_query = empty($nature) ? 'nature:categorical OR nature:continuous' : 'nature:' . $nature;
+  $query_string = empty($query) ? NULL : $query . ' AND ' . $nature_query;
+
+  $variables = $dataset_resource->get_variables($dataset_type, $dataset_id, 0, 10, NULL, NULL, $query_string);
+  drupal_json_output($variables);
+}
+
+function obiba_mica_dataset_variables_crosstab($dataset_type, $dataset_id, $variable1, $variable2) {
+  $dataset_resource = new MicaDatasetResource();
+
+  $variables = $dataset_resource->cross_variables($dataset_type, $dataset_id, $variable1, $variable2);
+  drupal_json_output($variables);
+}
+
+function obiba_mica_dataset_variable_info($variable_id) {
+  $dataset_resource = new MicaDatasetResource();
+  $variable_dto = $dataset_resource->get_variable($variable_id);
+  drupal_json_output($variable_dto);
+}

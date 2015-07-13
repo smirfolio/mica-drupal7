@@ -22,6 +22,7 @@ class MicaClientPathProvider {
   const HARMONIZATION_DATASET = 'mica/harmonization-dataset/{id}';
   const HARMONIZATION_VARIABLE = 'mica/variable/{id}:{name}:Dataschema';
   const SEARCH = 'mica/search';
+  const CROSSTAB = 'mica/variables';
   const COVERAGE = 'mica/coverage';
   const DATA_ACCESS_HOME = 'mica/data_access/home';
   const DATA_ACCESS_LIST = 'mica/data_access/requests';
@@ -35,6 +36,15 @@ class MicaClientPathProvider {
   }
 
   static function dataset($dataset) {
+    if (empty($dataset->{'obiba.mica.StudyDatasetDto.type'})
+      && empty($dataset->{'obiba.mica.HarmonizationDatasetDto.type'})) {
+
+      // DTO object
+      return !empty($dataset->getExtensionList('obiba.mica.StudyDatasetDto.type'))
+        ? self::study_dataset($dataset->id)
+        : self::harmonization_dataset($dataset->id);
+    }
+
     return !empty($dataset->{'obiba.mica.StudyDatasetDto.type'})
       ? self::study_dataset($dataset->id)
       : self::harmonization_dataset($dataset->id);
@@ -253,6 +263,19 @@ class MicaClientAnchorHelper {
     return self::list_item($dataset, MicaClientPathProvider::dataset($dataset));
   }
 
+  static function dataset_crosstab($dataset, $is_button = FALSE) {
+    $res = l(
+      t('Crosstabs'),
+      MicaClientPathProvider::CROSSTAB,
+      array(
+        'attributes' => array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES),
+        'fragment' => preg_replace('/mica\\//', '/crosstab/', MicaClientPathProvider::dataset($dataset))
+      )
+    );
+
+    return $res;
+  }
+
   static function dataset_variables($text, $dataset_id, array $attributes = array()) {
     $query = MicaClient::add_parameter_dto_query_link( //
       array('variables' => array('terms' => array('datasetId' => $dataset_id))) //
@@ -358,6 +381,24 @@ class MicaClientAnchorHelper {
       $datasetName,
       MicaClientPathProvider::variable_dataset($variable)
     );
+  }
+
+
+  static function variable_crosstab($variable, $is_button = FALSE) {
+    $dataset = $variable->variableType === 'Study'
+      ? MicaClientPathProvider::study_dataset($variable->datasetId)
+      : MicaClientPathProvider::harmonization_dataset($variable->datasetId);
+
+    $res = l(
+      t('Crosstabs'),
+      MicaClientPathProvider::CROSSTAB,
+      array(
+        'attributes' => array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES),
+        'fragment' => preg_replace('/mica\\//', '/crosstab/', $dataset) . '/variable/' . $variable->id
+      )
+    );
+
+    return $res;
   }
 
   static function variable_harmonized($variable) {
