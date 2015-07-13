@@ -2,12 +2,10 @@ name = "Obiba Mica Datasets "
 description = "Mica Client -- Datasets"
 package = Obiba
 core = 7.x
+
 dependencies[] = obiba_mica_commons
 dependencies[] = obiba_mica_model
 dependencies[] = obiba_mica_study
 
-
-; Information added by obiba.org packaging script on Fri, 03 Jul 2015 15:18:59 -0400
-version = 7.34-1.0.3-dev
+version = 7.34-1.0.3
 project = obiba_mica_dataset
-datestamp = 1435951139

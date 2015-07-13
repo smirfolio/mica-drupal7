@@ -11,9 +11,5 @@ files[] = includes/obiba_mica_data_access_request_comment.inc
 dependencies[] = http_client
 dependencies[] = obiba_agate
 
-
-
-; Information added by obiba.org packaging script on Fri, 03 Jul 2015 15:18:59 -0400
-version = 7.34-1.0.3-dev
+version = 7.34-1.0.3
 project = obiba_mica_data_access_request
-datestamp = 1435951139
