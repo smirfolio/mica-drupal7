@@ -23,7 +23,7 @@ function obiba_main_app_angular_drush_command() {
 
 function obiba_mica_drush_angular_app() {
   //download lib by bower installer
-  $bower_install_cmd = "cd sites/all/modules/obiba_mica && bower install";
+  $bower_install_cmd = "cd sites/all/modules/obiba_mica && bower --allow-root install";
   if ($out = drush_shell_exec($bower_install_cmd)) {
     print($out);
     drush_log(dt('Angular-js dependencies downloaded in /bower_components'), 'success');
