@@ -8,5 +8,4 @@ dependencies[] = obiba_mica_model
 
 files[] = includes/obiba_mica_study_resource.inc
 
-version = 7.34-1.0-dev
-project = obiba_mica_study
+project = obiba_mica_studyversion = 7.x-1.1-dev

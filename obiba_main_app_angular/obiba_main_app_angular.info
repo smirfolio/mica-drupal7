@@ -3,5 +3,5 @@ description = "Obiba Angular main app"
 package = Obiba
 core = 7.x
 
-version = 7.34-1.0-dev
 project = obiba_main_app_angular
+version = 7.x-1.1-dev
