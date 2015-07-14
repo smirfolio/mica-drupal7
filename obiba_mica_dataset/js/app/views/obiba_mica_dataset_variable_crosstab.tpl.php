@@ -53,32 +53,33 @@
     <input type="checkbox" ng-model="showDetails"> {{'show-details' | translate}}
   </label>
 
-  <table class="table table-bordered no-margin no-padding">
+    <table class="table table-striped table-bordered no-margin no-padding">
     <thead>
       <tr>
-        <th width="20%" rowspan="{{crosstab.lhs.variable.categories.length}}">{{'study-tables' | translate}}</th>
+        <th ng-if="datasetHarmo" width="20%" rowspan="{{crosstab.lhs.variable.categories.length}}">{{'study-table' | translate}}</th>
         <th rowspan="{{crosstab.lhs.variable.categories.length}}">{{crosstab.rhs.variable.name}}</th>
         <th colspan="{{crosstab.lhs.variable.categories.length}}"> {{crosstab.lhs.variable.name}}</th>
         <th rowspan="{{crosstab.lhs.variable.categories.length}}">{{'total' | translate}}</th>
       </tr>
       <tr>
-        <td class="text-center" ng-repeat="category in crosstab.lhs.variable.categories">{{category.name}}</td>
+        <th class="text-center" ng-repeat="category in crosstab.lhs.variable.categories">{{category.name}}</th>
       </tr>
     </thead>
 
+
     <!-- Categorical -->
-    <tbody ng-repeat="contingency in crosstab.contingencies" ng-if="!contingency.aggregations[0].statistics"
-           ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_frequencies'">
+    <tbody ng-repeat="contingency in crosstab.contingencies track by $index" ng-if="!isStatistical(crosstab.rhs.variable)"
+           ng-include="getTemplatePath(contingency, '<?php print base_path(); ?>')">
     </tbody>
-    <tbody class="grand-total" ng-init="contingency = crosstab.all; grandTotal = true" ng-if="!crosstab.all.aggregations[0].statistics"
+    <tbody ng-init="contingency = crosstab.all; grandTotal = true" ng-if="datasetHarmo && !isStatistical(crosstab.rhs.variable)"
            ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_frequencies'">
     </tbody>
 
     <!-- Statistical -->
-    <tbody ng-repeat="contingency in crosstab.contingencies" ng-if="contingency.aggregations[0].statistics"
-           ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_statistics'">
+    <tbody ng-repeat="contingency in crosstab.contingencies" ng-if="isStatistical(crosstab.rhs.variable)"
+           ng-include="getTemplatePath(contingency, '<?php print base_path(); ?>')">
     </tbody>
-    <tbody class="grand-total" ng-init="contingency = crosstab.all; grandTotal = true" ng-if="crosstab.all.aggregations[0].statistics"
+    <tbody ng-init="contingency = crosstab.all; grandTotal = true" ng-if="datasetHarmo && isStatistical(crosstab.rhs.variable)"
            ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_statistics'">
     </tbody>
 

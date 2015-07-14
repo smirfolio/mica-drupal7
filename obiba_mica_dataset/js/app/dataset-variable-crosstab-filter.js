@@ -41,6 +41,13 @@
               }
             }
           }])
+
+        .filter('roundNumber', ['$filter',
+          function ($filter) {
+            return function (value) {
+              return isNaN(value) ? value : $filter('number')(value, 2);
+            }
+          }])
     }
   }
 }(jQuery));
