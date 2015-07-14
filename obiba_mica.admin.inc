@@ -18,30 +18,7 @@ function obiba_mica_admin_settings() {
     '#collapsible' => FALSE,
   );
 
-  _obiba_mica_settings_server_form($form);
-  _obiba_mica_settings_access_settings($form);
-
-  $form['statistics'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Statistics settings'),
-    '#collapsible' => FALSE,
-  );
-
-  $info = variable_get_info('mica_statistics');
-  $form['statistics']['mica_statistics'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('mica_statistics'),
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('mica_statistics_coverage');
-  $form['statistics']['mica_statistics_coverage'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('mica_statistics_coverage'),
-    '#description' => $info['description'],
-  );
+  _obiba_mica_settings_server($form);
 
   $form['image_cache'] = array(
     '#type' => 'fieldset',
@@ -70,11 +47,11 @@ function obiba_mica_admin_settings() {
     '#collapsible' => FALSE,
   );
 
-  _obiba_mica_settings_search_page($form);
-  _obiba_mica_settings_networks_form($form);
-  _obiba_mica_settings_studies_form($form);
-  _obiba_mica_settings_datasets_form($form);
-  _obiba_mica_settings_variables_form($form);
+  _obiba_mica_settings_search($form);
+  _obiba_mica_settings_search_networks_form($form);
+  _obiba_mica_settings_search_studies_form($form);
+  _obiba_mica_settings_search_datasets_form($form);
+  _obiba_mica_settings_search_variables_form($form);
 
   $form['content_display_settings'] = array(
     '#type' => 'vertical_tabs',
@@ -82,50 +59,15 @@ function obiba_mica_admin_settings() {
     '#collapsible' => FALSE,
   );
 
-  _obiba_mica_settings_study_form($form);
-  _obiba_mica_settings_dataset_form($form);
-  _obiba_mica_settings_variable_form($form);
-
-  $form['taxonomies'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Taxonomies'),
-    '#collapsible' => FALSE,
-  );
-
-  $info = variable_get_info('mica_taxonomy_figures');
-  $form['taxonomies']['mica_taxonomy_figures'] = array(
-    '#type' => 'textarea',
-    '#title' => $info['title'],
-    '#required' => FALSE,
-    '#default_value' => variable_get_value('mica_taxonomy_figures'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('mica_taxonomy_order');
-  $value = variable_get_value('mica_taxonomy_order');
-  $form['taxonomies']['mica_taxonomy_order'] = array(
-    '#type' => 'textarea',
-    '#title' => $info['title'],
-    '#required' => FALSE,
-    '#default_value' => empty($value) ? _obiba_mica_admin_get_taxonomy_summaries() : $value,
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
+  _obiba_mica_settings_study_content($form);
+  _obiba_mica_settings_dataset_content($form);
+  _obiba_mica_settings_variable_content($form);
+  _obiba_mica_settings_data_access_content($form);
 
   $form['translation'] = array(
     '#type' => 'fieldset',
     '#title' => t('Translations'),
     '#collapsible' => FALSE,
-  );
-
-  $info = variable_get_info('mica_disable_translation');
-  $form['translation']['mica_disable_translation'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#required' => FALSE,
-    '#default_value' => variable_get_value('mica_disable_translation'),
-    '#description' => $info['description'],
   );
 
   $info = variable_get_info('mica_disabled_path_translation');
@@ -138,7 +80,6 @@ function obiba_mica_admin_settings() {
     '#description' => $info['description'],
   );
 
-
   $form['#submit'] = array('obiba_mica_default_password');
   return system_settings_form($form);
 }
@@ -147,10 +88,10 @@ function obiba_mica_admin_settings() {
  * settings of search page
  * @param $form
  */
-function _obiba_mica_settings_search_page(&$form) {
+function _obiba_mica_settings_search(&$form) {
   $form['search_display_settings']['page_settings'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Search Page Settings'),
+    '#title' => t('Search Settings'),
     '#collapsible' => FALSE,
   );
 
@@ -164,7 +105,6 @@ function _obiba_mica_settings_search_page(&$form) {
     '#description' => $info['description'],
   );
 
-  // tab
   $info = variable_get_info('help_text_harmonization_potential_page');
   $form['search_display_settings']['page_settings']['help_text_harmonization_potential_page'] = array(
     '#type' => 'textarea',
@@ -175,9 +115,38 @@ function _obiba_mica_settings_search_page(&$form) {
     '#description' => $info['description'],
   );
 
+  $info = variable_get_info('mica_statistics_coverage');
+  $form['search_display_settings']['page_settings']['mica_statistics_coverage'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_statistics_coverage'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('mica_taxonomy_figures');
+  $form['search_display_settings']['page_settings']['mica_taxonomy_figures'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('mica_taxonomy_figures'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('mica_taxonomy_order');
+  $value = variable_get_value('mica_taxonomy_order');
+  $form['search_display_settings']['page_settings']['mica_taxonomy_order'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => empty($value) ? _obiba_mica_admin_get_taxonomy_summaries() : $value,
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
 }
 
-function _obiba_mica_settings_server_form(&$form) {
+function _obiba_mica_settings_server(&$form) {
   $info = variable_get_info('mica_url');
   $form['server']['mica_url'] = array(
     '#type' => 'textfield',
@@ -240,15 +209,15 @@ function _obiba_mica_settings_server_form(&$form) {
   );
 }
 
-function _obiba_mica_settings_access_settings(&$form) {
-  $form['access'] = array(
+function _obiba_mica_settings_data_access_content(&$form) {
+  $form['content_display_settings']['access_form'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Data Access Request'),
+    '#title' => t('Data Access Content'),
     '#collapsible' => FALSE,
   );
 
   $info = variable_get_info('access_home_page_title');
-  $form['access']['access_home_page_title'] = array(
+  $form['content_display_settings']['access_form']['access_home_page_title'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_home_page_title'),
@@ -256,7 +225,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_requests_page_title');
-  $form['access']['my_requests']['access_requests_page_title'] = array(
+  $form['content_display_settings']['access_form']['my_requests']['access_requests_page_title'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_requests_page_title'),
@@ -264,7 +233,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_request_page_title');
-  $form['access']['my_requests']['access_request_page_title'] = array(
+  $form['content_display_settings']['access_form']['my_requests']['access_request_page_title'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_request_page_title'),
@@ -272,7 +241,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_documents_section_title');
-  $form['access']['my_requests']['access_documents_section_title'] = array(
+  $form['content_display_settings']['access_form']['my_requests']['access_documents_section_title'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_documents_section_title'),
@@ -281,7 +250,7 @@ function _obiba_mica_settings_access_settings(&$form) {
   );
 
   $info = variable_get_info('access_documents_section_help_text');
-  $form['access']['my_requests']['access_documents_section_help_text'] = array(
+  $form['content_display_settings']['access_form']['my_requests']['access_documents_section_help_text'] = array(
     '#type' => 'textarea',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_documents_section_help_text'),
@@ -289,7 +258,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_my_requests_button');
-  $form['access']['access_my_requests_button'] = array(
+  $form['content_display_settings']['access_form']['access_my_requests_button'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_my_requests_button'),
@@ -297,7 +266,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_download_button');
-  $form['access']['access_download_button'] = array(
+  $form['content_display_settings']['access_form']['access_download_button'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_download_button'),
@@ -305,7 +274,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_new_request_button');
-  $form['access']['access_new_request_button'] = array(
+  $form['content_display_settings']['access_form']['access_new_request_button'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_new_request_button'),
@@ -313,7 +282,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_signup_button');
-  $form['access']['access_signup_button'] = array(
+  $form['content_display_settings']['access_form']['access_signup_button'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_signup_button'),
@@ -321,7 +290,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_signin_button');
-  $form['access']['access_signin_button'] = array(
+  $form['content_display_settings']['access_form']['access_signin_button'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_signin_button'),
@@ -329,7 +298,7 @@ function _obiba_mica_settings_access_settings(&$form) {
     '#description' => $info['description'],
   );
   $info = variable_get_info('access_comments_enabled');
-  $form['access']['access_comments_enabled'] = array(
+  $form['content_display_settings']['access_form']['access_comments_enabled'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_comments_enabled'),
@@ -338,7 +307,7 @@ function _obiba_mica_settings_access_settings(&$form) {
   );
 }
 
-function _obiba_mica_settings_networks_form(&$form) {
+function _obiba_mica_settings_search_networks_form(&$form) {
   $form['search_display_settings']['networks_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Networks Search'),
@@ -408,7 +377,7 @@ function _obiba_mica_settings_networks_form(&$form) {
   );
 }
 
-function _obiba_mica_settings_studies_form(&$form) {
+function _obiba_mica_settings_search_studies_form(&$form) {
   $form['search_display_settings']['studies_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Studies Search'),
@@ -551,7 +520,7 @@ function _obiba_mica_settings_studies_form(&$form) {
   );
 }
 
-function _obiba_mica_settings_study_form(&$form) {
+function _obiba_mica_settings_study_content(&$form) {
   $form['content_display_settings']['study_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Study Content'),
@@ -637,7 +606,7 @@ function _obiba_mica_settings_study_form(&$form) {
 
 }
 
-function _obiba_mica_settings_dataset_form(&$form) {
+function _obiba_mica_settings_dataset_content(&$form) {
   $bootstrap_theme_path = base_path() . drupal_get_path('theme', 'obiba_bootstrap');
   $form['content_display_settings']['dataset_form'] = array(
     '#type' => 'fieldset',
@@ -704,11 +673,19 @@ function _obiba_mica_settings_dataset_form(&$form) {
 
 }
 
-function _obiba_mica_settings_variable_form(&$form) {
+function _obiba_mica_settings_variable_content(&$form) {
   $form['content_display_settings']['variable_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Variable Content'),
     '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('mica_statistics');
+  $form['content_display_settings']['variable_form']['mica_statistics'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_statistics'),
+    '#description' => $info['description'],
   );
 
   $info = variable_get_info('variable_show_studies');
@@ -718,6 +695,7 @@ function _obiba_mica_settings_variable_form(&$form) {
     '#default_value' => variable_get_value('variable_show_studies'),
     '#description' => $info['description'],
   );
+
   $info = variable_get_info('dataset_detailed_var_stats');
   $form['content_display_settings']['variable_form']['dataset_detailed_var_stats'] = array(
     '#type' => 'checkbox',
@@ -725,10 +703,9 @@ function _obiba_mica_settings_variable_form(&$form) {
     '#default_value' => variable_get_value('dataset_detailed_var_stats'),
     '#description' => $info['description'],
   );
-
 }
 
-function _obiba_mica_settings_datasets_form(&$form) {
+function _obiba_mica_settings_search_datasets_form(&$form) {
   $form['search_display_settings']['datasets_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Datasets Search'),
@@ -810,7 +787,7 @@ function _obiba_mica_settings_datasets_form(&$form) {
   );
 }
 
-function _obiba_mica_settings_variables_form(&$form) {
+function _obiba_mica_settings_search_variables_form(&$form) {
   $form['search_display_settings']['variables_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Variables Search'),
