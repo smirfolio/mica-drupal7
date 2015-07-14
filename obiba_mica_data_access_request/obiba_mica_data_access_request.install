@@ -10,11 +10,31 @@
  */
 
 function obiba_mica_data_access_request_install() {
-  obiba_mica_data_access_request_create_node();
+  _obiba_mica_data_access_request_add_role('mica-data-access-officer');
+  _obiba_mica_data_access_request_add_role('mica-user');
+  _obiba_mica_data_access_request_apply_default_permissions();
+  _obiba_mica_data_access_request_create_node();
 }
 
-function obiba_mica_data_access_request_create_node() {
+function _obiba_mica_data_access_request_create_node() {
   $my_body_content = "<div> <p>Requests for further information on the datasets and requests for access are received by the our Access Office. Prior to submitting a Data Access Application Form, we strongly recommend that you consult the our Policy documents, that will provide you with detailed information about the process and our's access, publication and intellectual property policies.</p> </div>";
   $access_request_node_page = obiba_mica_commons_add_page(st('Data Access'), st($my_body_content));
   variable_set('access_request_page', $access_request_node_page->nid);
+}
+
+function _obiba_mica_data_access_request_add_role($role_name)  {
+  // verify role does not already exists
+  //$role = user_role_load_by_name($role_name);
+  //if(!empty($role)) return;
+
+  $role = new stdClass();
+  $role->name = $role_name;
+  user_role_save($role);
+}
+
+function _obiba_mica_data_access_request_apply_default_permissions() {
+  $role = user_role_load_by_name('mica-user');
+  user_role_grant_permissions($role->rid, array('can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS, 'can_see_' . MicaDataAccessRequest::NEW_DATA_ACCESS));
+  $role = user_role_load_by_name('mica-data-access-officer');
+  user_role_grant_permissions($role->rid, array('can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS));
 }

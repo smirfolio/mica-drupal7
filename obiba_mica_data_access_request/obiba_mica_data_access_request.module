@@ -300,18 +300,16 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
  * Implements hook_permission().
  */
 function obiba_mica_data_access_request_permission() {
-  $perms = array();
-  foreach (array(
-             MicaDataAccessRequest::LIST_DATA_ACCESS,
-             MicaDataAccessRequest::NEW_DATA_ACCESS
-           ) as $type) {
-    $perms += array(
-      "can_see_$type" => array(
-        'title' => t('Can see %type_name ', array('%type_name' => $type)),
-      )
-    );
-  }
-  return $perms;
+  return array(
+    "can_see_" . MicaDataAccessRequest::LIST_DATA_ACCESS => array(
+      'title' => t('Can view the data access requests list page'),
+      'description' => t('Note that this permission does not assume which operations can be performed on each request.')
+    ),
+    "can_see_" . MicaDataAccessRequest::NEW_DATA_ACCESS => array(
+      'title' => t('Can create a new data access request'),
+      'description' => t('Note that this permission can be overruled by permission constraints on Mica server side.')
+    )
+  );
 }
 
 /*
