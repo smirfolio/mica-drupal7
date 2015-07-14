@@ -16,11 +16,24 @@ function obiba_mica_menu() {
     'description' => 'Configure Mica services',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_admin_settings'),
-    'access arguments' => array('administer obiba'),
+    'access arguments' => array('administer obiba mica'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'obiba_mica.admin.inc',
   );
   return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function obiba_mica_permission() {
+  return array(
+    'administer obiba mica' => array(
+      'title' => t('Administer OBiBa Mica'),
+      'description' => t('Configure OBiBa Mica server and other settings.'),
+      'restrict access' => TRUE,
+    )
+  );
 }
 
 /**
