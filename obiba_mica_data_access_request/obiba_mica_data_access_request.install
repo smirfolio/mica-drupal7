@@ -24,8 +24,8 @@ function _obiba_mica_data_access_request_create_node() {
 
 function _obiba_mica_data_access_request_add_role($role_name)  {
   // verify role does not already exists
-  //$role = user_role_load_by_name($role_name);
-  //if(!empty($role)) return;
+  $role = user_role_load_by_name($role_name);
+  if(!empty($role)) return;
 
   $role = new stdClass();
   $role->name = $role_name;
