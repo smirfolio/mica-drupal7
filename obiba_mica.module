@@ -119,12 +119,11 @@ function obiba_mica_js_alter(&$javascript) {
   }
   $current_module_path = drupal_get_path('module', 'obiba_mica');
   //check we want to disable languge for some pages (By path)
-  $translatable = variable_get_value('mica_disable_translation');
-  if (!empty($translatable)) {
+  $translatable_path = variable_get_value('mica_disabled_path_translation');
+  if (!empty($translatable_path)) {
     global $language;
     if ($language->provider !== 'language-default') {
       //retrieve the paths list of  not translatable page
-      $translatable_path = variable_get_value('mica_disabled_path_translation');
       $paths = explode(',', $translatable_path);
       drupal_add_js($current_module_path . '/js/obiba-mica-translatable_redirect.js');
       drupal_add_js(array(
