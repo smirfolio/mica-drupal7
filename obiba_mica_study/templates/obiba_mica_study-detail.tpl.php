@@ -26,7 +26,7 @@
 
   <div class="btn-group pull-right md-bottom-margin">
     <?php if (variable_get_value('mica_statistics_coverage')): ?>
-      <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle hidden" data-toggle="dropdown"
+      <button id="study-actions" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
         aria-expanded="false">
         <?php print t('Search') ?> <span class="caret"></span>
       </button>

@@ -27,7 +27,7 @@ function obiba_mica_search_menu() {
     'page callback' => 'obiba_mica_search_coverage_page',
     'menu_name' => 'main-menu',
     'weight' => 11,
-    'access callback' => TRUE
+    'access callback' => 'obiba_mica_search_coverage_access_callback'
   );
 
   $items['mica/coverage/download'] = array(
@@ -1357,4 +1357,6 @@ function _obiba_mica_search_facet_expand_strategy() {
     : NULL;
 }
 
-
+function obiba_mica_search_coverage_access_callback() {
+  return variable_get_value('mica_statistics_coverage');
+}
