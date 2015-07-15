@@ -598,3 +598,9 @@ function obiba_mica_dataset_variable_info($variable_id) {
   $variable_dto = $dataset_resource->get_variable($variable_id);
   drupal_json_output($variable_dto);
 }
+
+function obiba_mica_dataset_info($dataset_type, $dataset_id) {
+  $dataset_resource = new MicaDatasetResource();
+  $dataset_dto = $dataset_resource->get_dataset($dataset_type, $dataset_id);
+  drupal_json_output($dataset_dto);
+}

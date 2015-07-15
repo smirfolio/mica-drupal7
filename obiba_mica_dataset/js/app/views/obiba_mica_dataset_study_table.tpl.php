@@ -3,8 +3,4 @@
   <span>
   {{contingency.studyTable.name | localizedValue}}
   </span>
-  <span>
-    {{contingency.studyTable.project}}
-    {{contingency.studyTable.table}}
-  </span>
 </span>
