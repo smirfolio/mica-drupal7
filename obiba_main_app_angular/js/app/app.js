@@ -21,7 +21,10 @@ var mica;
 
       'use strict';
       /* App Module */
-      mica = angular.module('mica', modules.concat(Drupal.settings.angularjsApp.modules));
+      if (Drupal.settings.angularjsApp.module) {
+        modules = modules.concat(Drupal.settings.angularjsApp.module);
+      }
+      mica = angular.module('mica', modules);
       mica.config(['$routeProvider', '$translateProvider',
         function ($routeProvider, $translateProvider) {
           $routeProvider
@@ -74,7 +77,7 @@ var mica;
             } else {
               response.data = {messageTemplate: 'server.error.' + response.status};
             }
-            return  response;
+            return response;
           }
         }
 

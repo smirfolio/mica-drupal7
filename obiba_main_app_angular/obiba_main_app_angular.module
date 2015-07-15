@@ -109,15 +109,12 @@ function obiba_main_app_angular_load_external_app_js() {
  * hook implementation to get external modules names to load
  */
 function obiba_main_app_angular_load_ng_module() {
-  $modules = array();
-  foreach (module_implements('get_ng_module_to_load') as $key=>$module) {
+  foreach (module_implements('get_ng_module_to_load') as $key => $module) {
     // Calling all modules implementing hook_hook_name and
-    // Returning results than pushing them into the $result array:
-
-    $modules[$key] = module_invoke($module, 'get_ng_module_to_load');
-    if(!empty($modules[$key])){
-      $modules_to_load[0] = $modules[$key];
-      return $modules_to_load;
+    // and return the first result:
+    $module = module_invoke($module, 'get_ng_module_to_load');
+    if (!empty($module)) {
+      return $module;
     }
   }
   return FALSE;
@@ -143,7 +140,7 @@ function obiba_main_app_angular_load_js_resources() {
   // Add CSRF token required by restWS.
   $js_settings = array(
     'angularjsApp' => array(
-      'modules' => obiba_main_app_angular_load_ng_module(),
+      'module' => obiba_main_app_angular_load_ng_module(),
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
       'authenticated' => AgateClient::hasTicket() || user_is_logged_in(),
       //  'restws_csrf_token' => drupal_get_token('restws'),
@@ -169,7 +166,7 @@ function obiba_main_app_angular_main_page() {
   if (!empty($current_menu_item['title'])) {
     drupal_set_title($current_menu_item['title']);
   }
-return obiba_main_app_angular_load_template_app();
+  return obiba_main_app_angular_load_template_app();
 
 }
 
