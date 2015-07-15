@@ -24,9 +24,11 @@ class MicaClientPathProvider {
   const SEARCH = 'mica/search';
   const CROSSTAB = 'mica/variables';
   const COVERAGE = 'mica/coverage';
+  const DATA_ACCESS = 'mica/data_access';
+  const DATA_ACCESS_REQUEST = 'mica/data-access/request';
   const DATA_ACCESS_HOME = 'mica/data_access/home';
   const DATA_ACCESS_LIST = 'mica/data_access/requests';
-
+  const AGATE_REGISTER  = 'agate/register';
   static function study($id) {
     return preg_replace('/\\{id\\}/', $id, self::STUDY, 1);
   }
