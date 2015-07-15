@@ -12,7 +12,7 @@
 function obiba_mica_data_access_request_menu() {
   $items = array();
 
-  $items['mica/data_access'] = array(
+  $items[MicaClientPathProvider::DATA_ACCESS] = array(
     'title' => t(variable_get('access_request_page_title', 'Data Access Request')),
     'page callback' => 'obiba_mica_data_access_request_page',
     'access callback' => TRUE,
@@ -136,7 +136,7 @@ function obiba_mica_data_access_request_permission_check() {
 function obiba_mica_data_access_request_load_menus() {
   $items = array();
 
-  $items['mica/data-access/request'] = array(
+  $items[MicaClientPathProvider::DATA_ACCESS_REQUEST] = array(
     'access callback' => TRUE,
     'title' => t(variable_get('access_request_page_title', 'Data Access Request')),
   );
@@ -253,18 +253,26 @@ function obiba_mica_data_access_request_page() {
  */
 
 function obiba_mica_data_access_request_get_ng_module_to_load() {
-  return 'mica.DataAccessRequest';
+  if(current_path()==MicaClientPathProvider::DATA_ACCESS_REQUEST) {
+    return 'mica.DataAccessRequest';
+  }
+  return FALSE;
 }
 
 /**
  * Implements hook_get_js()
  */
 function obiba_mica_data_access_request_get_js() {
-  $module_path = drupal_get_path('module', 'obiba_mica_data_access_request');
-  $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
-  ksort($js);
-  foreach ($js as $file_js) {
-    drupal_add_js($file_js->uri, array('type' => 'file', 'scope' => 'footer'));
+  if(current_path()==MicaClientPathProvider::DATA_ACCESS_REQUEST) {
+    $module_path = drupal_get_path('module', 'obiba_mica_data_access_request');
+    $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
+    ksort($js);
+    foreach ($js as $file_js) {
+      drupal_add_js($file_js->uri, array(
+        'type' => 'file',
+        'scope' => 'footer'
+      ));
+    }
   }
 }
 
