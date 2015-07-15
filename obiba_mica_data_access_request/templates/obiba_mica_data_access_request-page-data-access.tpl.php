@@ -13,7 +13,9 @@
 <?php if ($data_access_register_user) : ?>
   <p class="md-top-margin">
     <?php print t('You need to be authenticated to start an application') ?>
-    <?php print l(t(variable_get_value('access_signup_button')), 'agate/register', array('attributes' => array('class' => 'btn btn-info'))) ?>
+    <?php print l(t(variable_get_value('access_signup_button')), 'agate/register',
+      array('attributes' => array('class' => 'btn btn-info'), 'fragment' => 'join')) ?>
+
     <?php print l(t(variable_get_value('access_signin_button')), 'user/login', array(
       'query' => array('destination' => MicaClientPathProvider::DATA_ACCESS_HOME),
       'attributes' => array(
