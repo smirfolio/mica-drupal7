@@ -42,6 +42,13 @@
             });
           }])
 
+        .factory('DatasetResource', ['$resource',
+          function ($resource) {
+            return $resource('dataset/:dsType/:dsId/ws', {}, {
+              'get': {method: 'GET', errorHandler: true}
+            });
+          }])
+
         .service('ContingencyService',
           function () {
             return {

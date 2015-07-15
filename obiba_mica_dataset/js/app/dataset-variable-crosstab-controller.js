@@ -15,6 +15,7 @@
     attach: function (context, settings) {
       mica.DatasetVariableCrosstab
         .controller('DatasetVariableCrosstabController', ['$rootScope', '$scope', '$routeParams', '$log',
+          'DatasetResource',
           'DatasetCategoricalVariablesResource',
           'DatasetVariablesResource',
           'DatasetVariableResource',
@@ -22,17 +23,29 @@
           'ServerErrorAlertService',
 
           function ($rootScope, $scope, $routeParams, $log,
+                    DatasetResource,
                     DatasetCategoricalVariablesResource,
                     DatasetVariablesResource,
                     DatasetVariableResource,
                     DatasetVariablesCrosstabResource,
                     ServerErrorAlertService) {
 
+            startProgess();
+
+            function startProgess() {
+              $.ObibaProgressBarController().start();
+              $.ObibaProgressBarController().setPercentage(65, true);
+            }
+
+            function endProgress() {
+              $.ObibaProgressBarController().finish();
+            }
+
             var onError = function (response) {
               $scope.serverError = true;
               ServerErrorAlertService.alert('DataAccessRequestEditController', response);
               ForbiddenDrupalRedirect.redirectDrupalMessage(response);
-              $.ObibaProgressBarController().finish();
+              endProgress();
             };
 
             var searchCategoricalVariables = function(queryString) {
@@ -55,9 +68,22 @@
                 function onSuccess(response) {
                   $scope.crosstab.rhs.variables = response.variables;
                 },
-                function onFail(response) {
-                  $log.debug('Failed', response);
-                });
+                onError
+              );
+            };
+
+            var canExchangeVariables = function(){
+              return $scope.crosstab.lhs.variable
+                && $scope.crosstab.rhs.variable
+                && !isStatistical($scope.crosstab.rhs.variable);
+            }
+
+            var exchangeVariables = function() {
+              if (canExchangeVariables()) {
+                var temp = $scope.crosstab.lhs.variable;
+                $scope.crosstab.lhs.variable = $scope.crosstab.rhs.variable;
+                $scope.crosstab.rhs.variable = temp;
+              }
             };
 
             var clear = function() {
@@ -119,10 +145,10 @@
              * @returns {*}
              */
             function normalizeData(contingencies) {
-              var v2Cats = $scope.crosstab.rhs.variable.categories.map(function(category) {
+              var v2Cats = $scope.crosstab.rhs.xVariable.categories.map(function(category) {
                 return category.name;
               });
-              var v1Cats = $scope.crosstab.lhs.variable.categories.map(function(category) {
+              var v1Cats = $scope.crosstab.lhs.xVariable.categories.map(function(category) {
                 return category.name;
               });
 
@@ -130,7 +156,7 @@
                 contingencies.forEach(function (contingency) {
                   $log.debug('>', contingency);
 
-                  if (isStatistical($scope.crosstab.rhs.variable)) {
+                  if (isStatistical($scope.crosstab.rhs.xVariable)) {
                     normalizeStatistics(contingency, v1Cats);
                   } else {
                     normalizeFrequencies(contingency, v2Cats);
@@ -147,20 +173,27 @@
              */
             var submit = function() {
               if ($scope.crosstab.lhs.variable && $scope.crosstab.rhs.variable) {
+                $scope.crosstab.lhs.xVariable = $scope.crosstab.lhs.variable;
+                $scope.crosstab.rhs.xVariable = $scope.crosstab.rhs.variable;
+                $scope.loading = true;
+                startProgess();
+
                 DatasetVariablesCrosstabResource.get({
                     dsType: $routeParams.type,
                     dsId: $routeParams.ds,
-                    v1: $scope.crosstab.lhs.variable.name,
-                    v2: $scope.crosstab.rhs.variable.name
+                    v1: $scope.crosstab.lhs.xVariable.name,
+                    v2: $scope.crosstab.rhs.xVariable.name
                   },
                   function onSuccess(response) {
                     $log.debug('Crosstab Succeeded', response);
-
                     $scope.crosstab.contingencies = normalizeData(response.contingencies ? response.contingencies : [response]);
 
                     if ($scope.datasetHarmo) {
                       $scope.crosstab.all = normalizeData(response.all ? [response.all] : [])[0];
                     }
+
+                    endProgress();
+                    $scope.loading = false;
                   },
                   onError
                 );
@@ -174,10 +207,13 @@
              * @returns {string}
              */
             var getTemplatePath = function(contingency, basePath){
-              if ($scope.crosstab.rhs.variable) $log.error('RHS variable is not initialized!');
+              if (!$scope.crosstab.rhs.xVariable) {
+                $log.error('RHS variable is not initialized!');
+                return;
+              }
 
               var folder = basePath + "obiba_main_app_angular/obiba_mica_data_access_request/";
-              var template = isStatistical($scope.crosstab.rhs.variable)
+              var template = isStatistical($scope.crosstab.rhs.xVariable)
                 ? (contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_statistics" : "obiba_mica_dataset_variable_crosstab_statistics_empty")
                 : (contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_frequencies" : "obiba_mica_dataset_variable_crosstab_frequencies_empty");
 
@@ -188,13 +224,16 @@
               $scope.crosstab = {
                 lhs: {
                   variable : null,
+                  xVariable : null,
                   variables : []
                 },
                 rhs: {
                   variable: null,
+                  xVariable: null,
                   variables: []
                 },
-                data: null
+                all: null,
+                contingencies: null
               };
             };
 
@@ -202,22 +241,34 @@
             $scope.datasetHarmo = $routeParams.type === 'harmonization-dataset';
             $scope.getTemplatePath = getTemplatePath;
             $scope.showDetails = true;
+            $scope.canExchangeVariables = canExchangeVariables;
+            $scope.exchangeVariables = exchangeVariables;
+            $scope.showDetails = true;
             $scope.clear = clear;
             $scope.submit = submit;
             $scope.searchCategoricalVariables = searchCategoricalVariables;
             $scope.searchVariables = searchVariables;
 
             initCrosstab();
+            endProgress();
+
+            DatasetResource.get({dsType: $routeParams.type, dsId: $routeParams.ds},
+              function onSuccess(response) {
+                $scope.dataset = response;
+              },
+              onError
+            );
 
             if ($routeParams.varId) {
+              startProgess();
               DatasetVariableResource.get({varId: $routeParams.varId},
                 function onSuccess(response) {
                   $log.debug('Variable info', response);
                   $scope.crosstab.lhs.variable = response;
                   $scope.crosstab.lhs.variables = [response];
+                  endProgress();
                 },
                 onError
-
               );
             }
 
