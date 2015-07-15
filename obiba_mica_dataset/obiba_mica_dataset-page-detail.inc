@@ -579,7 +579,7 @@ function obiba_mica_dataset_get_variables($dataset_id) {
 
 function obiba_mica_dataset_variables_search($dataset_type, $dataset_id, $query = NULL, $nature = NULL) {
   $dataset_resource = new MicaDatasetResource();
-  $nature_query = empty($nature) ? 'nature:categorical OR nature:continuous' : 'nature:' . $nature;
+  $nature_query = empty($nature) ? '(nature:categorical OR nature:continuous)' : 'nature:' . $nature;
   $query_string = empty($query) ? NULL : $query . ' AND ' . $nature_query;
 
   $variables = $dataset_resource->get_variables($dataset_type, $dataset_id, 0, 10, NULL, NULL, $query_string);
