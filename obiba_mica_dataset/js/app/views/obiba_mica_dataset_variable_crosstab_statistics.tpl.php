@@ -27,7 +27,7 @@
     <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_study_table'"></span>
     <span ng-if="grandTotal"><strong>{{'total' | translate}}</strong></span>
   </td>
-  <td>N</td>
-  <td class="text-center" ng-repeat="aggregation in contingency.aggregations">{{aggregation.n}}</td>
-  <td class="text-center">{{contingency.all.n}}</td>
+  <td class="grand-total">N</td>
+  <td class="text-center grand-total" ng-repeat="aggregation in contingency.aggregations">{{aggregation.n}}</td>
+  <td class="text-center grand-total">{{contingency.all.n}}</td>
 </tr>
