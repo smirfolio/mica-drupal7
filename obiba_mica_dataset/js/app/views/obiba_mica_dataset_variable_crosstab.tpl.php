@@ -54,12 +54,21 @@
 <!-- crosstab results -->
 <div ng-if="crosstab.contingencies && crosstab.contingencies.length > 0">
 
-  <label>
-    <input type="checkbox" ng-model="showDetails"> {{'show-details' | translate}}
-  </label>
-    <img
-      src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif"
-      ng-if="loading">
+  <span>
+    <span>
+      <label>
+        <input type="checkbox" ng-model="showDetails"> {{'show-details' | translate}}
+      </label>
+      <img
+        src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif"
+        ng-if="loading">
+    </span>
+    <span class="pull-right sm-bottom-margin">
+      <a ng-click="download()" target="_self" ng-href="" class="btn btn-default btn-sm download-btn">
+        <i class="glyphicon glyphicon-download-alt"></i> <span><?php print t('Download Result'); ?></span>
+      </a>
+</span>
+  </span>
 
     <table ng-if="!loading" class="table table-striped table-bordered no-margin no-padding">
     <thead>
@@ -78,6 +87,9 @@
     <tbody ng-repeat="contingency in crosstab.contingencies track by $index" ng-if="!isStatistical(crosstab.rhs.xVariable)"
            ng-include="getTemplatePath(contingency, '<?php print base_path(); ?>')">
     </tbody>
+    <tbody ng-if="datasetHarmo && !isStatistical(crosstab.rhs.xVariable)">
+      <tr><td colspan="{{crosstab.lhs.xVariable.categories.length + 3}}"></td></tr>
+    </tbody>
     <tbody ng-repeat="contingency in [crosstab.all]" ng-init="grandTotal = true" ng-if="datasetHarmo && !isStatistical(crosstab.rhs.xVariable)"
            ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_frequencies'">
     </tbody>
@@ -85,6 +97,9 @@
     <!-- Statistical -->
     <tbody ng-repeat="contingency in crosstab.contingencies" ng-if="isStatistical(crosstab.rhs.xVariable)"
            ng-include="getTemplatePath(contingency, '<?php print base_path(); ?>')">
+    </tbody>
+    <tbody ng-if="datasetHarmo && isStatistical(crosstab.rhs.xVariable)">
+      <tr><td colspan="{{crosstab.lhs.xVariable.categories.length + 3}}"></td></tr>
     </tbody>
     <tbody ng-repeat="contingency in [crosstab.all]" ng-init="grandTotal = true" ng-if="datasetHarmo && isStatistical(crosstab.rhs.xVariable)"
            ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_statistics'">

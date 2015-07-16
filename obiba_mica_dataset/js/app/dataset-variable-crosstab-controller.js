@@ -14,23 +14,48 @@
   Drupal.behaviors.obiba_mica_dataset_variable_crosstab_controller = {
     attach: function (context, settings) {
       mica.DatasetVariableCrosstab
-        .controller('DatasetVariableCrosstabController', ['$rootScope', '$scope', '$routeParams', '$log',
+        .controller('DatasetVariableCrosstabController', ['$rootScope',
+          '$scope',
+          '$routeParams',
+          '$log',
+          '$location',
+          '$route',
           'DatasetResource',
           'DatasetCategoricalVariablesResource',
           'DatasetVariablesResource',
           'DatasetVariableResource',
           'DatasetVariablesCrosstabResource',
           'ServerErrorAlertService',
+          'ContingencyService',
+          'LocalizedStringService',
 
-          function ($rootScope, $scope, $routeParams, $log,
+          function ($rootScope, $scope, $routeParams, $log, $location, $route,
                     DatasetResource,
                     DatasetCategoricalVariablesResource,
                     DatasetVariablesResource,
                     DatasetVariableResource,
                     DatasetVariablesCrosstabResource,
-                    ServerErrorAlertService) {
+                    ServerErrorAlertService,
+                    ContingencyService,
+                    LocalizedStringService) {
 
             startProgess();
+
+            function updateLocation(currentPath, param) {
+              var original = $location.path;
+              $location.path = function (path, reload) {
+                if (reload === false) {
+                  var lastRoute = $route.current;
+                  var un = $rootScope.$on('$locationChangeSuccess', function () {
+                    $route.current = lastRoute;
+                    un();
+                  });
+                }
+                return original.apply($location, [path]);
+              };
+              $location.path(currentPath + '/' + param, false);
+              $location.path = original;
+            }
 
             function startProgess() {
               $.ObibaProgressBarController().start();
@@ -175,6 +200,15 @@
               if ($scope.crosstab.lhs.variable && $scope.crosstab.rhs.variable) {
                 $scope.crosstab.lhs.xVariable = $scope.crosstab.lhs.variable;
                 $scope.crosstab.rhs.xVariable = $scope.crosstab.rhs.variable;
+
+                updateLocation(
+                  ContingencyService.removeVariableFromUrl($location.path()),
+                  ContingencyService.createVariableUrlPart(
+                    $scope.crosstab.lhs.xVariable.id,
+                    $scope.crosstab.rhs.xVariable.id
+                  )
+                );
+
                 $scope.loading = true;
                 startProgess();
 
@@ -197,6 +231,37 @@
                   },
                   onError
                 );
+              }
+            };
+
+            var download = function() {
+              var downloadUrl = ContingencyService.getCrossDownloadUrl({
+                ':dsType': $routeParams.type,
+                ':dsId': $routeParams.ds,
+                ':v1': $scope.crosstab.lhs.xVariable.name,
+                ':v2': $scope.crosstab.rhs.xVariable.name
+              });
+
+              var form = $("<form action='" + downloadUrl + "' method='get'>");
+              $('body').after(form);
+              form.submit().remove();
+              return false;
+            };
+
+            var extractStudySummaryInfo = function(studtTable) {
+              var summary = studtTable.studySummary;
+              var pop = summary.populationSummaries ? summary.populationSummaries[0] : null;
+              var dce = pop && pop.dataCollectionEventSummaries
+                  ? pop.dataCollectionEventSummaries.filter(function(dce) {
+                      return dce.id === studtTable.dataCollectionEventId;
+                    })
+                  : null;
+              return {
+                summary: LocalizedStringService.getValue(summary.acronym),
+                population: pop ? LocalizedStringService.getValue(pop.name) : '',
+                dce: dce ? LocalizedStringService.getValue(dce[0].name) : '',
+                project: studtTable.project,
+                table: studtTable.table
               }
             };
 
@@ -243,9 +308,11 @@
             $scope.showDetails = true;
             $scope.canExchangeVariables = canExchangeVariables;
             $scope.exchangeVariables = exchangeVariables;
+            $scope.extractStudySummaryInfo = extractStudySummaryInfo;
             $scope.showDetails = true;
             $scope.clear = clear;
             $scope.submit = submit;
+            $scope.download = download;
             $scope.searchCategoricalVariables = searchCategoricalVariables;
             $scope.searchVariables = searchVariables;
 
@@ -260,12 +327,23 @@
             );
 
             if ($routeParams.varId) {
-              startProgess();
               DatasetVariableResource.get({varId: $routeParams.varId},
                 function onSuccess(response) {
-                  $log.debug('Variable info', response);
+                  $log.debug('Variable LHS info', response);
                   $scope.crosstab.lhs.variable = response;
                   $scope.crosstab.lhs.variables = [response];
+                  endProgress();
+                },
+                onError
+              );
+            }
+
+            if ($routeParams.byId) {
+              DatasetVariableResource.get({varId: $routeParams.byId},
+                function onSuccess(response) {
+                  $log.debug('Variable RHS info', response);
+                  $scope.crosstab.rhs.variable = response;
+                  $scope.crosstab.rhs.variables = [response];
                   endProgress();
                 },
                 onError

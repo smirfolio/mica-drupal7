@@ -4,3 +4,12 @@
   {{contingency.studyTable.name | localizedValue}}
   </span>
 </span>
+
+<div class="lg-top-margin" ng-if="showDetails" ng-init="info = extractStudySummaryInfo(contingency.studyTable)">
+  <small>
+    <p class="text-muted no-margin">{{info.population}}</p>
+    <p class="text-muted indent">{{info.dce}}</p>
+    <p class="text-muted no-margin">{{info.project}}</p>
+    <p class="text-muted indent">{{info.table}}</p>
+  </small>
+</div>

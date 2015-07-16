@@ -593,6 +593,31 @@ function obiba_mica_dataset_variables_crosstab($dataset_type, $dataset_id, $vari
   drupal_json_output($variables);
 }
 
+function obiba_mica_dataset_variables_crosstab_download($dataset_type, $dataset_id, $variable1, $variable2) {
+  $dataset_resource = new MicaDatasetResource();
+
+  $response = $dataset_resource->download_cross_variables($dataset_type, $dataset_id, $variable1, $variable2);
+//  if (!empty($response)) {
+//    $headers = $dataset_resource->getLastResponseHeaders();
+//    drupal_add_http_header('Content-Type', $headers['Content-Type'][0] . '; utf-8');
+//    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+//    echo $response->body;
+//    flush();
+//    //stop drupal execution error : 'Headers already sent'
+//    exit;
+//  }
+
+  if (!empty($response)) {
+    $headers = $dataset_resource->getLastResponseHeaders();
+    drupal_add_http_header('Content-Type', $headers['Content-Type'][0] . '; utf-8');
+    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+    ob_clean();
+    $csv_response = $response->body;
+    print $csv_response;
+    exit;
+  }
+}
+
 function obiba_mica_dataset_variable_info($variable_id) {
   $dataset_resource = new MicaDatasetResource();
   $variable_dto = $dataset_resource->get_variable($variable_id);

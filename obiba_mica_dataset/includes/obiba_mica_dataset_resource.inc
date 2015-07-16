@@ -172,6 +172,29 @@ class MicaDatasetResource extends MicaClient {
   }
 
 
+  public function download_cross_variables($resource, $dataset_id, $variable1, $variable2) {
+    $this->setLastResponse(NULL);
+    $params = empty($variable2) ? '' : 'by=' . $variable2;
+    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id) . '/variable/' . (empty($variable1) ? '' : $variable1) . '/contingency/_export?' . $params;
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_CSV),
+        )
+      ),
+    ));
+    $client = $this->client();
+    try {
+      $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return $client->lastResponse;
+    }
+    catch (HttpClientException $e) {
+      return array();
+    }
+  }
+
   /**
    * Get the list variable harmonization status for a harmonization dataset.
    *

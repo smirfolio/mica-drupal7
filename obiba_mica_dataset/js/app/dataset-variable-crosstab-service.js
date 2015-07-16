@@ -51,15 +51,33 @@
 
         .service('ContingencyService',
           function () {
+
+            function searchReplace(pattern, params) {
+              return pattern.replace(/:\w+/g, function(all) {
+                return params[all] || all;
+              });
+            }
+
             return {
-              getName: function (contingency) {
-                if (!variable && !variable.attributes && !names) return null;
-                return variable.attributes.filter(
-                  function (attribute) {
-                    return names.indexOf(attribute.name) !== -1;
-                  });
+
+              removeVariableFromUrl: function(path) {
+                return path.replace(/\/variable\/.*/, '');
+              },
+
+              getCrossDownloadUrl: function(params) {
+                return searchReplace(':dsType/:dsId/download/cross/:v1/by/:v2/ws', params);
+              },
+
+              createVariableUrlPart: function(var1, var2) {
+                var params = {
+                  ':var': var1,
+                  ':by': var2
+                };
+
+                return searchReplace('variable/:var/by/:by', params);
               }
             }
+
           })
     }
   }
