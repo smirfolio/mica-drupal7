@@ -28,6 +28,7 @@
           'ServerErrorAlertService',
           'ContingencyService',
           'LocalizedStringService',
+          'ChiSquaredCalculator',
 
           function ($rootScope, $scope, $routeParams, $log, $location, $route,
                     DatasetResource,
@@ -37,7 +38,8 @@
                     DatasetVariablesCrosstabResource,
                     ServerErrorAlertService,
                     ContingencyService,
-                    LocalizedStringService) {
+                    LocalizedStringService,
+                    ChiSquaredCalculator) {
 
             startProgess();
 
@@ -147,7 +149,19 @@
                 return total === 0 ? 0 : value / total * 100;
               }
 
-              function normalize(aggregation, grandTotal, totals, isAll) {
+              function expected(cTotal, rTotal, gt) {
+                return (cTotal * rTotal) / gt;
+              }
+
+              function cellChiSquared(value, expected) {
+                return Math.pow(value - expected, 2) / expected;
+              }
+
+              function degreeOfFreedom(rows, columns) {
+                return (rows - 1) * (columns - 1);
+              }
+
+              function normalize(aggregation, grandTotal, totals, chiSquaredInfo) {
                 var fCats = aggregation.frequencies.map(function (frq) {
                   return frq.value;
                 });
@@ -159,30 +173,41 @@
                   }
                 });
 
-                if (isAll) {
-                  aggregation.frequencies.forEach(function (frequency, i) {
-                    frequency.percent = percentage(frequency.count, grandTotal);
-                    frequency.cpercent = percentage(frequency.n, grandTotal);
-                  });
-                } else {
+                if (chiSquaredInfo) {
                   aggregation.percent = percentage(aggregation.n, grandTotal);
                   aggregation.frequencies.forEach(function (frequency, i) {
                     frequency.percent = percentage(frequency.count, totals.frequencies[i].count);
                     frequency.cpercent = percentage(frequency.count, aggregation.n);
+
+                    chiSquaredInfo.sum += cellChiSquared(frequency.count, expected(aggregation.n, totals.frequencies[i].count, grandTotal));
+                  });
+                } else {
+                  aggregation.frequencies.forEach(function (frequency, i) {
+                    frequency.percent = percentage(frequency.count, grandTotal);
+                    frequency.cpercent = percentage(frequency.n, grandTotal);
                   });
                 }
               }
 
               var grandTotal = contingency.all.total;
-              normalize(contingency.all, grandTotal, contingency.all, true);
+              normalize(contingency.all, grandTotal, contingency.all);
 
               if (contingency.aggregations) {
+                contingency.chiSquaredInfo = {
+                  pValue: 0,
+                  sum: 0,
+                  df: degreeOfFreedom(
+                    $scope.crosstab.rhs.xVariable.categories.length,
+                    $scope.crosstab.lhs.xVariable.categories.length
+                  )
+                };
+
                 contingency.aggregations.forEach(function(aggregation) {
-                  normalize(aggregation, grandTotal, contingency.all, false);
+                  normalize(aggregation, grandTotal, contingency.all, contingency.chiSquaredInfo);
                 });
               }
 
-
+              contingency.chiSquaredInfo.pValue = (1 - ChiSquaredCalculator.compute(contingency.chiSquaredInfo));
             }
 
             /**
