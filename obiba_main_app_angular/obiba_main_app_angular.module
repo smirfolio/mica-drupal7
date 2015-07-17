@@ -194,6 +194,11 @@ function obiba_main_app_angular_load_angular_library() {
       'version' => 'Last Version',
       'js' => array(
 
+
+        $lib_path_schema_form . '/jquery-ui/jquery-ui.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
         $lib_path_schema_form . '/angular/angular.min.js' => array('type' => 'file', 'scope' => 'footer'),
         $lib_path_schema_form . '/angular-resource/angular-resource.min.js' => array(
           'type' => 'file',
@@ -218,10 +223,6 @@ function obiba_main_app_angular_load_angular_library() {
           'scope' => 'footer'
         ),
         $lib_path_schema_form . '/angular-route/angular-route.js' => array(
-          'type' => 'file',
-          'scope' => 'footer'
-        ),
-        $lib_path_schema_form . '/jquery-ui/jquery-ui.min.js' => array(
           'type' => 'file',
           'scope' => 'footer'
         ),

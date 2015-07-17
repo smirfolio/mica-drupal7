@@ -93,8 +93,15 @@ function obiba_mica_dataset_menu() {
     'page arguments' => array(1, 2, 5, 7)
   );
 
-  $items['mica/%/%/download/cross/%/by/%/ws'] = array(
-    'page callback' => 'obiba_mica_dataset_variables_crosstab_download',
+  $items['mica/%/%/download_csv/cross/%/by/%/ws'] = array(
+    'page callback' => 'obiba_mica_dataset_variables_crosstab_download_csv',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 2, 5, 7)
+  );
+
+  $items['mica/%/%/download_excel/cross/%/by/%/ws'] = array(
+    'page callback' => 'obiba_mica_dataset_variables_crosstab_download_excel',
     'file' => 'obiba_mica_dataset-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(1, 2, 5, 7)

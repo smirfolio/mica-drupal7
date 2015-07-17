@@ -65,7 +65,7 @@
               },
 
               getCrossDownloadUrl: function(params) {
-                return searchReplace(':dsType/:dsId/download/cross/:v1/by/:v2/ws', params);
+                return searchReplace(':dsType/:dsId/download_:docType/cross/:v1/by/:v2/ws', params);
               },
 
               createVariableUrlPart: function(var1, var2) {

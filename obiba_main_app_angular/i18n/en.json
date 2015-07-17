@@ -92,7 +92,9 @@
   "REVIEWED": "Under Review",
   "APPROVED": "Approved",
   "no-results": "No results found",
-  "show-details": "Show Details",
+  "show-details": "Detailed",
+  "show-frequency": "Frequency",
+  "show-percentage": "Percentage",
   "REJECTED": "Rejected",
   "min": "Min",
   "max": "Max",
@@ -101,6 +103,8 @@
   "or": "or",
   "study": "Study",
   "study-table": "Study Table",
+  "csv": "CSV",
+  "excel": "Excel",
   "server": {
     "error": {
       "403": "You do not have the permission to access this page.",

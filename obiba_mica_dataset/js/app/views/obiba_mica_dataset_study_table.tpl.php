@@ -5,7 +5,7 @@
   </span>
 </span>
 
-<div class="lg-top-margin" ng-if="showDetails" ng-init="info = extractStudySummaryInfo(contingency.studyTable)">
+<div class="lg-top-margin" ng-if="options.showDetails" ng-init="info = extractStudySummaryInfo(contingency.studyTable)">
   <small>
     <p class="text-muted no-margin">{{info.population}}</p>
     <p class="text-muted indent">{{info.dce}}</p>

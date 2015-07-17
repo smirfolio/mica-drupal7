@@ -172,16 +172,18 @@ class MicaDatasetResource extends MicaClient {
   }
 
 
-  public function download_cross_variables($resource, $dataset_id, $variable1, $variable2) {
+  public function download_cross_variables($resource, $dataset_id, $variable1, $variable2, $doc_type) {
     $this->setLastResponse(NULL);
     $params = empty($variable2) ? '' : 'by=' . $variable2;
-    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id) . '/variable/' . (empty($variable1) ? '' : $variable1) . '/contingency/_export?' . $params;
+    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . rawurlencode($dataset_id)
+      . '/variable/' . (empty($variable1) ? '' : $variable1) . '/contingency/_export?' . $params;
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_CSV),
-        )
+      'headers' => $this->authorizationHeader(
+        $doc_type === 'csv'
+          ? array('Accept' => array(parent::HEADER_CSV))
+          : array('Accept' => array(parent::HEADER_EXCEL_SHEET))
       ),
     ));
     $client = $this->client();
