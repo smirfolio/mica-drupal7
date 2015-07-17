@@ -58,12 +58,12 @@
       <!-- table detail and stats options -->
       <div class="btn-group">
         <label class="btn" ng-class="{'btn-info': options.showDetails, 'btn-default': !options.showDetails}"
-               ng-model="options.showDetails" btn-checkbox>{{'show-details' | translate}}</label>
+               ng-model="options.showDetails" btn-checkbox>{{'detailed' | translate}}</label>
         <div class="btn-group" ng-if="!isStatistical(crosstab.rhs.xVariable)">
           <label class="btn" ng-class="{'btn-info': options.statistics === StatType.CPERCENT, 'btn-default': options.statistics !== StatType.CPERCENT}"
-                 ng-model="options.statistics" btn-radio="StatType.CPERCENT">{{'show-percentage' | translate}} <i class="fa fa-long-arrow-down"></i></label>
+                 ng-model="options.statistics" btn-radio="StatType.CPERCENT">{{'percentage' | translate}} <i class="fa fa-long-arrow-down"></i></label>
           <label class="btn" ng-class="{'btn-info': options.statistics === StatType.RPERCENT, 'btn-default': options.statistics !== StatType.RPERCENT}"
-                 ng-model="options.statistics" btn-radio="StatType.RPERCENT">{{'show-percentage' | translate}} <i class="fa fa-long-arrow-right"></i></label>
+                 ng-model="options.statistics" btn-radio="StatType.RPERCENT">{{'percentage' | translate}} <i class="fa fa-long-arrow-right"></i></label>
         </div>
       </div>
 
@@ -88,17 +88,18 @@
         src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif"
         ng-if="loading">
     </div>
+
     <table ng-if="!loading" class="table table-striped table-bordered no-margin no-padding">
       <thead>
       <tr>
         <th style="vertical-align: top" class="" ng-if="datasetHarmo" width="20%"
-            rowspan="{{crosstab.lhs.xVariable.categories.length}}">{{'study-table' | translate}}
+            rowspan="{{crosstab.lhs.xVariable.categories.length}}">{{options.showDetailedStats ? ('study-table' | translate) : ''}}
         </th>
         <th style="vertical-align: top" rowspan="{{crosstab.lhs.xVariable.categories.length}}" width="10%">
-          {{crosstab.rhs.xVariable.name}}
+          <a href="<?php print base_path(); ?>mica/variable/{{crosstab.rhs.xVariable.id}}">{{crosstab.rhs.xVariable.name}}</a>
         </th>
         <th class="text-center" colspan="{{crosstab.lhs.xVariable.categories.length}}">
-          {{crosstab.lhs.xVariable.name}}
+          <a href="<?php print base_path(); ?>mica/variable/{{crosstab.lhs.xVariable.id}}">{{crosstab.lhs.xVariable.name}}</a>
         </th>
         <th style="vertical-align: top" class="text-center" rowspan="{{crosstab.lhs.xVariable.categories.length}}">
           {{'total' | translate}}
@@ -114,10 +115,10 @@
 
       <!-- Categorical -->
       <tbody ng-repeat="contingency in crosstab.contingencies track by $index"
-             ng-if="!isStatistical(crosstab.rhs.xVariable)"
+             ng-if="!isStatistical(crosstab.rhs.xVariable) && (!datasetHarmo || (datasetHarmo && options.showDetailedStats))"
              ng-include="getTemplatePath(contingency, '<?php print base_path(); ?>')">
       </tbody>
-      <tbody ng-if="datasetHarmo && !isStatistical(crosstab.rhs.xVariable)">
+      <tbody ng-if="!isStatistical(crosstab.rhs.xVariable) && datasetHarmo && options.showDetailedStats">
       <tr>
         <td colspan="{{crosstab.lhs.xVariable.categories.length + 3}}"></td>
       </tr>
@@ -128,10 +129,11 @@
       </tbody>
 
       <!-- Statistical -->
-      <tbody ng-repeat="contingency in crosstab.contingencies" ng-if="isStatistical(crosstab.rhs.xVariable)"
+      <tbody ng-repeat="contingency in crosstab.contingencies"
+             ng-if="isStatistical(crosstab.rhs.xVariable) && (!datasetHarmo || (datasetHarmo && options.showDetailedStats))"
              ng-include="getTemplatePath(contingency, '<?php print base_path(); ?>')">
       </tbody>
-      <tbody ng-if="datasetHarmo && isStatistical(crosstab.rhs.xVariable)">
+      <tbody ng-if="isStatistical(crosstab.rhs.xVariable) && datasetHarmo options.showDetailedStats">
       <tr>
         <td colspan="{{crosstab.lhs.xVariable.categories.length + 3}}"></td>
       </tr>

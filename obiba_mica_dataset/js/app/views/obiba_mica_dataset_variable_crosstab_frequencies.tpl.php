@@ -13,7 +13,8 @@
 
   <td ng-repeat="aggregation in contingency.aggregations">
     {{aggregation.frequencies[$parent.$index].count}}&nbsp;
-    <span class="help-inline">
+
+    <span ng-show="aggregation.privacyCheck" class="help-inline">
       <span ng-show="options.statistics === StatType.RPERCENT">
         ({{aggregation.frequencies[$parent.$index].percent | number:2}}%)
       </span>
@@ -24,7 +25,7 @@
   </td>
   <td>
     {{contingency.all.frequencies[$index].count}}&nbsp;
-    <span class="help-inline">
+    <span ng-if="aggregation.privacyCheck" class="help-inline">
       <span ng-if="options.statistics === StatType.RPERCENT">
         (100%)
       </span>
@@ -35,14 +36,14 @@
   </td>
 </tr>
 <tr>
-  <td ng-if="datasetHarmo && !options.showDetails" rowspan="{{crosstab.rhs.xVariable.categories.length}}">
+  <td ng-if="options.showDetailedStats && datasetHarmo && !options.showDetails" rowspan="{{crosstab.rhs.xVariable.categories.length}}">
     <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_study_table'"></span>
     <span ng-if="grandTotal"><strong>{{'total' | translate}}</strong></span>
   </td>
   <td><em>N</em></td>
   <td ng-repeat="aggregation in contingency.aggregations">
     {{aggregation.n}}&nbsp;
-    <span class="help-inline">
+    <span ng-if="aggregation.privacyCheck" class="help-inline">
       <span ng-if="options.statistics === StatType.RPERCENT">
         ({{aggregation.percent | number:2}}%)
       </span>
@@ -53,7 +54,7 @@
   </td>
   <td>
     {{contingency.all.n}}&nbsp;
-    <span class="help-inline">
+    <span ng-if="contingency.valid" class="help-inline">
       <span ng-if="options.statistics === StatType.CPERCENT">
         (100%)
       </span>
@@ -63,9 +64,10 @@
     <span>
   </td>
 </tr>
-<tr>
+
+<tr ng-if="options.showDetails && !grandTotal && contingency.privacyCheck">
   <td>
-    <em>{{'chi-squared-test' | translate}}</em>
+    <em>{{'dataset.crosstab.chi-squared.test' | translate}}</em>
   </td>
   <td colspan="{{crosstab.lhs.xVariable.categories.length + 1}}">
     <span>
@@ -73,5 +75,16 @@
       df = {{contingency.chiSquaredInfo.df}},&nbsp;&nbsp;
       p-value = {{contingency.chiSquaredInfo.pValue | number:4 }}
     </span>
+    <span class="text-danger" ng-if="!contingency.privacyCheck">
+      {{'dataset.crosstab.privacy-check-failed' | translate:{arg0:contingency.privacyThreshold} }}
+    <span>
   </td>
 </tr>
+<tr ng-if="!grandTotal && !contingency.privacyCheck">
+  <td colspan="{{crosstab.lhs.xVariable.categories.length + 2}}">
+    <span class="text-danger" ng-if="!contingency.privacyCheck">
+      {{'dataset.crosstab.privacy-check-failed' | translate:{arg0:contingency.privacyThreshold} }}
+    <span>
+  </td>
+</tr>
+
