@@ -101,13 +101,14 @@
               return $scope.crosstab.lhs.variable
                 && $scope.crosstab.rhs.variable
                 && !isStatistical($scope.crosstab.rhs.variable);
-            }
+            };
 
             var exchangeVariables = function() {
               if (canExchangeVariables()) {
                 var temp = $scope.crosstab.lhs.variable;
                 $scope.crosstab.lhs.variable = $scope.crosstab.rhs.variable;
                 $scope.crosstab.rhs.variable = temp;
+                submit();
               }
             };
 
@@ -142,7 +143,7 @@
 
             function normalizeFrequencies(contingency, v2Cats) {
 
-              function normalize(aggregation) {
+              function normalize(aggregation, grandTotal, totals) {
                 var fCats = aggregation.frequencies.map(function (frq) {
                   return frq.value;
                 });
@@ -153,15 +154,30 @@
                     aggregation.frequencies.splice(i, 0, {count: 0, value: cat});
                   }
                 });
+
+                if (totals) {
+                  aggregation.percent = aggregation.n / grandTotal * 100;
+                  aggregation.frequencies.forEach(function (frequency, i) {
+                    var n = totals.frequencies[i].count;
+                    frequency.percent = n === 0 ? 0 : frequency.count / n * 100;
+                  });
+                } else {
+                  aggregation.frequencies.forEach(function (frequency, i) {
+                    frequency.percent = frequency.count / grandTotal * 100;
+                  });
+                }
               }
+
+              var grandTotal = contingency.all.total > 0 ? contingency.all.total : 1;
+              normalize(contingency.all, grandTotal, null);
 
               if (contingency.aggregations) {
                 contingency.aggregations.forEach(function(aggregation) {
-                  normalize(aggregation);
+                  normalize(aggregation, grandTotal, contingency.all);
                 });
               }
 
-              normalize(contingency.all, v2Cats);
+
             }
 
             /**
@@ -234,10 +250,11 @@
               }
             };
 
-            var download = function() {
+            var download = function(docType) {
               var downloadUrl = ContingencyService.getCrossDownloadUrl({
                 ':dsType': $routeParams.type,
                 ':dsId': $routeParams.ds,
+                ':docType': docType,
                 ':v1': $scope.crosstab.lhs.xVariable.name,
                 ':v2': $scope.crosstab.rhs.xVariable.name
               });
@@ -248,6 +265,31 @@
               return false;
             };
 
+            var lhsVariableCategory = function(category) {
+              return getVariableCategory($scope.crosstab.lhs.xVariable, category);
+            };
+
+            var rhsVariableCategory = function(category) {
+              return getVariableCategory($scope.crosstab.rhs.xVariable, category);
+            };
+
+            function getVariableCategory(variable, category) {
+              var result = null;
+
+              if (variable && variable.categories) {
+                result = lhsVar.categories.filter(function(cat) {
+                  return cat.name === category;
+                });
+              }
+
+              return result ? result[0] : category;
+            }
+
+            /**
+             * Retrieves study table info for the result page
+             * @param studtTable
+             * @returns {{summary: *, population: *, dce: *, project: *, table: *}}
+             */
             var extractStudySummaryInfo = function(studtTable) {
               var summary = studtTable.studySummary;
               var pop = summary.populationSummaries ? summary.populationSummaries[0] : null;
@@ -303,18 +345,23 @@
             };
 
             $scope.isStatistical = isStatistical;
-            $scope.datasetHarmo = $routeParams.type === 'harmonization-dataset';
             $scope.getTemplatePath = getTemplatePath;
-            $scope.showDetails = true;
             $scope.canExchangeVariables = canExchangeVariables;
             $scope.exchangeVariables = exchangeVariables;
             $scope.extractStudySummaryInfo = extractStudySummaryInfo;
-            $scope.showDetails = true;
+            $scope.lhsVariableCategory = lhsVariableCategory;
+            $scope.rhsVariableCategory = rhsVariableCategory;
             $scope.clear = clear;
             $scope.submit = submit;
             $scope.download = download;
             $scope.searchCategoricalVariables = searchCategoricalVariables;
             $scope.searchVariables = searchVariables;
+            $scope.DocType = {CSV: 'csv', EXCEL: 'excel'};
+            $scope.datasetHarmo = $routeParams.type === 'harmonization-dataset';
+            $scope.options = {
+              showDetails: true,
+              showFrequency: true
+            };
 
             initCrosstab();
             endProgress();
@@ -326,13 +373,15 @@
               onError
             );
 
+            var varCount = 0;
             if ($routeParams.varId) {
               DatasetVariableResource.get({varId: $routeParams.varId},
                 function onSuccess(response) {
                   $log.debug('Variable LHS info', response);
                   $scope.crosstab.lhs.variable = response;
                   $scope.crosstab.lhs.variables = [response];
-                  endProgress();
+                  varCount++;
+                  if (varCount > 1) submit();
                 },
                 onError
               );
@@ -344,11 +393,14 @@
                   $log.debug('Variable RHS info', response);
                   $scope.crosstab.rhs.variable = response;
                   $scope.crosstab.rhs.variables = [response];
-                  endProgress();
+                  varCount++;
+                  if (varCount > 1) submit();
                 },
                 onError
               );
             }
+
+
 
           }]);
     }

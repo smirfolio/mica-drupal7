@@ -14,6 +14,23 @@
     attach: function (context, settings) {
 
       mica.DatasetVariableCrosstab
+
+        .filter('variableCategory',
+          function () {
+            return function (categories, category) {
+              var result = null;
+
+              if (categories) {
+                result = categories.filter(function(cat) {
+                  return cat.name === category;
+                });
+              }
+
+              return result ? result[0] : null;
+            }
+          })
+
+
         .filter('variableLabel', ['AttributeService',
           function (AttributeService) {
             return function (variable) {
