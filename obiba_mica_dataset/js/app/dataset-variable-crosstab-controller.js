@@ -143,7 +143,11 @@
 
             function normalizeFrequencies(contingency, v2Cats) {
 
-              function normalize(aggregation, grandTotal, totals) {
+              function percentage(value, total) {
+                return total === 0 ? 0 : value / total * 100;
+              }
+
+              function normalize(aggregation, grandTotal, totals, isAll) {
                 var fCats = aggregation.frequencies.map(function (frq) {
                   return frq.value;
                 });
@@ -155,25 +159,26 @@
                   }
                 });
 
-                if (totals) {
-                  aggregation.percent = aggregation.n / grandTotal * 100;
+                if (isAll) {
                   aggregation.frequencies.forEach(function (frequency, i) {
-                    var n = totals.frequencies[i].count;
-                    frequency.percent = n === 0 ? 0 : frequency.count / n * 100;
+                    frequency.percent = percentage(frequency.count, grandTotal);
+                    frequency.cpercent = percentage(frequency.n, grandTotal);
                   });
                 } else {
+                  aggregation.percent = percentage(aggregation.n, grandTotal);
                   aggregation.frequencies.forEach(function (frequency, i) {
-                    frequency.percent = frequency.count / grandTotal * 100;
+                    frequency.percent = percentage(frequency.count, totals.frequencies[i].count);
+                    frequency.cpercent = percentage(frequency.count, aggregation.n);
                   });
                 }
               }
 
-              var grandTotal = contingency.all.total > 0 ? contingency.all.total : 1;
-              normalize(contingency.all, grandTotal, null);
+              var grandTotal = contingency.all.total;
+              normalize(contingency.all, grandTotal, contingency.all, true);
 
               if (contingency.aggregations) {
                 contingency.aggregations.forEach(function(aggregation) {
-                  normalize(aggregation, grandTotal, contingency.all);
+                  normalize(aggregation, grandTotal, contingency.all, false);
                 });
               }
 
@@ -357,10 +362,11 @@
             $scope.searchCategoricalVariables = searchCategoricalVariables;
             $scope.searchVariables = searchVariables;
             $scope.DocType = {CSV: 'csv', EXCEL: 'excel'};
+            $scope.StatType = {CPERCENT: 1, RPERCENT: 2, CHI: 3};
             $scope.datasetHarmo = $routeParams.type === 'harmonization-dataset';
             $scope.options = {
               showDetails: true,
-              showFrequency: true
+              statistics: $scope.StatType.CPERCENT
             };
 
             initCrosstab();

@@ -12,19 +12,25 @@
   </td>
 
   <td class="text-center" ng-repeat="aggregation in contingency.aggregations">
-    <span ng-show="options.showFrequency">
-      {{aggregation.frequencies[$parent.$index].count}}
-    </span>
-    <span ng-show="!options.showFrequency">
-      {{aggregation.frequencies[$parent.$index].percent | number:2}}%
+    {{aggregation.frequencies[$parent.$index].count}}&nbsp;
+    <span class="help-inline">
+      <span ng-show="options.statistics === StatType.RPERCENT">
+        ({{aggregation.frequencies[$parent.$index].percent | number:2}}%)
+      </span>
+      <span ng-show="options.statistics === StatType.CPERCENT">
+        ({{aggregation.frequencies[$parent.$index].cpercent | number:2}}%)
+      </span>
     </span>
   </td>
   <td class="text-center">
-    <span ng-if="options.showFrequency">
-      {{contingency.all.frequencies[$index].count}}
-    </span>
-    <span ng-if="!options.showFrequency">
-      {{contingency.all.frequencies[$index].percent | number:2}}%
+    {{contingency.all.frequencies[$index].count}}&nbsp;
+    <span class="help-inline">
+      <span ng-if="options.statistics === StatType.RPERCENT">
+        (100%)
+      </span>
+      <span ng-if="options.statistics === StatType.CPERCENT">
+        ({{contingency.all.frequencies[$index].percent | number:2}}%)
+      </span>
     </span>
   </td>
 </tr>
@@ -35,19 +41,25 @@
   </td>
   <td class="grand-total">N</td>
   <td class="text-center grand-total" ng-repeat="aggregation in contingency.aggregations">
-    <span ng-if="options.showFrequency">
-      {{aggregation.n}}
-    </span>
-    <span ng-if="!options.showFrequency">
-      {{aggregation.percent | number:2}}%
+    {{aggregation.n}}&nbsp;
+    <span class="help-inline">
+      <span ng-if="options.statistics === StatType.RPERCENT">
+        ({{aggregation.percent | number:2}}%)
+      </span>
+      <span ng-if="options.statistics === StatType.CPERCENT">
+        (100%)
+      </span>
     </span>
   </td>
   <td class="text-center grand-total">
-    <span ng-if="options.showFrequency">
-      {{contingency.all.n}}
-    </span>
-    <span ng-if="!options.showFrequency">
-      100%
-    </span>
+    {{contingency.all.n}}&nbsp;
+    <span class="help-inline">
+      <span ng-if="options.statistics === StatType.CPERCENT">
+        (100%)
+      </span>
+      <span ng-if="options.statistics === StatType.RPERCENT">
+        (100%)
+      </span>
+    <span>
   </td>
 </tr>
