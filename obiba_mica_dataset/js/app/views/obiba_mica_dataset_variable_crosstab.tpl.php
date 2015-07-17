@@ -55,17 +55,19 @@
   <div ng-if="crosstab.contingencies && crosstab.contingencies.length > 0">
 
     <div>
+      <!-- table detail and stats options -->
       <div class="btn-group">
         <label class="btn" ng-class="{'btn-info': options.showDetails, 'btn-default': !options.showDetails}"
                ng-model="options.showDetails" btn-checkbox>{{'show-details' | translate}}</label>
         <div class="btn-group" ng-if="!isStatistical(crosstab.rhs.xVariable)">
-          <label class="btn" ng-class="{'btn-info': options.showFrequency, 'btn-default': !options.showFrequency}"
-                 ng-model="options.showFrequency" btn-radio="true">{{'show-frequency' | translate}}</label>
-          <label class="btn" ng-class="{'btn-info': !options.showFrequency, 'btn-default': options.showFrequency}"
-                 ng-model="options.showFrequency" btn-radio="false">{{'show-percentage' | translate}}</label>
+          <label class="btn" ng-class="{'btn-info': options.statistics === StatType.CPERCENT, 'btn-default': options.statistics !== StatType.CPERCENT}"
+                 ng-model="options.statistics" btn-radio="StatType.CPERCENT">{{'show-percentage' | translate}} <i class="fa fa-long-arrow-down"></i></label>
+          <label class="btn" ng-class="{'btn-info': options.statistics === StatType.RPERCENT, 'btn-default': options.statistics !== StatType.RPERCENT}"
+                 ng-model="options.statistics" btn-radio="StatType.RPERCENT">{{'show-percentage' | translate}} <i class="fa fa-long-arrow-right"></i></label>
         </div>
       </div>
 
+      <!-- download menu -->
       <div class="pull-right sm-bottom-margin">
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
