@@ -1,5 +1,5 @@
 <span>
-  <a href="<?php print base_path(); ?>/mica/study/{{contingency.studyTable.studyId}}">{{contingency.studyTable.studySummary.acronym | localizedValue}}</a>
+  <a href="<?php print base_path(); ?>mica/study/{{contingency.studyTable.studyId}}">{{contingency.studyTable.studySummary.acronym | localizedValue}}</a>
   <span>
   {{contingency.studyTable.name | localizedValue}}
   </span>
