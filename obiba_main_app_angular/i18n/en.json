@@ -218,6 +218,7 @@
       "another": "Select another variable...",
       "query-help": "Displays the multivariate frequency distribution of selected variables.",
       "privacy-check-failed": "To prevent disclosure risk, results in the table above are not shown because at least one cell has between 1 to {{arg0}} observations.",
+      "total-privacy-check-failed": "To prevent disclosure risk, results in the table above are not shown because at least one category has between 1 to {{arg0}} observations.",
       "chi-squared": {
         "test": "Chi-Squared Test"
       }
