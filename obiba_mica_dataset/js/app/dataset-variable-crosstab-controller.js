@@ -123,24 +123,42 @@
             };
 
             function normalizeStatistics(contingency, v1Cats) {
-              var terms = contingency.aggregations.map(function(aggregation) {
+              function createEmptyStatistics() {
+                return {
+                  min: '-',
+                  max: '-',
+                  mean: '-',
+                  stdDeviation: '-'
+                }
+              }
+
+              contingency.privacyCheck = contingency.aggregations.filter(function(aggregation) {
+                return aggregation.statistics !== null;
+              }).length > 0;
+                //contingency.aggregations ? contingency.aggregations[0].n > contingency.privacyThreshold : true;
+
+              var terms = contingency.aggregations.map(function (aggregation) {
                 return aggregation.term;
               });
 
-              v1Cats.forEach(function (cat, i) {
-                if (terms.indexOf(cat) === -1) {
-                  // create a cat at the same index
-                  contingency.aggregations.splice(i, 0, {
-                    statistics: {
-                      min: '-',
-                      max: '-',
-                      mean: '-',
-                      stdDeviation: '-'
-                    },
-                    n: '-'
-                  });
-                }
-              });
+              if (!contingency.privacyCheck) {
+                // server returns no aggregation, create emptyu ones
+                contingency.aggregations.forEach(function(aggregation, i) {
+                  aggregation.statistics = createEmptyStatistics();
+                });
+
+                contingency.all.statistics = createEmptyStatistics();
+
+              } else {
+                // create the missing category aggregations
+                v1Cats.forEach(function (cat, i) {
+                  if (terms.indexOf(cat) === -1) {
+                    // create a cat at the same index
+                    contingency.aggregations.splice(i, 0, { n:'-', statistics: createEmptyStatistics()});
+                  }
+
+                });
+              }
             }
 
             function normalizeFrequencies(contingency, v2Cats) {
@@ -161,7 +179,11 @@
                 return (rows - 1) * (columns - 1);
               }
 
-              function normalize(aggregation, grandTotal, totals, chiSquaredInfo) {
+              /**
+               * Normalized data; accounts for frequencies with no value (ignored by Elasticsearch)
+               * @param aggregation
+               */
+              function normalize(aggregation) {
                 var fCats = aggregation.frequencies.map(function (frq) {
                   return frq.value;
                 });
@@ -169,10 +191,19 @@
                 v2Cats.forEach(function (cat, i) {
                   if (fCats.indexOf(cat) === -1) {
                     // create a cat at the same index
-                    aggregation.frequencies.splice(i, 0, {count: 0, value: cat});
+                    aggregation.frequencies.splice(i, 0, {count: aggregation.privacyCheck ? 0 : '-', value: cat});
                   }
                 });
+              }
 
+              /**
+               * Calulates frequency percentages and chi-squared
+               * @param aggregation
+               * @param grandTotal
+               * @param totals
+               * @param chiSquaredInfo
+               */
+              function statistics(aggregation, grandTotal, totals, chiSquaredInfo) {
                 if (chiSquaredInfo) {
                   aggregation.percent = percentage(aggregation.n, grandTotal);
                   aggregation.frequencies.forEach(function (frequency, i) {
@@ -182,15 +213,21 @@
                     chiSquaredInfo.sum += cellChiSquared(frequency.count, expected(aggregation.n, totals.frequencies[i].count, grandTotal));
                   });
                 } else {
-                  aggregation.frequencies.forEach(function (frequency, i) {
+                  aggregation.frequencies.forEach(function (frequency) {
                     frequency.percent = percentage(frequency.count, grandTotal);
                     frequency.cpercent = percentage(frequency.n, grandTotal);
                   });
                 }
               }
 
+              /**
+               * process contingency
+               */
+
+              var privacyThreshold = contingency.privacyThreshold;
               var grandTotal = contingency.all.total;
-              normalize(contingency.all, grandTotal, contingency.all);
+              normalize(contingency.all, privacyThreshold);
+              statistics(contingency.all, grandTotal, contingency.all);
 
               if (contingency.aggregations) {
                 contingency.chiSquaredInfo = {
@@ -202,12 +239,20 @@
                   )
                 };
 
-                contingency.aggregations.forEach(function(aggregation) {
-                  normalize(aggregation, grandTotal, contingency.all, contingency.chiSquaredInfo);
-                });
-              }
+                contingency.privacyCheck = true;
+                contingency.aggregations.forEach(function (aggregation) {
+                  aggregation.privacyCheck = aggregation.frequencies.length > 0;
+                  contingency.privacyCheck &= aggregation.privacyCheck;
 
-              contingency.chiSquaredInfo.pValue = (1 - ChiSquaredCalculator.compute(contingency.chiSquaredInfo));
+                  normalize(aggregation);
+                  statistics(aggregation, grandTotal, contingency.all, contingency.chiSquaredInfo);
+                });
+
+                if (contingency.privacyCheck) {
+                  // no cell has an observation < 5
+                  contingency.chiSquaredInfo.pValue = (1 - ChiSquaredCalculator.compute(contingency.chiSquaredInfo));
+                }
+              }
             }
 
             /**
@@ -226,13 +271,14 @@
               if (contingencies) {
                 contingencies.forEach(function (contingency) {
                   $log.debug('>', contingency);
+                  if (contingency.all.n > 0) {
 
-                  if (isStatistical($scope.crosstab.rhs.xVariable)) {
-                    normalizeStatistics(contingency, v1Cats);
-                  } else {
-                    normalizeFrequencies(contingency, v2Cats);
+                    if (isStatistical($scope.crosstab.rhs.xVariable)) {
+                      normalizeStatistics(contingency, v1Cats);
+                    } else {
+                      normalizeFrequencies(contingency, v2Cats);
+                    }
                   }
-
                 });
               }
 
@@ -389,7 +435,9 @@
             $scope.DocType = {CSV: 'csv', EXCEL: 'excel'};
             $scope.StatType = {CPERCENT: 1, RPERCENT: 2, CHI: 3};
             $scope.datasetHarmo = $routeParams.type === 'harmonization-dataset';
+            $scope.routeParams = $routeParams;
             $scope.options = {
+              showDetailedStats: Drupal.settings.angularjsApp.show_detailed_stats,
               showDetails: true,
               statistics: $scope.StatType.CPERCENT
             };

@@ -145,7 +145,8 @@ function obiba_main_app_angular_load_js_resources() {
       'authenticated' => AgateClient::hasTicket() || user_is_logged_in(),
       //  'restws_csrf_token' => drupal_get_token('restws'),
       'user' => $user,
-      'locale' => $language->language
+      'locale' => $language->language,
+      'show_detailed_stats' => variable_get_value('dataset_detailed_var_stats')
     )
   );
 

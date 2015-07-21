@@ -92,9 +92,8 @@
   "REVIEWED": "Under Review",
   "APPROVED": "Approved",
   "no-results": "No results found",
-  "show-details": "Detailed",
-  "show-percentage": "Percentage",
-  "chi-squared-test": "Chi-Squared Test",
+  "detailed": "Detailed",
+  "percentage": "Percentage",
   "REJECTED": "Rejected",
   "min": "Min",
   "max": "Max",
@@ -217,7 +216,11 @@
       "title": "Contingency Table",
       "categorical": "Select a categorical variable...",
       "another": "Select another variable...",
-      "query-help": "Displays the multivariate frequency distribution of selected variables."
+      "query-help": "Displays the multivariate frequency distribution of selected variables.",
+      "privacy-check-failed": "To prevent disclosure risk, results in the table above are not shown because at least one cell has between 1 to {{arg0}} observations..",
+      "chi-squared": {
+        "test": "Chi-Squared Test"
+      }
     }
   }
 }
