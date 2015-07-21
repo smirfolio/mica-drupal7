@@ -133,7 +133,7 @@
              ng-if="isStatistical(crosstab.rhs.xVariable) && (!datasetHarmo || (datasetHarmo && options.showDetailedStats))"
              ng-include="getTemplatePath(contingency, '<?php print base_path(); ?>')">
       </tbody>
-      <tbody ng-if="isStatistical(crosstab.rhs.xVariable) && datasetHarmo options.showDetailedStats">
+      <tbody ng-if="isStatistical(crosstab.rhs.xVariable) && datasetHarmo && options.showDetailedStats">
       <tr>
         <td colspan="{{crosstab.lhs.xVariable.categories.length + 3}}"></td>
       </tr>
