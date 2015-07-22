@@ -43,7 +43,8 @@ class MicaClientPathProvider {
       && empty($dataset->{'obiba.mica.HarmonizationDatasetDto.type'})) {
 
       // DTO object
-      return !empty($dataset->getExtensionList('obiba.mica.StudyDatasetDto.type'))
+      $exts = $dataset->getExtensionList('obiba.mica.StudyDatasetDto.type');
+      return !empty($exts)
         ? self::study_dataset($dataset->id)
         : self::harmonization_dataset($dataset->id);
     }
