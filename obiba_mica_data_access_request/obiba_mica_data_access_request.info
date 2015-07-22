@@ -12,4 +12,4 @@ dependencies[] = http_client
 dependencies[] = obiba_agate
 
 project = obiba_mica_data_access_request
-version = 7.x-1.1-dev
+version = 7.x-1.1.0
