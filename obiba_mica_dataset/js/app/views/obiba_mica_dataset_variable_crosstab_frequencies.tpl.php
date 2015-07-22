@@ -25,7 +25,7 @@
   </td>
   <td>
     {{contingency.all.frequencies[$index].count}}&nbsp;
-    <span ng-if="aggregation.privacyCheck" class="help-inline">
+    <span ng-if="contingency.all.privacyCheck" class="help-inline">
       <span ng-if="options.statistics === StatType.RPERCENT">
         (100%)
       </span>
@@ -36,32 +36,42 @@
   </td>
 </tr>
 <tr>
-  <td ng-if="options.showDetailedStats && datasetHarmo && !options.showDetails" rowspan="{{crosstab.rhs.xVariable.categories.length}}">
+  <td ng-if="options.showDetailedStats &&  datasetHarmo && !options.showDetails" rowspan="{{crosstab.rhs.xVariable.categories.length}}">
     <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_study_table'"></span>
     <span ng-if="grandTotal"><strong>{{'total' | translate}}</strong></span>
   </td>
   <td><em>N</em></td>
   <td ng-repeat="aggregation in contingency.aggregations">
-    {{aggregation.n}}&nbsp;
-    <span ng-if="aggregation.privacyCheck" class="help-inline">
-      <span ng-if="options.statistics === StatType.RPERCENT">
-        ({{aggregation.percent | number:2}}%)
+    <span ng-if="contingency.totalPrivacyCheck">
+      {{aggregation.n}}&nbsp;
+      <span class="help-inline">
+        <span ng-if="options.statistics === StatType.RPERCENT">
+          ({{aggregation.percent | number:2}}%)
+        </span>
+        <span ng-if="options.statistics === StatType.CPERCENT">
+          (100%)
+        </span>
       </span>
-      <span ng-if="options.statistics === StatType.CPERCENT">
-        (100%)
-      </span>
+    </span>
+    <span ng-if="!contingency.totalPrivacyCheck">
+      -
     </span>
   </td>
   <td>
-    {{contingency.all.n}}&nbsp;
-    <span ng-if="contingency.valid" class="help-inline">
-      <span ng-if="options.statistics === StatType.CPERCENT">
-        (100%)
-      </span>
-      <span ng-if="options.statistics === StatType.RPERCENT">
-        (100%)
-      </span>
-    <span>
+    <span ng-if="!contingency.totalPrivacyCheck">
+      -
+    </span>
+    <span ng-if="contingency.totalPrivacyCheck">
+      {{contingency.all.n}}&nbsp;
+      <span ng-if="contingency.privacyCheck" class="help-inline">
+        <span ng-if="options.statistics === StatType.CPERCENT">
+          (100%)
+        </span>
+        <span ng-if="options.statistics === StatType.RPERCENT">
+          (100%)
+        </span>
+      <span>
+    </span>
   </td>
 </tr>
 
@@ -83,7 +93,7 @@
 <tr ng-if="!grandTotal && !contingency.privacyCheck">
   <td colspan="{{crosstab.lhs.xVariable.categories.length + 2}}">
     <span class="text-danger" ng-if="!contingency.privacyCheck">
-      {{'dataset.crosstab.privacy-check-failed' | translate:{arg0:contingency.privacyThreshold} }}
+      {{getPrivacyErrorMessage(contingency) | translate:{arg0:contingency.privacyThreshold} }}
     <span>
   </td>
 </tr>

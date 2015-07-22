@@ -166,11 +166,13 @@
 <?php if (variable_get_value('mica_statistics')): ?>
   <section>
     <h2><?php print t('Statistics') ?>
-      <?php if (strcasecmp($variable_dto->nature, 'categorical') === 0): ?>
-        <span class="pull-right">
-        <?php if (variable_get_value('mica_statistics')) print MicaClientAnchorHelper::variable_crosstab($variable_dto, TRUE) ?>
-      </span>
-      <?php endif;?>
+      <!-- TODO uncomment until the variable crosstab is properly implemented.
+<!--      -->
+<!--      --><?php //if (strcasecmp($variable_dto->nature, 'categorical') === 0): ?>
+<!--        <span class="pull-right">-->
+<!--        --><?php //if (variable_get_value('mica_statistics')) print MicaClientAnchorHelper::variable_crosstab($variable_dto, TRUE) ?>
+<!--      </span>-->
+<!--      --><?php //endif;?>
 
     </h2>
     <?php

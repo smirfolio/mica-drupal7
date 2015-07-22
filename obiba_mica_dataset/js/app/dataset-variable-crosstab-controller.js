@@ -134,8 +134,7 @@
 
               contingency.privacyCheck = contingency.aggregations.filter(function(aggregation) {
                 return aggregation.statistics !== null;
-              }).length > 0;
-                //contingency.aggregations ? contingency.aggregations[0].n > contingency.privacyThreshold : true;
+              }).length === contingency.aggregations.length;
 
               var terms = contingency.aggregations.map(function (aggregation) {
                 return aggregation.term;
@@ -226,6 +225,7 @@
 
               var privacyThreshold = contingency.privacyThreshold;
               var grandTotal = contingency.all.total;
+              contingency.all.privacyCheck = contingency.all.frequencies.length > 0;
               normalize(contingency.all, privacyThreshold);
               statistics(contingency.all, grandTotal, contingency.all);
 
@@ -242,7 +242,7 @@
                 contingency.privacyCheck = true;
                 contingency.aggregations.forEach(function (aggregation) {
                   aggregation.privacyCheck = aggregation.frequencies.length > 0;
-                  contingency.privacyCheck &= aggregation.privacyCheck;
+                  contingency.privacyCheck = contingency.privacyCheck && aggregation.privacyCheck;
 
                   normalize(aggregation);
                   statistics(aggregation, grandTotal, contingency.all, contingency.chiSquaredInfo);
@@ -271,7 +271,8 @@
               if (contingencies) {
                 contingencies.forEach(function (contingency) {
                   $log.debug('>', contingency);
-                  if (contingency.all.n > 0) {
+                  contingency.totalPrivacyCheck = contingency.all.n !== -1; // show the details anyway
+                  if (!contingency.totalPrivacyCheck || contingency.all.n > 0) {
 
                     if (isStatistical($scope.crosstab.rhs.xVariable)) {
                       normalizeStatistics(contingency, v1Cats);
@@ -383,6 +384,12 @@
               }
             };
 
+            var getPrivacyErrorMessage = function(contingency) {
+              return !contingency.totalPrivacyCheck
+                ? 'dataset.crosstab.total-privacy-check-failed'
+                : (!contingency.privacyCheck ? 'dataset.crosstab.privacy-check-failed' : '');
+            };
+
             /**
              * Returns the proper template based on total.n
              * @param contingency
@@ -397,8 +404,8 @@
 
               var folder = basePath + "obiba_main_app_angular/obiba_mica_data_access_request/";
               var template = isStatistical($scope.crosstab.rhs.xVariable)
-                ? (contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_statistics" : "obiba_mica_dataset_variable_crosstab_statistics_empty")
-                : (contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_frequencies" : "obiba_mica_dataset_variable_crosstab_frequencies_empty");
+                ? (!contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_statistics" : "obiba_mica_dataset_variable_crosstab_statistics_empty")
+                : (!contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_frequencies" : "obiba_mica_dataset_variable_crosstab_frequencies_empty");
 
               return folder + template;
             };
@@ -422,6 +429,7 @@
 
             $scope.isStatistical = isStatistical;
             $scope.getTemplatePath = getTemplatePath;
+            $scope.getPrivacyErrorMessage = getPrivacyErrorMessage;
             $scope.canExchangeVariables = canExchangeVariables;
             $scope.exchangeVariables = exchangeVariables;
             $scope.extractStudySummaryInfo = extractStudySummaryInfo;

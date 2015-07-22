@@ -28,13 +28,27 @@
     <span ng-if="grandTotal"><strong>{{'total' | translate}}</strong></span>
   </td>
   <td>N</td>
-  <td class="text-center" ng-repeat="aggregation in contingency.aggregations">{{aggregation.n}}</td>
-  <td class="text-center">{{contingency.all.n}}</td>
+  <td class="text-center" ng-repeat="aggregation in contingency.aggregations">
+    <span ng-if="contingency.totalPrivacyCheck">
+      {{aggregation.n}}
+    </span>
+    <span ng-if="!contingency.totalPrivacyCheck">
+      -
+    </span>
+  </td>
+  <td class="text-center">
+    <span ng-if="contingency.totalPrivacyCheck">
+      {{contingency.all.n}}
+    </span>
+    <span ng-if="!contingency.totalPrivacyCheck">
+      -
+    </span>
+  </td>
 </tr>
 <tr>
   <td ng-if="!grandTotal && !contingency.privacyCheck" colspan="{{crosstab.lhs.xVariable.categories.length + 3}}">
     <span class="text-danger" ng-if="!contingency.privacyCheck">
-      {{'dataset.crosstab.privacy-check-failed' | translate:{arg0:contingency.privacyThreshold} }}
+      {{getPrivacyErrorMessage(contingency) | translate:{arg0:contingency.privacyThreshold} }}
     <span>
   </td>
 </tr>
