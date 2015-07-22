@@ -29,6 +29,7 @@ class MicaClientPathProvider {
   const DATA_ACCESS_HOME = 'mica/data_access/home';
   const DATA_ACCESS_LIST = 'mica/data_access/requests';
   const AGATE_REGISTER  = 'agate/register';
+  const AGATE_PROFILE = 'agate/user/profile';
 
   static function study($id) {
     return preg_replace('/\\{id\\}/', $id, self::STUDY, 1);
