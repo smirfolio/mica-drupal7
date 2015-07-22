@@ -21,4 +21,4 @@ dependencies[] = obiba_mica_network
 scripts[] = js/obiba-mica-progressbar-controller.js
 
 project = obiba_mica
-version = 7.x-1.1.0
+version = 7.x-1.1-dev
