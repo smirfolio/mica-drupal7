@@ -8,4 +8,4 @@ dependencies[] = obiba_mica_model
 dependencies[] = obiba_mica_study
 
 project = obiba_mica_dataset
-version = 7.x-1.1-dev
+version = 7.x-1.1.1

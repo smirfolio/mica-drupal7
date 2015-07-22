@@ -8,4 +8,4 @@ dependencies[] = obiba_mica_model
 dependencies[] = charts_google
 
 project = obiba_mica_search
-version = 7.x-1.1-dev
+version = 7.x-1.1.1
