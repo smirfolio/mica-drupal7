@@ -11,14 +11,48 @@
 function obiba_mica_menu() {
   $items = array();
 
-  $items['admin/config/system/obiba'] = array(
-    'title' => 'OBiBa Mica settings',
-    'description' => 'Configure Mica services',
+  $items['admin/config/obiba-mica'] = array(
+    'title' => t('OBiBa Mica'),
+    'description' => t('Configure Mica'),
+    'weight' => -100,
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+    'position' => 'right',
+  );
+
+  $items['admin/config/obiba-mica/obiba-mica-settings'] = array(
+    'title' => t('Mica server settings'),
+    'description' => t('Configure Mica services'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_admin_settings'),
     'access arguments' => array('administer obiba mica'),
     'type' => MENU_NORMAL_ITEM,
     'file' => 'obiba_mica.admin.inc',
+    'weight' => 0,
+  );
+
+  $items['admin/config/obiba-mica/obiba-search-pages-settings'] = array(
+    'title' => t('Search pages settings'),
+    'description' => t('Configure search pages'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('obiba_mica_search_pages_admin_settings'),
+    'access arguments' => array('administer obiba mica'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'obiba_mica_search_pages.admin.inc',
+    'weight' => 1,
+  );
+
+  $items['admin/config/obiba-mica/obiba-content-pages-settings'] = array(
+    'title' => t('Catalogs content pages settings'),
+    'description' => t('Configure the catalogues content pages'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('obiba_mica_content_pages_admin_settings'),
+    'access arguments' => array('administer obiba mica'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'obiba_mica_content_pages.admin.inc',
+    'weight' => 1,
   );
   return $items;
 }
