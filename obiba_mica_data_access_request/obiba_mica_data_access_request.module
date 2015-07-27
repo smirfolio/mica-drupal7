@@ -292,6 +292,7 @@ function obiba_mica_data_access_requests_datatable_init($requests) {
   drupal_add_js(array(
     'user' => $user,
     'table_headers' => array(
+      array("title" => ''),
       array("title" => t('ID')),
       array("title" => t('Applicant')),
       array("title" => t('Title'), 'width' => '35%'),
@@ -336,7 +337,6 @@ function obiba_mica_data_access_request_table_rows($requests) {
   $js_dictionary_file = drupal_get_path('module', 'obiba_main_app_angular') . '/i18n/' . $language->language . '.json';
   $js_dictionary = json_decode(file_get_contents($js_dictionary_file), TRUE);
   $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->get_requests();
-
   if (empty($requests->responseCode) && !empty($requests)) {
     $res = array_map(function ($r) use ($js_dictionary) {
       $r->submission_date = NULL;
@@ -349,10 +349,14 @@ function obiba_mica_data_access_request_table_rows($requests) {
       }
 
       $r->full_name = _obiba_mica_data_access_request_profile_full_name($r);
-
+      $applicant_mail = _obiba_mica_data_access_request_profile_attribute($r,'email');
       return array(
-        l($r->id, 'mica/data-access/request', array('fragment' => '/view/' . $r->id)),
         $r->full_name,
+        l($r->id, 'mica/data-access/request', array('fragment' => '/view/' . $r->id)),
+        '<a id="applicantProfile" href="" data-toggle="modal"
+        data-target="#UserDetailModal"
+        data-name-applicant="'.$r->full_name.'"
+        data-email-applicant="'.$applicant_mail.'">'.$r->full_name.'</a>',
         empty($r->title) ? '' : $r->title,
         date_format(date_create(empty($r->timestamps->lastUpdate) ?
           $r->timestamps->created :

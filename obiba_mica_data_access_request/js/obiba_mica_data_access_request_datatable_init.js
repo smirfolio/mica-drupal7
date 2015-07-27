@@ -22,17 +22,23 @@
         var divRequests = $('#table-requests'),
           colDefs = [
             {
+              targets: 0,
+              "visible": false,
+              "searchable": false
+            },
+            {
               targets: -1,
               render: function (data, type, row) {
                 return '<ul class="list-inline no-margin">' + data.map(function (action) {
                     if (action in ACTIONS) {
                       if (action === 'DELETE') {
-                        var titleInMOdal = row[2] ? row[2] : row[row.length - 1];
+                        var titleInMOdal = row[3] ? row[3] : row[row.length - 1];
+                        console.log(row);
                         return '<li><a  title="' + Drupal.t(action) + '"' +
                           'data-target="#delete-modal" id="' + action +
                           '" href="' + hrefBuilder(action, row[row.length - 1]) +
                           '" data-action="' + action +
-                          '"data-access-applicant="' + row[1] +
+                          '"data-access-applicant="' + row[0] +
                           '" data-access-title="' + titleInMOdal + '">' +
                           ' <i class="glyphicon ' + ACTIONS[action] + '"></i></a></li>';
                       }
@@ -79,13 +85,22 @@
           }
         );
 
-        /* Add events */
+        /* Add events on delete request*/
         $("body").on("click", "#table-requests tbody #DELETE", function (e) {
           e.preventDefault();
           var modal = $('#delete-modal').modal('show');
           modal.find('#data-access-title').text($(this).attr("data-access-title"));
           modal.find('#data-access-applicant').text($(this).attr("data-access-applicant"));
           modal.find('#clickedDelete').attr('data-delete-resource', $(this).attr("href"));
+          return false;
+        });
+        /* Add events on view applicant profile */
+        $("body").on("click", "#table-requests tbody #applicantProfile", function (e) {
+          e.preventDefault();
+          var modal = $('#UserDetailModal').modal('show');
+          modal.find('#data-name-applicant').text($(this).attr("data-name-applicant"));
+          modal.find('span#data-email-applicant').text($(this).attr("data-email-applicant"));
+          modal.find('a#data-email-applicant').attr("href",'mailto:'+$(this).attr("data-email-applicant"));
           return false;
         });
 
