@@ -9,12 +9,6 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-function obiba_mica_data_access_request_list_page() {
-  obiba_mica_data_access_requests_datatable_init(array());
-  drupal_set_title(t(variable_get_value('access_requests_page_title')));
-  return theme('obiba_mica_data_access_request-list');
-}
-
 function obiba_mica_data_access_request_form_get_config() {
   $mica_client = new MicaDataAccessRequest();
   $config = $mica_client->get_form_definition();
@@ -24,7 +18,9 @@ function obiba_mica_data_access_request_form_get_config() {
 function obiba_mica_data_access_requests_action() {
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_POST');
-    $data_access_request = $mica_client->data_access_save(file_get_contents('php://input'), NULL, '/data-access-requests');
+    $data_access_request =
+      $mica_client->data_access_save(file_get_contents('php://input'),
+        NULL, '/data-access-requests');
     drupal_json_output($data_access_request);
   }
 
@@ -34,13 +30,16 @@ function obiba_mica_data_access_request_comments_action($id_data_request) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
       $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_GET');
-      $data_access_request = $mica_client->get_comments($id_data_request, '/data-access-request');
+      $data_access_request =
+        $mica_client->get_comments($id_data_request, '/data-access-request');
       drupal_json_output($data_access_request);
       break;
 
     case 'POST':
       $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_POST');
-      $data_access_request = $mica_client->save_comment(file_get_contents('php://input'), $id_data_request, '/data-access-request');
+      $data_access_request =
+        $mica_client->save_comment(file_get_contents('php://input'),
+          $id_data_request, '/data-access-request');
       drupal_json_output($data_access_request);
       break;
   }
@@ -52,13 +51,17 @@ function obiba_mica_data_access_request_comment_action($id_data_request, $commen
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'PUT':
       $mica_client = new MicaDataAccessRequestComment(NULL, 'METHOD_PUT');
-      $data_access_request = $mica_client->save_comment($id_data_request, $comment_id, file_get_contents('php://input'), '/data-access-request');
+      $data_access_request =
+        $mica_client->save_comment($id_data_request, $comment_id,
+          file_get_contents('php://input'), '/data-access-request');
       drupal_json_output($data_access_request);
       break;
 
     case 'DELETE':
       $mica_client = new MicaDataAccessRequestComment(NULL, 'METHOD_DELETE');
-      $data_access_request = $mica_client->delete_comment($id_data_request, $comment_id, '/data-access-request');
+      $data_access_request =
+        $mica_client->delete_comment($id_data_request, $comment_id,
+          '/data-access-request');
       drupal_json_output($data_access_request);
       break;
   }
@@ -69,7 +72,8 @@ function obiba_mica_data_access_request_attachment($id_data_request, $id_file) {
   $dataset_resource = new MicaDataAccessRequest(NULL, 'METHOD_GET');
   $responses = $dataset_resource->download_attachment($id_data_request, $id_file);
   if (!empty($responses)) {
-    drupal_add_http_header('Content-Disposition', $responses['headers']['Content-Disposition'][0]);
+    drupal_add_http_header('Content-Disposition',
+      $responses['headers']['Content-Disposition'][0]);
     echo $responses['response']->body;
     flush();
     //stop drupal execution error : 'Headers already sent'
@@ -82,7 +86,8 @@ function obiba_mica_data_access_request_download_pdf($id_data_request) {
     $dataset_resource = new MicaDataAccessRequest(NULL, 'METHOD_GET');
     $responses = $dataset_resource->download_pdf($id_data_request);
     if (!empty($responses)) {
-      drupal_add_http_header('Content-Disposition', $responses['headers']['Content-Disposition'][0]);
+      drupal_add_http_header('Content-Disposition',
+        $responses['headers']['Content-Disposition'][0]);
       echo $responses['response']->body;
       flush();
       //stop drupal execution error : 'Headers already sent'
@@ -103,7 +108,9 @@ function obiba_mica_data_access_request_action($id_data_request) {
       break;
     case 'PUT':
       $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
-      $data_access_request = $mica_client->data_access_save(file_get_contents('php://input'), $id_data_request, '/data-access-request');
+      $data_access_request =
+        $mica_client->data_access_save(file_get_contents('php://input'),
+          $id_data_request, '/data-access-request');
       drupal_json_output($data_access_request);
       break;
     case 'DELETE' :
@@ -121,7 +128,7 @@ function obiba_mica_data_access_request_delete_request_access($id_request) {
 
 function obiba_mica_data_access_request_redirect($operation, $id_request) {
   global $base_url;
-  $url = $base_url . '/'. 'mica/data-access/request#/' . $operation . '/'. $id_request;
+  $url = $base_url . '/' . 'mica/data-access/request#/' . $operation . '/' . $id_request;
   header('Location: ' . $url, TRUE);
   drupal_exit($url);
 }
@@ -143,3 +150,37 @@ function obiba_mica_data_access_request_get_attachment($id_file) {
   $response = $mica_client->get_file($id_file, 'files/temp');
   drupal_json_output($response);
 }
+
+function obiba_mica_data_access_request_user_profile($user_id) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+  $response = $mica_client->get_user_profile($user_id);
+  $user_profile =
+    _obiba_mica_data_access_request_user_profile_attribute($response->attributes);
+  drupal_json_output(array('profile_html' => $user_profile));
+}
+
+function _obiba_mica_data_access_request_user_profile_attribute($user_attributes) {
+  $html_user_profile = '';
+  foreach ($user_attributes as $attribute) {
+    if(!in_array($attribute->key,
+      array('email', 'lastName', 'firstName', 'createdDate', 'lastLogin')))
+    $html_user_profile .=
+      theme('obiba_mica_data_access_request_user-profile-attributes', array(
+        'label' => t($attribute->key),
+        'value' => $attribute->value,
+      ));
+  }
+  if (!empty($html_user_profile)) {
+    return $html_user_profile;
+  }
+  return FALSE;
+}
+
+function obiba_mica_data_access_request_users() {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+  $response = $mica_client->get_users_list();
+
+  drupal_json_output($response);
+}
+
+

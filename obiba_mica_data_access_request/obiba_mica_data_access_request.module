@@ -123,10 +123,38 @@ function obiba_mica_data_access_request_menu() {
     'access callback' => TRUE
   );
 
+  $items['mica/data-access/user/%/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_request_user_profile',
+    'page arguments' => array(3),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+    'access callback' => TRUE
+  );
+
+  $items['mica/data-access/users/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_request_users',
+    'page arguments' => array(3),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+    'access callback' => TRUE
+  );
+
+  $items[MicaClientPathProvider::DATA_ACCESS_USERS_LIST] = array(
+    'title' => t('Researchers User'),
+    'page callback' => 'obiba_mica_data_access_request_users_list_page',
+    'description' => 'List Researchers',
+    'access callback' => 'obiba_mica_data_access_request_permission_check',
+    'access arguments' => array('dao'),
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 4
+  );
+
   return $items;
 }
 
-function obiba_mica_data_access_request_permission_check() {
+function obiba_mica_data_access_request_permission_check($access_arguments = NULL) {
+  if ($access_arguments) {
+    return user_access('can_see_' . MicaDataAccessRequest::LIST_USERS_DATA_ACCESS);
+  }
   return obiba_mica_commons_is_authorized_agate_user();
 }
 
@@ -178,7 +206,15 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
     'obiba_mica_data_access_request-list' => array(
       'template' => 'obiba_mica_data_access_request-list',
       'path' => $path_theme
-    )
+    ),
+    'obiba_mica_data_access_request_user-profile-attributes' => array(
+      'template' => 'obiba_mica_data_access_request_user-profile-attributes',
+      'path' => $path_theme
+    ),
+    'obiba_mica_data_access_request-users-list' => array(
+      'template' => 'obiba_mica_data_access_request-users-list',
+      'path' => $path_theme
+    ),
   );
 }
 
@@ -195,7 +231,8 @@ function obiba_mica_data_access_request_library() {
  *
  */
 function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
-  if (($module == 'obiba_mica_data_access_request' || $module == 'system') && current_path() == 'mica/data-access/request') {
+  if (($module == 'obiba_mica_data_access_request' || $module == 'system') &&
+    current_path() == 'mica/data-access/request') {
     $path = drupal_get_path('module', 'jquery_update');
     jquery_update_jquery_replace($javascript, NULL, $path, NULL, '1.10');
   }
@@ -216,7 +253,8 @@ function obiba_mica_data_access_request() {
 the our Access Office. Prior to submitting a Data Access Application Form, we strongly recommend that you consult the
 our Policy documents, that will provide you with detailed information about the process and our's access, publication
 and intellectual property policies.</p> </div>";
-    $access_request_node_page = obiba_mica_commons_add_page(t(variable_get('access_request_page')), $my_body_content);
+    $access_request_node_page =
+      obiba_mica_commons_add_page(t(variable_get('access_request_page')), $my_body_content);
     variable_set('access_request_page', $access_request_node_page->nid);
     return node_view(node_load(variable_get('access_request_page')));
   }
@@ -253,7 +291,7 @@ function obiba_mica_data_access_request_page() {
  */
 
 function obiba_mica_data_access_request_get_ng_module_to_load() {
-  if(current_path()==MicaClientPathProvider::DATA_ACCESS_REQUEST) {
+  if (current_path() == MicaClientPathProvider::DATA_ACCESS_REQUEST) {
     return 'mica.DataAccessRequest';
   }
   return FALSE;
@@ -263,9 +301,10 @@ function obiba_mica_data_access_request_get_ng_module_to_load() {
  * Implements hook_get_js()
  */
 function obiba_mica_data_access_request_get_js() {
-  if(current_path()==MicaClientPathProvider::DATA_ACCESS_REQUEST) {
+  if (current_path() == MicaClientPathProvider::DATA_ACCESS_REQUEST) {
     $module_path = drupal_get_path('module', 'obiba_mica_data_access_request');
-    $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
+    $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/',
+      array('key' => 'name'));
     ksort($js);
     foreach ($js as $file_js) {
       drupal_add_js($file_js->uri, array(
@@ -276,7 +315,7 @@ function obiba_mica_data_access_request_get_js() {
   }
 }
 
-function obiba_mica_data_access_requests_datatable_init($requests) {
+function obiba_mica_data_access_requests_datatable_init() {
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
   }
@@ -317,7 +356,11 @@ function obiba_mica_data_access_request_permission() {
     "can_see_" . MicaDataAccessRequest::NEW_DATA_ACCESS => array(
       'title' => t('Can create a new data access request'),
       'description' => t('Note that this permission can be overruled by permission constraints on Mica server side.')
-    )
+    ),
+    "can_see_" . MicaDataAccessRequest::LIST_USERS_DATA_ACCESS => array(
+      'title' => t('Can view the list of research users'),
+      'description' => t('Note that this permission can be overruled by permission constraints on Mica server side.')
+    ),
   );
 }
 
@@ -334,7 +377,9 @@ function obiba_mica_data_access_request_table_rows($requests) {
 
   // Reuse the same translation as the angular app code
   global $language;
-  $js_dictionary_file = drupal_get_path('module', 'obiba_main_app_angular') . '/i18n/' . $language->language . '.json';
+  $js_dictionary_file =
+    drupal_get_path('module', 'obiba_main_app_angular') .
+    '/i18n/' . $language->language . '.json';
   $js_dictionary = json_decode(file_get_contents($js_dictionary_file), TRUE);
   $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->get_requests();
   if (empty($requests->responseCode) && !empty($requests)) {
@@ -349,19 +394,24 @@ function obiba_mica_data_access_request_table_rows($requests) {
       }
 
       $r->full_name = _obiba_mica_data_access_request_profile_full_name($r);
-      $applicant_mail = _obiba_mica_data_access_request_profile_attribute($r,'email');
+      $applicant_mail =
+        _obiba_mica_data_access_request_profile_attribute(
+          $r->profile->attributes, 'email');
       return array(
         $r->full_name,
-        l($r->id, 'mica/data-access/request', array('fragment' => '/view/' . $r->id)),
+        l($r->id, 'mica/data-access/request',
+          array('fragment' => '/view/' . $r->id)),
         '<a id="applicantProfile" href="" data-toggle="modal"
         data-target="#UserDetailModal"
-        data-name-applicant="'.$r->full_name.'"
-        data-email-applicant="'.$applicant_mail.'">'.$r->full_name.'</a>',
+        data-id-applicant="' . $r->profile->username . '"
+        data-name-applicant="' . $r->full_name . '"
+        data-email-applicant="' . $applicant_mail . '">' . $r->full_name . '</a>',
         empty($r->title) ? '' : $r->title,
         date_format(date_create(empty($r->timestamps->lastUpdate) ?
           $r->timestamps->created :
           $r->timestamps->lastUpdate), "Y-m-d H:i:s"),
-        empty($r->submission_date) ? '' : date_format(date_create($r->submission_date), "Y-m-d H:i:s"),
+        empty($r->submission_date) ? '' :
+          date_format(date_create($r->submission_date), "Y-m-d H:i:s"),
         $js_dictionary[$r->status],
         $r->actions,
         $r->id
@@ -372,9 +422,9 @@ function obiba_mica_data_access_request_table_rows($requests) {
   return FALSE;
 }
 
-function _obiba_mica_data_access_request_profile_attribute($request, $key) {
-  if (!empty($request->profile->attributes)) {
-    foreach ($request->profile->attributes as $attr) {
+function _obiba_mica_data_access_request_profile_attribute($request_profile_attributes, $key) {
+  if (!empty($request_profile_attributes)) {
+    foreach ($request_profile_attributes as $attr) {
       if ($attr->key == $key) {
         return $attr->value;
       }
@@ -385,19 +435,86 @@ function _obiba_mica_data_access_request_profile_attribute($request, $key) {
 
 function _obiba_mica_data_access_request_profile_full_name($request) {
   $full_name = $request->applicant;
-  $first_name = _obiba_mica_data_access_request_profile_attribute($request, 'firstName');
+  $first_name =
+    _obiba_mica_data_access_request_profile_attribute(
+      $request->profile->attributes, 'firstName');
   if (!empty($first_name)) {
     $full_name = $first_name;
   }
-  $last_name = _obiba_mica_data_access_request_profile_attribute($request, 'lastName');
+  $last_name = _obiba_mica_data_access_request_profile_attribute(
+    $request->profile->attributes, 'lastName');
   if (!empty($last_name)) {
     $full_name = $full_name . ' ' . $last_name;
   }
-  $email = _obiba_mica_data_access_request_profile_attribute($request, 'email');
-  if (!empty($email)) {
-    // cannot do this because it breaks the delete action
-    //$full_name = l($full_name, 'mailto:' . $email, array('absolute' => TRUE));
-  }
   return $full_name;
-
 }
+
+function obiba_mica_data_access_request_list_page() {
+  obiba_mica_data_access_requests_datatable_init();
+  drupal_set_title(t(variable_get_value('access_requests_page_title')));
+  return theme('obiba_mica_data_access_request-list');
+}
+
+function obiba_mica_data_access_request_users_list_page() {
+  obiba_mica_data_access_requests_users_list_datatable_init();
+  drupal_set_title(t(variable_get_value('user_list_page_title')));
+  return theme('obiba_mica_data_access_request-users-list');
+}
+
+function obiba_mica_data_access_requests_users_list_datatable_init() {
+  if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
+    drupal_add_library('obiba_mica_dataset', 'datatables');
+  }
+  else {
+    obiba_mica_commons_datatables_external_source();
+  }
+
+  global $user;
+  $users = (new MicaDataAccessRequest())->get_users_list();
+
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_data_access_request') .
+    '/js/obiba_mica_data_access_request_users_list_datatable_init.js', 'file');
+  drupal_add_js(array(
+    'user' => $user,
+    'table_headers' => array(
+      array("title" => t('User Name'), 'width' => '25%'),
+      array("title" => t('Research Users'), 'width' => '35%'),
+      array("title" => t('Created Date')),
+      array("title" => t('Last Logged-in'))
+    ),
+    'table_data' => obiba_mica_data_access_request_table_users_list_rows($users)
+  ), 'setting');
+}
+
+function obiba_mica_data_access_request_table_users_list_rows($users) {
+  $rows = array();
+  foreach ($users as $user) {
+    $user_full_name =
+      _obiba_mica_data_access_request_profile_attribute($user->attributes,
+        'firstName') .
+      ' ' .
+      _obiba_mica_data_access_request_profile_attribute($user->attributes,
+        'lastName');
+    $user_email =
+      _obiba_mica_data_access_request_profile_attribute($user->attributes,
+        'email');
+    $rows[] = array(
+      $user->username,
+      '<a id="applicantProfile" href="" data-toggle="modal"
+        data-target="#UserDetailModal"
+        data-id-applicant="' . $user->username . '"
+        data-name-applicant="' . $user_full_name . '"
+        data-email-applicant="' . $user_email . '">' . $user_full_name . '</a>',
+      date_format(date_create(
+        _obiba_mica_data_access_request_profile_attribute(
+          $user->attributes, 'createdDate')
+      ), "Y-m-d H:i:s"),
+      date_format(date_create(
+        _obiba_mica_data_access_request_profile_attribute(
+          $user->attributes, 'lastLogin')
+      ), "Y-m-d H:i:s"),
+    );
+  }
+  return $rows;
+}
+

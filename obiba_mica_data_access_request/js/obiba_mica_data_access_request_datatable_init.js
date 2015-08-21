@@ -33,7 +33,7 @@
                     if (action in ACTIONS) {
                       if (action === 'DELETE') {
                         var titleInMOdal = row[3] ? row[3] : row[row.length - 1];
-                        console.log(row);
+
                         return '<li><a  title="' + Drupal.t(action) + '"' +
                           'data-target="#delete-modal" id="' + action +
                           '" href="' + hrefBuilder(action, row[row.length - 1]) +
@@ -97,13 +97,25 @@
         /* Add events on view applicant profile */
         $("body").on("click", "#table-requests tbody #applicantProfile", function (e) {
           e.preventDefault();
-          var modal = $('#UserDetailModal').modal('show');
-          modal.find('#data-name-applicant').text($(this).attr("data-name-applicant"));
-          modal.find('span#data-email-applicant').text($(this).attr("data-email-applicant"));
-          modal.find('a#data-email-applicant').attr("href",'mailto:'+$(this).attr("data-email-applicant"));
-          return false;
+          $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix +
+            'mica/data-access/user/' + $(this).attr("data-id-applicant") + '/ws')
+            .done(function (data) {
+              modalProfile(this).find('#user-attributes').html(data.profile_html);
+              return false;
+            }.bind(this))
+            .fail(function () {
+              modalProfile(this);
+              return false;
+            }.bind(this));
         });
 
+        function modalProfile(localProfile) {
+          var modal = $('#UserDetailModal').modal('show');
+          modal.find('#data-name-applicant').text($(localProfile).attr("data-name-applicant"));
+          modal.find('span#data-email-applicant').text($(localProfile).attr("data-email-applicant"));
+          modal.find('a#data-email-applicant').attr("href", 'mailto:' + $(localProfile).attr("data-email-applicant"));
+          return modal;
+        }
 
         $('#clickedDelete').on("click", function () {
           $.ajax({

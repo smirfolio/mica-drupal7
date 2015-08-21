@@ -28,6 +28,7 @@ class MicaClientPathProvider {
   const DATA_ACCESS_REQUEST = 'mica/data-access/request';
   const DATA_ACCESS_HOME = 'mica/data_access/home';
   const DATA_ACCESS_LIST = 'mica/data_access/requests';
+  const DATA_ACCESS_USERS_LIST = 'mica/data_access/users';
   const AGATE_REGISTER  = 'agate/register';
   const AGATE_PROFILE = 'agate/user/profile';
 
