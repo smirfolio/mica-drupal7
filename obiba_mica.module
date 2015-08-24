@@ -23,7 +23,7 @@ function obiba_mica_menu() {
   );
 
   $items['admin/config/obiba-mica/obiba-mica-settings'] = array(
-    'title' => t('Mica server settings'),
+    'title' => t('Settings'),
     'description' => t('Configure Mica services'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_admin_settings'),
@@ -45,7 +45,7 @@ function obiba_mica_menu() {
   );
 
   $items['admin/config/obiba-mica/obiba-content-pages-settings'] = array(
-    'title' => t('Catalogs content pages settings'),
+    'title' => t('Content pages settings'),
     'description' => t('Configure the catalogues content pages'),
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_content_pages_admin_settings'),
