@@ -162,7 +162,12 @@
       "title": "Form Submitted",
       "message": "Your access form was successfully submitted."
     },
-    "parse-error": "Form content is not a valid document, please contact your administrator for more help."
+    "parse-error": "Form content is not a valid document, please contact your administrator for more help.",
+    "profile" :{
+      "title" : "Applicant profile",
+      "name" : "Name",
+      "email" : "E-mail"
+    }
   },
   "data-access-config": {
     "menu": "Data Access",
