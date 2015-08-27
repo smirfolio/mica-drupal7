@@ -138,7 +138,7 @@ function obiba_mica_data_access_request_menu() {
   );
 
   $items[MicaClientPathProvider::DATA_ACCESS_USERS_LIST] = array(
-    'title' => t('Researchers User'),
+    'title' => t(variable_get_value('user_list_page_title')),
     'page callback' => 'obiba_mica_data_access_request_users_list_page',
     'description' => 'List Researchers',
     'access callback' => 'obiba_mica_data_access_request_permission_check',
@@ -217,6 +217,10 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
     ),
     'obiba_mica_data_access_request-users-list' => array(
       'template' => 'obiba_mica_data_access_request-users-list',
+      'path' => $path_theme
+    ),
+    'obiba_mica_data_access_request-user-profile-modal' => array(
+      'template' => 'obiba_mica_data_access_request-user-profile-modal',
       'path' => $path_theme
     ),
   );
@@ -456,13 +460,19 @@ function _obiba_mica_data_access_request_profile_full_name($request) {
 function obiba_mica_data_access_request_list_page() {
   obiba_mica_data_access_requests_datatable_init();
   drupal_set_title(t(variable_get_value('access_requests_page_title')));
-  return theme('obiba_mica_data_access_request-list');
+  $profile_users_modal=theme('obiba_mica_data_access_request-user-profile-modal');
+  return theme('obiba_mica_data_access_request-list', array(
+    'profile_users_modal' => $profile_users_modal,
+  ));
 }
 
 function obiba_mica_data_access_request_users_list_page() {
   obiba_mica_data_access_requests_users_list_datatable_init();
   drupal_set_title(t(variable_get_value('user_list_page_title')));
-  return theme('obiba_mica_data_access_request-users-list');
+  $profile_users_modal=theme('obiba_mica_data_access_request-user-profile-modal');
+  return theme('obiba_mica_data_access_request-users-list', array(
+    'profile_users_modal' => $profile_users_modal,
+  ));
 }
 
 function obiba_mica_data_access_requests_users_list_datatable_init() {
@@ -481,10 +491,10 @@ function obiba_mica_data_access_requests_users_list_datatable_init() {
   drupal_add_js(array(
     'user' => $user,
     'table_headers' => array(
-      array("title" => t('User Name'), 'width' => '25%'),
-      array("title" => t('Research Users'), 'width' => '35%'),
-      array("title" => t('Created Date')),
-      array("title" => t('Last Logged-in'))
+      array("title" => t('Username'), 'width' => '25%'),
+      array("title" => t('User'), 'width' => '35%'),
+      array("title" => t('Registration')),
+      array("title" => t('Last Login'))
     ),
     'table_data' => obiba_mica_data_access_request_table_users_list_rows($users)
   ), 'setting');

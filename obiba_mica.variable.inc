@@ -186,6 +186,12 @@ function _obiba_mica_variable_info_access(&$variable)
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['user_list_page_title'] = array(
+    'title' => t('Registered users list page'),
+    'description' => t('The list registered users title page.'),
+    'type' => 'string',
+    'default' => 'Registered Users',
+  );
 }
 
 function _obiba_mica_variable_search_networks(&$variable) {
