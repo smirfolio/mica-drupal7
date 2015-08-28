@@ -142,7 +142,7 @@ function obiba_main_app_angular_load_js_resources() {
     'angularjsApp' => array(
       'module' => obiba_main_app_angular_load_ng_module(),
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
-      'authenticated' => AgateClient::hasTicket() || user_is_logged_in(),
+      'authenticated' => ObibaAgateClient::hasTicket() || user_is_logged_in(),
       //  'restws_csrf_token' => drupal_get_token('restws'),
       'user' => $user,
       'locale' => $language->language,
