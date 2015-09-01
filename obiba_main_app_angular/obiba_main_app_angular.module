@@ -137,12 +137,16 @@ function obiba_main_app_angular_load_js_resources() {
   obiba_main_app_angular_load_js_by_folder_app('file');
   obiba_main_app_angular_load_external_app_js();
   global $user, $language;
-  // Add CSRF token required by restWS.
+  // TODO Add CSRF token required by restWS.
+  $authenticated = user_is_logged_in();
+  if (module_exists('obiba_agate')) {
+    $authenticated = ObibaAgateClient::hasTicket() || user_is_logged_in();
+  }
   $js_settings = array(
     'angularjsApp' => array(
       'module' => obiba_main_app_angular_load_ng_module(),
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
-      'authenticated' => ObibaAgateClient::hasTicket() || user_is_logged_in(),
+      'authenticated' => $authenticated,
       //  'restws_csrf_token' => drupal_get_token('restws'),
       'user' => $user,
       'locale' => $language->language,
@@ -195,12 +199,14 @@ function obiba_main_app_angular_load_angular_library() {
       'version' => 'Last Version',
       'js' => array(
 
-
         $lib_path_schema_form . '/jquery-ui/jquery-ui.min.js' => array(
           'type' => 'file',
           'scope' => 'footer'
         ),
-        $lib_path_schema_form . '/angular/angular.min.js' => array('type' => 'file', 'scope' => 'footer'),
+        $lib_path_schema_form . '/angular/angular.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
         $lib_path_schema_form . '/angular-resource/angular-resource.min.js' => array(
           'type' => 'file',
           'scope' => 'footer'
@@ -213,8 +219,14 @@ function obiba_main_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer'
         ),
-        $lib_path_schema_form . '/tv4/tv4.js' => array('type' => 'file', 'scope' => 'footer'),
-        $lib_path_schema_form . '/objectpath/lib/ObjectPath.js' => array('type' => 'file', 'scope' => 'footer'),
+        $lib_path_schema_form . '/tv4/tv4.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
+        $lib_path_schema_form . '/objectpath/lib/ObjectPath.js' => array(
+          'type' => 'file',
+          'scope' => 'footer'
+        ),
         $lib_path_schema_form . '/angular-schema-form/dist/schema-form.min.js' => array(
           'type' => 'file',
           'scope' => 'footer'
