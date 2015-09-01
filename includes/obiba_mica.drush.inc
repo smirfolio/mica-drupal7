@@ -206,9 +206,9 @@ function obiba_mica_drush_obiba_progressbar() {
     $version_progress_bar = $args[0];
   }
   else {
-    $version_progress_bar = '1.0.0';
+    $version_progress_bar = variable_get('obiba-progressbar-lib-version', '1.0.0');
   }
-  print_r($args);
+
   // Create the libraries path if it does not exist.
   if (!is_dir($path . '/sites/all/libraries')) {
     drush_op('mkdir', $path . '/sites/all/libraries');
