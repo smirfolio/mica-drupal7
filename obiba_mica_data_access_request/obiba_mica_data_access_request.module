@@ -240,7 +240,8 @@ function obiba_mica_data_access_request_library() {
  */
 function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
   if (($module == 'obiba_mica_data_access_request' || $module == 'system') &&
-    current_path() == 'mica/data-access/request') {
+    current_path() == 'mica/data-access/request'
+  ) {
     $path = drupal_get_path('module', 'jquery_update');
     jquery_update_jquery_replace($javascript, NULL, $path, NULL, '1.10');
   }
@@ -460,7 +461,7 @@ function _obiba_mica_data_access_request_profile_full_name($request) {
 function obiba_mica_data_access_request_list_page() {
   obiba_mica_data_access_requests_datatable_init();
   drupal_set_title(t(variable_get_value('access_requests_page_title')));
-  $profile_users_modal=theme('obiba_mica_data_access_request-user-profile-modal');
+  $profile_users_modal = theme('obiba_mica_data_access_request-user-profile-modal');
   return theme('obiba_mica_data_access_request-list', array(
     'profile_users_modal' => $profile_users_modal,
   ));
@@ -469,13 +470,14 @@ function obiba_mica_data_access_request_list_page() {
 function obiba_mica_data_access_request_users_list_page() {
   obiba_mica_data_access_requests_users_list_datatable_init();
   drupal_set_title(t(variable_get_value('user_list_page_title')));
-  $profile_users_modal=theme('obiba_mica_data_access_request-user-profile-modal');
+  $profile_users_modal = theme('obiba_mica_data_access_request-user-profile-modal');
   return theme('obiba_mica_data_access_request-users-list', array(
     'profile_users_modal' => $profile_users_modal,
   ));
 }
 
 function obiba_mica_data_access_requests_users_list_datatable_init() {
+  $user_list_rows = array();
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
   }
@@ -485,7 +487,13 @@ function obiba_mica_data_access_requests_users_list_datatable_init() {
 
   global $user;
   $users = (new MicaDataAccessRequest())->get_users_list();
-
+  if (!isset($users->error)) {
+    $user_list_rows = obiba_mica_data_access_request_table_users_list_rows($users);
+  }
+  else {
+    drupal_set_message(t('An error occurred and processing did not complete Mica Server error: @message',
+      array('@message' => $users->error)), 'error');
+  }
   drupal_add_js(drupal_get_path('module', 'obiba_mica_data_access_request') .
     '/js/obiba_mica_data_access_request_users_list_datatable_init.js', 'file');
   drupal_add_js(array(
@@ -496,7 +504,7 @@ function obiba_mica_data_access_requests_users_list_datatable_init() {
       array("title" => t('Registration')),
       array("title" => t('Last Login'))
     ),
-    'table_data' => obiba_mica_data_access_request_table_users_list_rows($users)
+    'table_data' => $user_list_rows,
   ), 'setting');
 }
 
