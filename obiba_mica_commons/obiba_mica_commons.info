@@ -6,6 +6,3 @@ core = 7.x
 dependencies[] = http_client
 
 files[] = includes/obiba_mica.inc
-
-project = obiba_mica_commons
-version = 7.x-1.1-dev

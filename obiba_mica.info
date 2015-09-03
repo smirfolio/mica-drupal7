@@ -18,9 +18,6 @@ dependencies[] = obiba_mica_study
 dependencies[] = obiba_mica_search
 dependencies[] = obiba_mica_dataset
 dependencies[] = obiba_mica_network
-dependencies[] = obiba_main_app_angular
+dependencies[] = obiba_mica_app_angular
 
 scripts[] = js/obiba-mica-progressbar-controller.js
-
-project = obiba_mica
-version = 7.x-1.1-dev

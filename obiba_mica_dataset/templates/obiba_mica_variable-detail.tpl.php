@@ -269,7 +269,7 @@
                   <span class="glyphicon glyphicon-ok alert-success" title="<?php print t('Complete') ?>"></span>
                 <?php
                 elseif ($variable_harmonization['status'] == 'impossible'): ?>
-                  <span class="glyphicon <?php print  ObibaDatasetConstants::get_icon(); ?>"
+                  <span class="glyphicon <?php print  ObibaDatasetConstants::getIcon(); ?>"
                         title="<?php print t(variable_get_value('dataset_harmonization_impossible_label')) ?>"></span>
                 <?php
                 elseif ($variable_harmonization['status'] == 'undetermined'): ?>

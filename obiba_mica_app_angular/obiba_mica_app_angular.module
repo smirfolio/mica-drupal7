@@ -9,32 +9,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function obiba_main_app_angular_menu() {
+function obiba_mica_app_angular_menu() {
   $external_items = array();
-  $external_items += obiba_angular_load_external_menus_definitions();
+  $external_items += obiba_mica_app_angular_load_external_menus_definitions();
 
   foreach ($external_items as $key_item => $external_item) {
-    $external_items[$key_item]['page callback'] = 'obiba_main_app_angular_main_page';
+    $external_items[$key_item]['page callback'] = 'obiba_mica_app_angular_main_page';
   }
   $items = array();
 
   $items['obiba-angular-app'] = array(
-    'page callback' => 'obiba_main_app_angular_main_page',
+    'page callback' => 'obiba_mica_app_angular_main_page',
     'access callback' => TRUE,
     //'page arguments' => array(2)
   );
 
-  $items['obiba_main_app_angular/%/%'] = array(
-    'page callback' => 'obiba_main_app_angular_get_angular_template',
+  $items['obiba_mica_app_angular/%/%'] = array(
+    'page callback' => 'obiba_mica_app_angular_get_angular_template',
     'access callback' => TRUE,
     'page arguments' => array(1, 2)
   );
-  $items['obiba_main_app_angular/translation'] = array(
-    'page callback' => 'obiba_main_app_angular_get_angular_translation',
+  $items['obiba_mica_app_angular/translation'] = array(
+    'page callback' => 'obiba_mica_app_angular_get_angular_translation',
     'access callback' => TRUE
   );
   $items['un-authorized-error'] = array(
-    'page callback' => 'obiba_main_app_angular_set_drupal_message_error',
+    'page callback' => 'obiba_mica_app_angular_set_drupal_message_error',
     'access callback' => TRUE
   );
   return $items + $external_items;
@@ -43,8 +43,8 @@ function obiba_main_app_angular_menu() {
 /**
  * Implements hook_library().
  */
-function obiba_main_app_angular_library() {
-  return obiba_main_app_angular_load_angular_library();
+function obiba_mica_app_angular_library() {
+  return obiba_mica_app_angular_load_angular_library();
 }
 
 /**
@@ -52,8 +52,8 @@ function obiba_main_app_angular_library() {
  * Angular library compatible with Jquery 1.10
  *
  */
-function obiba_main_app_angular_library_alter(&$javascript, $module) {
-  if (($module == 'obiba_main_app_angular' || $module == 'system') && current_path() == 'obiba-angular-app') {
+function obiba_mica_app_angular_library_alter(&$javascript, $module) {
+  if (($module == 'obiba_mica_app_angular' || $module == 'system') && current_path() == 'obiba-angular-app') {
     $path = drupal_get_path('module', 'jquery_update');
     jquery_update_jquery_replace($javascript, NULL, $path, NULL, '1.10');
   }
@@ -63,7 +63,7 @@ function obiba_main_app_angular_library_alter(&$javascript, $module) {
 /**
  * Implements hook_theme().
  */
-function obiba_main_app_angular_theme($existing, $type, $theme, $path) {
+function obiba_mica_app_angular_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
   $path_view_template = $path . '/js/app/views';
   return array(
@@ -71,12 +71,12 @@ function obiba_main_app_angular_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_angular_main',
       'path' => $path_theme
     ),
-    'obiba_main_app_angular_attachment-input-template' => array(
-      'template' => 'obiba_main_app_angular_attachment-input-template',
+    'obiba_mica_app_angular_attachment-input-template' => array(
+      'template' => 'obiba_mica_app_angular_attachment-input-template',
       'path' => $path_view_template
     ),
-    'obiba_main_app_angular_attachment-list-template' => array(
-      'template' => 'obiba_main_app_angular_attachment-list-template',
+    'obiba_mica_app_angular_attachment-list-template' => array(
+      'template' => 'obiba_mica_app_angular_attachment-list-template',
       'path' => $path_view_template
     ),
   );
@@ -86,7 +86,7 @@ function obiba_main_app_angular_theme($existing, $type, $theme, $path) {
  * hook implementations to load the menus rooting of external angular js modules
  */
 
-function obiba_angular_load_external_menus_definitions() {
+function obiba_mica_app_angular_load_external_menus_definitions() {
   $external_items = array();
   foreach (module_implements('load_menus') as $module) {
     $external_loaded_menu = module_invoke($module, 'load_menus');
@@ -101,14 +101,14 @@ function obiba_angular_load_external_menus_definitions() {
 /**
  * hook implementation to load external angular app js
  */
-function obiba_main_app_angular_load_external_app_js() {
+function obiba_mica_app_angular_load_external_app_js() {
   module_invoke_all('get_js');
 }
 
 /**
  * hook implementation to get external modules names to load
  */
-function obiba_main_app_angular_load_ng_module() {
+function obiba_mica_app_angular_load_ng_module() {
   foreach (module_implements('get_ng_module_to_load') as $key => $module) {
     // Calling all modules implementing hook_hook_name and
     // and return the first result:
@@ -120,8 +120,8 @@ function obiba_main_app_angular_load_ng_module() {
   return FALSE;
 }
 
-function obiba_main_app_angular_load_js_by_folder_app($folder = 'app') {
-  $module_path = drupal_get_path('module', 'obiba_main_app_angular');
+function obiba_mica_app_angular_load_js_by_folder_app($folder = 'app') {
+  $module_path = drupal_get_path('module', 'obiba_mica_app_angular');
   $js = file_scan_directory($module_path . '/js/' . $folder, '/.*\.js$/', array('key' => 'name'));
 
   ksort($js);
@@ -130,12 +130,12 @@ function obiba_main_app_angular_load_js_by_folder_app($folder = 'app') {
   }
 }
 
-function obiba_main_app_angular_load_js_resources() {
-  obiba_main_app_angular_load_libraires_resources('obiba_main_app_angular');
-  obiba_main_app_angular_load_js_by_folder_app();
-  obiba_main_app_angular_load_js_by_folder_app('attachment');
-  obiba_main_app_angular_load_js_by_folder_app('file');
-  obiba_main_app_angular_load_external_app_js();
+function obiba_mica_app_angular_load_js_resources() {
+  obiba_mica_app_angular_load_libraires_resources('obiba_mica_app_angular');
+  obiba_mica_app_angular_load_js_by_folder_app();
+  obiba_mica_app_angular_load_js_by_folder_app('attachment');
+  obiba_mica_app_angular_load_js_by_folder_app('file');
+  obiba_mica_app_angular_load_external_app_js();
   global $user, $language;
   // TODO Add CSRF token required by restWS.
   $authenticated = user_is_logged_in();
@@ -144,7 +144,7 @@ function obiba_main_app_angular_load_js_resources() {
   }
   $js_settings = array(
     'angularjsApp' => array(
-      'module' => obiba_main_app_angular_load_ng_module(),
+      'module' => obiba_mica_app_angular_load_ng_module(),
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
       'authenticated' => $authenticated,
       //  'restws_csrf_token' => drupal_get_token('restws'),
@@ -161,25 +161,25 @@ function obiba_main_app_angular_load_js_resources() {
  * Load resource + template main app
  * @return: The template of the main angular app
  */
-function obiba_main_app_angular_load_template_app() {
-  obiba_main_app_angular_load_js_resources();
+function obiba_mica_app_angular_load_template_app() {
+  obiba_mica_app_angular_load_js_resources();
   return theme('obiba_angular_main');
 }
 
-function obiba_main_app_angular_main_page() {
+function obiba_mica_app_angular_main_page() {
   $current_menu_item = menu_get_item(current_path());
   if (!empty($current_menu_item['title'])) {
     drupal_set_title($current_menu_item['title']);
   }
-  return obiba_main_app_angular_load_template_app();
+  return obiba_mica_app_angular_load_template_app();
 
 }
 
-function obiba_main_app_angular_get_angular_template($module, $angular_template) {
+function obiba_mica_app_angular_get_angular_template($module, $angular_template) {
   print theme($angular_template);
 }
 
-function obiba_main_app_angular_get_angular_translation() {
+function obiba_mica_app_angular_get_angular_translation() {
   global $language;
   print file_get_contents(sprintf('%s/i18n/%s.json', __DIR__, $language->language));
 }
@@ -188,7 +188,7 @@ function obiba_main_app_angular_get_angular_translation() {
  * Implement hook_Library
  *
  */
-function obiba_main_app_angular_load_angular_library() {
+function obiba_mica_app_angular_load_angular_library() {
   $libraries = array();
   $lib_path_schema_form = libraries_get_path('angular-app');
   // Make sure we have a valid library path before returning library load info.
@@ -309,7 +309,7 @@ function obiba_main_app_angular_load_angular_library() {
   return $libraries;
 }
 
-function obiba_main_app_angular_load_libraires_resources($module_name) {
+function obiba_mica_app_angular_load_libraires_resources($module_name) {
   if (drupal_get_library($module_name, 'angular-app')) {
     drupal_add_library($module_name, 'angular-app');
   }
@@ -318,7 +318,7 @@ function obiba_main_app_angular_load_libraires_resources($module_name) {
   }
 }
 
-function obiba_main_app_angular_set_drupal_message_error() {
+function obiba_mica_app_angular_set_drupal_message_error() {
   if (!user_is_logged_in()) {
     drupal_set_message(t('Server rejected your request, please make sure you are logged in and try again.'), 'error');
   }

@@ -198,7 +198,7 @@ function obiba_mica_variable_get_harmonization_table_rows($variable) {
         $status = '<span class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>';
       }
       elseif ($status == 'impossible') {
-        $status = '<span class="glyphicon ' . ObibaDatasetConstants::get_icon() . '" title="' . t(variable_get('dataset_harmonization_impossible_label')) . '"></span>';
+        $status = '<span class="glyphicon ' . ObibaDatasetConstants::getIcon() . '" title="' . t(variable_get('dataset_harmonization_impossible_label')) . '"></span>';
       }
       elseif ($status == 'undetermined') {
         $status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>';

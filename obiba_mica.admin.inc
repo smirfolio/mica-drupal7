@@ -42,6 +42,9 @@ function obiba_mica_admin_settings() {
   return system_settings_form($form);
 }
 
+/**
+ * Server setting forms.
+ */
 function _obiba_mica_settings_server(&$form) {
   $info = variable_get_info('mica_url');
   $form['server']['mica_url'] = array(
@@ -67,7 +70,6 @@ function _obiba_mica_settings_server(&$form) {
   $form['server']['mica_anonymous_password'] = array(
     '#type' => 'password',
     '#title' => $info['title'],
-    //  '#default_value' => variable_get_value('mica_anonymous_password'),
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
@@ -105,12 +107,20 @@ function _obiba_mica_settings_server(&$form) {
   );
 }
 
+/**
+ * Call Back on submit setting form option to set default password.
+ */
 function obiba_mica_default_password($form, &$form_state) {
   if (empty($form_state['values']['mica_anonymous_password'])) {
-    $form_state['values']['mica_anonymous_password'] = variable_get_value('mica_anonymous_password');
+    $form_state['values']['mica_anonymous_password']
+      = variable_get_value('mica_anonymous_password',
+        array('default' => 'password'));
   }
 }
 
+/**
+ * Call Back on clear images cache..
+ */
 function obiba_mica_clear_images_cache() {
   cache_clear_all('images-cache-', 'cache', TRUE);
   drupal_set_message(t('The images cache cleared'));

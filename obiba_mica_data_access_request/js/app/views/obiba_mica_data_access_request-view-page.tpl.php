@@ -104,7 +104,7 @@
       <tab heading="<?php print t('History'); ?>">
         <div
           ng-include="'<?php ;
-          print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-histroy-view'"></div>
+          print base_path(); ?>obiba_mica_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-histroy-view'"></div>
       </tab>
 
     </tabset>

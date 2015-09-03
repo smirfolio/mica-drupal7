@@ -131,7 +131,7 @@ function obiba_mica_data_access_request_permission_check() {
 }
 
 /**
- * Implements hook_load_menus (obiba_main_app_angular_)
+ * Implements hook_load_menus (obiba_mica_app_angular)
  */
 function obiba_mica_data_access_request_load_menus() {
   $items = array();
@@ -186,7 +186,7 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
  * Implements hook_library().
  */
 function obiba_mica_data_access_request_library() {
-  return obiba_main_app_angular_load_angular_library();
+  return obiba_mica_app_angular_load_angular_library();
 }
 
 /**
@@ -333,7 +333,7 @@ function obiba_mica_data_access_request_table_rows($requests) {
 
   // Reuse the same translation as the angular app code
   global $language;
-  $js_dictionary_file = drupal_get_path('module', 'obiba_main_app_angular') . '/i18n/' . $language->language . '.json';
+  $js_dictionary_file = drupal_get_path('module', 'obiba_mica_app_angular') . '/i18n/' . $language->language . '.json';
   $js_dictionary = json_decode(file_get_contents($js_dictionary_file), TRUE);
   $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->get_requests();
 

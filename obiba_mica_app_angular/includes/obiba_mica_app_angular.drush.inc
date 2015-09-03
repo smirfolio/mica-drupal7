@@ -7,7 +7,7 @@
 /**
  * Implements hook_drush_command().
  */
-function obiba_main_app_angular_drush_command() {
+function obiba_mica_app_angular_drush_command() {
   $items['angular-app'] = array(
     'callback' => 'obiba_mica_drush_angular_app',
     'aliases' => 'asflib',

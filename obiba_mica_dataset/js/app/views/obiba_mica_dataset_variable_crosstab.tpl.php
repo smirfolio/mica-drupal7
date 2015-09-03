@@ -125,7 +125,7 @@
       </tbody>
       <tbody ng-repeat="contingency in [crosstab.all]" ng-init="grandTotal = true"
              ng-if="datasetHarmo && !isStatistical(crosstab.rhs.xVariable)"
-             ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_frequencies'">
+             ng-include="'<?php print base_path(); ?>obiba_mica_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_frequencies'">
       </tbody>
 
       <!-- Statistical -->
@@ -140,7 +140,7 @@
       </tbody>
       <tbody ng-repeat="contingency in [crosstab.all]" ng-init="grandTotal = true"
              ng-if="datasetHarmo && isStatistical(crosstab.rhs.xVariable)"
-             ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_statistics'">
+             ng-include="'<?php print base_path(); ?>obiba_mica_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_variable_crosstab_statistics'">
       </tbody>
 
     </table>

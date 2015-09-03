@@ -224,7 +224,7 @@ function obiba_mica_dataset_library() {
     );
   }
 
-  return array_merge($libraries, obiba_main_app_angular_load_angular_library());
+  return array_merge($libraries, obiba_mica_app_angular_load_angular_library());
 }
 
 /**
@@ -544,7 +544,7 @@ function obiba_mica_dataset_get_js() {
   }
 }
 /**
- * Implements hook_load_menus (obiba_main_app_angular_)
+ * Implements hook_load_menus (obiba_mica_app_angular)
  */
 function obiba_mica_dataset_load_menus() {
   $items = array();

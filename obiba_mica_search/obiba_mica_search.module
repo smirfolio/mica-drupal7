@@ -196,7 +196,7 @@ function obiba_mica_search_block_view($delta = '') {
   $block = array();
   switch ($delta) {
     case 'facet-search':
-      $output = _get_facets_theme();
+      $output = obiba_mica_search_get_facets_theme();
       $block['subject'] = t('Facet search');
       $block['content'] = $output;
       break;
@@ -212,7 +212,7 @@ function obiba_mica_search_block_view($delta = '') {
   return $block;
 }
 
-function _get_facets_theme() {
+function obiba_mica_search_get_facets_theme() {
   return theme('obiba_mica_search_tab_block', array(
     'obiba_mica_variable' =>
       _obiba_mica_search_get_facets_block_by_dto_type('facet_conf_variable', 'variables'),
@@ -419,11 +419,11 @@ function obiba_mica_search_variable_page_search() {
   //drupal_set_title(t('@request variables search', array('@request' => ucwords($request))));
 
   if (!obiba_mica_commons_is_ajax()) {
-    _get_search_data();
+    obiba_mica_search_get_search_data();
     $url_param = explode('?', request_uri());
 
     if (!empty($url_param[1])) {
-      return drupal_goto(request_path(), array(
+      drupal_goto(request_path(), array(
         'fragment' => '!' . $url_param[1]
       ), 302);
     }
@@ -433,15 +433,16 @@ function obiba_mica_search_variable_page_search() {
     return theme('obiba_mica_search_search', array());
   }
 
-  $output = theme('obiba_mica_search_search', _get_search_data()); //populates facets session values
+  // Populates facets session values.
+  $output = theme('obiba_mica_search_search', obiba_mica_search_get_search_data());
 
-  return drupal_json_output(array(
-    'facets' => _get_facets_theme(),
+  drupal_json_output(array(
+    'facets' => obiba_mica_search_get_facets_theme(),
     'searchResult' => $output
   ));
 }
 
-function _get_search_data() {
+function obiba_mica_search_get_search_data() {
   $studies = NULL;
   $study_charts = NULL;
   $variables = NULL;
@@ -559,7 +560,7 @@ function obiba_mica_search_coverage_page() {
     $output = theme('obiba_mica_search_coverage', $coverages_data);
 
     return drupal_json_output(array(
-      'facets' => empty($parts['with-facets']) || strtolower($parts['with-facets']) !== "false" ? _get_facets_theme() : NULL,
+      'facets' => empty($parts['with-facets']) || strtolower($parts['with-facets']) !== "false" ? obiba_mica_search_get_facets_theme() : NULL,
       'searchResult' => $output,
       'coverageTaxonomies' => array_values(array_map(function($c) {return $c->taxonomy->name;}, $coverages_data['coverages']->taxonomies)),
       'aggsDictionary' => empty($parts['with-facets']) || strtolower($parts['with-facets']) !== "false" ? obiba_mica_search_create_aggs_dictionary() : NULL
