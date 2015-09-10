@@ -53,6 +53,7 @@
               switch (id) {
                 case 'form':
                   break;
+
                 case 'comments':
                   retrieveComments();
                   break;
@@ -454,7 +455,6 @@
             $scope.validate = validate;
 
           }]);
-
 
     }
   }

@@ -141,7 +141,7 @@ function _obiba_mica_variable_info_access(&$variable) {
     'title' => t('Request Page title'),
     'description' => t('Data Access request page title.'),
     'type' => 'string',
-    'default' => ' Data Access Request',
+    'default' => 'Data Access Request',
   );
   $variable['access_my_requests_button'] = array(
     'title' => t('My requests button'),
@@ -432,7 +432,7 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'title' => t("Label to show for the 'Impossible' status"),
     'description' => t("Text to display, for the label to show for 'Impossible' harmonization status"),
     'type' => 'string',
-    'default' => t('Impossible'),
+    'default' => 'Impossible',
   );
   $variable['dataset_harmonization_undetermined_icon'] = array(
     'title' => t("Icon to show for the 'Undetermined' status"),
@@ -444,7 +444,7 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'title' => t("Label to show for the 'Undetermined' status"),
     'description' => t("Text to display, for the label to show for 'Undetermined' harmonization status"),
     'type' => 'string',
-    'default' => t('Undetermined'),
+    'default' => 'Undetermined',
   );
 }
 
@@ -523,13 +523,13 @@ function _obiba_mica_variable_search_datasets(&$variable) {
     'title' => t('Datasets search label'),
     'description' => t('Text to be displayed in links to dataset search.'),
     'type' => 'string',
-    'default' => t('Search Datasets'),
+    'default' => 'Search Datasets',
   );
   $variable['datasets_empty_label'] = array(
     'title' => t('No dataset label'),
     'description' => t('Text to be displayed when no dataset is found.'),
     'type' => 'string',
-    'default' => t('No dataset found'),
+    'default' => 'No dataset found',
   );
   $variable['search_datasets_autocomplete'] = array(
     'title' => t('Show dataset auto-complete search filter'),
@@ -565,18 +565,18 @@ function _obiba_mica_variable_search_variables(&$variable) {
     'title' => t('Variable classification label'),
     'description' => t('Text to be displayed in links to variable classification.'),
     'type' => 'string',
-    'default' => t('Variable Classification'),
+    'default' => 'Variable Classification',
   );
   $variable['variables_search_label'] = array(
     'title' => t('Variables search label'),
     'description' => t('Text to be displayed in links to variable search.'),
     'type' => 'string',
-    'default' => t('Search Variables'),
+    'default' => 'Search Variables',
   );
   $variable['variables_empty_label'] = array(
     'title' => t('No variable label'),
     'description' => t('Text to be displayed when no variable is found.'),
     'type' => 'string',
-    'default' => t('No variable found'),
+    'default' => 'No variable found',
   );
 }

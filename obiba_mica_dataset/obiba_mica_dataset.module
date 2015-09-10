@@ -357,7 +357,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
           array(
             'query' => array(
               'type' => 'variables',
-              'query' => MicaClient::add_parameter_dto_query_link(
+              'query' => MicaClient::addParameterDtoQueryLink(
                   array(
                     'variables' =>
                       array(
