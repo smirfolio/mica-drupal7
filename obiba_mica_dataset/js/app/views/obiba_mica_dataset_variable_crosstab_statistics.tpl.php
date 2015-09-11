@@ -1,6 +1,6 @@
 <tr ng-if="options.showDetails">
   <td ng-if="datasetHarmo" rowspan="{{!grandTotal && !contingency.privacyCheck ? '6' : '5'}}">
-    <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_study_table'"></span>
+    <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_mica_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_study_table'"></span>
     <span ng-if="grandTotal"><strong>{{'total' | translate}}</strong></span>
   </td>
   <td translate>min</td>
@@ -24,7 +24,7 @@
 </tr>
 <tr>
   <td ng-if="datasetHarmo && !options.showDetails">
-    <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_main_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_study_table'"></span>
+    <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_mica_app_angular/obiba_mica_data_access_request/obiba_mica_dataset_study_table'"></span>
     <span ng-if="grandTotal"><strong>{{'total' | translate}}</strong></span>
   </td>
   <td>N</td>

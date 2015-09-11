@@ -55,7 +55,7 @@
             <th><?php print t('Dataset'); ?></th>
             <td>
               <p>
-                <?php print MicaClientAnchorHelper::variable_dataset($variable_dto); ?>
+                <?php print MicaClientAnchorHelper::variableDataset($variable_dto); ?>
               </p>
             </td>
           </tr>
@@ -79,7 +79,7 @@
             <p>
               <?php print t('@type variable', array('@type' => t($variable_dto->variableType))); ?>
               <?php if ($variable_dto->variableType == 'Harmonized'): ?>
-                <?php print '(' . MicaClientAnchorHelper::variable_harmonized($variable_dto) . ')'; ?>
+                <?php print '(' . MicaClientAnchorHelper::variableHarmonized($variable_dto) . ')'; ?>
               <?php endif; ?>
             </p>
           </td>
@@ -169,7 +169,7 @@
       <?php print t('Statistics') ?>
       <?php if (strcasecmp($variable_dto->nature, 'categorical') === 0 && $variable_dto->variableType !== 'Harmonized'): ?>
         <span class="pull-right">
-        <?php if (variable_get_value('mica_statistics')) print MicaClientAnchorHelper::variable_crosstab($variable_dto, TRUE) ?>
+        <?php if (variable_get_value('mica_statistics')) print MicaClientAnchorHelper::variableCrosstab($variable_dto, TRUE) ?>
       </span>
       <?php endif; ?>
     </h2>
@@ -269,7 +269,7 @@
                   <span class="glyphicon glyphicon-ok alert-success" title="<?php print t('Complete') ?>"></span>
                 <?php
                 elseif ($variable_harmonization['status'] == 'impossible'): ?>
-                  <span class="glyphicon <?php print  ObibaDatasetConstants::get_icon(); ?>"
+                  <span class="glyphicon <?php print  ObibaDatasetConstants::getIcon(); ?>"
                         title="<?php print t(variable_get_value('dataset_harmonization_impossible_label')) ?>"></span>
                 <?php
                 elseif ($variable_harmonization['status'] == 'undetermined'): ?>

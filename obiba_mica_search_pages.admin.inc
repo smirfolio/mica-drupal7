@@ -457,7 +457,7 @@ function _obiba_mica_settings_search_variables_form(&$form) {
  */
 function _obiba_mica_admin_get_taxonomy_summaries() {
   $service = new MicaTaxonomyResource();
-  $taxonomies = $service->get_taxonomy_summaries();
+  $taxonomies = $service->getTaxonomySummaries();
   $list = array();
 
   if (!empty($taxonomies) && !empty($taxonomies->summaries)) {

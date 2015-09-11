@@ -412,7 +412,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
               elseif ($status == 'impossible') {
 
                 $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
-                  ObibaDatasetConstants::get_icon()
+                  ObibaDatasetConstants::getIcon()
                   . '" data-original-title="' . t(variable_get('dataset_harmonization_impossible_label')) . '"></span>';
                 $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
                   array(
@@ -457,7 +457,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
 
 function obiba_mica_dataset_coverage($dataset_id) {
   $coverage['charts'] = obiba_mica_search_query_charts(
-    MicaClient::add_parameter_dto_query_link(
+    MicaClient::addParameterDtoQueryLink(
       array('variables' => array('terms' => array('datasetId' => $dataset_id)))));
   if (!empty($coverage['charts'])) {
     $coverage['has_coverage'] = TRUE;
