@@ -15,7 +15,7 @@
           var $btn = $(this).button('loading');
           $('.collapse').collapse();
 
-          // WORKAROUND: When the harmonization table is a child, the DataTable is not drawn properly
+          // WORKAROUND: When the harmonization table is a child, the DataTable is not drawn properly.
           Drupal.behaviors.micaDataset_Datatable_init.invalidate(context, $('#harmo-table'));
 
           $("#harmo-table-btn").unbind("click");
@@ -36,4 +36,3 @@
     }
   }
 }(jQuery));
-

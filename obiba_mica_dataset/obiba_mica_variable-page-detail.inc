@@ -28,7 +28,7 @@ function obiba_mica_variable_page_detail($variable_id) {
   }
 
   $variable_resource = new MicaDatasetResource();
-  $variable = $variable_resource->get_variable($variable_id);
+  $variable = $variable_resource->getVariable($variable_id);
   if (empty($variable)) {
     drupal_set_title(t('Variable not found'));
     return '';
@@ -75,7 +75,7 @@ function obiba_mica_variable_page_detail($variable_id) {
 function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variable_names) {
   $sorted_variables = json_decode($sorted_variable_names, true);
   $variable_resource = new MicaDatasetResource();
-  $harmonization_variables = $variable_resource->get_variable_harmonizations($variable_id);
+  $harmonization_variables = $variable_resource->getVariableHarmonizations($variable_id);
   foreach ($harmonization_variables->datasetVariableSummaries as $harmonization_variable) {
     $variable_resolver = $harmonization_variable->resolver;
     $study_id = $variable_resolver->studyId;
@@ -170,7 +170,7 @@ function obiba_mica_variable_get_harmonization_table_rows($variable) {
   $rows = array();
   $variable_resource = new MicaDatasetResource();
 
-  $variable_harmonizations = $variable_resource->get_variable_harmonizations($variable->id);
+  $variable_harmonizations = $variable_resource->getVariableHarmonizations($variable->id);
 
   if (!empty($variable_harmonizations->datasetVariableSummaries)) {
     foreach ($variable_harmonizations->datasetVariableSummaries as $variable_harmonization) {
@@ -296,12 +296,12 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   if (!variable_get_value('mica_statistics')) return;
   $stat_tab = FALSE;
   $variable_resource = new MicaDatasetResource();
-  $variable = $variable_resource->get_variable($variable_id);
-  $variable_stat = $variable_resource->get_variable_aggregation($variable_id);
+  $variable = $variable_resource->getVariable($variable_id);
+  $variable_stat = $variable_resource->getVariableAggregation($variable_id);
   if (!empty($variable_stat)) {
     $statistics = new VariableStatistics($variable, $variable_stat);
-    $stat_tab['table'] = $statistics->as_table();
-    $stat_tab['chart'] = $statistics->as_chart();
+    $stat_tab['table'] = $statistics->asTable();
+    $stat_tab['chart'] = $statistics->asChart();
     return drupal_json_output($stat_tab);
   }
   return FALSE;
@@ -311,14 +311,14 @@ function obiba_mica_dataset_variable_get_ajax_statistics_test($variable_id = NUL
   if (!variable_get_value('mica_statistics')) return;
   $stat_tab = '';
   $variable_resource = new MicaDatasetResource();
-  $variable = $variable_resource->get_variable($variable_id);
+  $variable = $variable_resource->getVariable($variable_id);
   $variable_stat = $variable_resource->get_variable_aggregation($variable_id);
 //  dpm($variable);
 //  dpm($variable_stat);
   if (!empty($variable_stat)) {
     $statistics = new VariableStatistics($variable, $variable_stat);
-    $stat_tab .= $statistics->as_table();
-    $stat_tab .= $statistics->as_chart();
+    $stat_tab .= $statistics->asTable();
+    $stat_tab .= $statistics->asChart();
   }
 
   return $stat_tab;

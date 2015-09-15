@@ -268,7 +268,7 @@ function obiba_mica_dataset_theme($existing, $type, $theme, $path) {
 function obiba_mica_dataset_get_all_datasets_studies($study_id) {
   $output = NULL;
   $dataset_resource = new MicaDatasetResource();
-  $datasets = $dataset_resource->get_datasets('datasets', $study_id, NULL, 0, 50, 'studyTable.populationId', 'asc');
+  $datasets = $dataset_resource->getDatasets('datasets', $study_id, NULL, 0, 50, 'studyTable.populationId', 'asc');
 
   if (!empty($datasets)) {
     $output = obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id);

@@ -89,7 +89,7 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resou
   if (!empty($_GET['page'])) {
     $from = $resource->paginationListSearchParameters($_GET['page'], 'datasets', $size_response);
   }
-  $response = $resource->get_datasets($dataset_resource, NULL, $query, $from, $size_response, $sort, $sort_by);
+  $response = $resource->getDatasets($dataset_resource, NULL, $query, $from, $size_response, $sort, $sort_by);
   if (!empty($response)) {
     $_SESSION['datasets']['aggregations']['total_hits'] = $response->getTotalHits();
   }

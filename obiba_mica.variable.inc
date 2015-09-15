@@ -105,7 +105,7 @@ function _obiba_mica_variable_info_mica_server(&$variable) {
     'title' => t('Copyright notice text'),
     'description' => t('Copyright notice displayed in the site and downloaded documents.'),
     'type' => 'string',
-    'default' => '',
+    'default' => t('Copyright'),
   );
   $variable['mica_response_page_size'] = array(
     'title' => t('Number of items per server response page'),
@@ -328,7 +328,7 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'title' => t('No study label'),
     'description' => t('Text to be displayed when no study is found.'),
     'type' => 'string',
-    'default' => 'No study found',
+    'default' => t('No study found'),
   );
   $variable['search_studies_dce_autocomplete'] = array(
     'title' => t('Show Data Collection Event auto-complete search filter'),
@@ -432,7 +432,7 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'title' => t("Label to show for the 'Impossible' status"),
     'description' => t("Text to display, for the label to show for 'Impossible' harmonization status"),
     'type' => 'string',
-    'default' => 'Impossible',
+    'default' => t('Impossible'),
   );
   $variable['dataset_harmonization_undetermined_icon'] = array(
     'title' => t("Icon to show for the 'Undetermined' status"),
@@ -444,7 +444,7 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'title' => t("Label to show for the 'Undetermined' status"),
     'description' => t("Text to display, for the label to show for 'Undetermined' harmonization status"),
     'type' => 'string',
-    'default' => 'Undetermined',
+    'default' => t('Undetermined'),
   );
 }
 
