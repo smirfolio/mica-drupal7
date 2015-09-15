@@ -105,7 +105,7 @@ function _obiba_mica_variable_info_mica_server(&$variable) {
     'title' => t('Copyright notice text'),
     'description' => t('Copyright notice displayed in the site and downloaded documents.'),
     'type' => 'string',
-    'default' => t('Copyright'),
+    'default' => '',
   );
   $variable['mica_response_page_size'] = array(
     'title' => t('Number of items per server response page'),
