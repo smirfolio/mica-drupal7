@@ -1,13 +1,19 @@
 <?php
+/**
+ * @file
+ * Code to perform module installation operations
+ */
 
-/*
- * @file code to perform module installation operations
- * */
-
+/**
+ * Implements hook_install().
+ */
 function obiba_mica_dataset_install() {
   obiba_mica_dataset_create_node();
 }
 
+/**
+ * Create page node content for the dataset page.
+ */
 function obiba_mica_dataset_create_node() {
 
   $my_body_content = '<p>To harmonize data between studies participating in the consortium, study-specific datasets and Harmonized Datasets (i.e. variables targeted for harmonization) are used and made available to investigators. Variables collected by each study and those defined in the Harmonization Dataset are described using a standardized data dictionary which covers variable definitions and characteristics (e.g. type, unit, categories, and area of information covered). Once Study Datasets and a Harmonization Dataset are defined and loaded in the system, variable-specific mapping algorithms are developed in order to derive the study datasets into the common format defined in the Harmonization Dataset. In order to increase transparency of the harmonization process, these resources are made available to the research community.&nbsp;</p><hr/>';

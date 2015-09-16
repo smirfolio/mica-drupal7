@@ -1,61 +1,76 @@
 <?php
 
 /**
- * @file code to deal with variable statics
+ * @file
+ * Code to deal with variable statics.
+ */
+
+/**
+ * VariableStatistics class
  */
 class VariableStatistics {
 
   private $variable;
 
-  private $variable_stat;
+  private $variableStat;
 
-  private $dataset_detailed_var_stats;
+  private $datasetDetailedVarStats;
 
-  function __construct($variable, $variable_stat) {
+  /**
+   * Instance initialisation.
+   *
+   * @param object $variable
+   *   The variable to extract statistics.
+   * @param object $variable_stat
+   *   The variable aggregations.
+   */
+  public function __construct($variable, $variable_stat) {
     $this->variable = $variable;
-    $this->variable_stat = $variable_stat;
-    $this->dataset_detailed_var_stats = variable_get_value('dataset_detailed_var_stats');
+    $this->variableStat = $variable_stat;
+    $this->datasetDetailedVarStats = variable_get_value('dataset_detailed_var_stats');
   }
 
   /**
    * Table of descriptive statistics or frequencies.
-   * @return string
    */
-  public function as_table() {
-    if (!empty($this->variable_stat->statistics)) {
-      return $this->as_descriptive_table();
+  public function asTable() {
+    if (!empty($this->variableStat->statistics)) {
+      return $this->asDescriptiveTable();
     }
-    if (!empty($this->variable_stat->frequencies)) {
-      return $this->as_frequencies_table();
+    if (!empty($this->variableStat->frequencies)) {
+      return $this->asFrequenciesTable();
     }
     return '<div class="alert alert-info">No statistics found for this variable (which nature is "' . strtolower($this->variable->nature) . '").</div>';
   }
 
   /**
    * Chart of frequencies only.
-   * @return bool|string
    */
-  public function as_chart() {
-    if (!empty($this->variable_stat->statistics)) {
+  public function asChart() {
+    if (!empty($this->variableStat->statistics)) {
       return FALSE;
-      //return $this->as_stacked_bar_chart();
+      // May be need to review :
+      // return $this->asStackedBarChart();
     }
-    return $this->as_pie_chart();
+    return $this->asPieChart();
   }
 
-  private function as_stacked_bar_chart() {
-    if (!empty($this->variable_stat->frequencies)) {
-      $aggregations = $this->get_aggregations();
+  /**
+   * Chart as stacked bar.
+   */
+  private function asStackedBarChart() {
+    if (!empty($this->variableStat->frequencies)) {
+      $aggregations = $this->getAggregations();
 
       $labels = array();
       $data = array();
-      // add category frequencies first
+      // Add category frequencies first.
       if (!empty($this->variable->categories)) {
         foreach ($this->variable->categories as $category) {
-          $labels[] = $this->get_category_label($category);
+          $labels[] = $this->getCategoryLabel($category);
           foreach ($aggregations as $aggregation) {
             if (!empty($aggregation->frequencies)) {
-              $header = $this->get_study_table_label($aggregation);
+              $header = $this->getStudyTableLabel($aggregation);
               foreach ($aggregation->frequencies as $frequency) {
                 if ($frequency->value == $category->name) {
                   $data[$header][] = $frequency->count;
@@ -66,14 +81,13 @@ class VariableStatistics {
           }
         }
       }
-      // look for values that are not categories
-      // observed that are missings
-      $observed_values = $this->get_observed_values($aggregations, TRUE);
+      // Look for values that are not categories observed that are missing.
+      $observed_values = $this->getObservedValues($aggregations, TRUE);
       foreach ($observed_values as $observed) {
         $labels[] = $observed;
         foreach ($aggregations as $aggregation) {
           if (!empty($aggregation->frequencies)) {
-            $header = $this->get_study_table_label($aggregation);
+            $header = $this->getStudyTableLabel($aggregation);
             $count = 0;
             foreach ($aggregation->frequencies as $frequency) {
               if ($frequency->value == $observed) {
@@ -85,11 +99,11 @@ class VariableStatistics {
           }
         }
       }
-      // observed that are valid, merged into one
-      if (!empty($this->variable_stat->statistics)) {
+      // Observed that are valid, merged into one.
+      if (!empty($this->variableStat->statistics)) {
         $labels[] = 'N (' . t('Valid values') . ')';
         foreach ($aggregations as $aggregation) {
-          $header = $this->get_study_table_label($aggregation);
+          $header = $this->getStudyTableLabel($aggregation);
           $data[$header][] = empty($aggregation->n) ? 0 : $aggregation->n;
         }
       }
@@ -107,15 +121,14 @@ class VariableStatistics {
 
   /**
    * Combined pie chart.
-   * @return bool
    */
-  private function as_pie_chart() {
-    $aggregation = $this->variable_stat;
+  private function asPieChart() {
+    $aggregation = $this->variableStat;
     $raw_options = array(
       'chartArea' => array(
         'left' => "0",
-        'width' => "100%"
-      )
+        'width' => "100%",
+      ),
     );
     if (empty($aggregation->frequencies)) {
       return FALSE;
@@ -127,15 +140,15 @@ class VariableStatistics {
     $labels = array();
     $data = array();
     foreach ($aggregation->frequencies as $frequency) {
-      // do not include missings and observed (non-categorical) values
-      if (!$frequency->missing && $this->is_category($frequency->value)) {
-        $labels[] = $this->get_label_from_category_name($frequency->value, FALSE);
+      // Do not include missing and observed (non-categorical) values.
+      if (!$frequency->missing && $this->isCategory($frequency->value)) {
+        $labels[] = $this->getLabelFromCategoryName($frequency->value, FALSE);
         $data[] = $frequency->count;
       }
     }
 
     if (!empty($data) && count($data) > 1) {
-      if (!empty($this->dataset_detailed_var_stats) && $this->variable->variableType == 'Dataschema') {
+      if (!empty($this->datasetDetailedVarStats) && $this->variable->variableType == 'Dataschema') {
         $raw_options = array();
       }
 
@@ -149,11 +162,9 @@ class VariableStatistics {
 
   /**
    * Mix category name and localized label in one string.
-   * @param $category
-   * @return null|string|the
    */
-  private function get_category_label($category) {
-    $label = _obiba_mica_variable_attributes_detail($category, 'label');
+  private function getCategoryLabel($category) {
+    $label = obiba_mica_dataset_variable_attributes_detail($category, 'label');
     if (empty($label)) {
       $label = $category->name;
     }
@@ -165,17 +176,15 @@ class VariableStatistics {
 
   /**
    * From a value, search for a corresponding category and get its label.
-   * @param $value
-   * @return null|string|the
    */
-  private function get_label_from_category_name($value, $html = TRUE) {
+  private function getLabelFromCategoryName($value, $html = TRUE) {
     if ($value == NULL || $value == '' || empty($this->variable->categories)) {
       return $value;
     }
 
     foreach ($this->variable->categories as $category) {
       if ($value == $category->name) {
-        $label = _obiba_mica_variable_attributes_detail($category, 'label');
+        $label = obiba_mica_dataset_variable_attributes_detail($category, 'label');
         return $html ? '<span title="' . $label . '">' . $value . '</span>' : $value . ' (' . $label . ')';
       }
     }
@@ -183,11 +192,11 @@ class VariableStatistics {
   }
 
   /**
-   * Mix study localized acronym with study table localized name if any in one string.
-   * @param $aggregation
-   * @return mixed|string
+   * Mix study localized acronym with study table localized name.
+   *
+   * If any in one string.
    */
-  private function get_study_table_label($aggregation) {
+  private function getStudyTableLabel($aggregation) {
     $study_id = $aggregation->studyTable->studyId;
     $header = _obiba_mica_variable_study_acronym($this->variable, $study_id);
     if (!empty($aggregation->studyTable->name)) {
@@ -198,31 +207,27 @@ class VariableStatistics {
 
   /**
    * Get the variable statistics as an aggregation list.
-   * @return array
    */
-  private function get_aggregations() {
+  private function getAggregations() {
     $aggregations = array();
-    if (!empty($this->variable_stat->aggregations)) {
-      $aggregations = $this->variable_stat->aggregations;
+    if (!empty($this->variableStat->aggregations)) {
+      $aggregations = $this->variableStat->aggregations;
     }
     else {
-      array_push($aggregations, $this->variable_stat);
+      array_push($aggregations, $this->variableStat);
     }
     return $aggregations;
   }
 
   /**
    * Look for occurrences of values that are not categories.
-   * @param $aggregations
-   * @param $missing
-   * @return array
    */
-  private function get_observed_values($aggregations, $missing = NULL) {
+  private function getObservedValues($aggregations, $missing = NULL) {
     $observed_values = array();
     foreach ($aggregations as $aggregation) {
       if (!empty($aggregation->frequencies)) {
         foreach ($aggregation->frequencies as $frequency) {
-          if (!in_array($frequency->value, $observed_values) && !$this->is_category($frequency->value)) {
+          if (!in_array($frequency->value, $observed_values) && !$this->isCategory($frequency->value)) {
             if (empty($missing) || $frequency->missing == $missing) {
               $observed_values[] = $frequency->value;
             }
@@ -235,10 +240,8 @@ class VariableStatistics {
 
   /**
    * Check if value is a category name of the current variable.
-   * @param $value
-   * @return bool
    */
-  private function is_category($value) {
+  private function isCategory($value) {
     if ($value == NULL || $value == '') {
       return FALSE;
     }
@@ -256,35 +259,34 @@ class VariableStatistics {
 
   /**
    * Table of descriptive statistics.
-   * @return string
    */
-  private function as_descriptive_table() {
+  private function asDescriptiveTable() {
     $rows = array();
     $aggregations = array();
 
-    if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
-      if (!empty($this->variable_stat->aggregations)) {
-        $aggregations = $this->variable_stat->aggregations;
+    if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
+      if (!empty($this->variableStat->aggregations)) {
+        $aggregations = $this->variableStat->aggregations;
       }
     }
     else {
-      array_push($aggregations, $this->variable_stat);
+      array_push($aggregations, $this->variableStat);
     }
 
-    // frequencies of missings
+    // Frequencies of missing.
     $missings = array();
-    if (!empty($this->variable_stat->frequencies)) {
-      foreach ($this->variable_stat->frequencies as $frequency) {
+    if (!empty($this->variableStat->frequencies)) {
+      foreach ($this->variableStat->frequencies as $frequency) {
         if ($frequency->value != 'NOT_NULL') {
           array_push($missings, $frequency->value);
         }
       }
     }
 
-    // statistics
+    // Statistics.
     foreach ($aggregations as $aggregation) {
       $row = array();
-      if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
+      if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
         $study_id = $aggregation->studyTable->studyId;
         $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
         if (!empty($aggregation->studyTable->name)) {
@@ -292,7 +294,7 @@ class VariableStatistics {
         }
         $row[] = $header;
       }
-      $row = array_merge($row, $this->statistics_to_row($aggregation));
+      $row = array_merge($row, $this->statisticsToRow($aggregation));
       foreach ($missings as $missing) {
         $count = 0;
         if (!empty($aggregation->frequencies)) {
@@ -312,15 +314,15 @@ class VariableStatistics {
       $rows[] = $row;
     }
 
-    // combined statistics
-    if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
+    // Combined statistics.
+    if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
       $row = array();
-      if ($this->dataset_detailed_var_stats) {
+      if ($this->datasetDetailedVarStats) {
         $row[] = array('data' => '<strong>' . t('All') . '</strong>');
       }
 
-      $row = array_merge($row, $this->statistics_to_row($this->variable_stat));
-      $aggregation = $this->variable_stat;
+      $row = array_merge($row, $this->statisticsToRow($this->variableStat));
+      $aggregation = $this->variableStat;
       foreach ($missings as $missing) {
         $count = 0;
         if (!empty($aggregation->frequencies)) {
@@ -340,35 +342,38 @@ class VariableStatistics {
       $rows[] = $row;
     }
 
-    // headers
+    // Headers.
     $headers = array();
-    if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
+    if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
       $headers = array(t('Study'));
     }
     array_push($headers, t('Min'), t('Max'), t('Mean'), t('Std. Dev'), t('N'));
     foreach ($missings as $missing) {
-      $label = $this->get_label_from_category_name($missing);
+      $label = $this->getLabelFromCategoryName($missing);
       $label = $label == 'N/A' ? t('Missing') : $label;
       array_push($headers, $label);
     }
     array_push($headers, t('Total'));
 
-    return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No statistics available')));
+    return theme('table', array(
+      'header' => $headers,
+      'rows' => $rows,
+      'empty' => t('No statistics available'),
+    ));
   }
 
   /**
    * Table of value frequencies.
-   * @return string
    */
-  private function as_frequencies_table() {
+  private function asFrequenciesTable() {
     $headers = array(t('Value'));
     $rows = array();
     $missing_rows = array();
     $aggregations = array();
-    // headers
-    if ($this->dataset_detailed_var_stats && $this->variable->variableType == 'Dataschema') {
-      if (!empty($this->variable_stat->aggregations)) {
-        $aggregations = $this->variable_stat->aggregations;
+    // Headers.
+    if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
+      if (!empty($this->variableStat->aggregations)) {
+        $aggregations = $this->variableStat->aggregations;
         foreach ($aggregations as $aggregation) {
           $study_id = $aggregation->studyTable->studyId;
           $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
@@ -379,42 +384,42 @@ class VariableStatistics {
         }
         if (count($aggregations) > 1) {
           $headers[] = t('All');
-          array_push($aggregations, $this->variable_stat);
+          array_push($aggregations, $this->variableStat);
         }
       }
     }
     else {
       array_push($headers, t('Frequency'));
-      array_push($aggregations, $this->variable_stat);
+      array_push($aggregations, $this->variableStat);
     }
 
-    // counts per valid/missing values
+    // Counts per valid/missing values.
     $colspan = count($aggregations) + 1;
     $rows[] = array(
       array(
         'data' => '<strong>' . t('Valid Values') . '</strong>',
-        'colspan' => $colspan
-      )
+        'colspan' => $colspan,
+      ),
     );
     $missing_rows[] = array(
       array(
         'data' => '<strong>' . t('Other Values') . '</strong>',
-        'colspan' => $colspan
-      )
+        'colspan' => $colspan,
+      ),
     );
 
-    // categories first
+    // Categories first.
     if (!empty($this->variable->categories)) {
       foreach ($this->variable->categories as $category) {
         $category_name = $category->name;
-        $category_label = _obiba_mica_variable_attributes_detail($category, 'label');
+        $category_label = obiba_mica_dataset_variable_attributes_detail($category, 'label');
         $missing = $category->missing;
         $row = array(
           array(
             'data' => $category->name . '<p class="help-inline">' . $category_label . '</p>',
             'data-toggle' => 'tooltip',
             'data-original-title' => $category_label,
-          )
+          ),
         );
         $value = $category_name;
         foreach ($aggregations as $aggregation) {
@@ -424,10 +429,10 @@ class VariableStatistics {
               if ($frequency->value == $value) {
                 $count = $frequency->count;
                 if ($frequency->missing) {
-                  $count = $this->count_markup($count, $aggregation->total, $aggregation->total - $aggregation->n, 'Percentage over other values count');
+                  $count = $this->countMarkup($count, $aggregation->total, $aggregation->total - $aggregation->n, t('Percentage over other values count'));
                 }
                 else {
-                  $count = $this->count_markup($count, $aggregation->total, $aggregation->n, 'Percentage over valid values count');
+                  $count = $this->countMarkup($count, $aggregation->total, $aggregation->n, t('Percentage over valid values count'));
                 }
                 break;
               }
@@ -444,8 +449,8 @@ class VariableStatistics {
       }
     }
 
-    // observed values
-    $observed_values = $this->get_observed_values($aggregations);
+    // Observed values.
+    $observed_values = $this->getObservedValues($aggregations);
     foreach ($observed_values as $observed_value) {
       $label = $observed_value == 'NOT_NULL' ? t('Valid values') : $observed_value;
       $label = $observed_value == 'N/A' ? t('Missing') : $label;
@@ -456,13 +461,14 @@ class VariableStatistics {
         if (!empty($aggregation->frequencies)) {
           foreach ($aggregation->frequencies as $frequency) {
             if ($frequency->value == $observed_value) {
-              $missing = $frequency->missing; # expected to be the same through the aggregations
+              // Expected to be the same through the aggregations.
+              $missing = $frequency->missing;
               $count = $frequency->count;
               if ($frequency->missing) {
-                $count = $this->count_markup($count, $aggregation->total, $aggregation->total - $aggregation->n, 'Percentage over other values count');
+                $count = $this->countMarkup($count, $aggregation->total, $aggregation->total - $aggregation->n, t('Percentage over other values count'));
               }
               else {
-                $count = $this->count_markup($count, $aggregation->total, $aggregation->n, 'Percentage over valid values count');
+                $count = $this->countMarkup($count, $aggregation->total, $aggregation->n, t('Percentage over valid values count'));
               }
               break;
             }
@@ -471,53 +477,60 @@ class VariableStatistics {
         $row[] = $count;
       }
       if (!$missing) {
-        // do not include those non-categorical details
-        //$rows[] = $row;
+        // Do not include those non-categorical details.
+        // $rows[] = $row;
       }
       else {
         $missing_rows[] = $row;
       }
     }
 
-    // subtotal valid values
+    // Subtotal valid values.
     $row = array('<i>' . t('Subtotal') . '</i>');
     foreach ($aggregations as $aggregation) {
-      $row[] = $this->count_markup($aggregation->n, $aggregation->total);
+      $row[] = $this->countMarkup($aggregation->n, $aggregation->total);
     }
     $rows[] = $row;
 
-    // subtotal missing values
+    // Subtotal missing values.
     if (count($missing_rows) > 1) {
-      // total missing
+      // Total missing.
       $row = array('<i>' . t('Subtotal') . '</i>');
       foreach ($aggregations as $aggregation) {
-        $row[] = $this->count_markup($aggregation->total - $aggregation->n, $aggregation->total);
+        $row[] = $this->countMarkup($aggregation->total - $aggregation->n, $aggregation->total);
       }
       $missing_rows[] = $row;
 
       $rows = array_merge($rows, $missing_rows);
     }
 
-    // grand total
+    // Grand total.
     $row = array(
       array(
         'data' => '<strong>' . t('Total') . '</strong>',
-        'class' => array('active')
-      )
+        'class' => array('active'),
+      ),
     );
 
     foreach ($aggregations as $aggregation) {
       $row[] = array(
         'data' => obiba_mica_commons_format_number($aggregation->total),
-        'class' => array('active')
+        'class' => array('active'),
       );
     }
     $rows[] = $row;
 
-    return theme('table', array('header' => $headers, 'rows' => $rows, 'empty' => t('No statistics available')));
+    return theme('table', array(
+      'header' => $headers,
+      'rows' => $rows,
+      'empty' => t('No statistics available'),
+    ));
   }
 
-  private function count_markup($count, $total = 0, $subtotal = 0, $title = NULL) {
+  /**
+   * Count markup.
+   */
+  private function countMarkup($count, $total = 0, $subtotal = 0, $title = NULL) {
     $percent_total = $total > 0 ? round(($count / ($total)) * 100, 1) : 0;
     $percent = $subtotal > 0 ? round(($count / $subtotal) * 100, 1) : 0;
     $total_title = t('Percentage over total count');
@@ -526,14 +539,17 @@ class VariableStatistics {
       . '<div class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' .
       obiba_mica_commons_format_number($percent_total, 1) . '%</div><div class="help-inline" data-toggle="tooltip" title="" data-original-title="' .
 
-      t($title) . '"><i>(' . obiba_mica_commons_format_number($percent, 1) . '%)</i></div>';
+      $title . '"><i>(' . obiba_mica_commons_format_number($percent, 1) . '%)</i></div>';
     }
     return obiba_mica_commons_format_number($count) .
     '<p class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' .
     $percent_total . '%</p>';
   }
 
-  private function statistics_to_row($aggregation) {
+  /**
+   * Wrap statistics to row.
+   */
+  private function statisticsToRow($aggregation) {
     if (!empty($aggregation->statistics)) {
       $statistics = $aggregation->statistics;
       $pct = empty($aggregation->total) ? 0 : round(($aggregation->n / $aggregation->total) * 100, 1);
@@ -542,9 +558,9 @@ class VariableStatistics {
         property_exists($statistics, 'min') ? obiba_mica_commons_format_number(round($statistics->min, 1), 1) : '-',
         property_exists($statistics, 'max') ? obiba_mica_commons_format_number(round($statistics->max, 1), 1) : '-',
         property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ?
-          obiba_mica_commons_format_number(round($statistics->mean, 1), 1) : '-',
+        obiba_mica_commons_format_number(round($statistics->mean, 1), 1) : '-',
         property_exists($statistics, 'stdDeviation') ? obiba_mica_commons_format_number(round($statistics->stdDeviation, 1), 1) : '-',
-        obiba_mica_commons_format_number($n)
+        obiba_mica_commons_format_number($n),
       );
     }
     else {
@@ -553,7 +569,7 @@ class VariableStatistics {
         '-',
         '-',
         '-',
-        '-'
+        '-',
       );
     }
   }

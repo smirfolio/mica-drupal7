@@ -1,14 +1,17 @@
 <?php
+/**
+ * @file
+ * Code for variable details page.
+ */
 
-/*
- * @file code for variable details page
- * */
+include_once 'includes/obiba_mica_dataset_resource.inc';
+include_once 'includes/obiba_mica_variable_statistics.inc';
 
-include_once('includes/obiba_mica_dataset_resource.inc');
-include_once('includes/obiba_mica_variable_statistics.inc');
-
+/**
+ * Variable page detail.
+ */
 function obiba_mica_variable_page_detail($variable_id) {
-  $library_chart = obiba_mica_variable_load_chart_libraries();
+  $library_chart = obiba_mica_dataset_variable_load_chart_libraries();
   drupal_add_js(
     drupal_get_path('module', 'charts') .
     '/modules/charts_' . $library_chart .
@@ -28,18 +31,17 @@ function obiba_mica_variable_page_detail($variable_id) {
   }
 
   $variable_resource = new MicaDatasetResource();
-  $variable = $variable_resource->get_variable($variable_id);
+  $variable = $variable_resource->getVariable($variable_id);
   if (empty($variable)) {
     drupal_set_title(t('Variable not found'));
     return '';
   }
   if ($variable->variableType == "Dataschema") {
-    // $algos = obiba_mica_dataset_get_variable_algorithm($variable_id);
     $algos = TRUE;
   }
-  $variable->label = _obiba_mica_variable_attributes_detail($variable, 'label');
-  $variable->description = _obiba_mica_variable_attributes_detail($variable, 'description');
-  $variable->comment = _obiba_mica_variable_attributes_detail($variable, 'comment');
+  $variable->label = obiba_mica_dataset_variable_attributes_detail($variable, 'label');
+  $variable->description = obiba_mica_dataset_variable_attributes_detail($variable, 'description');
+  $variable->comment = obiba_mica_dataset_variable_attributes_detail($variable, 'comment');
 
   $title = $variable->name;
   if ($variable->variableType == 'Harmonized') {
@@ -60,22 +62,25 @@ function obiba_mica_variable_page_detail($variable_id) {
     l(t('Datasets'), 'mica/datasets'),
     l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
     l(obiba_mica_commons_get_localized_field($variable, 'datasetName'), 'mica/' . obiba_mica_variable_dataset_type($variable)
-      . '/' . $variable->datasetId)
+      . '/' . $variable->datasetId),
   ));
 
-  _obiba_mica_dataset_remove_harmonization_taxonomy($variable);
+  obiba_mica_dataset_remove_harmonization_taxonomy($variable);
   return theme('obiba_mica_variable-detail', array(
     'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => $variable->variableType != 'Harmonized')),
     'variable_dto' => $variable,
     'variable_harmonization_algorithms' => !empty($algos) ? $algos : NULL,
-    'variable_harmonization' => obiba_mica_variable_get_harmonization($variable),
+    'variable_harmonization' => obiba_mica_dataset_variable_get_harmonization($variable),
   ));
 }
 
+/**
+ * Ajax Callback to get variable algorithm.
+ */
 function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variable_names) {
-  $sorted_variables = json_decode($sorted_variable_names, true);
+  $sorted_variables = json_decode($sorted_variable_names, TRUE);
   $variable_resource = new MicaDatasetResource();
-  $harmonization_variables = $variable_resource->get_variable_harmonizations($variable_id);
+  $harmonization_variables = $variable_resource->getVariableHarmonizations($variable_id);
   foreach ($harmonization_variables->datasetVariableSummaries as $harmonization_variable) {
     $variable_resolver = $harmonization_variable->resolver;
     $study_id = $variable_resolver->studyId;
@@ -84,18 +89,19 @@ function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variabl
     if (!empty($harmonization_variable->studyTable->name)) {
       $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($harmonization_variable->studyTable, 'name') . ')';
     }
-    $algorithm = _obiba_mica_variable_attributes_detail($harmonization_variable, 'algorithm', array(
+    $algorithm = obiba_mica_dataset_variable_attributes_detail($harmonization_variable, 'algorithm', array(
       'maelstrom',
-      'Mlstr_harmo'
+      'Mlstr_harmo',
     ));
     if (empty($algorithm)) {
-      // no need to render
+      // No need to render.
       unset($sorted_variables[$variable_title]);
-    } else {
+    }
+    else {
       if (array_key_exists($variable_title, $sorted_variables)) {
         $sorted_variables[$variable_title] = array(
           'var_id' => $variable_resolver->id,
-          'var_detail' => obiba_mica_commons_markdown($algorithm)
+          'var_detail' => obiba_mica_commons_markdown($algorithm),
         );
       }
     }
@@ -109,7 +115,10 @@ function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variabl
   drupal_json_output($themed_algo);
 }
 
-function _obiba_mica_dataset_remove_harmonization_taxonomy($variable) {
+/**
+ * Remove harmonization taxonomies.
+ */
+function obiba_mica_dataset_remove_harmonization_taxonomy($variable) {
 
   if (!empty($variable->termAttributes)) {
     $variable->termAttributes = array_filter($variable->termAttributes, function ($term_attribute) {
@@ -119,7 +128,10 @@ function _obiba_mica_dataset_remove_harmonization_taxonomy($variable) {
 
 }
 
-function obiba_mica_variable_load_chart_libraries() {
+/**
+ * Load the chart libraries js.
+ */
+function obiba_mica_dataset_variable_load_chart_libraries() {
   if (module_exists('charts')) {
     $chart_param = variable_get('charts_default_settings');
     if (!empty($chart_param)) {
@@ -142,35 +154,45 @@ function obiba_mica_variable_load_chart_libraries() {
   return 'google';
 }
 
-function obiba_mica_variable_get_harmonizations($variable) {
+/**
+ * Called to get js that inject a harmonization dataset dataTable.
+ */
+function obiba_mica_dataset_variable_get_harmonizations($variable) {
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
-  } else {
+  }
+  else {
     obiba_mica_commons_datatables_external_source();
   }
 
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_variable_harmo_datatable_init.js', 'file');
   drupal_add_js(array(
-    'table_headers' => obiba_mica_variable_get_harmonization_table_headers(),
-    'table_data' => obiba_mica_variable_get_harmonization_table_rows($variable)
+    'table_headers' => obiba_mica_dataset_variable_get_harmonization_table_headers(),
+    'table_data' => obiba_mica_dataset_variable_get_harmonization_table_rows($variable),
   ), 'setting');
 }
 
-function obiba_mica_variable_get_harmonization_table_headers() {
+/**
+ * GEt harmonized variable header table.
+ */
+function obiba_mica_dataset_variable_get_harmonization_table_headers() {
   return array(
     array("title" => t('Harmonized Variable'), 'width' => '20%'),
     array("title" => t('Study')),
     array("title" => t('Data Collection Event'), 'width' => '40%'),
     array("title" => t('Status'), 'width' => '15%'),
-    array("title" =>t('Comment'))
+    array("title" => t('Comment')),
   );
 }
 
-function obiba_mica_variable_get_harmonization_table_rows($variable) {
+/**
+ * GEt harmonized variable row data table.
+ */
+function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
   $rows = array();
   $variable_resource = new MicaDatasetResource();
 
-  $variable_harmonizations = $variable_resource->get_variable_harmonizations($variable->id);
+  $variable_harmonizations = $variable_resource->getVariableHarmonizations($variable->id);
 
   if (!empty($variable_harmonizations->datasetVariableSummaries)) {
     foreach ($variable_harmonizations->datasetVariableSummaries as $variable_harmonization) {
@@ -186,9 +208,9 @@ function obiba_mica_variable_get_harmonization_table_rows($variable) {
         $variable_title_key .= ' (' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
       }
 
-      $status = trim(strtolower(_obiba_mica_variable_attributes_detail($variable_harmonization, 'status', array(
+      $status = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status', array(
         'maelstrom',
-        'Mlstr_harmo'
+        'Mlstr_harmo',
       ))));
 
       if (empty($status)) {
@@ -198,7 +220,7 @@ function obiba_mica_variable_get_harmonization_table_rows($variable) {
         $status = '<span class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>';
       }
       elseif ($status == 'impossible') {
-        $status = '<span class="glyphicon ' . ObibaDatasetConstants::getIcon() . '" title="' . t(variable_get('dataset_harmonization_impossible_label')) . '"></span>';
+        $status = '<span class="glyphicon ' . ObibaDatasetConstants::getIcon() . '" title="' . variable_get('dataset_harmonization_impossible_label') . '"></span>';
       }
       elseif ($status == 'undetermined') {
         $status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>';
@@ -211,24 +233,23 @@ function obiba_mica_variable_get_harmonization_table_rows($variable) {
         '<p>' .
         l($variable_title, 'mica/variable/' . $harmonized_variable_id, array(
           'query' => array(
-            'title' => $variable_title
-          )
+            'title' => $variable_title,
+          ),
         )) . '</p><p class="help-block">' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'description') . '</p>',
         l($study_acronym, 'mica/study/' . $study_id),
         obiba_mica_dataset_get_dce_name_from_dataset($variable_harmonization->studyTable, $study_summary),
-        //$variable_harmonization->studyTable->populationId . ':' . $variable_harmonization->studyTable->dataCollectionEventId,
         l($status, 'mica/variable/' . $harmonized_variable_id, array(
           'html' => TRUE,
           'query' => array(
-            'title' => $variable_title
-          )
+            'title' => $variable_title,
+          ),
         )),
-        _obiba_mica_variable_html_truncated(
-          _obiba_mica_variable_attributes_detail($variable_harmonization, 'comment', array(
+        obiba_mica_dataset_variable_html_truncated(
+          obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'comment', array(
             'maelstrom',
-            'Mlstr_harmo'
-          )), t('comment'), 200, FALSE),
-        $variable_title_key
+            'Mlstr_harmo',
+          )), t('comment'), 200),
+        $variable_title_key,
       );
 
     }
@@ -237,30 +258,36 @@ function obiba_mica_variable_get_harmonization_table_rows($variable) {
   return $rows;
 }
 
-function obiba_mica_variable_get_harmonization($harmonized_variable) {
+/**
+ * Get variable harmonization table.
+ */
+function obiba_mica_dataset_variable_get_harmonization($harmonized_variable) {
   return array(
-    'status' => _obiba_mica_variable_attributes_detail($harmonized_variable, 'status', array(
+    'status' => obiba_mica_dataset_variable_attributes_detail($harmonized_variable, 'status', array(
       'maelstrom',
-      'Mlstr_harmo'
+      'Mlstr_harmo',
     )),
-    'comment' => _obiba_mica_variable_attributes_detail($harmonized_variable, 'comment', array(
+    'comment' => obiba_mica_dataset_variable_attributes_detail($harmonized_variable, 'comment', array(
       'maelstrom',
-      'Mlstr_harmo'
+      'Mlstr_harmo',
     )),
-    'algorithm' => obiba_mica_commons_markdown(_obiba_mica_variable_attributes_detail($harmonized_variable, 'algorithm', array(
+    'algorithm' => obiba_mica_commons_markdown(obiba_mica_dataset_variable_attributes_detail($harmonized_variable, 'algorithm', array(
       'maelstrom',
-      'Mlstr_harmo'
+      'Mlstr_harmo',
     ))),
-    'script' => _obiba_mica_variable_attributes_detail($harmonized_variable, 'script'),
+    'script' => obiba_mica_dataset_variable_attributes_detail($harmonized_variable, 'script'),
   );
 }
 
-function _obiba_mica_variable_html_truncated($text, $label, $size = 200, $is_code = FALSE, $pre_class = '') {
+/**
+ * Get a truncated snippet of a given variable attribute.
+ */
+function obiba_mica_dataset_variable_html_truncated($text, $label, $size = 200) {
   if (!empty($text)) {
     $truncate = strlen($text) > $size;
-    $html_truncate = $truncate //
-      ? check_markup(truncate_utf8($text, $size, FALSE)) . "[" . $label . " " . t("truncated") . "]" //
-      : check_markup($text); //
+    $html_truncate = $truncate ?
+      check_markup(truncate_utf8($text, $size, FALSE)) . "[" . $label . " " . t("truncated") . "]" :
+      check_markup($text);
   }
   else {
     $html_truncate = '-';
@@ -268,14 +295,17 @@ function _obiba_mica_variable_html_truncated($text, $label, $size = 200, $is_cod
   return $html_truncate;
 }
 
-function obiba_mica_variable_get_categories($categories = NULL) {
+/**
+ * Get variable categories table.
+ */
+function obiba_mica_dataset_variable_get_categories($categories = NULL) {
   $rows = array();
   if (!empty($categories)) {
     foreach ($categories as $category) {
       $rows[] = array(
         $category->name,
-        _obiba_mica_variable_attributes_detail($category, 'label'),
-        $category->missing ? '<span class="glyphicon glyphicon-ok"></span>' : NULL
+        obiba_mica_dataset_variable_attributes_detail($category, 'label'),
+        $category->missing ? '<span class="glyphicon glyphicon-ok"></span>' : NULL,
       );
     }
     return theme(
@@ -292,43 +322,30 @@ function obiba_mica_variable_get_categories($categories = NULL) {
   return FALSE;
 }
 
+/**
+ * Callback to get variable statistics charts/table.
+ */
 function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
-  if (!variable_get_value('mica_statistics')) return;
+  if (!variable_get_value('mica_statistics')) {
+    return;
+  }
   $stat_tab = FALSE;
   $variable_resource = new MicaDatasetResource();
-  $variable = $variable_resource->get_variable($variable_id);
-  $variable_stat = $variable_resource->get_variable_aggregation($variable_id);
+  $variable = $variable_resource->getVariable($variable_id);
+  $variable_stat = $variable_resource->getVariableAggregation($variable_id);
   if (!empty($variable_stat)) {
     $statistics = new VariableStatistics($variable, $variable_stat);
-    $stat_tab['table'] = $statistics->as_table();
-    $stat_tab['chart'] = $statistics->as_chart();
+    $stat_tab['table'] = $statistics->asTable();
+    $stat_tab['chart'] = $statistics->asChart();
     return drupal_json_output($stat_tab);
   }
   return FALSE;
 }
 
-function obiba_mica_dataset_variable_get_ajax_statistics_test($variable_id = NULL) {
-  if (!variable_get_value('mica_statistics')) return;
-  $stat_tab = '';
-  $variable_resource = new MicaDatasetResource();
-  $variable = $variable_resource->get_variable($variable_id);
-  $variable_stat = $variable_resource->get_variable_aggregation($variable_id);
-//  dpm($variable);
-//  dpm($variable_stat);
-  if (!empty($variable_stat)) {
-    $statistics = new VariableStatistics($variable, $variable_stat);
-    $stat_tab .= $statistics->as_table();
-    $stat_tab .= $statistics->as_chart();
-  }
-
-  return $stat_tab;
-}
-
 /**
- * Get the study summary found in the variable. If not found, fetch the study summary directly.
- * @param $variable
- * @param $study_id
- * @return mixed
+ * Get the study summary found in the variable.
+ *
+ * If not found, fetch the study summary directly.
  */
 function _obiba_mica_variable_study_summary($variable, $study_id) {
   foreach ($variable->studySummaries as $study) {
@@ -336,22 +353,23 @@ function _obiba_mica_variable_study_summary($variable, $study_id) {
       return $study;
     }
   }
-  // not found in the dto, then fetch it
+  // Not found in the dto, then fetch it.
   $study_resource = new MicaStudyResource();
   return $study_resource->study($study_id);
 }
 
 /**
- * Get the study acronym from the study summary found in the variable. If not found, fetch the
- * study summary directly.
- * @param $variable
- * @param $study_id
- * @return mixed
+ * Get the study acronym from the study summary found in the variable.
+ *
+ * If not found, fetch the study summary directly.
  */
 function _obiba_mica_variable_study_acronym($variable, $study_id) {
   return obiba_mica_commons_get_localized_field(_obiba_mica_variable_study_summary($variable, $study_id), 'acronym');
 }
 
+/**
+ * Return the dataset type.
+ */
 function obiba_mica_variable_dataset_type($variable) {
   return $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
 }

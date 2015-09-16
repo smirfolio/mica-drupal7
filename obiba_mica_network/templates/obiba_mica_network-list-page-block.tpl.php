@@ -35,9 +35,9 @@
       $variables = $counts->variables;
       $vars_caption = $variables < 2 ? t('variable') : t('variables');
       $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
-      $dataset_caption = $datasets < 2 ? "dataset" : "datasets";
+      $dataset_caption = $datasets < 2 ? t('dataset') : t('datasets');
       $studies = $counts->studies;
-      $caption = $studies < 2 ? 'study' : 'studies';
+      $caption = $studies < 2 ? t('study') : t('studies');
       ?>
       <?php if (!empty($studies) && variable_get_value('networks_column_studies')): ?>
         <span class="label label-default rounded right-indent">

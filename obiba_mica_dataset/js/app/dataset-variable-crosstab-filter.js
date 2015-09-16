@@ -30,7 +30,6 @@
             }
           })
 
-
         .filter('variableLabel', ['AttributeService',
           function (AttributeService) {
             return function (variable) {
@@ -68,4 +67,3 @@
     }
   }
 }(jQuery));
-

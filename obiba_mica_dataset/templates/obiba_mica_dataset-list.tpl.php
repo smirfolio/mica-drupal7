@@ -1,3 +1,20 @@
+<?php
+/**
+ * @file
+ * Code for the obiba_mica_dataset modules.
+ */
+
+?>
+<!--
+  ~ Copyright (c) 2015 OBiBa. All rights reserved.
+  ~
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the GNU Public License v3.0.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
 <?php print render($node_page) ?>
 
 <div class="list-page">
@@ -22,7 +39,8 @@
       </div>
       <div class="btn-group pull-right">
         <?php if (variable_get_value('mica_statistics_coverage')): ?>
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <button type="button" class="btn btn-primary dropdown-toggle"
+            data-toggle="dropdown" aria-expanded="false">
             <?php print t('Search') ?> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
@@ -30,8 +48,8 @@
             <li><?php print MicaClientAnchorHelper::searchDatasets() ?></li>
           </ul>
         <?php else:
-          print MicaClientAnchorHelper::searchDatasets(true);
-        ?>
+          print MicaClientAnchorHelper::searchDatasets(TRUE);
+          ?>
         <?php endif; ?>
       </div>
     </div>

@@ -550,7 +550,7 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
   $form['search-sort-order'] = array(
     '#type' => 'select',
     '#title' => '',
-    '#description' => 'Sort order',
+    '#description' => t('Sort order'),
     '#options' => array(
       'asc' => t('Asc.'),
       'desc' => t('Desc.'),
@@ -562,7 +562,7 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
     '#type' => 'textfield',
     '#title' => '',
     '#size' => 15,
-    '#description' => 'Filter by',
+    '#description' => t('Filter by'),
     '#default_value' => !empty($_GET['search-query']) ? check_plain($_GET['search-query']) : NULL,
     '#prefix' => '<i class="input-group-addon glyphicon glyphicon-search"></i>',
   );

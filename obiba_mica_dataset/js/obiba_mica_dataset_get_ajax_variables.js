@@ -7,7 +7,9 @@
 
   Drupal.behaviors.obiba_mica_variable = {
     attach: function (context, settings) {
-      if (context === document) getAjaxTable();
+      if (context === document) {
+        getAjaxTable();
+      }
 
       function getAjaxTable() {
         var alertMEssage = '<div class="alert alert-warning alert-dismissible" role="alert">' +

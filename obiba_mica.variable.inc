@@ -328,7 +328,7 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'title' => t('No study label'),
     'description' => t('Text to be displayed when no study is found.'),
     'type' => 'string',
-    'default' => 'No study found',
+    'default' => t('No study found'),
   );
   $variable['search_studies_dce_autocomplete'] = array(
     'title' => t('Show Data Collection Event auto-complete search filter'),
@@ -432,7 +432,7 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'title' => t("Label to show for the 'Impossible' status"),
     'description' => t("Text to display, for the label to show for 'Impossible' harmonization status"),
     'type' => 'string',
-    'default' => 'Impossible',
+    'default' => t('Impossible'),
   );
   $variable['dataset_harmonization_undetermined_icon'] = array(
     'title' => t("Icon to show for the 'Undetermined' status"),
@@ -444,7 +444,7 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'title' => t("Label to show for the 'Undetermined' status"),
     'description' => t("Text to display, for the label to show for 'Undetermined' harmonization status"),
     'type' => 'string',
-    'default' => 'Undetermined',
+    'default' => t('Undetermined'),
   );
 }
 
@@ -529,7 +529,7 @@ function _obiba_mica_variable_search_datasets(&$variable) {
     'title' => t('No dataset label'),
     'description' => t('Text to be displayed when no dataset is found.'),
     'type' => 'string',
-    'default' => 'No dataset found',
+    'default' => t('No dataset found'),
   );
   $variable['search_datasets_autocomplete'] = array(
     'title' => t('Show dataset auto-complete search filter'),
