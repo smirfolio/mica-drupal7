@@ -138,22 +138,23 @@ function obiba_mica_study_get_opal_url($opal_url) {
  */
 function obiba_mica_study_library() {
   $libraries = array();
-  $lib_path = libraries_get_path('micatimelines');
+  $lib_path = libraries_get_path('mica-study-timeline');
   // Make sure we have a valid library path before returning library load info.
   if (!empty($lib_path)) {
-    $libraries['micatimeline'] = array(
+    $libraries['mica-study-timeline'] = array(
       'title' => 'MicaTimeLine',
       'website' => 'http://obiba.org/',
       'version' => '0.1',
       'js' => array(
-        $lib_path . '/js/d3.min.js' => array(),
-        $lib_path . '/js/mica-study-timeline.js' => array()
+        $lib_path . '/dist/d3.min.js' => array(),
+        $lib_path . '/dist/mica-study-timeline.min.js' => array()
       ),
       'css' => array(
-        $lib_path . '/css/timeline.css' => array(),
+        $lib_path . '/dist/mica-study-timeline.min.css' => array(),
       )
     );
   }
+
   return $libraries;
 }
 
@@ -162,11 +163,8 @@ function obiba_mica_study_library() {
  * */
 function obiba_mica_study_get_timeline_detail($study_detail) {
   $study_json = json_encode($study_detail);
-
   drupal_add_css(drupal_get_path('module', 'obiba_mica_study') . '/css/mica_studies.css', 'file');
-  drupal_add_css(drupal_get_path('module', 'obiba_mica_study') . '/css/timeline.css', 'file');
-  //drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/d3.min.js', 'file');
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/mica-study-timeline.js', 'file');
+  drupal_add_library('obiba_mica_study','mica-study-timeline');
   $page_render_timeline = '<div id="vis" style="width=100%"></div>';
   drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/obiba-mica-study-timeline.js', 'file');
   drupal_add_js(array('obiba_mica_study' => array('study_json' => $study_json)), 'setting');
