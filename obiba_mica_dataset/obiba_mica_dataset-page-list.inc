@@ -1,30 +1,42 @@
 <?php
+/**
+ * @file
+ * Code to dataset list page.
+ */
 
-/*
- * @file Code to dataset list page
- * */
+include_once 'includes/obiba_mica_dataset_resource.inc';
 
-include_once('includes/obiba_mica_dataset_resource.inc');
-
+/**
+ * Get the dataset list.
+ */
 function obiba_mica_dataset_get_datasets_list() {
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get('dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
-  return _obiba_mica_dataset_get_datasets_page($node_rendered, 'datasets');
+  return obiba_mica_dataset_get_datasets_page($node_rendered, 'datasets');
 }
 
+/**
+ * Get the harmonized dataset list.
+ */
 function obiba_mica_dataset_get_harmonization_datasets_list() {
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get('harmo_dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
-  return _obiba_mica_dataset_get_datasets_page($node_rendered, 'harmonization_datasets');
+  return obiba_mica_dataset_get_datasets_page($node_rendered, 'harmonization_datasets');
 }
 
+/**
+ * Get the study dataset list.
+ */
 function obiba_mica_dataset_get_study_datasets_list() {
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get('study_dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
-  return _obiba_mica_dataset_get_datasets_page($node_rendered, 'study_datasets');
+  return obiba_mica_dataset_get_datasets_page($node_rendered, 'study_datasets');
 }
 
-function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
+/**
+ * Render the dataset list on a page template.
+ */
+function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
   $context['url'] = '/drupal/mica/refresh_list_datasets_' . $dataset_resource;
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
@@ -56,12 +68,12 @@ function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
   if (!empty($summaries)) {
     foreach ($summaries as $dataset) {
       $list_datasets .= theme('obiba_mica_dataset-list-page-block', array(
-        'dataset' => $dataset
+        'dataset' => $dataset,
       ));
     }
   }
   else {
-    $list_datasets = t(variable_get_value('datasets_empty_label'));
+    $list_datasets = variable_get_value('datasets_empty_label');
   }
   return theme('obiba_mica_dataset-list', array(
     "form_search" => drupal_get_form('obiba_mica_dataset_create_form'),
@@ -69,19 +81,25 @@ function _obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
     "total_items" => $total_hits,
     'list_datasets' => $list_datasets,
     'pager_wrap' => $pager_output,
-    'dataset_type' => $dataset_resource
+    'dataset_type' => $dataset_resource,
   ));
 }
 
+/**
+ * Helper to parse the correct resource mica server.
+ */
 function obiba_mica_dataset_correct_resource_server($dataset_resource) {
   $resource = array(
     'datasets' => 'datasets',
     'harmonization_datasets' => 'datasets/harmonization',
-    'study_datasets' => 'datasets/study'
+    'study_datasets' => 'datasets/study',
   );
   return $resource[$dataset_resource];
 }
 
+/**
+ * Get the datasets from server.
+ */
 function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resource, $dataset_limits = NULL) {
   $from = 0;
   $resource = new MicaDatasetResource();
@@ -97,31 +115,43 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resou
   return $response;
 }
 
+/**
+ * Search form creation on the dataset list page.
+ */
 function obiba_mica_dataset_create_form() {
-  $context =
-    array(
-      'options' => //
-        array()
-    );
-
+  $context = array(
+    'options' => array(),
+  );
   return obiba_mica_commons_create_search_form($context);
 }
 
+/**
+ * Ajax callback to retrieve datasets.
+ */
 function obiba_mica_dataset_retrieve_datasets($query, $sort = NULL, $sort_order = NULL) {
   $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'datasets');
   drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
 }
 
+/**
+ * Ajax callback to retrieve harmonized datasets.
+ */
 function obiba_mica_dataset_retrieve_harmonizationDatasets($query, $sort = NULL, $sort_order = NULL) {
   $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'datasets/harmonization');
   drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
 }
 
+/**
+ * Ajax callback to retrieve study datasets.
+ */
 function obiba_mica_dataset_retrieve_studyDatasets($query, $sort = NULL, $sort_order = NULL) {
   $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'datasets/study');
   drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
 }
 
+/**
+ * Theme block datasets list.
+ */
 Function obiba_mica_dataset_themed_list_dataset($list_datasets) {
   $list_datasets_rendered = '';
   foreach ($list_datasets->getSummaries() as $dataset) {
@@ -134,11 +164,13 @@ Function obiba_mica_dataset_themed_list_dataset($list_datasets) {
   return $data;
 }
 
+/**
+ * GEt datasets table.
+ */
 function _obiba_mica_dataset_get_datasets_table($datasets, $type) {
   $dataset_rows = array();
   foreach ($datasets as $key_dataset => $dataset_dto) {
     $dce_description = NULL;
-    //
     if (!empty($dataset_dto->description)) {
       $dataset_description = theme('box',
         truncate_utf8(strip_tags(obiba_mica_commons_get_localized_field($dataset_dto, 'description')), 50, TRUE, TRUE));
@@ -148,8 +180,8 @@ function _obiba_mica_dataset_get_datasets_table($datasets, $type) {
     $dataset_rows[$key_dataset] = array(
       'data' => array(
         'label' => l($dataset_name, 'mica/' . $type . '/' . $dataset_dto->id),
-        'desc' => !empty($dataset_description) ? $dataset_description : '-'
-      )
+        'desc' => !empty($dataset_description) ? $dataset_description : '-',
+      ),
     );
   }
 
@@ -158,15 +190,17 @@ function _obiba_mica_dataset_get_datasets_table($datasets, $type) {
     array(
       'header' => array(t('Name'), t('Description')),
       'rows' => $dataset_rows,
-      'empty' => t(variable_get_value('datasets_empty_label')),
+      'empty' => variable_get_value('datasets_empty_label'),
       'sticky' => FALSE,
-      'attributes' => array('id' => 'variables_overview')
+      'attributes' => array('id' => 'variables_overview'),
     )
   );
   return $dataset;
 }
 
+/**
+ * Check the dataset type.
+ */
 function obiba_mica_dataset_type($dataset) {
   return !empty($dataset->{'obiba.mica.StudyDatasetDto.type'}) ? 'study-dataset' : 'harmonization-dataset';
 }
-

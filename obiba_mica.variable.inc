@@ -529,7 +529,7 @@ function _obiba_mica_variable_search_datasets(&$variable) {
     'title' => t('No dataset label'),
     'description' => t('Text to be displayed when no dataset is found.'),
     'type' => 'string',
-    'default' => 'No dataset found',
+    'default' => t('No dataset found'),
   );
   $variable['search_datasets_autocomplete'] = array(
     'title' => t('Show dataset auto-complete search filter'),

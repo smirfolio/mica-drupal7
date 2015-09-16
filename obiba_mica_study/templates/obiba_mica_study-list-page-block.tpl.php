@@ -88,11 +88,11 @@
         <?php
         $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
         $vars = $counts->variables;
-        $var_caption = $vars < 2 ? "variable" : "variables";
+        $var_caption = $vars < 2 ? t('variable') : t('variables');
         $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
-        $dataset_caption = $datasets < 2 ? "dataset" : "datasets";
+        $dataset_caption = $datasets < 2 ? t('dataset') : t('datasets');
         $networks = $counts->networks;
-        $network_caption = $networks < 2 ? "network" : "networks";
+        $network_caption = $networks < 2 ? t('network') : t('networks');
         ?>
         <?php if (!empty($networks) && variable_get_value('studies_column_networks')): ?>
           <span class="label label-default rounded right-indent">

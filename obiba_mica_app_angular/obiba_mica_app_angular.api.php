@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Hooks provided by Obiba Mica app angular module.
+ */
+
+/**
+ * @addtogroup hooks
+ * @{
+ */
+
+/**
+ * Load the menu paths on each module implementing angular app.
+ *
+ * @return array
+ *   The array of menu as defined by Drupal menu system.
+ */
+function hook_load_menus() {
+  $items = array();
+
+  $items['given/path'] = array(
+    'access callback' => TRUE,
+    'title' => t('Title menu'),
+  );
+  return $items;
+}
+
+/**
+ * Load angular application javascript within the module.
+ */
+function hook_get_js() {
+  if (current_path() == MicaClientPathProvider::CROSSTAB) {
+    $module_path = drupal_get_path('module', 'obiba_mica_dataset');
+    $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
+    ksort($js);
+    foreach ($js as $file_js) {
+      drupal_add_js($file_js->uri, array(
+        'type' => 'file',
+        'scope' => 'footer',
+      ));
+    }
+  }
+}
+
+/**
+ * The Angular application name to load on the main app.
+ *
+ * @return string
+ *   The module angular name.
+ */
+function hook_get_ng_module_to_load() {
+  if (current_path() == MicaClientPathProvider::CROSSTAB) {
+    return 'mica.DatasetVariableCrosstab';
+  }
+  return FALSE;
+}
+
+/**
+ * @} End of "addtogroup hooks".
+ */

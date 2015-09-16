@@ -294,11 +294,11 @@ function obiba_mica_dataset_studies_table_data($variables_dataset) {
   if (!empty($variables_dataset->variables)) {
     foreach ($variables_dataset->variables as $variable) {
       $var_row = l($variable->name, 'mica/variable/' . $variable->id);
-      $domains = _obiba_mica_variable_domains_list($variable);
+      $domains = obiba_mica_dataset_variable_domains_list($variable);
       $rows[] = array(
         "index" => '',
         "name" => $var_row,
-        "label" => _obiba_mica_variable_attributes_detail($variable, 'label'),
+        "label" => obiba_mica_dataset_variable_attributes_detail($variable, 'label'),
         "classifications" => $domains,
       );
     }
@@ -398,7 +398,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
               && $variable_summary->resolver->project == $study_table->project
               && $variable_summary->resolver->table == $study_table->table
             ) {
-              $status = trim(strtolower(_obiba_mica_variable_attributes_detail($variable_summary, 'status', array(
+              $status = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
                 'maelstrom',
                 'Mlstr_harmo',
               ))));

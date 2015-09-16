@@ -164,7 +164,7 @@ class VariableStatistics {
    * Mix category name and localized label in one string.
    */
   private function getCategoryLabel($category) {
-    $label = _obiba_mica_variable_attributes_detail($category, 'label');
+    $label = obiba_mica_dataset_variable_attributes_detail($category, 'label');
     if (empty($label)) {
       $label = $category->name;
     }
@@ -184,7 +184,7 @@ class VariableStatistics {
 
     foreach ($this->variable->categories as $category) {
       if ($value == $category->name) {
-        $label = _obiba_mica_variable_attributes_detail($category, 'label');
+        $label = obiba_mica_dataset_variable_attributes_detail($category, 'label');
         return $html ? '<span title="' . $label . '">' . $value . '</span>' : $value . ' (' . $label . ')';
       }
     }
@@ -412,7 +412,7 @@ class VariableStatistics {
     if (!empty($this->variable->categories)) {
       foreach ($this->variable->categories as $category) {
         $category_name = $category->name;
-        $category_label = _obiba_mica_variable_attributes_detail($category, 'label');
+        $category_label = obiba_mica_dataset_variable_attributes_detail($category, 'label');
         $missing = $category->missing;
         $row = array(
           array(
