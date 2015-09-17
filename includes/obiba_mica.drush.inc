@@ -66,8 +66,8 @@ function obiba_mica_drush_command() {
  */
 function obiba_mica_drush_timeline_download() {
   $args = func_get_args();
-  if ($args[0]) {
-    $path = $args[0];
+  if ($args[1]) {
+    $path = $args[1];
   }
   else {
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
@@ -79,7 +79,13 @@ function obiba_mica_drush_timeline_download() {
   $path = $path . '/sites/all/libraries';
   chdir($path);
 
-  $svn_cmd = 'wget  https://github.com/obiba/mica-study-timeline/archive/master.zip';
+  if ($args[0]) {
+    $version_time_line = $args[0];
+  }
+  else {
+    $version_time_line = variable_get('obiba-$version-time-line-version', '1.0');
+  }
+  $svn_cmd = 'wget  https://github.com/obiba/mica-study-timeline/archive/' . $version_time_line . '.zip';
   if (drush_shell_exec($svn_cmd)) {
     drush_log(dt('mica-study-timeline  was downloaded to !path.', array('!path' => ' ' . $path)), 'success');
     $unzip_cmd = 'unzip master.zip -d .';
