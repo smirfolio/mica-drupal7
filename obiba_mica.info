@@ -5,6 +5,7 @@ core = 7.x
 
 files[] = obiba_mica.constants.inc
 
+dependencies[] = composer_manager
 dependencies[] = charts
 dependencies[] = collapsiblock
 dependencies[] = countries

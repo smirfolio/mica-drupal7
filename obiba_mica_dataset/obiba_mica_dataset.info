@@ -4,5 +4,4 @@ package = Obiba
 core = 7.x
 
 dependencies[] = obiba_mica_commons
-dependencies[] = obiba_mica_model
 dependencies[] = obiba_mica_study

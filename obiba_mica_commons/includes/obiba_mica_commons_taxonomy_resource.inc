@@ -5,17 +5,6 @@
  * MicaStudyResource class
  */
 
-$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
-$path_module_protos = drupal_get_path('module', 'obiba_mica_model');
-
-include_once $path_module_protobuf . '/protobuf/Protobuf.php';
-use \DrSlump\Protobuf;
-
-Protobuf::autoload();
-
-include_once $path_module_protos . '/protos/Mica.php';
-include_once $path_module_protos . '/protos/MicaSearch.php';
-
 /**
  * Class MicaStudyResource
  */
@@ -29,7 +18,7 @@ class MicaTaxonomyResource extends MicaClient {
    */
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    Protobuf::setDefaultCodec(new Protobuf\Codec\Binary());
+    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary());
   }
 
   /**
