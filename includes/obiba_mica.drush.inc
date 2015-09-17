@@ -88,24 +88,21 @@ function obiba_mica_drush_timeline_download() {
   $svn_cmd = 'wget  https://github.com/obiba/mica-study-timeline/archive/' . $version_time_line . '.zip';
   if (drush_shell_exec($svn_cmd)) {
     drush_log(dt('mica-study-timeline  was downloaded to !path.', array('!path' => ' ' . $path)), 'success');
-    $unzip_cmd = 'unzip master.zip -d .';
+    $unzip_cmd = 'unzip ' . $version_time_line . '.zip -d .';
     if (drush_shell_exec($unzip_cmd)) {
       drush_log(dt('mica-study-timeline Unzipped  to !path.', array('!path' => 'mica-study-timeline-master')), 'success');
-      $timeline_lib_path = 'mica-study-timeline';
-      $cmd_mv_path = "mv mica-study-timeline-master " . $timeline_lib_path;
-      if (drush_shell_exec($cmd_mv_path)) {
-        drush_log(dt('mica-study-timeline path renamed  to !path.', array('!path' => $timeline_lib_path)), 'success');
-        chdir($timeline_lib_path);
-        $cmd_get_d3 = 'bower --allow-root install && cp bower_components/d3/d3.min.js dist/ && mv ../master.zip bower_components/';
-        if (drush_shell_exec($cmd_get_d3)) {
-          drush_log(dt('d3 js downloaded and copied !path.', array('!path' => 'mica-study-timeline/dist')), 'success');
-          $cmd_remove_bower_components = "rm -rf bower_components";
-          if (drush_shell_exec($cmd_remove_bower_components)) {
-            drush_log(dt('bower_components folder and source zip removed.'), 'success');
-            drush_log(dt('Timeline library successfully installed'), 'success');
-          }
+      $timeline_lib_path = 'mica-study-timeline-' . $version_time_line;
+      chdir($timeline_lib_path);
+      $cmd_get_d3 = 'bower --allow-root install ; cp bower_components/d3/d3.min.js dist/  ; mv ../' . $version_time_line . '.zip bower_components/';
+      if (drush_shell_exec($cmd_get_d3)) {
+        drush_log(dt('d3 js downloaded and copied !path.', array('!path' => 'mica-study-timeline/dist')), 'success');
+        $cmd_remove_bower_components = "rm -rf bower_components";
+        if (drush_shell_exec($cmd_remove_bower_components)) {
+          drush_log(dt('bower_components folder and source zip removed.'), 'success');
+          drush_log(dt('Timeline library successfully installed'), 'success');
         }
       }
+
     }
   }
   else {
