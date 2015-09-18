@@ -5,16 +5,6 @@
  * MicaStudyResource class
  */
 
-$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
-$path_module_protos = drupal_get_path('module', 'obiba_mica_model');
-
-include_once $path_module_protobuf . '/protobuf/Protobuf.php';
-use \DrSlump\Protobuf;
-
-Protobuf::autoload();
-
-include_once $path_module_protos . '/protos/Mica.php';
-include_once $path_module_protos . '/protos/MicaSearch.php';
 
 /**
  * Class MicaStudyResource
@@ -29,7 +19,7 @@ class MicaDatasetResource extends MicaClient {
    */
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
+    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Json());
   }
 
   /**
@@ -109,7 +99,7 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return $data ? Protobuf::decode('\obiba\mica\DatasetDto', $data) : NULL;
+      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetDto', $data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -162,7 +152,7 @@ class MicaDatasetResource extends MicaClient {
       if (!empty($detail)) {
         return json_decode($data);
       }
-      return $data ? Protobuf::decode('\obiba\mica\DatasetVariablesDto', $data) : NULL;
+      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariablesDto', $data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -205,7 +195,7 @@ class MicaDatasetResource extends MicaClient {
         return json_decode($data);
       }
       $dto_object = ($resource == 'study-dataset') ? '\obiba\mica\DatasetVariableContingencyDto' : '\obiba\mica\DatasetVariableContingenciesDto';
-      return $data ? Protobuf::decode($dto_object, $data) : NULL;
+      return $data ? DrSlump\Protobuf::decode($dto_object, $data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -292,7 +282,7 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return $data ? Protobuf::decode('\obiba\mica\DatasetVariablesHarmonizationsDto', $data) : NULL;
+      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariablesHarmonizationsDto', $data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -358,7 +348,7 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return $data ? Protobuf::decode('\obiba\mica\DatasetVariableDto', $data) : NULL;
+      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariableDto', $data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -418,7 +408,7 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return $data ? Protobuf::decode('\obiba\mica\DatasetVariableHarmonizationDto', $data) : NULL;
+      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariableHarmonizationDto', $data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();

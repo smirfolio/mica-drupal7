@@ -1,6 +1,0 @@
-name = "Obiba Mica Model"
-description = "Mica Client -- Model"
-package = Obiba
-core = 7.x
-
-dependencies[] = obiba_protobuf

@@ -5,17 +5,9 @@
  * Code for obiba_mica_commons module.
  */
 
-$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
-$path_module_protos = drupal_get_path('module', 'obiba_mica_model');
-
-include_once $path_module_protobuf . '/protobuf/Protobuf.php';
-use \DrSlump\Protobuf;
-
-Protobuf::autoload();
-
 const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
-include_once $path_module_protos . '/protos/Mica.php';
+
 
 /**
  * Implements hook_user_logout().
@@ -677,7 +669,6 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
  */
 function obiba_mica_commons_markdown($text) {
   if (!empty($text)) {
-    module_load_include('php', 'obiba_mica_commons', 'includes/Parsedown');
     $formatter = new Parsedown();
     return '<div class="markdown">' . $formatter->text($text) . '</div>';
   }

@@ -5,16 +5,6 @@
  * MicaClient class
  */
 
-$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
-$path_module_protos = drupal_get_path('module', 'obiba_mica_model');
-
-include_once $path_module_protobuf . '/protobuf/Protobuf.php';
-use \DrSlump\Protobuf;
-
-Protobuf::autoload();
-
-include_once $path_module_protos . '/protos/Mica.php';
-include_once $path_module_protos . '/protos/MicaSearch.php';
 include_once "obiba_mica_commons_query_dto_builders.inc";
 include_once "obiba_mica_commons_query_response_wrappers.inc";
 include_once "obiba_mica_commons_resource_paths.inc";
@@ -317,7 +307,7 @@ class MicaClient {
       CURLOPT_ENCODING => TRUE,
     );
 
-    Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
+    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Json());
 
     return $client;
   }
@@ -813,9 +803,9 @@ class MicaClient {
     $lang = $language->language;
     $page_size = MicaClient::getResponsePageSize();
     $query_dto_builder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $page_size, $lang, $with_facets);
-    Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
+    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Json());
     $json_query_encoded
-      = Protobuf::encode($query_dto_builder->documentQuery($type, $from, $page_size, $group_by)
+      = DrSlump\Protobuf::encode($query_dto_builder->documentQuery($type, $from, $page_size, $group_by)
       ->build());
 
     return $json_query_encoded;
