@@ -89,7 +89,7 @@
 
         .filter('filterAttributes', function(){
           return function(attributes){
-            var exclude = ["email", "firstName", "lastName", "createdDate",  "lastLogin" ];
+            var exclude = ["email", "firstName", "lastName", "createdDate",  "lastLogin", "username" ];
            return attributes.filter(function(attribute){
               return exclude.indexOf(attribute.key)===-1;
             });

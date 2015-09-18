@@ -293,7 +293,7 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
     return array('code' => $http_code, 'message' => trim($match));
   }
 
-  public function get_user_profile($user_id){
+  public function getUserProfile($user_id){
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/user/' . $user_id . '/application/drupal';
     $request = new HttpClientRequest($url_requests, array(
@@ -307,7 +307,7 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
-  public function get_users_list(){
+  public function getUsersList(){
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/users/application/drupal';
     $request = new HttpClientRequest($url_requests, array(

@@ -268,7 +268,7 @@
             $scope.userProfile = function () {
               $modal.open({
                 scope: $scope,
-                templateUrl: Drupal.settings.basePath + 'obiba_main_app_angular/obiba_mica_data_access_request/data-access-request-profile-user-modal'
+                templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular/obiba_mica_data_access_request/data-access-request-profile-user-modal'
               });
             };
 
