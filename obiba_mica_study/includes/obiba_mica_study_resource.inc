@@ -5,17 +5,6 @@
  * MicaStudyResource class
  */
 
-$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
-$path_module_protos = drupal_get_path('module', 'obiba_mica_model');
-
-include_once($path_module_protobuf . '/protobuf/Protobuf.php');
-use \DrSlump\Protobuf;
-
-Protobuf::autoload();
-
-include_once($path_module_protos . '/protos/Mica.php');
-include_once($path_module_protos . '/protos/MicaSearch.php');
-
 /**
  * Class MicaStudyResource
  */
@@ -23,7 +12,7 @@ class MicaStudyResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
+    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
   }
 
   /**
@@ -87,8 +76,8 @@ class MicaStudyResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dtoObj = '\obiba\mica\StudyDto';
-      Protobuf::setDefaultCodec(new Protobuf\Codec\Binary);
-      return $data ? Protobuf::decode($dtoObj, $data) : NULL;
+      DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
+      return $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -100,7 +89,7 @@ class MicaStudyResource extends MicaClient {
     $url = $this->micaUrl . '/studies/_search/?' . 'size=' . MicaClient::getResponsePageSize();
     $url_parm = explode('?', request_uri());
     if (empty($url_parm[1])) {
-      $dto_param = $this->dto_filter_construct('studies', NULL, NULL, $spec_dto_params);
+      $dto_param = $this->dtoFilterConstruct('studies', NULL, NULL, $spec_dto_params);
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
@@ -124,7 +113,7 @@ class MicaStudyResource extends MicaClient {
 
     }
     else {
-      $dto_param = $this->dto_filter_construct($url_parm[1], array('child' => 'Variable'), 'study', $spec_dto_params);
+      $dto_param = $this->dtoFilterConstruct($url_parm[1], array('child' => 'Variable'), 'study', $spec_dto_params);
       if (empty(json_decode($dto_param)->filteredQuery->filter)) {
         $url = $this->micaUrl . '/studies/_search/?from=' . json_decode($dto_param)->from . '&size=' . MicaClient::getResponsePageSize();
 
@@ -154,7 +143,7 @@ class MicaStudyResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $dto_data_response = json_decode($data);
-      $this->session_facets_builder($dto_data_response);
+      $this->sessionFacetsBuilder($dto_data_response);
 
       $summaries_studies = !empty($dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries) ?
         $dto_data_response->{'obiba.mica.StudyResultDto.result'}->summaries : NULL;
@@ -163,7 +152,7 @@ class MicaStudyResource extends MicaClient {
       $summaries_data = !empty($summaries_studies) ? $summaries_studies : NULL;
       if ($summaries_data) {
         foreach ($summaries_studies as $study) {
-          $dtos ['data'][] = Protobuf::decode($dtoObj, json_encode($study));
+          $dtos ['data'][] = DrSlump\Protobuf::decode($dtoObj, json_encode($study));
         }
       }
       $dtos ['total_hits'] = $dto_data_response->totalHits;

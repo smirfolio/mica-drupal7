@@ -138,22 +138,24 @@ function obiba_mica_study_get_opal_url($opal_url) {
  */
 function obiba_mica_study_library() {
   $libraries = array();
-  $lib_path = libraries_get_path('micatimelines');
+  $version_lib = variable_get('obiba-$version-time-line-version', '1.0');
+  $lib_path = libraries_get_path('mica-study-timeline-'.$version_lib);
   // Make sure we have a valid library path before returning library load info.
   if (!empty($lib_path)) {
-    $libraries['micatimeline'] = array(
+    $libraries['mica-study-timeline'] = array(
       'title' => 'MicaTimeLine',
       'website' => 'http://obiba.org/',
-      'version' => '0.1',
+      'version' => '1.0',
       'js' => array(
-        $lib_path . '/js/d3.min.js' => array(),
-        $lib_path . '/js/mica-study-timeline.js' => array()
+        $lib_path . '/dist/d3.min.js' => array(),
+        $lib_path . '/dist/mica-study-timeline.min.js' => array()
       ),
       'css' => array(
-        $lib_path . '/css/timeline.css' => array(),
+        $lib_path . '/dist/mica-study-timeline.min.css' => array(),
       )
     );
   }
+
   return $libraries;
 }
 
@@ -162,11 +164,8 @@ function obiba_mica_study_library() {
  * */
 function obiba_mica_study_get_timeline_detail($study_detail) {
   $study_json = json_encode($study_detail);
-
   drupal_add_css(drupal_get_path('module', 'obiba_mica_study') . '/css/mica_studies.css', 'file');
-  drupal_add_css(drupal_get_path('module', 'obiba_mica_study') . '/css/timeline.css', 'file');
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/d3.min.js', 'file');
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/mica-study-timeline.js', 'file');
+  drupal_add_library('obiba_mica_study','mica-study-timeline');
   $page_render_timeline = '<div id="vis" style="width=100%"></div>';
   drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/obiba-mica-study-timeline.js', 'file');
   drupal_add_js(array('obiba_mica_study' => array('study_json' => $study_json)), 'setting');
@@ -187,7 +186,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
       if (!empty($population->dataCollectionEvents)) {
         $dce_rows = obiba_mica_study_get_dce_table($population->dataCollectionEvents, $study_detail->id, $population->id);
         uasort($dce_rows, 'obiba_mica_study_sort_dce');
-        _obiba_mica_commons_normalize_rows($dce_rows);
+        obiba_mica_commons_normalize_rows($dce_rows);
 
         $population['dce-tab'] = theme(
           'table',
@@ -265,7 +264,7 @@ function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collec
       'study_id' => $study_id,
       'population_id' => $population_id,
       'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
-      'dce_id_target' => MicaClientPathHelpers::replace_plus_in_url($study_id . '-' . $population_id . '-' . $dce->id),
+      'dce_id_target' => MicaClientPathHelpers::replacePlusInUrl($study_id . '-' . $population_id . '-' . $dce->id),
       'dce' => $dce,
       'attachements' => $themed_attachment
     ));
@@ -291,7 +290,7 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
           'external' => TRUE,
           'attributes' => array(
             'data-toggle' => 'modal',
-            'data-target' => MicaClientPathHelpers::replace_plus_in_url('#dce-' . $study_id . '-' . $population_id . '-' . $dce_wrapper->id)
+            'data-target' => MicaClientPathHelpers::replacePlusInUrl('#dce-' . $study_id . '-' . $population_id . '-' . $dce_wrapper->id)
           )
         )),
         'desc' => $dce_description,
@@ -326,7 +325,7 @@ function obiba_mica_study_get_variables($study_id) {
 
 function obiba_mica_study_coverage($study_id) {
   $coverage['charts'] = obiba_mica_search_query_charts(
-    MicaClient::add_parameter_dto_query_link(array('variables' => array('terms' => array('studyIds' => $study_id)))),
+    MicaClient::addParameterDtoQueryLink(array('variables' => array('terms' => array('studyIds' => $study_id)))),
     function ($b, $study_id) {
       // filter the dces of the current study
       return strpos($b->value, ':') === FALSE || strpos($b->value, $study_id . ':') === 0;

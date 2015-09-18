@@ -35,7 +35,6 @@ var mica;
           $translateProvider.useLoader('DrupalTranslationLoader', {});
           $translateProvider.preferredLanguage('en');
 
-
         }]);
 
       mica.controller('MainController', [
@@ -44,7 +43,7 @@ var mica;
 
       mica.factory('TranslationService', ['$resource',
         function ($resource) {
-          return $resource(Drupal.settings.basePath + 'obiba_main_app_angular/translation', {}, {
+          return $resource(Drupal.settings.basePath + 'obiba_mica_app_angular/translation', {}, {
             'get': {method: 'GET'}
           });
         }]);
@@ -56,7 +55,7 @@ var mica;
 
             $http({
               method: 'GET',
-              url: Drupal.settings.basePath + 'obiba_main_app_angular/translation'
+              url: Drupal.settings.basePath + 'obiba_mica_app_angular/translation'
             }).success(function (data) {
               deferred.resolve(data);
             }).error(function () {
@@ -80,7 +79,6 @@ var mica;
             return response;
           }
         }
-
 
       });
 
@@ -145,7 +143,9 @@ var mica;
         function () {
           return {
             getAttributes: function(container, names) {
-              if (!container && !container.attributes && !names) return null;
+              if (!container && !container.attributes && !names){
+                return null;
+              }
               return container.attributes.filter(
                 function(attribute) {
                   return names.indexOf(attribute.name) !== -1;
@@ -153,7 +153,9 @@ var mica;
             },
 
             getValue: function (attribute) {
-              if (!attribute) return null;
+              if (!attribute) {
+                return null;
+              }
               var value = attribute.values.filter(
                 function(value) {
                   return value.lang === Drupal.settings.angularjsApp.locale || value.lang === 'und';
@@ -168,7 +170,9 @@ var mica;
         function () {
           return {
             getValue: function (localized) {
-              if (!localized) return null;
+              if (!localized) {
+                return null;
+              }
               var value = localized.filter(
                 function(locale) {
                   return locale.lang === Drupal.settings.angularjsApp.locale || locale.lang === 'und';

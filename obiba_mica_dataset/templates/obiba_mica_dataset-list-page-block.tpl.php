@@ -1,9 +1,26 @@
+<?php
+/**
+ * @file
+ * Code for the obiba_mica_dataset modules.
+ */
+
+?>
+  <!--
+    ~ Copyright (c) 2015 OBiBa. All rights reserved.
+    ~
+    ~ This program and the accompanying materials
+    ~ are made available under the terms of the GNU Public License v3.0.
+    ~
+    ~ You should have received a copy of the GNU General Public License
+    ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    -->
+
 <?php if (!empty($dataset)): ?>
   <div class="row sm-bottom-margin document-item-list flex-row">
     <div class="col-md-12  col-sm-12 col-xs-12">
       <h4>
         <?php
-        print MicaClientAnchorHelper::dataset_list_item($dataset);
+        print MicaClientAnchorHelper::datasetListItem($dataset);
         ?>
       </h4>
       <hr class="no-margin">
@@ -26,29 +43,29 @@
         $studies = $counts->studies;
         $studies_caption = $studies < 2 ? t('study') : t('studies');
         $networks = $counts->networks;
-        $network_caption = $networks < 2 ? "network" : "networks";
+        $network_caption = $networks < 2 ? t('network') : t('networks');
         ?>
         <?php if (!empty($networks) && variable_get_value('datasets_column_networks')): ?>
           <span class="label label-default rounded right-indent">
-            <?php print MicaClientAnchorHelper::dataset_networks(t('@count ' . $network_caption, array('@count' => $networks)), $dataset->id) ?>
+            <?php print MicaClientAnchorHelper::datasetNetworks(t('@count @networkCaption',
+              array('@count' => $networks, '@networkCaption' => $network_caption)), $dataset->id) ?>
           </span>
         <?php endif ?>
         <?php if (!empty($studies) && variable_get_value('datasets_column_studies')): ?>
           <span class="label label-default rounded right-indent">
-            <?php print MicaClientAnchorHelper::dataset_studies(t('@count ' . $studies_caption, array('@count' => $studies)), $dataset->id) ?>
+            <?php print MicaClientAnchorHelper::datasetStudies(t('@count @studiesCaption',
+              array('@count' => $studies, '@studiesCaption' => $studies_caption)), $dataset->id) ?>
           </span>
         <?php endif ?>
         <?php if (!empty($variables) && variable_get_value('datasets_column_variables')): ?>
           <span class="label label-default rounded">
-            <?php print MicaClientAnchorHelper::dataset_variables(t('@count ' . $vars_caption,
-              array('@count' => obiba_mica_commons_format_number($variables))), $dataset->id) ?>
+            <?php print MicaClientAnchorHelper::datasetVariables(t('@count @vars',
+              array('@count' => obiba_mica_commons_format_number($variables), '@vars' => $vars_caption)), $dataset->id) ?>
           </span>
         <?php endif ?>
       </div>
     </div>
   </div>
-
-
 
   <?php
   $dataset_name = obiba_mica_commons_get_localized_field($dataset, 'name');

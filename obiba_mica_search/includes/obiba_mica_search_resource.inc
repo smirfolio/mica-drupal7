@@ -5,17 +5,6 @@
  * MicaStudyResource class
  */
 
-$path_module_protobuf = drupal_get_path('module', 'obiba_protobuf');
-$path_module_protos = drupal_get_path('module', 'obiba_mica_model');
-
-include_once($path_module_protobuf . '/protobuf/Protobuf.php');
-use \DrSlump\Protobuf;
-
-Protobuf::autoload();
-
-include_once($path_module_protos . '/protos/Mica.php');
-include_once($path_module_protos . '/protos/MicaSearch.php');
-
 /**
  * Class MicaSearchResource
  */
@@ -23,7 +12,7 @@ class MicaSearchResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    Protobuf::setDefaultCodec(new Protobuf\Codec\Json());
+    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Json());
   }
 
   public function download_taxonomies_coverage($query_param_parts, $default_dto_search = NULL) {
@@ -45,7 +34,7 @@ class MicaSearchResource extends MicaClient {
 
     if (!empty($coverage_result)) {
       $_SESSION['request-search-response'] = 'no-empty';
-      $this->session_facets_builder($coverage_result->queryResult);
+      $this->sessionFacetsBuilder($coverage_result->queryResult);
     }
     else {
       $_SESSION['request-search-response'] = 'empty';
@@ -59,12 +48,12 @@ class MicaSearchResource extends MicaClient {
   }
 
   private function _get_dto_query_param_from_url($parts = NULL, $type, $parameters = NULL) {
-    $from = empty($parts['page']) ? 0 : $this->pagination_list_search_parameters($_GET['page'], $type, MicaClient::getResponsePageSize());
+    $from = empty($parts['page']) ? 0 : $this->paginationListSearchParameters($_GET['page'], $type, MicaClient::getResponsePageSize());
     $q = empty($parts['query']) ? (empty($parameters) ? NULL : $parameters) : $parts['query'];
     $group_by = empty($parts['group-by']) ? NULL : $parts['group-by'];
     $withFacets = empty($parts['with-facets']) ? TRUE : strtolower($parts['with-facets']) === "true";
 
-    return $this->dto_filter_construct($type, $q, $from, $group_by, $withFacets);
+    return $this->dtoFilterConstruct($type, $q, $from, $group_by, $withFacets);
   }
 
   /*
@@ -128,7 +117,7 @@ class MicaSearchResource extends MicaClient {
           'Content-Type' => array(parent::HEADER_JSON)
         )
       ),
-      'data' => !empty($dto_param) ? $dto_param : $this->dto_filter_construct($type, NULL, 0, NULL),
+      'data' => !empty($dto_param) ? $dto_param : $this->dtoFilterConstruct($type, NULL, 0, NULL),
     ));
 
     $client = $this->client();
@@ -188,7 +177,7 @@ class MicaSearchResource extends MicaClient {
 
     if (!$response->isEmpty()) {
       $_SESSION['request-search-response'] = 'no-empty';
-      $this->session_facets_builder($join_query_response->getResponseDto());
+      $this->sessionFacetsBuilder($join_query_response->getResponseDto());
     }
     else {
       $_SESSION['request-search-response'] = 'empty';

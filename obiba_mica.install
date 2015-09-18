@@ -1,14 +1,20 @@
 <?php
-/*
- * @file code to perform installation operations
- *
- * */
+/**
+ * @file
+ * Code to perform installation operations.
+ */
 
+/**
+ * Implements hook_install().
+ */
 function obiba_mica_install() {
   obiba_mica_block_configuration();
   obiba_mica_theme_configuration();
 }
 
+/**
+ * Implements hook_uninstall().
+ */
 function obiba_mica_uninstall() {
   variable_set('theme_default', 'bartik');
   variable_set('admin_theme', 'seven');
@@ -20,6 +26,11 @@ function obiba_mica_uninstall() {
   variable_del('obiba-progressbar-file');
 }
 
+/**
+ * Block configuration.
+ *
+ * Disable the form search, the navigation block and the login block.
+ */
 function obiba_mica_block_configuration() {
   $blocks = array(
     'form',
@@ -36,6 +47,9 @@ function obiba_mica_block_configuration() {
 
 }
 
+/**
+ * Variable default settings.
+ */
 function obiba_mica_theme_configuration() {
   variable_set('theme_default', 'obiba_bootstrap');
   variable_set('admin_theme', 'obiba_bootstrap');

@@ -15,7 +15,7 @@ set-version:
 	$(call inject-version-info,obiba_mica_network,obiba_mica_network)
 	$(call inject-version-info,obiba_mica_search,obiba_mica_search)
 	$(call inject-version-info,obiba_mica_study,obiba_mica_study)
-	$(call inject-version-info,obiba_main_app_angular,obiba_main_app_angular)
+	$(call inject-version-info,obiba_mica_app_angular,obiba_mica_app_angular)
 	$(call inject-version-info,obiba_mica_data_access_request,obiba_mica_data_access_request)
 
 inject-version-info = cd $1 && \

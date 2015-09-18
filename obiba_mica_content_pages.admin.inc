@@ -6,7 +6,10 @@
  */
 
 /**
- * Provides settings pages.
+ * Provides settings pages form.
+ *
+ * @return array
+ *   The setting form on a array drupal markup.
  */
 function obiba_mica_content_pages_admin_settings() {
   $form['content_display_settings'] = array(
@@ -15,10 +18,10 @@ function obiba_mica_content_pages_admin_settings() {
     '#collapsible' => FALSE,
   );
 
-  _obiba_mica_settings_study_content($form);
-  _obiba_mica_settings_dataset_content($form);
-  _obiba_mica_settings_variable_content($form);
-  _obiba_mica_settings_data_access_content($form);
+  obiba_mica_settings_study_content($form);
+  obiba_mica_settings_dataset_content($form);
+  obiba_mica_settings_variable_content($form);
+  obiba_mica_settings_data_access_content($form);
 
   $form['translation'] = array(
     '#type' => 'fieldset',
@@ -39,7 +42,13 @@ function obiba_mica_content_pages_admin_settings() {
   return system_settings_form($form);
 }
 
-function _obiba_mica_settings_data_access_content(&$form) {
+/**
+ * Data access content form setting.
+ *
+ * @param array $form
+ *   The admin setting form.
+ */
+function obiba_mica_settings_data_access_content(&$form) {
   $form['content_display_settings']['access_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Data Access Content'),
@@ -84,7 +93,6 @@ function _obiba_mica_settings_data_access_content(&$form) {
     '#type' => 'textarea',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('access_documents_section_help_text'),
-    //  '#maxlength' => 255,
     '#description' => $info['description'],
   );
   $info = variable_get_info('user_list_page_title');
@@ -145,7 +153,13 @@ function _obiba_mica_settings_data_access_content(&$form) {
   );
 }
 
-function _obiba_mica_settings_study_content(&$form) {
+/**
+ * Study content form setting.
+ *
+ * @param array $form
+ *   The admin setting form.
+ */
+function obiba_mica_settings_study_content(&$form) {
   $form['content_display_settings']['study_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Study Content'),
@@ -163,7 +177,11 @@ function _obiba_mica_settings_study_content(&$form) {
     '#type' => 'radios',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('study_title_acronym_display'),
-    '#options' => array(0 => t('Study Title - Acronym'), 1 => t('Acronym - Study Title'), 2 => t('Study Title only')),
+    '#options' => array(
+      0 => t('Study Title - Acronym'),
+      1 => t('Acronym - Study Title'),
+      2 => t('Study Title only'),
+    ),
     '#description' => $info['description'],
   );
 
@@ -231,7 +249,13 @@ function _obiba_mica_settings_study_content(&$form) {
 
 }
 
-function _obiba_mica_settings_dataset_content(&$form) {
+/**
+ * Dataset content form setting.
+ *
+ * @param array $form
+ *   The admin setting form.
+ */
+function obiba_mica_settings_dataset_content(&$form) {
   $bootstrap_theme_path = base_path() . drupal_get_path('theme', 'obiba_bootstrap');
   $form['content_display_settings']['dataset_form'] = array(
     '#type' => 'fieldset',
@@ -282,7 +306,7 @@ function _obiba_mica_settings_dataset_content(&$form) {
     '#default_value' => variable_get_value('dataset_harmonization_impossible_icon'),
     '#options' => array(
       ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON => '<img src="' . $bootstrap_theme_path . '/glyphicon-remove.png" > Remove',
-      ObibaDatasetConstants::INCOMPLETE_HARMO_ICON => '<img src="' . $bootstrap_theme_path . '/glyphicon-minus.png" > Minus'
+      ObibaDatasetConstants::INCOMPLETE_HARMO_ICON => '<img src="' . $bootstrap_theme_path . '/glyphicon-minus.png" > Minus',
     ),
     '#description' => $info['description'],
   );
@@ -298,7 +322,13 @@ function _obiba_mica_settings_dataset_content(&$form) {
 
 }
 
-function _obiba_mica_settings_variable_content(&$form) {
+/**
+ * Variable content form setting.
+ *
+ * @param array $form
+ *   The admin setting form.
+ */
+function obiba_mica_settings_variable_content(&$form) {
   $form['content_display_settings']['variable_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Variable Content'),

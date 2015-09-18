@@ -3,13 +3,10 @@ description = "Mica Client -- Data Access"
 package = Obiba
 core = 7.x
 
+dependencies[] = http_client
+dependencies[] = obiba_agate
 
 files[] = includes/obiba_mica_data_access_request.inc
 files[] = includes/obiba_mica_data_access_requests.inc
 files[] = includes/obiba_mica_data_access_request_comments.inc
 files[] = includes/obiba_mica_data_access_request_comment.inc
-dependencies[] = http_client
-dependencies[] = obiba_agate
-
-project = obiba_mica_data_access_request
-version = 7.x-1.1-dev

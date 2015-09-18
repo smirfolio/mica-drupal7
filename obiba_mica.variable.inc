@@ -11,8 +11,6 @@ function obiba_mica_variable_info($options) {
   _obiba_mica_variable_info_mica_server($variable);
   _obiba_mica_variable_info_access($variable);
 
-
-
   $variable['image_cache_time_out'] = array(
     'title' => t('The image cache timeout'),
     'description' => t('The timeout in minute to expire Studies and networks image cache'),
@@ -62,6 +60,9 @@ function obiba_mica_variable_info($options) {
   return $variable;
 }
 
+/**
+ * Setting Variable search page.
+ */
 function _obiba_mica_variable_search_page(&$variable) {
   $variable['help_text_search_page'] = array(
     'title' => t('Search help text'),
@@ -78,6 +79,9 @@ function _obiba_mica_variable_search_page(&$variable) {
   );
 }
 
+/**
+ * Setting Variable search page.
+ */
 function _obiba_mica_variable_info_mica_server(&$variable) {
   $variable['mica_url'] = array(
     'title' => t('Mica address'),
@@ -117,8 +121,10 @@ function _obiba_mica_variable_info_mica_server(&$variable) {
   );
 }
 
-function _obiba_mica_variable_info_access(&$variable)
-{
+/**
+ * Setting Variable access page.
+ */
+function _obiba_mica_variable_info_access(&$variable) {
   $variable['access_home_page_title'] = array(
     'title' => t('Home Page title'),
     'description' => t('Data Access home page title.'),
@@ -135,7 +141,7 @@ function _obiba_mica_variable_info_access(&$variable)
     'title' => t('Request Page title'),
     'description' => t('Data Access request page title.'),
     'type' => 'string',
-    'default' => ' Data Access Request',
+    'default' => 'Data Access Request',
   );
   $variable['access_my_requests_button'] = array(
     'title' => t('My requests button'),
@@ -194,6 +200,9 @@ function _obiba_mica_variable_info_access(&$variable)
   );
 }
 
+/**
+ * Setting Variable search page networks.
+ */
 function _obiba_mica_variable_search_networks(&$variable) {
   $variable['search_networks'] = array(
     'title' => t('Show networks search'),
@@ -239,6 +248,9 @@ function _obiba_mica_variable_search_networks(&$variable) {
   );
 }
 
+/**
+ * Setting Variable search page studies.
+ */
 function _obiba_mica_variable_search_studies(&$variable) {
   $variable['search_studies'] = array(
     'title' => t('Show studies search'),
@@ -322,7 +334,7 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'title' => t('No study label'),
     'description' => t('Text to be displayed when no study is found.'),
     'type' => 'string',
-    'default' => 'No study found',
+    'default' => t('No study found'),
   );
   $variable['search_studies_dce_autocomplete'] = array(
     'title' => t('Show Data Collection Event auto-complete search filter'),
@@ -338,6 +350,9 @@ function _obiba_mica_variable_search_studies(&$variable) {
   );
 }
 
+/**
+ * Setting Variable content page study.
+ */
 function _obiba_mica_variable_study_content(&$variable) {
   $variable['study_title_acronym_display'] = array(
     'title' => t('Show acronym/title study order display'),
@@ -364,32 +379,35 @@ function _obiba_mica_variable_study_content(&$variable) {
     'default' => TRUE,
   );
   $variable['studies_list_show_search_form'] = array(
-    'title' => t('Show the rapid search/sort form in list studies page '),
+    'title' => t('Show the rapid search/sort form in list studies page'),
     'description' => t('If selected the the rapid search/sort form will be displayed in list studies page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_list_show_search_button'] = array(
-    'title' => t('Show the search studies button  in list studies page '),
+    'title' => t('Show the search studies button  in list studies page'),
     'description' => t('If selected the search studies button will be displayed in list studies page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_list_show_study_sup_info'] = array(
-    'title' => t('Show supplementary details study in list studies page '),
+    'title' => t('Show supplementary details study in list studies page'),
     'description' => t('If selected the supplementary details study badges will be displayed in list studies page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_list_show_trimmed_description_study'] = array(
-    'title' => t('Show trimmed description details study, with \'Read more\' link in list studies page '),
-    'description' => t('If selected the description details study will be displayed in list studies page with a \'Read more\' link'),
+    'title' => t("Show trimmed description details study, with 'Read more' link in list studies page"),
+    'description' => t("If selected the description details study will be displayed in list studies page with a 'Read more' link"),
     'type' => 'boolean',
     'default' => TRUE,
   );
 
 }
 
+/**
+ * Setting Variable content page dataset.
+ */
 function _obiba_mica_variable_dataset_content(&$variable) {
 
   $variable['dataset_title_acronym_setup'] = array(
@@ -411,31 +429,34 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'default' => TRUE,
   );
   $variable['dataset_harmonization_impossible_icon'] = array(
-    'title' => t('Icon to show for the \'Impossible\' status '),
-    'description' => t('Select,the Icon to show for \'Impossible\' harmonization status'),
+    'title' => t("Icon to show for the 'Impossible' status"),
+    'description' => t("Select,the Icon to show for 'Impossible' harmonization status"),
     'type' => 'string',
     'default' => ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON,
   );
   $variable['dataset_harmonization_impossible_label'] = array(
-    'title' => t('Label to show for the \'Impossible\' status '),
-    'description' => t('Text to display, for the label to show for \'Impossible\' harmonization status'),
+    'title' => t("Label to show for the 'Impossible' status"),
+    'description' => t("Text to display, for the label to show for 'Impossible' harmonization status"),
     'type' => 'string',
     'default' => t('Impossible'),
   );
   $variable['dataset_harmonization_undetermined_icon'] = array(
-    'title' => t('Icon to show for the \'Undetermined\' status '),
-    'description' => t('Select,the Icon to show for \'Undetermined\' harmonization status'),
+    'title' => t("Icon to show for the 'Undetermined' status"),
+    'description' => t("Select,the Icon to show for 'Undetermined' harmonization status"),
     'type' => 'string',
     'default' => ObibaDatasetConstants::UNDETERMINED_HARMO_ICON,
   );
   $variable['dataset_harmonization_undetermined_label'] = array(
-    'title' => t('Label to show for the \'Undetermined\' status '),
-    'description' => t('Text to display, for the label to show for \'Undetermined\' harmonization status'),
+    'title' => t("Label to show for the 'Undetermined' status"),
+    'description' => t("Text to display, for the label to show for 'Undetermined' harmonization status"),
     'type' => 'string',
     'default' => t('Undetermined'),
   );
 }
 
+/**
+ * Setting Variable content page.
+ */
 function _obiba_mica_variable_variable_content(&$variable) {
   $variable['variable_show_studies'] = array(
     'title' => t('Show studies'),
@@ -457,6 +478,9 @@ function _obiba_mica_variable_variable_content(&$variable) {
   );
 }
 
+/**
+ * Setting Variable statistic content.
+ */
 function _obiba_mica_variable_statistics_content(&$variable) {
 
   $variable['mica_statistics_coverage'] = array(
@@ -467,6 +491,9 @@ function _obiba_mica_variable_statistics_content(&$variable) {
   );
 }
 
+/**
+ * Setting Variable search page datasets.
+ */
 function _obiba_mica_variable_search_datasets(&$variable) {
   $variable['search_datasets'] = array(
     'title' => t('Show datasets search'),
@@ -502,7 +529,7 @@ function _obiba_mica_variable_search_datasets(&$variable) {
     'title' => t('Datasets search label'),
     'description' => t('Text to be displayed in links to dataset search.'),
     'type' => 'string',
-    'default' => t('Search Datasets'),
+    'default' => 'Search Datasets',
   );
   $variable['datasets_empty_label'] = array(
     'title' => t('No dataset label'),
@@ -518,6 +545,9 @@ function _obiba_mica_variable_search_datasets(&$variable) {
   );
 }
 
+/**
+ * Setting Variable search page variables.
+ */
 function _obiba_mica_variable_search_variables(&$variable) {
   $variable['search_variables'] = array(
     'title' => t('Show variables search'),
@@ -541,18 +571,18 @@ function _obiba_mica_variable_search_variables(&$variable) {
     'title' => t('Variable classification label'),
     'description' => t('Text to be displayed in links to variable classification.'),
     'type' => 'string',
-    'default' => t('Variable Classification'),
+    'default' => 'Variable Classification',
   );
   $variable['variables_search_label'] = array(
     'title' => t('Variables search label'),
     'description' => t('Text to be displayed in links to variable search.'),
     'type' => 'string',
-    'default' => t('Search Variables'),
+    'default' => 'Search Variables',
   );
   $variable['variables_empty_label'] = array(
     'title' => t('No variable label'),
     'description' => t('Text to be displayed when no variable is found.'),
     'type' => 'string',
-    'default' => t('No variable found'),
+    'default' => 'No variable found',
   );
 }

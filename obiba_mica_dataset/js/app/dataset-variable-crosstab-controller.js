@@ -75,8 +75,8 @@
               endProgress();
             };
 
-            var searchCategoricalVariables = function(queryString) {
-              if (!queryString) return;
+            var searchCategoricalVariables = function (queryString) {
+              if (! queryString) return;
               DatasetCategoricalVariablesResource.get({
                   dsType: $routeParams.type,
                   dsId: $routeParams.ds,
@@ -89,9 +89,13 @@
               );
             };
 
-            var searchVariables = function(queryString) {
-              if (!queryString) return;
-              DatasetVariablesResource.get({dsType: $routeParams.type, dsId: $routeParams.ds, query: queryString},
+            var searchVariables = function (queryString) {
+              if (! queryString) return;
+              DatasetVariablesResource.get({
+                  dsType: $routeParams.type,
+                  dsId: $routeParams.ds,
+                  query: queryString
+                },
                 function onSuccess(response) {
                   $scope.crosstab.rhs.variables = response.variables;
                 },
@@ -99,13 +103,13 @@
               );
             };
 
-            var canExchangeVariables = function(){
+            var canExchangeVariables = function () {
               return $scope.crosstab.lhs.variable
                 && $scope.crosstab.rhs.variable
-                && !isStatistical($scope.crosstab.rhs.variable);
+                && ! isStatistical($scope.crosstab.rhs.variable);
             };
 
-            var exchangeVariables = function() {
+            var exchangeVariables = function () {
               if (canExchangeVariables()) {
                 var temp = $scope.crosstab.lhs.variable;
                 $scope.crosstab.lhs.variable = $scope.crosstab.rhs.variable;
@@ -114,11 +118,11 @@
               }
             };
 
-            var clear = function() {
+            var clear = function () {
               initCrosstab();
             };
 
-            var isStatistical = function(variable) {
+            var isStatistical = function (variable) {
               return variable && variable.nature.toLowerCase() === 'continuous';
             };
 
@@ -132,17 +136,17 @@
                 }
               }
 
-              contingency.privacyCheck = contingency.aggregations.filter(function(aggregation) {
-                return aggregation.statistics !== null;
-              }).length === contingency.aggregations.length;
+              contingency.privacyCheck = contingency.aggregations.filter(function (aggregation) {
+                  return aggregation.statistics !== null;
+                }).length === contingency.aggregations.length;
 
               var terms = contingency.aggregations.map(function (aggregation) {
                 return aggregation.term;
               });
 
-              if (!contingency.privacyCheck) {
+              if (! contingency.privacyCheck) {
                 // server returns no aggregation, create emptyu ones
-                contingency.aggregations.forEach(function(aggregation, i) {
+                contingency.aggregations.forEach(function (aggregation, i) {
                   aggregation.statistics = createEmptyStatistics();
                 });
 
@@ -151,9 +155,12 @@
               } else {
                 // create the missing category aggregations
                 v1Cats.forEach(function (cat, i) {
-                  if (terms.indexOf(cat) === -1) {
+                  if (terms.indexOf(cat) === - 1) {
                     // create a cat at the same index
-                    contingency.aggregations.splice(i, 0, { n:'-', statistics: createEmptyStatistics()});
+                    contingency.aggregations.splice(i, 0, {
+                      n: '-',
+                      statistics: createEmptyStatistics()
+                    });
                   }
 
                 });
@@ -188,9 +195,12 @@
                 });
 
                 v2Cats.forEach(function (cat, i) {
-                  if (fCats.indexOf(cat) === -1) {
+                  if (fCats.indexOf(cat) === - 1) {
                     // create a cat at the same index
-                    aggregation.frequencies.splice(i, 0, {count: aggregation.privacyCheck ? 0 : '-', value: cat});
+                    aggregation.frequencies.splice(i, 0, {
+                      count: aggregation.privacyCheck ? 0 : '-',
+                      value: cat
+                    });
                   }
                 });
               }
@@ -261,18 +271,19 @@
              * @returns {*}
              */
             function normalizeData(contingencies) {
-              var v2Cats = $scope.crosstab.rhs.xVariable.categories.map(function(category) {
+              var v2Cats = $scope.crosstab.rhs.xVariable.categories.map(function (category) {
                 return category.name;
               });
-              var v1Cats = $scope.crosstab.lhs.xVariable.categories.map(function(category) {
+              var v1Cats = $scope.crosstab.lhs.xVariable.categories.map(function (category) {
                 return category.name;
               });
 
               if (contingencies) {
                 contingencies.forEach(function (contingency) {
                   $log.debug('>', contingency);
-                  contingency.totalPrivacyCheck = contingency.all.n !== -1; // show the details anyway
-                  if (!contingency.totalPrivacyCheck || contingency.all.n > 0) {
+                  // Show the details anyway.
+                  contingency.totalPrivacyCheck = contingency.all.n !== - 1;
+                  if (! contingency.totalPrivacyCheck || contingency.all.n > 0) {
 
                     if (isStatistical($scope.crosstab.rhs.xVariable)) {
                       normalizeStatistics(contingency, v1Cats);
@@ -289,7 +300,7 @@
             /**
              * Submits the crosstab query
              */
-            var submit = function() {
+            var submit = function () {
               if ($scope.crosstab.lhs.variable && $scope.crosstab.rhs.variable) {
                 $scope.crosstab.lhs.xVariable = $scope.crosstab.lhs.variable;
                 $scope.crosstab.rhs.xVariable = $scope.crosstab.rhs.variable;
@@ -327,7 +338,7 @@
               }
             };
 
-            var download = function(docType) {
+            var download = function (docType) {
               var downloadUrl = ContingencyService.getCrossDownloadUrl({
                 ':dsType': $routeParams.type,
                 ':dsId': $routeParams.ds,
@@ -342,11 +353,11 @@
               return false;
             };
 
-            var lhsVariableCategory = function(category) {
+            var lhsVariableCategory = function (category) {
               return getVariableCategory($scope.crosstab.lhs.xVariable, category);
             };
 
-            var rhsVariableCategory = function(category) {
+            var rhsVariableCategory = function (category) {
               return getVariableCategory($scope.crosstab.rhs.xVariable, category);
             };
 
@@ -354,7 +365,7 @@
               var result = null;
 
               if (variable && variable.categories) {
-                result = lhsVar.categories.filter(function(cat) {
+                result = lhsVar.categories.filter(function (cat) {
                   return cat.name === category;
                 });
               }
@@ -367,14 +378,14 @@
              * @param studtTable
              * @returns {{summary: *, population: *, dce: *, project: *, table: *}}
              */
-            var extractStudySummaryInfo = function(studtTable) {
+            var extractStudySummaryInfo = function (studtTable) {
               var summary = studtTable.studySummary;
               var pop = summary.populationSummaries ? summary.populationSummaries[0] : null;
               var dce = pop && pop.dataCollectionEventSummaries
-                  ? pop.dataCollectionEventSummaries.filter(function(dce) {
-                      return dce.id === studtTable.dataCollectionEventId;
-                    })
-                  : null;
+                ? pop.dataCollectionEventSummaries.filter(function (dce) {
+                return dce.id === studtTable.dataCollectionEventId;
+              })
+                : null;
               return {
                 summary: LocalizedStringService.getValue(summary.acronym),
                 population: pop ? LocalizedStringService.getValue(pop.name) : '',
@@ -384,10 +395,10 @@
               }
             };
 
-            var getPrivacyErrorMessage = function(contingency) {
-              return !contingency.totalPrivacyCheck
+            var getPrivacyErrorMessage = function (contingency) {
+              return ! contingency.totalPrivacyCheck
                 ? 'dataset.crosstab.total-privacy-check-failed'
-                : (!contingency.privacyCheck ? 'dataset.crosstab.privacy-check-failed' : '');
+                : (! contingency.privacyCheck ? 'dataset.crosstab.privacy-check-failed' : '');
             };
 
             /**
@@ -396,26 +407,26 @@
              * @param basePath
              * @returns {string}
              */
-            var getTemplatePath = function(contingency, basePath){
-              if (!$scope.crosstab.rhs.xVariable) {
+            var getTemplatePath = function (contingency, basePath) {
+              if (! $scope.crosstab.rhs.xVariable) {
                 $log.error('RHS variable is not initialized!');
                 return;
               }
 
-              var folder = basePath + "obiba_main_app_angular/obiba_mica_data_access_request/";
+              var folder = basePath + "obiba_mica_app_angular/obiba_mica_data_access_request/";
               var template = isStatistical($scope.crosstab.rhs.xVariable)
-                ? (!contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_statistics" : "obiba_mica_dataset_variable_crosstab_statistics_empty")
-                : (!contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_frequencies" : "obiba_mica_dataset_variable_crosstab_frequencies_empty");
+                ? (! contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_statistics" : "obiba_mica_dataset_variable_crosstab_statistics_empty")
+                : (! contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_frequencies" : "obiba_mica_dataset_variable_crosstab_frequencies_empty");
 
               return folder + template;
             };
 
-            var initCrosstab = function() {
+            var initCrosstab = function () {
               $scope.crosstab = {
                 lhs: {
-                  variable : null,
-                  xVariable : null,
-                  variables : []
+                  variable: null,
+                  xVariable: null,
+                  variables: []
                 },
                 rhs: {
                   variable: null,
@@ -453,7 +464,10 @@
             initCrosstab();
             endProgress();
 
-            DatasetResource.get({dsType: $routeParams.type, dsId: $routeParams.ds},
+            DatasetResource.get({
+                dsType: $routeParams.type,
+                dsId: $routeParams.ds
+              },
               function onSuccess(response) {
                 $scope.dataset = response;
               },
@@ -467,8 +481,10 @@
                   $log.debug('Variable LHS info', response);
                   $scope.crosstab.lhs.variable = response;
                   $scope.crosstab.lhs.variables = [response];
-                  varCount++;
-                  if (varCount > 1) submit();
+                  varCount ++;
+                  if (varCount > 1) {
+                    submit();
+                  }
                 },
                 onError
               );
@@ -480,14 +496,14 @@
                   $log.debug('Variable RHS info', response);
                   $scope.crosstab.rhs.variable = response;
                   $scope.crosstab.rhs.variables = [response];
-                  varCount++;
-                  if (varCount > 1) submit();
+                  varCount ++;
+                  if (varCount > 1) {
+                    submit();
+                  }
                 },
                 onError
               );
             }
-
-
 
           }]);
     }

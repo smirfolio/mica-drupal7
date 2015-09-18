@@ -1,13 +1,23 @@
 <?php
-/*
- * @file drush commands  implementations
- *    to help users download required libraries
- * */
+/**
+ * @file
+ * drush commands  implementations to help users download required libraries.
+ */
 
 /**
  * Implements hook_drush_command().
  */
 function obiba_mica_drush_command() {
+  $items['mica-study-timeline-download'] = array(
+    'callback' => 'obiba_mica_drush_timeline_download',
+    'aliases' => 'dhtime',
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Downloads the ths study timeline library from timeline repositories.'),
+    'arguments' => array(
+      'path' => dt('Optional. The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries/mica-study-timeline</code>).'),
+    ),
+  );
+
   $items['highcharts-download'] = array(
     'callback' => 'obiba_mica_drush_highcharts_download',
     'aliases' => 'dhili',
@@ -52,7 +62,57 @@ function obiba_mica_drush_command() {
 }
 
 /**
- * Downloads
+ * Implementation of command to download timeline library.
+ */
+function obiba_mica_drush_timeline_download() {
+  $args = func_get_args();
+  if ($args[1]) {
+    $path = $args[1];
+  }
+  else {
+    $path = drush_get_context('DRUSH_DRUPAL_ROOT');
+  }
+  // Create the path if it does not exist.
+  if (!is_dir($path . '/sites/all/libraries')) {
+    drush_op('mkdir', $path . '/sites/all/libraries');
+  }
+  $path = $path . '/sites/all/libraries';
+  chdir($path);
+
+  if ($args[0]) {
+    $version_time_line = $args[0];
+  }
+  else {
+    $version_time_line = variable_get('obiba-$version-time-line-version', '1.0');
+  }
+  $svn_cmd = 'wget  https://github.com/obiba/mica-study-timeline/archive/' . $version_time_line . '.zip';
+  if (drush_shell_exec($svn_cmd)) {
+    drush_log(dt('mica-study-timeline  was downloaded to !path.', array('!path' => ' ' . $path)), 'success');
+    $unzip_cmd = 'unzip ' . $version_time_line . '.zip -d .';
+    if (drush_shell_exec($unzip_cmd)) {
+      drush_log(dt('mica-study-timeline Unzipped  to !path.', array('!path' => 'mica-study-timeline-master')), 'success');
+      $timeline_lib_path = 'mica-study-timeline-' . $version_time_line;
+      chdir($timeline_lib_path);
+      $cmd_get_d3 = 'bower --allow-root install ; cp bower_components/d3/d3.min.js dist/  ; mv ../' . $version_time_line . '.zip bower_components/';
+      if (drush_shell_exec($cmd_get_d3)) {
+        drush_log(dt('d3 js downloaded and copied !path.', array('!path' => 'mica-study-timeline/dist')), 'success');
+        $cmd_remove_bower_components = "rm -rf bower_components";
+        if (drush_shell_exec($cmd_remove_bower_components)) {
+          drush_log(dt('bower_components folder and source zip removed.'), 'success');
+          drush_log(dt('Timeline library successfully installed'), 'success');
+        }
+      }
+
+    }
+  }
+  else {
+    drush_log(dt('Drush was unable to download mica-study-timeline to !path.', array('!path' => ' ' . $path)) . '<br/>' . dt('Attempted command: !wget.', array('!wget' => '<code>' . $svn_cmd . '</code>')), 'error');
+  }
+
+}
+
+/**
+ * Implementation of command to download HighCharts library.
  */
 function obiba_mica_drush_highcharts_download() {
   $args = func_get_args();
@@ -60,7 +120,6 @@ function obiba_mica_drush_highcharts_download() {
     $path = $args[0];
   }
   else {
-    // $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries';
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
   }
   // Create the path if it does not exist.
@@ -99,13 +158,15 @@ function obiba_mica_drush_highcharts_download() {
 
 }
 
+/**
+ * Implementation of command to download dataTable library.
+ */
 function obiba_mica_drush_datatable_download() {
   $args = func_get_args();
   if ($args[0]) {
     $path = $args[0];
   }
   else {
-    // $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries';
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
   }
 
@@ -142,13 +203,15 @@ function obiba_mica_drush_datatable_download() {
   }
 }
 
+/**
+ * Implementation of command to download DataTable Bootstrap Plugin library.
+ */
 function obiba_mica_drush_datatable_bootstrap_plugins_download() {
   $args = func_get_args();
   if ($args[0]) {
     $path = $args[0];
   }
   else {
-    // $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries';
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
   }
 
@@ -192,13 +255,15 @@ function obiba_mica_drush_datatable_bootstrap_plugins_download() {
   }
 }
 
+/**
+ * Implementation of command to download Obiba Progress bar library.
+ */
 function obiba_mica_drush_obiba_progressbar() {
   $args = func_get_args();
   if ($args[1]) {
     $path = $args[1];
   }
   else {
-    // $path = drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries';
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
   }
 
@@ -241,4 +306,3 @@ function obiba_mica_drush_obiba_progressbar() {
     }
   }
 }
-

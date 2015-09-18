@@ -17,21 +17,20 @@
         function ($routeProvider, $locationProvider) {
           $routeProvider
             .when('/crosstab/:type/:ds', {
-              templateUrl: Drupal.settings.basePath + 'obiba_main_app_angular/obiba_mica_dataset/obiba_mica_dataset_variable_crosstab',
+              templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular/obiba_mica_dataset/obiba_mica_dataset_variable_crosstab',
               controller: 'DatasetVariableCrosstabController'
             })
 
           .when('/crosstab/:type/:ds/variable/:varId', {
-            templateUrl: Drupal.settings.basePath + 'obiba_main_app_angular/obiba_mica_dataset/obiba_mica_dataset_variable_crosstab',
+            templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular/obiba_mica_dataset/obiba_mica_dataset_variable_crosstab',
             controller: 'DatasetVariableCrosstabController'
           })
 
           .when('/crosstab/:type/:ds/variable/:varId/by/:byId', {
-            templateUrl: Drupal.settings.basePath + 'obiba_main_app_angular/obiba_mica_dataset/obiba_mica_dataset_variable_crosstab',
+            templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular/obiba_mica_dataset/obiba_mica_dataset_variable_crosstab',
             controller: 'DatasetVariableCrosstabController'
           })
         }]);
-
 
     }
   }
