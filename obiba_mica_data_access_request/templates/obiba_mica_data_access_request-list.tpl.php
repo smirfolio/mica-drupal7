@@ -61,4 +61,7 @@
     </div>
   </div>
 
+  <?php if(!empty($profile_users_modal)): ?>
+  <?php print $profile_users_modal; ?>
+  <?php endif;; ?>
 </div>

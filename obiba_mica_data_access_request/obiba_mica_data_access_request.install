@@ -56,6 +56,7 @@ function obiba_mica_data_access_request_apply_default_permissions() {
     'can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS,
     'can_see_' . MicaDataAccessRequest::NEW_DATA_ACCESS,
   ));
-  $role = user_role_load_by_name('mica-data-access-officer');
-  user_role_grant_permissions($role->rid, array('can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS));
+  $role_dao = user_role_load_by_name('mica-data-access-officer');
+  user_role_grant_permissions($role_dao->rid, array('can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS));
+  user_role_grant_permissions($role_dao->rid, array('can_see_' . MicaDataAccessRequest::LIST_USERS_DATA_ACCESS));
 }

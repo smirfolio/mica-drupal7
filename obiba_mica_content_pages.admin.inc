@@ -95,6 +95,14 @@ function obiba_mica_settings_data_access_content(&$form) {
     '#default_value' => variable_get_value('access_documents_section_help_text'),
     '#description' => $info['description'],
   );
+  $info = variable_get_info('user_list_page_title');
+  $form['content_display_settings']['access_form']['user_list_page_title'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('user_list_page_title'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
   $info = variable_get_info('access_my_requests_button');
   $form['content_display_settings']['access_form']['access_my_requests_button'] = array(
     '#type' => 'textfield',

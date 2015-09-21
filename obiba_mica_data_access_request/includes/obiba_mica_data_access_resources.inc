@@ -89,7 +89,7 @@ class MicaDataAccessRequestResources extends MicaClient {
       array('@message' => $e->getMessage())),
       'error');*/
       drupal_add_http_header('Status', $e->getCode());
-      return empty($client->lastResponse->body) ? FALSE : $client->lastResponse->body;
+      return empty($client->lastResponse->body) ? FALSE : json_decode($client->lastResponse->body);
     }
 
   }

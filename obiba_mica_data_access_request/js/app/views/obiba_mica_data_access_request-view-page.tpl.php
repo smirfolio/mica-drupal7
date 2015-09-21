@@ -30,7 +30,13 @@
   <div ng-hide="serverError">
     <p class="help-block pull-left">
       <span><?php print t('Created by'); ?></span>
-      {{getFullName(dataAccessRequest.profile) || dataAccessRequest.applicant}},
+      <span ng-if="actions.canViewProfile('mica-user')">
+         {{getFullName(dataAccessRequest.profile) || dataAccessRequest.applicant}}
+      </span>
+      <a href ng-click="userProfile()"
+        ng-if="actions.canViewProfile('mica-data-access-officer')">
+        {{getFullName(dataAccessRequest.profile) || dataAccessRequest.applicant}}
+        </a>,
       <span>{{dataAccessRequest.timestamps.created | amCalendar}}</span>
       <span class="label label-success">{{dataAccessRequest.status | translate | uppercase}}</span>
     </p>

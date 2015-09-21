@@ -265,6 +265,13 @@
               confirmStatusChange(DataAccessRequestService.status.REJECTED, null, 'reject');
             };
 
+            $scope.userProfile = function () {
+              $modal.open({
+                scope: $scope,
+                templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular/obiba_mica_data_access_request/data-access-request-profile-user-modal'
+              });
+            };
+
             $scope.$on(
               NOTIFICATION_EVENTS.confirmDialogAccepted,
               function(event, status) {
@@ -304,6 +311,15 @@
                   return getAttributeValue(profile.attributes, 'firstName') + ' ' + getAttributeValue(profile.attributes, 'lastName');
                 }
                 return profile.username;
+              }
+              return null;
+            };
+
+            $scope.getProfileEmail = function (profile) {
+              if (profile) {
+                if (profile.attributes) {
+                  return getAttributeValue(profile.attributes, 'email');
+                }
               }
               return null;
             };

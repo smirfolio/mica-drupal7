@@ -15,6 +15,7 @@ include_once $path_module_data_access . '/includes/obiba_mica_data_access_resour
 class MicaDataAccessRequest extends MicaDataAccessRequestResources {
   const LIST_DATA_ACCESS = 'list-data-access';
   const NEW_DATA_ACCESS = 'new-data-access';
+  const LIST_USERS_DATA_ACCESS = 'list-user-data-access';
 
   /**
    * Instance initialisation.
@@ -290,6 +291,34 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
     }
     curl_close($resource);
     return array('code' => $http_code, 'message' => trim($match));
+  }
+
+  public function getUserProfile($user_id){
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/user/' . $user_id . '/application/drupal';
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      )
+    ));
+
+    return $this->execute($request);
+  }
+
+  public function getUsersList(){
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/users/application/drupal';
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      )
+    ));
+
+    return $this->execute($request);
   }
 
 }

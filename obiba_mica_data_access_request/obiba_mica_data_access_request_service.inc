@@ -11,15 +11,6 @@
  */
 
 /**
- * Data access list page.
- */
-function obiba_mica_data_access_request_list_page() {
-  obiba_mica_data_access_requests_datatable_init();
-  drupal_set_title(variable_get_value('access_requests_page_title'));
-  return theme('obiba_mica_data_access_request-list');
-}
-
-/**
  * Get the data access request form config.
  */
 function obiba_mica_data_access_request_form_get_config() {
@@ -182,5 +173,37 @@ function obiba_mica_data_access_request_upload_attachment() {
 function obiba_mica_data_access_request_get_attachment($id_file) {
   $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
   $response = $mica_client->getFile($id_file, 'files/temp');
+  drupal_json_output($response);
+}
+
+function obiba_mica_data_access_request_user_profile($user_id) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+  $response = $mica_client->getUserProfile($user_id);
+  $user_profile =
+    obiba_mica_data_access_request_user_profile_attribute($response->attributes);
+  drupal_json_output(array('profile_html' => $user_profile));
+}
+
+function obiba_mica_data_access_request_user_profile_attribute($user_attributes) {
+  $html_user_profile = '';
+  foreach ($user_attributes as $attribute) {
+    if(!in_array($attribute->key,
+      array('email', 'lastName', 'firstName', 'createdDate', 'lastLogin', 'username')))
+    $html_user_profile .=
+      theme('obiba_mica_data_access_request_user-profile-attributes', array(
+        'label' => t($attribute->key),
+        'value' => $attribute->value,
+      ));
+  }
+  if (!empty($html_user_profile)) {
+    return $html_user_profile;
+  }
+  return FALSE;
+}
+
+function obiba_mica_data_access_request_users() {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+  $response = $mica_client->getUsersList();
+
   drupal_json_output($response);
 }

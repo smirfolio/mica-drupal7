@@ -151,6 +151,11 @@
       "message": "Your access form was successfully submitted."
     },
     "parse-error": "Form content is not a valid document, please contact your administrator for more help."
+    "profile" :{
+      "title" : "Profile Utilisateur",
+      "name" : "Nom",
+      "email" : "Courriel"
+    }
   },
   "data-access-config": {
     "menu": "Data Access",

@@ -87,6 +87,15 @@
             });
           }])
 
+        .filter('filterAttributes', function(){
+          return function(attributes){
+            var exclude = ["email", "firstName", "lastName", "createdDate",  "lastLogin", "username" ];
+           return attributes.filter(function(attribute){
+              return exclude.indexOf(attribute.key)===-1;
+            });
+          }
+        })
+
         .service('DataAccessRequestService', ['LocaleStringUtils', 'moment', '$filter',
           function (LocaleStringUtils, moment, $filter) {
             var statusList = {
@@ -118,6 +127,16 @@
             };
 
             this.actions = {
+              canViewProfile: function(role){
+                var found = false;
+                $.each(Drupal.settings.angularjsApp.user.roles,function(key, value){
+                  if(value === role){
+                    found = true;
+                    return true;
+                  }
+                });
+              return found;
+              },
               canView: function (request) {
                 return canDoAction(request, 'VIEW');
               },
