@@ -3,7 +3,7 @@
     <button type="button" class="close" aria-hidden="true"
       ng-click="$dismiss()">&times;</button>
     <h4 class="modal-title">
-      <?php print t('Applicant Profile'); ?>
+      <?php print t('User Profile'); ?>
     </h4>
   </div>
   <div class="modal-body">

@@ -164,7 +164,7 @@
     },
     "parse-error": "Form content is not a valid document, please contact your administrator for more help.",
     "profile" :{
-      "title" : "Applicant profile",
+      "title" : "User profile",
       "name" : "Name",
       "email" : "E-mail"
     }

@@ -17,7 +17,7 @@
           aria-label="Close"><span
             aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"
-          id="UserDetailModalTilte"><?php print t('Applicant Profile'); ?></h4>
+          id="UserDetailModalTilte"><?php print t('User Profile'); ?></h4>
       </div>
       <div class="modal-body">
         <div>
