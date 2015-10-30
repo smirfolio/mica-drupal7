@@ -23,6 +23,7 @@ class MicaStudyResource extends MicaClient {
    * @param $limit
    * @param null $sort field name to sort by
    * @param null $order "asc" or "desc"
+   *
    * @return array|mixed
    */
   public function get_studies($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
@@ -36,9 +37,9 @@ class MicaStudyResource extends MicaClient {
     $request = new HttpClientRequest($url_studies, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
+          'Accept' => array(parent::HEADER_JSON),
         )
+      )
     ));
     $client = $this->client();
     try {
@@ -48,7 +49,10 @@ class MicaStudyResource extends MicaClient {
     }
     catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
       return array();
     }
   }
@@ -57,6 +61,7 @@ class MicaStudyResource extends MicaClient {
    * Get a study by its ID.
    *
    * @param $study_id
+   *
    * @return array|Protobuf\Message|null
    */
   public function get_study($study_id) {
@@ -66,9 +71,9 @@ class MicaStudyResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_BINARY),
-          )
-        ),
+          'Accept' => array(parent::HEADER_BINARY),
+        )
+      ),
     ));
 
     $client = $this->client();
@@ -84,6 +89,55 @@ class MicaStudyResource extends MicaClient {
     }
   }
 
+  /**
+   * Get attachments by path resource.
+   *
+   * @param $attachment_path
+   *
+   * @return array
+   */
+  public function getAttachment($attachment_path) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/files-search/' . rawurlencode($attachment_path) . '?order=asc&query=&recursively=true&sort=name';
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return $this->wrapAttachments(json_decode($data));
+    }
+    catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage(),
+        ), WATCHDOG_WARNING);
+      return array();
+    }
+  }
+
+  /**
+   * Wrap the attachments and return associative array path=>file name
+   *
+   * @param $flat_attachments
+   *
+   * @return array
+   */
+  protected function wrapAttachments($flat_attachments) {
+    $wrapped_attachments = array();
+    foreach ($flat_attachments as $key => $attachment) {
+      $wrapped_attachments[$attachment->attachment->path][$key] = $attachment->attachment;
+    }
+    return $wrapped_attachments;
+  }
+
   public function studies_search($spec_dto_params = NULL) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/studies/_search/?' . 'size=' . MicaClient::getResponsePageSize();
@@ -94,19 +148,19 @@ class MicaStudyResource extends MicaClient {
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
           'headers' => $this->authorizationHeader(array(
-                'Accept' => array(parent::HEADER_JSON),
-              )
-            ),
+              'Accept' => array(parent::HEADER_JSON),
+            )
+          ),
         ));
       }
       else {
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_POST,
           'headers' => $this->authorizationHeader(array(
-                'Accept' => array(parent::HEADER_JSON),
-                'Content-Type' => array(parent::HEADER_JSON)
-              )
-            ),
+              'Accept' => array(parent::HEADER_JSON),
+              'Content-Type' => array(parent::HEADER_JSON)
+            )
+          ),
           'data' => $dto_param,
         ));
       }
@@ -120,19 +174,19 @@ class MicaStudyResource extends MicaClient {
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
           'headers' => $this->authorizationHeader(array(
-                'Accept' => array(parent::HEADER_JSON),
-              )
-            ),
+              'Accept' => array(parent::HEADER_JSON),
+            )
+          ),
         ));
       }
       else {
         $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_POST,
           'headers' => $this->authorizationHeader(array(
-                'Accept' => array(parent::HEADER_JSON),
-                'Content-Type' => array(parent::HEADER_JSON)
-              )
-            ),
+              'Accept' => array(parent::HEADER_JSON),
+              'Content-Type' => array(parent::HEADER_JSON)
+            )
+          ),
           'data' => $dto_param,
         ));
       }

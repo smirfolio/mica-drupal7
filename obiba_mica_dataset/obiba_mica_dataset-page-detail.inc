@@ -18,6 +18,7 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
     obiba_mica_commons_datatables_external_source();
   }
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/obiba_mica_commons_attachment_download.js');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_datatable_init.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_toggle_harmo_table.js', 'file');
   $dataset_resource = new MicaDatasetResource();
@@ -83,8 +84,9 @@ function obiba_mica_dataset_get_population_dce($dataset_type_dto) {
   $study_table = $dataset_type_dto->studyTable;
   $study_resource = new MicaStudyResource();
   $study_dto = $study_resource->get_study($study_table->studyId);
-
-  if (!empty($study_dto)) {
+  $flat_study_attachments = $study_resource->getAttachment('/study/'.$study_table->studyId);
+  $data['attachments'] = $flat_study_attachments;
+   if (!empty($study_dto)) {
     $data['study'] = $study_dto;
     $population = array_filter($study_dto->populations, function ($population) use ($study_table) {
       return $study_table->populationId === $population->id;
@@ -131,8 +133,8 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
       $dce_variables_nbr = array();
       foreach ($dces as $dce) {
         $study_dto = $data['study'];
-        if (!empty($study_dto->attachments)) {
-          foreach ($study_dto->attachments as $attachment) {
+        if (!empty($data['attachments']["/study/$study_id/population/$population_id/data-collection-event/$dce->id"])) {
+          foreach ($data['attachments']["/study/$study_id/population/$population_id/data-collection-event/$dce->id"] as $attachment) {
             $themed_attachment .= theme('obiba_mica_study_attachments', array(
               'study_id' => $study_dto->id,
               'attachment' => $attachment,
@@ -148,7 +150,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
           'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
           'dce_id_target' => $study_id . '-' . $population_id . '-' . $dce->id,
           'dce' => $dce,
-          'attachements' => $themed_attachment,
+          'attachments' => $themed_attachment,
         ));
       }
     }

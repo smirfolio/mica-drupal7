@@ -115,12 +115,12 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
               </tr>
             <?php endif; ?>
 
-            <?php if (!empty($attachements)): ?>
+            <?php if (!empty($attachments)): ?>
               <tr>
                 <th><?php print t('Documents') ?></th>
                 <td>
                   <ul class="list-group">
-                    <?php print $attachements; ?>
+                    <?php print $attachments; ?>
                   </ul>
                 </td>
               </tr>
