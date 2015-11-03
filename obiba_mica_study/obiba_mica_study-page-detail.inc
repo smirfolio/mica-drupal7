@@ -110,11 +110,15 @@ function obiba_mica_study_page_detail($study_id) {
       'datasets' => NULL,
       'study_variables_aggs' => NULL, //obiba_mica_study_get_variables($study_id),
     );
+    if (module_exists('obiba_mica_persons') && !empty($study_dto)) {
+      $investigator_detail_modal = obiba_mica_persons_get_person_detail('investigator', $study_dto->id, $study_dto->investigators);
+      $contact_detail_modal = obiba_mica_persons_get_person_detail('contact', $study_dto->id, $study_dto->contacts);
+    }
     $populations = obiba_mica_study_get_populations_detail($study_dto,NULL, NULL,$flat_study_attachments);
     return theme('obiba_mica_study_detail',
       array(
-        'investigators_modal' => obiba_mica_study_get_contact_detail('investigator', $study_dto->id, $study_dto->investigators),
-        'contacts_modal' => obiba_mica_study_get_contact_detail('contact', $study_dto->id, $study_dto->contacts),
+        'investigators_modal' => !empty($investigator_detail_modal)?$investigator_detail_modal:NULL,
+        'contacts_modal' => !empty($contact_detail_modal)?$contact_detail_modal:NULL,
         'study_dto' => $study_dto,
         'study_attachments' => $themed_attachment,
         'timeline' => obiba_mica_study_get_timeline_detail($study_dto),
@@ -225,25 +229,6 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
   }
 
   return $page_render_populations;
-}
-
-/**
- * Create modal DOM for Contact/investigators
- * @param $study_id
- * @param $contacts
- * @return string
- */
-function obiba_mica_study_get_contact_detail($type_contact, $study_id, $contacts) {
-  $page_render_contacts = '';
-  foreach ($contacts as $key_contact => $contact) {
-    $id_contact = $type_contact . '_' . $study_id . '_' . $key_contact;
-    $page_render_contacts .= theme('mica_contact_detail', array(
-      'study_id' => $study_id,
-      'contact_uid' => $id_contact,
-      'contact' => $contact,
-    ));
-  }
-  return $page_render_contacts;
 }
 
 /**

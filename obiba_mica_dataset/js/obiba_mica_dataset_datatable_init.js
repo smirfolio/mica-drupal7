@@ -18,15 +18,14 @@
     attach: function (context, settings) {
       createDataTable();
     }
-  }
+  };
 
   function createDataTable() {
     var divDataTableVar = $('#variables-table');
     var idDataset = divDataTableVar.attr('id-dataset');
     var typeDataset = divDataTableVar.attr('type-dataset');
     var headerTable = null;
-    console.log(Drupal.settings.basePath);
-    console.log(Drupal.settings.pathPrefix);
+
     $.ajax({
       'async': false,
       'url': Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variables-tab-header/' + typeDataset,
