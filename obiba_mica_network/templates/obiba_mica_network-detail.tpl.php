@@ -9,9 +9,9 @@
         <a
           href="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
           class="fancybox-button">
-        <img
-          src="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
-          class="imageThumb">
+          <img
+            src="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
+            class="imageThumb">
         </a>
       <?php endif; ?>
       <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?>
@@ -21,7 +21,9 @@
   <?php if (!empty($network_dto->studyIds)): ?>
     <div class="btn-group pull-right md-bottom-margin">
       <?php if (variable_get_value('mica_statistics_coverage')): ?>
-        <button type="button" class="btn btn-primary dropdown-toggle <?php print $has_variables ? '' : 'hidden'; ?>" data-toggle="dropdown" aria-expanded="false">
+        <button type="button"
+          class="btn btn-primary dropdown-toggle <?php print $has_variables ? '' : 'hidden'; ?>"
+          data-toggle="dropdown" aria-expanded="false">
           <?php print t('Search') ?> <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
@@ -30,7 +32,7 @@
         </ul>
       <?php else:
         print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary indent'));
-      ?>
+        ?>
       <?php endif; ?>
 
     </div>
@@ -52,7 +54,9 @@
           <?php if (!empty($network_dto->acronym)): ?>
             <tr>
               <th><?php print t('Acronym') ?></th>
-              <td><p><?php print obiba_mica_commons_get_localized_field($network_dto, 'acronym'); ?></p></td>
+              <td>
+                <p><?php print obiba_mica_commons_get_localized_field($network_dto, 'acronym'); ?></p>
+              </td>
             </tr>
           <?php endif; ?>
 
@@ -84,7 +88,8 @@
                         <?php if (!empty($investigator->academicLevel)) {
                           print ', ' . $investigator->academicLevel;
                         } ?>
-                        (<?php print obiba_mica_commons_get_localized_field($investigator->institution, 'name'); ?>)
+                        (<?php print obiba_mica_commons_get_localized_field($investigator->institution, 'name'); ?>
+                        )
                       </a>
                     </li>
                   <?php endforeach; ?>
@@ -108,7 +113,8 @@
                         <?php if (!empty($contact->academicLevel)) {
                           print ', ' . $contact->academicLevel;
                         } ?>
-                        (<?php print obiba_mica_commons_get_localized_field($contact->institution, 'name'); ?>)
+                        (<?php print obiba_mica_commons_get_localized_field($contact->institution, 'name'); ?>
+                        )
                       </a>
                     </li>
                   <?php endforeach; ?>
@@ -119,7 +125,12 @@
 
           </tbody>
         </table>
-
+        <?php if (!empty($associated_people_button)): ?>
+          <?php print render($associated_people_button); ?>
+          <?php if (!empty($associated_people_modal)): ?>
+            <?php print render($associated_people_modal); ?>
+          <?php endif; ?>
+        <?php endif; ?>
       </div>
 
       <?php if (!empty($network_dto->attributes)): ?>

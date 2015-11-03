@@ -35,13 +35,22 @@ function obiba_mica_network_page_detail($network_id) {
       l(t('Home'), '<front>'),
       l(t('Networks'), MicaClientPathProvider::NETWORKS),
     ));
-
+    if (module_exists('obiba_mica_persons') && !empty($network_dto->studyIds)) {
+      obiba_mica_persons_datatable_init($network_dto->studyIds);
+      $associated_people_button = theme('obiba_mica_persons-button');
+      $associated_people_modal = theme('obiba_mica_persons-modal',
+        array('persons_table'=>theme('obiba_mica_persons-table')));
+      $investigator_detail_modal = obiba_mica_persons_get_person_detail('investigator', $network_dto->id, $network_dto->investigators);
+      $contact_detail_modal = obiba_mica_persons_get_person_detail('contact', $network_dto->id, $network_dto->contacts);
+    }
     return theme('obiba_mica_network-detail', array(
-      'investigators_modal' => obiba_mica_study_get_contact_detail('investigator', $network_dto->id, $network_dto->investigators),
-      'contacts_modal' => obiba_mica_study_get_contact_detail('contact', $network_dto->id, $network_dto->contacts),
+      'investigators_modal' => !empty($investigator_detail_modal)?$investigator_detail_modal:NULL,
+      'contacts_modal' => !empty($contact_detail_modal)?$contact_detail_modal:NULL,
       'network_dto' => $network_dto,
       'has_variables' => _obiba_mica_network_has_variables($network_dto->studySummaries),
       'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
+      'associated_people_button' => !empty($associated_people_button) ? $associated_people_button : NULL,
+      'associated_people_modal' => !empty($associated_people_modal) ? $associated_people_modal : NULL
     ));
   }
   else {
@@ -114,9 +123,9 @@ function obiba_mica_network_study_table_headers() {
 
 function obiba_mica_network_coverage($study_ids) {
   return obiba_mica_search_query_charts(MicaClient::addParameterDtoQueryLink(array(
-      'variables' =>
-        array('terms' => array('studyIds' => $study_ids))
-    )), NULL, NULL,
+    'variables' =>
+      array('terms' => array('studyIds' => $study_ids))
+  )), NULL, NULL,
     array('group-by' => 'studyIds'));
 }
 
@@ -128,7 +137,5 @@ function _obiba_mica_network_has_variables($study_summaries) {
       }
     }
   }
-
   return FALSE;
 }
-
