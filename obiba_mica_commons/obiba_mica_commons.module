@@ -36,12 +36,6 @@ function obiba_mica_commons_menu() {
     'page arguments' => array(2),
   );
 
-  $items['download/%/%/%'] = array(
-    'page callback' => 'obiba_mica_commons_download_attachment',
-    'access callback' => TRUE,
-    'page arguments' => array(1, 2, 3),
-  );
-
   $items['mica/datatable-international'] = array(
     'title' => 'Dataset',
     'page callback' => 'obiba_mica_commons_datatables_multi_Lang',
@@ -94,42 +88,6 @@ function obiba_mica_commons_library_alter(&$libraries, $module) {
 function obiba_mica_commons_fixed_sidebar($template) {
   $output['fixed_menu'] = theme($template, $_SESSION['fixed_menu']);
   drupal_json_output($output);
-}
-
-/**
- * Download the attachments.
- *
- * @param string $entity_type
- *   The entity type containing attachments.
- * @param string $entity_id
- *   The entity id.
- * @param string $file_resource_id
- *   The file resource id.
- */
-function obiba_mica_commons_download_attachment($entity_type, $entity_id, $file_resource_id) {
-  if (!empty($file_resource_id)) {
-    $mica_client = new MicaClient();
-    $raw_data = $mica_client->downloadFile($entity_type, $entity_id, $file_resource_id);
-
-    if (!empty($raw_data) && empty($raw_data['code'])) {
-      drupal_add_http_header('Content-Type', $raw_data['raw_header_array']['Content-Type']);
-      drupal_add_http_header('Content-Disposition', $raw_data['raw_header_array']['Content-Disposition']);
-      ob_clean();
-      print $raw_data['data'];
-      exit;
-    }
-    else {
-      drupal_set_message(t('An error occurred downloading file, server response code : @code, Server message: "@message"',
-        array(
-          '@code' => $raw_data['code'],
-          '@message' => $raw_data['message'],
-        )
-      ),
-        'error');
-      drupal_goto('mica/' . $entity_type . '/' . $entity_id);
-
-    }
-  }
 }
 
 /**

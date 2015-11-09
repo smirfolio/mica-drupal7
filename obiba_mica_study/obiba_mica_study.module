@@ -97,7 +97,6 @@ function obiba_mica_study_theme($existing, $type, $theme, $path) {
       'path' => $path_theme
     ),
     'mica_dce_detail' => array('template' => 'obiba_mica_study-dce-detail', 'path' => $path_theme),
-    'obiba_mica_study_attachments' => array('template' => 'obiba_mica_study_attachments', 'path' => $path_theme),
     'obiba_mica_study_opal' => array('template' => 'obiba_mica_study_opal', 'path' => $path_theme),
     'obiba_mica_study_fixed_sidebar' => array('template' => 'obiba_mica_study_fixed_sidebar', 'path' => $path_theme)
   );
@@ -201,7 +200,6 @@ function obiba_mica_study_get_attachment_url($study_id, $attachment) {
 function obiba_mica_study_load_libs() {
   $module_path_ = drupal_get_path('module', 'obiba_mica_commons');
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-affix.js');
-  drupal_add_js($module_path_ . '/js/obiba_mica_commons_attachment_download.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-got-top.js');
 
   $charts_info = variable_get('charts_default_settings');

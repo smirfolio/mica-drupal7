@@ -1,0 +1,323 @@
+<?php
+
+/**
+ * @file
+ * MicaFilesResource class
+ */
+
+/**
+ * Class MicaStudyResource
+ */
+class MicaFilesResource extends MicaClient {
+
+  const POPULATION = 'population';
+  const DCE = 'data-collection-event';
+
+  public function __construct($mica_url = NULL) {
+    parent::__construct($mica_url);
+
+  }
+
+  /**
+   * Get attachments by path resource.
+   *
+   * @param $attachment_path
+   *
+   * @return array
+   */
+  public function getAttachment($entity_type, $entity_id) {
+    $this->setLastResponse(NULL);
+    $path_attachments = '/' . $entity_type . '/' . $entity_id;
+    $url = $this->micaUrl . '/files-search/' . rawurlencode($path_attachments) . '?order=asc&query=&recursively=true&sort=name';
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return $this->wrapAttachments($entity_type, $entity_id, json_decode($data));
+    }
+    catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage(),
+        ), WATCHDOG_WARNING);
+      return array();
+    }
+  }
+
+  /**
+   * Wrap the attachments and return associative array path=>file name
+   *
+   * @param $flat_attachments
+   *
+   * @return array
+   */
+  protected function wrapAttachments($entity_type, $entity_id, $flat_attachments) {
+    $wrapped_attachments = array();
+    foreach ($flat_attachments as $key => $attachment) {
+      $wrapped_attachments[$attachment->attachment->path][$key] = $attachment->attachment;
+    }
+    ksort($wrapped_attachments, SORT_NATURAL);
+    $tree = new Tree($entity_type, $entity_id);
+    foreach ($wrapped_attachments as $path => $data) {
+      $tree->addNode($path, $data);
+    }
+    return $tree;
+  }
+
+  /**
+   * Deal with downloadable resources from server (Images, attachments).
+   *
+   * @param string $entity_type
+   *   Study, dce, network ...
+   * @param string $entity_id
+   *   The id of the entity.
+   * @param string $file_id
+   *   The id of the stored file on the server.
+   *
+   * @return array
+   *   containing :
+   *    data : The raw file to download
+   *    filename : The real file name of the file
+   *    raw_header_array : the raw of header response
+   *    or in case of error
+   *    code : the error code
+   *    message : the error message
+   */
+  public function downloadAttachmentFile($file_path, $file_name) {
+    $url = $this->micaUrl . "/file-dl/" . $file_path . "/" . rawurlencode($file_name);
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => self::authorizationHeader(array(
+          'Accept' => array(
+            'text/html',
+            'application/xhtml+xml',
+            'application/xml;q=0.9',
+            'image/webp',
+            '*/*;q=0.8'
+          ),
+        )
+      ),
+    ));
+
+    $client = $this->client();
+
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      $file_name = parent::getPropertyValueFromHeaderArray(parent::parseHeaders($client->lastResponse->headers),
+        'filename',
+        'Content-Disposition'
+      );
+      $raw_data = array(
+        'extension' => parent::getFileExtension($file_name),
+        'data' => $data,
+        'filename' => $file_name,
+        'raw_header_array' => parent::parseHeaders($client->lastResponse->headers),
+      );
+      return $raw_data;
+    }
+    catch (HttpClientException $e) {
+      watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage(),
+        ), WATCHDOG_WARNING);
+      return $raw_data = array(
+        'code' => $e->getCode(),
+        'message' => $e->getMessage(),
+      );
+    }
+
+  }
+
+}
+
+/**
+ * Node instanced represent the tree structure
+ */
+class TreeNode {
+  private $children;
+  private $path;
+  private $fullPath;
+  private $data;
+
+  public function __construct($path, $fullPath) {
+    $this->path = $path;
+    $this->fullPath = $fullPath;
+  }
+
+  public function getPath() {
+    return $this->path;
+  }
+
+  public function getFullPath() {
+    return $this->fullPath;
+  }
+
+  public function getData() {
+    return $this->data;
+  }
+
+  public function setData($value) {
+    $this->data = $value;
+  }
+
+  public function hasChildren() {
+    return !empty($this->children);
+  }
+
+  public function getChildren() {
+    return $this->children;
+  }
+
+  public function addChild($child) {
+    if (empty($this->children)) {
+      $this->children = array();
+    }
+    array_push($this->children, $child);
+  }
+
+  public function findChildFullPath($full_path) {
+    return $this->findChildInternal($this, $full_path, function ($node, $full_path) {
+      return $node->fullPath === $full_path;
+      //return strstr($node->fullPath, $full_path);
+    });
+  }
+
+  public function findChild($path) {
+    return $this->findChildInternal($this, $path, function ($node, $path) {
+      return $node->path === $path;
+    });
+  }
+
+  /**
+   * La recherche recursive parmis les enfants
+   */
+  private function findChildInternal($node, $path, $compare_function) {
+    if ($compare_function($node, $path)) {
+      return $node;
+    }
+    else {
+      if (!empty($node->children)) {
+        // go through all children and try to find the path
+        foreach ($node->children as $child) {
+          $result = $this->findChildInternal($child, $path, $compare_function);
+          if ($result != NULL) {
+            return $result;
+          }
+        }
+      }
+    }
+
+    // never found the path
+    return NULL;
+  }
+
+}
+
+class Tree {
+  private $root;
+  private $entity_type;
+  private $id_entity;
+
+  public function __construct($entity_type, $id_entity) {
+    $this->entity_type = $entity_type;
+    $this->id_entity = $id_entity;
+    $this->root = new TreeNode(NULL, NULL);
+  }
+
+  /**
+   * Takes a raw path, breaks into parts and assigns the data to the last node
+   * For example the following data:
+   *
+   * '/a/b/c/d' => DATA
+   *
+   * Will become a tree of this form:
+   *
+   * - a
+   *   - b
+   *     - c
+   *       -d => DATA
+   */
+  public function addNode($path, $data) {
+    $parts = explode('/', trim($path, '/'));
+    $node = $this->root;
+    $fullPath = '';
+
+    foreach ($parts as $path) {
+      $target = $node->findChild($path);
+      $fullPath .= '/' . $path;
+
+      if (empty($target)) {
+        $target = new TreeNode($path, $fullPath);
+        $node->addChild($target);
+      }
+
+      $node = $target;
+    }
+
+    // echo $fullPath . '<br/>';
+
+    $node->setData($data);
+  }
+
+  public function findNode($path) {
+    return $this->root->findChild($path);
+  }
+
+  public function findNodeFullPath($path) {
+    return $this->root->findChildFullPath($path);
+  }
+
+
+  /**
+   * For debugging
+   */
+  public function themeFolders($root_node = NULL, $exclude_path = NULL) {
+    $root_node = $root_node ? $root_node : $this->root;
+    return $this->processThemeFolders($root_node, 1, $exclude_path);
+  }
+
+  function themeListFiles($data) {
+    $files = '';
+    foreach ($data as $file) {
+      $files .= theme('obiba_mica_files_themed_files_list', array(
+        'entity_type' => $this->entity_type,
+        'id_entity' => $this->id_entity,
+        'attachment' => $file
+      ));
+    }
+    return $files;
+  }
+
+  private function processThemeFolders($node, $indent = 1, $exclude_path = NULL) {
+    $folder_theme = '';
+    if (!empty($node->getFullPath()) &&  (empty($exclude_path) || !strstr($node->getPath(), $exclude_path))) {
+      $data = $node->getData();
+      $list_files = empty($data) ? '' : $this->themeListFiles($data);
+      $folder_theme .= theme('obiba_mica_files_themed_folders_list', array(
+        'indent' => $indent,
+        'folder_path' => $node->getFullPath(),
+        'list_files' => $list_files
+      ));
+      if ($node->hasChildren()) {
+        $children = $node->getChildren();
+        foreach ($children as $child) {
+          $folder_theme .= $this->processThemeFolders($child, $indent + 2, $exclude_path);
+        }
+      }
+      return $folder_theme;
+    }
+
+  }
+}
+

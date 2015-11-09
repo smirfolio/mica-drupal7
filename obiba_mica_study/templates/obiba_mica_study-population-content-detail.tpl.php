@@ -209,8 +209,11 @@
           <td><?php print obiba_mica_commons_get_localized_field($population->selectionCriteria, 'info'); ?></td>
         </tr>
       <?php endif; ?>
-
       </tbody>
     </table>
   </div>
+<?php endif; ?>
+
+<?php if (!empty($attachments)): ?>
+  <?php print $attachments; ?>
 <?php endif; ?>

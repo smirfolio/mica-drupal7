@@ -117,6 +117,10 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
   </section>
 
+  <?php if (!empty($attachments)): ?>
+    <?php print $attachments; ?>
+  <?php endif; ?>
+
   <!-- STUDIES -->
   <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
     <section>

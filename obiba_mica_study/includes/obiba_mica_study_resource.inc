@@ -89,55 +89,6 @@ class MicaStudyResource extends MicaClient {
     }
   }
 
-  /**
-   * Get attachments by path resource.
-   *
-   * @param $attachment_path
-   *
-   * @return array
-   */
-  public function getAttachment($attachment_path) {
-    $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/files-search/' . rawurlencode($attachment_path) . '?order=asc&query=&recursively=true&sort=name';
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $this->wrapAttachments(json_decode($data));
-    }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
-      return array();
-    }
-  }
-
-  /**
-   * Wrap the attachments and return associative array path=>file name
-   *
-   * @param $flat_attachments
-   *
-   * @return array
-   */
-  protected function wrapAttachments($flat_attachments) {
-    $wrapped_attachments = array();
-    foreach ($flat_attachments as $key => $attachment) {
-      $wrapped_attachments[$attachment->attachment->path][$key] = $attachment->attachment;
-    }
-    return $wrapped_attachments;
-  }
-
   public function studies_search($spec_dto_params = NULL) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/studies/_search/?' . 'size=' . MicaClient::getResponsePageSize();

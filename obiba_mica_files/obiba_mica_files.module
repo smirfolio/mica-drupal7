@@ -1,0 +1,91 @@
+<?php
+/**
+ * @file
+ * Mica files module file
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function obiba_mica_files_menu() {
+
+  $items['download/%/%/%'] = array(
+    'page callback' => 'obiba_mica_files_download_attachment',
+    'file' => 'obiba_mica_files_services.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 2, 3),
+  );
+
+  return $items;
+}
+
+/**
+ *Implements hook_theme().
+ *
+ * copy '<modules>/obiba_mica_study/templates/'   files in  yor customized
+ * theme  '<YOUR_THEME>/templates/' path you can modify default display of
+ * listed page templates by rearrange block field for example don't forget to
+ * clear the theme registry.
+ */
+function obiba_mica_files_theme($existing, $type, $theme, $path) {
+  $path_theme = $path . '/templates';
+  return array(
+    'obiba_mica_files_themed_files_list' => array(
+      'template' => 'obiba_mica_files_themed_files_list',
+      'path' => $path_theme
+    ),
+    'obiba_mica_files_themed_folders_list' => array(
+      'template' => 'obiba_mica_files_themed_folders_list',
+      'path' => $path_theme
+    ),
+    'obiba_mica_files_documents_section' => array(
+      'template' => 'obiba_mica_files_documents_section',
+      'path' => $path_theme
+    ),
+  );
+}
+
+/**
+ *
+ */
+function obiba_mica_files_get_flat_attachments($entity_type, $entity_id) {
+  $files_resources = new MicaFilesResource();
+  $flat_attachments = $files_resources->getAttachment($entity_type, $entity_id);
+  return $flat_attachments;
+}
+
+function obiba_mica_files_get_themed_attachments($entity_type, $entity_id, $parent_path_attachment, $flat_attachments) {
+  $themed_list_attachments = '';
+  if (!empty($flat_attachments)) {
+    foreach ($flat_attachments as $current_path => $attachments_path) {
+      if (is_array($attachments_path)) {
+        $themed_list_attachments[$current_path]= obiba_mica_files_get_themed_attachment_folder($entity_type, $entity_id, $attachments_path, $current_path, $parent_path_attachment);
+      }
+    }
+  }
+  $themed_list_attachments .= theme('obiba_mica_files_documents_section', array('attachments' => $themed_list_attachments));
+  return $themed_list_attachments;
+}
+
+function obiba_mica_files_get_themed_attachment_folder($entity_type, $entity_id, $attachments_path, $current_path, $parent_path_attachment) {
+  $themed_list_attachments = '';
+  $path_name = str_replace($parent_path_attachment, '', $current_path);
+    foreach ($attachments_path as $path_attahcment => $attachment) {
+      $themed_list_attachments = obiba_mica_files_get_themed_attachment_file($entity_type, $entity_id, $attachment, $current_path, $parent_path_attachment);
+    }
+
+  return theme('obiba_mica_files_themed_folders_list',
+    array(
+      'folder_path' => $path_name ? $path_name : '',
+      'list_files' => $themed_list_attachments
+    ));
+}
+
+function obiba_mica_files_get_themed_attachment_file($entity_type, $entity_id, $attachment, $path_attachment, $parent_path_attachment) {
+  return theme('obiba_mica_files_themed_files_list', array(
+    'parent_path_attachment' => $parent_path_attachment,
+    'entity_type' => $entity_type,
+    'id_entity' => $entity_id,
+    'attachment' => $attachment,
+  ));
+}

@@ -125,6 +125,9 @@
 
           </tbody>
         </table>
+        <?php if (!empty($attachments)): ?>
+          <?php print $attachments; ?>
+        <?php endif; ?>
         <?php if (!empty($associated_people_button)): ?>
           <?php print render($associated_people_button); ?>
           <?php if (!empty($associated_people_modal)): ?>

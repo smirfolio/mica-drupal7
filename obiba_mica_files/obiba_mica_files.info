@@ -1,0 +1,8 @@
+name = "Obiba Mica Files"
+description = "Mica Client -- studies/networks/datasets associated files/attachements"
+package = Obiba
+core = 7.x
+
+dependencies[] = obiba_mica_commons
+
+files[] = includes/obiba_mica_files_resources.inc
