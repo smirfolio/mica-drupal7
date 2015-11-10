@@ -112,8 +112,10 @@ function obiba_mica_study_page_detail($study_id) {
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
       $flat_study_attachments = obiba_mica_files_get_flat_attachments('study', $study_id);
-      $filtred_tree_path = $flat_study_attachments->findNodeFullPath('/study/clsa');
-      $themed_attachment = $flat_study_attachments->themeFolders($filtred_tree_path, MicaFilesResource::POPULATION);
+      $filtered_tree_path = $flat_study_attachments->findNodeFullPath('/study/'.$study_id);
+      if (!empty($filtered_tree_path)) {
+        $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, MicaFilesResource::POPULATION,$study_id);
+      }
     }
     $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $flat_study_attachments);
     return theme('obiba_mica_study_detail',
@@ -192,8 +194,8 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
       if (!empty($flat_study_attachments) && module_exists('obiba_mica_files')) {
         if (!empty("/study/$study_detail->id/population/$population->id")) {
           $path_population_attachment = "/study/$study_detail->id/population/$population->id";
-          $filtred_tree_path = $flat_study_attachments->findNodeFullPath($path_population_attachment);
-          $themed_attachment = $flat_study_attachments->themeFolders($filtred_tree_path, MicaFilesResource::DCE);
+          $filtered_tree_path = $flat_study_attachments->findNodeFullPath($path_population_attachment);
+          $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, MicaFilesResource::DCE,$population->id );
         }
       }
       $dce_uids = array();
@@ -262,8 +264,8 @@ function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collec
     if (module_exists('obiba_mica_files')) {
       if (!empty("/study/$study_id/population/$population_id/data-collection-event/$dce->id")) {
         $path_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
-        $filtred_tree_dce_path = $flat_study_attachments->findNodeFullPath($path_attachment);
-        $themed_dce_attachment = $flat_study_attachments->themeFolders($filtred_tree_dce_path);
+        $filtered_tree_path = $flat_study_attachments->findNodeFullPath($path_attachment);
+        $themed_dce_attachment = $flat_study_attachments->themeFolders($filtered_tree_path,NULL,  $dce->id);
       }
     }
     $page_render_dces .= theme('mica_dce_detail', array(

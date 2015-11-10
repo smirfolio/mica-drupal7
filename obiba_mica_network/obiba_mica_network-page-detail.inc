@@ -10,7 +10,8 @@ include_once($path_module_study . '/obiba_mica_study-page-detail.inc');
 
 function obiba_mica_network_page_detail($network_id) {
   obiba_mica_network_load_charts_libs();
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/mica-network-detail.js', 'file');
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_network') .
+    '/js/mica-network-detail.js', 'file');
   drupal_add_js(array('network_url' => rawurlencode($network_id)), 'setting');
 
   $url_param = explode('?', request_uri());
@@ -40,24 +41,39 @@ function obiba_mica_network_page_detail($network_id) {
       $associated_people_button = theme('obiba_mica_persons-button');
       $associated_people_modal = theme('obiba_mica_persons-modal',
         array('persons_table' => theme('obiba_mica_persons-table')));
-      $investigator_detail_modal = obiba_mica_persons_get_person_detail('investigator', $network_dto->id, $network_dto->investigators);
-      $contact_detail_modal = obiba_mica_persons_get_person_detail('contact', $network_dto->id, $network_dto->contacts);
-    }
-    if (module_exists('obiba_mica_files')) {
-      drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
-      $flat_network_attachments = obiba_mica_files_get_flat_attachments('network', $network_id);
-      $path_attachment = '/network/' . $network_id;
-      $themed_attachment = obiba_mica_files_get_themed_attachments('network', $network_id, $path_attachment, $flat_network_attachments);
+      $investigator_detail_modal =
+        obiba_mica_persons_get_person_detail('investigator', $network_dto->id,
+          $network_dto->investigators);
+      $contact_detail_modal = obiba_mica_persons_get_person_detail('contact',
+        $network_dto->id, $network_dto->contacts);
     }
 
+    if (module_exists('obiba_mica_files')) {
+      drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
+        '/js/obiba_mica_files_attachment_download.js');
+      $flat_network_attachments =
+        obiba_mica_files_get_flat_attachments('network', $network_id);
+      $filtered_tree_path =
+        $flat_network_attachments->findNodeFullPath('/network/'.$network_id);
+      if (!empty($filtered_tree_path)) {
+        $themed_attachment =
+          $flat_network_attachments->themeFolders($filtered_tree_path,
+            NULL,$network_id);
+      }
+    }
     return theme('obiba_mica_network-detail', array(
-      'investigators_modal' => !empty($investigator_detail_modal) ? $investigator_detail_modal : NULL,
-      'contacts_modal' => !empty($contact_detail_modal) ? $contact_detail_modal : NULL,
+      'investigators_modal' => !empty($investigator_detail_modal) ?
+        $investigator_detail_modal : NULL,
+      'contacts_modal' => !empty($contact_detail_modal) ?
+        $contact_detail_modal : NULL,
       'network_dto' => $network_dto,
-      'has_variables' => _obiba_mica_network_has_variables($network_dto->studySummaries),
+      'has_variables' =>
+        _obiba_mica_network_has_variables($network_dto->studySummaries),
       'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
-      'associated_people_button' => !empty($associated_people_button) ? $associated_people_button : NULL,
-      'associated_people_modal' => !empty($associated_people_modal) ? $associated_people_modal : NULL,
+      'associated_people_button' => !empty($associated_people_button) ?
+        $associated_people_button : NULL,
+      'associated_people_modal' => !empty($associated_people_modal) ?
+        $associated_people_modal : NULL,
       'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
     ));
   }

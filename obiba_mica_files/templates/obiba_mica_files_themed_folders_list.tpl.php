@@ -1,20 +1,38 @@
-<div>
-  <?php if (empty($folder_path)): ?>
-    <i class="glyphicon glyphicon-folder-close"></i> ../<?php print $folder_path; ?>
-    <?php print $list_files; ?>
-  <?php else: ?>
-    <div style="margin-left:  <?php print 5*$indent?>px;">
-      <?php $folder_id = preg_replace('/[^A-Za-z0-9\-]/', '', $folder_path) ?>
-      <?php str_repeat('&nbsp;', $indent); ?>
+<?php
+/**
+ * @file
+ * Code for the obiba_mica_files modules.
+ *
+ * @author Obiba <info@obiba.org>
+ *
+ */
+
+?>
+<!--
+  ~ Copyright (c) 2015 OBiBa. All rights reserved.
+  ~
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the GNU Public License v3.0.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<?php if (!empty($folder_path)): ?>
+  <tr>
+    <td>
+      <div style="margin-left:  <?php print 5 * $indent ?>px;">
+        <?php str_repeat('&nbsp;', $indent); ?>
         <i class="glyphicon glyphicon-folder-close"></i>
         <?php print $folder_path; ?>
-
-      <div class="" id="folder-<?php print $folder_id; ?>">
-        <?php print $list_files; ?>
       </div>
-    </div>
-  <?php endif; ?>
+    </td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+<?php endif; ?>
+<?php print $list_files; ?>
 
-</div>
+
 
 

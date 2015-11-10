@@ -1,7 +1,10 @@
 <?php
 /**
  * @file
- * Code for the obiba_mica_dataset modules.
+ * Code for the obiba_mica_files modules.
+ *
+ * @author Obiba <info@obiba.org>
+ *
  */
 
 ?>
@@ -17,12 +20,23 @@
 
 <?php if (!empty($attachments)): ?>
   <section>
-    <h2 id="documents"><?php print t('Documents'); ?></h2>
-    <div>
-        <ul class="list-group">
-          <?php print $attachments; ?>
-        </ul>
-    </div>
+    <h2 id="documents"><?php print variable_get('files_documents_label'); ?></h2>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-condensed table-bordered">
+        <thead>
+        <tr>
+          <th width="45%"><?php print t('Name'); ?></th>
+          <th><?php print t('Type'); ?></th>
+          <th width="30%"><?php print t('Description'); ?></th>
+          <th><?php print t('Last Modification'); ?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php print $attachments; ?>
+        </tbody>
+      </table>
+      <div>
   </section>
 <?php endif; ?>
 

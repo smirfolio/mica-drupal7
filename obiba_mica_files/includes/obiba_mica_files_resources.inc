@@ -21,14 +21,18 @@ class MicaFilesResource extends MicaClient {
   /**
    * Get attachments by path resource.
    *
-   * @param $attachment_path
+   * @param $entity_type
+   *  study/network/population/data-collection-event/dataset
+   * @param  $entity_id
+   *  The entity Id
    *
    * @return array
    */
   public function getAttachment($entity_type, $entity_id) {
     $this->setLastResponse(NULL);
     $path_attachments = '/' . $entity_type . '/' . $entity_id;
-    $url = $this->micaUrl . '/files-search/' . rawurlencode($path_attachments) . '?order=asc&query=&recursively=true&sort=name';
+    $url = $this->micaUrl . '/files-search/' . rawurlencode($path_attachments) .
+      '?order=asc&query=&recursively=true&sort=name';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -44,7 +48,8 @@ class MicaFilesResource extends MicaClient {
       return $this->wrapAttachments($entity_type, $entity_id, json_decode($data));
     }
     catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,  Error serve code : @code, message: @message',
+      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
+      Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),
@@ -54,8 +59,12 @@ class MicaFilesResource extends MicaClient {
   }
 
   /**
-   * Wrap the attachments and return associative array path=>file name
+   * Wrap the attachments and return a tree folders.
    *
+   * @param $entity_type
+   *  study/network/population/data-collection-event/dataset
+   * @param  $entity_id
+   *  The entity Id
    * @param $flat_attachments
    *
    * @return array
@@ -63,7 +72,8 @@ class MicaFilesResource extends MicaClient {
   protected function wrapAttachments($entity_type, $entity_id, $flat_attachments) {
     $wrapped_attachments = array();
     foreach ($flat_attachments as $key => $attachment) {
-      $wrapped_attachments[$attachment->attachment->path][$key] = $attachment->attachment;
+      $wrapped_attachments[$attachment->attachment->path][$key] =
+        $attachment->attachment;
     }
     ksort($wrapped_attachments, SORT_NATURAL);
     $tree = new Tree($entity_type, $entity_id);
@@ -145,7 +155,7 @@ class MicaFilesResource extends MicaClient {
  * Node instanced represent the tree structure
  */
 class TreeNode {
-  private $children;
+  public $children;
   private $path;
   private $fullPath;
   private $data;
@@ -189,7 +199,6 @@ class TreeNode {
   public function findChildFullPath($full_path) {
     return $this->findChildInternal($this, $full_path, function ($node, $full_path) {
       return $node->fullPath === $full_path;
-      //return strstr($node->fullPath, $full_path);
     });
   }
 
@@ -211,7 +220,7 @@ class TreeNode {
         // go through all children and try to find the path
         foreach ($node->children as $child) {
           $result = $this->findChildInternal($child, $path, $compare_function);
-          if ($result != NULL) {
+          if ($result !== NULL) {
             return $result;
           }
         }
@@ -279,18 +288,47 @@ class Tree {
   }
 
 
-  /**
-   * For debugging
-   */
-  public function themeFolders($root_node = NULL, $exclude_path = NULL) {
+  public function themeFolders($root_node = NULL, $exclude_path = NULL, $id_entity) {
     $root_node = $root_node ? $root_node : $this->root;
-    return $this->processThemeFolders($root_node, 1, $exclude_path);
+    return theme('obiba_mica_files_documents_section',
+      array('attachments' => $this->processThemeFolders($root_node, $exclude_path, $id_entity, 0)));
   }
 
-  function themeListFiles($data) {
+  private function processThemeFolders($node, $exclude_path = NULL, $id_entity, $indent = 0) {
+    $folder_theme = '';
+    if (!empty($node->getFullPath()) && (empty($exclude_path) || !strstr($node->getPath(), $exclude_path))) {
+      $data = $node->getData();
+      if (!empty($data)) {
+        $folder_theme .= theme('obiba_mica_files_themed_folders_list', array(
+          'indent' =>  $indent==2?$indent-2:$indent,
+          'folder_path' => $node->getPath() !== $id_entity ? $node->getPath() : NULL,
+          'list_files' => $this->themeListFiles($data, $indent==0?0:$indent+2)
+        ));
+      }
+      else{
+        $folder_theme .= theme('obiba_mica_files_themed_folders_list', array(
+          'indent' =>  $indent==2?$indent-2:$indent,
+          'folder_path' => $node->getPath() !== $id_entity ? $node->getPath() : NULL,
+          'list_files' => ''
+        ));
+      }
+
+      if ($node->hasChildren()) {
+        $children = $node->getChildren();
+        foreach ($children as $child) {
+          $folder_theme .= $this->processThemeFolders($child, $exclude_path, $id_entity, $indent + 2);
+        }
+      }
+      return $folder_theme;
+    }
+
+  }
+
+  function themeListFiles($data, $indent) {
     $files = '';
     foreach ($data as $file) {
       $files .= theme('obiba_mica_files_themed_files_list', array(
+        'indent' => $indent,
         'entity_type' => $this->entity_type,
         'id_entity' => $this->id_entity,
         'attachment' => $file
@@ -298,26 +336,4 @@ class Tree {
     }
     return $files;
   }
-
-  private function processThemeFolders($node, $indent = 1, $exclude_path = NULL) {
-    $folder_theme = '';
-    if (!empty($node->getFullPath()) &&  (empty($exclude_path) || !strstr($node->getPath(), $exclude_path))) {
-      $data = $node->getData();
-      $list_files = empty($data) ? '' : $this->themeListFiles($data);
-      $folder_theme .= theme('obiba_mica_files_themed_folders_list', array(
-        'indent' => $indent,
-        'folder_path' => $node->getFullPath(),
-        'list_files' => $list_files
-      ));
-      if ($node->hasChildren()) {
-        $children = $node->getChildren();
-        foreach ($children as $child) {
-          $folder_theme .= $this->processThemeFolders($child, $indent + 2, $exclude_path);
-        }
-      }
-      return $folder_theme;
-    }
-
-  }
 }
-

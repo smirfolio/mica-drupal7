@@ -62,10 +62,18 @@ function obiba_mica_dataset_page_detail($dataset_type, $dataset_id) {
     ));
 
     if (module_exists('obiba_mica_files')) {
-      drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
-      $flat_dataset_attachments = obiba_mica_files_get_flat_attachments($dataset_type, $dataset_id);
+      drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
+        '/js/obiba_mica_files_attachment_download.js');
+      $flat_dataset_attachments =
+        obiba_mica_files_get_flat_attachments($dataset_type, $dataset_id);
       $path_attachment = '/' . $dataset_type . '/' . $dataset_id;
-      $themed_attachment = obiba_mica_files_get_themed_attachments($dataset_type, $dataset_id, $path_attachment, $flat_dataset_attachments);
+      $filtered_tree_path =
+        $flat_dataset_attachments->findNodeFullPath($path_attachment);
+      if (!empty($filtered_tree_path)) {
+        $themed_attachment =
+          $flat_dataset_attachments->themeFolders($filtered_tree_path, NULL,
+            $dataset_id);
+      }
     }
 
     return theme('obiba_mica_dataset-detail', array(
@@ -121,18 +129,20 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
   $modals = array();
   $themed_population_attachment = NULL;
   $populations = $data['population'];
-  $flat_study_attachments = obiba_mica_files_get_flat_attachments('study', $study_id);
+  $flat_study_attachments =
+    obiba_mica_files_get_flat_attachments('study', $study_id);
   if (!empty($populations)) {
     foreach ($populations as $population) {
-      if (!empty($flat_study_attachments) && module_exists('obiba_mica_files')) {
-        if (!empty("/study/$study_id/population/$population->id")) {
-          $path_population_attachment = "/study/$study_id/population/$population->id";
+      if (module_exists('obiba_mica_files')) {
+        drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
+          '/js/obiba_mica_files_attachment_download.js');
+        $path_population_attachment = "/study/$study_id/population/$population->id";
+        $filtered_tree_path =
+          $flat_study_attachments->findNodeFullPath($path_population_attachment);
+        if (!empty($filtered_tree_path)) {
           $themed_population_attachment =
-            obiba_mica_files_get_themed_attachments('study',
-              $study_id,
-              $path_population_attachment,
-              $flat_study_attachments,
-              MicaFilesResource::DCE);
+            $flat_study_attachments->themeFolders($filtered_tree_path,
+              MicaFilesResource::DCE,$population->id);
         }
       }
 
@@ -156,9 +166,15 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
       $dce_variables_nbr = array();
       foreach ($dces as $dce) {
         if (!empty($flat_study_attachments) && module_exists('obiba_mica_files')) {
-          if (!empty("/study/$study_id/population/$population_id/data-collection-event/$dce->id")) {
-            $path_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
-            $themed_attachment = obiba_mica_files_get_themed_attachments('study', $study_id, $path_attachment, $flat_study_attachments);
+          drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
+            '/js/obiba_mica_files_attachment_download.js');
+          $path_dce_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
+          $filtered_tree_path =
+            $flat_study_attachments->findNodeFullPath($path_dce_attachment);
+          if (!empty($filtered_tree_path)) {
+            $themed_dce_attachment =
+              $flat_study_attachments->themeFolders($filtered_tree_path,
+                NULL,$population->id);
           }
         }
         $dce_variables_nbr[obiba_mica_commons_get_localized_field($dce, 'name')] = $variables_dataset->total;
@@ -170,7 +186,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
           'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
           'dce_id_target' => $study_id . '-' . $population_id . '-' . $dce->id,
           'dce' => $dce,
-          'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
+          'attachments' => !empty($themed_dce_attachment) ? $themed_dce_attachment : NULL,
         ));
       }
     }
