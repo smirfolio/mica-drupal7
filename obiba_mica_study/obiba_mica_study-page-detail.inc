@@ -262,11 +262,12 @@ function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collec
   $themed_dce_attachment = NULL;
   foreach ($data_collection_events as $dce) {
     if (module_exists('obiba_mica_files')) {
-      if (!empty("/study/$study_id/population/$population_id/data-collection-event/$dce->id")) {
-        $path_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
-        $filtered_tree_path = $flat_study_attachments->findNodeFullPath($path_attachment);
-        $themed_dce_attachment = $flat_study_attachments->themeFolders($filtered_tree_path,NULL,  $dce->id);
+        $path_dce_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
+        $filtered_dce_tree_path = $flat_study_attachments->findNodeFullPath($path_dce_attachment);
+      if($population_id==1 && $dce->id==2){
+//        dvm($filtered_dce_tree_path);
       }
+        $themed_dce_attachment = $flat_study_attachments->themeFolders($filtered_dce_tree_path,NULL,  $dce->id);
     }
     $page_render_dces .= theme('mica_dce_detail', array(
       'has_coverage' => $has_coverage,

@@ -164,30 +164,35 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
       $themed_attachment = NULL;
       $population_id = $population->id;
       $dce_variables_nbr = array();
+      $modals['dce']='';
       foreach ($dces as $dce) {
         if (!empty($flat_study_attachments) && module_exists('obiba_mica_files')) {
           drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
             '/js/obiba_mica_files_attachment_download.js');
           $path_dce_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
-          $filtered_tree_path =
+          $filtered_dce_tree_path =
             $flat_study_attachments->findNodeFullPath($path_dce_attachment);
-          if (!empty($filtered_tree_path)) {
+          if (!empty($filtered_dce_tree_path)) {
             $themed_dce_attachment =
-              $flat_study_attachments->themeFolders($filtered_tree_path,
-                NULL,$population->id);
+              $flat_study_attachments->themeFolders($filtered_dce_tree_path,
+                NULL,$dce->id);
           }
         }
         $dce_variables_nbr[obiba_mica_commons_get_localized_field($dce, 'name')] = $variables_dataset->total;
-        $modals['dce'][] = theme('mica_dce_detail', array(
+
+        $modals['dce'] .= theme('mica_dce_detail', array(
           'has_coverage' => $has_coverage,
           'dce_variables_nbr' => $dce_variables_nbr,
           'study_id' => $study_id,
           'population_id' => $population_id,
           'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
-          'dce_id_target' => $study_id . '-' . $population_id . '-' . $dce->id,
+          'dce_id_target' => MicaClientPathHelpers::replacePlusInUrl($study_id . '-' . $population_id . '-' . $dce->id),
           'dce' => $dce,
           'attachments' => !empty($themed_dce_attachment) ? $themed_dce_attachment : NULL,
         ));
+      }
+      if(!empty($modals['dce'])){
+        drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_details.js', 'file');
       }
     }
   }

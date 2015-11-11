@@ -19,9 +19,6 @@
   -->
 
 <?php if (!empty($attachments)): ?>
-  <section>
-    <h2 id="documents"><?php print variable_get('files_documents_label'); ?></h2>
-
     <div class="table-responsive">
       <table class="table table-striped table-condensed table-bordered">
         <thead>
@@ -36,7 +33,6 @@
         <?php print $attachments; ?>
         </tbody>
       </table>
-      <div>
-  </section>
+    </div>
 <?php endif; ?>
 

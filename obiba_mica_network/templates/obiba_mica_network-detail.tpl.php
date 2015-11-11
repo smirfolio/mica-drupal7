@@ -143,8 +143,11 @@
     </div>
 
   </section>
+  <section>
+    <h2><?php print variable_get('files_documents_label'); ?></h2>
   <?php if (!empty($attachments)): ?>
     <?php print $attachments; ?>
+  </section>
   <?php endif; ?>
   <!-- STUDIES -->
   <?php if (!empty($network_dto->studySummaries)): ?>

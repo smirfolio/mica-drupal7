@@ -351,8 +351,12 @@
 <?php endif; ?>
 
   <!-- DOCUMENTS -->
+
   <?php if (!empty($attachments)): ?>
+  <section>
+    <h2><?php print variable_get('files_documents_label'); ?></h2>
     <?php print $attachments; ?>
+  </section>
   <?php endif; ?>
 
 <!-- TIMELINE -->

@@ -208,6 +208,18 @@ class TreeNode {
     });
   }
 
+  public function findImmediateChild($path) {
+    if (!empty($this->children)) {
+      foreach ($this->children as $child) {
+        if ($child->path === $path) {
+          return $child;
+        }
+      }
+    }
+
+    return NULL;
+  }
+
   /**
    * La recherche recursive parmis les enfants
    */
@@ -261,21 +273,15 @@ class Tree {
     $parts = explode('/', trim($path, '/'));
     $node = $this->root;
     $fullPath = '';
-
     foreach ($parts as $path) {
-      $target = $node->findChild($path);
+      $target = $node->findImmediateChild($path);
       $fullPath .= '/' . $path;
-
       if (empty($target)) {
         $target = new TreeNode($path, $fullPath);
         $node->addChild($target);
       }
-
       $node = $target;
     }
-
-    // echo $fullPath . '<br/>';
-
     $node->setData($data);
   }
 
@@ -290,24 +296,27 @@ class Tree {
 
   public function themeFolders($root_node = NULL, $exclude_path = NULL, $id_entity) {
     $root_node = $root_node ? $root_node : $this->root;
-    return theme('obiba_mica_files_documents_section',
-      array('attachments' => $this->processThemeFolders($root_node, $exclude_path, $id_entity, 0)));
+    $themed = $this->processThemeFolders($root_node, $exclude_path, $id_entity, 0);
+    return !empty($themed) ? theme('obiba_mica_files_documents_section',
+      array('attachments' => $themed)) : NULL;
   }
 
-  private function processThemeFolders($node, $exclude_path = NULL, $id_entity, $indent = 0) {
-    $folder_theme = '';
-    if (!empty($node->getFullPath()) && (empty($exclude_path) || !strstr($node->getPath(), $exclude_path))) {
+  private function processThemeFolders($node, $exclude_path = NULL, $id_entity, $indent = 0, &$has_files = NULL) {
+    $folder_theme = NULL;
+    if (!empty($node->getFullPath()) && (empty($exclude_path) || !strstr($node->getFullPath(), $exclude_path))) {
+
       $data = $node->getData();
       if (!empty($data)) {
         $folder_theme .= theme('obiba_mica_files_themed_folders_list', array(
-          'indent' =>  $indent==2?$indent-2:$indent,
+          'indent' => $indent == 2 ? $indent - 2 : $indent,
           'folder_path' => $node->getPath() !== $id_entity ? $node->getPath() : NULL,
-          'list_files' => $this->themeListFiles($data, $indent==0?0:$indent+2)
+          'list_files' => $this->themeListFiles($data, $indent == 0 ? 0 : $indent + 2)
         ));
+        $has_files++;
       }
       else{
         $folder_theme .= theme('obiba_mica_files_themed_folders_list', array(
-          'indent' =>  $indent==2?$indent-2:$indent,
+          'indent' => $indent == 2 ? $indent - 2 : $indent,
           'folder_path' => $node->getPath() !== $id_entity ? $node->getPath() : NULL,
           'list_files' => ''
         ));
@@ -316,10 +325,11 @@ class Tree {
       if ($node->hasChildren()) {
         $children = $node->getChildren();
         foreach ($children as $child) {
-          $folder_theme .= $this->processThemeFolders($child, $exclude_path, $id_entity, $indent + 2);
+          $folder_theme .= $this->processThemeFolders($child, $exclude_path, $id_entity, $indent + 2, $has_files);
         }
       }
-      return $folder_theme;
+//      return $folder_theme ;
+      return !empty($has_files) ? $folder_theme : NULL;
     }
 
   }
@@ -336,4 +346,28 @@ class Tree {
     }
     return $files;
   }
+
+  /**
+   * For debugging
+   */
+  public function dump_tree() {
+    $this->dump_treeInternal($this->root);
+  }
+
+  private function dump_treeInternal($node, $indent = 0) {
+    print str_repeat('&nbsp;', $indent)
+      . $node->getPath()
+      . '&nbsp'
+      . (empty($node->getData()) ? '' : $node->getData())
+      . '<br/>';
+
+    if ($node->hasChildren()) {
+      $children = $node->getChildren();
+      // array of folder templates
+      foreach ($children as $child) {
+        $this->dump_treeInternal($child, $indent + 2);
+      }
+    }
+  }
+
 }
