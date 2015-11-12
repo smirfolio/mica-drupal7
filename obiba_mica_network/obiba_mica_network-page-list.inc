@@ -9,7 +9,7 @@ function obiba_mica_network_page_list() {
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
 
-  $node_rendered = obiba_mica_commons_get_translated_node(variable_get('networks_page'));
+  $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('networks_page'));
 
   drupal_set_title($node_rendered['#node']->title);
 
@@ -55,7 +55,7 @@ function obiba_mica_network_page_list() {
     }
   }
   else {
-    $list_networks = t(variable_get_value('networks_empty_label'));
+    $list_networks = variable_get_value('networks_empty_label');
   }
 
   return theme('obiba_mica_network-list', array(
@@ -113,7 +113,7 @@ function obiba_mica_network_networks_table($networks_result) {
     array(
       'header' => $headers,
       'rows' => empty($chunks) ? array() : $chunks[$current_page],
-      'empty' => t(variable_get_value('networks_empty_label'))
+      'empty' => variable_get_value('networks_empty_label')
     )
   ) . theme('pager', $args);
 }

@@ -251,7 +251,7 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
 }
 
 function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none', $raw_options = array()) {
-  $chart_param = variable_get('charts_default_settings');
+  $chart_param = variable_get_value('charts_default_settings');
 
   $chart = array(
     '#type' => 'chart',
@@ -278,7 +278,7 @@ function obiba_mica_search_pie_chart($labels, $data, $title, $width = 250, $heig
 }
 
 function obiba_mica_search_mini_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
-  $chart_param = variable_get('charts_default_settings');
+  $chart_param = variable_get_value('charts_default_settings');
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
@@ -314,7 +314,7 @@ function obiba_mica_search_mini_column_chart($labels, $data, $title, $width = 25
 }
 
 function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
-  $chart_param = variable_get('charts_default_settings');
+  $chart_param = variable_get_value('charts_default_settings');
   $chart_width = $width;
   if (empty($width) && count($labels) < 10) {
     $chart_width = count($labels) * 20 + $height;

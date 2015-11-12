@@ -142,7 +142,7 @@ function obiba_mica_data_access_request_menu() {
   );
 
   $items[MicaClientPathProvider::DATA_ACCESS_USERS_LIST] = array(
-    'title' => t(variable_get_value('user_list_page_title')),
+    'title' => variable_get_value('user_list_page_title'),
     'page callback' => 'obiba_mica_data_access_request_users_list_page',
     'description' => 'List Researchers',
     'access callback' => 'obiba_mica_data_access_request_permission_check',
@@ -258,7 +258,7 @@ function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
  * Create/Update data access request node content page.
  */
 function obiba_mica_data_access_request() {
-  $data_access_node_node = obiba_mica_commons_get_translated_node(variable_get('access_request_page'));
+  $data_access_node_node = obiba_mica_commons_get_translated_node(variable_get_value('access_request_page'));
   drupal_set_title($data_access_node_node['#node']->title);
   if (!empty($data_access_node_node)) {
     return $data_access_node_node;
@@ -268,9 +268,9 @@ function obiba_mica_data_access_request() {
 the our Access Office. Prior to submitting a Data Access Application Form, we strongly recommend that you consult the
 our Policy documents, that will provide you with detailed information about the process and our's access, publication
 and intellectual property policies.</p> </div>";
-    $access_request_node_page = obiba_mica_commons_add_page(variable_get('access_request_page'), $my_body_content);
+    $access_request_node_page = obiba_mica_commons_add_page(variable_get_value('access_request_page'), $my_body_content);
     variable_set('access_request_page', $access_request_node_page->nid);
-    return node_view(node_load(variable_get('access_request_page')));
+    return node_view(node_load(variable_get_value('access_request_page')));
   }
 }
 
@@ -479,7 +479,7 @@ function obiba_mica_data_access_request_list_page() {
 
 function obiba_mica_data_access_request_users_list_page() {
   obiba_mica_data_access_requests_users_list_datatable_init();
-  drupal_set_title(t(variable_get_value('user_list_page_title')));
+  drupal_set_title(variable_get_value('user_list_page_title'));
   $profile_users_modal = theme('obiba_mica_data_access_request-user-profile-modal');
   return theme('obiba_mica_data_access_request-users-list', array(
     'profile_users_modal' => $profile_users_modal,

@@ -478,7 +478,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
 
                 $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
                   ObibaDatasetConstants::getIcon()
-                  . '" data-original-title="' . variable_get('dataset_harmonization_impossible_label') . '"></span>';
+                  . '" data-original-title="' . variable_get_value('dataset_harmonization_impossible_label') . '"></span>';
                 $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,

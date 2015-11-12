@@ -30,7 +30,7 @@ function obiba_mica_persons_admin_settings() {
   $form['persons']['persons_display']['labels']['associated_people'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('associated_people', 'Associated people'),
+    '#default_value' => variable_get_value('associated_people'),
     '#maxlength' => 255,
     '#description' => $info['description'],
   );

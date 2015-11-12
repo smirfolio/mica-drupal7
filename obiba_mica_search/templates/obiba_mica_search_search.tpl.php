@@ -93,7 +93,7 @@ if (!empty($search_param)) {
                       <?php
                       print MicaClientAnchorHelper::ajaxFriendlyAnchor(
                         MicaClientPathProvider::COVERAGE,
-                        t(variable_get_value('variable_coverage_label')),
+                        variable_get_value('variable_coverage_label'),
                         array('class' => 'btn btn-primary indent'),
                         array('query' => $query, 'group-by' => 'studyIds')
                       );
@@ -132,7 +132,7 @@ if (!empty($search_param)) {
                   if (variable_get_value('mica_statistics_coverage')) {
                     print MicaClientAnchorHelper::ajaxFriendlyAnchor(
                       MicaClientPathProvider::COVERAGE,
-                      t(variable_get_value('variable_coverage_label')),
+                      variable_get_value('variable_coverage_label'),
                       array('class' => 'btn btn-primary indent'),
                       array('query' => $query, 'group-by' => 'studyIds')
                     );
@@ -164,7 +164,7 @@ if (!empty($search_param)) {
                   if (variable_get_value('mica_statistics_coverage')) {
                     print MicaClientAnchorHelper::ajaxFriendlyAnchor(
                       MicaClientPathProvider::COVERAGE,
-                      t(variable_get_value('variable_coverage_label')),
+                      variable_get_value('variable_coverage_label'),
                       array('class' => 'btn btn-primary indent'),
                       array('query' => $query, 'group-by' => 'studyIds')
                     );
@@ -195,7 +195,7 @@ if (!empty($search_param)) {
                   if (variable_get_value('mica_statistics_coverage')) {
                     print MicaClientAnchorHelper::ajaxFriendlyAnchor(
                       MicaClientPathProvider::COVERAGE,
-                      t(variable_get_value('variable_coverage_label')),
+                      variable_get_value('variable_coverage_label'),
                       array('class' => 'btn btn-primary indent'),
                       array('query' => $query, 'group-by' => 'studyIds')
                     );
