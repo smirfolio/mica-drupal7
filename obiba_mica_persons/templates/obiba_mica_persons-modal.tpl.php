@@ -26,9 +26,6 @@
           class="modal-title"><?php print variable_get_value('associated_people'); ?></h3>
       </div>
       <div class="modal-body">
-        <button id="download-csv-person" class="btn btn-success pull-right"><i
-            class="glyphicon glyphicon-download"></i><?php print t('Download'); ?>
-        </button>
         <?php if (!empty($persons_table)): ?>
           <?php print $persons_table; ?>
         <?php endif; ?>
