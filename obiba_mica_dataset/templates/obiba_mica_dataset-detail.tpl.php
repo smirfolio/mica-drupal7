@@ -52,7 +52,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
 <div class="clearfix"></div>
 
-<article>
+<article class="bordered-article">
 
   <!-- OVERVIEW -->
   <section>

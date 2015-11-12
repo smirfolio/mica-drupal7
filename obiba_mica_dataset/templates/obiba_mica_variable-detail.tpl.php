@@ -15,7 +15,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<article>
+<article class="bordered-article">
   <section>
     <div class="row">
       <div class="col-lg-6 col-xs-12 ">

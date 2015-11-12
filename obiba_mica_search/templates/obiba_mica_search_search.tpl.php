@@ -69,7 +69,7 @@ if (!empty($search_param)) {
 
     <?php if (!empty($search_param['search_variables'])): ?>
       <div class="tab-pane active" id="variables">
-        <article class="<?php print $border_style ?>">
+        <article class="bordered-article <?php print $border_style ?>">
           <section class="<?php print $border_style . ' ' . $padding_style ?>">
             <div>
               <?php if ($show_tabs): ?>
@@ -120,7 +120,7 @@ if (!empty($search_param)) {
 
     <?php if (!empty($search_param['search_datasets'])): ?>
       <div class="tab-pane" id="datasets">
-        <article>
+        <article class="bordered-article">
           <section>
             <h2 class="pull-left"><?php print t('Datasets') ?></h2>
 
@@ -152,7 +152,7 @@ if (!empty($search_param)) {
 
     <?php if (!empty($search_param['search_studies'])): ?>
       <div class="tab-pane" id="studies">
-        <article>
+        <article class="bordered-article">
           <section>
             <h2 class="pull-left"><?php print t('Studies') ?></h2>
 
@@ -183,7 +183,7 @@ if (!empty($search_param)) {
 
     <?php if (!empty($search_param['search_networks'])): ?>
       <div class="tab-pane" id="networks">
-        <article>
+        <article class="bordered-article">
           <section>
             <h2 class="pull-left"><?php print t('Networks') ?></h2>
 

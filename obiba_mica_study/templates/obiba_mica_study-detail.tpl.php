@@ -49,7 +49,7 @@
 
 <div class="clearfix"></div>
 
-<article>
+<article class="bordered-article">
 
 <section>
 <div class="row">

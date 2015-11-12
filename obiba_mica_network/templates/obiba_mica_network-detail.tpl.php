@@ -41,7 +41,7 @@
 
 <div class="clearfix"></div>
 
-<article>
+<article class="bordered-article">
 
   <section>
     <h2><?php print t('Overview') ?></h2>

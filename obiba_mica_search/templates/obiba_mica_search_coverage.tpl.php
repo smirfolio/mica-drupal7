@@ -95,7 +95,7 @@ if (empty($query)) {
 $has_coverage = !empty($coverages->totalHits);
 ?>
 
-<article id="coverages" class="pull-left">
+<article id="coverages" class="bordered-article pull-left">
 </article>
 
 <?php if (!$has_coverage): ?>
