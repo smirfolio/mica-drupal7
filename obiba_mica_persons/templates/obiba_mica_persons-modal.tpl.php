@@ -29,7 +29,6 @@
         <button id="download-csv-person" class="btn btn-success pull-right"><i
             class="glyphicon glyphicon-download"></i><?php print t('Download'); ?>
         </button>
-        <div class="clearfix"></div>
         <?php if (!empty($persons_table)): ?>
           <?php print $persons_table; ?>
         <?php endif; ?>

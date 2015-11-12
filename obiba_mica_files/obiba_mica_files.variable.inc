@@ -10,7 +10,7 @@
 function obiba_mica_files_variable_info($options) {
   $variable['files_documents_label'] = array(
     'title' => t('Documents'),
-    'description' => t('The attached documents'),
+    'description' => t('The attached documents section title'),
     'type' => 'string',
     'default' => 'Documents',
   );
