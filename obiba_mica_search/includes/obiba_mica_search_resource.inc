@@ -32,7 +32,7 @@ class MicaSearchResource extends MicaClient {
   public function taxonomies_coverage($parameters = NULL, $default_dto_search = NULL) {
     $coverage_result = $this->_aggregation_resource('coverage', $parameters, $default_dto_search);
 
-    if (!empty($coverage_result)) {
+    if (!empty($coverage_result) && !empty($coverage_result->queryResult)) {
       $_SESSION['request-search-response'] = 'no-empty';
       $this->sessionFacetsBuilder($coverage_result->queryResult);
     }
