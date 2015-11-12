@@ -202,5 +202,5 @@ function _obiba_mica_dataset_get_datasets_table($datasets, $type) {
  * Check the dataset type.
  */
 function obiba_mica_dataset_type($dataset) {
-  return !empty($dataset->{'obiba.mica.StudyDatasetDto.type'}) ? 'study-dataset' : 'harmonization-dataset';
+  return $dataset->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
 }

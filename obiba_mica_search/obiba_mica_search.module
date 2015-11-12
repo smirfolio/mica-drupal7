@@ -1062,7 +1062,7 @@ function obiba_mica_search_datasets_table($datasets) {
       $count_variables = !empty($dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables) ?
         obiba_mica_commons_format_number($dataset->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables) : NULL;
 
-      if (!empty($dataset->{'obiba.mica.StudyDatasetDto.type'})) {
+      if ($dataset->variableType == 'Study') {
         $type_dataset_link = 'study-dataset';
         $type_dataset = t('Study');
       }

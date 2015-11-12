@@ -1,6 +1,6 @@
 {
   "require": {
-    "obiba/obiba-mica-protos": "^1.0",
+    "obiba/obiba-mica-protos": "^1.1",
     "erusev/parsedown": "^1.5"
   }
 }
