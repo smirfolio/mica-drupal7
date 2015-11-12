@@ -43,7 +43,7 @@ class MicaClientPathProvider {
   const DATA_ACCESS_HOME = 'mica/data_access/home';
   const DATA_ACCESS_LIST = 'mica/data_access/requests';
   const DATA_ACCESS_USERS_LIST = 'mica/data_access/users';
-  const AGATE_REGISTER  = 'agate/register';
+  const AGATE_REGISTER = 'agate/register';
   const AGATE_PROFILE = 'agate/user/profile';
 
   /**
@@ -82,16 +82,19 @@ class MicaClientPathProvider {
    *   Study/Harmonization dataset.
    */
   public static function dataset($dataset) {
-    if (empty($dataset->{'obiba.mica.StudyDatasetDto.type'})
-      && empty($dataset->{'obiba.mica.HarmonizationDatasetDto.type'})
-    ) {
-
-      // DTO object.
-      $exts = $dataset->getExtensionList('obiba.mica.StudyDatasetDto.type');
-      return !empty($exts) ? self::studyDataset($dataset->id) : self::harmonizationDataset($dataset->id);
+    if (!empty($dataset->variableType)) {
+      return $dataset->variableType == 'Study' ? self::studyDataset($dataset->id) : self::harmonizationDataset($dataset->id);
+    }
+    if (!empty($dataset->_extensions)) {
+      if ($dataset->hasExtension('obiba.mica.StudyDatasetDto.type')) {
+        return self::studyDataset($dataset->id);
+      }
+      if ($dataset->hasExtension('obiba.mica.HarmonizationDatasetDto.type')) {
+        return self::harmonizationDataset($dataset->id);
+      }
     }
 
-    return !empty($dataset->{'obiba.mica.StudyDatasetDto.type'}) ? self::studyDataset($dataset->id) : self::harmonizationDataset($dataset->id);
+    return self::studyDataset($dataset->id);
   }
 
   /**
