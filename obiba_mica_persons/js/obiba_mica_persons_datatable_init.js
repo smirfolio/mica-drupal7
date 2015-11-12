@@ -11,14 +11,6 @@
           createDataTable(Drupal.settings.table_header, Drupal.settings.studies_id);
         });
       }
-
-      $("button#download-csv-person").on('click', function (event) {
-        // create a form for the file upload
-        var form = $("<form action='" + Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.resourcePathPersons + Drupal.settings.studies_id + '/download/ws' + "' method='post'>");
-        $(this).after(form);
-        form.submit().remove();
-        return false;
-      });
     }
   };
 
@@ -30,7 +22,7 @@
     else {
       divTablePersons.dataTable({
         "responsive": true,
-        "sDom": '<"table-var-wrapper"rftp>',
+        "sDom": '<"table-var-wrapper"r<"pull-left"f><"#buttonPlaceholder.pull-right">tp>',
         "bServerSide": false,
         "iDisplayLength": 10,
         "sAjaxSource": Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.resourcePathPersons + studies_id + '/ws',
@@ -77,5 +69,17 @@
         }
       });
     }
+
+    divTablePersons.on('draw.dt', function () {
+      $("div#buttonPlaceholder").html(Drupal.settings.download_button);
+      $("button#download-csv-person").on('click', function (event) {
+        // create a form for the file upload
+        var form = $("<form action='" + Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.resourcePathPersons + Drupal.settings.studies_id + '/download/ws' + "' method='post'>");
+        $(this).after(form);
+        form.submit().remove();
+        return false;
+      });
+    });
+
   }
 }(jQuery));
