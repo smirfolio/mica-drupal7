@@ -57,7 +57,7 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
   if (!empty($_GET['search-nbr-result'])) {
     $dataset_limits = $_GET['search-nbr-result'];
   }
-
+  $node_view['#node']->title = '';
   $resource_dataset = obiba_mica_dataset_correct_resource_server($dataset_resource);
   $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset, $dataset_limits);
   $total_hits = empty($response) ? 0 : $response->getTotalHits();
