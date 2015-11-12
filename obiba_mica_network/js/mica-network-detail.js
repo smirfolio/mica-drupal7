@@ -2,7 +2,14 @@
   Drupal.behaviors.obiba_mica_network_detail = {
     attach: function (context, settings) {
       if (context === document) {
-        $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/network/' + settings.network_url + '/coverage')
+        var resource_url = Drupal.settings.basePath
+          + Drupal.settings.pathPrefix
+          + 'mica/network/'
+          + settings.network_url
+          + '/coverage/'
+          + encodeURIComponent(JSON.stringify(settings.study_ids ? settings.study_ids : []));
+
+        $.ajax(resource_url)
           .done(function (data) {
             if (!data) {
               $('#coverage').remove();
