@@ -145,23 +145,24 @@
   </section>
   <?php if (!empty($attachments)): ?>
   <section>
-    <h2><?php print variable_get('files_documents_label'); ?></h2>
+    <h2><?php print variable_get_value('files_documents_label'); ?></h2>
     <?php print $attachments; ?>
   </section>
   <?php endif; ?>
   <!-- STUDIES -->
   <?php if (!empty($network_dto->studySummaries)): ?>
-  <section id="studies">
-    <h2><?php print t('Studies') ?></h2>
+    <section>
+      <h2><?php print t('Studies') ?></h2>
 
-    <div id="studies-table">
-      <div class="row">
-        <div class="col-lg-12 col-xs-12">
-          <table class="table table-striped" id="table-studies"></table>
+      <div id="studies-table">
+        <div class="row">
+          <div class="col-lg-12 col-xs-12">
+            <table class="table table-striped" id="table-studies"></table>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+
+    </section>
   <?php endif; ?>
 
   <!-- COVERAGE placeholder -->

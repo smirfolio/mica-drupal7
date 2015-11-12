@@ -215,6 +215,6 @@
 <?php endif; ?>
 
 <?php if (!empty($attachments)): ?>
-      <h4><?php print variable_get('files_documents_label'); ?></h4>
+      <h4><?php print variable_get_value('files_documents_label'); ?></h4>
   <?php print $attachments; ?>
 <?php endif; ?>
