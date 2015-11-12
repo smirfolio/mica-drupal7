@@ -52,7 +52,7 @@
         </small>
       </p>
     </div>
-    <?php if (variable_get('studies_list_show_study_sup_info')): ?>
+    <?php if (variable_get_value('studies_list_show_study_sup_info')): ?>
       <ul class="search-item-list-no-style sm-top-margin help-block">
         <li>
           <?php foreach ($network_digests as $digest) {

@@ -201,7 +201,7 @@
           <div class="table-statistic-var">
             <div id="param-statistics"
               var-id="<?php print $variable_dto->id; ?>"
-              <?php if (!variable_get('dataset_detailed_var_stats')) : ?> class="statistic-tab"<?php endif; ?> >
+              <?php if (!variable_get_value('dataset_detailed_var_stats')) : ?> class="statistic-tab"<?php endif; ?> >
               <div id="toempty">
                 <img
                   src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif">
@@ -220,7 +220,7 @@
             class="col-md-6 col-sm-12">
             <div id="param-statistics"
               var-id="<?php print $variable_dto->id; ?>"
-              <?php if (!variable_get('dataset_detailed_var_stats')) : ?> class="statistic-tab"<?php endif; ?> >
+              <?php if (!variable_get_value('dataset_detailed_var_stats')) : ?> class="statistic-tab"<?php endif; ?> >
               <div id="toempty">
                 <img
                   src="<?php print base_path() . drupal_get_path('theme', obiba_mica_commons_get_current_theme()) ?>/img/spin.gif">

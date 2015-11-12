@@ -10,7 +10,7 @@ include_once 'includes/obiba_mica_dataset_resource.inc';
  * Get the dataset list.
  */
 function obiba_mica_dataset_get_datasets_list() {
-  $node_rendered = obiba_mica_commons_get_translated_node(variable_get('dataset_page'));
+  $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
   return obiba_mica_dataset_get_datasets_page($node_rendered, 'datasets');
 }
@@ -19,7 +19,7 @@ function obiba_mica_dataset_get_datasets_list() {
  * Get the harmonized dataset list.
  */
 function obiba_mica_dataset_get_harmonization_datasets_list() {
-  $node_rendered = obiba_mica_commons_get_translated_node(variable_get('harmo_dataset_page'));
+  $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('harmo_dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
   return obiba_mica_dataset_get_datasets_page($node_rendered, 'harmonization_datasets');
 }
@@ -28,7 +28,7 @@ function obiba_mica_dataset_get_harmonization_datasets_list() {
  * Get the study dataset list.
  */
 function obiba_mica_dataset_get_study_datasets_list() {
-  $node_rendered = obiba_mica_commons_get_translated_node(variable_get('study_dataset_page'));
+  $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('study_dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
   return obiba_mica_dataset_get_datasets_page($node_rendered, 'study_datasets');
 }

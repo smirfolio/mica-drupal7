@@ -133,7 +133,7 @@ function obiba_mica_dataset_remove_harmonization_taxonomy($variable) {
  */
 function obiba_mica_dataset_variable_load_chart_libraries() {
   if (module_exists('charts')) {
-    $chart_param = variable_get('charts_default_settings');
+    $chart_param = variable_get_value('charts_default_settings');
     if (!empty($chart_param)) {
       $charts_lib = libraries_load($chart_param['library']);
       if (!empty($charts_lib)) {
@@ -220,7 +220,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
         $status = '<span class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>';
       }
       elseif ($status == 'impossible') {
-        $status = '<span class="glyphicon ' . ObibaDatasetConstants::getIcon() . '" title="' . variable_get('dataset_harmonization_impossible_label') . '"></span>';
+        $status = '<span class="glyphicon ' . ObibaDatasetConstants::getIcon() . '" title="' . variable_get_value('dataset_harmonization_impossible_label') . '"></span>';
       }
       elseif ($status == 'undetermined') {
         $status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>';

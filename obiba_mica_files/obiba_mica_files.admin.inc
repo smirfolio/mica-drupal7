@@ -31,7 +31,7 @@ function obiba_mica_files_admin_settings() {
   $form['files']['files_display']['labels']['files_documents_label'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('files_documents_label', 'Documents'),
+    '#default_value' => variable_get_value('files_documents_label'),
     '#maxlength' => 255,
     '#description' => $info['description'],
   );

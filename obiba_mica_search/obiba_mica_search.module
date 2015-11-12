@@ -777,7 +777,7 @@ function obiba_mica_search_variables_table($variables) {
     array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t(variable_get_value('variables_empty_label'))
+      'empty' => variable_get_value('variables_empty_label')
     )
   ) . '</div>' . theme('pager');
 }
@@ -1023,7 +1023,7 @@ function obiba_mica_search_studies_table($studies) {
         'header' => $headers,
         'rows' => $rows,
         variable_get_value('studies_column_design'),
-        'empty' => t(variable_get_value('studies_empty_label')),
+        'empty' => variable_get_value('studies_empty_label'),
         'attributes' => array(
           'id' => 'studies-results',
         )
@@ -1123,7 +1123,7 @@ function obiba_mica_search_datasets_table($datasets) {
     array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => t(variable_get_value('datasets_empty_label')),
+      'empty' => variable_get_value('datasets_empty_label'),
     )
   ) . '</div>' . theme('pager');
 }
@@ -1312,7 +1312,7 @@ function obiba_mica_search_networks_table($networks) {
       array(
         'header' => $headers,
         'rows' => $rows,
-        'empty' => t(variable_get_value('networks_empty_label')),
+        'empty' => variable_get_value('networks_empty_label'),
         'attributes' => array(
           'id' => 'networks-results',
         )

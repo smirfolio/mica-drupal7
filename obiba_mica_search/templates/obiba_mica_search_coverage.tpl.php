@@ -43,7 +43,7 @@ if (empty($query)) {
     <?php
       print MicaClientAnchorHelper::ajaxFriendlyAnchor(
         MicaClientPathProvider::SEARCH,
-        t(variable_get_value('variables_search_label')),
+        variable_get_value('variables_search_label'),
         array('class' => 'btn btn-primary indent'),
         array('type' => 'variables', 'query' => $query)
       );
@@ -100,7 +100,7 @@ $has_coverage = !empty($coverages->totalHits);
 
 <?php if (!$has_coverage): ?>
   <p class="md-top-margin pull-left">
-    <i><?php print t(variable_get_value('variables_empty_label')); ?></i>
+    <i><?php print variable_get_value('variables_empty_label'); ?></i>
   </p>
 <?php endif ?>
 
