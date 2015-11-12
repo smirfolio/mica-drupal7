@@ -14,4 +14,4 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<table id="person-table" class="table-striped table-bordered"></table>
+<table id="person-table" class="table table-striped table-bordered"></table>
