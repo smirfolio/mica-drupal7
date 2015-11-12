@@ -48,8 +48,10 @@
     ?>
   </td>
   <td>
-    <?php print
-      format_date(strtotime($attachment->timestamps->lastUpdate), 'custom', 'm/d/Y');
-    ?>
+    <?php if (!empty($attachment->timestamps->lastUpdate)): ?>
+      <?php print
+        format_date(strtotime($attachment->timestamps->lastUpdate), 'custom', 'm/d/Y');
+      ?>
+    <?php endif; ?>
   </td>
 </tr>
