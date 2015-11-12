@@ -9,11 +9,6 @@ $path_module_study = drupal_get_path('module', 'obiba_mica_study');
 include_once($path_module_study . '/obiba_mica_study-page-detail.inc');
 
 function obiba_mica_network_page_detail($network_id) {
-  obiba_mica_network_load_charts_libs();
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_network') .
-    '/js/mica-network-detail.js', 'file');
-  drupal_add_js(array('network_url' => rawurlencode($network_id)), 'setting');
-
   $url_param = explode('?', request_uri());
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
@@ -61,6 +56,12 @@ function obiba_mica_network_page_detail($network_id) {
             NULL,$network_id);
       }
     }
+
+    obiba_mica_network_load_charts_libs();
+    drupal_add_js(drupal_get_path('module', 'obiba_mica_network') .
+      '/js/mica-network-detail.js', 'file');
+    drupal_add_js(array('network_url' => rawurlencode($network_id), 'study_ids' => $network_dto->studyIds), 'setting');
+
     return theme('obiba_mica_network-detail', array(
       'investigators_modal' => !empty($investigator_detail_modal) ?
         $investigator_detail_modal : NULL,
@@ -83,10 +84,12 @@ function obiba_mica_network_page_detail($network_id) {
   }
 }
 
-function obiba_mica_network_page_detail_coverage($network_id) {
-  $network_resource = new MicaNetworkResource();
-  $network_dto = $network_resource->get_network($network_id);
-  $coverage = obiba_mica_network_coverage($network_dto->studyIds);
+function obiba_mica_network_page_detail_coverage($network_id, $study_ids) {
+  if (empty($study_ids)) {
+    exit;
+  }
+
+  $coverage = obiba_mica_network_coverage(json_decode($study_ids));
 
   if (empty($coverage)) {
     exit;
