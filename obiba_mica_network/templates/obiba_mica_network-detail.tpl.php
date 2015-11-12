@@ -143,26 +143,25 @@
     </div>
 
   </section>
+  <?php if (!empty($attachments)): ?>
   <section>
     <h2><?php print variable_get('files_documents_label'); ?></h2>
-  <?php if (!empty($attachments)): ?>
     <?php print $attachments; ?>
   </section>
   <?php endif; ?>
   <!-- STUDIES -->
   <?php if (!empty($network_dto->studySummaries)): ?>
-    <section>
-      <h2><?php print t('Studies') ?></h2>
+  <section id="studies">
+    <h2><?php print t('Studies') ?></h2>
 
-      <div id="studies-table">
-        <div class="row">
-          <div class="col-lg-12 col-xs-12">
-            <table class="table table-striped" id="table-studies"></table>
-          </div>
+    <div id="studies-table">
+      <div class="row">
+        <div class="col-lg-12 col-xs-12">
+          <table class="table table-striped" id="table-studies"></table>
         </div>
       </div>
-
-    </section>
+    </div>
+  </section>
   <?php endif; ?>
 
   <!-- COVERAGE placeholder -->
