@@ -150,7 +150,7 @@ function obiba_mica_network_coverage($study_ids) {
     'variables' =>
       array('terms' => array('studyIds' => $study_ids))
   )), NULL, NULL,
-    array('group-by' => 'studyIds'));
+    array('group-by' => 'studyIds', 'with-facets' => 'false'));
 }
 
 function _obiba_mica_network_has_variables($study_summaries) {
