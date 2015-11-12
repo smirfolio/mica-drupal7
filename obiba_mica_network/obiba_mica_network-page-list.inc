@@ -12,7 +12,7 @@ function obiba_mica_network_page_list() {
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('networks_page'));
 
   drupal_set_title($node_rendered['#node']->title);
-
+  $node_rendered['#node']->title = '';
   $query = NULL;
   $sort = NULL;
   $sort_by = NULL;
