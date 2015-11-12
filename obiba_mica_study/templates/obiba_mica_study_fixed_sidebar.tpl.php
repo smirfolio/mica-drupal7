@@ -30,7 +30,7 @@
         <?php if ($attachments): ?>
           <li>
             <a href="#documents">
-              <?php print t('Documents'); ?>
+              <?php print variable_get('files_documents_label'); ?>
             </a>
           </li>
         <?php endif; ?>

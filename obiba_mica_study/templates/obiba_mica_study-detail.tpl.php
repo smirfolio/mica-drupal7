@@ -350,6 +350,15 @@
   </section>
 <?php endif; ?>
 
+  <!-- DOCUMENTS -->
+
+  <?php if (!empty($attachments)): ?>
+  <section>
+    <h2><?php print variable_get('files_documents_label'); ?></h2>
+    <?php print $attachments; ?>
+  </section>
+  <?php endif; ?>
+
 <!-- TIMELINE -->
 <?php if (!empty($timeline)): ?>
   <section>
@@ -406,21 +415,6 @@
       </div>
 
     <?php endif ?>
-  </section>
-<?php endif; ?>
-
-<!-- DOCUMENTS -->
-<?php if (!empty($study_attachments)): ?>
-  <section>
-    <h2 id="documents"><?php print t('Documents'); ?></h2>
-
-    <div>
-      <?php if (!empty($study_attachments)): ?>
-        <ul class="list-group">
-          <?php print $study_attachments; ?>
-        </ul>
-      <?php endif; ?>
-    </div>
   </section>
 <?php endif; ?>
 

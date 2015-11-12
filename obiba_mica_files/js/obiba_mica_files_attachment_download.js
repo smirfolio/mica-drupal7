@@ -13,10 +13,11 @@
           // create a form for the file upload
           var entityType = $(this).attr('entity');
           var idEntity = $(this).attr('id_entity');
-          var idAttachment = $(this).attr('id_attachment');
-
-          var form = $("<form action='" + Drupal.settings.basePath + 'download/' + entityType + '/' + idEntity + '/' + idAttachment + "' method='post'>");
+          var fileName = $(this).attr('file_name');
+          var filepath = $(this).attr('file_path');
+          var form = $("<form action='" + Drupal.settings.basePath + 'download/' + idEntity + '/' + entityType + '/' + fileName + "' method='post'><input name='file_path' type='hidden' value='" + filepath + "'>");
           $(this).after(form);
+          console.log(form);
           form.submit().remove();
           return false;
         });

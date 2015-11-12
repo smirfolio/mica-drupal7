@@ -114,22 +114,13 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                 <td><p><?php print obiba_mica_commons_get_localized_field($dce, 'tissueTypes'); ?></p></td>
               </tr>
             <?php endif; ?>
-
-            <?php if (!empty($attachments)): ?>
-              <tr>
-                <th><?php print t('Documents') ?></th>
-                <td>
-                  <ul class="list-group">
-                    <?php print $attachments; ?>
-                  </ul>
-                </td>
-              </tr>
-            <?php endif; ?>
-
             </tbody>
           </table>
-
         </section>
+        <?php if (!empty($attachments)): ?>
+              <h4><?php print variable_get('files_documents_label'); ?></h4>
+          <?php print $attachments; ?>
+        <?php endif; ?>
       </div>
     </div>
   </div>

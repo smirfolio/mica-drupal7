@@ -117,6 +117,13 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
   </section>
 
+  <?php if (!empty($attachments)): ?>
+    <section>
+      <h2><?php print variable_get('files_documents_label'); ?></h2>
+      <?php print $attachments; ?>
+    </section>
+  <?php endif; ?>
+
   <!-- STUDIES -->
   <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
     <section>
@@ -210,15 +217,6 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               </tbody>
             </table>
           </div>
-
-          <?php if (!empty($modals)): ?>
-            <?php if (!empty($modals['population'])): ?>
-              <?php print render($modals['population'][0]); ?>
-            <?php endif; ?>
-            <?php if (!empty($modals['dce'])): ?>
-              <?php print render($modals['dce'][0]); ?>
-            <?php endif; ?>
-          <?php endif; ?>
         </div>
       <?php endif ?>
     </section>
@@ -268,3 +266,11 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   <?php endif; ?>
 
 </article>
+<?php if (!empty($modals)): ?>
+  <?php if (!empty($modals['population'])): ?>
+    <?php print render($modals['population'][0]); ?>
+  <?php endif; ?>
+  <?php if (!empty($modals['dce'])): ?>
+    <?php print render($modals['dce']); ?>
+  <?php endif; ?>
+<?php endif; ?>

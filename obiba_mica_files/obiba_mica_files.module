@@ -1,0 +1,73 @@
+<?php
+/**
+ * @file
+ * Mica files module file
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function obiba_mica_files_menu() {
+
+  $items['admin/config/obiba-mica/obiba-mica-files-settings'] = array(
+    'title' => 'Files module settings',
+    'description' => 'Configure Files modules pages',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('obiba_mica_files_admin_settings'),
+    'access arguments' => array('administer obiba mica'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'obiba_mica_files.admin.inc',
+    'weight' => 3,
+  );
+
+  $items['download/%/%/%'] = array(
+    'page callback' => 'obiba_mica_files_download_attachment',
+    'file' => 'obiba_mica_files_services.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(1, 2, 3),
+  );
+
+  return $items;
+}
+
+/**
+ *Implements hook_theme().
+ *
+ * copy '<modules>/obiba_mica_study/templates/'   files in  yor customized
+ * theme  '<YOUR_THEME>/templates/' path you can modify default display of
+ * listed page templates by rearrange block field for example don't forget to
+ * clear the theme registry.
+ */
+function obiba_mica_files_theme($existing, $type, $theme, $path) {
+  $path_theme = $path . '/templates';
+  return array(
+    'obiba_mica_files_themed_files_list' => array(
+      'template' => 'obiba_mica_files_themed_files_list',
+      'path' => $path_theme
+    ),
+    'obiba_mica_files_themed_folders_list' => array(
+      'template' => 'obiba_mica_files_themed_folders_list',
+      'path' => $path_theme
+    ),
+    'obiba_mica_files_documents_section' => array(
+      'template' => 'obiba_mica_files_documents_section',
+      'path' => $path_theme
+    ),
+  );
+}
+
+/**
+ * Get flat list attachments.
+ *
+ * @param $entity_type
+ *  study/network/population/data-collection-event/dataset.
+ * @param  $entity_id
+ *  The entity Id.
+ *
+ * @return array
+ */
+function obiba_mica_files_get_flat_attachments($entity_type, $entity_id) {
+  $files_resources = new MicaFilesResource();
+  $flat_attachments = $files_resources->getAttachment($entity_type, $entity_id);
+  return $flat_attachments;
+}

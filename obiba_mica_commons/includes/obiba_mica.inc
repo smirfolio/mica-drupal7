@@ -1004,7 +1004,7 @@ class MicaClient {
    * @return array
    *   The parsed header on an array.
    */
-  private function parseHeaders($raw_headers) {
+  protected function parseHeaders($raw_headers) {
     $headers = [];
 
     foreach (explode("\n", $raw_headers) as $i => $h) {
@@ -1028,7 +1028,7 @@ class MicaClient {
    * @return string
    *   The property value.
    */
-  private function parseHeader($attribute, $property) {
+  protected function parseHeader($attribute, $property) {
     $attributes_array = explode(';', $attribute);
     foreach ($attributes_array as $property_string) {
       if (strstr($property_string, $property)) {
@@ -1053,7 +1053,7 @@ class MicaClient {
    * @return string
    *   The value of property.
    */
-  private function getPropertyValueFromHeaderArray(array $header, $property, $attribute = NULL) {
+  protected function getPropertyValueFromHeaderArray(array $header, $property, $attribute = NULL) {
     if (!empty($attribute)) {
       return $this->parseHeader($header[$attribute], $property);
     }
@@ -1077,7 +1077,7 @@ class MicaClient {
    * @return string
    *   The file extension.
    */
-  private function getFileExtension($file_resource) {
+  protected function getFileExtension($file_resource) {
     $file_array = explode('.', $file_resource);
     $extension_file = count($file_array);
 
