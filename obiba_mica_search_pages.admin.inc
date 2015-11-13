@@ -447,6 +447,21 @@ function _obiba_mica_settings_search_variables_form(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+  $info = variable_get_info('variables_strict_coverage');
+  $form['search_display_settings']['variables_form']['variables_strict_coverage'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('variables_strict_coverage'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('variables_empty_coverage_label');
+  $form['search_display_settings']['variables_form']['variables_empty_coverage_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('variables_empty_coverage_label'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
 }
 
 
