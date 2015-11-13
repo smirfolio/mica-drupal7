@@ -147,8 +147,9 @@ function obiba_mica_commons_create_full_text_query_form($arg) {
     '#title' => '',
     '#description' => 'Filter by',
     '#default_value' => !empty($_GET['search-query']) ? check_plain($_GET['search-query']) : NULL,
-    '#prefix' => '<div class="lg-width"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-filter"></i></span>',
-    '#suffix' => "</div></div>",
+    '#theme_wrappers'   => array(), // remove the wrapper
+    '#prefix' => '<div class="input-group"><span class="glyphicon glyphicon-filter input-group-addon"></span>',
+    '#suffix' => "</div>",
     '#attributes' => array('id' => $input_id, 'name' => $input_id)
   );
 

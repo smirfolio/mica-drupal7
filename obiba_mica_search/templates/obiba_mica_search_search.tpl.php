@@ -35,7 +35,8 @@ if (!empty($search_param)) {
 
       <?php if (!empty($search_param['search_networks'])): ?>
         <li><a href="#networks" role="tab"> <?php print t('Networks') ?>
-            (<?php print !empty($network_total_hits) ? $network_total_hits : 0; ?>)
+            (<?php print !empty($network_total_hits) ? $network_total_hits : 0; ?>
+            )
           </a>
         </li>
       <?php endif; ?>
@@ -49,14 +50,17 @@ if (!empty($search_param)) {
 
       <?php if (!empty($search_param['search_datasets'])): ?>
         <li><a href="#datasets" role="tab"> <?php print t('Datasets') ?>
-            (<?php print !empty($dataset_total_hits) ? $dataset_total_hits : 0; ?>)
+            (<?php print !empty($dataset_total_hits) ? $dataset_total_hits : 0; ?>
+            )
           </a>
         </li>
       <?php endif; ?>
 
       <?php if (!empty($search_param['search_variables'])): ?>
-        <li class="active"><a href="#variables" role="tab"><?php print t('Variables') ?>
-            (<?php print !empty($variable_total_hits) ? obiba_mica_commons_format_number($variable_total_hits) : 0; ?>)
+        <li class="active"><a href="#variables"
+            role="tab"><?php print t('Variables') ?>
+            (<?php print !empty($variable_total_hits) ? obiba_mica_commons_format_number($variable_total_hits) : 0; ?>
+            )
           </a>
         </li>
       <?php endif; ?>
@@ -87,27 +91,27 @@ if (!empty($search_param)) {
               <div class="pull-right lg-top-margin facet-search-form">
                 <div class="row form-button-group">
                   <?php if (variable_get_value('mica_statistics_coverage')): ?>
-                    <div class="col-md-2"><?php print render($variable_select_size_form); ?></div>
-                    <div class="col-md-5"><?php print render($variable_search_form) ?> </div>
-                    <div class="col-md-4 pull-right">
+                    <div
+                      class="col-md-1 col-sm-2 col-sm-offset-4 col-md-offset-4"><?php print render($variable_select_size_form); ?></div>
+                    <div
+                      class="col-md-4 col-sm-3"><?php print render($variable_search_form) ?> </div>
+                    <div class="col-md-3 col-sm-3 no-padding">
                       <?php
                       print MicaClientAnchorHelper::ajaxFriendlyAnchor(
                         MicaClientPathProvider::COVERAGE,
                         variable_get_value('variable_coverage_label'),
-                        array('class' => 'btn btn-primary indent'),
+                        array('class' => 'btn btn-sm btn-primary btn-block'),
                         array('query' => $query, 'group-by' => 'studyIds')
                       );
                       ?>
                     </div>
                   <?php else: ?>
-                    <div class="pull-right no-padding">
-                      <div
-                        class="col-md-4"><?php print render($variable_select_size_form); ?></div>
-                      <div
-                        class="col-md-8 no-padding"><?php print render($variable_search_form) ?> </div>
-                    </div>
+                    <div
+                      class="col-md-2 col-md-offset-7"><?php print render($variable_select_size_form); ?></div>
+                    <div
+                      class="col-md-4"><?php print render($variable_search_form) ?> </div>
                   <?php endif; ?>
-                </div>
+
 
               </div>
             </div>
@@ -126,21 +130,27 @@ if (!empty($search_param)) {
 
             <div class="pull-right lg-top-margin facet-search-form">
               <div class="row form-button-group">
-                <div class="col-md-2"><?php print render($dataset_select_size_form); ?></div>
-                <div class="col-md-5 "><?php print render($dataset_search_form) ?> </div>
-                <div class="col-md-4 pull-right"><?php
-                  if (variable_get_value('mica_statistics_coverage')) {
+                <?php if (variable_get_value('mica_statistics_coverage')): ?>
+                  <div
+                    class="col-md-1 col-sm-2 col-sm-offset-4 col-md-offset-4"><?php print render($dataset_select_size_form); ?></div>
+                  <div
+                    class="col-md-4 col-sm-3"><?php print render($dataset_search_form) ?> </div>
+                  <div class="col-md-3 col-sm-3 no-padding"><?php
                     print MicaClientAnchorHelper::ajaxFriendlyAnchor(
                       MicaClientPathProvider::COVERAGE,
                       variable_get_value('variable_coverage_label'),
-                      array('class' => 'btn btn-primary indent'),
+                      array('class' => 'btn btn-sm btn-primary btn-block'),
                       array('query' => $query, 'group-by' => 'studyIds')
                     );
-                  }
-                  ?>
-                </div>
+                    ?>
+                  </div>
+                <?php else: ?>
+                  <div
+                    class="col-md-2 col-md-offset-7"><?php print render($dataset_select_size_form); ?></div>
+                  <div
+                    class="col-md-4"><?php print render($dataset_search_form) ?> </div>
+                <?php endif; ?>
               </div>
-
             </div>
 
             <div class="clearfix"></div>
@@ -158,19 +168,27 @@ if (!empty($search_param)) {
 
             <div class="pull-right lg-top-margin facet-search-form">
               <div class="row form-button-group">
-                <div class="col-md-2"><?php print render($study_select_size_form); ?></div>
-                <div class="col-md-5 "><?php print render($study_search_form) ?> </div>
-                <div class="col-md-4 pull-right"><?php
-                  if (variable_get_value('mica_statistics_coverage')) {
+                <?php if (variable_get_value('mica_statistics_coverage')): ?>
+                  <div
+                    class="col-md-1 col-sm-2 col-sm-offset-4 col-md-offset-4"><?php print render($study_select_size_form); ?></div>
+                  <div
+                    class="col-md-4 col-sm-3"><?php print render($study_search_form) ?> </div>
+                  <div class="col-md-3 col-sm-3 no-padding"><?php
                     print MicaClientAnchorHelper::ajaxFriendlyAnchor(
                       MicaClientPathProvider::COVERAGE,
                       variable_get_value('variable_coverage_label'),
-                      array('class' => 'btn btn-primary indent'),
+                      array('class' => 'btn btn-sm btn-primary btn-block'),
                       array('query' => $query, 'group-by' => 'studyIds')
                     );
-                  }
-                  ?>
-                </div>
+                    ?>
+                  </div>
+                <?php else: ?>
+                  <div
+                    class="col-md-2 col-md-offset-7"><?php print render($study_select_size_form); ?></div>
+                  <div
+                    class="col-md-4"><?php print render($study_search_form) ?> </div>
+                <?php endif; ?>
+
               </div>
 
             </div>
@@ -189,19 +207,28 @@ if (!empty($search_param)) {
 
             <div class="pull-right lg-top-margin facet-search-form">
               <div class="row form-button-group">
-                <div class="col-md-2"><?php print render($network_select_size_form); ?></div>
-                <div class="col-md-5 "><?php print render($network_search_form) ?> </div>
-                <div class="col-md-4 pull-right"><?php
-                  if (variable_get_value('mica_statistics_coverage')) {
-                    print MicaClientAnchorHelper::ajaxFriendlyAnchor(
-                      MicaClientPathProvider::COVERAGE,
-                      variable_get_value('variable_coverage_label'),
-                      array('class' => 'btn btn-primary indent'),
-                      array('query' => $query, 'group-by' => 'studyIds')
-                    );
-                  }
-                  ?>
-                </div>
+                <?php if (variable_get_value('mica_statistics_coverage')): ?>
+                  <div
+                    class="col-md-1 col-sm-2 col-sm-offset-4 col-md-offset-4"><?php print render($network_select_size_form); ?></div>
+                  <div
+                    class="col-md-4 col-sm-3"><?php print render($network_search_form) ?> </div>
+                  <div class="col-md-3 col-sm-3 no-padding"><?php
+                    if (variable_get_value('mica_statistics_coverage')) {
+                      print MicaClientAnchorHelper::ajaxFriendlyAnchor(
+                        MicaClientPathProvider::COVERAGE,
+                        variable_get_value('variable_coverage_label'),
+                        array('class' => 'btn btn-sm btn-primary btn-block'),
+                        array('query' => $query, 'group-by' => 'studyIds')
+                      );
+                    }
+                    ?>
+                  </div>
+                  <?php else: ?>
+                  <div
+                    class="col-md-2 col-md-offset-6"><?php print render($network_select_size_form); ?></div>
+                  <div
+                    class="col-md-4"><?php print render($network_search_form) ?> </div>
+                <?php endif; ?>
               </div>
 
             </div>
