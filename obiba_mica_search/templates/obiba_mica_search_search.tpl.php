@@ -107,9 +107,9 @@ if (!empty($search_param)) {
                     </div>
                   <?php else: ?>
                     <div
-                      class="col-md-2 col-md-offset-7"><?php print render($variable_select_size_form); ?></div>
+                      class="col-md-2 col-md-offset-6"><?php print render($variable_select_size_form); ?></div>
                     <div
-                      class="col-md-4"><?php print render($variable_search_form) ?> </div>
+                      class="col-md-4 no-padding"><?php print render($variable_search_form) ?> </div>
                   <?php endif; ?>
 
 
@@ -146,9 +146,9 @@ if (!empty($search_param)) {
                   </div>
                 <?php else: ?>
                   <div
-                    class="col-md-2 col-md-offset-7"><?php print render($dataset_select_size_form); ?></div>
+                    class="col-md-2 col-md-offset-6"><?php print render($dataset_select_size_form); ?></div>
                   <div
-                    class="col-md-4"><?php print render($dataset_search_form) ?> </div>
+                    class="col-md-4 no-padding"><?php print render($dataset_search_form) ?> </div>
                 <?php endif; ?>
               </div>
             </div>
@@ -184,9 +184,9 @@ if (!empty($search_param)) {
                   </div>
                 <?php else: ?>
                   <div
-                    class="col-md-2 col-md-offset-7"><?php print render($study_select_size_form); ?></div>
+                    class="col-md-2 col-md-offset-6"><?php print render($study_select_size_form); ?></div>
                   <div
-                    class="col-md-4"><?php print render($study_search_form) ?> </div>
+                    class="col-md-4 no-padding"><?php print render($study_search_form) ?> </div>
                 <?php endif; ?>
 
               </div>
@@ -227,7 +227,7 @@ if (!empty($search_param)) {
                   <div
                     class="col-md-2 col-md-offset-6"><?php print render($network_select_size_form); ?></div>
                   <div
-                    class="col-md-4"><?php print render($network_search_form) ?> </div>
+                    class="col-md-4 no-padding"><?php print render($network_search_form) ?> </div>
                 <?php endif; ?>
               </div>
 
