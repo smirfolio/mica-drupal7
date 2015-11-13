@@ -76,8 +76,7 @@ class MicaSearchResource extends MicaClient {
                                                   $aggregation_type = 'search',
                                                   $parameters = NULL,
                                                   $default_dto_search = NULL,
-                                                  $query_param_parts = NULL)
-  {
+                                                  $query_param_parts = NULL) {
     if (!empty($_SESSION['errorsQuery'])) {
       unset($_SESSION['errorsQuery']);
     }
@@ -110,13 +109,19 @@ class MicaSearchResource extends MicaClient {
 
     $url = $this->micaUrl . '/' . $type . '/_' . $aggregation_type;
 
+    $request_parameters = array();
+    if ($aggregation_type == 'coverage') {
+      $request_parameters['strict'] = variable_get_value('variables_strict_coverage', array('default' => TRUE)) ? 'true' : 'false';
+    }
+
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_POST,
       'headers' => $this->authorizationHeader(array(
-          'Accept' => array($accept_type),
-          'Content-Type' => array(parent::HEADER_JSON)
-        )
-      ),
+            'Accept' => array($accept_type),
+            'Content-Type' => array(parent::HEADER_JSON)
+          )
+        ),
+      'parameters' => $request_parameters,
       'data' => !empty($dto_param) ? $dto_param : $this->dtoFilterConstruct($type, NULL, 0, NULL),
     ));
 
@@ -125,8 +130,7 @@ class MicaSearchResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return array('data' => $data, 'last_response' => $client->lastResponse);
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       if ($e->getCode() == 403) {
         drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
       }

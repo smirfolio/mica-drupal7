@@ -104,4 +104,10 @@ $has_coverage = !empty($coverages->totalHits);
   </p>
 <?php endif ?>
 
+<?php if ($has_coverage && empty($coverages->taxonomies)): ?>
+  <p class="md-top-margin pull-left">
+    <i><?php print variable_get_value('variables_empty_coverage_label'); ?></i>
+  </p>
+<?php endif ?>
+
 <div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i></div>

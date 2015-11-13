@@ -585,4 +585,16 @@ function _obiba_mica_variable_search_variables(&$variable) {
     'type' => 'string',
     'default' => 'No variable found',
   );
+  $variable['variables_empty_coverage_label'] = array(
+    'title' => t('No variable coverage label'),
+    'description' => t('Text to be displayed when no variable coverage is found.'),
+    'type' => 'string',
+    'default' => 'Select some variable search criteria to see their corresponding coverage',
+  );
+  $variable['variables_strict_coverage'] = array(
+    'title' => t('Strict variable coverage'),
+    'description' => t('Get the variable classification coverage strictly: only report the variable counts for the corresponding search criteria.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 }
