@@ -23,13 +23,14 @@
         var formData = {};
         $.each(json, function (type, typeValues) {
           $.each(typeValues, function (aggType, aggs) {
-            $.each(aggs, function (name, agg) {
 
-              if (aggType === 'matches') {
-                var key = type + ":matches:facet-search-query";
-                formData[key] = aggs;
-                return;
-              }
+            if (aggType === 'matches') {
+              var key = type + ":matches:facet-search-query";
+              formData[key] = aggs;
+              return;
+            }
+
+            $.each(aggs, function (name, agg) {
 
               if (!$.isEmptyObject(agg.values) && agg.values.length > 0) {
                 formData[type + ":" + aggType + ":" + name + ":op"] = agg.op;
@@ -105,7 +106,7 @@
        * @returns {{matches: *}}
        */
       function extractMatchesEntry(value) {
-        var entry = /^(\w+):matches:.*=(.*)$/.exec(value);
+        var entry = /^(\w+):matches:facet-search-query=([^&]*)/.exec(value);
         return entry === null ? null : {type: entry[1], matches: entry[2]};
       }
 
