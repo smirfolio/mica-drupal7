@@ -38,6 +38,7 @@
       });
 
       $("#refresh-button").on("click", function () {
+        event.preventDefault();
         window.location = window.location.pathname;
       });
       /*******************/
