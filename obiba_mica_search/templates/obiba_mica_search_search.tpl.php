@@ -87,36 +87,36 @@ if (!empty($search_param)) {
                 </span>
                 </h3>
               <?php endif; ?>
+              <div class="clearfix"/>
+              <div
+                class="pull-right lg-top-search-page-margin facet-search-form">
 
-              <div class="pull-right lg-top-margin facet-search-form">
-                <div class="row form-button-group">
-                  <?php if (variable_get_value('mica_statistics_coverage')): ?>
-                    <div
-                      class="col-md-1 col-sm-2 col-sm-offset-4 col-md-offset-4"><?php print render($variable_select_size_form); ?></div>
-                    <div
-                      class="col-md-4 col-sm-3"><?php print render($variable_search_form) ?> </div>
-                    <div class="col-md-3 col-sm-3 no-padding">
-                      <?php
-                      print MicaClientAnchorHelper::ajaxFriendlyAnchor(
-                        MicaClientPathProvider::COVERAGE,
-                        variable_get_value('variable_coverage_label'),
-                        array('class' => 'btn btn-sm btn-primary btn-block'),
-                        array('query' => $query, 'group-by' => 'studyIds')
-                      );
-                      ?>
+                <?php if (variable_get_value('mica_statistics_coverage')): ?>
+                  <?php print render($variable_select_size_form); ?>
+                  <?php print render($variable_search_form) ?>
+                  <div class="inline-form search-coverage-btn">
+                    <div>
+                      <div class="input-group">
+                        <?php
+                        print MicaClientAnchorHelper::ajaxFriendlyAnchor(
+                          MicaClientPathProvider::COVERAGE,
+                          variable_get_value('variable_coverage_label'),
+                          array('class' => 'btn btn-primary'),
+                          array('query' => $query, 'group-by' => 'studyIds')
+                        );
+                        ?>
+                      </div>
                     </div>
-                  <?php else: ?>
-                    <div
-                      class="col-md-2 col-md-offset-6"><?php print render($variable_select_size_form); ?></div>
-                    <div
-                      class="col-md-4 no-padding"><?php print render($variable_search_form) ?> </div>
-                  <?php endif; ?>
-
+                  </div>
+                <?php else: ?>
+                  <?php print render($variable_select_size_form); ?>
+                  <?php print render($variable_search_form) ?>
+                <?php endif; ?>
 
               </div>
-            </div>
-            <div class="clearfix"/>
-            <?php print $variables_result['data']; ?>
+
+              <div class="clearfix"/>
+              <?php print $variables_result['data']; ?>
           </section>
         </article>
       </div>
@@ -128,29 +128,29 @@ if (!empty($search_param)) {
           <section>
             <h2 class="pull-left"><?php print t('Datasets') ?></h2>
 
-            <div class="pull-right lg-top-margin facet-search-form">
-              <div class="row form-button-group">
-                <?php if (variable_get_value('mica_statistics_coverage')): ?>
-                  <div
-                    class="col-md-1 col-sm-2 col-sm-offset-4 col-md-offset-4"><?php print render($dataset_select_size_form); ?></div>
-                  <div
-                    class="col-md-4 col-sm-3"><?php print render($dataset_search_form) ?> </div>
-                  <div class="col-md-3 col-sm-3 no-padding"><?php
-                    print MicaClientAnchorHelper::ajaxFriendlyAnchor(
-                      MicaClientPathProvider::COVERAGE,
-                      variable_get_value('variable_coverage_label'),
-                      array('class' => 'btn btn-sm btn-primary btn-block'),
-                      array('query' => $query, 'group-by' => 'studyIds')
-                    );
-                    ?>
+            <div class="clearfix"/>
+            <div class="pull-right lg-top-search-page-margin facet-search-form">
+              <?php if (variable_get_value('mica_statistics_coverage')): ?>
+                <?php print render($dataset_select_size_form); ?>
+                <?php print render($dataset_search_form) ?>
+                <div class="inline-form search-coverage-btn">
+                  <div>
+                    <div class="input-group">
+                      <?php
+                      print MicaClientAnchorHelper::ajaxFriendlyAnchor(
+                        MicaClientPathProvider::COVERAGE,
+                        variable_get_value('variable_coverage_label'),
+                        array('class' => 'btn btn-primary'),
+                        array('query' => $query, 'group-by' => 'studyIds')
+                      );
+                      ?>
+                    </div>
                   </div>
-                <?php else: ?>
-                  <div
-                    class="col-md-2 col-md-offset-6"><?php print render($dataset_select_size_form); ?></div>
-                  <div
-                    class="col-md-4 no-padding"><?php print render($dataset_search_form) ?> </div>
-                <?php endif; ?>
-              </div>
+                </div>
+              <?php else: ?>
+                <?php print render($dataset_select_size_form); ?>
+                <?php print render($dataset_search_form) ?>
+              <?php endif; ?>
             </div>
 
             <div class="clearfix"></div>
@@ -165,32 +165,28 @@ if (!empty($search_param)) {
         <article class="bordered-article">
           <section>
             <h2 class="pull-left"><?php print t('Studies') ?></h2>
-
-            <div class="pull-right lg-top-margin facet-search-form">
-              <div class="row form-button-group">
-                <?php if (variable_get_value('mica_statistics_coverage')): ?>
-                  <div
-                    class="col-md-1 col-sm-2 col-sm-offset-4 col-md-offset-4"><?php print render($study_select_size_form); ?></div>
-                  <div
-                    class="col-md-4 col-sm-3"><?php print render($study_search_form) ?> </div>
-                  <div class="col-md-3 col-sm-3 no-padding"><?php
-                    print MicaClientAnchorHelper::ajaxFriendlyAnchor(
-                      MicaClientPathProvider::COVERAGE,
-                      variable_get_value('variable_coverage_label'),
-                      array('class' => 'btn btn-sm btn-primary btn-block'),
-                      array('query' => $query, 'group-by' => 'studyIds')
-                    );
-                    ?>
+            <div class="clearfix"/>
+            <div class="pull-right lg-top-search-page-margin facet-search-form">
+              <?php if (variable_get_value('mica_statistics_coverage')): ?>
+                <?php print render($study_select_size_form); ?>
+                <?php print render($study_search_form) ?>
+                <div class="inline-form search-coverage-btn">
+                  <div>
+                    <div class="input-group">
+                      <?php print MicaClientAnchorHelper::ajaxFriendlyAnchor(
+                        MicaClientPathProvider::COVERAGE,
+                        variable_get_value('variable_coverage_label'),
+                        array('class' => 'btn btn-primary'),
+                        array('query' => $query, 'group-by' => 'studyIds')
+                      );
+                      ?>
+                    </div>
                   </div>
-                <?php else: ?>
-                  <div
-                    class="col-md-2 col-md-offset-6"><?php print render($study_select_size_form); ?></div>
-                  <div
-                    class="col-md-4 no-padding"><?php print render($study_search_form) ?> </div>
-                <?php endif; ?>
-
-              </div>
-
+                </div>
+              <?php else: ?>
+                <?php print render($study_select_size_form); ?>
+                <?php print render($study_search_form) ?>
+              <?php endif; ?>
             </div>
             <div class="clearfix"></div>
             <?php print $studies['data']; ?>
@@ -204,33 +200,28 @@ if (!empty($search_param)) {
         <article class="bordered-article">
           <section>
             <h2 class="pull-left"><?php print t('Networks') ?></h2>
-
-            <div class="pull-right lg-top-margin facet-search-form">
-              <div class="row form-button-group">
-                <?php if (variable_get_value('mica_statistics_coverage')): ?>
-                  <div
-                    class="col-md-1 col-sm-2 col-sm-offset-4 col-md-offset-4"><?php print render($network_select_size_form); ?></div>
-                  <div
-                    class="col-md-4 col-sm-3"><?php print render($network_search_form) ?> </div>
-                  <div class="col-md-3 col-sm-3 no-padding"><?php
-                    if (variable_get_value('mica_statistics_coverage')) {
-                      print MicaClientAnchorHelper::ajaxFriendlyAnchor(
+            <div class="clearfix"/>
+            <div class="pull-right lg-top-search-page-margin facet-search-form">
+              <?php if (variable_get_value('mica_statistics_coverage')): ?>
+                <?php print render($network_select_size_form); ?>
+                <?php print render($network_search_form) ?>
+                <div class="inline-form search-coverage-btn">
+                  <div>
+                    <div class="input-group">
+                      <?php print MicaClientAnchorHelper::ajaxFriendlyAnchor(
                         MicaClientPathProvider::COVERAGE,
                         variable_get_value('variable_coverage_label'),
-                        array('class' => 'btn btn-sm btn-primary btn-block'),
+                        array('class' => 'btn btn-primary'),
                         array('query' => $query, 'group-by' => 'studyIds')
                       );
-                    }
-                    ?>
+                      ?>
+                    </div>
                   </div>
-                  <?php else: ?>
-                  <div
-                    class="col-md-2 col-md-offset-6"><?php print render($network_select_size_form); ?></div>
-                  <div
-                    class="col-md-4 no-padding"><?php print render($network_search_form) ?> </div>
-                <?php endif; ?>
-              </div>
-
+                </div>
+              <?php else: ?>
+                <?php print render($network_select_size_form); ?>
+                <?php print render($network_search_form) ?>
+              <?php endif; ?>
             </div>
 
             <div class="clearfix"/>

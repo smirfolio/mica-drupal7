@@ -148,7 +148,7 @@ function obiba_mica_commons_create_full_text_query_form($arg) {
     '#description' => 'Filter by',
     '#default_value' => !empty($_GET['search-query']) ? check_plain($_GET['search-query']) : NULL,
     '#theme_wrappers'   => array(), // remove the wrapper
-    '#prefix' => '<div class="input-group"><span class="glyphicon glyphicon-filter input-group-addon"></span>',
+    '#prefix' => '<div class="input-group max-width-search"><span class="glyphicon glyphicon-filter input-group-addon"></span>',
     '#suffix' => "</div>",
     '#attributes' => array('id' => $input_id, 'name' => $input_id)
   );
@@ -519,6 +519,8 @@ function obiba_mica_search_get_search_data() {
 function obiba_mica_search_size_select_form() {
   $context =
     array(
+      '#prefix' => '<div class="inline-form">',
+      '#suffix' => '</div>',
       'options' => //
         array( //
           10 => 10, //

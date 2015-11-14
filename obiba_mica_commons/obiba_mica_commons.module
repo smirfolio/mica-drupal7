@@ -543,12 +543,17 @@ function obiba_mica_commons_create_size_select_form($context) {
   $form['#id'] = 'obiba-mica-size-select-form';
   $form['#method'] = 'get';
 
+  $form['#prefix'] = $context['#prefix']?$context['#prefix']:'';
+  $form['#suffix'] = $context['#suffix']?$context['#suffix']:'';
+
   $form['size'] = array(
     '#type' => 'select',
     '#title' => '',
     '#description' => t('Nbr items'),
     '#options' => $context['options'],
     '#default_value' => $default_size,
+    '#prefix' => '<div class="input-group">',
+    '#suffix' => "</div>",
     '#theme_wrappers'   => array(), // remove the wrapper
     '#attributes' => array(
       'id' => 'edit-size',
