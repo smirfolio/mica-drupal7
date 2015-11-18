@@ -10,7 +10,7 @@
 function obiba_mica_drush_command() {
   $items['mica-study-timeline-download'] = array(
     'callback' => 'obiba_mica_drush_timeline_download',
-    'aliases' => 'dhtime',
+    'aliases' => array('dhtime'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Downloads the ths study timeline library from timeline repositories.'),
     'arguments' => array(
@@ -20,7 +20,7 @@ function obiba_mica_drush_command() {
 
   $items['highcharts-download'] = array(
     'callback' => 'obiba_mica_drush_highcharts_download',
-    'aliases' => 'dhili',
+    'aliases' => array('dhili'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Downloads the Optional highcharts library from highcharts repositories.'),
     'arguments' => array(
@@ -30,7 +30,7 @@ function obiba_mica_drush_command() {
 
   $items['datatables-plugins-download'] = array(
     'callback' => 'obiba_mica_drush_datatable_bootstrap_plugins_download',
-    'aliases' => 'dataplg',
+    'aliases' => array('dataplg'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Downloads the Optional Datatables Bootstrap Plugin library from datatables.net .'),
     'arguments' => array(
@@ -40,7 +40,7 @@ function obiba_mica_drush_command() {
 
   $items['datatables-download'] = array(
     'callback' => 'obiba_mica_drush_datatable_download',
-    'aliases' => 'ddlib',
+    'aliases' => array('ddlib'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Downloads the Optional Datatables library from datatables.net .'),
     'arguments' => array(
@@ -50,7 +50,7 @@ function obiba_mica_drush_command() {
 
   $items['obiba-progressbar-download'] = array(
     'callback' => 'obiba_mica_drush_obiba_progressbar',
-    'aliases' => 'opblib',
+    'aliases' => array('opblib'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Downloads the  obiba-progressbar library from Obiba repository .'),
     'arguments' => array(
