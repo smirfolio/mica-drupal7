@@ -31,7 +31,7 @@ class MicaFilesResource extends MicaClient {
   public function getAttachment($entity_type, $entity_id) {
     $this->setLastResponse(NULL);
     $path_attachments = '/' . $entity_type . '/' . $entity_id;
-    $url = $this->micaUrl . '/files-search/' . rawurlencode($path_attachments) .
+    $url = $this->micaUrl . '/files-search' . $path_attachments .
       '?order=asc&query=&recursively=true&sort=name';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -54,7 +54,7 @@ class MicaFilesResource extends MicaClient {
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),
         ), WATCHDOG_WARNING);
-      return array();
+      return $this->wrapAttachments($entity_type, $entity_id,array());
     }
   }
 
