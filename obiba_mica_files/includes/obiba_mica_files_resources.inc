@@ -303,7 +303,8 @@ class Tree {
 
   private function processThemeFolders($node, $exclude_path = NULL, $id_entity, $indent = 0, &$has_files = NULL) {
     $folder_theme = NULL;
-    if (!empty($node->getFullPath()) && (empty($exclude_path) || !strstr($node->getFullPath(), $exclude_path))) {
+    $full_path = $node->getFullPath();
+    if (!empty($full_path) && (empty($exclude_path) || !strstr($full_path, $exclude_path))) {
 
       $data = $node->getData();
       if (!empty($data)) {
@@ -355,10 +356,11 @@ class Tree {
   }
 
   private function dump_treeInternal($node, $indent = 0) {
+    $data = $node->getData();
     print str_repeat('&nbsp;', $indent)
       . $node->getPath()
       . '&nbsp'
-      . (empty($node->getData()) ? '' : $node->getData())
+      . (empty($data) ? '' : $data)
       . '<br/>';
 
     if ($node->hasChildren()) {
