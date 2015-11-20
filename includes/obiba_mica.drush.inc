@@ -8,6 +8,16 @@
  * Implements hook_drush_command().
  */
 function obiba_mica_drush_command() {
+  $items['download-dependencies'] = array(
+    'callback' => 'obiba_mica_drush_download_js_dependencies',
+    'aliases' => array('dldeps'),
+    'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
+    'description' => dt('Download JavaScript dependencies for the production environment.'),
+    'arguments' => array(
+      'path' => dt('Optional. The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries/angular-schema-form</code>).'),
+    ),
+  );
+
   $items['mica-study-timeline-download'] = array(
     'callback' => 'obiba_mica_drush_timeline_download',
     'aliases' => array('dhtime'),
@@ -304,5 +314,50 @@ function obiba_mica_drush_obiba_progressbar() {
         }
       }
     }
+  }
+}
+
+
+
+/**
+ * Uses curl to install all required JS packages. No other dependencies than Curl is required.
+ */
+function obiba_mica_drush_download_js_dependencies()
+{
+  $args = func_get_args();
+  if ($args[0]) {
+    $path = $args[0];
+  } else {
+    $path = drush_get_context('DRUSH_DRUPAL_ROOT');
+  }
+
+  $path .= '/sites/all/libraries';
+
+  // Create the libraries path if it does not exist.
+  if (!is_dir($path)) {
+    drush_op('mkdir', $path);
+  }
+
+  // clean up content
+  if (!drush_shell_exec("rm -rf $path/*")) {
+    drush_log(dt("Failed to empty $path content."), 'error');
+    return;
+  }
+
+  $repository_name = 'mica-drupal-js-libraries';
+  $dependencies_url = 'https://github.com/obiba/'. $repository_name .'/archive/master.tar.gz';
+
+  if (!drush_shell_exec("rm -rf $path/*")) {
+    drush_log(dt("Failed to empty $path content."), 'error');
+    return;
+  }
+
+  if (!drush_shell_exec("curl -Ls $dependencies_url |  tar -xzf - -C $path/. --strip-components=1")) {
+    drush_log(dt("Failed download to dependencies from $dependencies_url to $path."), 'error');
+    return;
+  }
+
+  if (!drush_shell_exec("rm -rf .git*")) {
+    drush_log(dt("Failed to delete Git related file"), 'warning');
   }
 }
