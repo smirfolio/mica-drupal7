@@ -202,7 +202,7 @@ function obiba_mica_commons_clean_string($str) {
     return $nstr;
   }
 
-  return t(ucwords(str_replace('_', ' ', $str)));
+  return t(str_replace('_', ' ', $str));
 }
 
 /**
