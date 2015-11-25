@@ -23,10 +23,6 @@
             }
           }
         }
-
-        if ($term->key == 'Nutrition') {
-          dpm($term->description);
-        }
         $tooltip = empty($term->description) ? (strlen($title) < 30 ? '' : $title) : $term->description;
         ?>
         <span id="checkthebox"
