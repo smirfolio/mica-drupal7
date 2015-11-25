@@ -287,7 +287,7 @@ class VariableStatistics {
           }
         }
       }
-      if ($missing_end) {
+      if (!empty($missing_end)) {
         array_push($missings, $missing_end);
       }
     }
