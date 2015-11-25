@@ -158,7 +158,7 @@ function obiba_mica_search_term_chart($term_coverage) {
  */
 function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, $bucket_filter_arg = NULL, $default_dto_search = NULL, $chart_title = NULL) {
   $search_resources = new MicaSearchResource();
-  $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search);
+  $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search, array('strict' => 'false'));
   $taxonomy_charts = array();
   if (!empty($coverages->taxonomies)) {
     foreach ($coverages->taxonomies as $taxonomy_coverage) {
