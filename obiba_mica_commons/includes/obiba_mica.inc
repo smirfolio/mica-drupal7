@@ -199,22 +199,35 @@ class MicaClient {
     }
     else {
       watchdog('obiba_mica', 'Auth by anonymous credentials');
+      $current_anonymous_pass = variable_get_value('mica_anonymous_password');
+      if ($current_anonymous_pass == variable_get_value('mica_anonymous_password_saved')) {
 
-      if (isset($_SESSION[self::MICA_COOKIE])) {
-        $headers = $this->addCookieHeader($headers, NULL,
-          $_SESSION[self::MICA_COOKIE]);
+        if (isset($_SESSION[self::MICA_COOKIE])) {
+          $headers = $this->addCookieHeader($headers, NULL,
+            $_SESSION[self::MICA_COOKIE]);
+        }
+
+        $credentials = variable_get_value('mica_anonymous_name') . ':'
+          . variable_get_value('mica_anonymous_password');
+        $headers[self::AUTHORIZATION_HEADER] = array(
+          'Basic '
+          . base64_encode($credentials),
+        );
       }
+      else {
+        $credentials = variable_get_value('mica_anonymous_name') . ':'
+          . variable_get_value('mica_anonymous_password');
+        $headers[self::AUTHORIZATION_HEADER] = array(
+          'Basic '
+          . base64_encode($credentials),
+        );
+        session_unset();
+        variable_set_value('mica_anonymous_name_saved', variable_get_value('mica_anonymous_name'));
 
-      $credentials = variable_get_value('mica_anonymous_name') . ':'
-        . variable_get_value('mica_anonymous_password');
-      $headers[self::AUTHORIZATION_HEADER] = array(
-        'Basic '
-        . base64_encode($credentials),
-      );
+      }
     }
     return $headers;
   }
-
 
   /**
    * Add the cookie Id/value to the header.
@@ -229,7 +242,8 @@ class MicaClient {
    * @return array
    *   The transformed initial headers.
    */
-  private function addCookieHeader(array $headers, $obibaid, $micasid) {
+  private
+  function addCookieHeader(array $headers, $obibaid, $micasid) {
     $cookie = $this->cookieHeaderValue($obibaid, $micasid);
 
     if (isset($headers[self::COOKIE_HEADER])) {
@@ -252,7 +266,8 @@ class MicaClient {
    * @return string
    *   The Value of the cooke.
    */
-  private function cookieHeaderValue($obibaid, $micasid) {
+  private
+  function cookieHeaderValue($obibaid, $micasid) {
     $cookie_parts = array();
 
     if (isset($obibaid)) {
@@ -275,7 +290,8 @@ class MicaClient {
    * @return array
    *   The cookie array.
    */
-  private function parseCookie($cookie_str) {
+  private
+  function parseCookie($cookie_str) {
     $cookie = array();
     foreach (explode(';', $cookie_str) as $entry_str) {
       $entry = explode('=', $entry_str);
@@ -290,7 +306,8 @@ class MicaClient {
    * @return object
    *   The overridden object.
    */
-  protected function client() {
+  protected
+  function client() {
     $default_headers_setter = function ($request) {
       $request->setHeader('Accept-Encoding', 'gzip, deflate');
     };
@@ -321,7 +338,8 @@ class MicaClient {
    * @return array
    *   An array of constructed facet bucket to store in session.
    */
-  protected function sessionFacetsBucketConstruction($facets_bucket) {
+  protected
+  function sessionFacetsBucketConstruction($facets_bucket) {
     $facets_buckets = array();
     if (!empty($facets_bucket)) {
       foreach ($facets_bucket as $bucket) {
@@ -357,7 +375,8 @@ class MicaClient {
    * @param object $aggregations
    *   The object aggregation returned by Mica server.
    */
-  protected function sessionFacetsBuilder($aggregations) {
+  protected
+  function sessionFacetsBuilder($aggregations) {
     $network_buckets = array();
     $study_buckets = array();
     $dataset_buckets = array();
@@ -506,7 +525,8 @@ class MicaClient {
    * @return object
    *   The aggregation term object.
    */
-  protected function getAggregationsByEntityDto($entity_aggr, $aggregations_term) {
+  protected
+  function getAggregationsByEntityDto($entity_aggr, $aggregations_term) {
     if (!empty($entity_aggr)) {
       foreach ($entity_aggr as $agg) {
         if ($agg->aggregation == $aggregations_term && !empty($agg->{'obiba.mica.TermsAggregationResultDto.terms'})) {
@@ -523,7 +543,8 @@ class MicaClient {
    * @return int
    *   The page size.
    */
-  public static function getResponsePageSizeSmall() {
+  public
+  static function getResponsePageSizeSmall() {
     return self::$responsePageSizeSmall;
   }
 
@@ -533,7 +554,8 @@ class MicaClient {
    * @return int
    *   The page size.
    */
-  public static function getResponsePageSize() {
+  public
+  static function getResponsePageSize() {
     $size = empty($_GET['size']) ? self::$responsePageSize : $_GET['size'];
     return $size;
   }
@@ -547,7 +569,8 @@ class MicaClient {
    * @return array
    *   filtered aggregations.
    */
-  private static function filterVariableAggregations($aggs) {
+  private
+  static function filterVariableAggregations($aggs) {
     $filters = NULL;
     if (variable_get_value('search_datasets_autocomplete') == ObibaDatasetConstants::FACET_TYPE_HIDE) {
       $filters[] = "datasetId";
@@ -569,7 +592,8 @@ class MicaClient {
    * @return array
    *   filtered aggregations.
    */
-  private static function filterStudyAggregations($aggs) {
+  private
+  static function filterStudyAggregations($aggs) {
     $filters = NULL;
     if (!variable_get_value('search_general_population_sources_autocomplete')) {
       $filters[] = "populations-recruitment-generalPopulationSources";
@@ -585,7 +609,8 @@ class MicaClient {
    * @return int
    *   The number of taxonomies.
    */
-  public static function getTaxonomiesCount() {
+  public
+  static function getTaxonomiesCount() {
     return count(self::getTaxonomiesAsArray(variable_get_value('mica_taxonomy_order')));
   }
 
@@ -599,7 +624,8 @@ class MicaClient {
    * @param string $getter
    *   The getter method.
    */
-  public static function orderTaxonomies(&$taxonomies, $getter) {
+  public
+  static function orderTaxonomies(&$taxonomies, $getter) {
     $order_taxonomy_variable = variable_get_value('mica_taxonomy_order');
     if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
       $ordered_taxonomies = self::getTaxonomiesAsArray($order_taxonomy_variable);
@@ -628,7 +654,8 @@ class MicaClient {
    * @param string $getter
    *   The getter method.
    */
-  public static function orderFacetTaxonomies(&$taxonomies, $getter) {
+  public
+  static function orderFacetTaxonomies(&$taxonomies, $getter) {
     $order_taxonomy_variable = variable_get_value('mica_taxonomy_order');
 
     if (!empty($taxonomies) && !empty($order_taxonomy_variable)) {
