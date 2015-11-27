@@ -605,15 +605,16 @@ class MicaClient {
       $ordered_taxonomies = self::getTaxonomiesAsArray($order_taxonomy_variable);
       $taxonomies = array_map(
         function ($n) use ($taxonomies, $getter) {
-        $tmp = array_filter($taxonomies,
-          function ($t) use ($n, $getter) {
-            return $getter($t) === $n;
-          }
-        );
-        return reset($tmp);
+          $tmp = array_filter($taxonomies,
+            function ($t) use ($n, $getter) {
+              return $getter($t) === $n;
+            }
+          );
+          return reset($tmp);
         }
-      , $ordered_taxonomies);
-      $taxonomies = array_filter($taxonomies, function ($t) {return !empty($t);
+        , $ordered_taxonomies);
+      $taxonomies = array_filter($taxonomies, function ($t) {
+        return !empty($t);
       }
       );
     }
@@ -959,16 +960,17 @@ class MicaClient {
   public static function chartQueryBuilders($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, array $terms = NULL) {
     $parameters = array();
     $current_path_alias = drupal_get_path_alias();
+    $current_path_alias = explode('/[', $current_path_alias)[0];
     $common_param
       = array(
-        'variables' => array(
-          'terms' => array(
-            'attributes-'
-            . $taxonomy_name . '__' .
-            $vocabulary_name . '-und' => $terms,
-          ),
+      'variables' => array(
+        'terms' => array(
+          'attributes-'
+          . $taxonomy_name . '__' .
+          $vocabulary_name . '-und' => $terms,
         ),
-      );
+      ),
+    );
     if (!empty($query)) {
       return json_encode(MicaClient::concatenateParameterTerms(json_decode($query), $common_param));
     }
@@ -979,6 +981,11 @@ class MicaClient {
             $bucket->field => $bucket->value,
           ),
         ),
+        'networks' => array(
+          'terms' => array(
+            'networkId' => arg(2, $current_path_alias),
+          ),
+        ),
       );
     }
     if (strpos($current_path_alias, 'study')) {
@@ -986,6 +993,17 @@ class MicaClient {
         'studies' => array(
           'terms' => array(
             'studyIds' => arg(2, $current_path_alias),
+          ),
+        ),
+      );
+      $common_param
+        = array(
+        'variables' => array(
+          'terms' => array(
+            'attributes-'
+            . $taxonomy_name . '__' .
+            $vocabulary_name . '-und' => $terms,
+            $bucket->field => $bucket->value,
           ),
         ),
       );

@@ -207,7 +207,7 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
       foreach ($link as $key) {
         $links[] = $key;
       }
-//      dpm($links2);
+
       if (!empty($data)) {
         $parser_data['data'] = $data;
         $parser_data['links'] = !empty($links) ? $links : NULL;
