@@ -261,6 +261,14 @@ function obiba_mica_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer',
         ),
+        $lib_path_schema_form . '/ng-obiba/dist/ng-obiba.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
+        $lib_path_schema_form . '/ng-obiba-mica/dist/ng-obiba-mica.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
         $lib_path_schema_form . '/tv4/tv4.js' => array(
           'type' => 'file',
           'scope' => 'footer',
@@ -330,10 +338,6 @@ function obiba_mica_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/ng-obiba/dist/ng-obiba.js' => array(
-          'type' => 'file',
-          'scope' => 'footer',
-        ),
         $lib_path_schema_form
         . '/angular-recaptcha/release/angular-recaptcha.min.js' => array(
           'type' => 'file',
@@ -351,6 +355,7 @@ function obiba_mica_app_angular_load_angular_library() {
       ),
       'css' => array(
         $lib_path_schema_form . '/ng-obiba/dist/css/ng-obiba.css' => array(),
+        $lib_path_schema_form . '/ng-obiba-mica/dist/css/ng-obiba-mica.css' => array(),
         $lib_path_schema_form . '/angular-ui-select/dist/select.css' => array(),
       ),
     );

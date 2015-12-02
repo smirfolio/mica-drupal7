@@ -10,6 +10,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$path_module_commons = drupal_get_path('module', 'obiba_mica_commons');
+include_once($path_module_commons . '/includes/obiba_mica_commons_temp_file_resource.inc');
+
 /**
  * Get the data access request form config.
  */
@@ -23,10 +26,18 @@ function obiba_mica_data_access_request_form_get_config() {
  * Actions on data access requests.
  */
 function obiba_mica_data_access_requests_action() {
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_POST');
-    $data_access_request = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-requests');
-    drupal_json_output($data_access_request);
+
+  switch ($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+      $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_GET');
+      $data_access_request = $mica_client->getRequests();
+      drupal_json_output($data_access_request);
+      break;
+    case 'POST':
+      $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_POST');
+      $data_access_request = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-requests');
+      drupal_json_output($data_access_request->body);
+      break;
   }
 
 }
@@ -162,7 +173,7 @@ function obiba_mica_data_access_request_update_request($id_request, $status) {
  * Update the data access request attachments.
  */
 function obiba_mica_data_access_request_upload_attachment() {
-  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_POST');
+  $mica_client = new MicaTempFileResource(NULL, 'METHOD_POST');
   $response = $mica_client->uploadFile($_FILES);
   drupal_json_output($response);
 }
@@ -171,9 +182,18 @@ function obiba_mica_data_access_request_upload_attachment() {
  * GEt the temp data access request attachments.
  */
 function obiba_mica_data_access_request_get_attachment($id_file) {
-  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
-  $response = $mica_client->getFile($id_file, 'files/temp');
-  drupal_json_output($response);
+  switch ($_SERVER['REQUEST_METHOD']) {
+    case 'GET':
+      $mica_client = new MicaTempFileResource(NULL, 'METHOD_GET');
+      $response = $mica_client->getFile($id_file);
+      drupal_json_output($response);
+      break;
+    case 'DELETE':
+      $mica_client = new MicaTempFileResource(NULL, 'METHOD_DELETE');
+      $response = $mica_client->deleteFile($id_file);
+      drupal_json_output($response);
+      break;
+  }
 }
 
 function obiba_mica_data_access_request_user_profile($user_id) {

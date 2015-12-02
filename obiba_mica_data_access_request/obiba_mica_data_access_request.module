@@ -35,17 +35,6 @@ function obiba_mica_data_access_request_menu() {
     'weight' => 2,
   );
 
-  $items[MicaClientPathProvider::DATA_ACCESS_LIST] = array(
-    'title' => variable_get('access_requests_page_title', 'My Data Access Requests'),
-    'description' => 'List Data Access Requests',
-    'page callback' => 'obiba_mica_data_access_request_list_page',
-    'file' => 'obiba_mica_data_access_request_service.inc',
-    'access callback' => 'obiba_mica_data_access_request_permission_check',
-    'menu_name' => 'main-menu',
-    'type' => MENU_NORMAL_ITEM,
-    'weight' => 3,
-  );
-
   $items['mica/data-access/requests/ws'] = array(
     'page callback' => 'obiba_mica_data_access_requests_action',
     'access callback' => TRUE,
@@ -197,14 +186,7 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_data_access_request-view-page',
       'path' => $path_views_theme,
     ),
-    'obiba_mica_data_access_request-histroy-view' => array(
-      'template' => 'obiba_mica_data_access_request-histroy-view',
-      'path' => $path_views_theme,
-    ),
-    'data-access-request-validation-modal' => array(
-      'template' => 'data-access-request-validation-modal',
-      'path' => $path_views_theme,
-    ),
+    // TODO to be removed once they are integrated in ng-obiba-mica
     'data-access-request-submitted-modal' => array(
       'template' => 'data-access-request-submitted-modal',
       'path' => $path_views_theme,

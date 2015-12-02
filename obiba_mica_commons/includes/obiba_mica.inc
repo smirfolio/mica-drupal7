@@ -83,15 +83,36 @@ class MicaClient {
   }
 
   /**
+   * Get the last reposnse status code
+   *
+   * @return
+   *   The status code
+   */
+  public function getLastResponseStatusCode() {
+    if ($this->lastResponse != NULL) {
+      return $this->lastResponse->responseCode;
+    }
+    return NULL;
+  }
+
+  /**
    * Get the last response headers (if any).
    *
    * @return array
    *   The header response server.
    */
   public function getLastResponseHeaders() {
-    if ($this->lastResponse != NULL) {
+    if ($this->lastResponse) {
+      return $this->getHeaders($this->lastResponse->headers);
+    }
+
+    return array();
+  }
+
+  public function getHeaders($headers) {
+    if ($headers != NULL) {
       $result = array();
-      foreach (explode("\r\n", $this->lastResponse->headers) as $header) {
+      foreach (explode("\r\n", $headers) as $header) {
         $h = explode(":", $header, 2);
         if (count($h) == 2) {
           if (!array_key_exists($h[0], $result)) {
@@ -102,7 +123,7 @@ class MicaClient {
       }
       return $result;
     }
-    return '';
+    return array();
   }
 
   /**
