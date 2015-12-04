@@ -18,4 +18,7 @@ mica.DataAccessRequest = angular.module('mica.DataAccessRequest', [
     function (ngObibaMicaAccessTemplateUrlProvider) {
       ngObibaMicaAccessTemplateUrlProvider.setHeaderUrl('view',Drupal.settings.basePath + 'obiba_mica_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-view-page');
       ngObibaMicaAccessTemplateUrlProvider.setHeaderUrl('form', Drupal.settings.basePath + 'obiba_mica_app_angular/obiba_mica_data_access_request/obiba_mica_data_access_request-form-page');
-    }]);
+    }])
+  .run(['DataAccessRequestConfig', function(DataAccessRequestConfig){
+    DataAccessRequestConfig.setOptions(Drupal.settings.angularjsApp.data_access_config);
+  }]);

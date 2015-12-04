@@ -167,10 +167,10 @@ function obiba_mica_app_angular_load_js_resources() {
       'module' => obiba_mica_app_angular_load_ng_module(),
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
       'authenticated' => $authenticated,
-      /*  'restws_csrf_token' => drupal_get_token('restws'), */
       'user' => $user,
       'locale' => $language->language,
       'show_detailed_stats' => variable_get_value('dataset_detailed_var_stats'),
+      'data_access_config' => obiba_mica_app_angular_get_access_config()
     ),
   );
 
@@ -395,3 +395,15 @@ function obiba_mica_app_angular_set_drupal_message_error() {
   }
   return TRUE;
 }
+
+function obiba_mica_app_angular_get_access_config() {
+  return array(
+    'newRequestButtonCaption' => variable_get_value('access_new_request_button'),
+    'documentsSectionTitle' => variable_get_value('access_documents_section_title'),
+    'documentsSectionHelpText' => variable_get_value('access_documents_section_help_text'),
+    'downloadButtonCaption' => variable_get_value('access_download_button'),
+    'commentsEnabled' => variable_get_value('access_comments_enabled'),
+    'userListPageTitle' => variable_get_value('user_list_page_title')
+  );
+}
+
