@@ -19,6 +19,10 @@ function obiba_mica_network_page_detail($network_id) {
 
   if (!empty($network_dto)) {
 
+    if (!empty($network_dto->networkSummaries)) {
+      obiba_mica_network_networks_datatable_init($network_dto->networkSummaries);
+    }
+
     if (!empty($network_dto->studySummaries)) {
       obiba_mica_network_studies_datatable_init($network_dto->studySummaries);
     }
@@ -101,7 +105,43 @@ function obiba_mica_network_page_detail_coverage($network_id, $study_ids) {
 /**
  * @param $network_dto
  */
-function obiba_mica_network_studies_datatable_init($studySummaries) {
+function obiba_mica_network_networks_datatable_init($network_summaries) {
+  if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
+    drupal_add_library('obiba_mica_dataset', 'datatables');
+  }
+  else {
+    obiba_mica_commons_datatables_external_source();
+  }
+
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/obiba_mica_network_networks_datatable_init.js', 'file');
+
+  drupal_add_js(array(
+    'table_network_networks_headers' => array(
+      array("title" => t('Acronym')),
+      array("title" => t('Name'), 'width' => '90%')),
+    'table_network_networks_data' => obiba_mica_network_links_table_rows($network_summaries)
+  ), 'setting');
+}
+
+function obiba_mica_network_links_table_rows($network_summaries) {
+  $rows = array();
+
+  if (!empty($network_summaries)) {
+    foreach ($network_summaries as $network_summary) {
+      $rows[] = array(
+        obiba_mica_commons_get_localized_field($network_summary, 'acronym'),
+        $network_summary->getPublished() ? MicaClientAnchorHelper::network($network_summary) : t(obiba_mica_commons_get_localized_field($network_summary, 'name'))
+      );
+    }
+  }
+
+  return $rows;
+}
+
+/**
+ * @param $network_dto
+ */
+function obiba_mica_network_studies_datatable_init($study_summaries) {
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
   }
@@ -112,7 +152,7 @@ function obiba_mica_network_studies_datatable_init($studySummaries) {
   drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/obiba_mica_network_studies_datatable_init.js', 'file');
   drupal_add_js(array(
     'table_headers' => obiba_mica_network_study_table_headers(),
-    'table_data' => obiba_mica_network_study_table_rows($studySummaries)
+    'table_data' => obiba_mica_network_study_table_rows($study_summaries)
   ), 'setting');
 }
 
@@ -131,9 +171,9 @@ function obiba_mica_network_study_table_rows($study_summaries) {
         empty($study_summary->variables)
           ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id)
       );
-
     }
   }
+
   return $rows;
 }
 

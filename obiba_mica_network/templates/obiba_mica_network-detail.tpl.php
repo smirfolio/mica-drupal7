@@ -149,6 +149,23 @@
     <?php print $attachments; ?>
   </section>
   <?php endif; ?>
+
+  <!-- NETWORKS -->
+  <?php if (!empty($network_dto->networkSummaries)): ?>
+    <section>
+      <h2><?php print t('Harmonized Research Platforms') ?></h2>
+
+      <div id="networks-table">
+        <div class="row">
+          <div class="col-lg-12 col-xs-12">
+            <table class="table table-striped" id="table-networks"></table>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  <?php endif; ?>
+
   <!-- STUDIES -->
   <?php if (!empty($network_dto->studySummaries)): ?>
     <section>
