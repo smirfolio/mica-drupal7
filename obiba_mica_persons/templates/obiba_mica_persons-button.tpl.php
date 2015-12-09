@@ -16,4 +16,4 @@
   -->
 
 <button type="button" class="btn btn-primary" data-toggle="modal"
-  data-target="#associated-people"><i class="fa fa-group"></i> <?php print variable_get_value('associated_people'); ?></button>
+  data-target="#associated-people"><?php print variable_get_value('associated_people'); ?></button>
