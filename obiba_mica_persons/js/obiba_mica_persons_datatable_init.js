@@ -60,7 +60,6 @@
                     });
                     studies += (studies != '' ? ', ' : '') + '<a href="' + Drupal.settings.basePath + 'mica/study/' + studyObj.parentId + '">' + acronymCurrentLang + '</a> (' + studyObj.role + ')';
                   }
-                  return false;
                 });
               }
               return studies;
@@ -72,7 +71,7 @@
               var networks = '';
               var acronymCurrentLang;
               if (row) {
-                $.each(row, function (study, networkObj) {
+                $.each(row, function (network, networkObj) {
                   if (networkObj) {
                     $.each(networkObj.parentAcronym, function (index, acronym) {
                       if (acronym.lang == Drupal.settings.current_lang) {
@@ -82,7 +81,6 @@
                     });
                     networks += (networks != '' ? ', ' : '') + '<a href="' + Drupal.settings.basePath + 'mica/network/' + networkObj.parentId + '">' + acronymCurrentLang + '</a> (' + networkObj.role + ')';
                   }
-                  return false;
                 });
               }
               return networks;
