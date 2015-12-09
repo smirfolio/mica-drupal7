@@ -88,12 +88,14 @@ function obiba_mica_network_page_detail($network_id) {
   }
 }
 
-function obiba_mica_network_page_detail_coverage($network_id, $study_ids) {
+function obiba_mica_network_page_detail_coverage($network_id, $study_ids_string) {
+  $study_ids = json_decode($study_ids_string);
+
   if (empty($study_ids)) {
     exit;
   }
 
-  $coverage = obiba_mica_network_coverage(json_decode($study_ids));
+  $coverage = obiba_mica_network_coverage($study_ids);
 
   if (empty($coverage)) {
     exit;
