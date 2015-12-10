@@ -200,7 +200,8 @@ class MicaClient {
     else {
       watchdog('obiba_mica', 'Auth by anonymous credentials');
       $current_anonymous_pass = variable_get_value('mica_anonymous_password');
-      if ($current_anonymous_pass == variable_get_value('mica_anonymous_password_saved')) {
+      $saved_anonymous_pass = variable_get_value('mica_anonymous_password_saved');
+      if (empty($saved_anonymous_pass) || $current_anonymous_pass == $saved_anonymous_pass) {
 
         if (isset($_SESSION[self::MICA_COOKIE])) {
           $headers = $this->addCookieHeader($headers, NULL,
