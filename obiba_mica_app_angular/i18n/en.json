@@ -119,6 +119,7 @@
   },
   "data-access-requests": "Data Access Requests",
   "data-access-request": {
+    "submissionDate": "Submission Date",
     "applicant": "Applicant",
     "title": "Title",
     "title-help": "Short summary to help identifying the request.",

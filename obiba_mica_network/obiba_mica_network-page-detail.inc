@@ -16,7 +16,7 @@ function obiba_mica_network_page_detail($network_id) {
   $themed_attachment = NULL;
   $network_resource = new MicaNetworkResource();
   $network_dto = $network_resource->get_network($network_id);
-
+  $studies_statistics = '';
   if (!empty($network_dto)) {
 
     if (!empty($network_dto->networkSummaries)) {
@@ -78,6 +78,15 @@ function obiba_mica_network_page_detail($network_id) {
       }
     }
 
+    $networks_id = array($network_id);
+    if (module_exists('obiba_mica_graphic')) {
+      if (!empty(variable_get_value('graphics_content'))) {
+        if (!empty($network_dto->networkIds)) {
+          $networks_id =  array_merge($networks_id,$network_dto->networkIds );
+        }
+        $studies_statistics = obiba_mica_network_statistics_summaries($networks_id, $acronym);
+      }
+    }
     obiba_mica_network_load_charts_libs();
     drupal_add_js(drupal_get_path('module', 'obiba_mica_network') .
       '/js/mica-network-detail.js', 'file');
@@ -100,12 +109,87 @@ function obiba_mica_network_page_detail($network_id) {
       'associated_people_modal' => !empty($associated_people_modal) ?
         $associated_people_modal : NULL,
       'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
+      'statistics' => $studies_statistics,
     ));
   }
   else {
     drupal_set_title(t('Network not found'));
     return '';
   }
+}
+
+function obiba_mica_network_statistics_summaries($networks_id, $acronym = NULL) {
+  $name_network = $acronym ? $acronym : $networks_id[0];
+  $stat_charts_options = array(
+    'studiesByCountries' => array(
+      'divChartElement' => 'regions_div',
+      'idEntities' => $networks_id,
+      'StatPathResource' => 'mica/statistics/get_nbr_studies_networks_by_countries',
+      'viewTotalStudies' => FALSE,
+      'options' => array(
+        'title' => t('Distribution of ' . $name_network . ' studies by participants\' countries of residence')
+      )
+    ),
+    'studiesRecruitmentSource' => array(
+      'divTableElement' => 'recruitmentTargetTable_div',
+      'divChartElement' => 'recruitmentSourcePieChart_div',
+      'idEntities' => $networks_id,
+      'StatPathResource' => 'mica/statistics/get_recruitment_source_statistics',
+      'viewTotalStudies' => TRUE,
+      'options' => array(
+        'legend' =>'none',
+        'title' => t('Recruitment Source Pie chart')
+      )
+    ),
+    'studiesStudyDesign' => array(
+      'divTableElement' => 'studiesStudyDesignTable_div',
+      'divChartElement' => 'studiesStudyDesignPieChart_div',
+      'idEntities' => $networks_id,
+      'StatPathResource' => 'mica/statistics/get_study_design_statistics',
+      'viewTotalStudies' => TRUE,
+      'options' => array(
+        'legend'=> 'none',
+        'title' => t('Distribution of '.$name_network.' studies by study design')
+      )
+    ),
+    'studiesCollectedBiologicalSamples' => array(
+      'divTableElement' => 'studiesCollectedBiologicalSamplesTable_div',
+      'divChartElement' => 'studiesCollectedBiologicalSamplesPieChart_div',
+      'idEntities' => $networks_id,
+      'StatPathResource' => 'mica/statistics/get_biological_samples_statistics',
+      'viewTotalStudies' => TRUE,
+      'options' => array(
+        'legend'=> 'none',
+        'title' => t('Distribution of '.$name_network.' studies by collected biological samples')
+      )
+    ),
+    'studiesAccessToData' => array(
+      'divTableElement' => 'studiesAccessToDataTable_div',
+      'divChartElement' => 'studiesAccessToDataPieChart_div',
+      'idEntities' => $networks_id,
+      'StatPathResource' => 'mica/statistics/get_data_access_statistics',
+      'viewTotalStudies' => TRUE,
+      'options' => array(
+        'legend'=> 'none',
+        'title' => t('Distribution of '.$name_network.' studies by potential access to data and samples')
+      )
+    ),
+  );
+  obiba_mica_graphic_geo_charts();
+  obiba_mica_graphic_table_pie_charts();
+//  drupal_add_js(drupal_get_path('module', 'obiba_mica_graphic') . '/js/obiba-mica-graphic-get-all-studies-geoChart.js',
+//    array('type' => 'file', 'scope' => 'footer', 'weight' => 100)
+//  );
+  $js_settings = array(
+    'statisticsOptions' => $stat_charts_options
+  );
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/obiba-mica-network-statistics.js',
+    array('type' => 'file', 'scope' => 'footer', 'weight' => 100));
+  drupal_add_js($js_settings, 'setting');
+  return theme('obiba_mica_network-charts', array(
+    'network_id' => $networks_id[0],
+    'network_acronym' => $acronym,
+  ));
 }
 
 function obiba_mica_network_page_detail_coverage($network_id, $study_ids_string) {
