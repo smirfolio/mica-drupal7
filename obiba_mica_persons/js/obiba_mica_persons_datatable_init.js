@@ -25,7 +25,7 @@
         "sDom": '<"table-var-wrapper"r<"pull-left"f><"#buttonPlaceholder.pull-right">tp>',
         "bServerSide": false,
         "iDisplayLength": 10,
-        "sAjaxSource": Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.resourcePathPersons + JSON.stringify(entitiesId) + '/ws',
+        "sAjaxSource": Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.resourcePathPersons + encodeURIComponent(JSON.stringify(entitiesId)) + '/ws',
         "aoColumns": headerTable,
         "bSearchable": false,
         "searching": true,
@@ -98,7 +98,7 @@
       $("div#buttonPlaceholder").html(Drupal.settings.download_button);
       $("button#download-csv-person").on('click', function (event) {
         // create a form for the file upload
-        var form = $("<form action='" + Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.resourcePathPersons + JSON.stringify(entitiesId) + '/download/ws' + "' method='post'>");
+        var form = $("<form action='" + Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.resourcePathPersons + encodeURIComponent(JSON.stringify(entitiesId)) + '/download/ws' + "' method='post'>");
         $(this).after(form);
         form.submit().remove();
         return false;
