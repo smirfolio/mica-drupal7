@@ -179,12 +179,12 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
 
   return array(
-    'obiba_mica_data_access_request-form-page' => array(
-      'template' => 'obiba_mica_data_access_request-form-page',
+    'obiba_mica_data_access_request-form-header' => array(
+      'template' => 'obiba_mica_data_access_request-form-header',
       'path' => $path_views_theme,
     ),
-    'obiba_mica_data_access_request-view-page' => array(
-      'template' => 'obiba_mica_data_access_request-view-page',
+    'obiba_mica_data_access_request-view-header' => array(
+      'template' => 'obiba_mica_data_access_request-view-header',
       'path' => $path_views_theme,
     ),
     // TODO to be removed once they are integrated in ng-obiba-mica
@@ -199,10 +199,6 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
     'obiba_mica_data_access_request-page-data-access' => array(
       'template' => 'obiba_mica_data_access_request-page-data-access',
       'path' => $path_theme,
-    ),
-    'obiba_mica_data_access_request-list' => array(
-      'template' => 'obiba_mica_data_access_request-list',
-      'path' => $path_theme
     ),
     'obiba_mica_data_access_request_user-profile-attributes' => array(
       'template' => 'obiba_mica_data_access_request_user-profile-attributes',
@@ -448,18 +444,6 @@ function obiba_mica_data_access_request_profile_full_name($request) {
 
   return $full_name;
 
-}
-
-/**
- * Data access list page.
- */
-function obiba_mica_data_access_request_list_page() {
-  obiba_mica_data_access_requests_datatable_init();
-  drupal_set_title(variable_get_value('access_requests_page_title'));
-  $profile_users_modal = theme('obiba_mica_data_access_request-user-profile-modal');
-  return theme('obiba_mica_data_access_request-list', array(
-    'profile_users_modal' => $profile_users_modal,
-  ));
 }
 
 function obiba_mica_data_access_request_users_list_page() {
