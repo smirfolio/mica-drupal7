@@ -18,14 +18,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 'use strict';
-modules.push('mica.GraphicChartsStudyDesignChart');
-modules.push('mica.GraphicChartsGeoChart');
+
+angular.forEach(Drupal.settings.deltaModules, function(value, key){
+  modules.push(value);
+});
+
 mica.GraphicChartsStudyDesignChart = angular.module('mica.GraphicChartsStudyDesignChart', [ 'googlechart']);
 mica.GraphicChartsGeoChart = angular.module('mica.GraphicChartsGeoChart', [ 'googlechart']);
 
 mica.GraphicChartsStudyDesignChart.config(function(){
 
   console.log('toto');
+  console.log(modules);
+});
+
+mica.GraphicChartsGeoChart.config(function(){
+
+  console.log('tata');
   console.log(modules);
 });
 

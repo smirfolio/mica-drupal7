@@ -23,6 +23,7 @@ var modules = [
 if (Drupal.settings.angularjsApp.module) {
   modules = modules.concat(Drupal.settings.angularjsApp.module);
 }
+console.log(modules);
 var mica = angular.module('mica', modules);
 
 /**

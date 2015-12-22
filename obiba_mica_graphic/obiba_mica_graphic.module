@@ -164,7 +164,6 @@ function obiba_mica_graphic_block_view($delta = '') {
 
       obiba_mica_app_angular_load_js_resources('obiba_mica_graphic');
     }
-
     switch ($delta) {
       case NetworkStatistics::GEO_NBR_STAT:
         if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
@@ -173,6 +172,7 @@ function obiba_mica_graphic_block_view($delta = '') {
             $block['subject'] = t('Distribution of studies by participants\' countries of residence');
 //            $block['content'] = obiba_mica_graphic_get_geo_chart_studies(variable_get_value('graphics_blocks_networks'));
             $block['content'] = theme('obiba_mica_angular_app_geo_charts');
+            drupal_add_js(array('deltaModules'=> array('mica.GraphicChartsGeoChart')), 'setting');
           }
         }
         return $block;
@@ -190,6 +190,7 @@ function obiba_mica_graphic_block_view($delta = '') {
           if (!empty(variable_get_value('graphics_blocks')) && $display_design) {
 //            $block['content'] = obiba_mica_graphic_get_method_design(variable_get_value('graphics_blocks_networks'));
             $block['content'] = theme('obiba_mica_angular_app_study_design_charts');
+            drupal_add_js(array('deltaModules'=> array('mica.GraphicChartsStudyDesignChart')), 'setting');
           }
         }
         return $block;
@@ -210,6 +211,7 @@ function obiba_mica_graphic_block_view($delta = '') {
         }
         return $block;
     }
+
 
   }
 }
