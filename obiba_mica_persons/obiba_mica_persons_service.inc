@@ -11,6 +11,7 @@
  * @param string $entity_query
  */
 function obiba_mica_persons_list($entities_id) {
+  $entities_id = str_replace('+', '%2B', $entities_id);
   $entities_id = json_decode($entities_id);
   $query_person = empty($entities_id->studiesId) ? '' : "studyMemberships.parentId:(" . implode('+', $entities_id->studiesId) . ")";
   if (!empty($entities_id->networksId)) {
@@ -33,6 +34,7 @@ function obiba_mica_persons_list($entities_id) {
  * @param string $studies_id
  */
 function obiba_mica_persons_list_csv_download($entities_id) {
+  $entities_id = str_replace('+', '%2B', $entities_id);
   $entities_id = json_decode($entities_id);
   $query_person = empty($entities_id->studiesId) ? '' : "studyMemberships.parentId:(" . implode('+', $entities_id->studiesId) . ")";
   if (!empty($entities_id->networksId)) {
