@@ -8,13 +8,12 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div ng-controller='GeoChartController'>
+<div ng-controller='AccessController' >
   <div obiba-chart
-    field-transformer="country"
-    chart-type="GeoChart"
-    chart-aggregation-name="populations-selectionCriteria-countriesIso"
+    chart-type="BarChart"
+    chart-aggregation-name="access"
     chart-entity-dto="studyResultDto"
-    chart-options-name="geoChartOptions"
+    chart-options-name="access"
     chart-options ="chart.options"
     chart-header="chart.header">
   </div>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 OBiBa. All rights reserved.
+ * Copyright (c) 2015 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -8,25 +8,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+ * Copyright (c) 2014 OBiBa. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 'use strict';
 
-mica.GraphicChartsStudyDesignChart
-  .controller('GraphicStudyDesignChartsController', [
-    '$rootScope',
-    '$scope',
-    function ($rootScope,
-              $scope) {
+mica.ObibaGraphicCharts
+  .controller('AccessController', ['$scope', function ($scope) {
+    $scope.chart = {
+      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.access.options,
+      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.access.header
+    };
 
-      console.log('im loaded Study graphic');
-    }]);
+  }])
+  .controller('BioSamplesController', ['$scope', function ($scope) {
+    $scope.chart = {
+      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.biologicalSamples.options,
+      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.biologicalSamples.header
+    };
 
-mica.GraphicChartsGeoChart
-  .controller('GraphicGeoChartsController', [
-    '$rootScope',
-    '$scope',
-    function ($rootScope,
-              $scope) {
+  }])
+  .controller('GeoChartController', ['$scope', function ($scope) {
+    $scope.chart = {
+      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.geoChartOptions.options,
+      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.geoChartOptions.header
+    };
 
-      console.log('im loaded Geo graphic');
-    }]);
+  }])
+  .controller('RecruitmentResourcesController', ['$scope', function ($scope) {
+    $scope.chart = {
+      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.recruitmentResources.options,
+      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.recruitmentResources.header
+    };
 
+  }])
+  .controller('StudiesDesignsController', ['$scope', function ($scope) {
+    $scope.chart = {
+      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.studiesDesigns.options,
+      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.studiesDesigns.header
+    };
+
+  }]);

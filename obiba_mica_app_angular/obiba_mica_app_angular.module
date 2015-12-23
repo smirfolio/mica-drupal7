@@ -120,7 +120,7 @@ function obiba_mica_app_angular_load_external_app_js($module_caller = NULL, $wei
     if ($module_caller == $module) {
       $module = module_invoke($module, 'get_js', $weight_js);
       if (!empty($module)) {
-        return $module;
+        return TRUE;
       }
     }
   }
@@ -136,15 +136,17 @@ function obiba_mica_app_angular_load_external_app_js($module_caller = NULL, $wei
  *   that use obiba_mica_app_angular module.
  */
 function obiba_mica_app_angular_load_ng_module() {
+  $ng_modules = array();
   foreach (module_implements('get_ng_module_to_load') as $key => $module) {
-    // Calling all modules implementing hook_hook_name
-    // and return the first result.
-    $module = module_invoke($module, 'get_ng_module_to_load');
-    if (!empty($module)) {
-      return $module;
-    }
+    // Calling all modules implementing hook_get_ng_module_to_load
+    $ng_modules[] = module_invoke($module, 'get_ng_module_to_load');
   }
-  return FALSE;
+  if (!empty($ng_modules)) {
+    return $ng_modules;
+  }
+  else {
+    return FALSE;
+  }
 }
 
 /**
@@ -185,7 +187,7 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
   }
   $js_settings = array(
     'angularjsApp' => array(
-      'module' => obiba_mica_app_angular_load_ng_module(),
+      'modules' => obiba_mica_app_angular_load_ng_module(),
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
       'authenticated' => $authenticated,
       /*  'restws_csrf_token' => drupal_get_token('restws'), */
@@ -230,7 +232,7 @@ function obiba_mica_app_angular_main_page($module_caller = NULL) {
  * @return string
  *   The template of the AngularJs app.
  */
-function obiba_mica_app_angular_get_angular_template($module, $angular_template) {
+function obiba_mica_app_angular_get_angular_template($angular_template) {
   print theme($angular_template);
 }
 
@@ -325,7 +327,7 @@ function obiba_mica_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-marked/angular-marked.js' => array(
+        $lib_path_schema_form . '/angular-marked/dist/angular-marked.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),

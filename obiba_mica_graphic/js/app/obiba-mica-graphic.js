@@ -19,33 +19,29 @@
  */
 'use strict';
 
-angular.forEach(Drupal.settings.deltaModules, function(value, key){
-  modules.push(value);
-});
+mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
+    'obiba.mica.graphics'
+  ])
+  .controller('GraphicNetworkMainController', [
+    '$rootScope',
+    '$scope',
+    '$filter',
+    function ($rootScope,
+              $scope) {
 
-mica.GraphicChartsStudyDesignChart = angular.module('mica.GraphicChartsStudyDesignChart', [ 'googlechart']);
-mica.GraphicChartsGeoChart = angular.module('mica.GraphicChartsGeoChart', [ 'googlechart']);
 
-mica.GraphicChartsStudyDesignChart.config(function(){
-
-  console.log('toto');
-  console.log(modules);
-});
-
-mica.GraphicChartsGeoChart.config(function(){
-
-  console.log('tata');
-  console.log(modules);
-});
-
-//(function ($) {
-//
-//  Drupal.behaviors.obiba_mica_graphic = {
-//    attach: function (context, settings) {
-//      GraphicChartsGeoChart = angular.module('GraphicChartsGeoChart', [
-//        'googlechart'
-//      ]);
-//    }
-//  }
-//}(jQuery));
-
+      var selectTab = function (id) {
+        $scope.selectedTab = id;
+        switch (id) {
+          case 'form':
+            break;
+          case 'comments':
+            break;
+        }
+      };
+      selectTab(null);
+    }])
+  .run(['GraphicChartsConfig',
+    function (GraphicChartsConfig) {
+      GraphicChartsConfig.setOptions(Drupal.settings.GraphicChartsOptions);
+    }]);

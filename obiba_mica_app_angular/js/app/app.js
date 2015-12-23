@@ -16,14 +16,32 @@ var modules = [
   'angularUtils.directives.dirPagination',
   'pascalprecht.translate',
   'ngObibaMica'
-
 ];
+var sanitizeModules = function (origArr) {
+  var newArr = [],
+    origLen = origArr.length,
+    found, x, y;
+
+  for (x = 0; x < origLen; x ++) {
+    found = undefined;
+    for (y = 0; y < newArr.length; y ++) {
+      if (origArr[x] === newArr[y]) {
+        found = true;
+        break;
+      }
+    }
+    if (! found && origArr[x] !== false) {
+      newArr.push(origArr[x]);
+    }
+  }
+  return newArr;
+}
+var drupalModules = sanitizeModules(Drupal.settings.angularjsApp.modules);
 
 /* App Module */
-if (Drupal.settings.angularjsApp.module) {
-  modules = modules.concat(Drupal.settings.angularjsApp.module);
+if (drupalModules) {
+  modules = modules.concat(drupalModules);
 }
-console.log(modules);
 var mica = angular.module('mica', modules);
 
 /**
@@ -41,6 +59,7 @@ mica.config(['ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestStatusResource', 'request/:id/_status/:status/ws');
     ngObibaMicaUrlProvider.setUrl('TempFileUploadResource', 'request/upload-file');
     ngObibaMicaUrlProvider.setUrl('TempFileResource', 'request/file/:id');
+    ngObibaMicaUrlProvider.setUrl('getStudiesStatistics', Drupal.settings.basePath + 'mica/statistics/get_statistics/:id/ws');
   }]);
 
 mica.provider('SessionProxy',
@@ -76,8 +95,10 @@ mica.config(['$routeProvider', '$translateProvider',
         controller: 'MainController'
       });
 
-    $translateProvider.useLoader('DrupalTranslationLoader', {});
-    $translateProvider.preferredLanguage('en');
+    $translateProvider.preferredLanguage('en')
+      .useLoader('DrupalTranslationLoader', {})
+      .fallbackLanguage('en')
+      .useSanitizeValueStrategy('escaped');
 
   }]);
 
@@ -223,6 +244,9 @@ mica.service('LocalizedStringService',
           });
 
         return value.length > 0 ? value[0].value : null;
+      },
+      getLocal: function () {
+        return Drupal.settings.angularjsApp.locale;
       }
     }
   });

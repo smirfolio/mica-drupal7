@@ -71,29 +71,22 @@ class NetworkStatistics extends MicaSearchResource {
     return $this->dtoFilterConstruct($type, $q, $from, $group_by, $withFacets);
   }
 
-  public function GeoStudiesQuery($aggregation_name,$header_array ) {
+  public function GeoStudiesQuery() {
       $parts_query['type'] = 'studies';
       if (!empty($this->id_networks) && $this->id_networks !== '["NaN"]') {
         $parts_query['query'] = '{"networks":{"terms":{"networkId":{"values":' . $this->id_networks . ',"op":"and"}}}}';
       }
       $data = $this->_aggregation_resource_external($parts_query);
-      $chart_data = $this->getArrayByAggregation($aggregation_name, $data->studyResultDto, 'country');
-      array_unshift($chart_data, $header_array);
-      $json_response = array('ChartData' => json_encode($chart_data));
-    return $json_response;
+    return $data;
   }
 
-  public function queryForPieChart(&$chart_data, $aggregation_name, $header_array) {
+  public function queryForPieChart() {
     $parts_query['type'] = 'studies';
     if (!empty($this->id_networks) && $this->id_networks !== '["NaN"]') {
       $parts_query['query'] = '{"networks":{"terms":{"networkId":{"values":' . $this->id_networks . ',"op":"and"}}}}';
     }
-
     $data = $this->_aggregation_resource_external($parts_query);
-    $chart_data = $this->getArrayByAggregation($aggregation_name, $data->studyResultDto);
-    array_unshift($chart_data, $header_array);
-    $json_response = array('PieData' => json_encode($chart_data));
-    return $json_response;
+    return $data;
   }
 
   public function getTableData($chart_data, $percentage = FALSE) {
@@ -106,38 +99,6 @@ class NetworkStatistics extends MicaSearchResource {
       }
     }
     return theme('table', array('header' => $header, 'rows' => $chart_data));
-  }
-
-  private function getArrayByAggregation($aggregation_name, $dto_result, $special_retrieve = FALSE) {
-
-    foreach ($dto_result->aggs as $aggregation) {
-      if ($aggregation->aggregation == $aggregation_name) {
-          $terms_aggs = $aggregation->{'obiba.mica.TermsAggregationResultDto.terms'};
-        $data_array = array_map(
-          function ($terms_aggs) use ($special_retrieve) {
-            return $this->iterateDataChart($terms_aggs, $special_retrieve);
-          }, $terms_aggs);
-        $data_array = array_filter($data_array);
-        return $data_array;
-      }
-    }
-    return FALSE;
-  }
-
-  private function iterateDataChart($aggregations_term, $special_retrieve = FALSE) {
-    switch ($special_retrieve) {
-      case'country':
-        $item_name = countries_country_lookup(drupal_strtoupper($aggregations_term->key), 'iso' . strlen($aggregations_term->key));
-        break;
-      default:
-        $item_name = new stdClass();
-        $item_name->name = $aggregations_term->title;
-        break;
-    }
-    if (!empty($aggregations_term->count)) {
-      return array($item_name->name, $aggregations_term->count);
-    }
-    return FALSE;
   }
 
 }
