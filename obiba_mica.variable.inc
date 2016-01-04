@@ -24,6 +24,7 @@ function obiba_mica_variable_info($options) {
   _obiba_mica_variable_search_datasets($variable);
   _obiba_mica_variable_search_variables($variable);
 
+  _obiba_mica_variable_network_content($variable);
   _obiba_mica_variable_study_content($variable);
   _obiba_mica_variable_dataset_content($variable);
   _obiba_mica_variable_variable_content($variable);
@@ -348,6 +349,19 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+}
+
+/**
+ * Setting Variable content page network.
+ */
+function _obiba_mica_variable_network_content(&$variable) {
+  $variable['networks_section_label'] = array(
+    'title' => t('Label for Networks section'),
+    'description' => t('Displayed label For Networks section'),
+    'type' => 'string',
+    'default' => 'Networks',
+  );
+
 }
 
 /**

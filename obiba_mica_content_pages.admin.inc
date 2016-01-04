@@ -17,7 +17,7 @@ function obiba_mica_content_pages_admin_settings() {
     '#title' => t('Content page display settings'),
     '#collapsible' => FALSE,
   );
-
+  obiba_mica_settings_network_content($form);
   obiba_mica_settings_study_content($form);
   obiba_mica_settings_dataset_content($form);
   obiba_mica_settings_variable_content($form);
@@ -151,6 +151,35 @@ function obiba_mica_settings_data_access_content(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+}
+
+/**
+ * Study content form setting.
+ *
+ * @param array $form
+ *   The admin setting form.
+ */
+function obiba_mica_settings_network_content(&$form) {
+  $form['content_display_settings']['network_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Network Content'),
+    '#collapsible' => FALSE,
+  );
+
+  $form['content_display_settings']['network_form']['network_details'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Network details page'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('networks_section_label');
+  $form['content_display_settings']['network_form']['network_details']['networks_section_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_section_label'),
+    '#description' => $info['description'],
+  );
+
 }
 
 /**
