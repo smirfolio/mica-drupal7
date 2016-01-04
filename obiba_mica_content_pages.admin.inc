@@ -17,7 +17,7 @@ function obiba_mica_content_pages_admin_settings() {
     '#title' => t('Content page display settings'),
     '#collapsible' => FALSE,
   );
-
+  obiba_mica_settings_network_content($form);
   obiba_mica_settings_study_content($form);
   obiba_mica_settings_dataset_content($form);
   obiba_mica_settings_variable_content($form);
@@ -151,6 +151,97 @@ function obiba_mica_settings_data_access_content(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+}
+
+/**
+ * Study content form setting.
+ *
+ * @param array $form
+ *   The admin setting form.
+ */
+function obiba_mica_settings_network_content(&$form) {
+  $form['content_display_settings']['network_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Network Content'),
+    '#collapsible' => FALSE,
+  );
+
+  $form['content_display_settings']['network_form']['network_details'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Network details page'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('networks_section_label');
+  $form['content_display_settings']['network_form']['network_details']['networks_section_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_section_label'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('study_show_networks');
+  $form['content_display_settings']['study_form']['study_details']['study_show_networks'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_show_networks'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('study_show_datasets');
+  $form['content_display_settings']['study_form']['study_details']['study_show_datasets'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_show_datasets'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('study_show_coverage_graphs');
+  $form['content_display_settings']['study_form']['study_details']['study_show_coverage_graphs'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_show_coverage_graphs'),
+    '#description' => $info['description'],
+  );
+
+  $form['content_display_settings']['study_form']['studies_list'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Studies list page'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('studies_list_show_search_form');
+  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_search_form'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_search_form'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_search_button');
+  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_search_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_search_button'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_study_sup_info');
+  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_study_sup_info'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_study_sup_info'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_trimmed_description_study');
+  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_trimmed_description_study'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_trimmed_description_study'),
+    '#description' => $info['description'],
+  );
+
 }
 
 /**

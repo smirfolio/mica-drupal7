@@ -157,7 +157,8 @@
 
       <div class="row">
         <?php if (!empty($network_dto->studySummaries)): ?>
-          <div class="<?php echo(empty($network_dto->networkSummaries) ? 'col-lg-12' : 'col-lg-6') ?> col-xs-12">
+          <div class="<?php print (empty($network_dto->networkSummaries) ?
+            'col-lg-12' : 'col-lg-6') ?> col-xs-12">
             <h2><?php print t('Studies') ?></h2>
 
             <div id="studies-table">
@@ -171,8 +172,9 @@
         <?php endif; ?>
 
         <?php if (!empty($network_dto->networkSummaries)): ?>
-          <div class="<?php echo(empty($network_dto->studySummaries) ? 'col-lg-12' : 'col-lg-6') ?> col-xs-12">
-            <h2><?php print t('Networks') ?></h2>
+          <div class="<?php print (empty($network_dto->studySummaries) ?
+            'col-lg-12' : 'col-lg-6') ?> col-xs-12">
+            <h2><?php print variable_get_value('networks_section_label') ?></h2>
 
             <div id="networks-table">
               <div class="row">
