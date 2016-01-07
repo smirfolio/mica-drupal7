@@ -290,7 +290,7 @@ class MicaClient {
     $cookie = array();
     foreach (explode(';', $cookie_str) as $entry_str) {
       $entry = explode('=', $entry_str);
-      $cookie[$entry[0]] = $entry[1];
+      $cookie[$entry[0]] = empty($entry[1]) ? TRUE : $entry[1];
     }
     return $cookie;
   }
