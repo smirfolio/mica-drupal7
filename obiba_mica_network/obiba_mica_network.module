@@ -66,7 +66,6 @@ function obiba_mica_network_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_network-list-page-block',
       'path' => $path_theme
     ),
-    //TODO add charts template to obiba_bootstrap hook_theme
     'obiba_mica_network-charts' => array(
       'template' => 'obiba_mica_network-charts',
       'path' => $path_theme

@@ -59,7 +59,7 @@ mica.config(['ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestStatusResource', 'request/:id/_status/:status/ws');
     ngObibaMicaUrlProvider.setUrl('TempFileUploadResource', 'request/upload-file');
     ngObibaMicaUrlProvider.setUrl('TempFileResource', 'request/file/:id');
-    ngObibaMicaUrlProvider.setUrl('StudySearchResource', Drupal.settings.basePath + 'mica/statistics/get_statistics/:type/:id/ws');
+    ngObibaMicaUrlProvider.setUrl('PublishedStudiesSearchResource', Drupal.settings.basePath + 'mica/statistics/get_statistics/:type/:id/ws');
   }]);
 
 mica.provider('SessionProxy',
