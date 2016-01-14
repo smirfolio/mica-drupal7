@@ -413,7 +413,7 @@
                 return;
               }
 
-              var folder = basePath + "obiba_mica_app_angular/obiba_mica_data_access_request/";
+              var folder = basePath + "obiba_mica_app_angular_view_template/";
               var template = isStatistical($scope.crosstab.rhs.xVariable)
                 ? (! contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_statistics" : "obiba_mica_dataset_variable_crosstab_statistics_empty")
                 : (! contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_frequencies" : "obiba_mica_dataset_variable_crosstab_frequencies_empty");

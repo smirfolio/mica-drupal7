@@ -32,10 +32,10 @@ function obiba_mica_app_angular_menu() {
     'access callback' => TRUE,
   );
 
-  $items['obiba_mica_app_angular/%/%'] = array(
+  $items['obiba_mica_app_angular_view_template/%'] = array(
     'page callback' => 'obiba_mica_app_angular_get_angular_template',
     'access callback' => TRUE,
-    'page arguments' => array(1, 2),
+    'page arguments' => array(1),
   );
   $items['obiba_mica_app_angular/translation'] = array(
     'page callback' => 'obiba_mica_app_angular_get_angular_translation',
@@ -135,11 +135,13 @@ function obiba_mica_app_angular_load_external_app_js($module_caller = NULL, $wei
  *   The module name to load on the AngularJs main app in each Drupal module
  *   that use obiba_mica_app_angular module.
  */
-function obiba_mica_app_angular_load_ng_module() {
+function obiba_mica_app_angular_load_ng_module($module_caller) {
   $ng_modules = array();
   foreach (module_implements('get_ng_module_to_load') as $key => $module) {
     // Calling all modules implementing hook_get_ng_module_to_load
-    $ng_modules[] = module_invoke($module, 'get_ng_module_to_load');
+    if ($module_caller == $module) {
+      $ng_modules[] = module_invoke($module, 'get_ng_module_to_load');
+    }
   }
   if (!empty($ng_modules)) {
     return $ng_modules;
@@ -187,7 +189,7 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
   }
   $js_settings = array(
     'angularjsApp' => array(
-      'modules' => obiba_mica_app_angular_load_ng_module(),
+      'modules' => obiba_mica_app_angular_load_ng_module($module_caller),
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
       'authenticated' => $authenticated,
       /*  'restws_csrf_token' => drupal_get_token('restws'), */

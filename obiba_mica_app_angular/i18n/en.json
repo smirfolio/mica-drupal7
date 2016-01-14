@@ -230,6 +230,12 @@
         "test": "Chi-Squared Test"
       }
     }
+  },
+  "graphics": {
+    "geo-charts": "Geographical Distribution",
+    "selection-criteria": "Selection Criteria",
+    "study-design": "Study Designs",
+    "biological-samples": "Biological Samples",
+    "access-potential": "Access Potential"
   }
-
 }

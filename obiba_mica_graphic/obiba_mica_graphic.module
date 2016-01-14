@@ -19,10 +19,10 @@ function obiba_mica_graphic_menu() {
     'access arguments' => array('administer obiba mica graphic'),
     'file' => 'obiba_mica_graphic.admin.inc',
   );
-  $items['mica/statistics/get_statistics/%/ws'] = array(
-    'page callback' => 'obiba_mica_graphic_studies_query',
+  $items['mica/statistics/get_statistics/%/%/ws'] = array(
+    'page callback' => 'obiba_mica_graphic_statistics_query',
     'file' => 'obiba_mica_graphic_statistics_services.inc',
-    'page arguments' => array(3),
+    'page arguments' => array(3,4),
     'access callback' => TRUE,
   );
 
@@ -155,6 +155,7 @@ function obiba_mica_graphic_block_view($delta = '') {
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
+                  'entityType' => 'studies',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_geo_charts_options_settings('geoChartOptions',
                     array(t('Country'), t('Nbr of Studies')),
@@ -174,6 +175,7 @@ function obiba_mica_graphic_block_view($delta = '') {
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
+                  'entityType' => 'studies',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('recruitmentResources',
                     array(t('Recruitment Target'), t('% of studies')),
@@ -194,6 +196,7 @@ function obiba_mica_graphic_block_view($delta = '') {
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
+                  'entityType' => 'studies',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('studiesDesigns',
                     array(t('Study design'), t('Number of studies')),
@@ -214,6 +217,7 @@ function obiba_mica_graphic_block_view($delta = '') {
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
+                  'entityType' => 'studies',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('biologicalSamples',
                     array(
@@ -236,6 +240,7 @@ function obiba_mica_graphic_block_view($delta = '') {
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
+                  'entityType' => 'studies',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('access',
                     array(t('Access given to'), t('Number of studies')),

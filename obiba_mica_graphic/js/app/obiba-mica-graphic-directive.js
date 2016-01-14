@@ -17,7 +17,7 @@ mica.ObibaGraphicCharts
       restrict: 'EA',
       replace: true,
       scope: {},
-      templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular/obiba_mica_graphic/graphic-main',
+      templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/graphic-main',
       controller: 'GraphicNetworkMainController'
     };
   }]);
