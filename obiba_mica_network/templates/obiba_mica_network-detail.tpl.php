@@ -132,6 +132,21 @@
             <?php print render($associated_people_modal); ?>
           <?php endif; ?>
         <?php endif; ?>
+
+        <?php if (!empty($statistics)): ?>
+          <?php
+          $display_name = !empty($network_dto->acronym) ? obiba_mica_commons_get_localized_field($network_dto, 'acronym') : $network_dto->id;
+          print l($display_name . ' Catalogue Statistics', '', array(
+            'attributes' => array(
+              'class' => array('btn btn-primary'),
+              'role' => 'button',
+              'data-toggle' => 'collapse',
+              'aria-expanded' => 'true',
+              'aria-controls' => 'statistics'
+            ),
+            'fragment' => 'statistics',
+          )); ?>
+        <?php endif; ?>
       </div>
 
       <?php if (!empty($network_dto->attributes)): ?>
@@ -144,6 +159,15 @@
     </div>
 
   </section>
+  <?php if (!empty($statistics)): ?>
+    <div id="statistics" class="collapse" role="tabpanel">
+      <div style="margin-top:5px"></div>
+      <section>
+        <?php print render($statistics); ?>
+      </section>
+    </div>
+  <?php endif; ?>
+
   <?php if (!empty($attachments)): ?>
     <section>
       <h2><?php print variable_get_value('files_documents_label'); ?></h2>

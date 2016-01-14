@@ -42,9 +42,10 @@
     ?>
     <?php if ($can_access) : ?>
       <?php
-      print l(variable_get_value('access_my_requests_button'), 'mica/data_access/requests',
+      print l(variable_get_value('access_my_requests_button'), 'mica/data-access/request',
         array(
           'attributes' => array('class' => array('btn', 'btn-primary')),
+          'fragment' => 'data-access-requests',
         )
       ); ?>
     <?php endif; ?>
@@ -56,7 +57,7 @@
       print l('<i class="fa fa-plus"></i> ' . variable_get_value('access_new_request_button'), 'mica/data-access/request',
         array(
           'attributes' => array('class' => array('btn', 'btn-info', 'indent')),
-          'fragment' => 'new',
+          'fragment' => 'data-access-request/new',
           'html' => TRUE,
         )
       ); ?>
