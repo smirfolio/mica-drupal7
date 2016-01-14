@@ -167,6 +167,7 @@
     "profile" :{
       "title" : "User profile",
       "name" : "Name",
+      "send-email" : "Send an email",
       "email" : "E-mail"
     }
   },
