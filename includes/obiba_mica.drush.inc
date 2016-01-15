@@ -317,18 +317,24 @@ function obiba_mica_drush_obiba_progressbar() {
   }
 }
 
-
-
 /**
- * Uses curl to install all required JS packages. No other dependencies than Curl is required.
+ * Uses curl to install all required JS packages. No other dependencies than
+ * Curl is required.
  */
-function obiba_mica_drush_download_js_dependencies()
-{
-  $args = func_get_args();
+function obiba_mica_drush_download_js_dependencies(){
+ $args = func_get_args();
   if ($args[0]) {
     $path = $args[0];
-  } else {
+  }
+  else {
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
+  }
+
+  if ($args[1]) {
+    $repository = $args[1];
+  }
+  else {
+    $repository = variable_get('mica-drupal-js-libraries-version', '1.0.1');
   }
 
   $path .= '/sites/all/libraries';
@@ -345,7 +351,7 @@ function obiba_mica_drush_download_js_dependencies()
   }
 
   $repository_name = 'mica-drupal-js-libraries';
-  $dependencies_url = 'https://github.com/obiba/'. $repository_name .'/archive/1.0.1.tar.gz';
+  $dependencies_url = 'https://github.com/obiba/' . $repository_name . '/archive/' . $repository . '.tar.gz';
 
   if (!drush_shell_exec("rm -rf $path/*")) {
     drush_log(dt("Failed to empty $path content."), 'error');
@@ -355,6 +361,9 @@ function obiba_mica_drush_download_js_dependencies()
   if (!drush_shell_exec("curl -Ls $dependencies_url |  tar -xzf - -C $path/. --strip-components=1")) {
     drush_log(dt("Failed download to dependencies from $dependencies_url to $path."), 'error');
     return;
+  }
+  else {
+    drush_log(dt("Dependencies downloaded from $dependencies_url to $path."), 'success');
   }
 
   if (!drush_shell_exec("rm -rf .git*")) {
