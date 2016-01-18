@@ -1,8 +1,7 @@
 <?php
-
 /**
- * @file obiba_mica_graphic.module
- * TODO: Enter file description here.
+ * @file
+ * Obiba Mica Graphic file
  */
 
 /**
@@ -22,7 +21,7 @@ function obiba_mica_graphic_menu() {
   $items['mica/statistics/get_statistics/%/%/ws'] = array(
     'page callback' => 'obiba_mica_graphic_statistics_query',
     'file' => 'obiba_mica_graphic_statistics_services.inc',
-    'page arguments' => array(3,4),
+    'page arguments' => array(3, 4),
     'access callback' => TRUE,
   );
 
@@ -70,46 +69,63 @@ function obiba_mica_graphic_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Default blocks definition
+ */
+function obiba_mica_graphic_default_block() {
+  return array(
+    NetworkStatistics::GEO_NBR_STAT => array(
+      'info' => t('Geographical distribution for studies'),
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'weight' => '-13',
+    ),
+    NetworkStatistics::RECRUITMENT_SOURCES => array(
+      'info' => t('Sources of recruitment'),
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'weight' => '-12',
+    ),
+    NetworkStatistics::METHODS_DESIGNS => array(
+      'info' => t('Study design'),
+      'region' => 'content',
+      'visibility' => BLOCK_VISIBILITY_LISTED,
+      'pages' => '<front>',
+      'weight' => '-11',
+    ),
+    NetworkStatistics::BIO_SAMPLES =>
+      array(
+        'info' => t('Biological Samples'),
+        'region' => 'content',
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => '<front>',
+        'weight' => '-10',
+      ),
+    NetworkStatistics::RECRUITMENT_SOURCES =>
+      array(
+        'info' => t('Recruitment Source'),
+        'region' => 'content',
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => '<front>',
+        'weight' => '-9',
+      ),
+    NetworkStatistics::ACCESS =>
+      array(
+        'info' => t('Access permitted'),
+        'region' => 'content',
+        'visibility' => BLOCK_VISIBILITY_LISTED,
+        'pages' => '<front>',
+        'weight' => '-8',
+      ),
+  );
+}
+
+/**
  * Implements hook_block_info().
  */
 function obiba_mica_graphic_block_info() {
-  $blocks[NetworkStatistics::GEO_NBR_STAT] = array(
-    'info' => t('Geographical distribution for studies'),
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-  );
-  $blocks[NetworkStatistics::RECRUITMENT_SOURCES] = array(
-    'info' => t('Sources of recruitment'),
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-  );
-  $blocks[NetworkStatistics::METHODS_DESIGNS] = array(
-    'info' => t('Study design'),
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-  );
-  $blocks[NetworkStatistics::BIO_SAMPLES] = array(
-    'info' => t('Biological Samples'),
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-  );
-  $blocks[NetworkStatistics::RECRUITMENT_SOURCES] = array(
-    'info' => t('Recruitment Source'),
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-  );
-  $blocks[NetworkStatistics::ACCESS] = array(
-    'info' => t('Access permitted'),
-    'region' => 'content',
-    'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '<front>',
-  );
-  return $blocks;
+  return obiba_mica_graphic_default_block();
 }
 
 function obiba_mica_graphic_preprocess_block(&$variables) {

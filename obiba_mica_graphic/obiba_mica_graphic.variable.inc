@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Obiba Mica variable file
+ * Obiba Mica Graphics variable file
  */
 
 /**

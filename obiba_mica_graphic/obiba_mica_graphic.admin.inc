@@ -1,8 +1,7 @@
 <?php
-
 /**
- * @file obiba_mica_graphic.admin.inc
- * TODO: Enter file description here.
+ * @file
+ * Obiba Mica Graphic file
  */
 
 /**

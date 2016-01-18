@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Mica networks file
+ * Obiba Mica Graphics file
  */
 
 function obiba_mica_graphic_statistics_query($type_entities = 'studies', $id_entities) {
