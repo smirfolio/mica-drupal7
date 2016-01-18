@@ -151,19 +151,24 @@ function obiba_mica_network_statistics_angular_options($networks_id) {
 }
 
 function obiba_mica_network_page_detail_coverage($network_id, $study_ids_string) {
-  $study_ids = json_decode($study_ids_string);
-
-  if (empty($study_ids)) {
-    exit;
+  $cached_coverage = cache_get('network-cache-' . $study_ids_string);
+  if (!empty($cached_coverage)) {
+    $themed_coverage = $cached_coverage->data;
   }
+  else {
+    $study_ids = json_decode($study_ids_string);
 
-  $coverage = obiba_mica_network_coverage($study_ids);
-
-  if (empty($coverage)) {
-    exit;
+    if (empty($study_ids)) {
+      exit;
+    }
+    $coverage = obiba_mica_network_coverage($study_ids);
+    if (empty($coverage)) {
+      exit;
+    }
+    $themed_coverage = theme('obiba_mica_network_detail_coverage', array('coverage' => $coverage));
+    cache_set('network-cache-' . $study_ids_string, $themed_coverage, 'cache', time() + (60 * 60));
   }
-
-  print theme('obiba_mica_network_detail_coverage', array('coverage' => $coverage));
+  print $themed_coverage;
 }
 
 /**

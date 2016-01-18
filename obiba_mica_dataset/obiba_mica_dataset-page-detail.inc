@@ -213,17 +213,24 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
  * Ajax Variable table Call header.
  */
 function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_id) {
-  $dataset_resource = new MicaDatasetResource();
-  $dataset_dto = $dataset_resource->getDataset($dataset_id);
-  if ($dataset_type == 'study-dataset') {
-    $header = obiba_mica_dataset_studies_Variables_table_ajax_header();
+  $cached_header_variable_table = cache_get('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id);
+  if (!empty($cached_header_variable_table)) {
+    $data = $cached_header_variable_table->data;
   }
   else {
-    $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
-    $header = obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto);
-  }
+    $dataset_resource = new MicaDatasetResource();
+    $dataset_dto = $dataset_resource->getDataset($dataset_id);
+    if ($dataset_type == 'study-dataset') {
+      $header = obiba_mica_dataset_studies_Variables_table_ajax_header();
+    }
+    else {
+      $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
+      $header = obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto);
+    }
 
-  $data['header'] = $header;
+    $data['header'] = $header;
+    cache_set('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id, $data, 'cache', time() + (60 * 60));
+  }
   return drupal_json_output($data);
 }
 
@@ -262,41 +269,48 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
     $size = $_GET['iDisplayLength'];
   }
 
-  $sort = obiba_mica_dataset_get_sorted_by_column();
-
-  $dataset_dto = $dataset_resource->getDataset($id_dataset);
-
-  if ($dataset_type == 'study-dataset') {
-    // Get study dataset
-    // $dataset_type_dto =
-    // $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
-    $variables_dataset = $dataset_resource->getVariables($dataset_type,
-      $id_dataset,
-      $from,
-      $size,
-      !empty($sort['sort']) ? $sort['sort'] : 'index',
-      !empty($sort['order']) ? $sort['order'] : NULL
-    );
-
-    $data_variable = obiba_mica_dataset_studies_table_data($variables_dataset);
-
+  $variable_data = cache_get('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size);
+  if (!empty($variable_data)) {
+    $data = $variable_data->data;
   }
   else {
-    $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
-    $variables_dataset = $dataset_resource->getVariablesHarmonizations($dataset_type,
-      $id_dataset,
-      $from,
-      $size,
-      !empty($sort['sort']) ? $sort['sort'] : 'index',
-      !empty($sort['order']) ? $sort['order'] : NULL
-    );
-    $data_variable = obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $variables_dataset);
-  }
+    $sort = obiba_mica_dataset_get_sorted_by_column();
 
+    $dataset_dto = $dataset_resource->getDataset($id_dataset);
+
+    if ($dataset_type == 'study-dataset') {
+      // Get study dataset
+      // $dataset_type_dto =
+      // $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+      $variables_dataset = $dataset_resource->getVariables($dataset_type,
+        $id_dataset,
+        $from,
+        $size,
+        !empty($sort['sort']) ? $sort['sort'] : 'index',
+        !empty($sort['order']) ? $sort['order'] : NULL
+      );
+
+      $data_variable = obiba_mica_dataset_studies_table_data($variables_dataset);
+
+    }
+    else {
+      $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
+      $variables_dataset = $dataset_resource->getVariablesHarmonizations($dataset_type,
+        $id_dataset,
+        $from,
+        $size,
+        !empty($sort['sort']) ? $sort['sort'] : 'index',
+        !empty($sort['order']) ? $sort['order'] : NULL
+      );
+      $data_variable = obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $variables_dataset);
+    }
+    $data['iTotalRecords'] = $variables_dataset->total;
+    $data['iTotalDisplayRecords'] = $variables_dataset->total;
+    $data['aaData'] = $data_variable;
+    cache_set('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size, $data, 'cache', time() + (60 * 60));
+  }
+  // Must be update in each request (DataTable requirement in ajx call context)
   $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
-  $data['iTotalRecords'] = $variables_dataset->total;
-  $data['iTotalDisplayRecords'] = $variables_dataset->total;
-  $data['aaData'] = $data_variable;
   return drupal_json_output($data);
 }
 
