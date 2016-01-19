@@ -151,7 +151,7 @@ function obiba_mica_network_statistics_angular_options($networks_id) {
 }
 
 function obiba_mica_network_page_detail_coverage($network_id, $study_ids_string) {
-  $cached_coverage = cache_get('network-cache-' . $study_ids_string);
+  $cached_coverage = obiba_mica_commons_get_cache('network-cache-' . $study_ids_string);
   if (!empty($cached_coverage)) {
     $themed_coverage = $cached_coverage->data;
   }
@@ -166,7 +166,7 @@ function obiba_mica_network_page_detail_coverage($network_id, $study_ids_string)
       exit;
     }
     $themed_coverage = theme('obiba_mica_network_detail_coverage', array('coverage' => $coverage));
-    cache_set('network-cache-' . $study_ids_string, $themed_coverage, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('network-cache-' . $study_ids_string, $themed_coverage);
   }
   print $themed_coverage;
 }

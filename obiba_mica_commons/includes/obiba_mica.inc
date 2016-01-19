@@ -28,6 +28,8 @@ class MicaClient {
   const PAGINATE_VARIABLES = 1;
   const PAGINATE_DATASETS = 2;
   const PAGINATE_NETWORKS = 3;
+  const ANONYMOUS_CACHE_LIFE_TIME = 3600; //1 hour
+  const AUTHENTICATED_CACHE_LIFE_TIME = 900; //15 min
 
   protected $micaUrl;
 
@@ -310,10 +312,11 @@ class MicaClient {
   function parseCookie($cookie_str) {
     $cookie = array();
     foreach (explode(';', $cookie_str) as $entry_str) {
-      if (strpos($entry_str,'=')) {
+      if (strpos($entry_str, '=')) {
         $entry = explode('=', $entry_str);
         $cookie[$entry[0]] = $entry[1];
-      } else {
+      }
+      else {
         $cookie[$entry_str] = TRUE;
       }
     }

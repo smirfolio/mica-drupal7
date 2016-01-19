@@ -213,7 +213,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
  * Ajax Variable table Call header.
  */
 function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_id) {
-  $cached_header_variable_table = cache_get('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id);
+  $cached_header_variable_table = obiba_mica_commons_get_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id);
   if (!empty($cached_header_variable_table)) {
     $data = $cached_header_variable_table->data;
   }
@@ -229,7 +229,7 @@ function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_
     }
 
     $data['header'] = $header;
-    cache_set('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id, $data, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id, $data);
   }
   return drupal_json_output($data);
 }
@@ -269,7 +269,7 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
     $size = $_GET['iDisplayLength'];
   }
 
-  $variable_data = cache_get('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size);
+  $variable_data = obiba_mica_commons_get_cache('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size);
   if (!empty($variable_data)) {
     $data = $variable_data->data;
   }
@@ -307,7 +307,7 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
     $data['iTotalRecords'] = $variables_dataset->total;
     $data['iTotalDisplayRecords'] = $variables_dataset->total;
     $data['aaData'] = $data_variable;
-    cache_set('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size, $data, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size, $data);
   }
   // Must be update in each request (DataTable requirement in ajx call context)
   $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;

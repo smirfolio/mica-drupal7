@@ -329,7 +329,7 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   if (!variable_get_value('mica_statistics')) {
     return;
   }
-  $cached_variable_statistics = cache_get('variable-statistics-' . $variable_id);
+  $cached_variable_statistics = obiba_mica_commons_get_cache('variable-statistics-' . $variable_id);
   if (!empty($cached_variable_statistics)) {
     $statistics_variable = $cached_variable_statistics->data;
   }
@@ -343,7 +343,7 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
       $stat_tab['table'] = $statistics->asTable();
       $stat_tab['chart'] = $statistics->asChart();
       $statistics_variable = $stat_tab;
-      cache_set('variable-statistics-' . $variable_id, $statistics_variable, 'cache', time() + (60 * 60));
+      obiba_mica_commons_set_cache('variable-statistics-' . $variable_id, $statistics_variable);
     }
     else {
       cache_clear_all('variable-statistics-' . $variable_id);

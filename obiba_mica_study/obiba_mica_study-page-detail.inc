@@ -10,10 +10,11 @@ if (module_exists('obiba_mica_dataset')) {
 }
 
 function obiba_mica_study_page_detail_coverage($study_id) {
+
   if (!variable_get_value('study_show_coverage_graphs')) {
     exit;
   }
-  $cached_study_coverage = cache_get('study-coverage-cache-' . $study_id);
+  $cached_study_coverage = obiba_mica_commons_get_cache('study-coverage-cache-' . $study_id);
   if (!empty($cached_study_coverage)) {
     $study_coverage = $cached_study_coverage->data;
   }
@@ -25,7 +26,7 @@ function obiba_mica_study_page_detail_coverage($study_id) {
     }
 
     $study_coverage = theme('obiba_mica_study_detail_coverage', array('coverage' => $coverage['charts']));
-    cache_set('study-coverage-cache-' . $study_id, $study_coverage, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('study-coverage-cache-' . $study_id, $study_coverage);
   }
 
   print $study_coverage;
@@ -35,7 +36,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
   if (!variable_get_value('study_show_networks')) {
     exit;
   }
-  $cached_networks = cache_get('study-networks-cache-' . $study_id);
+  $cached_networks = obiba_mica_commons_get_cache('study-networks-cache-' . $study_id);
   if (!empty($cached_networks)) {
     $themed_study_networks = $cached_networks->data;
   }
@@ -49,7 +50,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
       exit;
     }
     $themed_study_networks = theme('obiba_mica_study_detail_networks', array('networks' => $network_output));
-    cache_set('study-networks-cache-' . $study_id, $themed_study_networks, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('study-networks-cache-' . $study_id, $themed_study_networks);
   }
   print $themed_study_networks;
 }
@@ -58,7 +59,7 @@ function obiba_mica_study_page_detail_datasets($study_id) {
   if (!variable_get_value('study_show_datasets')) {
     exit;
   }
-  $cached_datasets = cache_get('study-datasets-cache-' . $study_id);
+  $cached_datasets = obiba_mica_commons_get_cache('study-datasets-cache-' . $study_id);
   if (!empty($cached_datasets)) {
     $themed_datasets = $cached_datasets->data;
   }
@@ -71,7 +72,7 @@ function obiba_mica_study_page_detail_datasets($study_id) {
 
     $_SESSION['fixed_menu']['datasets'] = $dataset_output;
     $themed_datasets = theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
-    cache_set('study-datasets-cache-' . $study_id, $themed_datasets, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('study-datasets-cache-' . $study_id, $themed_datasets);
   }
   print $themed_datasets;
 }
