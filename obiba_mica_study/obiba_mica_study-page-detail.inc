@@ -10,50 +10,71 @@ if (module_exists('obiba_mica_dataset')) {
 }
 
 function obiba_mica_study_page_detail_coverage($study_id) {
+
   if (!variable_get_value('study_show_coverage_graphs')) {
     exit;
   }
+  $cached_study_coverage = obiba_mica_commons_get_cache('study-coverage-cache-' . $study_id);
+  if (!empty($cached_study_coverage)) {
+    $study_coverage = $cached_study_coverage->data;
+  }
+  else {
+    $coverage = obiba_mica_study_coverage($study_id);
 
-  $coverage = obiba_mica_study_coverage($study_id);
+    if (empty($coverage['charts'])) {
+      exit;
+    }
 
-  if (empty($coverage['charts'])) {
-    exit;
+    $study_coverage = theme('obiba_mica_study_detail_coverage', array('coverage' => $coverage['charts']));
+    obiba_mica_commons_set_cache('study-coverage-cache-' . $study_id, $study_coverage);
   }
 
-  $_SESSION['fixed_menu']['coverage'] = $coverage['charts'];
-  print theme('obiba_mica_study_detail_coverage', array('coverage' => $coverage['charts']));
+  print $study_coverage;
 }
 
 function obiba_mica_study_page_detail_networks($study_id) {
   if (!variable_get_value('study_show_networks')) {
     exit;
   }
-
-  $network_output = (module_exists('obiba_mica_network')) ?
-    obiba_mica_network_networks_list($study_id) : NULL;
-
-  $_SESSION['fixed_menu']['networks'] = $network_output;
-
-  if (empty($network_output)) {
-    exit;
+  $cached_networks = obiba_mica_commons_get_cache('study-networks-cache-' . $study_id);
+  if (!empty($cached_networks)) {
+    $themed_study_networks = $cached_networks->data;
   }
+  else {
+    $network_output = (module_exists('obiba_mica_network')) ?
+      obiba_mica_network_networks_list($study_id) : NULL;
 
-  print theme('obiba_mica_study_detail_networks', array('networks' => $network_output));
+    $_SESSION['fixed_menu']['networks'] = $network_output;
+
+    if (empty($network_output)) {
+      exit;
+    }
+    $themed_study_networks = theme('obiba_mica_study_detail_networks', array('networks' => $network_output));
+    obiba_mica_commons_set_cache('study-networks-cache-' . $study_id, $themed_study_networks);
+  }
+  print $themed_study_networks;
 }
 
 function obiba_mica_study_page_detail_datasets($study_id) {
   if (!variable_get_value('study_show_datasets')) {
     exit;
   }
-
-  $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
-
-  if (empty($dataset_output)) {
-    exit;
+  $cached_datasets = obiba_mica_commons_get_cache('study-datasets-cache-' . $study_id);
+  if (!empty($cached_datasets)) {
+    $themed_datasets = $cached_datasets->data;
   }
+  else {
+    $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
 
-  $_SESSION['fixed_menu']['datasets'] = $dataset_output;
-  print theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
+    if (empty($dataset_output)) {
+      exit;
+    }
+
+    $_SESSION['fixed_menu']['datasets'] = $dataset_output;
+    $themed_datasets = theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
+    obiba_mica_commons_set_cache('study-datasets-cache-' . $study_id, $themed_datasets);
+  }
+  print $themed_datasets;
 }
 
 function obiba_mica_study_page_detail($study_id) {
@@ -112,9 +133,9 @@ function obiba_mica_study_page_detail($study_id) {
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
       $flat_study_attachments = obiba_mica_files_get_flat_attachments('study', $study_id);
-      $filtered_tree_path = $flat_study_attachments->findNodeFullPath('/study/'.$study_id);
+      $filtered_tree_path = $flat_study_attachments->findNodeFullPath('/study/' . $study_id);
       if (!empty($filtered_tree_path)) {
-        $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, MicaFilesResource::POPULATION,$study_id);
+        $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, MicaFilesResource::POPULATION, $study_id);
       }
     }
     $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $flat_study_attachments);
@@ -192,9 +213,9 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
   if (!empty($study_detail->populations)) {
     foreach ($study_detail->populations as $population) {
       if (!empty($flat_study_attachments) && module_exists('obiba_mica_files')) {
-          $path_population_attachment = "/study/$study_detail->id/population/$population->id";
-          $filtered_tree_path = $flat_study_attachments->findNodeFullPath($path_population_attachment);
-          $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, MicaFilesResource::DCE,$population->id );
+        $path_population_attachment = "/study/$study_detail->id/population/$population->id";
+        $filtered_tree_path = $flat_study_attachments->findNodeFullPath($path_population_attachment);
+        $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, MicaFilesResource::DCE, $population->id);
       }
       $dce_uids = array();
       if (!empty($population->dataCollectionEvents)) {
@@ -260,12 +281,12 @@ function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collec
   $themed_dce_attachment = NULL;
   foreach ($data_collection_events as $dce) {
     if (module_exists('obiba_mica_files')) {
-        $path_dce_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
-        $filtered_dce_tree_path = $flat_study_attachments->findNodeFullPath($path_dce_attachment);
-      if($population_id==1 && $dce->id==2){
+      $path_dce_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
+      $filtered_dce_tree_path = $flat_study_attachments->findNodeFullPath($path_dce_attachment);
+      if ($population_id == 1 && $dce->id == 2) {
 //        dvm($filtered_dce_tree_path);
       }
-        $themed_dce_attachment = $flat_study_attachments->themeFolders($filtered_dce_tree_path,NULL,  $dce->id);
+      $themed_dce_attachment = $flat_study_attachments->themeFolders($filtered_dce_tree_path, NULL, $dce->id);
     }
     $page_render_dces .= theme('mica_dce_detail', array(
       'has_coverage' => $has_coverage,
@@ -332,9 +353,13 @@ function obiba_mica_study_get_variables($study_id) {
 
 function obiba_mica_study_coverage($study_id) {
   $coverage['charts'] = obiba_mica_search_query_charts(
-    MicaClient::addParameterDtoQueryLink(array('variables' => array(
-      'terms' => array(
-        'studyIds' => $study_id)))),
+    MicaClient::addParameterDtoQueryLink(array(
+      'variables' => array(
+        'terms' => array(
+          'studyIds' => $study_id
+        )
+      )
+    )),
     function ($b, $study_id) {
       // filter the dces of the current study
       return strpos($b->value, ':') === FALSE || strpos($b->value, $study_id . ':') === 0;

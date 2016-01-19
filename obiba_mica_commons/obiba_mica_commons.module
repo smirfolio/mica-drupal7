@@ -737,3 +737,29 @@ function obiba_mica_commons_taxonomies_filter_array() {
   }
   return explode(',', $mica_taxonomy_figures);
 }
+
+/**
+ * Helper to set cache for current user
+ */
+function obiba_mica_commons_set_cache($key, $value) {
+  global $user;
+  if (in_array('anonymous user', $user->roles, TRUE)) {
+    cache_set($key . '-' . 'anonymous_user', $value, 'cache', MicaClient::ANONYMOUS_CACHE_LIFE_TIME);
+  }
+  else {
+    cache_set($key . '-' . $user->sid, $value, 'cache', MicaClient::AUTHENTICATED_CACHE_LIFE_TIME);
+  }
+}
+
+/**
+ * Helper to get cache for current user
+ */
+function obiba_mica_commons_get_cache($key) {
+  global $user;
+  if (in_array('anonymous user', $user->roles, TRUE)) {
+    return cache_get($key . '-' . 'anonymous_user');
+  }
+  else {
+    return cache_get($key . '-' . $user->sid);
+  }
+}
