@@ -34,11 +34,13 @@ class VariableStatistics {
    * Table of descriptive statistics or frequencies.
    */
   public function asTable() {
-    if (!empty($this->variableStat->statistics)) {
-      return $this->asDescriptiveTable();
-    }
-    if (!empty($this->variableStat->frequencies)) {
-      return $this->asFrequenciesTable();
+    if (!empty($this->variableStat->total)) {
+      if (!empty($this->variableStat->statistics)) {
+        return $this->asDescriptiveTable();
+      }
+      if (!empty($this->variableStat->frequencies)) {
+        return $this->asFrequenciesTable();
+      }
     }
     return '<div class="alert alert-info">No statistics found for this variable (which nature is "' . strtolower($this->variable->nature) . '").</div>';
   }

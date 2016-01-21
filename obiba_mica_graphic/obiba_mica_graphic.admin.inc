@@ -85,7 +85,8 @@ function obiba_mica_graphic_settings_form_display_block(&$form) {
     '#options' => obiba_mica_graphic_get_aggregations(),
     '#description' => $info['description'],
   );
-  if (!empty(variable_get_value('graphics_blocks_aggregations') && variable_get_value('graphics_blocks_aggregations') != 'none')) {
+  $graphics_blocks_aggregations = variable_get_value('graphics_blocks_aggregations');
+  if (!empty($graphics_blocks_aggregations) && $graphics_blocks_aggregations != 'none') {
     $form['obiba_mica_graphic']['graphic_display']['blocks']['graphics_blocks_aggregations']['#default_value'] =
       variable_get_value('graphics_blocks_aggregations');
   }
@@ -133,7 +134,8 @@ function obiba_mica_graphic_get_networks_id() {
   $resource = new MicaNetworkResource();
   $networks = $resource->get_networks(NULL, NULL, NULL, 9999, NULL, NULL);
   $networks_options = array();
-  if (!empty($networks->hasSummaries())) {
+  $has_summary = $networks->hasSummaries();
+  if (!empty($has_summary)) {
     foreach ($networks->getSummaries() as $network_document) {
       $networks_options[$network_document->id] = obiba_mica_commons_get_localized_field($network_document, 'name');
     }
