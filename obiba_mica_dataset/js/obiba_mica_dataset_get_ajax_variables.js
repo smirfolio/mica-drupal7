@@ -23,61 +23,65 @@
         var param_stat_chart = $('#param-statistics-chart');
 
         var var_id = param_stat_tab.attr('var-id');
-
-        $.ajax({
-          'url': Drupal.settings.basePath + Drupal.settings.pathPrefix + 'variable-detail-statistics/' + var_id,
-          'type': 'GET',
-          'dataType': 'html',
-          'data': '',
-          'success': function (data) {
-            try {
-              var data_decoded = jQuery.parseJSON(data);
-            } catch (e) {
-              console.log(e.message);
-            }
-
-            if (typeof data_decoded == 'object') {
-              //   console.log(data_decoded);
-            }
-            if (!data_decoded) {
-              param_stat_tab.empty();
-              param_stat_chart.empty();
-
-              $(alertMEssage).appendTo(param_stat_tab);
-            }
-            else {
-              if (data_decoded.table) {
-                message_div_stat_tab.empty();
-                param_stat_tab.css({'padding-top': '0'});
-                $(data_decoded.table).appendTo(param_stat_tab);
+        if (var_id) {
+          $.ajax({
+            'url': Drupal.settings.basePath + Drupal.settings.pathPrefix + 'variable-detail-statistics/' + var_id,
+            'type': 'GET',
+            'dataType': 'html',
+            'data': '',
+            'success': function (data) {
+              try {console.log(jQuery.parseJSON(data));
+                var data_decoded = jQuery.parseJSON(data);
+              } catch (e) {
+                console.log(e.message);
               }
-              if (data_decoded.chart) {
-                message_div_stat_chart.empty();
-                param_stat_chart.css({'padding-top': '0'});
-                $(data_decoded.chart).appendTo(param_stat_chart);
 
-                if (Drupal.settings.obiba_mica_variable.library == 'google') {
-                  Drupal.behaviors.chartsGoogle.attach();
-                }
-                if (Drupal.settings.obiba_mica_variable.library == 'highcharts') {
-                  Drupal.behaviors.chartsHighcharts.attach();
-                }
+              if (typeof data_decoded == 'object') {
+                //   console.log(data_decoded);
+              }
+              if (! data_decoded) {
+                param_stat_tab.empty();
+                param_stat_chart.empty();
+
+                $(alertMEssage).appendTo(param_stat_tab);
               }
               else {
-                message_div_stat_chart.empty();
-              }
+                if (data_decoded.table) {
+                  message_div_stat_tab.empty();
+                  param_stat_tab.css({'padding-top': '0'});
+                  $(data_decoded.table).appendTo(param_stat_tab);
+                }
+                if (data_decoded.chart) {
+                  message_div_stat_chart.empty();
+                  param_stat_chart.css({'padding-top': '0'});
+                  $(data_decoded.chart).appendTo(param_stat_chart);
 
-              Drupal.attachBehaviors(param_stat_tab, settings);
+                  if (Drupal.settings.obiba_mica_variable.library == 'google') {
+                    Drupal.behaviors.chartsGoogle.attach();
+                  }
+                  if (Drupal.settings.obiba_mica_variable.library == 'highcharts') {
+                    Drupal.behaviors.chartsHighcharts.attach();
+                  }
+                }
+                else {
+                  message_div_stat_chart.empty();
+                }
+
+                Drupal.attachBehaviors(param_stat_tab, settings);
+              }
+            },
+            'error': function (data) {
+              param_stat_tab.empty();
+              param_stat_chart.empty();
+              var $errorMessage = Drupal.t('Error!');
+              console.log($errorMessage);
+              $($errorMessage).appendTo(param_stat_tab);
             }
-          },
-          'error': function (data) {
-            param_stat_tab.empty();
-            param_stat_chart.empty();
-            var $errorMessage = Drupal.t('Error!');
-            console.log($errorMessage);
-            $($errorMessage).appendTo(param_stat_tab);
-          }
-        });
+          });
+        }
+        else{
+          $('section#section-statistics').remove();
+        }
       }
     }
   };

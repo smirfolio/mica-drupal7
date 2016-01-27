@@ -21,29 +21,50 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_datatable_init.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_toggle_harmo_table.js', 'file');
   drupal_add_js(array('datasetId' => $dataset_id), 'setting');
-  $dataset_resource = new MicaDatasetResource();
+
   $dataset_dto = NULL;
   $dataset_type_dto = NULL;
   $variables_dataset = NULL;
   $variables_table_output = NULL;
   $themed_attachment = NULL;
   $modals = NULL;
-
-  $dataset_dto = $dataset_resource->getDataset($dataset_id);
-  $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
-  switch ($dataset_dto->variableType) {
-    case ('Harmonized') :
-      $dataset_type = 'harmonization-dataset';
-      break;
-    default:
-      $dataset_type = 'study-dataset';
+  $dataset_resource = new MicaDatasetResource();
+  $current_detail_dataset_cache = array();
+  $detail_dataset_cache = obiba_mica_commons_get_cache('dataset_detail_cache-' . $dataset_id);
+  if (!empty($detail_dataset_cache->data['dataset_dto'])) {
+    $dataset_dto = $detail_dataset_cache->data['dataset_dto'];
   }
+  else {
+    $dataset_dto = $dataset_resource->getDataset($dataset_id);
+    $current_detail_dataset_cache['study_dto'] = $dataset_dto;
+    obiba_mica_commons_set_cache('dataset_detail_cache-' . $dataset_id, $current_detail_dataset_cache);
+  }
+  if (!empty($detail_dataset_cache->data['dataset_coverage'])) {
+    $coverage = $detail_dataset_cache->data['dataset_coverage'];
+  }
+  else {
+    if (!empty($dataset_dto)) {
+      $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
+      $current_detail_dataset_cache['dataset_coverage'] = $coverage;
+      obiba_mica_commons_set_cache('dataset_detail_cache-' . $dataset_id, $current_detail_dataset_cache);
+    }
+  }
+
   if (!empty($dataset_dto)) {
+    switch ($dataset_dto->variableType) {
+      case ('Harmonized') :
+        $dataset_type = 'harmonization-dataset';
+        break;
+      default:
+        $dataset_type = 'study-dataset';
+    }
+
     $flat_study_attachments = NULL;
     $variables_dataset = $dataset_resource->getVariables($dataset_type, $dataset_id, 0, 1);
     if ($dataset_type == 'study-dataset') {
       $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
       $has_coverage = !empty($coverage['has_coverage']) ? $coverage['has_coverage'] : NULL;
+
       $study_id = $dataset_type_dto->studyTable->studyId;
       if (module_exists('obiba_mica_files')) {
         $flat_study_attachments =
@@ -86,18 +107,24 @@ function obiba_mica_dataset_page_detail($dataset_id) {
             $dataset_id);
       }
     }
-
-    return theme('obiba_mica_dataset-detail', array(
-      'dataset_dto' => $dataset_dto,
-      'coverage' => !empty($coverage) ? $coverage['charts'] : NULL,
-      'dataset_type_dto' => $dataset_type_dto,
-      'dataset_type' => $dataset_type,
-      'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => TRUE)),
-      'variables_dataset' => $variables_dataset,
-      'modals' => $modals,
-      'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
-
-    ));
+    if (!empty($detail_dataset_cache->data['dataset_theme'])) {
+      return $detail_dataset_cache->data['dataset_theme'];
+    }
+    else{
+      $dataset_theme =  theme('obiba_mica_dataset-detail', array(
+        'dataset_dto' => $dataset_dto,
+        'coverage' => !empty($coverage) ? $coverage['charts'] : NULL,
+        'dataset_type_dto' => $dataset_type_dto,
+        'dataset_type' => $dataset_type,
+        'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => TRUE)),
+        'variables_dataset' => $variables_dataset,
+        'modals' => $modals,
+        'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
+      ));
+      $current_detail_dataset_cache['dataset_theme'] = $dataset_theme;
+      obiba_mica_commons_set_cache('study_detail_cache-' . $dataset_id, $current_detail_dataset_cache);
+      return $dataset_theme;
+    }
   }
   else {
     drupal_set_title(t('Dataset not found'));
@@ -279,9 +306,6 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
     $dataset_dto = $dataset_resource->getDataset($id_dataset);
 
     if ($dataset_type == 'study-dataset') {
-      // Get study dataset
-      // $dataset_type_dto =
-      // $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
       $variables_dataset = $dataset_resource->getVariables($dataset_type,
         $id_dataset,
         $from,

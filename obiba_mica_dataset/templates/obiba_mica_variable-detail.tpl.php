@@ -179,7 +179,7 @@
 
   <!-- STATISTICS -->
   <?php if (variable_get_value('mica_statistics')): ?>
-    <section>
+    <section id="section-statistics">
       <h2>
         <?php print t('Statistics') ?>
         <?php if (strcasecmp($variable_dto->nature, 'categorical') === 0 && $variable_dto->variableType !== 'Harmonized'): ?>

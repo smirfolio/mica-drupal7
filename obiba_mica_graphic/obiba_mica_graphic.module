@@ -161,11 +161,12 @@ function obiba_mica_graphic_block_view($delta = '') {
     ) {
       obiba_mica_app_angular_load_js_resources('obiba_mica_graphic');
     }
+    $graphics_bocks = variable_get_value('graphics_blocks');
     switch ($delta) {
       case NetworkStatistics::GEO_NBR_STAT:
         if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
           $display_countries_geo = in_array($block_delta_parameters[$delta], $aggregations_to_show, TRUE);
-          if (!empty(variable_get_value('graphics_blocks')) && $display_countries_geo) {
+          if (!empty($graphics_bocks) && $display_countries_geo) {
             $block['subject'] = t('Distribution of studies by participants\' countries of residence');
             $block['content'] = theme('obiba_mica_angular_app_geo_charts');
             drupal_add_js(array(
@@ -186,7 +187,7 @@ function obiba_mica_graphic_block_view($delta = '') {
       case NetworkStatistics::RECRUITMENT_SOURCES:
         if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
           $display_recruitment = in_array($block_delta_parameters[NetworkStatistics::RECRUITMENT_SOURCES], $aggregations_to_show, TRUE);
-          if (!empty(variable_get_value('graphics_blocks')) && $display_recruitment) {
+          if (!empty($graphics_bocks) && $display_recruitment) {
             $block['content'] = theme('obiba_mica_angular_app_recruitment_source_charts');
             drupal_add_js(array(
               'GraphicChartsOptions' =>
@@ -207,7 +208,7 @@ function obiba_mica_graphic_block_view($delta = '') {
       case NetworkStatistics::METHODS_DESIGNS:
         if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
           $display_design = in_array($block_delta_parameters[NetworkStatistics::METHODS_DESIGNS], $aggregations_to_show, TRUE);
-          if (!empty(variable_get_value('graphics_blocks')) && $display_design) {
+          if (!empty($graphics_bocks) && $display_design) {
             $block['content'] = theme('obiba_mica_angular_app_study_design_charts');
             drupal_add_js(array(
               'GraphicChartsOptions' =>
@@ -228,7 +229,7 @@ function obiba_mica_graphic_block_view($delta = '') {
       case NetworkStatistics::BIO_SAMPLES:
         if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
           $display_bio_samples = in_array($block_delta_parameters[NetworkStatistics::BIO_SAMPLES], $aggregations_to_show, TRUE);
-          if (!empty(variable_get_value('graphics_blocks')) && $display_bio_samples) {
+          if (!empty($graphics_bocks) && $display_bio_samples) {
             $block['content'] = theme('obiba_mica_angular_app_biological_samples_charts');
             drupal_add_js(array(
               'GraphicChartsOptions' =>
@@ -251,7 +252,7 @@ function obiba_mica_graphic_block_view($delta = '') {
       case NetworkStatistics::ACCESS:
         if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
           $display_access = in_array($block_delta_parameters[NetworkStatistics::ACCESS], $aggregations_to_show, TRUE);
-          if (!empty(variable_get_value('graphics_blocks')) && $display_access) {
+          if (!empty($graphics_bocks) && $display_access) {
             $block['content'] = theme('obiba_mica_angular_app_access_charts');
             drupal_add_js(array(
               'GraphicChartsOptions' =>
