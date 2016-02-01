@@ -6,21 +6,12 @@
     <tr>
       <td>
         <?php
-        // $mica_client = new MicaClient();
-        if ($aggregation_facet == 'populations-selectionCriteria-countriesIso') {
-          $title = t(countries_country_lookup(drupal_strtoupper($term->title), 'iso' . strlen($term->title))->name);
-          if (empty($title)) {
+        if ($term->key === "0" || !empty($term->key)) {
+          if (!empty($term->title)) {
             $title = t($term->title);
           }
-        }
-        else {
-          if (!empty($term->key)) {
-            if (!empty($term->title)) {
-              $title = t($term->title);
-            }
-            else {
-              $title = $term->key;
-            }
+          else {
+            $title = $term->key;
           }
         }
         $tooltip = empty($term->description) ? (strlen($title) < 30 ? '' : $title) : $term->description;
