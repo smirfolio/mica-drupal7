@@ -1,0 +1,8 @@
+name = "Obiba Mica Angular Search"
+description = "Mica Client -- Angular Search"
+package = Obiba
+core = 7.x
+
+dependencies[] = obiba_mica_commons
+
+files[] = includes/obiba_mica_angular_search_resources.inc

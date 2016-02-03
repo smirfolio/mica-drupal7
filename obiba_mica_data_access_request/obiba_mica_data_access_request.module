@@ -187,11 +187,6 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_data_access_request-view-header',
       'path' => $path_views_theme,
     ),
-    // TODO to be removed once they are integrated in ng-obiba-mica
-    'data-access-request-submitted-modal' => array(
-      'template' => 'data-access-request-submitted-modal',
-      'path' => $path_views_theme,
-    ),
     'data-access-request-profile-user-modal' => array(
       'template' => 'data-access-request-profile-user-modal',
       'path' => $path_views_theme
@@ -420,11 +415,11 @@ function obiba_mica_data_access_request_table_rows() {
  * Get a value attribute.
  */
 function obiba_mica_data_access_request_profile_attribute($user_attributes, $key) {
-    foreach ($user_attributes as $attr) {
-      if ($attr->key == $key) {
-        return $attr->value;
-      }
+  foreach ($user_attributes as $attr) {
+    if ($attr->key == $key) {
+      return $attr->value;
     }
+  }
   return NULL;
 }
 

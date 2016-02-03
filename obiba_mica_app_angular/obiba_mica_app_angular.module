@@ -361,6 +361,10 @@ function obiba_mica_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer',
         ),
+        $lib_path_schema_form . '/rql-nodojo/js/rql.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
         $lib_path_schema_form
         . '/angular-strap/dist/angular-strap.tpl.js' => array(
           'type' => 'file',
