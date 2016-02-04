@@ -10,4 +10,7 @@
 
 mica.ObibaSearch = angular.module('mica.ObibaSearch', [
     'obiba.mica.search'
-  ]);
+  ])
+  .run(['ObibaSearchConfig', function(ObibaSearchConfig){
+  ObibaSearchConfig.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);
+}]);

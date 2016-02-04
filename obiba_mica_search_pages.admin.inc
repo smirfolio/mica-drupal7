@@ -261,14 +261,6 @@ function _obiba_mica_settings_search_studies_form(&$form) {
     '#description' => $info['description'],
   );
 
-  // content details
-  $info = variable_get_info('studies_column_variables');
-  $form['search_display_settings']['studies_form']['studies_column']['studies_column_variables'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('studies_column_variables'),
-    '#description' => $info['description'],
-  );
 
   // labels
   $info = variable_get_info('studies_search_label');
