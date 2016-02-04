@@ -45,6 +45,7 @@ class MicaClientPathProvider {
   const DATA_ACCESS_USERS_LIST = 'mica/data_access/users';
   const AGATE_REGISTER = 'agate/register';
   const AGATE_PROFILE = 'agate/user/profile';
+  const ANGULAR_SEARCH = 'mica/angular-search';
 
   /**
    * The study detail url.

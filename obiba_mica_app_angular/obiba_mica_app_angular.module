@@ -196,7 +196,8 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
       'user' => $user,
       'locale' => $language->language,
       'show_detailed_stats' => variable_get_value('dataset_detailed_var_stats'),
-      'data_access_config' => obiba_mica_app_angular_get_access_config()
+      'data_access_config' => obiba_mica_app_angular_get_access_config(),
+      'obibaSearchOptions' => obiba_mica_angular_search_config()
     ),
   );
 
@@ -358,6 +359,10 @@ function obiba_mica_app_angular_load_angular_library() {
           'scope' => 'footer',
         ),
         $lib_path_schema_form . '/angular-strap/dist/angular-strap.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
+        $lib_path_schema_form . '/rql-nodojo/js/rql.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
