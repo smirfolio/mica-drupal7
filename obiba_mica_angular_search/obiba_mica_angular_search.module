@@ -43,6 +43,12 @@ function obiba_mica_angular_search_menu() {
     'page arguments' => array(2, 4),
     'access callback' => TRUE
   );
+  $items['mica/variables/_coverage/%/ws'] = array(
+    'page callback' => 'obiba_mica_angular_search_variable_coverage',
+    'file' => 'obiba_mica_angular_search_services.inc',
+    'page arguments' => array(3),
+    'access callback' => TRUE
+  );
 
   return $items;
 }
@@ -121,19 +127,30 @@ function obiba_mica_angular_search_variable_page_search() {
  */
 function obiba_mica_angular_search_config() {
   return array(
-    'networks' =>
+    'variables' =>
       array(
-        'showNetworksSearchTab' => variable_get_value('search_networks'),
-        'networksColumn' => array(
-          'showNetworksStudiesColumn' => variable_get_value('networks_column_studies'),
-          'showNetworksStudyDatasetColumn' => variable_get_value('networks_column_study_datasets'),
-          'showNetworksHarmonizedDatasetColumn' => variable_get_value('networks_column_harmonization_datasets'),
-          'showNetworksVariablesColumn' => variable_get_value('networks_column_variables'),
+        'showSearchTab' => variable_get_value('search_variables'),
+        'variablesColumn' => array(
+          'showVariablesStudiesColumn' => variable_get_value('variables_column_study'),
+          'showVariablesDatasetsColumn' => variable_get_value('variables_column_dataset'),
+          'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
+          'showDatasetsVariablesColumn' => variable_get_value('datasets_column_variables'),
+        )
+      ),
+    'datasets' =>
+      array(
+        'showSearchTab' => variable_get_value('search_datasets'),
+        'showDatasetsSearchFilter' => variable_get_value('search_datasets_autocomplete'),
+        'datasetsColumn' => array(
+          'showDatasetsTypeColumn' => variable_get_value('datasets_column_type'),
+          'showDatasetsNetworkColumn' => variable_get_value('datasets_column_networks'),
+          'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
+          'showDatasetsVariablesColumn' => variable_get_value('datasets_column_variables'),
         )
       ),
     'studies' =>
       array(
-        'showStudiesSearchTab' => variable_get_value('search_studies'),
+        'showSearchTab' => variable_get_value('search_studies'),
         'showStudiesSearchFilter' => variable_get_value('studies_facet_search'),
         'studiesColumn' => array(
           'showStudiesDesignColumn' => variable_get_value('studies_column_design'),
@@ -148,26 +165,15 @@ function obiba_mica_angular_search_config() {
           'showStudiesVariablesColumn' => variable_get_value('studies_column_variables'),
         )
       ),
-    'datasets' =>
+    'networks' =>
       array(
-        'showDatasetsSearchTab' => variable_get_value('search_datasets'),
-        'showDatasetsSearchFilter' => variable_get_value('search_datasets_autocomplete'),
-        'datasetsColumn' => array(
-          'showDatasetsTypeColumn' => variable_get_value('datasets_column_type'),
-          'showDatasetsNetworkColumn' => variable_get_value('datasets_column_networks'),
-          'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
-          'showDatasetsVariablesColumn' => variable_get_value('datasets_column_variables'),
+        'showSearchTab' => variable_get_value('search_networks'),
+        'networksColumn' => array(
+          'showNetworksStudiesColumn' => variable_get_value('networks_column_studies'),
+          'showNetworksStudyDatasetColumn' => variable_get_value('networks_column_study_datasets'),
+          'showNetworksHarmonizedDatasetColumn' => variable_get_value('networks_column_harmonization_datasets'),
+          'showNetworksVariablesColumn' => variable_get_value('networks_column_variables'),
         )
       ),
-    'variables' =>
-      array(
-        'showVariablesSearchTab' => variable_get_value('search_variables'),
-        'variablesColumn' => array(
-          'showVariablesStudiesColumn' => variable_get_value('variables_column_study'),
-          'showVariablesDatasetsColumn' => variable_get_value('variables_column_dataset'),
-          'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
-          'showDatasetsVariablesColumn' => variable_get_value('datasets_column_variables'),
-        )
-      )
   );
 }
