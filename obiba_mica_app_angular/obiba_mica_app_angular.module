@@ -197,7 +197,7 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
       'locale' => $language->language,
       'show_detailed_stats' => variable_get_value('dataset_detailed_var_stats'),
       'data_access_config' => obiba_mica_app_angular_get_access_config(),
-      'obibaSearchOptions' => obiba_mica_angular_search_config()
+      'obibaSearchOptions' => obiba_mica_app_angular_get_search_config()
     ),
   );
 
@@ -272,142 +272,142 @@ function obiba_mica_app_angular_get_angular_translation() {
  */
 function obiba_mica_app_angular_load_angular_library() {
   $libraries = array();
-  $lib_path_schema_form = libraries_get_path('angular-app');
+  $lib_path = libraries_get_path('angular-app');
   // Make sure we have a valid library path before returning library load info.
-  if (!empty($lib_path_schema_form)) {
+  if (!empty($lib_path)) {
     $libraries['angular-app'] = array(
       'title' => 'Angular Js + dependencies',
       'website' => 'https://angularjs.org',
       'version' => 'Last Version',
       'js' => array(
 
-        $lib_path_schema_form . '/jquery-ui/jquery-ui.min.js' => array(
+        $lib_path . '/jquery-ui/jquery-ui.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular/angular.min.js' => array(
+        $lib_path . '/angular/angular.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/angular-resource/angular-resource.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/angular-bootstrap/ui-bootstrap-tpls.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/angular-sanitize/angular-sanitize.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/ng-obiba/dist/ng-obiba.js' => array(
+        $lib_path . '/ng-obiba/dist/ng-obiba.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/ng-obiba-mica/dist/ng-obiba-mica.js' => array(
+        $lib_path . '/ng-obiba-mica/dist/ng-obiba-mica.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/tv4/tv4.js' => array(
+        $lib_path . '/tv4/tv4.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/objectpath/lib/ObjectPath.js' => array(
+        $lib_path . '/objectpath/lib/ObjectPath.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/angular-schema-form/dist/schema-form.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/angular-schema-form/dist/bootstrap-decorator.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-route/angular-route.js' => array(
+        $lib_path . '/angular-route/angular-route.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-translate/angular-translate.js' => array(
+        $lib_path . '/angular-translate/angular-translate.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-ui/build/angular-ui.min.js' => array(
+        $lib_path . '/angular-ui/build/angular-ui.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/marked/lib/marked.js' => array(
+        $lib_path . '/marked/lib/marked.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-marked/dist/angular-marked.js' => array(
+        $lib_path . '/angular-marked/dist/angular-marked.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/moment/moment.js' => array(
+        $lib_path . '/moment/moment.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-moment/angular-moment.js' => array(
+        $lib_path . '/angular-moment/angular-moment.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-strap/dist/angular-strap.js' => array(
+        $lib_path . '/angular-strap/dist/angular-strap.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/rql-nodojo/js/rql.min.js' => array(
+        $lib_path . '/rql-nodojo/js/rql.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/angular-strap/dist/angular-strap.tpl.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/angular-schema-form-datetimepicker/schema-form-date-time-picker.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/filesize/lib/filesize.min.js' => array(
+        $lib_path . '/filesize/lib/filesize.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/ng-file-upload/ng-file-upload-all.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form
+        $lib_path
         . '/angular-recaptcha/release/angular-recaptcha.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-utils-pagination/dirPagination.js'
+        $lib_path . '/angular-utils-pagination/dirPagination.js'
         => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-ui-select/dist/select.js' => array(
+        $lib_path . '/angular-ui-select/dist/select.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path_schema_form . '/angular-google-chart/ng-google-chart.min.js' => array(
+        $lib_path . '/angular-google-chart/ng-google-chart.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
       ),
       'css' => array(
-        $lib_path_schema_form . '/ng-obiba/dist/css/ng-obiba.css' => array(),
-        $lib_path_schema_form . '/ng-obiba-mica/dist/css/ng-obiba-mica.css' => array(),
-        $lib_path_schema_form . '/angular-ui-select/dist/select.css' => array(),
+        $lib_path . '/ng-obiba/dist/css/ng-obiba.css' => array(),
+        $lib_path . '/ng-obiba-mica/dist/css/ng-obiba-mica.css' => array(),
+        $lib_path . '/angular-ui-select/dist/select.css' => array(),
       ),
     );
   }
@@ -458,3 +458,58 @@ function obiba_mica_app_angular_get_access_config() {
   );
 }
 
+/**
+ * Search Module settings
+ */
+function obiba_mica_app_angular_get_search_config() {
+  return array(
+    'variables' =>
+      array(
+        'showSearchTab' => variable_get_value('search_variables'),
+        'variablesColumn' => array(
+          'showVariablesStudiesColumn' => variable_get_value('variables_column_study'),
+          'showVariablesDatasetsColumn' => variable_get_value('variables_column_dataset'),
+          'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
+          'showDatasetsVariablesColumn' => variable_get_value('datasets_column_variables'),
+        )
+      ),
+    'datasets' =>
+      array(
+        'showSearchTab' => variable_get_value('search_datasets'),
+        'showDatasetsSearchFilter' => variable_get_value('search_datasets_autocomplete'),
+        'datasetsColumn' => array(
+          'showDatasetsTypeColumn' => variable_get_value('datasets_column_type'),
+          'showDatasetsNetworkColumn' => variable_get_value('datasets_column_networks'),
+          'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
+          'showDatasetsVariablesColumn' => variable_get_value('datasets_column_variables'),
+        )
+      ),
+    'studies' =>
+      array(
+        'showSearchTab' => variable_get_value('search_studies'),
+        'showStudiesSearchFilter' => variable_get_value('studies_facet_search'),
+        'studiesColumn' => array(
+          'showStudiesDesignColumn' => variable_get_value('studies_column_design'),
+          'showStudiesQuestionnaireColumn' => variable_get_value('studies_column_questionnaire'),
+          'showStudiesPmColumn' => variable_get_value('studies_column_pm'),
+          'showStudiesBioColumn' => variable_get_value('studies_column_bio'),
+          'showStudiesOtherColumn' => variable_get_value('studies_column_other'),
+          'showStudiesParticipantsColumn' => variable_get_value('studies_column_participants'),
+          'showStudiesNetworksColumn' => variable_get_value('studies_column_networks'),
+          'showStudiesDatasetsColumn' => variable_get_value('studies_column_study_datasets'),
+          'showStudiesHarmonizedDatasetsColumn' => variable_get_value('studies_column_harmonization_datasets'),
+          'showStudiesVariablesColumn' => variable_get_value('studies_column_variables'),
+        )
+      ),
+    'networks' =>
+      array(
+        'showSearchTab' => variable_get_value('search_networks'),
+        'networksColumn' => array(
+          'showNetworksStudiesColumn' => variable_get_value('networks_column_studies'),
+          'showNetworksStudyDatasetColumn' => variable_get_value('networks_column_study_datasets'),
+          'showNetworksHarmonizedDatasetColumn' => variable_get_value('networks_column_harmonization_datasets'),
+          'showNetworksVariablesColumn' => variable_get_value('networks_column_variables'),
+        )
+      ),
+  );
+}
