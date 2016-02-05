@@ -65,6 +65,7 @@ mica.config(['ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('TaxonomyResource', Drupal.settings.basePath + 'mica/search/taxonomy/:taxonomy/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('VocabularyResource', Drupal.settings.basePath + 'mica/search/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', Drupal.settings.basePath + 'mica/search/:type/_rql/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageResource', Drupal.settings.basePath + 'mica/variables/_coverage/:query/ws');
 
   }]);
 
