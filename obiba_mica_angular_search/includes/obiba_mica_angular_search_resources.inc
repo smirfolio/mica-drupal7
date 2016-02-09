@@ -68,7 +68,7 @@ class ObibaSearchResources extends MicaSearchResource {
   }
 
   public function searchQuery($type, $query) {
-    $url = $this->micaUrl . '/'.$type.'/_rql?'.$query;
+    $url = $this->micaUrl . '/'.$type.'/_rql?query='.$query;
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -96,7 +96,7 @@ class ObibaSearchResources extends MicaSearchResource {
   }
 
   public function variablesCoverage($query) {
-    $url = $this->micaUrl . '/variables/_coverage?'.$query;
+    $url = $this->micaUrl . '/variables/_coverage?query='.$query;
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
