@@ -40,8 +40,8 @@ class ObibaSearchResources extends MicaSearchResource {
     }
   }
 
-  public function taxonomiesFilter() {
-    $url = $this->micaUrl . '/taxonomies/_filter?target=variable';
+  public function taxonomiesFilter($entity) {
+    $url = $this->micaUrl . '/taxonomies/_filter?target='.$entity;
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
