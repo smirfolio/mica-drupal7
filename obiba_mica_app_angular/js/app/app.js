@@ -258,25 +258,29 @@ mica.service('LocalizedStringService',
     }
   })
   .service('LocalizedValues',
-  function () {
-    this.for = function (values, lang, keyLang, keyValue) {
-      if (angular.isArray(values)) {
-        var result = values.filter(function (item) {
-          return item[keyLang] === lang;
-        });
+    function () {
+      this.for = function (values, lang, keyLang, keyValue) {
+        if (angular.isArray(values)) {
+          var result = values.filter(function (item) {
+            return item[keyLang] === lang;
+          });
 
-        if (result && result.length > 0) {
+          if (result && result.length > 0) {
+            return result[0][keyValue];
+          }
           return result[0][keyValue];
         }
-        return values;
-      }
-    };
+      };
 
-    this.forLocale = function (values, lang) {
-      return this.for(values, lang, 'locale', 'text');
-    };
+      this.forLocale = function (values, lang) {
+        return this.for(values, lang, 'locale', 'text');
+      };
 
-    this.forLang = function (values, lang) {
-      return this.for(values, lang, 'lang', 'value');
-    };
-  });
+      this.forLang = function (values, lang) {
+        return this.for(values, lang, 'lang', 'value');
+      };
+
+      this.getLocal =  function () {
+        return Drupal.settings.angularjsApp.locale;
+      };
+    });

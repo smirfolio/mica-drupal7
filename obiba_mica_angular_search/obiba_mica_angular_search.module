@@ -6,15 +6,6 @@
 function obiba_mica_angular_search_menu() {
   $items = array();
 
-//  $items['mica/angular-search'] = array(
-//    'title' => 'Angular Search',
-//    'description' => 'Angular Search',
-//    'page callback' => 'obiba_mica_angular_search_variable_page_search',
-//    'menu_name' => 'main-menu',
-//    'weight' => 12,
-//    'access callback' => TRUE
-//  );
-
   $items['mica/search/taxonomies/_search/ws'] = array(
     'page callback' => 'obiba_mica_angular_search_taxonomies_search',
     'file' => 'obiba_mica_angular_search_services.inc',
