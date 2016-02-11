@@ -1092,8 +1092,9 @@
     }
   },
   "and": "AND",
-  "nand": "AND NOT",
+  "nand": "NAND",
   "or": "OR",
+  "nor": "NOR",
   "graphics": {
     "nbr-studies": "Nbr of Studies",
     "country": "Country",

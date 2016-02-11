@@ -95,20 +95,6 @@ mica.provider('SessionProxy',
     };
   });
 
-mica.config(['$routeProvider', '$translateProvider',
-  function ($routeProvider, $translateProvider) {
-    $routeProvider
-      .when('/', {
-        controller: 'MainController'
-      });
-
-    $translateProvider.preferredLanguage('en')
-      .useLoader('DrupalTranslationLoader', {})
-      .fallbackLanguage('en')
-      .useSanitizeValueStrategy('escaped');
-
-  }]);
-
 mica.controller('MainController', [
   function () {
   }]);
@@ -120,6 +106,18 @@ mica.factory('TranslationService', ['$resource',
     });
   }]);
 
+mica.config(['$routeProvider', '$translateProvider',
+  function ($routeProvider, $translateProvider) {
+    $routeProvider
+      .when('/', {
+        controller: 'MainController'
+      });
+    $translateProvider.preferredLanguage( Drupal.settings.angularjsApp.locale)
+      .useLoader('DrupalTranslationLoader', {lang: Drupal.settings.angularjsApp.locale})
+      .fallbackLanguage('en')
+      .useSanitizeValueStrategy('escaped');
+  }]);
+
 mica.factory('DrupalTranslationLoader',
   function ($http, $q) {
     return function (options) {
@@ -127,7 +125,7 @@ mica.factory('DrupalTranslationLoader',
 
       $http({
         method: 'GET',
-        url: Drupal.settings.basePath + 'obiba_mica_app_angular/translation'
+        url: Drupal.settings.basePath + 'obiba_mica_app_angular/translation/' + options.lang
       }).success(function (data) {
         deferred.resolve(data);
       }).error(function () {
@@ -280,7 +278,7 @@ mica.service('LocalizedStringService',
         return this.for(values, lang, 'lang', 'value');
       };
 
-      this.getLocal =  function () {
+      this.getLocal = function () {
         return Drupal.settings.angularjsApp.locale;
       };
     });
