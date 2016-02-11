@@ -37,8 +37,9 @@ function obiba_mica_app_angular_menu() {
     'access callback' => TRUE,
     'page arguments' => array(1),
   );
-  $items['obiba_mica_app_angular/translation'] = array(
+  $items['obiba_mica_app_angular/translation/%'] = array(
     'page callback' => 'obiba_mica_app_angular_get_angular_translation',
+    'page arguments' => array(2),
     'access callback' => TRUE,
   );
   $items['un-authorized-error'] = array(
@@ -253,16 +254,15 @@ function obiba_mica_app_angular_get_angular_template($angular_template) {
  * @return string
  *   The translation string of the AngularJs app.
  */
-function obiba_mica_app_angular_get_angular_translation() {
-  global $language;
-  $cached_translation = obiba_mica_commons_get_cache('translation-' . $language->language);
+function obiba_mica_app_angular_get_angular_translation($lang) {
+  $cached_translation = obiba_mica_commons_get_cache('translation-' . $lang);
   if (!empty($cached_translation)) {
     $translation = $cached_translation->data;
   }
   else {
     $translation = file_get_contents(sprintf('%s/i18n/%s.json', __DIR__,
-      $language->language));
-    obiba_mica_commons_set_cache('translation-' . $language->language, $translation, 'cache', time() + (60 * 60));
+      $lang));
+    obiba_mica_commons_set_cache('translation-' . $lang, $translation, 'cache', time() + (60 * 60));
   }
   print $translation;
 }
