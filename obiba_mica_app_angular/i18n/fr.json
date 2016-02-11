@@ -618,7 +618,18 @@
     },
     "index": "Index",
     "add-study-table": "Add Study Table",
-    "none": "No datasets."
+    "none": "No datasets.",
+    "crosstab": {
+      "title": "Contingency Table",
+      "categorical": "Select a categorical variable...",
+      "another": "Select another variable...",
+      "query-help": "Displays the multivariate frequency distribution of selected variables.",
+      "privacy-check-failed": "To prevent disclosure risk, results in the table above are not shown because at least one cell has between 1 to {{arg0}} observations.",
+      "total-privacy-check-failed": "To prevent disclosure risk, results in the table above are not shown because at least one category has between 1 to {{arg0}} observations.",
+      "chi-squared": {
+        "test": "Chi-Squared Test"
+      }
+    }
   },
   "attributes": "Attributes",
   "attribute": {
@@ -791,7 +802,6 @@
   "no-coverage": "Select some variable search criteria to see their corresponding coverage.",
   "coverage-hide-missing": "Hide missing",
   "coverage-show-missing": "Show missing",
-  "graphics": "Graphics",
   "all-null-classifications": "",
   "all-variable-classifications": "All variable classifications",
   "all-dataset-classifications": "All dataset classifications",
@@ -1081,28 +1091,18 @@
       "study": "Study"
     }
   },
-  "dataset": {
-    "crosstab": {
-      "title": "Contingency Table",
-      "categorical": "Select a categorical variable...",
-      "another": "Select another variable...",
-      "query-help": "Displays the multivariate frequency distribution of selected variables.",
-      "privacy-check-failed": "To prevent disclosure risk, results in the table above are not shown because at least one cell has between 1 to {{arg0}} observations.",
-      "total-privacy-check-failed": "To prevent disclosure risk, results in the table above are not shown because at least one category has between 1 to {{arg0}} observations.",
-      "chi-squared": {
-        "test": "Chi-Squared Test"
-      }
-    }
-  },
   "and": "AND",
   "nand": "AND NOT",
   "or": "OR",
   "graphics": {
+    "nbr-studies": "Nombre d'études",
+    "country": "Pays",
     "geo-charts": "Distribution géographique",
     "study-design": "Définitions d'étude",
-    "biological-samples": "Échantillons biologiques",
-    "participant-number": "Nombre de participants ciblé",
-    "geo-chart-title" : "Distribution des études par nombre de participants"
+    "bio-samples": "Échantillons biologiques",
+    "geo-chart-title" : "Distribution des études par nombre de participants",
+    "study-design-chart-title": "Distribution des études par définitions d'études",
+    "bio-samples-chart-title": "Distribution des études par échantillons biologiques"
   }
 
 }
