@@ -255,14 +255,14 @@ function obiba_mica_app_angular_get_angular_template($angular_template) {
  */
 function obiba_mica_app_angular_get_angular_translation() {
   global $language;
-  $cached_translation = cache_get('translation-' . $language->language);
+  $cached_translation = obiba_mica_commons_get_cache('translation-' . $language->language);
   if (!empty($cached_translation)) {
     $translation = $cached_translation->data;
   }
   else {
     $translation = file_get_contents(sprintf('%s/i18n/%s.json', __DIR__,
       $language->language));
-    cache_set('translation-' . $language->language, $translation, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('translation-' . $language->language, $translation, 'cache', time() + (60 * 60));
   }
   print $translation;
 }
