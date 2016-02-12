@@ -546,10 +546,6 @@
     "edit": {
       "member": "Edit {{type}}"
     },
-    "search": {
-      "member": "Find an existing {{type}}",
-      "placeholder": "Search by first name, last name or institution..."
-    },
     "title": "Title",
     "firstName": "First Name",
     "lastName": "Last Name",
@@ -793,7 +789,13 @@
   "users": "Users",
   "search": {
     "title": "Search",
-    "placeholder": "Examples: alcohol pregnancy cancer cohort ..."
+    "placeholder": "Examples: alcohol pregnancy cancer cohort ...",
+    "list": "List",
+    "coverage": "Coverage",
+    "graphics": "Graphics",
+    "no-coverage": "Select some variable search criteria to see their corresponding coverage.",
+    "coverage-hide-missing": "Hide missing",
+    "coverage-show-missing": "Show missing"
   },
   "variables": "Variables",
   "classifications": "Classifications",

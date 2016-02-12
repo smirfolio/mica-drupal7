@@ -10,11 +10,12 @@
 
 <div ng-controller='StudiesDesignsController'>
   <div obiba-chart
-    chart-type="PieChart"
+    chart-type="BarChart"
     chart-aggregation-name="methods-designs"
     chart-entity-dto="studyResultDto"
     chart-options-name="studiesDesigns"
     chart-options="chart.options"
-    chart-header="chart.header">
+    chart-header="chart.header"
+    chart-title="chart.title">
   </div>
 </div>

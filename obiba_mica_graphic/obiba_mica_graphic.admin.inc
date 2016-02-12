@@ -146,7 +146,6 @@ function obiba_mica_graphic_get_networks_id() {
 function obiba_mica_graphic_get_aggregations() {
   return array(
     'populations-selectionCriteria-countriesIso' => t('Country of residence'),
-    'populations-recruitment-dataSources' => t('Sources of recruitment'),
     'methods-designs' => t('Study design'),
     'populations-dataCollectionEvents-bioSamples' => t('Biological Samples'),
     'access' => t('Access permitted'),
