@@ -59,11 +59,11 @@ mica.config(['ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestStatusResource', 'request/:id/_status/:status/ws');
     ngObibaMicaUrlProvider.setUrl('TempFileUploadResource', 'request/upload-file');
     ngObibaMicaUrlProvider.setUrl('TempFileResource', 'request/file/:id');
-    ngObibaMicaUrlProvider.setUrl('TaxonomiesSearchResource', Drupal.settings.basePath + 'mica/search/taxonomies/_search/ws');
-    ngObibaMicaUrlProvider.setUrl('TaxonomiesResource', Drupal.settings.basePath + 'mica/search/taxonomies/_filter/ws');
-    ngObibaMicaUrlProvider.setUrl('TaxonomyResource', Drupal.settings.basePath + 'mica/search/taxonomy/:taxonomy/_filter/ws');
-    ngObibaMicaUrlProvider.setUrl('VocabularyResource', Drupal.settings.basePath + 'mica/search/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
-    ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', Drupal.settings.basePath + 'mica/search/:type/_rql/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('TaxonomiesSearchResource', Drupal.settings.basePath + 'mica/angular-search/taxonomies/_search/ws');
+    ngObibaMicaUrlProvider.setUrl('TaxonomiesResource', Drupal.settings.basePath + 'mica/angular-search/taxonomies/_filter/ws');
+    ngObibaMicaUrlProvider.setUrl('TaxonomyResource', Drupal.settings.basePath + 'mica/angular-search/taxonomy/:taxonomy/_filter/ws');
+    ngObibaMicaUrlProvider.setUrl('VocabularyResource', Drupal.settings.basePath + 'mica/angular-search/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
+    ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', Drupal.settings.basePath + 'mica/angular-search/:type/_rql/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageResource', Drupal.settings.basePath + 'mica/variables/_coverage/:query/ws');
 
   }]);
