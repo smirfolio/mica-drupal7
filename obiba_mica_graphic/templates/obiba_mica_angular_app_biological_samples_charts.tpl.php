@@ -15,6 +15,8 @@
     chart-entity-dto="studyResultDto"
     chart-options-name="biologicalSamples"
     chart-options ="chart.options"
-    chart-header="chart.header">
+    chart-header="chart.header"
+    chart-title="chart.title"
+  >
   </div>
 </div>

@@ -5,12 +5,13 @@
  * Mica networks file
  */
 class ObibaSearchResources extends MicaSearchResource {
+  const MICA_SEARCH = 'angular-search';
 
   function __construct() {
     parent::__construct();
   }
 
-  private function httpRequestGetBuilder($resources){
+  private function httpRequestGetBuilder($resources) {
     $url = $this->micaUrl . $resources;
 
     $request = new HttpClientRequest($url, array(
@@ -32,31 +33,34 @@ class ObibaSearchResources extends MicaSearchResource {
         drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
       }
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
       dpm($e->getMessage());
       return array();
     }
   }
 
-  private function queryLocalBuilder($query){
+  private function queryLocalBuilder($query) {
 
   }
 
   public function searchQuery($type, $query) {
     $this->queryLocalBuilder($query);
-    return $this->httpRequestGetBuilder('/'.$type.'/_rql?query='.$query);
+    return $this->httpRequestGetBuilder('/' . $type . '/_rql?query=' . $query);
   }
 
   public function taxonomiesSearch($query) {
-    return $this->httpRequestGetBuilder('/taxonomies/_search?query='.$query);
+    return $this->httpRequestGetBuilder('/taxonomies/_search?query=' . $query);
   }
 
   public function taxonomiesFilter($entity) {
-    return $this->httpRequestGetBuilder('/taxonomies/_filter?target='.$entity);
+    return $this->httpRequestGetBuilder('/taxonomies/_filter?target=' . $entity);
   }
 
   public function variablesCoverage($query) {
-    return $this->httpRequestGetBuilder('/variables/_coverage?query='.$query);
+    return $this->httpRequestGetBuilder('/variables/_coverage?query=' . $query);
   }
 
 }

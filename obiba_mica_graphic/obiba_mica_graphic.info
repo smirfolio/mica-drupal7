@@ -3,4 +3,8 @@ description = Api to get Geo/Pies graphics via ajax call
 package = Obiba
 core = 7.x
 
+dependencies[] = obiba_mica_commons
+dependencies[] = obiba_mica_app_angular
+dependencies[] = obiba_mica_angular_search
+
 files[] = includes/obiba_mica_graphic_statistics_resources.inc

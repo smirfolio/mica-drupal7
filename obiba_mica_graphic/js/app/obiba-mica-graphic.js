@@ -40,8 +40,4 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
         }
       };
       selectTab(null);
-    }])
-  .run(['GraphicChartsConfig',
-    function (GraphicChartsConfig) {
-      GraphicChartsConfig.setOptions(Drupal.settings.GraphicChartsOptions);
     }]);

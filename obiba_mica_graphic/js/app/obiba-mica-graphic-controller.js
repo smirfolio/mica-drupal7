@@ -20,38 +20,31 @@
 'use strict';
 
 mica.ObibaGraphicCharts
-  .controller('AccessController', ['$scope', function ($scope) {
+  .controller('BioSamplesController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
+    var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
     $scope.chart = {
-      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.access.options,
-      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.access.header
+      geoTitle : charOptions.biologicalSamples.title,
+      title: charOptions.biologicalSamples.title,
+      options: charOptions.biologicalSamples.options,
+      header: charOptions.biologicalSamples.header
     };
 
   }])
-  .controller('BioSamplesController', ['$scope', function ($scope) {
+  .controller('GeoChartController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
+    var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
     $scope.chart = {
-      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.biologicalSamples.options,
-      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.biologicalSamples.header
+      title: charOptions.geoChartOptions.title,
+      options: charOptions.geoChartOptions.options,
+      header: charOptions.geoChartOptions.header
     };
 
   }])
-  .controller('GeoChartController', ['$scope', function ($scope) {
+  .controller('StudiesDesignsController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
+    var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
     $scope.chart = {
-      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.geoChartOptions.options,
-      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.geoChartOptions.header
-    };
-
-  }])
-  .controller('RecruitmentResourcesController', ['$scope', function ($scope) {
-    $scope.chart = {
-      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.recruitmentResources.options,
-      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.recruitmentResources.header
-    };
-
-  }])
-  .controller('StudiesDesignsController', ['$scope', function ($scope) {
-    $scope.chart = {
-      options: Drupal.settings.GraphicChartsOptions.ChartsOptions.studiesDesigns.options,
-      header: Drupal.settings.GraphicChartsOptions.ChartsOptions.studiesDesigns.header
+      title: charOptions.studiesDesigns.title,
+      options: charOptions.studiesDesigns.options,
+      header: charOptions.studiesDesigns.header
     };
 
   }]);

@@ -9,6 +9,7 @@
   -->
 
 <div ng-controller='GeoChartController'>
+  <div ng-if="chart.title" style="color: black; font-size: 12px; font-family:Arial; font-weight:bold; margin:25px 0px 25px 95px;">{{chart.title | translate}}</div>
   <div obiba-chart
     field-transformer="country"
     chart-type="GeoChart"
@@ -16,6 +17,8 @@
     chart-entity-dto="studyResultDto"
     chart-options-name="geoChartOptions"
     chart-options ="chart.options"
-    chart-header="chart.header">
+    chart-header="chart.header"
+    chart-title="chart.title"
+  >
   </div>
 </div>

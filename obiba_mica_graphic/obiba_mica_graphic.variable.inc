@@ -44,13 +44,6 @@ function obiba_mica_graphic_variable_info($options) {
     'default' => '',
   );
 
-  $variable[NetworkStatistics::RECRUITMENT_SOURCES.'_css'] = array(
-    'title' => t('Specific CSS of the Sources of recruitment statistics block'),
-    'description' => t('Please select the Sources of recruitment statistics block, multiple classes must be separated by comma \',\'.'),
-    'type' => 'string',
-    'default' => '',
-  );
-
   $variable[NetworkStatistics::BIO_SAMPLES.'_css'] = array(
     'title' => t('Specific CSS of the Biological Samples statistics block'),
     'description' => t('Please select the Biological Samples statistics block, multiple classes must be separated by comma \',\'.'),
@@ -64,21 +57,6 @@ function obiba_mica_graphic_variable_info($options) {
     'type' => 'string',
     'default' => '',
   );
-
-  $variable[NetworkStatistics::RECRUITMENT_SOURCES.'_css'] = array(
-    'title' => t('Specific CSS of the Recruitment target statistics block'),
-    'description' => t('Please select the Recruitment target statistics block, multiple classes must be separated by comma \',\'.'),
-    'type' => 'string',
-    'default' => '',
-  );
-
-  $variable[NetworkStatistics::ACCESS.'_css'] = array(
-    'title' => t('Specific CSS of the Access Permitted statistics block'),
-    'description' => t('Please select the Access Permitted statistics block, multiple classes must be separated by comma \',\'.'),
-    'type' => 'string',
-    'default' => '',
-  );
-
 
   $variable['graphics_content'] = array(
     'title' => t('Statistics graphic in networks page '),
