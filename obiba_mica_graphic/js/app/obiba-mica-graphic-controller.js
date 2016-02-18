@@ -20,31 +20,33 @@
 'use strict';
 
 mica.ObibaGraphicCharts
-  .controller('BioSamplesController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
-    var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
-    $scope.chart = {
-      geoTitle : charOptions.biologicalSamples.title,
-      title: charOptions.biologicalSamples.title,
-      options: charOptions.biologicalSamples.options,
-      header: charOptions.biologicalSamples.header
-    };
-
-  }])
   .controller('GeoChartController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
     var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
     $scope.chart = {
+      geoTitle : charOptions.geoChartOptions.title,
       title: charOptions.geoChartOptions.title,
       options: charOptions.geoChartOptions.options,
-      header: charOptions.geoChartOptions.header
+      header: charOptions.geoChartOptions.header,
+      active: true
     };
-
   }])
   .controller('StudiesDesignsController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
     var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
     $scope.chart = {
       title: charOptions.studiesDesigns.title,
       options: charOptions.studiesDesigns.options,
-      header: charOptions.studiesDesigns.header
+      header: charOptions.studiesDesigns.header,
+      tableOptions: charOptions.studiesDesigns.tableOptions,
+      active: true
     };
-
-  }]);
+  }])
+  .controller('BioSamplesController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
+  var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
+  $scope.chart = {
+    title: charOptions.biologicalSamples.title,
+    options: charOptions.biologicalSamples.options,
+    header: charOptions.biologicalSamples.header,
+    tableOptions: charOptions.biologicalSamples.tableOptions,
+    active: true
+  };
+}]);

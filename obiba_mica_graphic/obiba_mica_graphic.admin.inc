@@ -148,6 +148,5 @@ function obiba_mica_graphic_get_aggregations() {
     'populations-selectionCriteria-countriesIso' => t('Country of residence'),
     'methods-designs' => t('Study design'),
     'populations-dataCollectionEvents-bioSamples' => t('Biological Samples'),
-    'access' => t('Access permitted'),
   );
 }
