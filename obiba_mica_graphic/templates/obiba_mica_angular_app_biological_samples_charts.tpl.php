@@ -17,6 +17,7 @@
     chart-options ="chart.options"
     chart-header="chart.header"
     chart-title="chart.title"
+    chart-select-graphic = "chart.active"
   >
   </div>
 </div>

@@ -247,9 +247,7 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $header
         '#009966',
         '#009933',
         '#66CC33'
-      ),
-      'width' => '500',
-      'height' => '300',
+      )
     )
   );
   $options = array(
