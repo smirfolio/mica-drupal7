@@ -141,16 +141,24 @@ function obiba_mica_network_page_detail($network_id) {
 }
 
 function obiba_mica_network_statistics_angular_options($networks_id) {
+  $colors_options = obiba_mica_graphic_charts_colors_options_settings();
+  $study_design_options =
+    !empty($colors_options)?
+      array_merge(array('legend' => array('position' => 'none')), $colors_options):
+      array('legend' => array('position' => 'none'));
+  $bio_samples_options =  !empty($colors_options)?
+    array_merge(array('legend' => array('position' => 'right')), $colors_options):
+    array('legend' => array('position' => 'right'));
   $chart_options = array_merge(
-    obiba_mica_graphic_geo_charts_options_settings('geoChartOptions',
+    obiba_mica_graphic_charts_options_settings('geoChartOptions',
       array('graphics.country', 'graphics.nbr-studies'),
-      'graphics.geo-chart-title'),
+      'graphics.geo-chart-title',array('colorAxis' =>  $colors_options)),
     obiba_mica_graphic_charts_options_settings('studiesDesigns',
       array('graphics.study-design', 'graphics.nbr-studies'),
-      'graphics.study-design-chart-title',array('legend' => array('position' =>'none'))),
+      'graphics.study-design-chart-title',$study_design_options),
     obiba_mica_graphic_charts_options_settings('biologicalSamples',
       array('graphics.bio-samples', 'graphics.nbr-studies'),
-      t('graphics.bio-samples-chart-title'),array('legend' => array('position' =>'right')))
+      t('graphics.bio-samples-chart-title'),$bio_samples_options)
   );
 
   drupal_add_js(array(

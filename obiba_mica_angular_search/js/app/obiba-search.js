@@ -11,6 +11,7 @@
 mica.ObibaSearch = angular.module('mica.ObibaSearch', [
     'obiba.mica.search'
   ])
-  .run(['ObibaSearchConfig', function (ObibaSearchConfig) {
+  .run(['ObibaSearchConfig', 'GraphicChartsConfig',  function (ObibaSearchConfig, GraphicChartsConfig) {
     ObibaSearchConfig.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);
+    GraphicChartsConfig.setOptions(Drupal.settings.GraphicChartsOptions);
   }]);

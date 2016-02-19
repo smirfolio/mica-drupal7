@@ -120,6 +120,14 @@ function obiba_mica_graphic_block_view($delta = '') {
       obiba_mica_app_angular_load_js_resources('obiba_mica_graphic');
     }
     $graphics_bocks = variable_get_value('graphics_blocks');
+    $colors_options = obiba_mica_graphic_charts_colors_options_settings();
+    $study_design_options =
+      !empty($colors_options)?
+        array_merge(array('legend' => array('position' => 'none')), $colors_options):
+        array('legend' => array('position' => 'none'));
+    $bio_samples_options =  !empty($colors_options)?
+      array_merge(array('legend' => array('position' => 'right')), $colors_options):
+      array('legend' => array('position' => 'right'));
     switch ($delta) {
       case NetworkStatistics::GEO_NBR_STAT:
         if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
@@ -131,9 +139,9 @@ function obiba_mica_graphic_block_view($delta = '') {
                 array(
                   'entityType' => 'studies',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
-                  'ChartsOptions' => obiba_mica_graphic_geo_charts_options_settings('geoChartOptions',
+                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('geoChartOptions',
                     array('graphics.country', 'graphics.nbr-studies'),
-                    'graphics.geo-chart-title')
+                    'graphics.geo-chart-title', array('colorAxis' =>  $colors_options))
                 ),
             ),
               'setting');
@@ -153,7 +161,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('studiesDesigns',
                     array('graphics.study-design', 'graphics.nbr-studies'),
-                    'graphics.study-design-chart-title', array('legend' => array('position' => 'none'))),
+                    'graphics.study-design-chart-title', $study_design_options),
                 ),
             ),
               'setting');
@@ -174,7 +182,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('biologicalSamples',
                     array('graphics.bio-samples', 'graphics.nbr-studies'),
                     'graphics.bio-samples-chart-title',
-                    array('legend' => array('position' => 'right'))),
+                    $bio_samples_options),
                 ),
             ),
               'setting');
@@ -212,43 +220,11 @@ function obiba_mica_graphic_get_ng_module_to_load() {
 }
 
 /**
- * Set Geo charts graphics options
- */
-function obiba_mica_graphic_geo_charts_options_settings($aggregation_option, $headers_label, $title_chart) {
-  return array(
-    $aggregation_option => array(
-      'header' => $headers_label,
-      'title' => $title_chart,
-      'options' => array(
-        'colorAxis' => array(
-          'colors' => array(
-            '#006600',
-            '#009900',
-            '#009966',
-            '#009933',
-            '#66CC33'
-          )
-        ),
-      )
-    ),
-  );
-}
-
-/**
  * Set Pie charts graphics options
  */
-function obiba_mica_graphic_charts_options_settings($aggregation_option, $headers_label, $title_chart, $custom_options) {
+function obiba_mica_graphic_charts_options_settings($aggregation_option, $headers_label, $title_chart, $custom_options = NULL) {
   $default_options = array(
-    'header' => $headers_label,
-    'options' => array(
-      'colors' => array(
-        '#006600',
-        '#009900',
-        '#009966',
-        '#009933',
-        '#66CC33'
-      )
-    )
+    'options' => array(),
   );
   $options = array(
     $aggregation_option => array(
@@ -256,7 +232,29 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $header
       'title' => $title_chart,
     ),
   );
-  $options_result = array_merge_recursive($default_options['options'], $custom_options);
-  $options[$aggregation_option]['options'] = $options_result;
+  if (!empty($custom_options)) {
+    $options_result = array_merge_recursive($default_options['options'], $custom_options);
+    $options[$aggregation_option]['options'] = $options_result;
+  }
   return $options;
+}
+
+/**
+ * Get default colors options
+ */
+function obiba_mica_graphic_charts_colors_options_settings() {
+  $options_colors = array();
+  $colors = variable_get_value('graphics_nbr_colors');
+  if(empty($colors) || $colors=='none'){
+    return NULL;
+  }
+  $colors_setting = array_filter($colors, function ($color) {
+    return !empty($color);
+  });
+  foreach ($colors_setting as $nbr => $colors) {
+    $options_colors[] = variable_get_value('color_' . $nbr);
+  }
+  if (!empty($options_colors)) {
+    return array('colors' => $options_colors);
+  }
 }
