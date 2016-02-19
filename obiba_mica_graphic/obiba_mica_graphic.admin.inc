@@ -10,19 +10,19 @@
 function obiba_mica_graphic_settings_form($form, &$form_state) {
   $form['obiba_mica_graphic'] = array(
     '#type' => 'vertical_tabs',
-    '#title' => t('Obiba Mica Graphic module display settings'),
+    '#title' => t('Obiba Mica display settings'),
     '#collapsible' => FALSE,
   );
 
   $form['obiba_mica_graphic']['graphic_labels'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Graphic module display labels'),
+    '#title' => t('Display labels'),
     '#collapsible' => FALSE,
   );
 
   $form['obiba_mica_graphic']['graphic_labels']['labels'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Graphic module labels'),
+    '#title' => t('Labels'),
     '#collapsible' => FALSE,
   );
 
@@ -35,22 +35,65 @@ function obiba_mica_graphic_settings_form($form, &$form_state) {
     '#description' => $info['description'],
   );
 
+  $form['obiba_mica_graphic']['graphic_display'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('display'),
+    '#collapsible' => FALSE,
+  );
+
+  obiba_mica_graphic_settings_form_general_display($form);
   obiba_mica_graphic_settings_form_display_block($form);
   obiba_mica_graphic_settings_form_display_content($form);
 
   return system_settings_form($form);
 }
 
-function obiba_mica_graphic_settings_form_display_block(&$form) {
-  $form['obiba_mica_graphic']['graphic_display'] = array(
+function obiba_mica_graphic_settings_form_general_display(&$form){
+  $form['obiba_mica_graphic']['graphic_display']['general_display'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Graphic module display'),
+    '#title' => t('General display'),
     '#collapsible' => FALSE,
   );
 
+
+  $color_fields = obiba_mica_graphic_get_nbr_colors();
+  $info = variable_get_info('graphics_nbr_colors');
+
+  $form['obiba_mica_graphic']['graphic_display']['general_display']['graphics_nbr_colors'] = array(
+    '#type' => 'checkboxes',
+    '#multiple' => TRUE,
+    '#title' => $info['title'],
+    '#options' => $color_fields,
+    '#description' => $info['description'],
+  );
+  $graphics_nbr_colors = variable_get_value('graphics_nbr_colors');
+  if (!empty($graphics_nbr_colors) && $graphics_nbr_colors != 'none') {
+    $form['obiba_mica_graphic']['graphic_display']['general_display']['graphics_nbr_colors']['#default_value'] =
+      variable_get_value('graphics_nbr_colors');
+  }
+
+  foreach($color_fields as $nbr_color => $colors){
+      $info = variable_get_info('color_' . $nbr_color);
+      $form['obiba_mica_graphic']['graphic_display']['general_display']['color_' . $nbr_color] = array(
+        '#type' => 'textfield',
+        '#states' => array(
+          'visible' => array(
+            ':input[name="graphics_nbr_colors[' . $nbr_color . ']"]' => array('checked' => TRUE),
+          ),
+        ),
+        '#title' => $info['title'],
+        '#default_value' => variable_get_value('color_' . $nbr_color),
+        '#maxlength' => 255,
+        '#description' => $info['description'],
+      );
+  }
+
+}
+
+function obiba_mica_graphic_settings_form_display_block(&$form) {
   $form['obiba_mica_graphic']['graphic_display']['blocks'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Graphic module display in blocks'),
+    '#title' => t('Display in blocks'),
     '#collapsible' => FALSE,
   );
 
@@ -115,7 +158,7 @@ function obiba_mica_graphic_settings_form_display_content(&$form) {
 
   $form['obiba_mica_graphic']['graphic_display']['content'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Graphic module display in Networks pages'),
+    '#title' => t('Display in Networks pages'),
     '#collapsible' => FALSE,
   );
 
@@ -148,5 +191,20 @@ function obiba_mica_graphic_get_aggregations() {
     'populations-selectionCriteria-countriesIso' => t('Country of residence'),
     'methods-designs' => t('Study design'),
     'populations-dataCollectionEvents-bioSamples' => t('Biological Samples'),
+  );
+}
+
+function obiba_mica_graphic_get_nbr_colors() {
+  return array(
+    '1' => t('Colors 1'),
+    '2' => t('Colors 2'),
+    '3' => t('Colors 3'),
+    '4' => t('Colors 4'),
+    '5' => t('Colors 5'),
+    '6' => t('Colors 6'),
+    '7' => t('Colors 7'),
+    '8' => t('Colors 8'),
+    '9' => t('Colors 9'),
+    '10' => t('Colors 10'),
   );
 }

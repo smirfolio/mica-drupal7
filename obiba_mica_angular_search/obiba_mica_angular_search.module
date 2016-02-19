@@ -36,6 +36,32 @@ function obiba_mica_angular_search_menu() {
  * Implements hook_get_js().
  */
 function obiba_mica_angular_search_get_js($weight_js) {
+  $colors_options = obiba_mica_graphic_charts_colors_options_settings();
+  $study_design_options =
+    !empty($colors_options)?
+      array_merge(array('legend' => array('position' => 'none')), $colors_options):
+      array('legend' => array('position' => 'none'));
+  $bio_samples_options =  !empty($colors_options)?
+    array_merge(array('legend' => array('position' => 'right')), $colors_options):
+    array('legend' => array('position' => 'right'));
+  $chart_options = array_merge(
+    obiba_mica_graphic_charts_options_settings('geoChartOptions',
+      array('graphics.country', 'graphics.nbr-studies'),
+      'graphics.geo-chart-title',array('colorAxis' =>  $colors_options)),
+    obiba_mica_graphic_charts_options_settings('studiesDesigns',
+      array('graphics.study-design', 'graphics.nbr-studies'),
+      'graphics.study-design-chart-title',$study_design_options),
+    obiba_mica_graphic_charts_options_settings('biologicalSamples',
+      array('graphics.bio-samples', 'graphics.nbr-studies'),
+      t('graphics.bio-samples-chart-title'),$bio_samples_options)
+  );
+
+  drupal_add_js(array(
+    'GraphicChartsOptions' => array(
+      'ChartsOptions' => $chart_options,
+    )
+  ),
+    'setting');
   if (current_path() == MicaClientPathProvider::ANGULAR_SEARCH) {
     $module_path = drupal_get_path('module', 'obiba_mica_angular_search');
     $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));

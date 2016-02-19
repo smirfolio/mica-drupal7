@@ -4,6 +4,9 @@
  * Obiba Mica Graphics variable file
  */
 
+$path_module_commons = drupal_get_path('module', 'obiba_mica_graphic');
+include_once($path_module_commons . '/obiba_mica_graphic.admin.inc');
+
 /**
  * Implements hook_variable_info().
  */
@@ -64,6 +67,23 @@ function obiba_mica_graphic_variable_info($options) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+
+  $variable['graphics_nbr_colors'] = array(
+    'title' => t('Graphics colors number'),
+    'description' => t('Pleas select the number of colors to use for graphics'),
+    'type' => 'options',
+    'default' => 'none',
+  );
+
+  $colors = obiba_mica_graphic_get_nbr_colors();
+  foreach($colors as $nbr => $color){
+    $variable['color_' . $nbr] = array(
+      'title' => t('Colors %c', array('%c' =>$nbr)),
+      'description' => t('Pleas enter the hex colors code'),
+      'type' => 'string',
+      'default' => '',
+    );
+  }
 
   return $variable;
 }
