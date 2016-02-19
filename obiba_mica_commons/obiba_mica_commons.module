@@ -742,12 +742,15 @@ function obiba_mica_commons_taxonomies_filter_array() {
  * Helper to set cache for current user
  */
 function obiba_mica_commons_set_cache($key, $value) {
-  global $user;
-  if (in_array('anonymous user', $user->roles, TRUE)) {
-    cache_set($key . '-' . 'anonymous_user', $value, 'cache', MicaClient::ANONYMOUS_CACHE_LIFE_TIME);
-  }
-  else {
-    cache_set($key . '-' . $user->sid, $value, 'cache', MicaClient::AUTHENTICATED_CACHE_LIFE_TIME);
+  if (variable_get_value('cache') == 1) {
+    $key = md5($key);
+    global $user;
+    if (in_array('anonymous user', $user->roles, TRUE)) {
+      cache_set($key . '-' . 'anonymous_user', $value, 'cache', MicaClient::ANONYMOUS_CACHE_LIFE_TIME);
+    }
+    else {
+      cache_set($key . '-' . $user->sid, $value, 'cache', MicaClient::AUTHENTICATED_CACHE_LIFE_TIME);
+    }
   }
 }
 
@@ -755,11 +758,15 @@ function obiba_mica_commons_set_cache($key, $value) {
  * Helper to get cache for current user
  */
 function obiba_mica_commons_get_cache($key) {
-  global $user;
-  if (in_array('anonymous user', $user->roles, TRUE)) {
-    return cache_get($key . '-' . 'anonymous_user');
+  if (variable_get_value('cache') == 1) {
+    $key = md5($key);
+    global $user;
+    if (in_array('anonymous user', $user->roles, TRUE)) {
+      return cache_get($key . '-' . 'anonymous_user');
+    }
+    else {
+      return cache_get($key . '-' . $user->sid);
+    }
   }
-  else {
-    return cache_get($key . '-' . $user->sid);
-  }
+  return FALSE;
 }

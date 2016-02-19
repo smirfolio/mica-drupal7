@@ -16,18 +16,6 @@ function obiba_mica_angular_search_menu() {
     'file' => 'obiba_mica_angular_search_services.inc',
     'access callback' => TRUE
   );
-  $items['mica/' . ObibaSearchResources::MICA_SEARCH . '/taxonomy/%/_filter/ws'] = array(
-    'page callback' => 'obiba_mica_angular_search_get_taxonomy',
-    'file' => 'obiba_mica_angular_search_services.inc',
-    'page arguments' => array(2),
-    'access callback' => TRUE
-  );
-  $items['mica/' . ObibaSearchResources::MICA_SEARCH . '/taxonomy/%/vocabulary/%/_filter/ws'] = array(
-    'page callback' => 'obiba_mica_angular_search_get_vocabulary',
-    'file' => 'obiba_mica_angular_search_services.inc',
-    'page arguments' => array(2),
-    'access callback' => TRUE
-  );
   $items['mica/' . ObibaSearchResources::MICA_SEARCH . '/%/_rql/%/ws'] = array(
     'page callback' => 'obiba_mica_angular_search_query',
     'file' => 'obiba_mica_angular_search_services.inc',

@@ -51,23 +51,6 @@ function obiba_mica_angular_search_taxonomies_filter() {
 }
 
 /**
- * Get taxonomy detail by $taxonomy
- */
-function obiba_mica_angular_search_get_taxonomy($taxonomy) {
-  drupal_json_output(array('taxonomies' => $taxonomy));
-}
-
-/**
- * Get Vocabulary detail by $taxonomy
- */
-function obiba_mica_angular_search_get_vocabulary($taxonomy, $vocabulary) {
-  drupal_json_output(array(
-    'taxonomies' => $taxonomy,
-    'vocabulary' => $vocabulary
-  ));
-}
-
-/**
  * Get Vocabulary detail by $taxonomy
  */
 function obiba_mica_angular_search_query($type, $query) {
