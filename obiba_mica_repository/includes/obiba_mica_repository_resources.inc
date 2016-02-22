@@ -60,6 +60,10 @@ class ObibaSearchResources extends MicaSearchResource {
     return $this->httpRequestGetBuilder('/taxonomies/_filter?target=' . $entity);
   }
 
+  public function taxonomyFilter($name, $entity) {
+    return $this->httpRequestGetBuilder('/taxonomy/' . $name . '/_filter?target=' . $entity);
+  }
+
   public function variablesCoverage($query) {
     return $this->httpRequestGetBuilder('/variables/_coverage?query=' . $query);
   }
