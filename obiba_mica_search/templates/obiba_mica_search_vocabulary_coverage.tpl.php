@@ -46,11 +46,7 @@
           <?php
           print MicaClientAnchorHelper::ajaxFriendlyAnchor(
             MicaClientPathProvider::SEARCH,
-            isset($bucket->title) ?
-              ($group_by == 'dceIds' ?
-                (isset($bucket->description) ? str_replace(':', ': ', $bucket->description) : $bucket->title)
-                : $bucket->title)
-              : $bucket->value,
+            isset($bucket->title) ? $bucket->title : $bucket->value,
             array(
               'data-toggle' => 'tooltip',
               'data-placement' => 'top',
