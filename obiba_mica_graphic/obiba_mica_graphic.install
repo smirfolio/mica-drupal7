@@ -7,9 +7,6 @@
 function obiba_mica_graphic_install() {
 
   $blocks_to_enable = obiba_mica_graphic_default_block();
-  foreach ($blocks_to_enable as $delta => $block) {
-    obiba_mica_graphic_activate_block($delta, 'obiba_bootstrap', $block);
-  }
   variable_set('graphics_blocks_networks', array('NaN' => 'NaN'));
   variable_set('graphics_blocks_aggregations', array(
     'populations-selectionCriteria-countriesIso' => 'populations-selectionCriteria-countriesIso',
