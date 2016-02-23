@@ -28,6 +28,12 @@ function obiba_mica_repository_menu() {
     'page arguments' => array(4),
     'access callback' => TRUE
   );
+  $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage_download/%/ws'] = array(
+    'page callback' => 'obiba_mica_repository_variable_coverage_download',
+    'file' => 'obiba_mica_repository_services.inc',
+    'page arguments' => array(4),
+    'access callback' => TRUE
+  );
 
   return $items;
 }
