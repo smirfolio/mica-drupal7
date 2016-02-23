@@ -69,6 +69,7 @@ mica.config(['ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('VariablePage', Drupal.settings.basePath + 'mica/variable/:variable');
     ngObibaMicaUrlProvider.setUrl('NetworkPage', Drupal.settings.basePath + 'mica/network/:network');
     ngObibaMicaUrlProvider.setUrl('StudyPage', Drupal.settings.basePath + 'mica/study/:study');
+    ngObibaMicaUrlProvider.setUrl('StudyPopulationsPage', Drupal.settings.basePath + 'mica/study/:study/#population-:population');
     ngObibaMicaUrlProvider.setUrl('DatasetPage', Drupal.settings.basePath + 'mica/:type/:dataset');
 
   }]);
