@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Code for the obiba_mica_angular_search_main_app template.
+ * Code for the obiba_mica_repository_main_app template.
  */
 
 ?>
@@ -15,8 +15,4 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<h2>
-  <ol class="mica-breadcrumb">
-    <li class="active" translate>search</li>
-  </ol>
-</h2>
+<div ng-app="ObibaSearch"></div>

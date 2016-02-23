@@ -5,7 +5,7 @@
  * Mica networks file
  */
 class ObibaSearchResources extends MicaSearchResource {
-  const MICA_SEARCH = 'angular-search';
+  const MICA_REPOSITORY = 'repository';
 
   function __construct() {
     parent::__construct();

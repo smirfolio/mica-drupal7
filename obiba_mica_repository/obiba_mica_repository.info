@@ -5,4 +5,4 @@ core = 7.x
 
 dependencies[] = obiba_mica_commons
 
-files[] = includes/obiba_mica_angular_search_resources.inc
+files[] = includes/obiba_mica_repository_resources.inc
