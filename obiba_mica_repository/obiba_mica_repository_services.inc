@@ -81,3 +81,25 @@ function obiba_mica_repository_variable_coverage($query) {
   }
   drupal_json_output($search_result);
 }
+
+/**
+ * Get Vocabulary detail by $taxonomy
+ */
+function obiba_mica_repository_variable_coverage_download($query) {
+    $search_resource = new ObibaSearchResources();
+    $search_resource->variablesCoverageDownload($query, MicaClient::HEADER_CSV);
+$response = !empty($search_resource->getLastResponse()->body)?$search_resource->getLastResponse()->body:NULL;
+  if (!empty($response)) {
+    $headers = $search_resource->getLastResponseHeaders();
+    $content_mime = $headers['Content-Type'][0];
+    $content_disposition = $headers['Content-Disposition'][0];
+    $copyright_notice = variable_get_value('mica_copyright_notice');
+    $output = !empty($copyright_notice) ? '"' . t($copyright_notice) . '"' . chr(13) : '';
+    $output .= $response;
+  }
+  drupal_add_http_header('Content-Type', $content_mime . '; utf-8');
+  drupal_add_http_header('Content-Disposition', $content_disposition);
+  ob_clean();
+  print $output;
+  exit;
+}

@@ -6,19 +6,20 @@
  */
 class ObibaSearchResources extends MicaSearchResource {
   const MICA_REPOSITORY = 'repository';
+  var $last_reponse;
 
   function __construct() {
     parent::__construct();
   }
 
-  private function httpRequestGetBuilder($resources) {
+  private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
     $url = $this->micaUrl . $resources;
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-          'Content-Type' => array(parent::HEADER_JSON)
+          'Accept' => array($header_accept),
+          'Content-Type' => array($header_accept)
         )
       )
     ));
@@ -61,6 +62,10 @@ class ObibaSearchResources extends MicaSearchResource {
 
   public function variablesCoverage($query) {
     return $this->httpRequestGetBuilder('/variables/_coverage?query=' . $query);
+  }
+
+  public function variablesCoverageDownload($query, $header_accept) {
+    return $this->httpRequestGetBuilder('/variables/_coverage_download?query=' . $query, $header_accept);
   }
 
 }

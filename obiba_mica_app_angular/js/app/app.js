@@ -65,6 +65,11 @@ mica.config(['ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('VocabularyResource', Drupal.settings.basePath + 'mica/repository/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', Drupal.settings.basePath + 'mica/repository/:type/_rql/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageResource', Drupal.settings.basePath + 'mica/repository/variables/_coverage/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageDownloadResource',  Drupal.settings.basePath + 'mica/repository/variables/_coverage_download/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('VariablePage', Drupal.settings.basePath + 'mica/variable/:variable');
+    ngObibaMicaUrlProvider.setUrl('NetworkPage', Drupal.settings.basePath + 'mica/network/:network');
+    ngObibaMicaUrlProvider.setUrl('StudyPage', Drupal.settings.basePath + 'mica/study/:study');
+    ngObibaMicaUrlProvider.setUrl('DatasetPage', Drupal.settings.basePath + 'mica/:type/:dataset');
 
   }]);
 
@@ -111,7 +116,7 @@ mica.config(['$routeProvider', '$translateProvider',
       .when('/', {
         controller: 'MainController'
       });
-    $translateProvider.preferredLanguage( Drupal.settings.angularjsApp.locale)
+    $translateProvider.preferredLanguage(Drupal.settings.angularjsApp.locale)
       .useLoader('DrupalTranslationLoader', {lang: Drupal.settings.angularjsApp.locale})
       .fallbackLanguage('en')
       .useSanitizeValueStrategy('escaped');
@@ -281,11 +286,11 @@ mica.service('LocalizedStringService',
         return Drupal.settings.angularjsApp.locale;
       };
     })
-  .service('GraphicChartsConfigurations', ['GraphicChartsConfig',function(GraphicChartsConfig){
-      this.setClientConfig = function(){
-        GraphicChartsConfig.setOptions(Drupal.settings.GraphicChartsOptions);
+  .service('GraphicChartsConfigurations', ['GraphicChartsConfig', function (GraphicChartsConfig) {
+    this.setClientConfig = function () {
+      GraphicChartsConfig.setOptions(Drupal.settings.GraphicChartsOptions);
     };
-    this.getClientConfig = function(){
+    this.getClientConfig = function () {
       return Drupal.settings.GraphicChartsOptions;
     };
   }]);
