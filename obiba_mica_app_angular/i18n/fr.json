@@ -795,7 +795,17 @@
     "graphics": "Graphics",
     "no-coverage": "Select some variable search criteria to see their corresponding coverage.",
     "coverage-hide-missing": "Hide missing",
-    "coverage-show-missing": "Show missing"
+    "coverage-show-missing": "Show missing",
+    "coverage-group-by": "Group by",
+    "coverage-buckets": {
+      "studyIds" : "Study",
+      "dceIds" : "Data Collection Event",
+      "networkId" : "Network"
+    },
+    "network-where": "Networks where...",
+    "study-where": "Studies where...",
+    "dataset-where": "Datasets where...",
+    "variable-where": "Variables where..."
   },
   "variables": "Variables",
   "classifications": "Classifications",
@@ -1107,5 +1117,4 @@
     "study-design-chart-title": "Distribution des études par définitions d'études",
     "bio-samples-chart-title": "Distribution des études par échantillons biologiques"
   }
-
 }
