@@ -18,7 +18,7 @@ function obiba_mica_search_pages_admin_settings() {
     '#collapsible' => FALSE,
   );
 
-  _obiba_mica_settings_search($form, $form_state);
+  _obiba_mica_settings_search($form);
   _obiba_mica_settings_search_networks_form($form);
   _obiba_mica_settings_search_studies_form($form);
   _obiba_mica_settings_search_datasets_form($form);
@@ -31,19 +31,7 @@ function obiba_mica_search_pages_admin_settings() {
  * settings of search page
  * @param $form
  */
-function _obiba_mica_settings_search(&$form, &$form_state) {
-  $add_form_field = function (&$form, $field_name, $info = NULL, $type = 'textfield') {
-    $info = empty($info) ? variable_get_info($field_name) : $info;
-    $form[$field_name] = array(
-      '#type' => $type,
-      '#title' => $info['title'],
-      '#required' => FALSE,
-      '#default_value' => variable_get_value($field_name),
-      '#maxlength' => 255,
-      '#description' => $info['description'],
-    );
-  };
-
+function _obiba_mica_settings_search(&$form) {
   $form['search_display_settings']['page_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Search Settings'),
@@ -99,10 +87,6 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#description' => $info['description'],
   );
 
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_taxonomy_tabs_order');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_tabs_order');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_result_tabs_order');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_result_graphics_order');
 }
 
 

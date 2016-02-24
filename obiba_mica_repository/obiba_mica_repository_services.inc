@@ -51,28 +51,6 @@ function obiba_mica_repository_taxonomies_filter() {
 }
 
 /**
- * Get filtered taxonomy
- */
-function obiba_mica_angular_search_taxonomy_filter($name) {
-  $taxonomy = array();
-  $request_parameters = drupal_get_query_parameters();
-
-  if (!empty($request_parameters['target'])) {
-    $cached_result = obiba_mica_commons_get_cache('taxonomy_filter-' . $name . '-' . $request_parameters['target']);
-
-    if (!empty($cached_result)) {
-      $taxonomy = $cached_result->data;
-    } else {
-      $taxonomies_resource = new ObibaSearchResources();
-      $taxonomy = $taxonomies_resource->taxonomyFilter($name, $request_parameters['target']);
-      obiba_mica_commons_set_cache('taxonomy_filter-' . $name . '-' . $request_parameters['target'], $taxonomy);
-    }
-  }
-
-  drupal_json_output($taxonomy);
-}
-
-/**
  * Get Vocabulary detail by $taxonomy
  */
 function obiba_mica_repository_query($type, $query) {
