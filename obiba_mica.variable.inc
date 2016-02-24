@@ -58,6 +58,34 @@ function obiba_mica_variable_info($options) {
     'default' => '',
   );
 
+  $variable['mica_taxonomy_tabs_order'] = array(
+    'title' => t('Taxonomy tabs order'),
+    'description' => t('List of taxonomy tabs (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI.'),
+    'type' => 'string',
+    'default' => 'variable,dataset,study,network',
+  );
+
+  $variable['mica_search_tabs_order'] = array(
+    'title' => t('Search tabs order'),
+    'description' => t('List of search tabs (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI.'),
+    'type' => 'string',
+    'default' => 'list,coverage,graphics',
+  );
+
+  $variable['mica_result_tabs_order'] = array(
+    'title' => t('Result tabs order'),
+    'description' => t('List of result tabs (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI.'),
+    'type' => 'string',
+    'default' => 'variable,dataset,study,network',
+  );
+
+  $variable['mica_result_graphics_order'] = array(
+    'title' => t('Result graphics order'),
+    'description' => t('List of graphics (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI.'),
+    'type' => 'string',
+    'default' => 'country,study-design,bio-samples',
+  );
+
   return $variable;
 }
 

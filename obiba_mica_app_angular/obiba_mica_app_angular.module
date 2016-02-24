@@ -463,6 +463,10 @@ function obiba_mica_app_angular_get_access_config() {
  */
 function obiba_mica_app_angular_get_search_config() {
   return array(
+    'taxonomyTabsOrder' => array_map('trim', explode(',', variable_get_value('mica_taxonomy_tabs_order'))),
+    'searchTabsOrder' => array_map('trim', explode(',', variable_get_value('mica_search_tabs_order'))),
+    'resultTabsOrder' => array_map('trim', explode(',', variable_get_value('mica_result_tabs_order'))),
+    'resultGraphicsOrder' => array_map('trim', explode(',', variable_get_value('mica_result_graphics_order'))),
     'variables' =>
       array(
         'showSearchTab' => variable_get_value('search_variables'),
