@@ -795,7 +795,17 @@
     "graphics": "Graphics",
     "no-coverage": "Select some variable search criteria to see their corresponding coverage.",
     "coverage-hide-missing": "Hide missing",
-    "coverage-show-missing": "Show missing"
+    "coverage-show-missing": "Show missing",
+    "coverage-group-by": "Group by",
+    "coverage-buckets": {
+      "studyIds" : "Study",
+      "dceIds" : "Data Collection Event",
+      "networkId" : "Network"
+    },
+    "network-where": "Networks where...",
+    "study-where": "Studies where...",
+    "dataset-where": "Datasets where...",
+    "variable-where": "Variables where..."
   },
   "variables": "Variables",
   "classifications": "Classifications",
@@ -1103,8 +1113,8 @@
     "geo-charts": "Geographical Distribution",
     "study-design": "Study Designs",
     "bio-samples": "Collected biological samples",
-    "geo-chart-title": "Distribution of studies by participants countries of residence",
-    "study-design-chart-title": "Distribution of studies by study design",
-    "bio-samples-chart-title": "Distribution of studies by Biological Samples"
+    "geo-chart-title": "Distribution of studies by countries",
+    "study-design-chart-title": "Distribution of Studies by Designs",
+    "bio-samples-chart-title": "Distribution of studies by collected Biological Sample types"
   }
 }
