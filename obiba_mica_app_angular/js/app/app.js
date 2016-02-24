@@ -47,8 +47,8 @@ var mica = angular.module('mica', modules);
 /**
  * Data Access Request related provider configuration
  */
-mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
-  function (ngObibaMicaSearchProvider, ngObibaMicaUrlProvider) {
+mica.config(['ngObibaMicaUrlProvider',
+  function (ngObibaMicaUrlProvider) {
     ngObibaMicaUrlProvider.setUrl('DataAccessFormConfigResource', 'data-access-form/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestsResource', 'requests/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestResource', 'request/:id/ws');
@@ -71,7 +71,6 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('StudyPage', Drupal.settings.basePath + 'mica/study/:study');
     ngObibaMicaUrlProvider.setUrl('DatasetPage', Drupal.settings.basePath + 'mica/:type/:dataset');
 
-    ngObibaMicaSearchProvider.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);
   }]);
 
 mica.provider('SessionProxy',
