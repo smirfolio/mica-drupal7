@@ -387,7 +387,7 @@
 
       <div class="row tabbable tabs-left">
         <div class="col-lg-2 col-xs-12  ">
-          <ul class="nav nav-pills nav-stacked">
+          <ul class="nav nav-pills nav-stacked" id="tab-pane">
             <?php foreach ($populations as $key => $population): ?>
               <li <?php if ($key == array_keys($populations)[0]) {
                 print 'class="active"';

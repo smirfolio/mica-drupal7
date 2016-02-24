@@ -72,6 +72,13 @@
             $('.show-coverage').removeClass('hidden');
           }
         });
+        var anchor = location.hash.substr(1)?location.hash.substr(1):null;
+        if(anchor) {
+          $('#tab-pane a[href="#' + anchor + '"]').tab('show');
+          $('html, body').animate({
+            scrollTop: $('#'+ anchor).offset().top
+          }, 'slow');
+        }
       }
     }
   }
