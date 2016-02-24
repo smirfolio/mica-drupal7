@@ -462,7 +462,14 @@ function obiba_mica_app_angular_get_access_config() {
  * Search Module settings
  */
 function obiba_mica_app_angular_get_search_config() {
+  $get_array_value = function ($variable) {
+    return array_filter(array_map('trim', explode(',', variable_get_value($variable))));
+  };
+
   return array(
+    'taxonomyTabsOrder' => $get_array_value('mica_taxonomy_tabs_order'),
+    'searchTabsOrder' => $get_array_value('mica_search_tabs_order'),
+    'resultTabsOrder' => $get_array_value('mica_result_tabs_order'),
     'variables' =>
       array(
         'showSearchTab' => variable_get_value('search_variables'),

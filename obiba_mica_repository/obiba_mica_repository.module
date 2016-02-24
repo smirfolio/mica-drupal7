@@ -5,7 +5,6 @@
 
 function obiba_mica_repository_menu() {
   $items = array();
-
   $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/taxonomies/_search/ws'] = array(
     'page callback' => 'obiba_mica_repository_taxonomies_search',
     'file' => 'obiba_mica_repository_services.inc',
@@ -32,6 +31,12 @@ function obiba_mica_repository_menu() {
     'page callback' => 'obiba_mica_repository_variable_coverage_download',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(4),
+    'access callback' => TRUE
+  );
+  $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/taxonomy/%/_filter/ws'] = array(
+    'page callback' => 'obiba_mica_angular_search_taxonomy_filter',
+    'file' => 'obiba_mica_repository_services.inc',
+    'page arguments' => array(3),
     'access callback' => TRUE
   );
 
