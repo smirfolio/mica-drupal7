@@ -123,7 +123,7 @@
             };
 
             var isStatistical = function (variable) {
-              return variable && variable.nature.toLowerCase() === 'continuous';
+              return variable && variable.nature === 'CONTINUOUS';
             };
 
             function normalizeStatistics(contingency, v1Cats) {
