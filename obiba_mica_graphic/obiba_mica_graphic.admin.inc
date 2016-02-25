@@ -88,6 +88,16 @@ function obiba_mica_graphic_settings_form_general_display(&$form){
       );
   }
 
+  $info = variable_get_info('pie_slice_text_style_color');
+  $form['obiba_mica_graphic']['graphic_display']['general_display']['pie_slice_text_style_color'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('pie_slice_text_style_color'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+
 }
 
 function obiba_mica_graphic_settings_form_display_block(&$form) {

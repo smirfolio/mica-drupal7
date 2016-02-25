@@ -85,5 +85,12 @@ function obiba_mica_graphic_variable_info($options) {
     );
   }
 
+  $variable['pie_slice_text_style_color'] = array(
+    'title' => t('Pie slice text color'),
+    'description' => t('Pleas enter the hex colors code'),
+    'type' => 'string',
+    'default' => '',
+  );
+
   return $variable;
 }
