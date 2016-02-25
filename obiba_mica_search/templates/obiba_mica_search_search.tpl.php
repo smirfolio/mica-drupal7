@@ -13,19 +13,22 @@ if (!empty($search_param)) {
 }
 
 ?>
-<div class="alert alert-info" xmlns="http://www.w3.org/1999/html">
-  <div id="search-help">
-    <i class="glyphicon glyphicon-arrow-left"></i>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div id="search-help">
+      <i class="glyphicon glyphicon-arrow-left"></i>
     <span class="indent">
       <?php print t('Start searching by selecting a facet'); ?>
     </span>
-  </div>
-  <div id="search-query"></div>
-  <div id="query-help" style="display:none;" class="md-top-margin help-inline">
-    <i class="glyphicon glyphicon-question-sign"></i>
+    </div>
+    <div id="search-query"></div>
+    <div id="query-help" style="display:none;"
+      class="md-top-margin help-inline">
+      <i class="glyphicon glyphicon-question-sign"></i>
     <span class="indent">
       <?php print t('Tips: click on a criteria to remove it, click on AND/OR to switch it.'); ?>
     </span>
+    </div>
   </div>
 </div>
 
@@ -165,6 +168,7 @@ if (!empty($search_param)) {
         <article class="bordered-article">
           <section>
             <h2 class="pull-left"><?php print t('Studies') ?></h2>
+
             <div class="clearfix"/>
             <div class="pull-right lg-top-search-page-margin facet-search-form">
               <?php if (variable_get_value('mica_statistics_coverage')): ?>
@@ -200,6 +204,7 @@ if (!empty($search_param)) {
         <article class="bordered-article">
           <section>
             <h2 class="pull-left"><?php print t('Networks') ?></h2>
+
             <div class="clearfix"/>
             <div class="pull-right lg-top-search-page-margin facet-search-form">
               <?php if (variable_get_value('mica_statistics_coverage')): ?>
