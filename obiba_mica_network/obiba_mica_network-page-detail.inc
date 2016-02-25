@@ -147,8 +147,8 @@ function obiba_mica_network_statistics_angular_options($networks_id) {
       array_merge(array('legend' => array('position' => 'none')), $colors_options):
       array('legend' => array('position' => 'none'));
   $bio_samples_options =  !empty($colors_options)?
-    array_merge(array('legend' => array('position' => 'right')), $colors_options):
-    array('legend' => array('position' => 'right'));
+    array_merge(array('legend' => array('position' => 'right'), 'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))), $colors_options):
+    array('legend' => array('position' => 'right'), 'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color')));
   $chart_options = array_merge(
     obiba_mica_graphic_charts_options_settings('geoChartOptions',
       array('graphics.country', 'graphics.nbr-studies'),
