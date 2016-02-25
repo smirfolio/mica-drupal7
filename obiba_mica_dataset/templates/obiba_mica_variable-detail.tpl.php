@@ -182,7 +182,7 @@
     <section id="section-statistics">
       <h2>
         <?php print t('Statistics') ?>
-        <?php if (strcasecmp($variable_dto->nature, 'categorical') === 0 && $variable_dto->variableType !== 'Harmonized'): ?>
+        <?php if (strcasecmp($variable_dto->nature, 'CATEGORICAL') === 0 && $variable_dto->variableType !== 'Harmonized'): ?>
           <span class="pull-right">
         <?php if (variable_get_value('mica_statistics')) :
           print MicaClientAnchorHelper::variableCrosstab($variable_dto, TRUE);
