@@ -463,7 +463,7 @@ function obiba_mica_app_angular_get_access_config() {
  */
 function obiba_mica_app_angular_get_search_config() {
   $get_array_value = function ($variable) {
-    return array_filter(array_map('trim', explode(',', variable_get_value($variable))));
+    return array_values(array_filter(array_map('trim', explode(',', variable_get_value($variable)))));
   };
 
   return array(
