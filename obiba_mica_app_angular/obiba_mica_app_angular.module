@@ -473,6 +473,8 @@ function obiba_mica_app_angular_get_search_config() {
     'variables' =>
       array(
         'showSearchTab' => variable_get_value('search_variables'),
+        'searchLabel' => variable_get_value('variables_search_label'),
+        'noResultsLabel' => variable_get_value('variables_empty_label'),
         'variablesColumn' => array(
           'showVariablesStudiesColumn' => variable_get_value('variables_column_study'),
           'showVariablesDatasetsColumn' => variable_get_value('variables_column_dataset'),
@@ -483,6 +485,8 @@ function obiba_mica_app_angular_get_search_config() {
     'datasets' =>
       array(
         'showSearchTab' => variable_get_value('search_datasets'),
+        'searchLabel' => variable_get_value('datasets_search_label'),
+        'noResultsLabel' => variable_get_value('datasets_empty_label'),
         'showDatasetsSearchFilter' => variable_get_value('search_datasets_autocomplete'),
         'datasetsColumn' => array(
           'showDatasetsTypeColumn' => variable_get_value('datasets_column_type'),
@@ -494,6 +498,8 @@ function obiba_mica_app_angular_get_search_config() {
     'studies' =>
       array(
         'showSearchTab' => variable_get_value('search_studies'),
+        'searchLabel' => variable_get_value('studies_search_label'),
+        'noResultsLabel' => variable_get_value('studies_empty_label'),
         'showStudiesSearchFilter' => variable_get_value('studies_facet_search'),
         'studiesColumn' => array(
           'showStudiesDesignColumn' => variable_get_value('studies_column_design'),
@@ -511,6 +517,8 @@ function obiba_mica_app_angular_get_search_config() {
     'networks' =>
       array(
         'showSearchTab' => variable_get_value('search_networks'),
+        'searchLabel' => variable_get_value('networks_search_label'),
+        'noResultsLabel' => variable_get_value('networks_empty_label'),
         'networksColumn' => array(
           'showNetworksStudiesColumn' => variable_get_value('networks_column_studies'),
           'showNetworksStudyDatasetColumn' => variable_get_value('networks_column_study_datasets'),
