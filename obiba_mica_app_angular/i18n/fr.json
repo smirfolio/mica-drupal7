@@ -705,6 +705,7 @@
   },
   "all": "All",
   "name": "Name",
+  "acronym": "Acronym",
   "id": "ID",
   "description": "Description",
   "size": "Size",
@@ -802,6 +803,23 @@
       "dceIds" : "Data Collection Event",
       "networkId" : "Network"
     },
+    "study": {
+      "label": "Study",
+      "dataSources": "Data Sources Available",
+      "quest": "Quest",
+      "pm": "PM",
+      "bio": "Bio",
+      "others": "Others",
+      "design": "Design",
+      "participants": "Participants"
+    },
+    "dataset": {
+      "label": "Dataset"
+    },
+    "variable": {
+      "label": "Label"
+     },
+    "harmonization": "Harmonization",
     "network-where": "Networks where...",
     "study-where": "Studies where...",
     "dataset-where": "Datasets where...",
