@@ -790,6 +790,7 @@
   "users": "Users",
   "search": {
     "title": "Search",
+    "noResults": "No result found",
     "placeholder": "Examples: alcohol pregnancy cancer cohort ...",
     "list": "List",
     "coverage": "Coverage",
@@ -805,6 +806,7 @@
     },
     "study": {
       "label": "Study",
+      "noResults": "No study found",
       "dataSources": "Data Sources Available",
       "quest": "Quest",
       "pm": "PM",
@@ -814,11 +816,16 @@
       "participants": "Participants"
     },
     "dataset": {
-      "label": "Dataset"
+      "label": "Dataset",
+      "noResults": "No dataset found"
     },
     "variable": {
-      "label": "Label"
-     },
+      "label": "Label",
+      "noResults": "No variable found"
+    },
+    "network": {
+      "noResults": "No network found"
+    },
     "harmonization": "Harmonization",
     "network-where": "Networks where...",
     "study-where": "Studies where...",
