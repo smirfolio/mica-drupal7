@@ -102,6 +102,9 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_taxonomy_tabs_order');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_tabs_order');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_result_tabs_order');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_list_label');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_coverage_label');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_graphics_label');
 }
 
 
