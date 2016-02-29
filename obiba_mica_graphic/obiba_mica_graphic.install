@@ -6,75 +6,46 @@
 
 function obiba_mica_graphic_install() {
 
-  $blocks_to_enable = obiba_mica_graphic_default_block();
   variable_set('graphics_blocks_networks', array('NaN' => 'NaN'));
   variable_set('graphics_blocks_aggregations', array(
     'populations-selectionCriteria-countriesIso' => 'populations-selectionCriteria-countriesIso',
     'populations-recruitment-dataSources' => 'populations-recruitment-dataSources',
     'methods-designs' => 'methods-designs',
     'populations-dataCollectionEvents-bioSamples' => 'populations-dataCollectionEvents-bioSamples',
-    'access' => 'access'
   ));
+
+  variable_set('graphics_nbr_colors', array(
+    '1' => '1',
+    '2' => '2',
+    '3' => '3',
+    '4' => '4',
+    '5' => '5',
+  ));
+  variable_set('color_1', '#e5edfb');
+  variable_set('color_2', '#cfddf5');
+  variable_set('color_3', '#b8cbed');
+  variable_set('color_4', '#a0b8e2');
+  variable_set('color_5', '#88a4d4');
+  variable_set('pie_slice_text_style_color', '#000000');
+
   variable_set('countriesIso_css', 'col-md-6');
   variable_set('recruitment-dataSources_css', 'col-md-6');
   variable_set('methods-designs_css', 'col-md-6');
-  variable_set('populationDceBioSamples_css', 'col-md-6');
-  variable_set('access_css', 'col-md-6');
 }
 
 function obiba_mica_graphic_uninstall() {
-  $blocks_to_enable = obiba_mica_graphic_default_block();
-  foreach ($blocks_to_enable as $delta => $block) {
-    obiba_mica_graphic_activate_block($delta, 'obiba_bootstrap', $block);
-  }
+
   variable_del('graphics_blocks_networks');
   variable_del('graphics_blocks_aggregations');
+  variable_del('graphics_nbr_colors');
+  variable_del('color_1');
+  variable_del('color_2');
+  variable_del('color_3');
+  variable_del('color_4');
+  variable_del('color_5');
+  variable_del('pie_slice_text_style_color');
   variable_del('countriesIso_css');
   variable_del('recruitment-dataSources_css');
   variable_del('methods-designs_css');
   variable_del('populationDceBioSamples_css');
-  variable_del('access_css');
 }
-
-/**
- * Enable default blocks
- */
-function obiba_mica_graphic_activate_block($delta, $theme, $block) {
-  drupal_set_message("Activating block obiba_mica_graphic :$delta \n");
-  db_merge('block')
-    ->key(array(
-      'theme' => $theme,
-      'delta' => $delta,
-      'module' => 'obiba_mica_graphic'
-    ))
-    ->fields(array(
-      'region' => ($block['region'] == BLOCK_REGION_NONE ? '' : $block['region']),
-      'pages' => trim($block['pages']),
-      'status' => (int) ($block['region'] != BLOCK_REGION_NONE),
-      'visibility' => $block['visibility'],
-      'weight' => $block['weight']
-    ))
-    ->execute();
-}
-
-/**
- * Enable default blocks
- */
-function obiba_mica_graphic_deactivate_block($delta, $theme, $block) {
-  drupal_set_message("Activating block obiba_mica_graphic :$delta\n");
-  db_merge('block')
-    ->key(array(
-      'theme' => $theme,
-      'delta' => $delta,
-      'module' => 'obiba_mica_graphic'
-    ))
-    ->fields(array(
-      'region' => ($block['region'] == BLOCK_REGION_NONE ? '' : $block['region']),
-      'pages' => trim($block['pages']),
-      'status' => 0,
-      'visibility' => $block['visibility'],
-      'weight' => $block['weight']
-    ))
-    ->execute();
-}
-
