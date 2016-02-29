@@ -72,6 +72,27 @@ function obiba_mica_variable_info($options) {
     'default' => 'list,coverage,graphics',
   );
 
+  $variable['mica_search_list_label'] = array(
+    'title' => t('List label'),
+    'description' => t('Text to be displayed in list search results.'),
+    'type' => 'string',
+    'default' => 'List',
+  );
+
+  $variable['mica_search_coverage_label'] = array(
+    'title' => t('Coverage label'),
+    'description' => t('Text to be displayed in coverage search results.'),
+    'type' => 'string',
+    'default' => 'Coverage',
+  );
+
+  $variable['mica_search_graphics_label'] = array(
+    'title' => t('Graphics label'),
+    'description' => t('Text to be displayed in graphics search results.'),
+    'type' => 'string',
+    'default' => 'Graphics',
+  );
+
   $variable['mica_result_tabs_order'] = array(
     'title' => t('Result tabs order'),
     'description' => t('List of result tabs (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI. Values should be: variable, dataset, study, network.'),
