@@ -17,7 +17,7 @@ function obiba_mica_study_page_detail_coverage($study_id) {
   $cached_study_coverage = obiba_mica_commons_get_cache('study-coverage-cache-' . $study_id);
   if (!empty($cached_study_coverage)) {
     $study_coverage = $cached_study_coverage->data;
-    if($study_coverage['coverage'] === 'empty'){
+    if ($study_coverage['coverage'] === 'empty') {
       exit;
     }
   }
@@ -44,7 +44,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
   $cached_networks = obiba_mica_commons_get_cache('study-networks-cache-' . $study_id);
   if (!empty($cached_networks)) {
     $themed_study_networks = $cached_networks->data;
-    if($themed_study_networks==='empty'){
+    if ($themed_study_networks === 'empty') {
       exit;
     }
   }
@@ -53,7 +53,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
       obiba_mica_network_networks_list($study_id) : NULL;
 
     if (empty($network_output)) {
-      $themed_study_networks='empty';
+      $themed_study_networks = 'empty';
       obiba_mica_commons_set_cache('study-networks-cache-' . $study_id, $themed_study_networks);
       exit;
     }
@@ -70,7 +70,7 @@ function obiba_mica_study_page_detail_datasets($study_id) {
   $cached_datasets = obiba_mica_commons_get_cache('study-datasets-cache-' . $study_id);
   if (!empty($cached_datasets)) {
     $themed_datasets = $cached_datasets->data;
-    if($themed_datasets === 'empty'){
+    if ($themed_datasets === 'empty') {
       exit;
     }
   }
@@ -78,7 +78,7 @@ function obiba_mica_study_page_detail_datasets($study_id) {
     $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
 
     if (empty($dataset_output)) {
-      $themed_datasets = 'empty' ;
+      $themed_datasets = 'empty';
       obiba_mica_commons_set_cache('study-datasets-cache-' . $study_id, $themed_datasets);
       exit;
     }
@@ -158,10 +158,13 @@ function obiba_mica_study_page_detail($study_id) {
     obiba_mica_study_get_timeline_detail($study_dto);
     $options_study_content = array(
       'showNetwork' => variable_get_value('study_show_networks'),
-      'showDatasets'=> variable_get_value('study_show_datasets'),
-      'showCoverage'=> variable_get_value('study_show_coverage_graphs'),
+      'showDatasets' => variable_get_value('study_show_datasets'),
+      'showCoverage' => variable_get_value('study_show_coverage_graphs'),
     );
-    drupal_add_js(array('study_url' => rawurlencode($study_id), 'optionsStudyContent' => $options_study_content), 'setting');
+    drupal_add_js(array(
+      'study_url' => rawurlencode($study_id),
+      'optionsStudyContent' => $options_study_content
+    ), 'setting');
 
     if (!empty($detail_study_cache->data['study_theme'])) {
       return $detail_study_cache->data['study_theme'];
@@ -176,8 +179,6 @@ function obiba_mica_study_page_detail($study_id) {
           'timeline' => '<div id="vis" style="width=100%"></div>',
           'populations' => $populations,
           'opal' => $opal_output,
-          'study_variables_aggs' => NULL,
-          //obiba_mica_study_get_variables($study_id),
           'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
         ));
       $current_detail_study_cache['study_theme'] = $study_theme;
@@ -364,23 +365,6 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
   return $dce_rows;
 }
 
-/**
- * Get the facets of the variables for this study.
- *
- * @param $dataset_id
- *
- * @return array
- */
-function obiba_mica_study_get_variables($study_id) {
-  $dataset_resource = new MicaDatasetResource();
-  return $dataset_resource->variables_search(array(
-    0 => array(
-      'field' => 'studyId',
-      'terms' => array($study_id)
-    )
-  ), 0);
-}
-
 function obiba_mica_study_coverage($study_id) {
   $coverage['charts'] = obiba_mica_search_query_charts(
     MicaClient::addParameterDtoQueryLink(array(
@@ -390,12 +374,9 @@ function obiba_mica_study_coverage($study_id) {
         )
       )
     )),
-    function ($b, $study_id) {
-      // filter the dces of the current study
-      return strpos($b->value, ':') === FALSE || strpos($b->value, $study_id . ':') === 0;
-    },
-    $study_id,
-    array('group-by' => 'dceIds', 'with-facets' => 'false'));
+    array('group-by' => 'dceIds', 'with-facets' => 'false'),
+    NULL,
+    $study_id);
   if (!empty($coverage['charts'])) {
     $coverage['has_coverage'] = TRUE;
     return $coverage;

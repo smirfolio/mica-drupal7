@@ -5,35 +5,35 @@
 
 function obiba_mica_repository_menu() {
   $items = array();
-  $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/taxonomies/_search/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/taxonomies/_search/ws'] = array(
     'page callback' => 'obiba_mica_repository_taxonomies_search',
     'file' => 'obiba_mica_repository_services.inc',
     'access callback' => TRUE
   );
-  $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/taxonomies/_filter/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/taxonomies/_filter/ws'] = array(
     'page callback' => 'obiba_mica_repository_taxonomies_filter',
     'file' => 'obiba_mica_repository_services.inc',
     'access callback' => TRUE
   );
-  $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/%/_rql/%/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/%/_rql/%/ws'] = array(
     'page callback' => 'obiba_mica_repository_query',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(2, 4),
     'access callback' => TRUE
   );
-  $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage/%/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage/%/ws'] = array(
     'page callback' => 'obiba_mica_repository_variable_coverage',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(4),
     'access callback' => TRUE
   );
-  $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage_download/%/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage_download/%/ws'] = array(
     'page callback' => 'obiba_mica_repository_variable_coverage_download',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(4),
     'access callback' => TRUE
   );
-  $items['mica/' . ObibaSearchResources::MICA_REPOSITORY . '/taxonomy/%/_filter/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/taxonomy/%/_filter/ws'] = array(
     'page callback' => 'obiba_mica_angular_search_taxonomy_filter',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(3),
@@ -73,7 +73,7 @@ function obiba_mica_repository_get_js($weight_js) {
     )
   ),
     'setting');
-  if (current_path() == MicaClientPathProvider::ANGULAR_SEARCH) {
+  if (current_path() == MicaClientPathProvider::REPOSITORY_SEARCH) {
     $module_path = drupal_get_path('module', 'obiba_mica_repository');
     $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
     ksort($js);
@@ -94,7 +94,7 @@ function obiba_mica_repository_get_js($weight_js) {
 function obiba_mica_repository_load_menus() {
   $items = array();
 
-  $items[MicaClientPathProvider::ANGULAR_SEARCH] = array(
+  $items[MicaClientPathProvider::REPOSITORY_SEARCH] = array(
     'access callback' => TRUE,
     'title' => variable_get('search_page_title', 'Search'),
     'module_caller' => 'obiba_mica_repository',
@@ -106,7 +106,7 @@ function obiba_mica_repository_load_menus() {
  * Implements hook_get_ng_module_to_load().
  */
 function obiba_mica_repository_get_ng_module_to_load() {
-  if (current_path() == MicaClientPathProvider::ANGULAR_SEARCH) {
+  if (current_path() == MicaClientPathProvider::REPOSITORY_SEARCH) {
     return 'mica.ObibaSearch';
   }
   return FALSE;

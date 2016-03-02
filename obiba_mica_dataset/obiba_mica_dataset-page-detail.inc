@@ -572,8 +572,10 @@ function obiba_mica_dataset_coverage($dataset_id) {
           )
         )
       )
-    ), NULL, NULL,
-    array('with-facets' => 'false'));
+    ),
+    array('with-facets' => 'false'),
+    NULL,
+    $dataset_id);
   if (!empty($coverage['charts'])) {
     $coverage['has_coverage'] = TRUE;
     return $coverage;
