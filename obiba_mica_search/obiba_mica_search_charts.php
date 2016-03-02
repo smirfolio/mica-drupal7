@@ -153,14 +153,10 @@ function obiba_mica_search_term_chart($term_coverage) {
  * Make a chart from taxonomy coverage.
  *
  * @param $query
- * @param $bucket_filter bucket filter closure with 2 arguments: the bucket and
- *   the $bucket_filter_arg
- * @param null $bucket_filter_arg argument to be passed to the bucket filter
- *   closure
  *
  * @return array
  */
-function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, $bucket_filter_arg = NULL, $default_dto_search = NULL, $chart_title = NULL) {
+function obiba_mica_search_query_charts($query, $default_dto_search = NULL, $chart_title = NULL, $entity_id = NULL) {
   $search_resources = new MicaSearchResource();
   $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search, array('strict' => 'false'));
   $taxonomy_charts = array();
@@ -193,7 +189,8 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
                     $bucket,
                     $taxonomy_coverage->taxonomy->name,
                     $vocabulary_coverage->vocabulary->name,
-                    $terms
+                    $terms,
+                    $entity_id
                   );
                 }
               }
@@ -206,7 +203,8 @@ function obiba_mica_search_query_charts($query, Callable $bucket_filter = NULL, 
                   NULL,
                   $taxonomy_coverage->taxonomy->name,
                   $vocabulary_coverage->vocabulary->name,
-                  $terms
+                  $terms,
+                  $entity_id
                 );
               }
             }

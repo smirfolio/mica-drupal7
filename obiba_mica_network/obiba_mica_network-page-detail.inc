@@ -33,7 +33,7 @@ function obiba_mica_network_page_detail($network_id) {
     }
 
     if (!empty($network_dto->studySummaries)) {
-      obiba_mica_network_studies_datatable_init($network_dto->studySummaries);
+      obiba_mica_network_studies_datatable_init($network_dto->studySummaries, $network_id);
     }
 
     $acronym = obiba_mica_commons_get_localized_field($network_dto, 'acronym');
@@ -143,22 +143,28 @@ function obiba_mica_network_page_detail($network_id) {
 function obiba_mica_network_statistics_angular_options($networks_id) {
   $colors_options = obiba_mica_graphic_charts_colors_options_settings();
   $study_design_options =
-    !empty($colors_options)?
-      array_merge(array('legend' => array('position' => 'none')), $colors_options):
+    !empty($colors_options) ?
+      array_merge(array('legend' => array('position' => 'none')), $colors_options) :
       array('legend' => array('position' => 'none'));
-  $bio_samples_options =  !empty($colors_options)?
-    array_merge(array('legend' => array('position' => 'right'), 'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))), $colors_options):
-    array('legend' => array('position' => 'right'), 'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color')));
+  $bio_samples_options = !empty($colors_options) ?
+    array_merge(array(
+      'legend' => array('position' => 'right'),
+      'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
+    ), $colors_options) :
+    array(
+      'legend' => array('position' => 'right'),
+      'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
+    );
   $chart_options = array_merge(
     obiba_mica_graphic_charts_options_settings('geoChartOptions',
       array('graphics.country', 'graphics.nbr-studies'),
-      'graphics.geo-chart-title',array('colorAxis' =>  $colors_options)),
+      'graphics.geo-chart-title', array('colorAxis' => $colors_options)),
     obiba_mica_graphic_charts_options_settings('studiesDesigns',
       array('graphics.study-design', 'graphics.nbr-studies'),
-      'graphics.study-design-chart-title',$study_design_options),
+      'graphics.study-design-chart-title', $study_design_options),
     obiba_mica_graphic_charts_options_settings('biologicalSamples',
       array('graphics.bio-samples', 'graphics.nbr-studies'),
-      t('graphics.bio-samples-chart-title'),$bio_samples_options)
+      t('graphics.bio-samples-chart-title'), $bio_samples_options)
   );
 
   drupal_add_js(array(
@@ -238,7 +244,7 @@ function obiba_mica_network_links_table_rows($network_summaries) {
 /**
  * @param $network_dto
  */
-function obiba_mica_network_studies_datatable_init($study_summaries) {
+function obiba_mica_network_studies_datatable_init($study_summaries, $id_network = NULL) {
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
   }
@@ -249,13 +255,17 @@ function obiba_mica_network_studies_datatable_init($study_summaries) {
   drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/obiba_mica_network_studies_datatable_init.js', 'file');
   drupal_add_js(array(
     'table_headers' => obiba_mica_network_study_table_headers(),
-    'table_data' => obiba_mica_network_study_table_rows($study_summaries)
+    'table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network)
   ), 'setting');
 }
 
-function obiba_mica_network_study_table_rows($study_summaries) {
+function obiba_mica_network_study_table_rows($study_summaries, $id_network = NULL) {
   $rows = array();
+  $query = NULL;
   if (!empty($study_summaries)) {
+    if (!empty($id_network)) {
+      $query = 'network(in(Mica_network.id,' . $id_network . '))';
+    }
     foreach ($study_summaries as $study_summary) {
       $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
       $rows[] = array(
@@ -266,7 +276,7 @@ function obiba_mica_network_study_table_rows($study_summaries) {
           isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL,
         obiba_mica_commons_countries($study_summary->countries),
         empty($study_summary->variables)
-          ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id)
+          ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, FALSE, $query)
       );
     }
   }
@@ -286,11 +296,14 @@ function obiba_mica_network_study_table_headers() {
 }
 
 function obiba_mica_network_coverage($study_ids) {
-  return obiba_mica_search_query_charts(MicaClient::addParameterDtoQueryLink(array(
+  return obiba_mica_search_query_charts(
+    MicaClient::addParameterDtoQueryLink(array(
     'variables' =>
       array('terms' => array('studyIds' => $study_ids))
-  )), NULL, NULL,
-    array('group-by' => 'studyIds', 'with-facets' => 'false'));
+  )),
+    array('group-by' => 'studyIds', 'with-facets' => 'false'),
+    NULL,
+    $study_ids);
 }
 
 function _obiba_mica_network_has_variables($study_summaries) {

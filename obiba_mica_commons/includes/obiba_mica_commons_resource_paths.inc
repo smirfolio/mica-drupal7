@@ -45,7 +45,7 @@ class MicaClientPathProvider {
   const DATA_ACCESS_USERS_LIST = 'mica/data_access/users';
   const AGATE_REGISTER = 'agate/register';
   const AGATE_PROFILE = 'agate/user/profile';
-  const ANGULAR_SEARCH = 'mica/repository';
+  const REPOSITORY_SEARCH = 'mica/repository';
 
   /**
    * The study detail url.
@@ -268,6 +268,17 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function studyDatasets($text, $study_id) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(
+        MicaClientPathProvider::REPOSITORY_SEARCH,
+        $text,
+        array(),
+        array(
+          'type' => 'datasets',
+          'query' => 'study(in(Mica_study.id,' . $study_id . '))',
+          'display' => 'list'
+        ));
+    }
     $query = MicaClient::addParameterDtoQueryLink(
       array('variables' => array('terms' => array('studyIds' => $study_id)))
     );
@@ -293,7 +304,23 @@ class MicaClientAnchorHelper {
    * @return string
    *   The anchor link.
    */
-  public static function studyVariables($text, $study_id, $is_button = FALSE) {
+  public static function studyVariables($text, $study_id, $is_button = FALSE, $supplementary_query = NULL) {
+    if (module_exists('obiba_mica_repository')) {
+      $query = 'study(in(Mica_study.id,' . $study_id . '))';
+      if (!empty($supplementary_query)) {
+        $query .= ',' . $supplementary_query;
+      }
+      return ObibaSearchResources::repositoryAnchor(
+        MicaClientPathProvider::REPOSITORY_SEARCH,
+        empty($text) ? variable_get_value('variables_search_label') : $text,
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'variables',
+          'query' => $query,
+          'display' => 'list'
+        ));
+    }
+
     $query = MicaClient::addParameterDtoQueryLink(
       array('studies' => array('terms' => array('studyIds' => $study_id)))
     );
@@ -320,6 +347,18 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function dceStudyVariables($text, $dce_id, $is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(
+        MicaClientPathProvider::REPOSITORY_SEARCH,
+        empty($text) ? variable_get_value('variables_search_label') : $text,
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'variables',
+          'query' => 'variable(in(Mica_variable.dceIds,' . urlencode($dce_id) . '))',
+          'display' => 'list'
+        ));
+    }
+
     $query = MicaClient::createQueryDtoAsString(array("variables" => array("terms" => array("dceIds" => $dce_id))));
 
     return self::ajaxFriendlyAnchor(
@@ -342,6 +381,18 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function coverageDceStudy($dce_id, $is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(
+        MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('variable_coverage_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'variables',
+          'query' => 'variable(in(Mica_variable.dceIds,' . urlencode($dce_id) . '))',
+          'display' => 'coverage'
+        ));
+    }
+
     $query = MicaClient::createQueryDtoAsString(array("variables" => array("terms" => array("dceIds" => $dce_id))));
 
     return self::ajaxFriendlyAnchor(
@@ -391,6 +442,18 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function studyNetworks($text, $study_id) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(
+        MicaClientPathProvider::REPOSITORY_SEARCH,
+        $text,
+        array(),
+        array(
+          'type' => 'networks',
+          'query' => 'network(in(Mica_network.studyIds,' . $study_id . '))',
+          'display' => 'list'
+        ));
+    }
+
     $query = MicaClient::addParameterDtoQueryLink(
       array('studies' => array('terms' => array('studyIds' => $study_id)))
     );
@@ -417,6 +480,18 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function networkStudies($text, $network_id, array $attributes = array()) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(
+        MicaClientPathProvider::REPOSITORY_SEARCH,
+        empty($text) ? variable_get_value('variables_search_label') : $text,
+        $attributes,
+        array(
+          'type' => 'studies',
+          'query' => 'network(in(Mica_network.id,' . $network_id . '))',
+          'display' => 'list'
+        ));
+    }
+
     $query = MicaClient::addParameterDtoQueryLink(
       array('networks' => array('terms' => array('networkId' => $network_id)))
     );
@@ -441,6 +516,17 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function networkDatasets($text, $network_id) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(
+        MicaClientPathProvider::REPOSITORY_SEARCH,
+        empty($text) ? variable_get_value('variables_search_label') : $text,
+        array(),
+        array(
+          'type' => 'datasets',
+          'query' => 'network(in(Mica_network.id,' . $network_id . '))',
+          'display' => 'list'
+        ));
+    }
     $query = MicaClient::addParameterDtoQueryLink(
       array('networks' => array('terms' => array('networkId' => $network_id)))
     );
@@ -467,6 +553,18 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function networkVariables($text, $network_id, array $attributes = array()) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(
+        MicaClientPathProvider::REPOSITORY_SEARCH,
+        empty($text) ? variable_get_value('variables_search_label') : $text,
+        $attributes,
+        array(
+          'type' => 'variables',
+          'query' => 'network(in(Mica_network.id,' . $network_id . '))',
+          'display' => 'list'
+        ));
+    }
+
     $query = MicaClient::addParameterDtoQueryLink(
       array('networks' => array('terms' => array('networkId' => $network_id)))
     );
@@ -489,6 +587,16 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function searchNetworks($is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('networks_search_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'networks',
+          'query' => 'network(exists(Mica_network.id))',
+          'display' => 'list'
+        ));
+    }
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       variable_get_value('networks_search_label'),
@@ -509,6 +617,17 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function coverageNetwork($network_id, $is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('variable_coverage_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'networks',
+          'query' => 'network(in(Mica_network.id,' . $network_id . '))',
+          'display' => 'coverage',
+          'bucket' => 'study'
+        ));
+    }
     $query = MicaClient::addParameterDtoQueryLink(
       array('networks' => array('terms' => array('networkId' => $network_id)))
     );
@@ -531,6 +650,17 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function coverageNetworks($is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('variable_coverage_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'networks',
+          'query' => 'network(exists(Mica_network.id))',
+          'display' => 'coverage'
+        ));
+    }
+
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::COVERAGE,
       variable_get_value('variable_coverage_label'),
@@ -587,7 +717,22 @@ class MicaClientAnchorHelper {
    * @return string
    *   The anchor link.
    */
-  public static function datasetVariables($text, $dataset_id, array $attributes = array()) {
+  public static function datasetVariables($text, $dataset_id, array $attributes = array(), $supplementary_query = NULL) {
+    if (module_exists('obiba_mica_repository')) {
+      $query = '';
+      if (!empty($supplementary_query)) {
+        $query .= ',' . $supplementary_query;
+      }
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        empty($text) ? variable_get_value('variables_search_label') : $text,
+        $attributes,
+        array(
+          'type' => 'variables',
+          'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))' . $query,
+          'display' => 'list'
+        ));
+    }
+
     $query = MicaClient::addParameterDtoQueryLink(
       array('variables' => array('terms' => array('datasetId' => $dataset_id)))
     );
@@ -612,6 +757,17 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function coverageDataset($dataset_id, $is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('variable_coverage_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'variables',
+          'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))',
+          'display' => 'coverage'
+        ));
+    }
+
     $query = MicaClient::addParameterDtoQueryLink(
       array('variables' => array('terms' => array('datasetId' => $dataset_id)))
     );
@@ -636,6 +792,17 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function datasetStudies($text, $dataset_id) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        $text,
+        array(),
+        array(
+          'type' => 'studies',
+          'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))',
+          'display' => 'list'
+        ));
+    }
+
     $query = MicaClient::addParameterDtoQueryLink(
       array('variables' => array('terms' => array('datasetId' => $dataset_id)))
     );
@@ -660,6 +827,17 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function datasetNetworks($text, $dataset_id) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        $text,
+        array(),
+        array(
+          'type' => 'networks',
+          'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))',
+          'display' => 'list'
+        ));
+    }
+
     $query = MicaClient::addParameterDtoQueryLink(
       array('variables' => array('terms' => array('datasetId' => $dataset_id)))
     );
@@ -682,6 +860,16 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function searchStudies($is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('studies_search_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'studies',
+          'query' => 'study(exists(Mica_study.id))',
+          'display' => 'list'
+        ));
+    }
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       variable_get_value('studies_search_label'),
@@ -700,6 +888,15 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function coverageStudies($is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('variable_coverage_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'query' => 'study(exists(Mica_study.id))',
+          'display' => 'coverage'
+        ));
+    }
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::COVERAGE,
       variable_get_value('variable_coverage_label'),
@@ -720,6 +917,15 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function coverageStudy($study_id, $is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('variable_coverage_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'query' => 'study(in(Mica_study.id,' . $study_id . '))',
+          'display' => 'coverage'
+        ));
+    }
     $query = MicaClient::createQueryDtoAsString(array("studies" => array("terms" => array("studyIds" => $study_id))));
 
     return self::ajaxFriendlyAnchor(
@@ -739,7 +945,23 @@ class MicaClientAnchorHelper {
    * @return string
    *   The anchor link.
    */
-  public static function coverageDatasets($is_button = FALSE) {
+  public static function coverageDatasets($is_button = FALSE, $bucket = 'dataset') {
+    if (module_exists('obiba_mica_repository')) {
+
+      $label = t('Harmonization Dataset');
+      if ($bucket == 'dataset') {
+        $label = t('Study Dataset');
+      }
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('variable_coverage_label') . ' ' . t('by') . ' ' . $label,
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'datasets',
+          'query' => 'dataset(exists(Mica_dataset.id))',
+          'display' => 'coverage',
+          'bucket' => $bucket
+        ));
+    }
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::COVERAGE,
       variable_get_value('variable_coverage_label'),
@@ -758,6 +980,16 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function searchDatasets($is_button = FALSE) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+        variable_get_value('datasets_search_label'),
+        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array(
+          'type' => 'datasets',
+          'query' => 'dataset(exists(Mica_dataset.id))',
+          'display' => 'list'
+        ));
+    }
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       variable_get_value('datasets_search_label'),

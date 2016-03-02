@@ -364,24 +364,36 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
       $dataset_description = NULL;
 
       if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
-        $variable_nbr_row = $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;;
-        $nb_variables = l(obiba_mica_commons_format_number($variable_nbr_row), 'mica/search',
-          array(
-            'query' => array(
-              'type' => 'variables',
-              'query' => MicaClient::addParameterDtoQueryLink(
-                array(
-                  'variables' => array(
-                    'terms' => array(
-                      'datasetId' => $summary->id,
-                      'studyIds' => $study_id,
+        $variable_nbr_row = $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;
+
+        if (module_exists('obiba_mica_repository')) {
+          $nb_variables = MicaClientAnchorHelper::datasetVariables(
+            obiba_mica_commons_format_number($variable_nbr_row),
+            $summary->id,
+            array(),
+            'study(in(Mica_study.id,' . $study_id . '))'
+          );
+        }
+        else {
+          $nb_variables = l(obiba_mica_commons_format_number($variable_nbr_row), 'mica/search',
+            array(
+              'query' => array(
+                'type' => 'variables',
+                'query' => MicaClient::addParameterDtoQueryLink(
+                  array(
+                    'variables' => array(
+                      'terms' => array(
+                        'datasetId' => $summary->id,
+                        'studyIds' => $study_id,
+                      ),
                     ),
-                  ),
-                )
+                  )
+                ),
               ),
-            ),
-          )
-        );
+            )
+          );
+        }
+
       }
       $dce_name_array = obiba_mica_dataset_get_dce_from_dataset($summary, $study_id);
       if (!empty($variable_nbr_row)) {

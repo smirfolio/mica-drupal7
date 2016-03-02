@@ -1007,7 +1007,10 @@ class MicaClient {
    * @return string
    *   A json query.
    */
-  public static function chartQueryBuilders($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, array $terms = NULL) {
+  public static function chartQueryBuilders($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, array $terms = NULL, $entity_id = NULL) {
+    if (module_exists('obiba_mica_repository')) {
+      return ObibaSearchResources::repositoryRqlBuilder($query, $bucket, $taxonomy_name, $vocabulary_name, $entity_id);
+    }
     $parameters = array();
     $current_path_alias = drupal_get_path_alias();
     $current_path_alias = explode('/[', $current_path_alias)[0];

@@ -44,7 +44,8 @@
             <?php print t('Search') ?> <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu">
-            <li><?php print MicaClientAnchorHelper::coverageDatasets() ?></li>
+            <li><?php print MicaClientAnchorHelper::coverageDatasets(FALSE) ?></li>
+            <li><?php print MicaClientAnchorHelper::coverageDatasets(FALSE, 'dataschema') ?></li>
             <li><?php print MicaClientAnchorHelper::searchDatasets() ?></li>
           </ul>
         <?php else:
