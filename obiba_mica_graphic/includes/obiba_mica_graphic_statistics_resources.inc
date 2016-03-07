@@ -10,6 +10,7 @@ class NetworkStatistics extends MicaSearchResource {
 
   const GEO_NBR_STAT = 'countriesIso';
   const METHODS_DESIGNS = 'methods-designs';
+  const NUMBER_PARTICIPANTS = 'number-participants';
   const BIO_SAMPLES = 'populationDceBioSamples';
   public $id_networks;
 
@@ -23,6 +24,7 @@ class NetworkStatistics extends MicaSearchResource {
     return array(
       NetworkStatistics::GEO_NBR_STAT =>'populations-selectionCriteria-countriesIso',
       NetworkStatistics::METHODS_DESIGNS => 'methods-designs',
+      NetworkStatistics::NUMBER_PARTICIPANTS => 'numberOfParticipants-participant-range',
       NetworkStatistics::BIO_SAMPLES => 'populations-dataCollectionEvents-bioSamples',
       );
   }

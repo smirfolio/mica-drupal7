@@ -106,10 +106,6 @@ class ObibaSearchResources extends MicaSearchResource {
   }
 
   static function repositoryRqlBuilder($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, $entity_id = NULL) {
-//    dpm($bucket);
-//    dpm($taxonomy_name);
-//    dpm($vocabulary_name);
-//    dpm($entity_id);
     $query_search='';
     if (!empty($taxonomy_name)) {
       if (!empty($vocabulary_name)) {

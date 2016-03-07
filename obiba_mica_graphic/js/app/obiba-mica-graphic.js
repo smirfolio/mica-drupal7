@@ -31,6 +31,7 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
       $scope.selectedTabGraphic = {
         geoCharts: false,
         studyDesign: false,
+        numberParticipants: false,
         bioSamples: false
       };
 

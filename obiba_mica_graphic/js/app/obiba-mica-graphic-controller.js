@@ -37,7 +37,21 @@ mica.ObibaGraphicCharts
       options: charOptions.studiesDesigns.options,
       header: charOptions.studiesDesigns.header,
       tableOptions: charOptions.studiesDesigns.tableOptions,
-      active: true
+      active: true,
+      ordered:true,
+      notOrdered: false
+    };
+  }])
+  .controller('NumberParticipantsController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
+    var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
+    $scope.chart = {
+      title: charOptions.numberParticipants.title,
+      options: charOptions.numberParticipants.options,
+      header: charOptions.numberParticipants.header,
+      tableOptions: charOptions.numberParticipants.tableOptions,
+      active: true,
+      ordered:false,
+      notOrdered: true
     };
   }])
   .controller('BioSamplesController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
@@ -47,6 +61,8 @@ mica.ObibaGraphicCharts
     options: charOptions.biologicalSamples.options,
     header: charOptions.biologicalSamples.header,
     tableOptions: charOptions.biologicalSamples.tableOptions,
-    active: true
+    active: true,
+    ordered:true,
+    notOrdered: false
   };
 }]);
