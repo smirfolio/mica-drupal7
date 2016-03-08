@@ -790,21 +790,35 @@
   "users": "Users",
   "search": {
     "title": "Search",
-    "placeholder": "Examples: alcohol pregnancy cancer cohort ...",
+    "no-results": "No result found.",
+    "placeholder": {
+      "variable": "alcohol pregnancy cancer ...",
+      "dataset": "search by dataset or network ...",
+      "study": "cohort gender twin ...",
+      "network": "search by network or study ..."
+    },
     "list": "List",
     "coverage": "Coverage",
     "graphics": "Graphics",
     "no-coverage": "Select some variable search criteria to see their corresponding coverage.",
+    "coverage-dce-cols": {
+      "study": "Study",
+      "population": "Population",
+      "dce": "DCE"
+    },
     "coverage-hide-missing": "Hide missing",
     "coverage-show-missing": "Show missing",
     "coverage-group-by": "Group by",
     "coverage-buckets": {
-      "studyIds" : "Study",
-      "dceIds" : "Data Collection Event",
-      "networkId" : "Network"
+      "study" : "Study",
+      "dce" : "Data Collection Event (DCE)",
+      "network" : "Network",
+      "dataschema": "Harmonization Dataset",
+      "dataset": "Study Dataset"
     },
     "study": {
       "label": "Study",
+      "noResults": "No study found",
       "dataSources": "Data Sources Available",
       "quest": "Quest",
       "pm": "PM",
@@ -814,16 +828,25 @@
       "participants": "Participants"
     },
     "dataset": {
-      "label": "Dataset"
+      "label": "Dataset",
+      "noResults": "No dataset found"
     },
     "variable": {
-      "label": "Label"
-     },
+      "label": "Label",
+      "noResults": "No variable found"
+    },
+    "network": {
+      "noResults": "No network found"
+    },
     "harmonization": "Harmonization",
     "network-where": "Networks where...",
     "study-where": "Studies where...",
     "dataset-where": "Datasets where...",
-    "variable-where": "Variables where..."
+    "variable-where": "Variables where...",
+    "match":{
+      "placeholder": "Enter text to search..."
+    },
+    "filter": "Filter"
   },
   "variables": "Variables",
   "classifications": "Classifications",
@@ -1118,7 +1141,9 @@
   "taxonomy": {
     "target": {
       "variable": "Variable",
-      "study": "Study"
+      "dataset": "Dataset",
+      "study": "Study",
+      "network": "Network"
     }
   },
   "and": "AND",
