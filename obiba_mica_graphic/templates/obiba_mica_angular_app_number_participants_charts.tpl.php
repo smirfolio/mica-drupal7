@@ -8,12 +8,12 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div ng-controller='StudiesDesignsController'>
+<div ng-controller='NumberParticipantsController'>
   <div obiba-chart
-    chart-type="google.charts.Bar"
-    chart-aggregation-name="methods-designs"
+    chart-type="PieChart"
+    chart-aggregation-name="numberOfParticipants-participant-range"
     chart-entity-dto="studyResultDto"
-    chart-options-name="studiesDesigns"
+    chart-options-name="numberParticipants"
     chart-options="chart.options"
     chart-header="chart.header"
     chart-title="chart.title"

@@ -1140,8 +1140,11 @@
     "geo-charts": "Geographical Distribution",
     "study-design": "Study Designs",
     "bio-samples": "Collected biological samples",
+    "number-participants": "Target Number of Participants",
+    "nbr-number-participants": "Total Target Number of Participants",
     "geo-chart-title": "Distribution of studies by countries",
     "study-design-chart-title": "Distribution of Studies by Designs",
+    "number-participants-chart-title": "Distribution of studies by Target Number of Participants",
     "bio-samples-chart-title": "Distribution of studies by collected Biological Sample types"
   }
 }

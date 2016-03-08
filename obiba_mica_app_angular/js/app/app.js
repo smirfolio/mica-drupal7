@@ -71,6 +71,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('StudyPage', Drupal.settings.basePath + 'mica/study/:study');
     ngObibaMicaUrlProvider.setUrl('StudyPopulationsPage', Drupal.settings.basePath + 'mica/study/:study/#population-:population');
     ngObibaMicaUrlProvider.setUrl('DatasetPage', Drupal.settings.basePath + 'mica/:type/:dataset');
+    ngObibaMicaUrlProvider.setUrl('BaseUrl', Drupal.settings.basePath);
 
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);
   }]);

@@ -61,6 +61,13 @@ function obiba_mica_graphic_variable_info($options) {
     'default' => '',
   );
 
+  $variable[NetworkStatistics::NUMBER_PARTICIPANTS.'_css'] = array(
+    'title' => t('Specific CSS of the Number of Participants statistics block'),
+    'description' => t('Please select the Number of Participants statistics block, multiple classes must be separated by comma \',\'.'),
+    'type' => 'string',
+    'default' => '',
+  );
+
   $variable['graphics_content'] = array(
     'title' => t('Statistics graphic in networks page '),
     'description' => t('Enable the Statistics graphic in networks page'),
