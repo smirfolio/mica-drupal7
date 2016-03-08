@@ -16,15 +16,22 @@
 function obiba_mica_repository_taxonomies_search() {
   $taxonomies = array();
   $request_parameters = drupal_get_query_parameters();
-  if (!empty($request_parameters['query'])) {
-    $cached_result = obiba_mica_commons_get_cache('taxonomies_search-' . $request_parameters['query']);
+  $query = $request_parameters['query'];
+  if (!empty($query)) {
+    $locale = $request_parameters['locale'];
+    $target = $request_parameters['target'];
+    $cacheKey = 'taxonomies_search-' . $query
+      . (!empty($target) ? '-' . $target : '')
+      . (!empty($locale) ? '-' . $locale : '');
+
+    $cached_result = obiba_mica_commons_get_cache($cacheKey);
     if (!empty($cached_result)) {
       $taxonomies = $cached_result->data;
     }
     else {
       $taxonomies_resource = new ObibaSearchResources();
-      $taxonomies = $taxonomies_resource->taxonomiesSearch($request_parameters['query']);
-      obiba_mica_commons_set_cache('taxonomies_search-' . $request_parameters['query'], $taxonomies);
+      $taxonomies = $taxonomies_resource->taxonomiesSearch($query, $target, $locale);
+      obiba_mica_commons_set_cache($cacheKey, $taxonomies);
     }
   }
   drupal_json_output($taxonomies);
