@@ -8,39 +8,50 @@ function obiba_mica_repository_menu() {
   $items[ObibaSearchResources::MICA_REPOSITORY . '/taxonomies/_search/ws'] = array(
     'page callback' => 'obiba_mica_repository_taxonomies_search',
     'file' => 'obiba_mica_repository_services.inc',
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
   );
   $items[ObibaSearchResources::MICA_REPOSITORY . '/taxonomies/_filter/ws'] = array(
     'page callback' => 'obiba_mica_repository_taxonomies_filter',
     'file' => 'obiba_mica_repository_services.inc',
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
   );
   $items[ObibaSearchResources::MICA_REPOSITORY . '/%/_rql/%/ws'] = array(
     'page callback' => 'obiba_mica_repository_query',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(2, 4),
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
   );
   $items[ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage/%/ws'] = array(
     'page callback' => 'obiba_mica_repository_variable_coverage',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(4),
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
   );
   $items[ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage_download/%/ws'] = array(
     'page callback' => 'obiba_mica_repository_variable_coverage_download',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(4),
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
   );
   $items[ObibaSearchResources::MICA_REPOSITORY . '/taxonomy/%/_filter/ws'] = array(
     'page callback' => 'obiba_mica_angular_search_taxonomy_filter',
     'file' => 'obiba_mica_repository_services.inc',
     'page arguments' => array(3),
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
   );
 
   return $items;
+}
+
+function obiba_mica_repository_menu_alter(&$items){
+  unset($items['mica/search']);
+  unset($items['mica/coverage']);
 }
 
 /**
@@ -142,6 +153,9 @@ function obiba_mica_repository_load_menus() {
     'access callback' => TRUE,
     'title' => variable_get('search_page_title', 'Search'),
     'module_caller' => 'obiba_mica_repository',
+    'menu_name' => 'main-menu',
+    'weight' => 10,
+    'options' => array('fragment' => 'search'),
   );
   return $items;
 }
