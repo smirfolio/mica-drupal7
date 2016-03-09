@@ -54,6 +54,12 @@ function obiba_mica_repository_menu_alter(&$items){
   unset($items['mica/coverage']);
 }
 
+function obiba_mica_repository_menu_link_alter(&$item){
+  if($item['link_path'] == ObibaSearchResources::MICA_REPOSITORY){
+    $item['options'] = array('fragment' => 'search');
+  }
+}
+
 /**
  * Implements hook_get_js().
  */
