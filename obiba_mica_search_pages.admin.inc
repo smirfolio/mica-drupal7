@@ -50,6 +50,16 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#collapsible' => FALSE,
   );
 
+  $info = variable_get_info('default_query_search');
+  $form['search_display_settings']['page_settings']['default_query_search'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('default_query_search'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
   $info = variable_get_info('help_text_search_page');
   $form['search_display_settings']['page_settings']['help_text_search_page'] = array(
     '#type' => 'textarea',

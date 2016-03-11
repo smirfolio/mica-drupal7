@@ -120,6 +120,13 @@ function _obiba_mica_variable_search_page(&$variable) {
     'type' => 'string',
     'default' => '<i class="glyphicon glyphicon-info-sign"></i> The Repository search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.',
   );
+
+  $variable['default_query_search'] = array(
+    'title' => t('Default query search'),
+    'description' => t('The default search query performed from the Search menu (?<query=YOUR QUERY>)'),
+    'type' => 'string',
+    'default' => '',
+  );
 }
 
 /**
