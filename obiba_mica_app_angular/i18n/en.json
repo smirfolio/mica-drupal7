@@ -790,6 +790,7 @@
   "users": "Users",
   "search": {
     "title": "Search",
+    "back": "Back to Search",
     "no-results": "No result found.",
     "placeholder": {
       "variable": "alcohol pregnancy cancer ...",

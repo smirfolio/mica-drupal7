@@ -790,6 +790,7 @@
   "users": "Users",
   "search": {
     "title": "Search",
+    "back": "Back to Search",
     "no-results": "No result found.",
     "placeholder": {
       "variable": "alcohol pregnancy cancer ...",
@@ -810,6 +811,7 @@
     "coverage-show-missing": "Show missing",
     "coverage-group-by": "Group by",
     "coverage-buckets": {
+      "datasetNav": "Dataset",
       "study" : "Study",
       "dce" : "Data Collection Event (DCE)",
       "network" : "Network",
