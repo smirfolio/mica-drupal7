@@ -57,8 +57,9 @@ function obiba_mica_repository_menu_alter(&$items){
 function obiba_mica_repository_menu_link_alter(&$item){
   $fragment = 'search';
   if($item['link_path'] == ObibaSearchResources::MICA_REPOSITORY) {
-    if (!empty(variable_get_value('default_query_search'))) {
-      $fragment = 'search?' . variable_get_value('default_query_search');
+    $default_query_search = variable_get_value('default_query_search');
+    if (!empty($default_query_search)) {
+      $fragment = 'search?' . $default_query_search;
     }
     $item['options'] = array('fragment' => $fragment);
   }
