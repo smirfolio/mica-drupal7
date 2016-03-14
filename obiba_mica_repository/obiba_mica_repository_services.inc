@@ -19,7 +19,7 @@ function obiba_mica_repository_taxonomies_search() {
   $query = $request_parameters['query'];
   if (!empty($query)) {
     $locale = $request_parameters['locale'];
-    $target = $request_parameters['target'];
+    $target = array_key_exists('target', $request_parameters) ? $request_parameters['target'] : '';
     $cacheKey = 'taxonomies_search-' . $query
       . (!empty($target) ? '-' . $target : '')
       . (!empty($locale) ? '-' . $locale : '');
