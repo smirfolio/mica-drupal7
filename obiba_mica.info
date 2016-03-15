@@ -9,7 +9,6 @@ dependencies[] = composer_manager
 dependencies[] = charts
 dependencies[] = collapsiblock
 dependencies[] = countries
-dependencies[] = devel
 dependencies[] = http_client
 dependencies[] = i18n
 dependencies[] = libraries
