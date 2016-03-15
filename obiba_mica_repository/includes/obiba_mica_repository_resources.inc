@@ -38,7 +38,6 @@ class ObibaSearchResources extends MicaSearchResource {
           '@code' => $e->getCode(),
           '@message' => $e->getMessage()
         ), WATCHDOG_WARNING);
-      dpm($e->getMessage());
       return array();
     }
   }

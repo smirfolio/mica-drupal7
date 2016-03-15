@@ -147,7 +147,7 @@ class MicaSearchResource extends MicaClient {
 
   }
 
-  public function get_stats_entities_count($dto, $dto_data_response) { //dpm($dto_data_response);
+  public function get_stats_entities_count($dto, $dto_data_response) {
     return array(
       'data' => $dto['data'],
       'study_total_hits' => empty($dto_data_response->studyResultDto) ? 0 : $dto_data_response->studyResultDto->totalHits,
