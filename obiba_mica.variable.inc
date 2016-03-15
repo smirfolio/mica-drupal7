@@ -121,12 +121,21 @@ function _obiba_mica_variable_search_page(&$variable) {
     'default' => '<i class="glyphicon glyphicon-info-sign"></i> The Repository search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.',
   );
 
-  $variable['default_query_search'] = array(
-    'title' => t('Default query search'),
-    'description' => t('The default search query performed from the Search menu (?query=< YOUR QUERY >)'),
-    'type' => 'string',
-    'default' => '',
-  );
+  if(module_exists('obiba_mica_repository')) {
+    $variable['default_query_search'] = array(
+      'title' => t('Default query search'),
+      'description' => t('The default search query performed from the Search menu (?query=< YOUR QUERY >)'),
+      'type' => 'string',
+      'default' => '',
+    );
+
+    $variable['coverage_group_by'] = array(
+      'title' => t('Grouped by coverage settings'),
+      'description' => t('Pleas select the group-by criteria for the coverage.'),
+      'type' => 'options',
+      'default' => 'none',
+    );
+  }
 }
 
 /**
