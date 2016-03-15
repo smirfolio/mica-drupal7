@@ -297,11 +297,6 @@ function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters
           }
         }
         catch (Exception $e) {
-          /*dpm($e->getMessage());
-          dpm($callback);
-          dpm($field);
-          dpm($parameters);
-          dpm($method);*/
           print $field;
         }
       }

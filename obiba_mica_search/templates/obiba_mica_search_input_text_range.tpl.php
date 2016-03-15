@@ -1,4 +1,16 @@
-<?php //dpm($fields_terms); ?>
+<?php
+/**
+ * @file
+ * Obiba Mica Module.
+ *
+ * Copyright (c) 2016 OBiBa. All rights reserved.
+ * This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+?>
+
 <div id="range" class="facet_terms_range form-inline" term="<?php print $aggregation_facet . '-range'; ?>">
   <label for="edit-range-from"><?php print  t('From'); ?> </label>
   <input type="text" id="range-auto-fill"

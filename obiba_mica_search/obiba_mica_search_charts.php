@@ -60,7 +60,6 @@ function obiba_mica_search_vocabulary_pie_chart($vocabulary_coverage) {
   if (empty($vocabulary_coverage->hits)) {
     return '';
   }
-  //dpm($vocabulary_coverage);
 
   $labels = array();
   $data = array();
@@ -82,7 +81,6 @@ function obiba_mica_search_vocabulary_bar_chart($vocabulary_coverage, $with_buck
   if (empty($vocabulary_coverage->hits)) {
     return '';
   }
-  //dpm($vocabulary_coverage);
 
   $labels = array();
   $data = array();
@@ -135,7 +133,6 @@ function obiba_mica_search_term_chart($term_coverage) {
   if (empty($term_coverage->hits) || empty($term_coverage->buckets)) {
     return '';
   }
-  //dpm($term_coverage);
 
   $labels = array();
   $data = array();
