@@ -50,6 +50,7 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#collapsible' => FALSE,
   );
 
+ if(module_exists('obiba_mica_repository')){
   $info = variable_get_info('default_query_search');
   $form['search_display_settings']['page_settings']['default_query_search'] = array(
     '#type' => 'textfield',
@@ -58,8 +59,9 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#default_value' => variable_get_value('default_query_search'),
     '#maxlength' => 255,
     '#description' => $info['description'],
+    '#attributes' => array('placeholder' => 'query=study(exists(Mica_study.id))&type=studies')
   );
-
+}
   $info = variable_get_info('help_text_search_page');
   $form['search_display_settings']['page_settings']['help_text_search_page'] = array(
     '#type' => 'textarea',
