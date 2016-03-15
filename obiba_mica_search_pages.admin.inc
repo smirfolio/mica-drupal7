@@ -50,18 +50,29 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#collapsible' => FALSE,
   );
 
- if(module_exists('obiba_mica_repository')){
-  $info = variable_get_info('default_query_search');
-  $form['search_display_settings']['page_settings']['default_query_search'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#required' => FALSE,
-    '#default_value' => variable_get_value('default_query_search'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-    '#attributes' => array('placeholder' => 'query=study(exists(Mica_study.id))&type=studies')
-  );
-}
+  if (module_exists('obiba_mica_repository')) {
+    $info = variable_get_info('default_query_search');
+    $form['search_display_settings']['page_settings']['default_query_search'] = array(
+      '#type' => 'textfield',
+      '#title' => $info['title'],
+      '#required' => FALSE,
+      '#default_value' => variable_get_value('default_query_search'),
+      '#maxlength' => 255,
+      '#description' => $info['description'],
+      '#attributes' => array('placeholder' => 'query=study(exists(Mica_study.id))&type=studies')
+    );
+
+    $coverage_group_by_options = obiba_mica_coverage_group_by_options();
+    $info = variable_get_info('coverage_group_by');
+    $form['search_display_settings']['page_settings']['coverage_group_by'] = array(
+      '#type' => 'checkboxes',
+      '#multiple' => TRUE,
+      '#default_value' => variable_get_value('coverage_group_by'),
+      '#title' => $info['title'],
+      '#options' => $coverage_group_by_options,
+      '#description' => $info['description'],
+    );
+  }
   $info = variable_get_info('help_text_search_page');
   $form['search_display_settings']['page_settings']['help_text_search_page'] = array(
     '#type' => 'textarea',
@@ -504,4 +515,17 @@ function _obiba_mica_admin_get_taxonomy_summaries() {
   }
 
   return implode(',', $list);
+}
+
+/**
+ * Grouped by coverage settings options
+ */
+function obiba_mica_coverage_group_by_options() {
+  return array(
+    'study' => t('Study'),
+    'dce' => t('Data Collection Event'),
+    'dataset' => t('Study Dataset'),
+    'dataschema' => t('Harmonization Dataset'),
+    'network' => t('Network'),
+  );
 }

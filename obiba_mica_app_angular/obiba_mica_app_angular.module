@@ -465,6 +465,9 @@ function obiba_mica_app_angular_get_search_config() {
   $get_array_value = function ($variable) {
     return array_values(array_filter(array_map('trim', explode(',', variable_get_value($variable)))));
   };
+  $coverage_group_by_options = array_map(function($coverage_option){
+    return !empty($coverage_option)?TRUE:FALSE;
+  }, variable_get_value('coverage_group_by'));
 
   return array(
     'taxonomyTabsOrder' => $get_array_value('mica_taxonomy_tabs_order'),
@@ -527,6 +530,10 @@ function obiba_mica_app_angular_get_search_config() {
           'showNetworksHarmonizedDatasetColumn' => variable_get_value('networks_column_harmonization_datasets'),
           'showNetworksVariablesColumn' => variable_get_value('networks_column_variables'),
         )
+      ),
+    'coverage' =>
+      array(
+        'groupBy' => $coverage_group_by_options,
       ),
   );
 }
