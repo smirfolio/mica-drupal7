@@ -133,7 +133,13 @@ function _obiba_mica_variable_search_page(&$variable) {
       'title' => t('Grouped by coverage settings'),
       'description' => t('Pleas select the group-by criteria for the coverage.'),
       'type' => 'options',
-      'default' => 'none',
+      'default' => array(
+        'study' => 'study',
+        'dce' => 'dce',
+        'dataset' => 'dataset',
+        'dataschema' => 'dataschema',
+        'network' => 'network',
+      ),
     );
   }
 }
