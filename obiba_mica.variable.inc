@@ -131,7 +131,7 @@ function _obiba_mica_variable_search_page(&$variable) {
 
     $variable['coverage_group_by'] = array(
       'title' => t('Grouped by coverage settings'),
-      'description' => t('Pleas select the group-by criteria for the coverage.'),
+      'description' => t('Please select the group-by criteria for the coverage.'),
       'type' => 'options',
       'default' => array(
         'study' => 'study',
