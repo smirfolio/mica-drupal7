@@ -479,8 +479,12 @@ function obiba_mica_app_angular_get_search_config() {
     'searchTabsOrder' => $get_array_value('mica_search_tabs_order'),
     'resultTabsOrder' => $get_array_value('mica_result_tabs_order'),
     'listLabel' => variable_get_value('mica_search_list_label'),
+    'listHelp' => variable_get_value('mica_search_list_help'),
     'coverageLabel' => variable_get_value('mica_search_coverage_label'),
+    'coverageHelp' => variable_get_value('mica_search_coverage_help'),
     'graphicsLabel' => variable_get_value('mica_search_graphics_label'),
+    'graphicsHelp' => variable_get_value('mica_search_graphics_help'),
+    'classificationsLinkLabel' => variable_get_value('mica_search_classifications_link_label'),
       array(
         'showSearchTab' => variable_get_value('search_variables'),
         'searchLabel' => variable_get_value('variables_search_label'),
