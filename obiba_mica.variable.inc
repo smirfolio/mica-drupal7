@@ -79,6 +79,13 @@ function obiba_mica_variable_info($options) {
     'default' => 'List',
   );
 
+  $variable['mica_search_list_help'] = array(
+      'title' => t('List help text'),
+      'description' => t('Text to be displayed in list help.'),
+      'type' => 'string',
+      'default' => NULL,
+  );
+
   $variable['mica_search_coverage_label'] = array(
     'title' => t('Coverage label'),
     'description' => t('Text to be displayed in coverage search results.'),
@@ -86,11 +93,32 @@ function obiba_mica_variable_info($options) {
     'default' => 'Coverage',
   );
 
+  $variable['mica_search_coverage_help'] = array(
+      'title' => t('Coverage help text'),
+      'description' => t('Text to be displayed in coverage help.'),
+      'type' => 'string',
+      'default' => NULL,
+  );
+
   $variable['mica_search_graphics_label'] = array(
     'title' => t('Graphics label'),
     'description' => t('Text to be displayed in graphics search results.'),
     'type' => 'string',
     'default' => 'Graphics',
+  );
+
+  $variable['mica_search_graphics_help'] = array(
+      'title' => t('Graphics help text'),
+      'description' => t('Text to be displayed in graphics help.'),
+      'type' => 'string',
+      'default' => NULL,
+  );
+
+  $variable['mica_search_classifications_link_label'] = array(
+      'title' => t('Classifications link label'),
+      'description' => t('Text to be displayed for the classifications link label.'),
+      'type' => 'string',
+      'default' => NULL,
   );
 
   $variable['mica_result_tabs_order'] = array(
