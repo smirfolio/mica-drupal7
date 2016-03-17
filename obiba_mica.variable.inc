@@ -121,6 +121,13 @@ function _obiba_mica_variable_search_page(&$variable) {
     'default' => '<i class="glyphicon glyphicon-info-sign"></i> The Repository search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.',
   );
 
+  $variable['search_page_title'] = array(
+    'title' => t('Default Search Page Title'),
+    'description' => t('Default Search Page Title to display on the Search page'),
+    'type' => 'string',
+    'default' => 'Search',
+  );
+
   if(module_exists('obiba_mica_repository')) {
     $variable['default_query_search'] = array(
       'title' => t('Default query search'),
