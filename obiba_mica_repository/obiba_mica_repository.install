@@ -1,0 +1,15 @@
+<?php
+
+/*
+ * @file
+ * Code to perform installation operations
+ * */
+function obiba_mica_repository_install() {
+  obiba_mica_repository_create_node();
+}
+
+function obiba_mica_repository_create_node() {
+  $my_body_content = '';
+  $node_page = obiba_mica_commons_add_page(st('Repository'), st($my_body_content));
+  variable_set('obiba_mica_repository_page', $node_page->nid);
+}
