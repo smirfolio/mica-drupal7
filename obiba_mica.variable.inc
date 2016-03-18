@@ -121,6 +121,20 @@ function obiba_mica_variable_info($options) {
       'default' => NULL,
   );
 
+  $variable['mica_search_taxonomy_nav_help'] = array(
+      'title' => t('Taxonomy navigation help text'),
+      'description' => t('Help text to be displayed in the taxonomy navigation panel.'),
+      'type' => 'string',
+      'default' => NULL,
+  );
+
+  $variable['mica_search_vocabulary_nav_help'] = array(
+      'title' => t('Vocabulary navigation help text'),
+      'description' => t('Help text to be displayed in the vocabulary navigation panel.'),
+      'type' => 'string',
+      'default' => NULL,
+  );
+
   $variable['mica_result_tabs_order'] = array(
     'title' => t('Result tabs order'),
     'description' => t('List of result tabs (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI. Values should be: variable, dataset, study, network.'),
