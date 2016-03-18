@@ -17,6 +17,14 @@ function obiba_mica_repository_taxonomies_search() {
   $taxonomies = array();
   $request_parameters = drupal_get_query_parameters();
   $query = $request_parameters['query'];
+
+  // quote query if there are multiple words (separated by blank spaces)
+  $re = "/\\s+/";
+  if (preg_match($re, $query)) {
+    $re = "/^\"|\"$/";
+    $query = '"' . preg_replace($re, '', trim($query)) . '"';
+  }
+
   if (!empty($query)) {
     $locale = $request_parameters['locale'];
     $target = array_key_exists('target', $request_parameters) ? $request_parameters['target'] : '';
