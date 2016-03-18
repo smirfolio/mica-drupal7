@@ -52,7 +52,7 @@ class ObibaSearchResources extends MicaSearchResource {
   }
 
   public function taxonomiesSearch($query, $target, $locale) {
-    return $this->httpRequestGetBuilder('/taxonomies/_search?query=' . $query
+    return $this->httpRequestGetBuilder('/taxonomies/_search?query=' . rawurlencode($query)
       . (!empty($target) ? '&target=' . $target : '')
       . (!empty($locale) ? '&locale=' . $locale : ''));
   }
