@@ -143,6 +143,8 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_graphics_label');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_graphics_help', NULL, 'textarea', 2000);
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_classifications_link_label');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_taxonomy_nav_help', NULL, 'textarea', 2000);
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_vocabulary_nav_help', NULL, 'textarea', 2000);
 }
 
 
