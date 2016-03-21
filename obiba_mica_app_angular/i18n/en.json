@@ -857,7 +857,11 @@
       "placeholder": "Enter text to search..."
     },
     "filter": "Filter",
-    "close-and-search": "Close and search"
+    "close-and-search": "Close and search",
+    "criterion": {
+      "created": "Criteria <strong>{{arg0}}</strong> was added.",
+      "updated": "Criteria <strong>{{arg0}}</strong> was updated."
+    }
   },
   "variables": "Variables",
   "classifications": "Classifications",
@@ -1165,6 +1169,7 @@
   "to": "to",
   "graphics": {
     "nbr-studies": "Nbr of Studies",
+    "number-participants": "Nbr of Participants",
     "country": "Country",
     "geo-charts": "Geographical Distribution",
     "study-design": "Study Designs",
