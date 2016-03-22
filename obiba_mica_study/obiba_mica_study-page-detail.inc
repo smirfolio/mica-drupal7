@@ -101,8 +101,7 @@ function obiba_mica_study_page_detail($study_id) {
   $flat_study_attachments = NULL;
 
   $study_resource = new MicaStudyResource();
-  $study_dto = $study_resource->getCache('study_detail_cache-' . $study_id)
-    ->get_study($study_id);
+  $study_dto = $study_resource->get_study($study_id);
   if (!empty($study_dto)) {
     $acronym = obiba_mica_commons_get_localized_field($study_dto, 'acronym');
     $name = obiba_mica_commons_get_localized_field($study_dto, 'name');

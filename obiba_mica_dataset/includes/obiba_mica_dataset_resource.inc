@@ -51,7 +51,10 @@ class MicaDatasetResource extends MicaClient {
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $params .= empty($study_id) ? '' : '&study=' . rawurlencode($study_id);
-    $url_datasets = $this->micaUrl . (empty($resource) ? '' : '/' . $resource) . '/_search?' . $params;
+    $resource_query =  (empty($resource) ? '' : '/' . $resource) . '/_search?' . $params;
+    $this->getCache($resource_query);
+    if(!isset($this->result_resource_query)){
+    $url_datasets = $this->micaUrl . $resource_query;
     $request = new HttpClientRequest($url_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -63,7 +66,9 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return new DatasetJoinResponseWrapper(json_decode($data));
+      $this->result_resource_query = new DatasetJoinResponseWrapper(json_decode($data));
+      obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+      return $this->result_resource_query;
     }
     catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -71,8 +76,11 @@ class MicaDatasetResource extends MicaClient {
           '@code' => $e->getCode(),
           '@message' => $e->getMessage()
         ), WATCHDOG_WARNING);
+      $this->result_resource_query = NULL;
       return array();
     }
+    }
+    return $this->result_resource_query;
   }
 
   /**
@@ -87,8 +95,10 @@ class MicaDatasetResource extends MicaClient {
    *   The server response.
    */
   public function getDataset($dataset_id, $resource = 'dataset') {
+    $resource_query = (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
+    $this->getCache($resource_query);
+    $url = $this->micaUrl . '/' . $resource_query;
     if (!isset($this->result_resource_query)) {
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -103,7 +113,7 @@ class MicaDatasetResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetDto', $data) : NULL;
-        obiba_mica_commons_set_cache('dataset_dto-' . $dataset_id, $this->result_resource_query);
+        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {
@@ -343,9 +353,11 @@ class MicaDatasetResource extends MicaClient {
    *   The server response.
    */
   public function getVariable($variable_id) {
+    $resource_query = '/variable/' . rawurlencode($variable_id);
     $this->setLastResponse(NULL);
+    $this->getCache($resource_query);
     if (!isset($this->result_resource_query)) {
-      $url = $this->micaUrl . '/variable/' . rawurlencode($variable_id);
+      $url = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -358,7 +370,7 @@ class MicaDatasetResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariableDto', $data) : NULL;
-        obiba_mica_commons_set_cache('variable_detail_cache-' . $variable_id, $this->result_resource_query);
+        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {

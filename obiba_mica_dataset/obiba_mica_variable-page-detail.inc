@@ -31,8 +31,7 @@ function obiba_mica_variable_page_detail($variable_id) {
   }
 
   $variable_resource = new MicaDatasetResource();
-  $variable = $variable_resource->getCache('variable_detail_cache-' . $variable_id)
-    ->getVariable($variable_id);
+  $variable = $variable_resource->getVariable($variable_id);
 
   if (empty($variable)) {
     drupal_set_title(t('Variable not found'));

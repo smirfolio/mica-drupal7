@@ -15,8 +15,7 @@ function obiba_mica_network_page_detail($network_id) {
   }
   $themed_attachment = NULL;
   $network_resource = new MicaNetworkResource();
-  $network_dto = $network_resource->getCache('network_detail_cache-' . $network_id)
-    ->get_network($network_id);
+  $network_dto = $network_resource->get_network($network_id);
 
   $studies_statistics = '';
   if (!empty($network_dto)) {

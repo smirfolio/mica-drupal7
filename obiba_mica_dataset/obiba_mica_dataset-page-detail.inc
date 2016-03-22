@@ -30,15 +30,14 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   $modals = NULL;
   $dataset_resource = new MicaDatasetResource();
 
-  $dataset_dto = $dataset_resource->getCache('dataset_dto-' . $dataset_id)
-    ->getDataset($dataset_id);
+  $dataset_dto = $dataset_resource->getDataset($dataset_id);
 
+  if (!empty($dataset_dto)) {
   $dataset_cache_coverage = obiba_mica_commons_get_cache('dataset_coverage-' . $dataset_dto->id);
   if (!empty($dataset_cache_coverage->data)) {
     $coverage = $dataset_cache_coverage->data;
   }
   else {
-    if (!empty($dataset_dto)) {
       $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
       obiba_mica_commons_set_cache('dataset_coverage-' . $dataset_dto->id, $coverage);
     }
