@@ -6,83 +6,86 @@
  */
 class ObibaSearchResources extends MicaSearchResource {
   const MICA_REPOSITORY = 'mica/repository';
-  var $last_reponse;
   private $result_resource_query;
-  private $resource_query;
 
-  function __construct($resource_query = NULL) {
+  function __construct() {
     parent::__construct();
     $this->result_resource_query = NULL;
-    $this->resource_query = $resource_query;
   }
 
-  private function httpRequestGetBuilder($header_accept = parent::HEADER_JSON) {
-    $resources = $this->resource_query;
-    $url = $this->micaUrl . $resources;
+  private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
+    if (!isset($this->result_resource_query)) {
+      $url = $this->micaUrl . $resources;
 
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array($header_accept),
-          'Content-Type' => array($header_accept)
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+            'Accept' => array($header_accept),
+            'Content-Type' => array($header_accept)
+          )
         )
-      )
-    ));
-    $client = $this->client();
-    try {
-      if (!isset($this->result_resource_query)) {
+      ));
+      $client = $this->client();
+      try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $array_response = json_decode($data);
         $this->result_resource_query = $array_response;
         obiba_mica_commons_set_cache($resources, $array_response);
+        return $this->result_resource_query;
+      } catch (HttpClientException $e) {
+        if ($e->getCode() == 403) {
+          drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
+        }
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        $this->result_resource_query = NULL;
+        return array();
       }
-      return $this->result_resource_query;
-    } catch (HttpClientException $e) {
-      if ($e->getCode() == 403) {
-        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
-      }
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        ), WATCHDOG_WARNING);
-      $this->result_resource_query = NULL;
-      return array();
     }
+    return $this->result_resource_query;
   }
 
-  public function getCache() {
-    $cached_result = obiba_mica_commons_get_cache($this->resource_query);
+  public function getCache($resource) {
+    $cached_result = obiba_mica_commons_get_cache($resource);
     if (!empty($cached_result)) {
       $this->result_resource_query = $cached_result->data;
     }
     return $this;
   }
 
-  public function searchQuery() {
-    return $this->httpRequestGetBuilder();
+  public function searchQuery($type, $query) {
+    $resource = '/' . $type . '/_rql?query=' . $query;
+    return $this->getCache($resource)->httpRequestGetBuilder($resource);
   }
 
-  public function taxonomiesSearch() {
-    return $this->httpRequestGetBuilder();
+  public function taxonomiesSearch($query, $target, $locale) {
+    $resource = '/taxonomies/_search?query=' . rawurlencode($query)
+      . (!empty($target) ? '&target=' . $target : '')
+      . (!empty($locale) ? '&locale=' . $locale : '');
+    return $this->getCache($resource)->httpRequestGetBuilder($resource);
   }
 
-  public function taxonomiesFilter() {
-    return $this->httpRequestGetBuilder();
+  public function taxonomiesFilter($target) {
+    $resource = '/taxonomies/_filter?target=' . $target;
+    return $this->getCache($resource)->httpRequestGetBuilder($resource);
   }
 
-  public function taxonomyFilter() {
-    return $this->httpRequestGetBuilder();
+  public function taxonomyFilter($name, $target) {
+    $resource = '/taxonomy/' . $name . '/_filter?target=' . $target;
+    return $this->getCache($resource)->httpRequestGetBuilder($resource);
   }
 
-  public function variablesCoverage() {
-    return $this->httpRequestGetBuilder();
+  public function variablesCoverage($query) {
+    $resource = '/variables/_coverage?query=' . $query;
+    return $this->getCache($resource)->httpRequestGetBuilder($resource);
   }
 
   public function variablesCoverageDownload($query, $header_accept) {
-    $this->resource_query = '/variables/_coverage_download?query=' . $query;
-    return $this->httpRequestGetBuilder($header_accept);
+    return $this->httpRequestGetBuilder('/variables/_coverage_download?query=' . $query, $header_accept);
   }
 
   static function repositoryAnchor($url, $text, array $attributes, array $query_params) {

@@ -17,8 +17,7 @@ function obiba_mica_repository_taxonomies_search() {
   $taxonomies = array();
   $request_parameters = drupal_get_query_parameters();
   $query = $request_parameters['query'];
-
-  // quote query if there are multiple words (separated by blank spaces)
+  // Quote query if there are multiple words (separated by blank spaces)
   $re = "/\\s+/";
   if (preg_match($re, $query)) {
     $re = "/^\"|\"$/";
@@ -28,10 +27,7 @@ function obiba_mica_repository_taxonomies_search() {
     $locale = $request_parameters['locale'];
     $target = array_key_exists('target', $request_parameters) ? $request_parameters['target'] : '';
     $taxonomies_resource = new ObibaSearchResources();
-    $resource = '/taxonomies/_search?query=' . rawurlencode($query)
-      . (!empty($target) ? '&target=' . $target : '')
-      . (!empty($locale) ? '&locale=' . $locale : '');
-    $taxonomies = $taxonomies_resource->getCache($resource)->taxonomiesSearch($resource);
+    $taxonomies = $taxonomies_resource->taxonomiesSearch($query, $target, $locale);
   }
   drupal_json_output($taxonomies);
 }
@@ -42,9 +38,9 @@ function obiba_mica_repository_taxonomies_search() {
 function obiba_mica_repository_taxonomies_filter() {
   $taxonomies = array();
   $request_parameters = drupal_get_query_parameters();
-  if (!empty($request_parameters['target'])) {;
-    $taxonomies_resource = new ObibaSearchResources('/taxonomies/_filter?target=' . $request_parameters['target']);
-    $taxonomies = $taxonomies_resource->getCache()->taxonomiesFilter();
+  if (!empty($request_parameters['target'])) {
+    $taxonomies_resource = new ObibaSearchResources();
+    $taxonomies = $taxonomies_resource->taxonomiesFilter($request_parameters['target']);
   }
   drupal_json_output($taxonomies);
 }
@@ -56,9 +52,8 @@ function obiba_mica_angular_search_taxonomy_filter($name) {
   $taxonomy = array();
   $request_parameters = drupal_get_query_parameters();
   if (!empty($request_parameters['target'])) {
-
-    $taxonomies_resource = new ObibaSearchResources($resource = '/taxonomy/' . $name . '/_filter?target=' . $request_parameters['target']);
-    $taxonomy = $taxonomies_resource->getCache()->taxonomyFilter();
+    $taxonomies_resource = new ObibaSearchResources();
+    $taxonomy = $taxonomies_resource->taxonomyFilter($name, $request_parameters['target']);
   }
   drupal_json_output($taxonomy);
 }
@@ -67,8 +62,8 @@ function obiba_mica_angular_search_taxonomy_filter($name) {
  * Get Vocabulary detail by $taxonomy
  */
 function obiba_mica_repository_query($type, $query) {
-  $search_resource = new ObibaSearchResources($resource = '/' . $type . '/_rql?query=' . $query);
-  $search_result = $search_resource->getCache()->searchQuery();
+  $search_resource = new ObibaSearchResources();
+  $search_result = $search_resource->searchQuery($type, $query);
   drupal_json_output($search_result);
 }
 
@@ -76,8 +71,8 @@ function obiba_mica_repository_query($type, $query) {
  * Get Vocabulary detail by $taxonomy
  */
 function obiba_mica_repository_variable_coverage($query) {
-  $search_resource = new ObibaSearchResources('/variables/_coverage?query=' . $query);
-  $search_result = $search_resource->getCache()->variablesCoverage();
+  $search_resource = new ObibaSearchResources();
+  $search_result = $search_resource->variablesCoverage($query);
   drupal_json_output($search_result);
 }
 
