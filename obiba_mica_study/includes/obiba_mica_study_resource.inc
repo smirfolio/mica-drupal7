@@ -67,26 +67,31 @@ class MicaStudyResource extends MicaClient {
   public function get_study($study_id) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/study/' . rawurlencode($study_id);
+    if (!isset($this->result_resource_query)) {
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_BINARY),
+          )
+        ),
+      ));
 
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_BINARY),
-        )
-      ),
-    ));
-
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $dtoObj = '\obiba\mica\StudyDto';
-      DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
-      return $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
-    }
-    catch (HttpClientException $e) {
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $dtoObj = '\obiba\mica\StudyDto';
+        DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
+        $this->result_resource_query = $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
+        obiba_mica_commons_set_cache('study_detail_cache-' . $study_id, $this->result_resource_query);
+        return $this->result_resource_query;
+      }
+      catch (HttpClientException $e) {
+        $this->result_resource_query = NULL;
+      }
       return array();
     }
+    return $this->result_resource_query;
   }
 
   public function studies_search($spec_dto_params = NULL) {

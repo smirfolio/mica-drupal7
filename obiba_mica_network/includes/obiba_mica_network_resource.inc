@@ -39,9 +39,9 @@ class MicaNetworkResource extends MicaClient {
     $request = new HttpClientRequest($url_networks, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
+          'Accept' => array(parent::HEADER_JSON),
         )
+      )
     ));
     $client = $this->client();
     try {
@@ -51,7 +51,10 @@ class MicaNetworkResource extends MicaClient {
     }
     catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
       return array();
     }
   }
@@ -65,26 +68,31 @@ class MicaNetworkResource extends MicaClient {
   public function get_network($network_id) {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/network/' . rawurlencode($network_id);
-
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
+    if (!isset($this->result_resource_query)) {
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_BINARY),
           )
         ),
-    ));
+      ));
 
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $dtoObj = '\obiba\mica\NetworkDto';
-      DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
-      return $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $dtoObj = '\obiba\mica\NetworkDto';
+        DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
+        $this->result_resource_query = $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
+        obiba_mica_commons_set_cache('network_detail_cache-' . $network_id, $this->result_resource_query);
+        return $this->result_resource_query;
+      }
+      catch (HttpClientException $e) {
+        $this->result_resource_query = NULL;
+        return array();
+      }
     }
-    catch (HttpClientException $e) {
-      return array();
-    }
+    return $this->result_resource_query;
   }
 
 }

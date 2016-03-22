@@ -6,7 +6,6 @@
  */
 class ObibaSearchResources extends MicaSearchResource {
   const MICA_REPOSITORY = 'mica/repository';
-  private $result_resource_query;
 
   function __construct() {
     parent::__construct();
@@ -33,7 +32,8 @@ class ObibaSearchResources extends MicaSearchResource {
         $this->result_resource_query = $array_response;
         obiba_mica_commons_set_cache($resources, $array_response);
         return $this->result_resource_query;
-      } catch (HttpClientException $e) {
+      }
+      catch (HttpClientException $e) {
         if ($e->getCode() == 403) {
           drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
         }
@@ -47,14 +47,6 @@ class ObibaSearchResources extends MicaSearchResource {
       }
     }
     return $this->result_resource_query;
-  }
-
-  public function getCache($resource) {
-    $cached_result = obiba_mica_commons_get_cache($resource);
-    if (!empty($cached_result)) {
-      $this->result_resource_query = $cached_result->data;
-    }
-    return $this;
   }
 
   public function searchQuery($type, $query) {

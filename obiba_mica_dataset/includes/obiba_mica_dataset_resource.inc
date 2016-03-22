@@ -55,9 +55,9 @@ class MicaDatasetResource extends MicaClient {
     $request = new HttpClientRequest($url_datasets, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
     ));
     $client = $this->client();
     try {
@@ -67,7 +67,10 @@ class MicaDatasetResource extends MicaClient {
     }
     catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
       return array();
     }
   }
@@ -86,24 +89,29 @@ class MicaDatasetResource extends MicaClient {
   public function getDataset($dataset_id, $resource = 'dataset') {
     $this->setLastResponse(NULL);
     $url = $this->micaUrl . '/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
-
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
+    if (!isset($this->result_resource_query)) {
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_JSON),
           )
         ),
-    ));
+      ));
 
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetDto', $data) : NULL;
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $this->result_resource_query = $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetDto', $data) : NULL;
+        obiba_mica_commons_set_cache('dataset_dto-' . $dataset_id, $this->result_resource_query);
+        return $this->result_resource_query;
+      }
+      catch (HttpClientException $e) {
+        $this->result_resource_query = NULL;
+        return array();
+      }
     }
-    catch (HttpClientException $e) {
-      return array();
-    }
+    return $this->result_resource_query;
   }
 
   /**
@@ -140,9 +148,9 @@ class MicaDatasetResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
     ));
     $client = $this->client();
     try {
@@ -274,9 +282,9 @@ class MicaDatasetResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
     ));
     $client = $this->client();
     try {
@@ -310,9 +318,9 @@ class MicaDatasetResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_CSV),
-          )
-        ),
+          'Accept' => array(parent::HEADER_CSV),
+        )
+      ),
     ));
     $client = $this->client();
     try {
@@ -336,23 +344,29 @@ class MicaDatasetResource extends MicaClient {
    */
   public function getVariable($variable_id) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/variable/' . rawurlencode($variable_id);
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
+    if (!isset($this->result_resource_query)) {
+      $url = $this->micaUrl . '/variable/' . rawurlencode($variable_id);
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_JSON),
           )
         ),
-    ));
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariableDto', $data) : NULL;
+      ));
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $this->result_resource_query = $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariableDto', $data) : NULL;
+        obiba_mica_commons_set_cache('variable_detail_cache-' . $variable_id, $this->result_resource_query);
+        return $this->result_resource_query;
+      }
+      catch (HttpClientException $e) {
+        $this->result_resource_query = NULL;
+        return array();
+      }
     }
-    catch (HttpClientException $e) {
-      return array();
-    }
+    return $this->result_resource_query;
   }
 
   /**
@@ -370,9 +384,9 @@ class MicaDatasetResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
     ));
     $client = $this->client();
     try {
@@ -400,9 +414,9 @@ class MicaDatasetResource extends MicaClient {
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
     ));
     $client = $this->client();
     try {

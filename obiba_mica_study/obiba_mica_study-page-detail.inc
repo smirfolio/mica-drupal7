@@ -99,18 +99,10 @@ function obiba_mica_study_page_detail($study_id) {
   $page_render_study = NULL;
   $themed_attachment = NULL;
   $flat_study_attachments = NULL;
-  $current_detail_study_cache = array();
-  $detail_study_cache = obiba_mica_commons_get_cache('study_detail_cache-' . $study_id);
-  if (!empty($detail_study_cache->data['study_dto'])) {
-    $study_dto = $detail_study_cache->data['study_dto'];
-  }
-  else {
-    $study_resource = new MicaStudyResource();
-    $study_dto = $study_resource->get_study($study_id);
-    $current_detail_study_cache['study_dto'] = $study_dto;
-    obiba_mica_commons_set_cache('study_detail_cache-' . $study_id, $current_detail_study_cache);
-  }
 
+  $study_resource = new MicaStudyResource();
+  $study_dto = $study_resource->getCache('study_detail_cache-' . $study_id)
+    ->get_study($study_id);
   if (!empty($study_dto)) {
     $acronym = obiba_mica_commons_get_localized_field($study_dto, 'acronym');
     $name = obiba_mica_commons_get_localized_field($study_dto, 'name');
@@ -146,13 +138,13 @@ function obiba_mica_study_page_detail($study_id) {
         $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, MicaFilesResource::POPULATION, $study_id);
       }
     }
-    if (!empty($detail_study_cache->data['study_population'])) {
-      $populations = $detail_study_cache->data['study_population'];
+    $cached_populations = obiba_mica_commons_get_cache('populations_detail_cache-' . $study_id);
+    if (!empty($cached_populations->data)) {
+      $populations = $cached_populations->data;
     }
     else {
       $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $flat_study_attachments);
-      $current_detail_study_cache['study_population'] = $populations;
-      obiba_mica_commons_set_cache('study_detail_cache-' . $study_id, $current_detail_study_cache);
+      obiba_mica_commons_set_cache('populations_detail_cache-' . $study_id, $populations);
     }
 
     obiba_mica_study_get_timeline_detail($study_dto);
@@ -166,8 +158,9 @@ function obiba_mica_study_page_detail($study_id) {
       'optionsStudyContent' => $options_study_content
     ), 'setting');
 
-    if (!empty($detail_study_cache->data['study_theme'])) {
-      return $detail_study_cache->data['study_theme'];
+    $study_theme_cache = obiba_mica_commons_get_cache('study_theme_cache-' . $study_id);
+    if (!empty($study_theme_cache->data)) {
+      return $study_theme_cache->data;
     }
     else {
       $study_theme = theme('obiba_mica_study_detail',
@@ -181,8 +174,7 @@ function obiba_mica_study_page_detail($study_id) {
           'opal' => $opal_output,
           'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
         ));
-      $current_detail_study_cache['study_theme'] = $study_theme;
-      obiba_mica_commons_set_cache('study_detail_cache-' . $study_id, $current_detail_study_cache);
+      obiba_mica_commons_set_cache('study_theme_cache-' . $study_id, $study_theme);
       return $study_theme;
     }
 
