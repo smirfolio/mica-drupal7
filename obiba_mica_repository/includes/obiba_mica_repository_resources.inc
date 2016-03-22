@@ -7,12 +7,17 @@
 class ObibaSearchResources extends MicaSearchResource {
   const MICA_REPOSITORY = 'mica/repository';
   var $last_reponse;
+  private $result_resource_query;
+  private $resource_query;
 
-  function __construct() {
+  function __construct($resource_query = NULL) {
     parent::__construct();
+    $this->result_resource_query = NULL;
+    $this->resource_query = $resource_query;
   }
 
-  private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
+  private function httpRequestGetBuilder($header_accept = parent::HEADER_JSON) {
+    $resources = $this->resource_query;
     $url = $this->micaUrl . $resources;
 
     $request = new HttpClientRequest($url, array(
@@ -25,11 +30,15 @@ class ObibaSearchResources extends MicaSearchResource {
     ));
     $client = $this->client();
     try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return json_decode($data);
-    }
-    catch (HttpClientException $e) {
+      if (!isset($this->result_resource_query)) {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $array_response = json_decode($data);
+        $this->result_resource_query = $array_response;
+        obiba_mica_commons_set_cache($resources, $array_response);
+      }
+      return $this->result_resource_query;
+    } catch (HttpClientException $e) {
       if ($e->getCode() == 403) {
         drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
       }
@@ -38,39 +47,42 @@ class ObibaSearchResources extends MicaSearchResource {
           '@code' => $e->getCode(),
           '@message' => $e->getMessage()
         ), WATCHDOG_WARNING);
+      $this->result_resource_query = NULL;
       return array();
     }
   }
 
-  private function queryLocalBuilder($query) {
-
+  public function getCache() {
+    $cached_result = obiba_mica_commons_get_cache($this->resource_query);
+    if (!empty($cached_result)) {
+      $this->result_resource_query = $cached_result->data;
+    }
+    return $this;
   }
 
-  public function searchQuery($type, $query) {
-    $this->queryLocalBuilder($query);
-    return $this->httpRequestGetBuilder('/' . $type . '/_rql?query=' . $query);
+  public function searchQuery() {
+    return $this->httpRequestGetBuilder();
   }
 
-  public function taxonomiesSearch($query, $target, $locale) {
-    return $this->httpRequestGetBuilder('/taxonomies/_search?query=' . rawurlencode($query)
-      . (!empty($target) ? '&target=' . $target : '')
-      . (!empty($locale) ? '&locale=' . $locale : ''));
+  public function taxonomiesSearch() {
+    return $this->httpRequestGetBuilder();
   }
 
-  public function taxonomiesFilter($entity) {
-    return $this->httpRequestGetBuilder('/taxonomies/_filter?target=' . $entity);
+  public function taxonomiesFilter() {
+    return $this->httpRequestGetBuilder();
   }
 
-  public function taxonomyFilter($name, $entity) {
-    return $this->httpRequestGetBuilder('/taxonomy/' . $name . '/_filter?target=' . $entity);
+  public function taxonomyFilter() {
+    return $this->httpRequestGetBuilder();
   }
 
-  public function variablesCoverage($query) {
-    return $this->httpRequestGetBuilder('/variables/_coverage?query=' . $query);
+  public function variablesCoverage() {
+    return $this->httpRequestGetBuilder();
   }
 
   public function variablesCoverageDownload($query, $header_accept) {
-    return $this->httpRequestGetBuilder('/variables/_coverage_download?query=' . $query, $header_accept);
+    $this->resource_query = '/variables/_coverage_download?query=' . $query;
+    return $this->httpRequestGetBuilder($header_accept);
   }
 
   static function repositoryAnchor($url, $text, array $attributes, array $query_params) {
@@ -107,19 +119,19 @@ class ObibaSearchResources extends MicaSearchResource {
   }
 
   static function repositoryRqlBuilder($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, $entity_id = NULL) {
-    $query_search='';
+    $query_search = '';
     if (!empty($taxonomy_name)) {
       if (!empty($vocabulary_name)) {
         $query_search = 'variable(and(exists(' . $taxonomy_name . '.' . $vocabulary_name . '),in(Mica_variable.';
       }
     }
     if (!empty($query)) {
-      $query_search .= 'datasetId,'. $entity_id;
+      $query_search .= 'datasetId,' . $entity_id;
     }
     else {
       switch ($bucket->field) {
         case 'studyIds' :
-          $query_search .= 'studyIds,'. $bucket->value;
+          $query_search .= 'studyIds,' . $bucket->value;
           break;
         case 'dceIds' :
           $query_search .= 'dceIds,' . urlencode(urlencode($bucket->value));
