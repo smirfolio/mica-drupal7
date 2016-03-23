@@ -10,7 +10,7 @@
 
 <div ng-controller='BioSamplesController'>
   <div obiba-chart
-    chart-type="PieChart"
+    chart-type="BarChart"
     chart-aggregation-name="populations-dataCollectionEvents-bioSamples"
     chart-entity-dto="studyResultDto"
     chart-options-name="biologicalSamples"
