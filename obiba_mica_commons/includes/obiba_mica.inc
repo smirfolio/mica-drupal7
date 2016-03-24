@@ -33,6 +33,7 @@ class MicaClient {
   const AUTHENTICATED_CACHE_LIFE_TIME = 900; //15 min
 
   protected $micaUrl;
+  protected $result_resource_query;
 
   private $lastResponse;
   private static $responsePageSizeSmall = 10;
@@ -1214,5 +1215,21 @@ class MicaClient {
       );
     }
 
+  }
+
+  /**
+   * query the cache.
+   *
+   * @param string $resource
+   *   Study, dce, network ...
+   *
+   * @return $this
+   */
+  protected function getCache($resource) {
+    $cached_result = obiba_mica_commons_get_cache($resource);
+    if (!empty($cached_result)) {
+      $this->result_resource_query = $cached_result->data;
+    }
+    return $this;
   }
 }

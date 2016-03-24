@@ -31,18 +31,12 @@ function obiba_mica_variable_page_detail($variable_id) {
   }
 
   $variable_resource = new MicaDatasetResource();
-  $detail_variable_cache = obiba_mica_commons_get_cache('variable_detail_cache-' . $variable_id);
-  if (!empty($detail_variable_cache->data)) {
-    $themed_variable = $detail_variable_cache->data['themed_variable'];
-    $variable = $detail_variable_cache->data['variable'];
-  }
-  else{
-    $variable = $variable_resource->getVariable($variable_id);
+  $variable = $variable_resource->getVariable($variable_id);
 
-    if (empty($variable)) {
-      drupal_set_title(t('Variable not found'));
-      return '';
-    }
+  if (empty($variable)) {
+    drupal_set_title(t('Variable not found'));
+    return '';
+  }
   if ($variable->variableType == "Dataschema") {
     $algos = TRUE;
   }
@@ -52,14 +46,14 @@ function obiba_mica_variable_page_detail($variable_id) {
 
   obiba_mica_dataset_remove_harmonization_taxonomy($variable);
 
-  $themed_variable =  theme('obiba_mica_variable-detail', array(
+  $themed_variable = theme('obiba_mica_variable-detail', array(
     'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => $variable->variableType != 'Harmonized')),
     'variable_dto' => $variable,
     'variable_harmonization_algorithms' => !empty($algos) ? $algos : NULL,
     'variable_harmonization' => obiba_mica_dataset_variable_get_harmonization($variable),
   ));
 
-  }
+
   $title = $variable->name;
   if ($variable->variableType == 'Harmonized') {
     if (!empty($url_query['title'])) {

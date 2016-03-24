@@ -13,18 +13,10 @@ function obiba_mica_network_page_detail($network_id) {
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
   }
-  $current_detail_network_cache = array();
-  $detail_network_cache = obiba_mica_commons_get_cache('network_detail_cache-' . $network_id);
-  if (!empty($detail_network_cache->data['network_dto'])) {
-    $network_dto = $detail_network_cache->data['network_dto'];
-  }
-  else {
-    $themed_attachment = NULL;
-    $network_resource = new MicaNetworkResource();
-    $network_dto = $network_resource->get_network($network_id);
-    $current_detail_network_cache['network_dto'] = $network_dto;
-    obiba_mica_commons_set_cache('network_detail_cache-' . $network_id, $current_detail_network_cache);
-  }
+  $themed_attachment = NULL;
+  $network_resource = new MicaNetworkResource();
+  $network_dto = $network_resource->get_network($network_id);
+
   $studies_statistics = '';
   if (!empty($network_dto)) {
 
@@ -108,9 +100,9 @@ function obiba_mica_network_page_detail($network_id) {
       'network_url' => rawurlencode($network_id),
       'study_ids' => $network_dto->studyIds
     ), 'setting');
-
-    if (!empty($detail_network_cache->data['network_theme'])) {
-      return $detail_network_cache->data['network_theme'];
+    $network_theme = obiba_mica_commons_get_cache('network_theme_cache-' . $network_id);
+    if (!empty($network_theme->data)) {
+      return $network_theme->data;
     }
     else {
       $network_theme = theme('obiba_mica_network-detail', array(
@@ -129,8 +121,7 @@ function obiba_mica_network_page_detail($network_id) {
         'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
         'statistics' => $studies_statistics,
       ));
-      $current_detail_network_cache['network_theme'] = $network_theme;
-      obiba_mica_commons_set_cache('network_detail_cache-' . $network_id, $current_detail_network_cache);
+      obiba_mica_commons_set_cache('network_theme_cache-' . $network_id, $network_theme);
       return $network_theme;
     }
   }

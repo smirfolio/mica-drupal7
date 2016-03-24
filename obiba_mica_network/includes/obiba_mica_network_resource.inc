@@ -34,26 +34,36 @@ class MicaNetworkResource extends MicaClient {
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $params .= empty($study_id) ? '' : '&study=' . rawurlencode($study_id);
-    $url_networks = $this->micaUrl . '/networks/_search?' . $params;
-
-    $request = new HttpClientRequest($url_networks, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
+    $resource_query = '/networks/_search?' . $params;
+    $this->getCache($resource_query);
+    if (!isset($this->result_resource_query)) {
+      $url_networks = $this->micaUrl . $resource_query;
+      $request = new HttpClientRequest($url_networks, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_JSON),
           )
         )
-    ));
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return new NetworkJoinResponseWrapper(json_decode($data));
+      ));
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $this->result_resource_query = new NetworkJoinResponseWrapper(json_decode($data));
+        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        return $this->result_resource_query;
+      }
+      catch (HttpClientException $e) {
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        $this->result_resource_query = NULL;
+        return array();
+      }
     }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
-      return array();
-    }
+    return $this->result_resource_query;
   }
 
   /**
@@ -63,28 +73,35 @@ class MicaNetworkResource extends MicaClient {
    * @return array|Protobuf\Message|null
    */
   public function get_network($network_id) {
+    $resource_query = '/network/' . rawurlencode($network_id);
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/network/' . rawurlencode($network_id);
-
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
+    $this->getCache($resource_query);
+    $url = $this->micaUrl . $resource_query;
+    if (!isset($this->result_resource_query)) {
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_BINARY),
           )
         ),
-    ));
+      ));
 
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $dtoObj = '\obiba\mica\NetworkDto';
-      DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
-      return $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $dtoObj = '\obiba\mica\NetworkDto';
+        DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
+        $this->result_resource_query = $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
+        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        return $this->result_resource_query;
+      }
+      catch (HttpClientException $e) {
+        $this->result_resource_query = NULL;
+        return array();
+      }
     }
-    catch (HttpClientException $e) {
-      return array();
-    }
+    return $this->result_resource_query;
   }
 
 }
