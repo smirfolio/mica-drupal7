@@ -563,8 +563,10 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
  * End harmonization variable ajax table.
  */
 function obiba_mica_dataset_coverage($dataset_id) {
-  $coverage['charts'] = obiba_mica_search_query_charts(
-    MicaClient::addParameterDtoQueryLink(
+  if (module_exists('obiba_mica_repository')) {
+    $query = RqlQueryBuilder::dataset_query_charts($dataset_id);
+  } else {
+    $query = MicaClient::addParameterDtoQueryLink(
       array(
         'variables' => array(
           'terms' => array(
@@ -572,10 +574,11 @@ function obiba_mica_dataset_coverage($dataset_id) {
           )
         )
       )
-    ),
-    array('with-facets' => 'false'),
-    NULL,
-    $dataset_id);
+    );
+  }
+
+  $coverage['charts'] = obiba_mica_search_query_charts($query, array('with-facets' => 'false'), NULL, $dataset_id);
+
   if (!empty($coverage['charts'])) {
     $coverage['has_coverage'] = TRUE;
     return $coverage;

@@ -155,7 +155,12 @@ function obiba_mica_search_term_chart($term_coverage) {
  */
 function obiba_mica_search_query_charts($query, $default_dto_search = NULL, $chart_title = NULL, $entity_id = NULL) {
   $search_resources = new MicaSearchResource();
-  $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search, array('strict' => 'false'));
+  if (module_exists('obiba_mica_repository')) {
+    $coverages = $search_resources->taxonomies_coverage_rql($query, 'variables', 'coverage', false);
+  } else {
+    $coverages = $search_resources->taxonomies_coverage($query, $default_dto_search, array('strict' => 'false'));
+  }
+
   $taxonomy_charts = array();
   if (!empty($coverages->taxonomies)) {
     $allowed_taxonomies = obiba_mica_commons_taxonomies_filter_array();

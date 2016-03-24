@@ -6,6 +6,7 @@
  */
 
 include_once "obiba_mica_commons_query_dto_builders.inc";
+include_once "obiba_mica_commons_query_rql_builders.inc";
 include_once "obiba_mica_commons_query_response_wrappers.inc";
 include_once "obiba_mica_commons_resource_paths.inc";
 

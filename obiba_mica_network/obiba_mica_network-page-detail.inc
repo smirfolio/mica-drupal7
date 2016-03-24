@@ -347,14 +347,21 @@ function obiba_mica_network_study_table_headers() {
 }
 
 function obiba_mica_network_coverage($study_ids) {
-  return obiba_mica_search_query_charts(
-    MicaClient::addParameterDtoQueryLink(array(
+  if (module_exists('obiba_mica_repository')) {
+    $query = RqlQueryBuilder::network_query_charts($study_ids);
+  } else {
+    $query = MicaClient::addParameterDtoQueryLink(array(
       'variables' =>
         array('terms' => array('studyIds' => $study_ids))
-    )),
+    ));
+  }
+
+  return obiba_mica_search_query_charts(
+    $query,
     array('group-by' => 'studyIds', 'with-facets' => 'false'),
     NULL,
-    $study_ids);
+    $study_ids
+  );
 }
 
 function _obiba_mica_network_has_variables($study_summaries) {
