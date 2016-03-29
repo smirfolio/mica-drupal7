@@ -29,8 +29,6 @@ class MicaClient {
   const PAGINATE_VARIABLES = 1;
   const PAGINATE_DATASETS = 2;
   const PAGINATE_NETWORKS = 3;
-  const ANONYMOUS_CACHE_LIFE_TIME = 3600; //1 hour
-  const AUTHENTICATED_CACHE_LIFE_TIME = 900; //15 min
 
   protected $micaUrl;
   protected $result_resource_query;

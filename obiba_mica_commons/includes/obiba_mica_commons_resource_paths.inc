@@ -263,16 +263,18 @@ class MicaClientAnchorHelper {
    *   The text anchor.
    * @param string $study_id
    *   Th study id.
+   * @param string $css_class
+   *   the affected css class.
    *
    * @return string
    *   The anchor link.
    */
-  public static function studyDatasets($text, $study_id) {
+  public static function studyDatasets($text, $study_id, $css_class = NULL) {
     if (module_exists('obiba_mica_repository')) {
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         $text,
-        array(),
+        array('class' => ($css_class ? $css_class : '')),
         array(
           'type' => 'datasets',
           'query' => 'study(in(Mica_study.id,' . $study_id . '))',
@@ -286,7 +288,7 @@ class MicaClientAnchorHelper {
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       $text,
-      array(),
+      array('class' => ($css_class ? $css_class : '')),
       array('type' => 'datasets', 'query' => $query)
     );
   }
@@ -300,11 +302,13 @@ class MicaClientAnchorHelper {
    *   The study id.
    * @param bool $is_button
    *   As link or button rendering.
+   * @param string $css_class
+   *   the affected css class.
    *
    * @return string
    *   The anchor link.
    */
-  public static function studyVariables($text, $study_id, $is_button = FALSE, $supplementary_query = NULL) {
+  public static function studyVariables($text, $study_id, $is_button = FALSE, $supplementary_query = NULL, $css_class = NULL) {
     if (module_exists('obiba_mica_repository')) {
       $query = 'study(in(Mica_study.id,' . $study_id . '))';
       if (!empty($supplementary_query)) {
@@ -313,7 +317,7 @@ class MicaClientAnchorHelper {
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         empty($text) ? variable_get_value('variables_search_label') : $text,
-        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+        array('class' => $is_button ? ($css_class ? $css_class : self::DEFAULT_PRIMARY_BUTTON_CLASSES) : ''),
         array(
           'type' => 'variables',
           'query' => $query,
@@ -328,7 +332,7 @@ class MicaClientAnchorHelper {
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       empty($text) ? variable_get_value('variables_search_label') : $text,
-      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+      array('class' => $is_button ? ($css_class ? $css_class : self::DEFAULT_PRIMARY_BUTTON_CLASSES) : ''),
       array('type' => 'variables', 'query' => $query)
     );
   }
@@ -437,16 +441,18 @@ class MicaClientAnchorHelper {
    *   The test link.
    * @param string $study_id
    *   The study id.
+   * @param string $css_class
+   *   the affected css class.
    *
    * @return string
    *   The anchor link.
    */
-  public static function studyNetworks($text, $study_id) {
+  public static function studyNetworks($text, $study_id, $css_class) {
     if (module_exists('obiba_mica_repository')) {
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         $text,
-        array(),
+        array('class' => ($css_class ? $css_class : '')),
         array(
           'type' => 'networks',
           'query' => 'network(in(Mica_network.studyIds,' . $study_id . '))',
@@ -461,7 +467,7 @@ class MicaClientAnchorHelper {
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       $text,
-      array(),
+      array('class' => ($css_class ? $css_class : '')),
       array('type' => 'networks', 'query' => $query)
     );
   }
@@ -515,12 +521,12 @@ class MicaClientAnchorHelper {
    * @return string
    *   The anchor link.
    */
-  public static function networkDatasets($text, $network_id) {
+  public static function networkDatasets($text, $network_id, array $attributes = array()) {
     if (module_exists('obiba_mica_repository')) {
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         empty($text) ? variable_get_value('variables_search_label') : $text,
-        array(),
+        $attributes,
         array(
           'type' => 'datasets',
           'query' => 'network(in(Mica_network.id,' . $network_id . '))',
@@ -534,7 +540,7 @@ class MicaClientAnchorHelper {
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       empty($text) ? variable_get_value('variables_search_label') : $text,
-      array(),
+      $attributes,
       array('type' => 'datasets', 'query' => $query)
     );
   }
@@ -713,6 +719,8 @@ class MicaClientAnchorHelper {
    *   The dataset id.
    * @param array $attributes
    *   A set of link attributes.
+   * @param string $supplementary_query
+   *   A supplementary query.
    *
    * @return string
    *   The anchor link.
@@ -787,15 +795,17 @@ class MicaClientAnchorHelper {
    *   Text link.
    * @param string $dataset_id
    *   The dataset id.
+   * @param array $attributes
+   *   A set of link attributes.
    *
    * @return string
    *   The anchor link.
    */
-  public static function datasetStudies($text, $dataset_id) {
+  public static function datasetStudies($text, $dataset_id, array $attributes = array()) {
     if (module_exists('obiba_mica_repository')) {
       return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
         $text,
-        array(),
+        $attributes,
         array(
           'type' => 'studies',
           'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))',
@@ -810,7 +820,7 @@ class MicaClientAnchorHelper {
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       $text,
-      array(),
+      $attributes,
       array('type' => 'studies', 'query' => $query)
     );
   }
@@ -822,15 +832,17 @@ class MicaClientAnchorHelper {
    *   Text link.
    * @param string $dataset_id
    *   The dataset id.
+   * @param array $attributes
+   *   A set of link attributes.
    *
    * @return string
    *   The anchor link.
    */
-  public static function datasetNetworks($text, $dataset_id) {
+  public static function datasetNetworks($text, $dataset_id, array $attributes = array()) {
     if (module_exists('obiba_mica_repository')) {
       return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
         $text,
-        array(),
+        $attributes,
         array(
           'type' => 'networks',
           'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))',
@@ -845,7 +857,7 @@ class MicaClientAnchorHelper {
     return self::ajaxFriendlyAnchor(
       MicaClientPathProvider::SEARCH,
       $text,
-      array(),
+      $attributes,
       array('type' => 'networks', 'query' => $query)
     );
   }

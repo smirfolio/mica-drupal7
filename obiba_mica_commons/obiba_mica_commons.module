@@ -746,10 +746,10 @@ function obiba_mica_commons_set_cache($key, $value) {
     $key = md5($key);
     global $user;
     if (in_array('anonymous user', $user->roles, TRUE)) {
-      cache_set($key . '-' . 'anonymous_user', $value, 'cache', MicaClient::ANONYMOUS_CACHE_LIFE_TIME);
+      cache_set($key . '-' . 'anonymous_user', $value, 'cache', CACHE_TEMPORARY);
     }
     else {
-      cache_set($key . '-' . $user->sid, $value, 'cache', MicaClient::AUTHENTICATED_CACHE_LIFE_TIME);
+      cache_set($key . '-' . $user->sid, $value, 'cache', CACHE_TEMPORARY);
     }
   }
 }
