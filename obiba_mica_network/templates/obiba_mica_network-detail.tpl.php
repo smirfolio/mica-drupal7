@@ -209,7 +209,8 @@
 
   <!-- COVERAGE placeholder -->
   <section id="coverage">
-    <div><?php print t('Loading ...') ?></div>
+    <h2><?php print t('Variable Classification') ?></h2>
+    <p><?php print t('Loading...') ?></p>
   </section>
 
   <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>

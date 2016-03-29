@@ -178,22 +178,23 @@ function obiba_mica_search_query_charts($query, $default_dto_search = NULL, $cha
             foreach ($vocabulary_coverage->terms as $key_term => $term) {
               array_push($terms, $term->term->name);
               if (!empty($vocabulary_coverage->buckets)) {
-                foreach ($term->buckets as $key_bucket => $bucket) {
-                  if (!empty($data[$bucket->value])) {
-                    $data[$bucket->value][$key_vocabulary] += $bucket->hits;
-                  }
-                  else {
-                    $data[$bucket->value][$key_vocabulary] = $bucket->hits;
-                  }
+                if (!empty($term->buckets)) {
+                  foreach ($term->buckets as $key_bucket => $bucket) {
+                    if (!empty($data[$bucket->value])) {
+                      $data[$bucket->value][$key_vocabulary] += $bucket->hits;
+                    } else {
+                      $data[$bucket->value][$key_vocabulary] = $bucket->hits;
+                    }
 
-                  $link[$bucket->value][$key_vocabulary] = MicaClient::chartQueryBuilders(
-                    NULL,
-                    $bucket,
-                    $taxonomy_coverage->taxonomy->name,
-                    $vocabulary_coverage->vocabulary->name,
-                    $terms,
-                    $entity_id
-                  );
+                    $link[$bucket->value][$key_vocabulary] = MicaClient::chartQueryBuilders(
+                      NULL,
+                      $bucket,
+                      $taxonomy_coverage->taxonomy->name,
+                      $vocabulary_coverage->vocabulary->name,
+                      $terms,
+                      $entity_id
+                    );
+                  }
                 }
               }
             }
@@ -315,7 +316,16 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
   }
   $raw_options['vAxis']['logScale'] = FALSE;
   $raw_options['vAxis']['minorGridlines']['count'] = 0;
-  $raw_options['links'] = $data['links'];
+
+  // make sure links keys are a sequence
+  $raw_options['links'] = array();
+  foreach($data['links'] as $k => $links) {
+    $raw_options['links'][$k] = array();
+    foreach($links as $link) {
+      $raw_options['links'][$k][] = $link;
+    }
+  }
+
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
@@ -330,16 +340,26 @@ function obiba_mica_search_stacked_column_chart($labels, $data, $title, $width =
     '#raw_options' => $raw_options,
   );
   foreach ($data['data'] as $key => $datum) {
+    // make sure datum keys are a sequence
+    $datum2 = array();
+    foreach($datum as $d) {
+      $datum2[] = $d;
+    }
     $chart[$key] = array(
       '#type' => 'chart_data',
       '#title' => ' ' . $key, // google chart has a bug when title is a number
-      '#data' => $datum
+      '#data' => $datum2
     );
+  }
 
+  // make sure label keys are a sequence
+  $labels2 = array();
+  foreach($labels as $label) {
+    $labels2[] = $label;
   }
   $chart['xaxis'] = array(
     '#type' => 'chart_xaxis',
-    '#labels' => $labels,
+    '#labels' => $labels2,
     //'#labels_rotation' => 90,
   );
   return $chart;
