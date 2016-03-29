@@ -15,7 +15,7 @@
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-        class="listImageThumb img-responsive"/>
+        class="img-responsive"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-S"></span>
@@ -63,8 +63,7 @@
       </p>
     </div>
     <?php if (variable_get_value('studies_list_show_study_sup_info')): ?>
-      <ul class="search-item-list-no-style sm-top-margin help-block">
-        <li>
+    <blockquote-small class="help-block">
           <?php foreach ($network_digests as $digest) {
             $names = array();
             array_push($names, obiba_mica_commons_get_localized_field($digest, 'name'));
@@ -74,9 +73,8 @@
             print t('Member of ') . implode(', and', $names);
           }
           ?>
-        </li>
         <?php if (!empty($study->designs) || !empty($study->targetNumber)) : ?>
-          <li>
+
             <?php if (!empty($study->designs)): print t('Study design') ?>:
               <span><?php print implode(', ', obiba_mica_commons_clean_string($study->designs)) ?></span>
             <?php endif; ?>
@@ -91,9 +89,8 @@
               ?>
             </span>
             <?php endif; ?>
-          </li>
+      </blockquote-small>
         <?php endif; ?>
-      </ul>
       <div class="sm-top-margin">
         <?php
         $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
@@ -105,19 +102,13 @@
         $network_caption = $networks < 2 ? t('network') : t('networks');
         ?>
         <?php if (!empty($networks) && variable_get_value('studies_column_networks')): ?>
-          <span class="label label-default rounded right-indent">
-            <?php print MicaClientAnchorHelper::studyNetworks(t('@count ' . $network_caption, array('@count' => $networks)), $study->id) ?>
-          </span>
+            <?php print MicaClientAnchorHelper::studyNetworks(t('@count ' . $network_caption, array('@count' => $networks)), $study->id, 'btn-default btn-xxs') ?>
         <?php endif ?>
         <?php if (!empty($datasets) && (variable_get_value('studies_column_study_datasets') || variable_get_value('studies_column_harmonization_datasets'))): ?>
-          <span class="label label-default rounded right-indent">
-            <?php print MicaClientAnchorHelper::studyDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id) ?>
-          </span>
+            <?php print MicaClientAnchorHelper::studyDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id, 'btn-default btn-xxs') ?>
         <?php endif ?>
         <?php if (!empty($vars) && variable_get_value('studies_column_variables')): ?>
-          <span class="label label-default rounded">
-            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $var_caption, array('@count' => $vars)), $study->id) ?>
-          </span>
+            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $var_caption, array('@count' => $vars)), $study->id, TRUE, NULL, 'btn-default btn-xxs') ?>
         <?php endif ?>
       </div>
     <?php endif; ?>

@@ -15,7 +15,7 @@
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
-        class="listImageThumb"/>
+        class="img-responsive"/>
     <?php else : ?>
       <h1 class="big-character">
         <span class="t_badge color_light i-obiba-N"></span>
@@ -51,20 +51,15 @@
       $caption = $studies < 2 ? t('study') : t('studies');
       ?>
       <?php if (!empty($studies) && variable_get_value('networks_column_studies')): ?>
-        <span class="label label-default rounded right-indent">
-          <?php print MicaClientAnchorHelper::networkStudies(t('@count ' . $caption, array('@count' => $studies)), $network->id) ?>
-        </span>
+          <?php print MicaClientAnchorHelper::networkStudies(t('@count ' . $caption, array('@count' => $studies)), $network->id, array('class' => 'btn-default btn-xxs')) ?>
+
       <?php endif ?>
       <?php if (!empty($datasets) && (variable_get_value('networks_column_study_datasets') || variable_get_value('networks_column_harmonization_datasets'))): ?>
-        <span class="label label-default rounded right-indent">
-            <?php print MicaClientAnchorHelper::networkDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $network->id) ?>
-          </span>
+            <?php print MicaClientAnchorHelper::networkDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $network->id, array('class' => 'btn-default btn-xxs')) ?>
       <?php endif ?>
       <?php if (!empty($variables) && variable_get_value('networks_column_variables')): ?>
-        <span class="label label-default rounded">
             <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $vars_caption,
-              array('@count' => obiba_mica_commons_format_number($variables))), $network->id) ?>
-          </span>
+              array('@count' => obiba_mica_commons_format_number($variables))), $network->id, array('class' => 'btn-default btn-xxs')) ?>
       <?php endif ?>
     </div>
   </div>

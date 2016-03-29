@@ -46,22 +46,16 @@
         $network_caption = $networks < 2 ? t('network') : t('networks');
         ?>
         <?php if (!empty($networks) && variable_get_value('datasets_column_networks')): ?>
-          <span class="label label-default rounded right-indent">
             <?php print MicaClientAnchorHelper::datasetNetworks(t('@count @networkCaption',
-              array('@count' => $networks, '@networkCaption' => $network_caption)), $dataset->id) ?>
-          </span>
+              array('@count' => $networks, '@networkCaption' => $network_caption)), $dataset->id, array('class' => 'btn-default btn-xxs')) ?>
         <?php endif ?>
         <?php if (!empty($studies) && variable_get_value('datasets_column_studies')): ?>
-          <span class="label label-default rounded right-indent">
             <?php print MicaClientAnchorHelper::datasetStudies(t('@count @studiesCaption',
-              array('@count' => $studies, '@studiesCaption' => $studies_caption)), $dataset->id) ?>
-          </span>
+              array('@count' => $studies, '@studiesCaption' => $studies_caption)), $dataset->id, array('class' => 'btn-default btn-xxs')) ?>
         <?php endif ?>
         <?php if (!empty($variables) && variable_get_value('datasets_column_variables')): ?>
-          <span class="label label-default rounded">
             <?php print MicaClientAnchorHelper::datasetVariables(t('@count @vars',
-              array('@count' => obiba_mica_commons_format_number($variables), '@vars' => $vars_caption)), $dataset->id) ?>
-          </span>
+              array('@count' => obiba_mica_commons_format_number($variables), '@vars' => $vars_caption)), $dataset->id, array('class' => 'btn-default btn-xxs')) ?>
         <?php endif ?>
       </div>
     </div>
