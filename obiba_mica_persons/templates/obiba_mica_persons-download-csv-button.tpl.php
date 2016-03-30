@@ -16,5 +16,5 @@
   -->
 
 <button id="download-csv-person" class="btn btn-success"><i
-    class="glyphicon glyphicon-download"></i><?php print t('Download'); ?>
+    class="glyphicon glyphicon-download"></i> <?php print t('Download'); ?>
 </button>
