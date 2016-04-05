@@ -103,6 +103,7 @@ function obiba_mica_dataset_page_detail($dataset_id) {
             $flat_dataset_attachments->themeFolders($filtered_tree_path, NULL,
               $dataset_id);
         }
+        obiba_mica_app_angular_load_js_resources('obiba_mica_files');
       }
 
       $dataset_theme = theme('obiba_mica_dataset-detail', array(
@@ -114,6 +115,7 @@ function obiba_mica_dataset_page_detail($dataset_id) {
         'variables_dataset' => $variables_dataset,
         'modals' => $modals,
         'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
+        'file_browser' => theme('obiba_mica_files_browser', array('doc_path' => '/'.$dataset_type, 'doc_id' => $dataset_id))
       ));
       obiba_mica_commons_set_cache('dataset_theme-' . $dataset_id, $dataset_theme);
       return $dataset_theme;
@@ -186,7 +188,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
           'dce_uids' => $dce_uids,
           'population' => $population,
           'hide_title' => TRUE,
-          'attachments' => !empty($themed_population_attachment) ? $themed_population_attachment : NULL,
+          'attachments' => !empty($themed_population_attachment) ? $themed_population_attachment : NULL
         )),
       ));
 
@@ -219,6 +221,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
           'dce_id_target' => MicaClientPathHelpers::replacePlusInUrl($study_id . '-' . $population_id . '-' . $dce->id),
           'dce' => $dce,
           'attachments' => !empty($themed_dce_attachment) ? $themed_dce_attachment : NULL,
+          'file_browser' => theme('obiba_mica_files_browser', array('doc_path' => '/study', 'doc_id' => $study_id)),
         ));
       }
       if (!empty($modals['dce'])) {

@@ -59,6 +59,74 @@ class MicaFilesResource extends MicaClient {
   }
 
   /**
+   * Get attachments by path resource.
+   *
+   * @param $entity_type
+   *  study/network/population/data-collection-event/dataset
+   * @param  $entity_id
+   *  The entity Id
+   *
+   * @return array
+   */
+  public function getFile($path) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/file' . $path;
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return $data;
+    }
+    catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
+      Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage(),
+        ), WATCHDOG_WARNING);
+      return array();
+    }
+  }
+
+  public function searchFiles($path, $query_params) {
+
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/files-search' . $path . '?' . http_build_query($query_params);
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return $data;
+    }
+    catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
+      Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage(),
+        ), WATCHDOG_WARNING);
+      
+      return array();
+    }
+  }
+
+  /**
    * Wrap the attachments and return a tree folders.
    *
    * @param $entity_type

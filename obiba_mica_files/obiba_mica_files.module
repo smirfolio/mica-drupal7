@@ -26,6 +26,25 @@ function obiba_mica_files_menu() {
     'access callback' => TRUE,
     'page arguments' => array(1, 2, 3),
   );
+  
+  $items['mica/file'] = array(
+    'page callback' => 'obiba_mica_files_get_file',
+    'file' => 'obiba_mica_files_services.inc',
+    'access callback' => TRUE
+  );
+
+  $items['mica/files/search'] = array(
+    'page callback' => 'obiba_mica_files_search_files',
+    'file' => 'obiba_mica_files_services.inc',
+    'access callback' => TRUE
+  );
+  
+  $items['mica/file/download'] = array(
+    'page callback' => 'obiba_mica_file_download',
+    'file' => 'obiba_mica_files_services.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
 
   return $items;
 }
@@ -40,6 +59,7 @@ function obiba_mica_files_menu() {
  */
 function obiba_mica_files_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
+  $path_views_theme = $path . '/js/app/views';
   return array(
     'obiba_mica_files_themed_files_list' => array(
       'template' => 'obiba_mica_files_themed_files_list',
@@ -53,9 +73,37 @@ function obiba_mica_files_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_files_documents_section',
       'path' => $path_theme
     ),
+    'obiba_mica_files_browser' => array(
+      'template' => 'obiba_mica_files_browser',
+      'path' => $path_views_theme
+    ),
   );
 }
 
+
+/**
+ * Implements hook_get_js().
+ */
+function obiba_mica_files_get_js($weight_js) {
+  $module_path = drupal_get_path('module', 'obiba_mica_files');
+  $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
+  ksort($js);
+  foreach ($js as $file_js) {
+    drupal_add_js($file_js->uri, array(
+      'type' => 'file',
+      'scope' => 'footer',
+      'weight' => ++$weight_js
+    ));
+  }
+  return $weight_js;
+}
+
+/**
+ * Implements hook_get_ng_module_to_load().
+ */
+function obiba_mica_files_get_ng_module_to_load() {
+  return 'mica.fileBrowser';
+}
 /**
  * Get flat list attachments.
  *
