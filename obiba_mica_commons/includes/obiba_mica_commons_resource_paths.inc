@@ -302,11 +302,11 @@ class MicaClientAnchorHelper {
    *   The study id.
    * @param bool $is_button
    *   As link or button rendering.
+   * @param string $supplementary_query
    * @param string $css_class
    *   the affected css class.
-   *
-   * @return string
-   *   The anchor link.
+   * @return string The anchor link.
+   * The anchor link.
    */
   public static function studyVariables($text, $study_id, $is_button = FALSE, $supplementary_query = NULL, $css_class = NULL) {
     if (module_exists('obiba_mica_repository')) {
@@ -554,19 +554,23 @@ class MicaClientAnchorHelper {
    *   The network id.
    * @param array $attributes
    *   A set of link attributes.
-   *
-   * @return string
-   *   The anchor link.
+   * @param string $supplementary_query
+   * @return string The anchor link.
+   * The anchor link.
    */
-  public static function networkVariables($text, $network_id, array $attributes = array()) {
+  public static function networkVariables($text, $network_id, array $attributes = array(), $supplementary_query = NULL) {
     if (module_exists('obiba_mica_repository')) {
+      $query = 'network(in(Mica_network.id,' . $network_id . '))';
+      if (!empty($supplementary_query)) {
+        $query .= ',' . $supplementary_query;
+      }
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         empty($text) ? variable_get_value('variables_search_label') : $text,
         $attributes,
         array(
           'type' => 'variables',
-          'query' => 'network(in(Mica_network.id,' . $network_id . '))',
+          'query' => $query,
           'display' => 'list'
         ));
     }

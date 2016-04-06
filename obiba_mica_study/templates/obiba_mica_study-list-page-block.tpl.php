@@ -96,6 +96,10 @@
         $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
         $vars = $counts->variables;
         $var_caption = $vars < 2 ? t('variable') : t('variables');
+        $study_vars = $counts->studyVariables;
+        $study_var_caption = $study_vars < 2 ? t('study variable') : t('study variables');
+        $dataschema_vars = $counts->dataschemaVariables;
+        $dataschema_var_caption = $dataschema_vars < 2 ? t('dataschema variable') : t('dataschema variables');
         $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
         $dataset_caption = $datasets < 2 ? t('dataset') : t('datasets');
         $networks = $counts->networks;
@@ -109,6 +113,12 @@
         <?php endif ?>
         <?php if (!empty($vars) && variable_get_value('studies_column_variables')): ?>
             <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $var_caption, array('@count' => $vars)), $study->id, TRUE, NULL, 'btn-default btn-xxs') ?>
+        <?php endif ?>
+        <?php if (!empty($study_vars) && variable_get_value('studies_column_study_variables')): ?>
+          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $study_var_caption, array('@count' => $study_vars)), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Study))', 'btn-default btn-xxs') ?>
+        <?php endif ?>
+        <?php if (!empty($dataschema_vars) && variable_get_value('studies_column_dataschema_variables')): ?>
+          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $dataschema_var_caption, array('@count' => $dataschema_vars)), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Dataschema))', 'btn-default btn-xxs') ?>
         <?php endif ?>
       </div>
     <?php endif; ?>

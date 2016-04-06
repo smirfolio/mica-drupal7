@@ -198,6 +198,20 @@ function _obiba_mica_settings_search_networks_form(&$form) {
     '#default_value' => variable_get_value('networks_column_variables'),
     '#description' => $info['description'],
   );
+  $info = variable_get_info('networks_column_study_variables');
+  $form['search_display_settings']['networks_form']['networks_column']['networks_column_study_variables'] = array(
+      '#type' => 'checkbox',
+      '#title' => $info['title'],
+      '#default_value' => variable_get_value('networks_column_study_variables'),
+      '#description' => $info['description'],
+  );
+  $info = variable_get_info('networks_column_dataschema_variables');
+  $form['search_display_settings']['networks_form']['networks_column']['networks_column_dataschema_variables'] = array(
+      '#type' => 'checkbox',
+      '#title' => $info['title'],
+      '#default_value' => variable_get_value('networks_column_dataschema_variables'),
+      '#description' => $info['description'],
+  );
 
   // labels
   $info = variable_get_info('networks_search_label');
@@ -317,6 +331,20 @@ function _obiba_mica_settings_search_studies_form(&$form) {
     '#title' => $info['title'],
     '#default_value' => variable_get_value('studies_column_variables'),
     '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_study_variables');
+  $form['search_display_settings']['studies_form']['studies_column']['studies_column_study_variables'] = array(
+      '#type' => 'checkbox',
+      '#title' => $info['title'],
+      '#default_value' => variable_get_value('studies_column_study_variables'),
+      '#description' => $info['description'],
+  );
+  $info = variable_get_info('studies_column_dataschema_variables');
+  $form['search_display_settings']['studies_form']['studies_column']['studies_column_dataschema_variables'] = array(
+      '#type' => 'checkbox',
+      '#title' => $info['title'],
+      '#default_value' => variable_get_value('studies_column_dataschema_variables'),
+      '#description' => $info['description'],
   );
 
 
@@ -456,6 +484,13 @@ function _obiba_mica_settings_search_variables_form(&$form) {
     '#type' => 'fieldset',
     '#title' => t('Variables column display settings'),
     '#collapsible' => FALSE,
+  );
+  $info = variable_get_info('variables_column_type');
+  $form['search_display_settings']['variables_form']['variables_column']['variables_column_type'] = array(
+      '#type' => 'checkbox',
+      '#title' => $info['title'],
+      '#default_value' => variable_get_value('variables_column_type'),
+      '#description' => $info['description'],
   );
   $info = variable_get_info('variables_column_study');
   $form['search_display_settings']['variables_form']['variables_column']['variables_column_study'] = array(

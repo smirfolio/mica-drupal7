@@ -346,7 +346,19 @@ function _obiba_mica_variable_search_networks(&$variable) {
     'title' => t('Show variables'),
     'description' => t('Show variables column in the networks table.'),
     'type' => 'boolean',
-    'default' => TRUE,
+    'default' => FALSE,
+  );
+  $variable['networks_column_study_variables'] = array(
+      'title' => t('Show study variables'),
+      'description' => t('Show study variables column in the networks table.'),
+      'type' => 'boolean',
+      'default' => TRUE,
+  );
+  $variable['networks_column_dataschema_variables'] = array(
+      'title' => t('Show dataschema variables'),
+      'description' => t('Show dataschema variables column in the networks table.'),
+      'type' => 'boolean',
+      'default' => TRUE,
   );
   $variable['networks_search_label'] = array(
     'title' => t('Networks search label'),
@@ -436,7 +448,19 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'title' => t('Show variables'),
     'description' => t('Show variables column in the studies table.'),
     'type' => 'boolean',
-    'default' => TRUE,
+    'default' => FALSE,
+  );
+  $variable['studies_column_study_variables'] = array(
+      'title' => t('Show variables'),
+      'description' => t('Show study variables column in the studies table.'),
+      'type' => 'boolean',
+      'default' => TRUE,
+  );
+  $variable['studies_column_dataschema_variables'] = array(
+      'title' => t('Show variables'),
+      'description' => t('Show dataschema variables column in the studies table.'),
+      'type' => 'boolean',
+      'default' => TRUE,
   );
   $variable['studies_search_label'] = array(
     'title' => t('Studies search label'),
@@ -679,6 +703,12 @@ function _obiba_mica_variable_search_variables(&$variable) {
   $variable['search_variables'] = array(
     'title' => t('Show variables search'),
     'description' => t('If selected, the variables tab will be displayed in the search page.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['variables_column_type'] = array(
+    'title' => t('Show type'),
+    'description' => t('Show type column in the variables table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
