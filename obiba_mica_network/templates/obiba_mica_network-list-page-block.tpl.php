@@ -45,6 +45,10 @@
       $counts = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
       $variables = $counts->variables;
       $vars_caption = $variables < 2 ? t('variable') : t('variables');
+      $study_vars = $counts->studyVariables;
+      $study_vars_caption = $study_vars < 2 ? t('study variable') : t('study variables');
+      $dataschema_vars = $counts->dataschemaVariables;
+      $dataschema_vars_caption = $dataschema_vars < 2 ? t('dataschema variable') : t('dataschema variables');
       $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
       $dataset_caption = $datasets < 2 ? t('dataset') : t('datasets');
       $studies = $counts->studies;
@@ -60,6 +64,14 @@
       <?php if (!empty($variables) && variable_get_value('networks_column_variables')): ?>
             <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $vars_caption,
               array('@count' => obiba_mica_commons_format_number($variables))), $network->id, array('class' => 'btn-default btn-xxs')) ?>
+      <?php endif ?>
+      <?php if (!empty($study_vars) && variable_get_value('networks_column_study_variables')): ?>
+        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $study_vars_caption,
+            array('@count' => obiba_mica_commons_format_number($study_vars))), $network->id, array('class' => 'btn-default btn-xxs'), 'variable(in(Mica_variable.variableType,Study))') ?>
+      <?php endif ?>
+      <?php if (!empty($dataschema_vars) && variable_get_value('networks_column_dataschema_variables')): ?>
+        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $dataschema_vars_caption,
+            array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $network->id, array('class' => 'btn-default btn-xxs'), 'variable(in(Mica_variable.variableType,Dataschema))') ?>
       <?php endif ?>
     </div>
   </div>

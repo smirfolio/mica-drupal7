@@ -487,11 +487,12 @@ function obiba_mica_app_angular_get_search_config() {
     'classificationsLinkLabel' => variable_get_value('mica_search_classifications_link_label'),
     'taxonomyNavHelp' => variable_get_value('mica_search_taxonomy_nav_help'),
     'vocabularyNavHelp' => variable_get_value('mica_search_vocabulary_nav_help'),
-      array(
+    'variables' =>  array(
         'showSearchTab' => variable_get_value('search_variables'),
         'searchLabel' => variable_get_value('variables_search_label'),
         'noResultsLabel' => variable_get_value('variables_empty_label'),
         'variablesColumn' => array(
+          'showVariablesTypeColumn' => variable_get_value('variables_column_type'),
           'showVariablesStudiesColumn' => variable_get_value('variables_column_study'),
           'showVariablesDatasetsColumn' => variable_get_value('variables_column_dataset'),
           'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
@@ -525,9 +526,11 @@ function obiba_mica_app_angular_get_search_config() {
           'showStudiesOtherColumn' => variable_get_value('studies_column_other'),
           'showStudiesParticipantsColumn' => variable_get_value('studies_column_participants'),
           'showStudiesNetworksColumn' => variable_get_value('studies_column_networks'),
-          'showStudiesDatasetsColumn' => variable_get_value('studies_column_study_datasets'),
-          'showStudiesHarmonizedDatasetsColumn' => variable_get_value('studies_column_harmonization_datasets'),
+          'showStudiesStudyDatasetsColumn' => variable_get_value('studies_column_study_datasets'),
+          'showStudiesHarmonizationDatasetsColumn' => variable_get_value('studies_column_harmonization_datasets'),
           'showStudiesVariablesColumn' => variable_get_value('studies_column_variables'),
+          'showStudiesStudyVariablesColumn' => variable_get_value('studies_column_study_variables'),
+          'showStudiesDataschemaVariablesColumn' => variable_get_value('studies_column_dataschema_variables'),
         )
       ),
     'networks' =>
@@ -538,8 +541,10 @@ function obiba_mica_app_angular_get_search_config() {
         'networksColumn' => array(
           'showNetworksStudiesColumn' => variable_get_value('networks_column_studies'),
           'showNetworksStudyDatasetColumn' => variable_get_value('networks_column_study_datasets'),
-          'showNetworksHarmonizedDatasetColumn' => variable_get_value('networks_column_harmonization_datasets'),
-          'showNetworksVariablesColumn' => variable_get_value('networks_column_variables'),
+          'showNetworksHarmonizationDatasetColumn' => variable_get_value('networks_column_harmonization_datasets'),
+          'showNetworksVariablesColumn' => variable_get_value('networks_column_variables'), 
+          'showNetworksStudyVariablesColumn' => variable_get_value('networks_column_study_variables'),
+          'showNetworksDataschemaVariablesColumn' => variable_get_value('networks_column_dataschema_variables'),
         )
       ),
     'coverage' =>
