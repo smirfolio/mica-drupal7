@@ -77,6 +77,7 @@ function obiba_mica_network_page_detail($network_id) {
           $flat_network_attachments->themeFolders($filtered_tree_path,
             NULL, $network_id);
       }
+      obiba_mica_app_angular_load_js_resources('obiba_mica_files');
     }
 
     $networks_id = array($network_id);
@@ -119,6 +120,7 @@ function obiba_mica_network_page_detail($network_id) {
         'associated_people_modal' => !empty($associated_people_modal) ?
           $associated_people_modal : NULL,
         'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
+        'file_browser' => theme('obiba_mica_files_browser', array('doc_path' => '/network', 'doc_id' => $network_id)),
         'statistics' => $studies_statistics,
       ));
       obiba_mica_commons_set_cache('network_theme_cache-' . $network_id, $network_theme);

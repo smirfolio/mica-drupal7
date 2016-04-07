@@ -136,6 +136,7 @@ function obiba_mica_study_page_detail($study_id) {
       if (!empty($filtered_tree_path)) {
         $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, MicaFilesResource::POPULATION, $study_id);
       }
+      obiba_mica_app_angular_load_js_resources('obiba_mica_files');
     }
     $cached_populations = obiba_mica_commons_get_cache('populations_detail_cache-' . $study_id);
     if (!empty($cached_populations->data)) {
@@ -168,6 +169,7 @@ function obiba_mica_study_page_detail($study_id) {
           'contacts_modal' => !empty($contact_detail_modal) ? $contact_detail_modal : NULL,
           'study_dto' => $study_dto,
           'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
+          'file_browser' => theme('obiba_mica_files_browser', array('doc_path' => '/study', 'doc_id' => $study_id)),
           'timeline' => '<div id="vis" style="width=100%"></div>',
           'populations' => $populations,
           'opal' => $opal_output,
