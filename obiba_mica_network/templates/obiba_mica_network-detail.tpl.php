@@ -163,7 +163,7 @@
   <?php if (!empty($attachments)): ?>
     <section>
       <h2><?php print variable_get_value('files_documents_label'); ?></h2>
-      <?php print $file_browser; ?>
+      <?php print (!empty($file_browser) ? $file_browser : $attachments); ?>
     </section>
   <?php endif; ?>
 

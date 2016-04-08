@@ -72,7 +72,8 @@
             $('.show-coverage').removeClass('hidden');
           }
         });
-        var anchor = location.hash.substr(1)?location.hash.substr(1):null;
+
+        var anchor = location.hash.substr(1)? location.hash.substr(1).replace(/^\//, '') :null;
         if(anchor) {
           $('#tab-pane a[href="#' + anchor + '"]').tab('show');
           $('html, body').animate({

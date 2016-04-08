@@ -198,7 +198,7 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
       'locale' => $language->language,
       'show_detailed_stats' => variable_get_value('dataset_detailed_var_stats'),
       'data_access_config' => obiba_mica_app_angular_get_access_config(),
-      'obibaSearchOptions' => obiba_mica_app_angular_get_search_config()
+      'obibaSearchOptions' => module_exists('obiba_mica_repository') ? obiba_mica_app_angular_get_search_config() : array()
     ),
   );
 
