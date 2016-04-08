@@ -13,7 +13,6 @@ function obiba_mica_study_menu() {
     'page callback' => 'obiba_mica_study_page_list',
     'file' => 'obiba_mica_study-page-list.inc',
     'access callback' => 'obiba_mica_study_access_page',
-    'access arguments' => array('1'),
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM
   );
@@ -63,11 +62,14 @@ function obiba_mica_study_menu() {
  * Access Studies list/Study page callback
  *
  */
-function obiba_mica_study_access_page($role) {
+function obiba_mica_study_access_page() {
   if (module_exists('content_access')) {
+    global $user;
+    foreach($user->roles as $id_role=>$role){
     $node = node_load(variable_get_value('study_list_page'));
     $accepted_roles = content_access_per_node_setting('view', $node);
-    return in_array($role, $accepted_roles);
+    return in_array($id_role, $accepted_roles);
+    }
   }
   return TRUE;
 }
