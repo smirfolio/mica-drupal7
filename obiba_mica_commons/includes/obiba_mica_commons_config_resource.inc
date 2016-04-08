@@ -6,7 +6,7 @@
  */
 
 /**
- * Class MicaConfigRequest
+ * Class MicaConfigResource
  */
 class MicaConfigResource extends MicaClient {
   const CONFIG_WS_URL = '/config/_public';
@@ -25,7 +25,7 @@ class MicaConfigResource extends MicaClient {
    * Get public configuration.
    *
    * @return object
-   *   The taxonomy summaries wrapper.
+   *   The Mica server public configuration.
    */
   public function getConfig() {
     $this->setLastResponse(NULL);
@@ -51,6 +51,11 @@ class MicaConfigResource extends MicaClient {
     }
   }
 
+  /**
+   * Get whether the published documents are accessible by anonymous user.
+   *
+   * @return bool
+   */
   public function isOpenAccess() {
     $config = $this->getConfig();
     if(empty($config)) {
