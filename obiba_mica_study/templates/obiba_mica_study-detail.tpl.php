@@ -46,7 +46,7 @@
         <?php if (variable_get_value('studies_list_show_search_button')): ?>
           <li><?php print MicaClientAnchorHelper::studyVariables(NULL, $study_dto->id) ?></li>
         <?php endif; ?>
-        <?php if (variable_get_value('mica_enable_to_mica_serve_button')): ?>
+        <?php if (variable_get_value('mica_enable_to_mica_server_link')): ?>
           <li><a href="<?php print variable_get_value('mica_url').'/#/study/'.$study_dto->id ?>" class="btn btn-primary"><?php print t('Edit The Study') ?></a></li>
         <?php endif; ?>
       </ul>
