@@ -110,7 +110,13 @@ function obiba_mica_study_page_detail($study_id) {
       if ($title_order_option == 1) {
         drupal_set_title($acronym . ' - ' . $name);
       }
-      if ($title_order_option == 2) {
+      else if ($title_order_option == 2) {
+        drupal_set_title($name);
+      }
+      else if ($title_order_option == 3) {
+        drupal_set_title($acronym);
+      }
+      else {
         drupal_set_title($name);
       }
     }

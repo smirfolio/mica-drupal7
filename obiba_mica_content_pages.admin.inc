@@ -210,6 +210,7 @@ function obiba_mica_settings_study_content(&$form) {
       0 => t('Study Title - Acronym'),
       1 => t('Acronym - Study Title'),
       2 => t('Study Title only'),
+      3 => t('Acronym only'),
     ),
     '#description' => $info['description'],
   );
