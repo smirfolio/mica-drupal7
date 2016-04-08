@@ -92,7 +92,12 @@ class MicaFilesResource extends MicaClient {
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),
         ), WATCHDOG_WARNING);
-      return array();
+
+      drupal_add_http_header('Status', $e->getCode());
+      return json_encode(array(
+        'code' => $e->getCode(),
+        'message' => $e->getMessage(),
+      ));
     }
   }
 
@@ -121,8 +126,12 @@ class MicaFilesResource extends MicaClient {
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),
         ), WATCHDOG_WARNING);
-      
-      return array();
+
+      drupal_add_http_header('Status', $e->getCode());
+      return json_encode(array(
+        'code' => $e->getCode(),
+        'message' => $e->getMessage(),
+      ));
     }
   }
 
