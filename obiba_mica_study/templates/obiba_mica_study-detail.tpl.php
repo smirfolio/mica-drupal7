@@ -119,7 +119,6 @@
               </td>
             </tr>
           <?php endif; ?>
-
           <?php if (!empty($study_dto->contacts)): ?>
             <tr>
               <th><?php print t('Contacts') ?></th>
@@ -143,6 +142,32 @@
                 </ul>
               </td>
             </tr>
+          <?php endif; ?>
+          <?php if (!empty($study_dto->memberships)): ?>
+            <?php foreach ($study_dto->memberships as $membership): ?>
+              <tr>
+                <th><?php print $membership->role ?></th>
+                <td>
+                  <ul class="list-unstyled">
+                    <?php foreach ($membership->members as  $key_member => $member) : ?>
+                      <li>
+                        <a href="#" data-toggle="modal"
+                           data-target="#member_<?php print $study_dto->id ?>_<?php print $key_member ?>">
+                          <?php print $member->title; ?>
+                          <?php print $member->firstName; ?>
+                          <?php print $member->lastName; ?>
+                          <?php if (!empty($member->academicLevel)) {
+                            print ', ' . $member->academicLevel;
+                          } ?>
+                          (<?php print obiba_mica_commons_get_localized_field($member->institution, 'name'); ?>
+                          )
+                        </a>
+                      </li>
+                    <?php endforeach; ?>
+                  </ul>
+                </td>
+              </tr>
+            <?php endforeach; ?>
           <?php endif; ?>
 
           <?php if (!empty($study_dto->startYear)): ?>
@@ -460,6 +485,7 @@
 
   <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
   <div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
+  <div><?php !empty($members_modal) ? print $members_modal : ''; ?></div>
 </article>
 <div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i>
 </div>

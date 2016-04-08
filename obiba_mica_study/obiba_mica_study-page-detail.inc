@@ -134,6 +134,9 @@ function obiba_mica_study_page_detail($study_id) {
     if (module_exists('obiba_mica_persons') && !empty($study_dto)) {
       $investigator_detail_modal = obiba_mica_persons_get_person_detail('investigator', $study_dto->id, $study_dto->investigators);
       $contact_detail_modal = obiba_mica_persons_get_person_detail('contact', $study_dto->id, $study_dto->contacts);
+      foreach($study_dto->memberships as $membership){
+          $member_detail_modal = obiba_mica_persons_get_person_detail('member', $study_dto->id, $membership->members);
+      }
     }
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
@@ -173,6 +176,7 @@ function obiba_mica_study_page_detail($study_id) {
         array(
           'investigators_modal' => !empty($investigator_detail_modal) ? $investigator_detail_modal : NULL,
           'contacts_modal' => !empty($contact_detail_modal) ? $contact_detail_modal : NULL,
+          'members_modal' => !empty($member_detail_modal) ? $member_detail_modal : NULL,
           'study_dto' => $study_dto,
           'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
           'file_browser' => theme('obiba_mica_files_browser', array('doc_path' => '/study', 'doc_id' => $study_id)),
