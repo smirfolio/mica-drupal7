@@ -233,6 +233,12 @@ function _obiba_mica_variable_info_mica_server(&$variable) {
     'type' => 'number',
     'default' => 10,
   );
+  $variable['mica_enable_to_mica_serve_button'] = array(
+    'title' => t('Mica Server Admin Button.'),
+    'description' => t('Display a Button link to Mica Server Admin'),
+    'type' => 'boolean',
+    'default' => 1,
+  );
 }
 
 /**

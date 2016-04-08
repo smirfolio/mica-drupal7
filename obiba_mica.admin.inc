@@ -105,6 +105,13 @@ function _obiba_mica_settings_server(&$form) {
     '#default_value' => variable_get_value('mica_response_page_size_small'),
     '#description' => $info['description'],
   );
+  $info = variable_get_info('mica_enable_to_mica_serve_button');
+  $form['server']['mica_enable_to_mica_serve_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_comments_enabled'),
+    '#description' => $info['description'],
+  );
 }
 
 /**
