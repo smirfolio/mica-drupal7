@@ -31,7 +31,7 @@ class MicaFilesResource extends MicaClient {
   public function getAttachment($entity_type, $entity_id) {
     $this->setLastResponse(NULL);
     $path_attachments = '/' . $entity_type . '/' . $entity_id;
-    $url = $this->micaUrl . '/files-search' . $path_attachments .
+    $url = $this->micaUrl . '/files-search' . $this->encode_path_parts($path_attachments) .
       '?order=asc&query=&recursively=true&sort=name';
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -70,7 +70,7 @@ class MicaFilesResource extends MicaClient {
    */
   public function getFile($path) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/file' . $path;
+    $url = $this->micaUrl . '/file' . $this->encode_path_parts($path);
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -104,7 +104,7 @@ class MicaFilesResource extends MicaClient {
   public function searchFiles($path, $query_params) {
 
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/files-search' . $path . '?' . http_build_query($query_params);
+    $url = $this->micaUrl . '/files-search' . $this->encode_path_parts($path) . '?' . http_build_query($query_params);
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -180,7 +180,7 @@ class MicaFilesResource extends MicaClient {
    *    message : the error message
    */
   public function downloadAttachmentFile($file_path, $file_name) {
-    $url = $this->micaUrl . "/file-dl/" . $file_path . "/" . rawurlencode($file_name);
+    $url = $this->micaUrl . "/file-dl/" . $this->encode_path_parts($file_path) . "/" . rawurlencode($file_name);
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => self::authorizationHeader(array(
@@ -224,6 +224,10 @@ class MicaFilesResource extends MicaClient {
       );
     }
 
+  }
+
+  private function encode_path_parts($path) {
+    return implode('/', array_map('rawurlencode', explode('/', $path)));
   }
 
 }
