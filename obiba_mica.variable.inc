@@ -114,6 +114,13 @@ function obiba_mica_variable_info($options) {
       'default' => NULL,
   );
 
+  $variable['mica_search_classifications_title'] = array(
+      'title' => t('Classifications title'),
+      'description' => t('Text to be displayed as classifications title.'),
+      'type' => 'string',
+      'default' => NULL,
+  );
+  
   $variable['mica_search_classifications_link_label'] = array(
       'title' => t('Classifications link label'),
       'description' => t('Text to be displayed for the classifications link label.'),

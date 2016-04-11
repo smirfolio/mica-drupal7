@@ -484,6 +484,7 @@ function obiba_mica_app_angular_get_search_config() {
     'coverageHelp' => variable_get_value('mica_search_coverage_help'),
     'graphicsLabel' => variable_get_value('mica_search_graphics_label'),
     'graphicsHelp' => variable_get_value('mica_search_graphics_help'),
+    'classificationsTitle' => variable_get_value('mica_search_classifications_title'),
     'classificationsLinkLabel' => variable_get_value('mica_search_classifications_link_label'),
     'taxonomyNavHelp' => variable_get_value('mica_search_taxonomy_nav_help'),
     'vocabularyNavHelp' => variable_get_value('mica_search_vocabulary_nav_help'),
