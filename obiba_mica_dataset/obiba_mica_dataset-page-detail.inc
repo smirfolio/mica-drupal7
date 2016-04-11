@@ -49,11 +49,11 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   else {
     if (!empty($dataset_dto)) {
       switch ($dataset_dto->variableType) {
-        case ('Harmonized') :
-          $dataset_type = 'harmonization-dataset';
+        case ('Study') :
+          $dataset_type = 'study-dataset';
           break;
         default:
-          $dataset_type = 'study-dataset';
+          $dataset_type = 'harmonization-dataset';
       }
 
       $flat_study_attachments = NULL;
