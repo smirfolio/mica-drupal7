@@ -42,8 +42,7 @@ function obiba_mica_files_menu() {
   $items['mica/file/download'] = array(
     'page callback' => 'obiba_mica_file_download',
     'file' => 'obiba_mica_files_services.inc',
-    'access callback' => TRUE,
-    'page arguments' => array(2),
+    'access callback' => TRUE
   );
 
   return $items;

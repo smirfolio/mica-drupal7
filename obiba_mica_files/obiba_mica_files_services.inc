@@ -31,11 +31,14 @@ function obiba_mica_files_search_files() {
   drupal_json_output(json_decode($mica_file->searchFiles($path, $query_params)));
 }
 
-function obiba_mica_file_download() {
+function  obiba_mica_file_download() {
   $path = drupal_get_query_parameters()['path'];
+  $inline = drupal_get_query_parameters()['inline'];
+
+
   $file_path = dirname($path);
   $file_name = basename($path);
-  _obiba_mica_files_download_attachment(NULL, NULL, $file_path, $file_name);
+  _obiba_mica_files_download_attachment(NULL, NULL, $file_path, $file_name, empty($inline) ? 'false' : $inline);
 }
 
 /**
@@ -48,9 +51,9 @@ function obiba_mica_file_download() {
  * @param string $file_resource_id
  *   The file resource id.
  */
-function _obiba_mica_files_download_attachment($entity_id, $entity_type, $file_path, $file_name) {
+function _obiba_mica_files_download_attachment($entity_id, $entity_type, $file_path, $file_name, $inline) {
   $mica_file = new MicaFilesResource();
-  $raw_data = $mica_file->downloadAttachmentFile($file_path, $file_name);
+  $raw_data = $mica_file->downloadAttachmentFile($file_path, $file_name, $inline);
   if (!empty($raw_data) && empty($raw_data['code'])) {
     drupal_add_http_header('Content-Type',
       $raw_data['raw_header_array']['Content-Type']);
