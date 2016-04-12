@@ -169,6 +169,8 @@ class MicaFilesResource extends MicaClient {
    *   The id of the entity.
    * @param string $file_id
    *   The id of the stored file on the server.
+   * @param boolean $inline
+   *   flag to indicate Content-Disposition to be inline
    *
    * @return array
    *   containing :
@@ -179,8 +181,13 @@ class MicaFilesResource extends MicaClient {
    *    code : the error code
    *    message : the error message
    */
-  public function downloadAttachmentFile($file_path, $file_name) {
-    $url = $this->micaUrl . "/file-dl/" . $this->encode_path_parts($file_path) . "/" . rawurlencode($file_name);
+  public function downloadAttachmentFile($file_path, $file_name, $inline) {
+    $url = sprintf("%s/file-dl/%s/%s?inline=%s",
+      $this->micaUrl,
+      $this->encode_path_parts($file_path),
+      rawurlencode($file_name),
+      $inline);
+
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => self::authorizationHeader(array(

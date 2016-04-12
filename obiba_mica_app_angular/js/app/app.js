@@ -74,7 +74,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('BaseUrl', Drupal.settings.basePath);
     ngObibaMicaUrlProvider.setUrl('FileBrowserFileResource', Drupal.settings.basePath + 'mica/file');
     ngObibaMicaUrlProvider.setUrl('FileBrowserSearchResource', Drupal.settings.basePath + 'mica/files/search');
-    ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', Drupal.settings.basePath + 'mica/file/download?path=:path');
+    ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', Drupal.settings.basePath + 'mica/file/download?path=:path&inline=:inline');
 
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);
   }]);
