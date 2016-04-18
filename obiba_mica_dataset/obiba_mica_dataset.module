@@ -599,3 +599,11 @@ function obiba_mica_dataset_get_ng_module_to_load() {
   }
   return FALSE;
 }
+
+function obiba_mica_dataset_harmonization_csv_alter($csv) {
+$impossible_label = strtolower(variable_get_value('dataset_harmonization_impossible_label'));
+if (!empty($impossible_label) && 'impossible' !== $impossible_label) {
+  return preg_replace('/\bimpossible\b/', strtolower($impossible_label), $csv);
+}
+return $csv;
+}
