@@ -96,13 +96,13 @@
         $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
         $vars = $counts->variables;
         $var_caption = $vars < 2 ? t('variable') : t('variables');
-        $study_vars = $counts->studyVariables;
+        $study_vars = !empty($counts->studyVariables)?$counts->studyVariables:NULL;
         $study_var_caption = $study_vars < 2 ? t('study variable') : t('study variables');
-        $dataschema_vars = $counts->dataschemaVariables;
+        $dataschema_vars = !empty($counts->dataschemaVariables)?$counts->dataschemaVariables:NULL;
         $dataschema_var_caption = $dataschema_vars < 2 ? t('dataschema variable') : t('dataschema variables');
         $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
         $dataset_caption = $datasets < 2 ? t('dataset') : t('datasets');
-        $networks = $counts->networks;
+        $networks = !empty($counts->networks)?$counts->networks:NULL;
         $network_caption = $networks < 2 ? t('network') : t('networks');
         ?>
         <?php if (!empty($networks) && variable_get_value('studies_column_networks')): ?>

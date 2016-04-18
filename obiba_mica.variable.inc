@@ -548,6 +548,12 @@ function _obiba_mica_variable_study_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['studies_list_show_studies_count_caption'] = array(
+    'title' => t('Show the studies count caption in list studies page'),
+    'description' => t('If selected the studies count caption will be displayed in list studies page'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
   $variable['studies_list_show_search_button'] = array(
     'title' => t('Show the search studies button  in list studies page'),
     'description' => t('If selected the search studies button will be displayed in list studies page'),
