@@ -23,7 +23,7 @@
   <!-- crosstab variable selection -->
   <div class="well well-sm">
     <div class="row">
-      <div class="col-xs-4">
+      <div class="cross-tab col-xs-4">
         <ui-select ng-model="crosstab.lhs.variable" theme="bootstrap">
           <ui-select-match placeholder="{{'dataset.crosstab.categorical' | translate}}">{{$select.selected.name}}
           </ui-select-match>
@@ -40,7 +40,7 @@
         <i class="fa fa-times fa-2x"></i>
       </div>
 
-      <div class="col-xs-4">
+      <div class="cross-tab col-xs-4">
         <ui-select ng-model="crosstab.rhs.variable" theme="bootstrap">
           <ui-select-match placeholder="{{'dataset.crosstab.another' | translate}}">{{$select.selected.name}}
           </ui-select-match>
