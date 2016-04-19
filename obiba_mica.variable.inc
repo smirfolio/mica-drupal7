@@ -671,6 +671,12 @@ function _obiba_mica_variable_search_datasets(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['datasets_column_acronym'] = array(
+      'title' => t('Show acronym'),
+      'description' => t('Show acronym column in the datasets table.'),
+      'type' => 'boolean',
+      'default' => TRUE,
+  );
   $variable['datasets_column_type'] = array(
     'title' => t('Show type dataset'),
     'description' => t('Show type dataset column in the datasets table.'),

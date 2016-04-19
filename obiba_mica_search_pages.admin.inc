@@ -404,6 +404,13 @@ function _obiba_mica_settings_search_datasets_form(&$form) {
     '#title' => t('Dataset column display settings'),
     '#collapsible' => FALSE,
   );
+  $info = variable_get_info('datasets_column_acronym');
+  $form['search_display_settings']['datasets_form']['datasets_column']['datasets_column_acronym'] = array(
+      '#type' => 'checkbox',
+      '#title' => $info['title'],
+      '#default_value' => variable_get_value('datasets_column_acronym'),
+      '#description' => $info['description'],
+  );
   $info = variable_get_info('datasets_column_type');
   $form['search_display_settings']['datasets_form']['datasets_column']['datasets_column_type'] = array(
     '#type' => 'checkbox',

@@ -507,6 +507,7 @@ function obiba_mica_app_angular_get_search_config() {
         'noResultsLabel' => variable_get_value('datasets_empty_label'),
         'showDatasetsSearchFilter' => variable_get_value('search_datasets_autocomplete'),
         'datasetsColumn' => array(
+          'showDatasetsAcronymColumn' => variable_get_value('datasets_column_acronym'),
           'showDatasetsTypeColumn' => variable_get_value('datasets_column_type'),
           'showDatasetsNetworkColumn' => variable_get_value('datasets_column_networks'),
           'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
