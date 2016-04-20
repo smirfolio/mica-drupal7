@@ -15,7 +15,7 @@ class MicaFilesResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-
+    $this->result_resource_query = NULL;
   }
 
   /**
@@ -31,8 +31,9 @@ class MicaFilesResource extends MicaClient {
   public function getAttachment($entity_type, $entity_id) {
     $this->setLastResponse(NULL);
     $path_attachments = '/' . $entity_type . '/' . $entity_id;
-    $url = $this->micaUrl . '/files-search' . $this->encode_path_parts($path_attachments) .
+    $resource_query = '/files-search' . $this->encode_path_parts($path_attachments) .
       '?order=asc&query=&recursively=true&sort=name';
+    $url = $this->micaUrl . $resource_query;
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -42,20 +43,27 @@ class MicaFilesResource extends MicaClient {
     ));
 
     $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $this->wrapAttachments($entity_type, $entity_id, json_decode($data));
-    }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
+    $this->getCache($resource_query);
+    if (!isset($this->result_resource_query)) {
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $this->result_resource_query = $this->wrapAttachments($entity_type, $entity_id, json_decode($data));
+        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        return $this->result_resource_query;
+      }
+      catch (HttpClientException $e) {
+        watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
-      return $this->wrapAttachments($entity_type, $entity_id,array());
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage(),
+          ), WATCHDOG_WARNING);
+        $this->result_resource_query = NULL;
+        return $this->wrapAttachments($entity_type, $entity_id, array());
+      }
     }
+    return $this->result_resource_query;
   }
 
   /**
@@ -70,7 +78,8 @@ class MicaFilesResource extends MicaClient {
    */
   public function getFile($path) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/file' . $this->encode_path_parts($path);
+    $resource_query = '/file' . $this->encode_path_parts($path);
+    $url = $this->micaUrl . $resource_query;
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -80,31 +89,38 @@ class MicaFilesResource extends MicaClient {
     ));
 
     $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $data;
-    }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
+    $this->getCache($resource_query);
+    if (!isset($this->result_resource_query)) {
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $this->result_resource_query = $data;
+        obiba_mica_commons_set_cache($resource_query, $data);
+        return $data;
+      }
+      catch (HttpClientException $e) {
+        watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage(),
+          ), WATCHDOG_WARNING);
 
-      drupal_add_http_header('Status', $e->getCode());
-      return json_encode(array(
-        'code' => $e->getCode(),
-        'message' => $e->getMessage(),
-      ));
+        drupal_add_http_header('Status', $e->getCode());
+        $this->result_resource_query = NULL;
+        return json_encode(array(
+          'code' => $e->getCode(),
+          'message' => $e->getMessage(),
+        ));
+      }
     }
+    return $this->result_resource_query;
   }
 
   public function searchFiles($path, $query_params) {
-
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/files-search' . $this->encode_path_parts($path) . '?' . http_build_query($query_params);
+    $resource_query = '/files-search' . $this->encode_path_parts($path) . '?' . http_build_query($query_params);
+    $url = $this->micaUrl . $resource_query;
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -114,25 +130,33 @@ class MicaFilesResource extends MicaClient {
     ));
 
     $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $data;
-    }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
+    $this->getCache($resource_query);
+    if (!isset($this->result_resource_query)) {
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $this->result_resource_query = $data;
+        obiba_mica_commons_set_cache($resource_query, $data);
+        return $data;
+      }
+      catch (HttpClientException $e) {
+        watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage(),
+          ), WATCHDOG_WARNING);
 
-      drupal_add_http_header('Status', $e->getCode());
-      return json_encode(array(
-        'code' => $e->getCode(),
-        'message' => $e->getMessage(),
-      ));
+        drupal_add_http_header('Status', $e->getCode());
+        $this->result_resource_query = NULL;
+        return json_encode(array(
+          'code' => $e->getCode(),
+          'message' => $e->getMessage(),
+        ));
+      }
     }
+    return $this->result_resource_query;
+
   }
 
   /**
