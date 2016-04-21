@@ -299,6 +299,13 @@ mica.service('LocalizedStringService',
       this.getLocal = function () {
         return Drupal.settings.angularjsApp.locale;
       };
+
+      this.formatNumber = function (number){
+        console.log(number);
+        console.log(this.getLocal());
+        return number.toLocaleString(this.getLocal());
+      };
+
     })
   .service('GraphicChartsConfigurations', ['GraphicChartsConfig', function (GraphicChartsConfig) {
     this.setClientConfig = function () {
