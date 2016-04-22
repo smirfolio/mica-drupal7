@@ -27,7 +27,9 @@ mica.ObibaGraphicCharts
       title: charOptions.geoChartOptions.title,
       options: charOptions.geoChartOptions.options,
       header: charOptions.geoChartOptions.header,
-      active: true
+      active: true,
+      ordered:true,
+      notOrdered: false
     };
   }])
   .controller('StudiesDesignsController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
@@ -36,7 +38,6 @@ mica.ObibaGraphicCharts
       title: charOptions.studiesDesigns.title,
       options: charOptions.studiesDesigns.options,
       header: charOptions.studiesDesigns.header,
-      tableOptions: charOptions.studiesDesigns.tableOptions,
       active: true,
       ordered:true,
       notOrdered: false
@@ -48,7 +49,6 @@ mica.ObibaGraphicCharts
       title: charOptions.numberParticipants.title,
       options: charOptions.numberParticipants.options,
       header: charOptions.numberParticipants.header,
-      tableOptions: charOptions.numberParticipants.tableOptions,
       active: true,
       ordered:false,
       notOrdered: true
@@ -60,7 +60,6 @@ mica.ObibaGraphicCharts
     title: charOptions.biologicalSamples.title,
     options: charOptions.biologicalSamples.options,
     header: charOptions.biologicalSamples.header,
-    tableOptions: charOptions.biologicalSamples.tableOptions,
     active: true,
     ordered:true,
     notOrdered: false
