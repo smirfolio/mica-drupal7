@@ -136,16 +136,6 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_taxonomy_tabs_order');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_tabs_order');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_result_tabs_order');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_list_label');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_list_help', NULL, 'textarea', 2000);
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_coverage_label');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_coverage_help', NULL, 'textarea', 2000);
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_graphics_label');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_graphics_help', NULL, 'textarea', 2000);
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_classifications_title');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_classifications_link_label');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_taxonomy_nav_help', NULL, 'textarea', 2000);
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_vocabulary_nav_help', NULL, 'textarea', 2000);
 }
 
 
@@ -547,16 +537,7 @@ function _obiba_mica_settings_search_variables_form(&$form) {
     '#default_value' => variable_get_value('variables_strict_coverage'),
     '#description' => $info['description'],
   );
-  $info = variable_get_info('variables_empty_coverage_label');
-  $form['search_display_settings']['variables_form']['variables_empty_coverage_label'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('variables_empty_coverage_label'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
 }
-
 
 /**
  * Retrieves taxonomies
