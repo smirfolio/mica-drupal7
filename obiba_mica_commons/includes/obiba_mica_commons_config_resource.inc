@@ -52,6 +52,37 @@ class MicaConfigResource extends MicaClient {
   }
 
   /**
+   * Get translations.
+   *
+   * @param string $locale
+   *   The locale to get translations for.
+   * @return object
+   *   The Mica server translations resource.
+   */
+  public function getTranslations($locale) {
+    $this->setLastResponse(NULL);
+    $url = $this->micaUrl . '/config/i18n/'. $locale . '.json';
+    $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => array(
+                'Accept' => array(parent::HEADER_JSON),
+            ),
+    ));
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+
+      return $data;
+    }
+    catch (HttpClientException $e) {
+      watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+      return array();
+    }
+  }
+
+  /**
    * Get whether the published documents are accessible by anonymous user.
    *
    * @return bool
