@@ -301,8 +301,6 @@ mica.service('LocalizedStringService',
       };
 
       this.formatNumber = function (number){
-        console.log(number);
-        console.log(this.getLocal());
         return number.toLocaleString(this.getLocal());
       };
 
