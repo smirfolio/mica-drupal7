@@ -476,6 +476,8 @@ function obiba_mica_app_angular_get_search_config() {
   }, variable_get_value('coverage_group_by'));
 
   return array(
+    'SearchHelpText' =>  variable_get_value('help_text_search_page'),
+    'ClassificationHelpText' =>  variable_get_value('help_text_harmonization_potential_page'),
     'taxonomyTabsOrder' => $get_array_value('mica_taxonomy_tabs_order'),
     'searchTabsOrder' => $get_array_value('mica_search_tabs_order'),
     'resultTabsOrder' => $get_array_value('mica_result_tabs_order'),
