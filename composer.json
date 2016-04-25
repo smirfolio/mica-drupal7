@@ -1,6 +1,6 @@
 {
   "require": {
-    "obiba/obiba-mica-protos": "^1.1",
+    "obiba/obiba-mica-protos": "dev-master",
     "erusev/parsedown": "^1.5"
   }
 }
