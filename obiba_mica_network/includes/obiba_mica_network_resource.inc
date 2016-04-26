@@ -15,7 +15,7 @@ class MicaNetworkResource extends MicaClient {
     DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
   }
 
-  /**
+  /**get_networks
    * Get the list of networks.
    *
    * @param null $study_id
@@ -35,8 +35,8 @@ class MicaNetworkResource extends MicaClient {
     $params .= empty($query) ? '' : '&query=' . $query;
     $params .= empty($study_id) ? '' : '&study=' . rawurlencode($study_id);
     $resource_query = '/networks/_search?' . $params;
-    $this->getCache($resource_query);
-    if (!isset($this->result_resource_query)) {
+    $result_resource_query = obiba_mica_commons_get_cache($resource_query);
+    if (empty($result_resource_query)) {
       $url_networks = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url_networks, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -50,8 +50,8 @@ class MicaNetworkResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = new NetworkJoinResponseWrapper(json_decode($data));
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
-        return $this->result_resource_query;
+        obiba_mica_commons_set_cache($resource_query, $result_resource_query);
+        return $result_resource_query;
       }
       catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -59,11 +59,52 @@ class MicaNetworkResource extends MicaClient {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
           ), WATCHDOG_WARNING);
-        $this->result_resource_query = NULL;
         return array();
       }
     }
-    return $this->result_resource_query;
+    return $result_resource_query;
+  }
+
+
+  /**
+   * Get the list of network details.
+   *
+   * @param null $networkIds
+   * @return array|mixed
+   */
+  public function get_network_details($networkIds) {
+    $this->setLastResponse(NULL);
+    $resource_query = '/networks/_rql?query=' . RqlQueryBuilder::networks($networkIds);
+    $result_resource_query = obiba_mica_commons_get_cache($resource_query);
+    if (empty($result_resource_query)) {
+      $url_networks = $this->micaUrl . $resource_query;
+      $request = new HttpClientRequest($url_networks, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        )
+      ));
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $response = json_decode($data);
+        $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
+        obiba_mica_commons_set_cache($resource_query, $result_resource_query);
+        return $result_resource_query;
+      }
+      catch (HttpClientException $e) {
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+
+        return array();
+      }
+    }
+    return $result_resource_query;
   }
 
   /**
