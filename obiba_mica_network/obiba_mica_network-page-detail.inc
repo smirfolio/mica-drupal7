@@ -21,7 +21,10 @@ function obiba_mica_network_page_detail($network_id) {
   if (!empty($network_dto)) {
 
     if (!empty($network_dto->networkSummaries)) {
-      obiba_mica_network_networks_datatable_init($network_dto->networkSummaries);
+      $ids = array_map(function($summary){
+        return $summary->id;
+      }, $network_dto->networkSummaries);
+      obiba_mica_network_networks_datatable_init($network_dto->networkSummaries, $network_resource->get_network_details($ids));
     }
 
     if (!empty($network_dto->studySummaries)) {
@@ -251,7 +254,7 @@ function obiba_mica_network_page_detail_coverage($network_id, $study_ids_string)
 /**
  * @param $network_dto
  */
-function obiba_mica_network_networks_datatable_init($network_summaries) {
+function obiba_mica_network_networks_datatable_init($network_summaries, $network_details) {
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
   }
@@ -264,25 +267,72 @@ function obiba_mica_network_networks_datatable_init($network_summaries) {
   drupal_add_js(array(
     'table_network_networks_headers' => array(
       array("title" => t('Acronym')),
-      array("title" => t('Name'), 'width' => '90%')
+      array("title" => t('Name')),
+      array("title" => t('Studies')),
+      array("title" => t('Participants')),
+      array("title" => t('Countries')),
+      array("title" => t('Study Variables')),
+      array("title" => t('DataSchema Variables'))
     ),
-    'table_network_networks_data' => obiba_mica_network_links_table_rows($network_summaries)
+    'table_network_networks_data' => obiba_mica_network_links_table_rows($network_summaries, $network_details)
   ), 'setting');
 }
 
-function obiba_mica_network_links_table_rows($network_summaries) {
+function obiba_mica_network_links_table_rows($network_summaries, $network_details) {
   $rows = array();
 
-  if (!empty($network_summaries)) {
-    foreach ($network_summaries as $network_summary) {
+  /**
+   * Helper closure to calculate total number of participants and a list of all countries
+   *
+   * @param $network
+   * @return array
+   */
+  $get_participants_countries = function($network) {
+    if (empty($network->studySummaries)) return array('targets' => 0, 'countries' => '');
+    $targets = 0;
+    foreach($network->studySummaries as $summary) {
+      $targets += empty($summary->targetNumber) ? 0 : $summary->targetNumber->number;
+      $countries[] = implode(',', $summary->countries);
+    };
+
+    return array('targets' => $targets, 'countries' => array_unique($countries));
+  };
+
+  if (!empty($network_details) && !empty($network_details->networks)) {
+    foreach ($network_details->networks as $network) {
+      $extra = $get_participants_countries($network);
       $rows[] = array(
-        obiba_mica_commons_get_localized_field($network_summary, 'acronym'),
-        $network_summary->getPublished() ? MicaClientAnchorHelper::network($network_summary) : t(obiba_mica_commons_get_localized_field($network_summary, 'name'))
+        obiba_mica_commons_get_localized_field($network, 'acronym'),
+        MicaClientAnchorHelper::network($network),
+        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->studies,
+        $extra['targets'],
+        $extra['countries'],
+        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyVariables,
+        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->harmonizationDatasets
       );
     }
   }
 
-  return $rows;
+  $unpublished_networks = array_filter($network_summaries, function($summary){
+    return !$summary->getPublished();
+  });
+
+  if (!empty($unpublished_networks)) {
+    foreach ($unpublished_networks as $unpublished_network) {
+      $rows[] = array(
+        obiba_mica_commons_get_localized_field($unpublished_network, 'acronym'),
+        t(obiba_mica_commons_get_localized_field($unpublished_network, 'name')),
+        '',
+        '',
+        '',
+        '',
+        ''
+      );
+    }
+  }
+
+
+   return $rows;
 }
 
 /**
