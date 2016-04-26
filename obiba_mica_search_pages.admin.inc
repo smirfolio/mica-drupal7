@@ -90,7 +90,7 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#title' => $info['title'],
     '#required' => FALSE,
     '#default_value' => variable_get_value('help_text_search_page'),
-    '#maxlength' => 255,
+    '#maxlength' => 512,
     '#description' => $info['description'],
   );
 
@@ -100,7 +100,7 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#title' => $info['title'],
     '#required' => FALSE,
     '#default_value' => variable_get_value('help_text_harmonization_potential_page'),
-    '#maxlength' => 255,
+    '#maxlength' => 512,
     '#description' => $info['description'],
   );
 
