@@ -16,12 +16,12 @@
   -->
 
 <div>
-  <h2 class="page-header">
+  <h3 class="page-header">
     <a href="<?php print url(MicaClientPathProvider::DATA_ACCESS_REQUEST, array('fragment' => 'data-access-requests')); ?>"
        title="<?php print variable_get_value('access_my_requests_button'); ?>">
       <i class="glyphicon glyphicon-chevron-left"></i>
     </a>
     <?php print variable_get_value('access_request_page_title'); ?>:
     {{dataAccessRequest.id}}
-  </h2>
+  </h3>
 </div>

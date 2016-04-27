@@ -90,14 +90,14 @@ function _obiba_mica_variable_search_page(&$variable) {
     'title' => t('Search help text'),
     'description' => t('Help text to display on the search page.'),
     'type' => 'string',
-    'default' => '<i class="glyphicon glyphicon-info-sign"></i> Search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.',
+    'default' => '<div class="well"><i class="glyphicon glyphicon-info-sign"></i> Search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.</div>',
   );
 
   $variable['help_text_harmonization_potential_page'] = array(
     'title' => t('Classification help text'),
     'description' => t('Help text to display on the variable classification page'),
     'type' => 'string',
-    'default' => '<i class="glyphicon glyphicon-info-sign"></i> The Repository search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.',
+    'default' => '<div class="well"><i class="glyphicon glyphicon-info-sign"></i> The Repository search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.</div>',
   );
 
   $variable['search_page_title'] = array(
