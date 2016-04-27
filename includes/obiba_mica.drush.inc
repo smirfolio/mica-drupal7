@@ -83,6 +83,9 @@ function obiba_mica_drush_timeline_download() {
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
   }
   // Create the path if it does not exist.
+  if (!is_dir($path . '/sites/all')) {
+    drush_op('mkdir', $path . '/sites/all');
+  }
   if (!is_dir($path . '/sites/all/libraries')) {
     drush_op('mkdir', $path . '/sites/all/libraries');
   }
@@ -133,6 +136,9 @@ function obiba_mica_drush_highcharts_download() {
     $path = drush_get_context('DRUSH_DRUPAL_ROOT');
   }
   // Create the path if it does not exist.
+  if (!is_dir($path . '/sites/all')) {
+    drush_op('mkdir', $path . '/sites/all');
+  }
   if (!is_dir($path . '/sites/all/libraries')) {
     drush_op('mkdir', $path . '/sites/all/libraries');
   }
@@ -181,6 +187,9 @@ function obiba_mica_drush_datatable_download() {
   }
 
   // Create the libraries path if it does not exist.
+  if (!is_dir($path . '/sites/all')) {
+    drush_op('mkdir', $path . '/sites/all');
+  }
   if (!is_dir($path . '/sites/all/libraries')) {
     drush_op('mkdir', $path . '/sites/all/libraries');
   }
@@ -285,6 +294,9 @@ function obiba_mica_drush_obiba_progressbar() {
   }
 
   // Create the libraries path if it does not exist.
+  if (!is_dir($path . '/sites/all')) {
+    drush_op('mkdir', $path . '/sites/all');
+  }
   if (!is_dir($path . '/sites/all/libraries')) {
     drush_op('mkdir', $path . '/sites/all/libraries');
   }
