@@ -154,10 +154,10 @@
 
   </section>
   <?php if (!empty($statistics)): ?>
-      <section>
-        <h2><?php print t('Summary statistics'); ?></h2>
-        <?php print render($statistics); ?>
-      </section>
+    <section>
+      <h2><?php print t('Summary statistics'); ?></h2>
+      <?php print render($statistics); ?>
+    </section>
   <?php endif; ?>
 
   <?php if (!empty($attachments)): ?>
@@ -171,38 +171,33 @@
   <?php if (!empty($network_dto->studySummaries) || !empty($network_dto->networkSummaries)): ?>
     <section>
 
-      <div class="row">
-        <?php if (!empty($network_dto->studySummaries)): ?>
-          <div class="<?php print (empty($network_dto->networkSummaries) ?
-            'col-lg-12' : 'col-lg-6') ?> col-xs-12">
-            <h2><?php print t('Studies') ?></h2>
+      <?php if (!empty($network_dto->networkSummaries)): ?>
+        <div>
+          <h2><?php print variable_get_value('networks_section_label') ?></h2>
 
-            <div id="studies-table">
-              <div class="row">
-                <div class="col-lg-12 col-xs-12">
-                  <table class="table table-striped" id="table-studies"></table>
-                </div>
+          <div id="networks-table">
+            <div class="row">
+              <div class="col-lg-12 col-xs-12">
+                <table class="table table-striped" id="table-networks"></table>
               </div>
             </div>
           </div>
-        <?php endif; ?>
+        </div>
+      <?php endif; ?>
 
-        <?php if (!empty($network_dto->networkSummaries)): ?>
-          <div class="<?php print (empty($network_dto->studySummaries) ?
-            'col-lg-12' : 'col-lg-6') ?> col-xs-12">
-            <h2><?php print variable_get_value('networks_section_label') ?></h2>
+      <?php if (!empty($network_dto->studySummaries)): ?>
+        <div>
+          <h2><?php print t('Studies') ?></h2>
 
-            <div id="networks-table">
-              <div class="row">
-                <div class="col-lg-12 col-xs-12">
-                  <table class="table table-striped" id="table-networks"></table>
-                </div>
+          <div id="studies-table">
+            <div class="row">
+              <div class="col-lg-12 col-xs-12">
+                <table class="table table-striped" id="table-studies"></table>
               </div>
             </div>
           </div>
-        <?php endif; ?>
-
-      </div>
+        </div>
+      <?php endif; ?>
 
     </section>
   <?php endif; ?>
