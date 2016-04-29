@@ -308,7 +308,7 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
         $extra['targets'],
         $extra['countries'],
         $network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyVariables,
-        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->harmonizationDatasets
+        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->dataschemaVariables
       );
     }
   }
