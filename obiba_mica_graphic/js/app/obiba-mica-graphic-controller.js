@@ -22,8 +22,8 @@
 mica.ObibaGraphicCharts
   .controller('GeoChartController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
     var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
+    $scope.directive = {title:charOptions.geoChartOptions.title};
     $scope.chart = {
-      geoTitle : charOptions.geoChartOptions.title,
       title: charOptions.geoChartOptions.title,
       options: charOptions.geoChartOptions.options,
       header: charOptions.geoChartOptions.header,
@@ -34,6 +34,7 @@ mica.ObibaGraphicCharts
   }])
   .controller('StudiesDesignsController', ['$scope', 'GraphicChartsConfig', function ($scope, GraphicChartsConfig) {
     var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
+    $scope.directive = {title:charOptions.studiesDesigns.title};
     $scope.chart = {
       title: charOptions.studiesDesigns.title,
       options: charOptions.studiesDesigns.options,

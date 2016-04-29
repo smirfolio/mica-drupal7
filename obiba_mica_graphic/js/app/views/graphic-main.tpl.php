@@ -5,9 +5,8 @@
              heading="{{'graphics.geo-charts' | translate}}">
       <div class="row" ng-controller='GeoChartController'>
         <div class="col-md-6">
-          <div ng-if="chart.title"
-               style="color: black; font-size: 13px; font-family:Arial; font-weight:bold; margin:25px 0px 25px 95px;">
-            {{chart.title | translate}}
+          <div ng-if="chart.title" class="chart-title">
+            {{directive.title | translate}}
           </div>
           <div obiba-chart
                field-transformer="country"
@@ -17,7 +16,7 @@
                chart-options-name="geoChartOptions"
                chart-options="chart.options"
                chart-header="chart.header"
-               chart-title="chart.title"
+               chart-title-graph="chart.title"
                chart-select-graphic="selectedTabGraphic.geoCharts"
           >
           </div>
@@ -39,16 +38,21 @@
     <uib-tab ng-click="selectTab('studyDesign')"
              heading="{{'graphics.study-design' | translate}}">
       <div class="row" ng-controller='StudiesDesignsController'>
-        <div class="col-md-6" obiba-chart
+        <div class="col-md-6">
+        <div ng-if="chart.title" class="chart-title" >
+          {{directive.title | translate}}
+        </div>
+        <div obiba-chart
              chart-type="google.charts.Bar"
              chart-aggregation-name="methods-designs"
              chart-entity-dto="studyResultDto"
              chart-options-name="studiesDesigns"
              chart-options="chart.options"
              chart-header="chart.header"
-             chart-title="chart.title"
+             chart-title-graph="chart.title"
              chart-select-graphic="selectedTabGraphic.studyDesign"
         >
+        </div>
         </div>
         <div class="col-md-6" obiba-table
              chart-type="Table"
@@ -74,7 +78,7 @@
              chart-options-name="numberParticipants"
              chart-options="chart.options"
              chart-header="chart.header"
-             chart-title="chart.title"
+             chart-title-graph="chart.title"
              chart-select-graphic="selectedTabGraphic.nbrParticipants"
         >
         </div>
@@ -104,7 +108,7 @@
              chart-options-name="biologicalSamples"
              chart-options="chart.options"
              chart-header="chart.header"
-             chart-title="chart.title"
+             chart-title-graph="chart.title"
              chart-select-graphic="selectedTabGraphic.bioSamples"
         >
         </div>
