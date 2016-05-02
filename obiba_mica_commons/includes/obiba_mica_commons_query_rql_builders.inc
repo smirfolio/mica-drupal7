@@ -4,21 +4,21 @@
 class RqlQueryBuilder {
   
   public static function network_query_charts($studyIds) {
-    return self::createQuery(
+    return self::createChartsQuery(
       "variable(in(studyIds,(%s)),sort(name),aggregate(%s,bucket(studyIds))),locale(%s)",
       $studyIds
     );
   }
 
   public static function study_query_charts($studyId) {
-    return self::createQuery(
+    return self::createChartsQuery(
       "variable(eq(studyIds,%s),sort(name),aggregate(%s,bucket(dceIds))),locale(%s)",
       $studyId
     );
   }
 
   public static function dataset_query_charts($datasetId) {
-    return self::createQuery(
+    return self::createChartsQuery(
       "variable(eq(datasetId,%s),sort(name),aggregate(%s)),locale(%s)",
       $datasetId
     );
@@ -32,6 +32,16 @@ class RqlQueryBuilder {
   }
 
   private static function createQuery($format, $args) {
+    global $language;
+
+    return sprintf(
+      $format ,
+      is_array($args) ? join(',', $args) : $args,
+      $language->language
+    );
+  }
+
+  private static function createChartsQuery($format, $args) {
     global $language;
 
     return sprintf(
