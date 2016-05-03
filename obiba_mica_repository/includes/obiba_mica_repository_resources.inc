@@ -4,7 +4,7 @@
  * @file
  * Mica networks file
  */
-class ObibaSearchResources extends MicaSearchResource {
+class ObibaSearchResources extends MicaClient {
   const MICA_REPOSITORY = 'mica/repository';
 
   function __construct() {
@@ -98,6 +98,42 @@ class ObibaSearchResources extends MicaSearchResource {
       $options['fragment'] = '/search?' . http_build_query($query_params);
     }
     return l($text, $url, $options);
+  }
+
+  public function taxonomiesCoverageRql($query, $type, $aggregation_type, $strict) {
+    if (!empty($_SESSION['errorsQuery'])) {
+      unset($_SESSION['errorsQuery']);
+    }
+
+    $request_parameters = array(
+      'query' => $query,
+      'strict' => $strict ? 'true' : 'false'
+    );
+
+    $url = sprintf("%s/%s/legacy/_%s", $this->micaUrl, $type, $aggregation_type);
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON)
+        )
+      ),
+      'parameters' => $request_parameters,
+      'data' => !empty($dto_param) ? $dto_param : $this->dtoFilterConstruct($type, NULL, 0, NULL),
+    ));
+
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return empty($data) ? array() : json_decode($data);
+    } catch (HttpClientException $e) {
+      if ($e->getCode() == 403) {
+        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
+      }
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+      return array();
+    }
   }
 
   /**

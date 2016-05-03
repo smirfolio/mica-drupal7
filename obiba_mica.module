@@ -5,6 +5,9 @@
  * Code for the obiba_mica modules.
  */
 
+$path_module_study = drupal_get_path('module', 'obiba_mica_study');
+include_once($path_module_study . '/obiba_mica_study-page-list.inc');
+
 /**
  * Implements hook_menu().
  */

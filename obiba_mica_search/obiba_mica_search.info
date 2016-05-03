@@ -1,6 +1,0 @@
-name = "Obiba Mica Search"
-description = "Mica Client -- Search"
-package = Obiba
-core = 7.x
-
-dependencies[] = obiba_mica_commons

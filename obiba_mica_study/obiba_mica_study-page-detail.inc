@@ -369,24 +369,13 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
 }
 
 function obiba_mica_study_coverage($study_id) {
-  if (module_exists('obiba_mica_repository')) {
     $query = RqlQueryBuilder::study_query_charts($study_id);
-  } else {
-    $query = MicaClient::addParameterDtoQueryLink(array(
-        'variables' => array(
-          'terms' => array(
-            'studyIds' => $study_id
-          )
-        )
-      ));
-  }
-
-  $coverage['charts'] = obiba_mica_search_query_charts(
-    $query,
-    array('group-by' => 'dceIds', 'with-facets' => 'false'),
-    NULL,
-    $study_id
-  );
+    $coverage['charts'] = obiba_mica_graphic_search_query_charts(
+      $query,
+      array('group-by' => 'dceIds', 'with-facets' => 'false'),
+      NULL,
+      $study_id
+    );
 
   if (!empty($coverage['charts'])) {
     $coverage['has_coverage'] = TRUE;
