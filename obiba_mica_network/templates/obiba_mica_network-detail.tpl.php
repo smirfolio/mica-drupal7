@@ -20,7 +20,7 @@
           class="fancybox-button">
           <img
             src="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
-            class="imageThumb">
+            class="imageThumb img-responsive">
         </a>
       <?php endif; ?>
       <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?>
