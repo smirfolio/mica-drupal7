@@ -34,8 +34,8 @@ function obiba_mica_dataset_page_detail($dataset_id) {
 
   if (!empty($dataset_dto)) {
   $dataset_cache_coverage = obiba_mica_commons_get_cache('dataset_coverage-' . $dataset_dto->id);
-  if (!empty($dataset_cache_coverage->data)) {
-    $coverage = $dataset_cache_coverage->data;
+  if (!empty($dataset_cache_coverage)) {
+    $coverage = $dataset_cache_coverage;
   }
   else {
       $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
@@ -43,8 +43,8 @@ function obiba_mica_dataset_page_detail($dataset_id) {
     }
   }
   $dataset_theme = obiba_mica_commons_get_cache('dataset_theme-' . $dataset_id);
-  if (!empty($dataset_theme->data)) {
-    return $dataset_theme->data;
+  if (!empty($dataset_theme)) {
+    return $dataset_theme;
   }
   else {
     if (!empty($dataset_dto)) {
@@ -239,7 +239,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
 function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_id) {
   $cached_header_variable_table = obiba_mica_commons_get_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id);
   if (!empty($cached_header_variable_table)) {
-    $data = $cached_header_variable_table->data;
+    $data = $cached_header_variable_table;
   }
   else {
     $dataset_resource = new MicaDatasetResource();
@@ -295,7 +295,7 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
 
   $variable_data = obiba_mica_commons_get_cache('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size);
   if (!empty($variable_data)) {
-    $data = $variable_data->data;
+    $data = $variable_data;
   }
   else {
     $sort = obiba_mica_dataset_get_sorted_by_column();

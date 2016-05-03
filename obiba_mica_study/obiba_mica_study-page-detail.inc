@@ -16,7 +16,7 @@ function obiba_mica_study_page_detail_coverage($study_id) {
   }
   $cached_study_coverage = obiba_mica_commons_get_cache('study-coverage-cache-' . $study_id);
   if (!empty($cached_study_coverage)) {
-    $study_coverage = $cached_study_coverage->data;
+    $study_coverage = $cached_study_coverage;
     if ($study_coverage['coverage'] === 'empty') {
       exit;
     }
@@ -43,7 +43,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
   }
   $cached_networks = obiba_mica_commons_get_cache('study-networks-cache-' . $study_id);
   if (!empty($cached_networks)) {
-    $themed_study_networks = $cached_networks->data;
+    $themed_study_networks = $cached_networks;
     if ($themed_study_networks === 'empty') {
       exit;
     }
@@ -69,7 +69,7 @@ function obiba_mica_study_page_detail_datasets($study_id) {
   }
   $cached_datasets = obiba_mica_commons_get_cache('study-datasets-cache-' . $study_id);
   if (!empty($cached_datasets)) {
-    $themed_datasets = $cached_datasets->data;
+    $themed_datasets = $cached_datasets;
     if ($themed_datasets === 'empty') {
       exit;
     }
@@ -148,8 +148,8 @@ function obiba_mica_study_page_detail($study_id) {
       obiba_mica_app_angular_load_js_resources('obiba_mica_files');
     }
     $cached_populations = obiba_mica_commons_get_cache('populations_detail_cache-' . $study_id);
-    if (!empty($cached_populations->data)) {
-      $populations = $cached_populations->data;
+    if (!empty($cached_populations)) {
+      $populations = $cached_populations;
     }
     else {
       $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $flat_study_attachments);
@@ -168,8 +168,8 @@ function obiba_mica_study_page_detail($study_id) {
     ), 'setting');
 
     $study_theme_cache = obiba_mica_commons_get_cache('study_theme_cache-' . $study_id);
-    if (!empty($study_theme_cache->data)) {
-      return $study_theme_cache->data;
+    if (!empty($study_theme_cache)) {
+      return $study_theme_cache;
     }
     else {
       $study_theme = theme('obiba_mica_study_detail',

@@ -105,8 +105,8 @@ function obiba_mica_network_page_detail($network_id) {
       'study_ids' => $network_dto->studyIds
     ), 'setting');
     $network_theme = obiba_mica_commons_get_cache('network_theme_cache-' . $network_id);
-    if (!empty($network_theme->data)) {
-      return $network_theme->data;
+    if (!empty($network_theme)) {
+      return $network_theme;
     }
     else {
       $network_theme = theme('obiba_mica_network-detail', array(
@@ -228,7 +228,7 @@ function obiba_mica_network_statistics_angular_options($networks_id) {
 function obiba_mica_network_page_detail_coverage($network_id, $study_ids_string) {
   $cached_coverage = obiba_mica_commons_get_cache('network-cache-' . $study_ids_string);
   if (!empty($cached_coverage)) {
-    $themed_coverage = $cached_coverage->data;
+    $themed_coverage = $cached_coverage;
     if ($themed_coverage === 'empty') {
       exit;
     }

@@ -335,7 +335,7 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   }
   $cached_variable_statistics = obiba_mica_commons_get_cache('variable-statistics-' . $variable_id);
   if (!empty($cached_variable_statistics)) {
-    $statistics_variable = $cached_variable_statistics->data;
+    $statistics_variable = $cached_variable_statistics;
   }
   else {
     $stat_tab = FALSE;
