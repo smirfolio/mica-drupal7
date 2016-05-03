@@ -242,13 +242,13 @@ function obiba_mica_app_angular_main_page($module_caller = NULL) {
  *   The template of the AngularJs app.
  */
 function obiba_mica_app_angular_get_angular_template($angular_template) {
-  $cached_template = cache_get('angular-template-cache-' . $angular_template);
+  $cached_template = obiba_mica_commons_get_cache('angular-template-cache-' . $angular_template);
   if (!empty($cached_template)) {
-    $angular_template = $cached_template->data;
+    $angular_template = $cached_template;
   }
   else {
     $angular_template = theme($angular_template);
-    cache_set('angular-template-cache-' . $angular_template, $angular_template, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('angular-template-cache-' . $angular_template, $angular_template);
   }
   print $angular_template;
 }

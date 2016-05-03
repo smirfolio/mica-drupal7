@@ -589,11 +589,10 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
   }
   $attached_resource = &drupal_static(__FUNCTION__);
   if (!isset($attached_resource)) {
-    $cached_attached_resources = cache_get('images-cache-' . $entity_id . '-' .
-      $file_resource->id);
+    $cached_attached_resources = obiba_mica_commons_get_images_cache('images-cache-' . $entity_id . '-' . $file_resource->id);
 
     if (!empty($cached_attached_resources)) {
-      return $cached_attached_resources->data;
+      return $cached_attached_resources;
     }
     else {
       if (!empty($file_resource)) {
@@ -605,10 +604,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
           $file = file_unmanaged_save_data($raw_data['data'], 'public://tmp' .
             $file_resource->id . '.' . $extension_file, FILE_EXISTS_REPLACE);
           $exposed_url = file_create_url($file);
-          // Time out in second.
-          $time_out = variable_get_value('image_cache_time_out') * 60;
-          cache_set('images-cache-' . $entity_id . '-' . $file_resource->id,
-            $exposed_url, 'cache', time() + $time_out);
+          obiba_mica_commons_set_images_cache('images-cache-' . $entity_id . '-' . $file_resource->id, $exposed_url);
           return $exposed_url;
         }
         else {
@@ -742,14 +738,42 @@ function obiba_mica_commons_taxonomies_filter_array() {
  * Helper to set cache for current user
  */
 function obiba_mica_commons_set_cache($key, $value) {
+  _obiba_mica_commons_set_cache($key, 'cache' ,$value);
+}
+
+/**
+ * Helper to get cache for current user
+ */
+function obiba_mica_commons_get_cache($key) {
+  return _obiba_mica_commons_get_cache($key, 'cache');
+}
+
+/**
+ * Helper to set images cache for current user
+ */
+function obiba_mica_commons_set_images_cache($key, $value) {
+  _obiba_mica_commons_set_cache($key, 'cache_image' ,$value);
+}
+
+/**
+ * Helper to get images cache for current user
+ */
+function obiba_mica_commons_get_images_cache($key) {
+  return _obiba_mica_commons_get_cache($key, 'cache_image');
+}
+
+/**
+ * Helper to set cache for current user
+ */
+function _obiba_mica_commons_set_cache($key, $bin, $value) {
   if (variable_get_value('cache') == 1) {
     $key = md5($key);
     global $user;
     if (in_array('anonymous user', $user->roles, TRUE)) {
-      cache_set($key . '-' . 'anonymous_user', $value, 'cache', CACHE_TEMPORARY);
+      cache_set($key . '-' . 'anonymous_user', $value, $bin, CACHE_TEMPORARY);
     }
     else {
-      cache_set($key . '-' . $user->sid, $value, 'cache', CACHE_TEMPORARY);
+      cache_set($key . '-' . $user->sid, $value, $bin, CACHE_TEMPORARY);
     }
   }
 }
@@ -757,18 +781,19 @@ function obiba_mica_commons_set_cache($key, $value) {
 /**
  * Helper to get cache for current user
  */
-function obiba_mica_commons_get_cache($key) {
+function _obiba_mica_commons_get_cache($key, $bin) {
   if (variable_get_value('cache') == 1) {
     $key = md5($key);
     global $user;
     if (in_array('anonymous user', $user->roles, TRUE)) {
-      $cache_object = cache_get($key . '-' . 'anonymous_user');
+      $cache_object = cache_get($key . '-' . 'anonymous_user', $bin);
     }
     else {
-      $cache_object = cache_get($key . '-' . $user->sid);
+      $cache_object = cache_get($key . '-' . $user->sid, $bin);
     }
 
     return empty($cache_object) ? FALSE : $cache_object->data;
   }
   return FALSE;
 }
+
