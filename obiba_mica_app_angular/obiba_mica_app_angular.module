@@ -262,7 +262,7 @@ function obiba_mica_app_angular_get_angular_template($angular_template) {
 function obiba_mica_app_angular_get_angular_translation($lang) {
   $cached_translation = obiba_mica_commons_get_cache('translation-' . $lang);
   if (!empty($cached_translation)) {
-    $translation = $cached_translation->data;
+    $translation = $cached_translation;
   }
   else {
     $mica_config = new MicaConfigResource();

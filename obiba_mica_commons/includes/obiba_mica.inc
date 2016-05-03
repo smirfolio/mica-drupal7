@@ -1227,7 +1227,7 @@ class MicaClient {
   protected function getCache($resource) {
     $cached_result = obiba_mica_commons_get_cache($resource);
     if (!empty($cached_result)) {
-      $this->result_resource_query = $cached_result->data;
+      $this->result_resource_query = $cached_result;
     }
     return $this;
   }
