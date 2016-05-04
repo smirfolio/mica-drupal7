@@ -51,11 +51,39 @@ function obiba_mica_variable_info($options) {
     'default' => '',
   );
 
-  $variable['mica_taxonomy_tabs_order'] = array(
-    'title' => t('Taxonomy tabs order'),
-    'description' => t('List of taxonomy tabs (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI. Values should be: variable, dataset, study, network.'),
+  $variable['mica_target_tabs_order'] = array(
+    'title' => t('Target tabs order'),
+    'description' => t('List of targets (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI. Values should be: variable, dataset, study, network.'),
     'type' => 'string',
     'default' => 'variable,dataset,study,network',
+  );
+
+  $variable['mica_variable_taxonomies_order'] = array(
+      'title' => t('Variable taxonomy facets order'),
+      'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
+      'type' => 'string',
+      'default' => '',
+  );
+
+  $variable['mica_study_taxonomies_order'] = array(
+      'title' => t('Study taxonomy facets order'),
+      'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
+      'type' => 'string',
+      'default' => '',
+  );
+
+  $variable['mica_dataset_taxonomies_order'] = array(
+      'title' => t('Dataset taxonomy facets order'),
+      'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
+      'type' => 'string',
+      'default' => '',
+  );
+
+  $variable['mica_network_taxonomies_order'] = array(
+      'title' => t('Network taxonomy facets order'),
+      'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
+      'type' => 'string',
+      'default' => '',
   );
 
   $variable['mica_search_tabs_order'] = array(

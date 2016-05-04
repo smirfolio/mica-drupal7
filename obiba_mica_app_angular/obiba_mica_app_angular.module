@@ -478,7 +478,12 @@ function obiba_mica_app_angular_get_search_config() {
   return array(
     'SearchHelpText' =>  variable_get_value('help_text_search_page'),
     'ClassificationHelpText' =>  variable_get_value('help_text_harmonization_potential_page'),
-    'taxonomyTabsOrder' => $get_array_value('mica_taxonomy_tabs_order'),
+    'targetTabsOrder' => $get_array_value('mica_target_tabs_order'),
+    'showAllFacetedTaxonomies' => false,
+    'variableTaxonomiesOrder' => $get_array_value('mica_variable_taxonomies_order'),
+    'studyTaxonomiesOrder' => $get_array_value('mica_study_taxonomies_order'),
+    'datasetTaxonomiesOrder' => $get_array_value('mica_dataset_taxonomies_order'),
+    'networkTaxonomiesOrder' => $get_array_value('mica_network_taxonomies_order'),
     'searchTabsOrder' => $get_array_value('mica_search_tabs_order'),
     'resultTabsOrder' => $get_array_value('mica_result_tabs_order'),
     'variables' =>  array(
