@@ -38,19 +38,8 @@
         <?php print render($form_search); ?>
       </div>
       <div class="btn-group pull-right">
-        <?php if (variable_get_value('mica_statistics_coverage')): ?>
-          <button type="button" class="btn btn-primary dropdown-toggle"
-            data-toggle="dropdown" aria-expanded="false">
-            <?php print t('Search') ?> <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li><?php print MicaClientAnchorHelper::coverageDatasets(FALSE) ?></li>
-            <li><?php print MicaClientAnchorHelper::coverageDatasets(FALSE, 'dataschema') ?></li>
-            <li><?php print MicaClientAnchorHelper::searchDatasets() ?></li>
-          </ul>
-        <?php else:
-          print MicaClientAnchorHelper::searchDatasets(TRUE);
-          ?>
+        <?php if (variable_get_value('datasets_list_show_search_button')): ?>
+          <?php print MicaClientAnchorHelper::searchDatasets(TRUE); ?>
         <?php endif; ?>
       </div>
     </div>

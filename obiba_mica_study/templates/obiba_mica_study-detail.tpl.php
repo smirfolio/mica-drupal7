@@ -34,28 +34,11 @@
   </p>
 
   <div class="btn-group pull-right md-bottom-margin">
-    <?php if (variable_get_value('mica_statistics_coverage')): ?>
-      <button id="study-actions" type="button"
-        class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
-        aria-expanded="false">
-        <?php print t('Search') ?> <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><?php print MicaClientAnchorHelper::coverageStudy($study_dto->id) ?></li>
-
-        <?php if (variable_get_value('studies_list_show_search_button')): ?>
-          <li><?php print MicaClientAnchorHelper::studyVariables(NULL, $study_dto->id) ?></li>
-        <?php endif; ?>
-        <?php if (variable_get_value('mica_enable_to_mica_server_link')): ?>
-          <li><a href="<?php print variable_get_value('mica_url').'/#/study/'.$study_dto->id ?>" class="btn btn-primary"><?php print t('Edit The Study') ?></a></li>
-        <?php endif; ?>
-      </ul>
-      <?php
-    else:
-      if (variable_get_value('studies_list_show_search_button')):
-        print MicaClientAnchorHelper::studyVariables(NULL, $study_dto->id, TRUE);
-      endif;
-      ?>
+    <?php if (variable_get_value('mica_enable_to_mica_server_link')): ?>
+      <a target="_blank" href="<?php print variable_get_value('mica_url').'/#/study/'.$study_dto->id ?>" class="btn btn-primary"><?php print t('Edit The Study') ?></a>
+    <?php endif; ?>
+      <?php if (variable_get_value('studies_list_show_search_button')): ?>
+        <?php print MicaClientAnchorHelper::studyVariables(NULL, $study_dto->id, TRUE) ?>
     <?php endif; ?>
   </div>
 </div>

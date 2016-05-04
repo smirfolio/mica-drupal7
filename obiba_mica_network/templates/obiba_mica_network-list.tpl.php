@@ -21,19 +21,9 @@
         <?php print render($form_search); ?>
       </div>
       <div class="btn-group pull-right">
-        <?php if (variable_get_value('mica_statistics_coverage')): ?>
-          <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            <?php print t('Search') ?> <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu">
-            <li><?php print MicaClientAnchorHelper::coverageNetworks() ?></li>
-            <li><?php print MicaClientAnchorHelper::searchNetworks() ?></li>
-          </ul>
-        <?php else:
-          print MicaClientAnchorHelper::searchNetworks(true);
-        ?>
+        <?php if (variable_get_value('networks_list_show_search_button')): ?>
+          <?php  print MicaClientAnchorHelper::searchNetworks(true); ?>
         <?php endif; ?>
-
       </div>
     </div>
   </div>
