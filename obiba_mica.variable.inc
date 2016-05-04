@@ -387,13 +387,13 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'default' => FALSE,
   );
   $variable['studies_column_study_variables'] = array(
-      'title' => t('Show variables'),
+      'title' => t('Show study variables'),
       'description' => t('Show study variables column in the studies table.'),
       'type' => 'boolean',
       'default' => TRUE,
   );
   $variable['studies_column_dataschema_variables'] = array(
-      'title' => t('Show variables'),
+      'title' => t('Show dataschema variables'),
       'description' => t('Show dataschema variables column in the studies table.'),
       'type' => 'boolean',
       'default' => TRUE,
