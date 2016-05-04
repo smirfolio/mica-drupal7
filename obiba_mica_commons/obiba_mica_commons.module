@@ -76,10 +76,7 @@ function obiba_mica_commons_library_alter(&$libraries, $module) {
     $libraries['charts_google']['dependencies'][0][1] = 'visualization';
     drupal_add_js($mica_common_chart_js . '/js/charts_google.js', 'file');
   }
-  $search_path = 'mica/search#!query=';
-  if (module_exists('obiba_mica_repository')) {
     $search_path = 'mica/repository#/search?query=';
-  }
   drupal_add_js(array('chartSettings' => array('searchPath' => $search_path)), 'setting');
 }
 

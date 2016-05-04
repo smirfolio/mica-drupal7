@@ -5,9 +5,7 @@
         if (settings.study_ids.length>0) {
           var resource_url = Drupal.settings.basePath
             + Drupal.settings.pathPrefix
-            + 'mica/network/'
-            + settings.network_url
-            + '/coverage/'
+            + 'mica/coverage/network/'
             + encodeURIComponent(JSON.stringify(settings.study_ids ? settings.study_ids : []));
 
           $.ajax(resource_url)

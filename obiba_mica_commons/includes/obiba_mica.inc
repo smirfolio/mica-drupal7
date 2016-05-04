@@ -1009,62 +1009,7 @@ class MicaClient {
    *   A json query.
    */
   public static function chartQueryBuilders($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, array $terms = NULL, $entity_id = NULL) {
-    if (module_exists('obiba_mica_repository')) {
       return ObibaSearchResources::repositoryRqlBuilder($query, $bucket, $taxonomy_name, $vocabulary_name, $entity_id);
-    }
-    $parameters = array();
-    $current_path_alias = drupal_get_path_alias();
-    $current_path_alias = explode('/[', $current_path_alias)[0];
-    $common_param
-      = array(
-      'variables' => array(
-        'terms' => array(
-          'attributes-'
-          . $taxonomy_name . '__' .
-          $vocabulary_name . '-und' => $terms,
-        ),
-      ),
-    );
-    if (!empty($query)) {
-      return json_encode(MicaClient::concatenateParameterTerms(json_decode($query), $common_param));
-    }
-    if (strpos($current_path_alias, 'network')) {
-      $parameters = array(
-        'studies' => array(
-          'terms' => array(
-            $bucket->field => $bucket->value,
-          ),
-        ),
-        'networks' => array(
-          'terms' => array(
-            'networkId' => arg(2, $current_path_alias),
-          ),
-        ),
-      );
-    }
-    if (strpos($current_path_alias, 'study')) {
-      $parameters = array(
-        'studies' => array(
-          'terms' => array(
-            'studyIds' => arg(2, $current_path_alias),
-          ),
-        ),
-      );
-      $common_param
-        = array(
-        'variables' => array(
-          'terms' => array(
-            'attributes-'
-            . $taxonomy_name . '__' .
-            $vocabulary_name . '-und' => $terms,
-            $bucket->field => $bucket->value,
-          ),
-        ),
-      );
-    }
-    $term_param = array_merge($parameters, $common_param);
-    return MicaClient::addParameterDtoQueryLink($term_param);
-
   }
 
   /**

@@ -4,7 +4,7 @@
  * @file
  * Mica networks file
  */
-class NetworkStatistics extends MicaSearchResource {
+class NetworkStatistics extends ObibaSearchResources {
   const MODULE_GRAPHIC_CHARTS_GEO_CHART = 'GraphicChartsGeoChart';
   const MODULE_GRAPHIC_CHARTS_STUDY_DESIGN_CHART = 'GraphicChartsStudyDesignChart';
 

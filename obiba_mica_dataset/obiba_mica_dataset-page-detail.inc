@@ -33,11 +33,11 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   $dataset_dto = $dataset_resource->getDataset($dataset_id);
 
   if (!empty($dataset_dto)) {
-  $dataset_cache_coverage = obiba_mica_commons_get_cache('dataset_coverage-' . $dataset_dto->id);
-  if (!empty($dataset_cache_coverage)) {
-    $coverage = $dataset_cache_coverage;
-  }
-  else {
+    $dataset_cache_coverage = obiba_mica_commons_get_cache('dataset_coverage-' . $dataset_dto->id);
+    if (!empty($dataset_cache_coverage)) {
+      $coverage = $dataset_cache_coverage;
+    }
+    else {
       $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
       obiba_mica_commons_set_cache('dataset_coverage-' . $dataset_dto->id, $coverage);
     }
@@ -115,7 +115,10 @@ function obiba_mica_dataset_page_detail($dataset_id) {
         'variables_dataset' => $variables_dataset,
         'modals' => $modals,
         'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
-        'file_browser' => theme('obiba_mica_files_browser', array('doc_path' => '/'.$dataset_type, 'doc_id' => $dataset_id))
+        'file_browser' => theme('obiba_mica_files_browser', array(
+          'doc_path' => '/' . $dataset_type,
+          'doc_id' => $dataset_id
+        ))
       ));
       obiba_mica_commons_set_cache('dataset_theme-' . $dataset_id, $dataset_theme);
       return $dataset_theme;
@@ -221,7 +224,10 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
           'dce_id_target' => MicaClientPathHelpers::replacePlusInUrl($study_id . '-' . $population_id . '-' . $dce->id),
           'dce' => $dce,
           'attachments' => !empty($themed_dce_attachment) ? $themed_dce_attachment : NULL,
-          'file_browser' => theme('obiba_mica_files_browser', array('doc_path' => '/study', 'doc_id' => $study_id)),
+          'file_browser' => theme('obiba_mica_files_browser', array(
+            'doc_path' => '/study',
+            'doc_id' => $study_id
+          )),
         ));
       }
       if (!empty($modals['dce'])) {
@@ -560,22 +566,8 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
  * End harmonization variable ajax table.
  */
 function obiba_mica_dataset_coverage($dataset_id) {
-  if (module_exists('obiba_mica_repository')) {
-    $query = RqlQueryBuilder::dataset_query_charts($dataset_id);
-  } else {
-    $query = MicaClient::addParameterDtoQueryLink(
-      array(
-        'variables' => array(
-          'terms' => array(
-            'datasetId' => $dataset_id
-          )
-        )
-      )
-    );
-  }
-
-  $coverage['charts'] = obiba_mica_search_query_charts($query, array('with-facets' => 'false'), NULL, $dataset_id);
-
+  $query = RqlQueryBuilder::dataset_query_charts($dataset_id);
+  $coverage['charts'] = obiba_mica_graphic_search_query_charts($query, array('with-facets' => 'false'), NULL, $dataset_id);
   if (!empty($coverage['charts'])) {
     $coverage['has_coverage'] = TRUE;
     return $coverage;
