@@ -433,6 +433,12 @@ function _obiba_mica_variable_network_content(&$variable) {
     'default' => 'Networks',
   );
 
+  $variable['networks_list_show_search_button'] = array(
+    'title' => t('Show the search networks button in list and detailed networks page'),
+    'description' => t('If selected the search networks button will be displayed in list and detailed  networks page'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 }
 
 /**
@@ -476,8 +482,8 @@ function _obiba_mica_variable_study_content(&$variable) {
     'default' => TRUE,
   );
   $variable['studies_list_show_search_button'] = array(
-    'title' => t('Show the search studies button  in list studies page'),
-    'description' => t('If selected the search studies button will be displayed in list studies page'),
+    'title' => t('Show the search studies button in list and detailed studies page'),
+    'description' => t('If selected the search studies button will be displayed in list and detailed studies page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -513,6 +519,14 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+
+  $variable['datasets_list_show_search_button'] = array(
+    'title' => t('Show the search datasets button in list and detailed datasets page'),
+    'description' => t('If selected the search datasets button will be displayed in list and detailed datasets page'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
   $variable['dataset_description_overview_field'] = array(
     'title' => t('Show description inside overview'),
     'description' => t('If selected, dataset description is shown as a plain text inside the overview section.'),

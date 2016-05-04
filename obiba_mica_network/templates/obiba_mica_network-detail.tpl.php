@@ -29,22 +29,12 @@
 
   <?php if (!empty($network_dto->studyIds)): ?>
     <div class="btn-group pull-right md-bottom-margin">
-      <?php if (variable_get_value('mica_statistics_coverage')): ?>
-        <button type="button"
-                class="btn btn-primary dropdown-toggle <?php print $has_variables ? '' : 'hidden'; ?>"
-                data-toggle="dropdown" aria-expanded="false">
-          <?php print t('Search') ?> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><?php print MicaClientAnchorHelper::coverageNetwork($network_dto->id) ?></li>
-          <li><?php print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id) ?></li>
-        </ul>
-      <?php
-      else:
-        print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary indent'));
-        ?>
+      <?php if (variable_get_value('mica_enable_to_mica_server_link')): ?>
+        <a target="_blank" href="<?php print variable_get_value('mica_url').'/#/network/'.$network_dto->id ?>" class="btn btn-primary"><?php print t('Edit The Study') ?></a>
       <?php endif; ?>
-
+      <?php if (variable_get_value('networks_list_show_search_button')): ?>
+        <?php  print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary indent')); ?>
+      <?php endif; ?>
     </div>
   <?php endif; ?>
 </div>

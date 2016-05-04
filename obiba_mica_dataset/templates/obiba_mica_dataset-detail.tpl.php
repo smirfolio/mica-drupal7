@@ -31,19 +31,8 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
       <?php print MicaClientAnchorHelper::datasetCrosstab($dataset_dto, TRUE); ?>
     <?php endif; ?>
     <div class="btn-group">
-      <?php if (variable_get_value('mica_statistics_coverage')): ?>
-        <button type="button" class="btn btn-primary dropdown-toggle"
-          data-toggle="dropdown" aria-expanded="false">
-          <?php print t('Search') ?> <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <li><?php print MicaClientAnchorHelper::coverageDataset($dataset_dto->id) ?></li>
-          <li><?php print MicaClientAnchorHelper::datasetVariables(NULL, $dataset_dto->id) ?></li>
-        </ul>
-        <?php
-      else:
-        print MicaClientAnchorHelper::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary indent'));
-        ?>
+      <?php if (variable_get_value('datasets_list_show_search_button')): ?>
+        <?php print MicaClientAnchorHelper::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary indent')) ?>
       <?php endif; ?>
     </div>
   </div>

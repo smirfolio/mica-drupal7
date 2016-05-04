@@ -101,7 +101,7 @@ function _obiba_mica_settings_server(&$form) {
   $form['server']['mica_enable_to_mica_server_link'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('access_comments_enabled'),
+    '#default_value' => variable_get_value('mica_enable_to_mica_server_link'),
     '#description' => $info['description'],
   );
 }
