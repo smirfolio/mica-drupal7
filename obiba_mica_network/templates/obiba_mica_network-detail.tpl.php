@@ -29,11 +29,6 @@
 
   <?php if (!empty($network_dto->studyIds)): ?>
     <div class="btn-group pull-right md-bottom-margin">
-      <?php global $user; ?>
-      <?php if ($user->uid!==0 &&  variable_get_value('mica_enable_to_mica_server_link')): ?>
-        <a title="<?php print t('Edit') ?>" target="_blank" href="<?php print variable_get_value('mica_url').'/#/network/'.$network_dto->id ?>" class="btn btn-primary">
-          <i class="glyphicon glyphicon-pencil"></i></a>
-      <?php endif; ?>
       <?php if (variable_get_value('networks_list_show_search_button')): ?>
         <?php  print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary indent')); ?>
       <?php endif; ?>
