@@ -150,18 +150,11 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#description' => $info['description'],
   );
 
-  $info = variable_get_info('mica_taxonomy_order');
-  $value = variable_get_value('mica_taxonomy_order');
-  $form['search_display_settings']['page_settings']['mica_taxonomy_order'] = array(
-    '#type' => 'textarea',
-    '#title' => $info['title'],
-    '#required' => FALSE,
-    '#default_value' => empty($value) ? _obiba_mica_admin_get_taxonomy_summaries() : $value,
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
-
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_taxonomy_tabs_order');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_target_tabs_order');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_variable_taxonomies_order');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_study_taxonomies_order');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_dataset_taxonomies_order');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_network_taxonomies_order');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_tabs_order');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_result_tabs_order');
 }
