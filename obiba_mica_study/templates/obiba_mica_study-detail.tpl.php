@@ -80,64 +80,16 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->investigators)): ?>
-            <tr>
-              <th><?php print t('Investigators') ?></th>
-              <td>
-                <ul class="list-unstyled">
-                  <?php foreach ($study_dto->investigators as $key_investigator => $investigator) : ?>
-                    <li>
-                      <a href="#" data-toggle="modal"
-                        data-target="#investigator_<?php print $study_dto->id ?>_<?php print $key_investigator ?>">
-                        <?php print $investigator->title; ?>
-                        <?php print $investigator->firstName; ?>
-                        <?php print $investigator->lastName; ?>
-                        <?php if (!empty($investigator->academicLevel)) {
-                          print ', ' . $investigator->academicLevel;
-                        } ?>
-                        (<?php print obiba_mica_commons_get_localized_field($investigator->institution, 'name'); ?>
-                        )
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </td>
-            </tr>
-          <?php endif; ?>
-          <?php if (!empty($study_dto->contacts)): ?>
-            <tr>
-              <th><?php print t('Contacts') ?></th>
-              <td>
-                <ul class="list-unstyled">
-                  <?php foreach ($study_dto->contacts as $key_contact => $contact) : ?>
-                    <li>
-                      <a href="#" data-toggle="modal"
-                        data-target="#contact_<?php print $study_dto->id ?>_<?php print $key_contact ?>">
-                        <?php print $contact->title; ?>
-                        <?php print $contact->firstName; ?>
-                        <?php print $contact->lastName; ?>
-                        <?php if (!empty($contact->academicLevel)) {
-                          print ', ' . $contact->academicLevel;
-                        } ?>
-                        (<?php print obiba_mica_commons_get_localized_field($contact->institution, 'name'); ?>
-                        )
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </td>
-            </tr>
-          <?php endif; ?>
           <?php if (!empty($study_dto->memberships)): ?>
             <?php foreach ($study_dto->memberships as $membership): ?>
               <tr>
-                <th><?php print $membership->role ?></th>
+                <th><?php print ucfirst(t($membership->role)) ?></th>
                 <td>
                   <ul class="list-unstyled">
                     <?php foreach ($membership->members as  $key_member => $member) : ?>
                       <li>
                         <a href="#" data-toggle="modal"
-                           data-target="#member_<?php print $study_dto->id ?>_<?php print $key_member ?>">
+                           data-target="#<?php print $membership->role ?>_<?php print $study_dto->id ?>_<?php print $key_member ?>">
                           <?php print $member->title; ?>
                           <?php print $member->firstName; ?>
                           <?php print $member->lastName; ?>
