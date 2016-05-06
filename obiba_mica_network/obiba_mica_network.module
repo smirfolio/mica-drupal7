@@ -86,6 +86,7 @@ function obiba_mica_network_load_charts_libs() {
   }
   else {
     drupal_add_js('https://www.google.com/jsapi', 'external');
-    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_google.js', 'file');
+    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_google.js', 
+      array('type' => 'file', 'scope' => 'footer'));
   }
 }
