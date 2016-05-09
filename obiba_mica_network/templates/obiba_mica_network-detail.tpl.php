@@ -13,18 +13,22 @@
 
 <div>
   <?php if (!empty($network_dto->description)): ?>
-    <p class="md-top-margin">
+    <div class="row">
       <?php if (!empty($network_dto->logo->id)): ?>
-        <a
-          href="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
-          class="fancybox-button">
-          <img
-            src="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
-            class="imageThumb img-responsive">
-        </a>
+        <div class="col-xs-12 col-md-6">
+          <a
+              href="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
+              class="fancybox-button">
+            <img
+                src="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
+                class="imageThumb img-responsive">
+          </a>
+        </div>
       <?php endif; ?>
-      <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?>
-    </p>
+      <div class="md-top-margin col-xs-12">
+        <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?>
+      </div>
+    </div>
   <?php endif; ?>
 
   <?php if (!empty($network_dto->studyIds)): ?>
