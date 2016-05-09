@@ -19,19 +19,23 @@
   <?php endforeach ?>
 <?php endif; ?>
 <div>
-  <p class="md-top-margin">
+  <div class="row">
     <?php if (!empty($study_dto->logo->id)): ?>
-      <a
-        href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study', TRUE) ?>"
-        class="fancybox-button">
-        <img
-          src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-          class="imageThumb">
-      </a>
+      <div class="col-xs-12 col-md-6">
+        <a
+          href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study', TRUE) ?>"
+          class="fancybox-button">
+          <img
+            src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
+            class="imageThumb img-responsive">
+        </a>
+      </div>
     <?php endif; ?>
+    <div class="md-top-margin col-xs-12">
+      <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($study_dto, 'objectives')); ?>
+    </div>
 
-    <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($study_dto, 'objectives')); ?>
-  </p>
+  </div>
 
   <div class="btn-group pull-right md-bottom-margin">
       <?php if (variable_get_value('studies_list_show_search_button')): ?>
