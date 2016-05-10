@@ -61,6 +61,17 @@ class MicaClientPathProvider {
   }
 
   /**
+   * Returns the url to the draft study document
+   * 
+   * @param string 
+   *  Study $id
+   * @return string
+   */
+  public static function study_draft_url($id) {
+    return sprintf("%s/#/study/%s", variable_get_value('mica_url'), $id);  
+  }
+  
+  /**
    * The network detail url.
    *
    * @param string $id
@@ -71,6 +82,17 @@ class MicaClientPathProvider {
    */
   public static function network($id) {
     return preg_replace('/\\{id\\}/', $id, self::NETWORK, 1);
+  }
+
+  /**
+   * Returns the url to the draft network document
+   *
+   * @param string
+   *  Study $id
+   * @return string
+   */
+  public static function network_draft_url($id) {
+    return sprintf("%s/#/network/%s", variable_get_value('mica_url'), $id);
   }
 
   /**
@@ -97,6 +119,21 @@ class MicaClientPathProvider {
 
     return self::studyDataset($dataset->id);
   }
+
+  /**
+   * Returns the url to the draft study/harmonization dataset document
+   *
+   * @param string
+   *  Study $id
+   * @return string
+   */
+  public static function dataset_draft_url($dataset) {
+      return sprintf("%s/#/%s/%s",
+      variable_get_value('mica_url'),
+      $dataset->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset',
+      $dataset->id);
+  }
+
 
   /**
    * The study dataset detail url.
