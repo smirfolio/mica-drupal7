@@ -479,9 +479,16 @@ function _obiba_mica_variable_network_content(&$variable) {
     'default' => 'Networks',
   );
 
-  $variable['networks_list_show_search_button'] = array(
-    'title' => t('Show the search button in list and detailed network pages'),
-    'description' => t('If selected the search button will be displayed in list and detailed network pages'),
+  $variable['network_list_show_search_button'] = array(
+    'title' => t('Show the search networks button in the network list page'),
+    'description' => t('If selected the search networks button will be displayed in the network list page'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['network_detail_show_search_button'] = array(
+    'title' => t('Show the search variables button in the network page'),
+    'description' => t('If selected the search variables button will be displayed in the network page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -516,32 +523,38 @@ function _obiba_mica_variable_study_content(&$variable) {
     'default' => TRUE,
   );
   $variable['studies_list_show_search_form'] = array(
-    'title' => t('Show the rapid search/sort form in list studies page'),
-    'description' => t('If selected the the rapid search/sort form will be displayed in list studies page'),
+    'title' => t('Show the rapid search/sort form in the study list page'),
+    'description' => t('If selected the rapid search/sort form will be displayed in the study list page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_list_show_studies_count_caption'] = array(
-    'title' => t('Show the studies count caption in list studies page'),
-    'description' => t('If selected the studies count caption will be displayed in list studies page'),
+    'title' => t('Show the studies count caption in the study list page'),
+    'description' => t('If selected the studies count caption will be displayed in the study list page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
-  $variable['studies_list_show_search_button'] = array(
-    'title' => t('Show the search button in list and detailed study pages'),
-    'description' => t('If selected the search button will be displayed in list and detailed study pages'),
+  $variable['study_list_show_search_button'] = array(
+    'title' => t('Show the search studies button in the study list page'),
+    'description' => t('If selected the search studies button will be displayed in the study list page'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['study_detail_show_search_button'] = array(
+    'title' => t('Show the search variables button in the study page'),
+    'description' => t('If selected the search variables button will be displayed in the study page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_list_show_study_sup_info'] = array(
-    'title' => t('Show supplementary details study in list studies page'),
-    'description' => t('If selected the supplementary details study badges will be displayed in list studies page'),
+    'title' => t('Show supplementary details study in the study list page'),
+    'description' => t('If selected the supplementary details study badges will be displayed in the study list page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_list_show_trimmed_description_study'] = array(
-    'title' => t("Show trimmed description details study, with 'Read more' link in list studies page"),
-    'description' => t("If selected the description details study will be displayed in list studies page with a 'Read more' link"),
+    'title' => t("Show trimmed description details study, with 'Read more' link in the study list page"),
+    'description' => t("If selected the description details study will be displayed in the study list page with a 'Read more' link"),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -566,9 +579,15 @@ function _obiba_mica_variable_dataset_content(&$variable) {
     'default' => TRUE,
   );
 
-  $variable['datasets_list_show_search_button'] = array(
-    'title' => t('Show the search button in list and detailed dataset pages'),
-    'description' => t('If selected the search button will be displayed in list and detailed dataset pages'),
+  $variable['dataset_list_show_search_button'] = array(
+    'title' => t('Show the search datasets button in the dataset list page'),
+    'description' => t('If selected the search datasets button will be displayed in the dataset list page'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['dataset_detail_show_search_button'] = array(
+    'title' => t('Show the search variables button in the dataset page'),
+    'description' => t('If selected the search variables button will be displayed in the dataset page'),
     'type' => 'boolean',
     'default' => TRUE,
   );

@@ -179,6 +179,7 @@ function obiba_mica_settings_network_content(&$form) {
     '#default_value' => variable_get_value('networks_section_label'),
     '#description' => $info['description'],
   );
+
 }
 
 /**

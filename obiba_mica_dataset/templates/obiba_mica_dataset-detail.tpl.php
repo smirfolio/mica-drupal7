@@ -39,7 +39,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
       <?php print MicaClientAnchorHelper::datasetCrosstab($dataset_dto, TRUE); ?>
     <?php endif; ?>
 
-    <?php if (variable_get_value('datasets_list_show_search_button')): ?>
+    <?php if (variable_get_value('dataset_detail_show_search_button')): ?>
       <?php print MicaClientAnchorHelper::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary')) ?>
     <?php endif; ?>
   </div>

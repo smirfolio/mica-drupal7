@@ -23,7 +23,7 @@
         <?php print render($form_search); ?>
       </div>
       <div class="btn-group pull-right">
-        <?php if (variable_get_value('studies_list_show_search_button')): ?>
+        <?php if (variable_get_value('study_list_show_search_button')): ?>
           <?php print MicaClientAnchorHelper::searchStudies(TRUE); ?>
         <?php endif; ?>
       </div>

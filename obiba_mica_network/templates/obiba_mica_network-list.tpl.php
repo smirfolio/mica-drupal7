@@ -21,7 +21,7 @@
         <?php print render($form_search); ?>
       </div>
       <div class="btn-group pull-right">
-        <?php if (variable_get_value('networks_list_show_search_button')): ?>
+        <?php if (variable_get_value('network_list_show_search_button')): ?>
           <?php  print MicaClientAnchorHelper::searchNetworks(true); ?>
         <?php endif; ?>
       </div>

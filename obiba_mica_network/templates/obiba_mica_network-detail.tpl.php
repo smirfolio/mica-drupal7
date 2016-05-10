@@ -40,7 +40,7 @@
       <i class="fa fa-pencil-square-o"></i> <?php print t('Edit')?></a>
   <?php endif; ?>
   <?php if (!empty($network_dto->studyIds)): ?>
-      <?php if (variable_get_value('networks_list_show_search_button')): ?>
+      <?php if (variable_get_value('network_detail_show_search_button')): ?>
         <?php  print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary')); ?>
       <?php endif; ?>
     </div>

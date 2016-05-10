@@ -133,33 +133,56 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
       '#options' => $coverage_group_by_options,
       '#description' => $info['description'],
   );
-  
+
   $form['search_display_settings']['page_settings']['other_settings'] = array(
       '#type' => 'fieldset',
       '#title' => t('Other search usage'),
       '#collapsible' => FALSE,
   );
 
-  $info = variable_get_info('networks_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['networks_list_show_search_button'] = array(
+  $info = variable_get_info('network_detail_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['network_detail_show_search_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('network_detail_show_search_button'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('network_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['network_list_show_search_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('network_list_show_search_button'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('study_detail_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['study_detail_show_search_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_detail_show_search_button'),
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('study_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['study_list_show_search_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_list_show_search_button'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('dataset_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['dataset_list_show_search_button'] = array(
       '#type' => 'checkbox',
       '#title' => $info['title'],
-      '#default_value' => variable_get_value('networks_list_show_search_button'),
+      '#default_value' => variable_get_value('dataset_list_show_search_button'),
       '#description' => $info['description'],
   );
-  $info = variable_get_info('studies_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['studies_list_show_search_button'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('studies_list_show_search_button'),
-      '#description' => $info['description'],
-  );
-  $info = variable_get_info('datasets_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['datasets_list_show_search_button'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('datasets_list_show_search_button'),
-      '#description' => $info['description'],
+  $info = variable_get_info('dataset_detail_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['dataset_detail_show_search_button'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('dataset_detail_show_search_button'),
+    '#description' => $info['description'],
   );
 
   $info = variable_get_info('mica_taxonomy_figures');
