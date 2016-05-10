@@ -476,8 +476,10 @@ function obiba_mica_app_angular_get_search_config() {
   }, variable_get_value('coverage_group_by'));
 
   return array(
-    'SearchHelpText' =>  variable_get_value('help_text_search_page'),
-    'ClassificationHelpText' =>  variable_get_value('help_text_harmonization_potential_page'),
+    'SearchHelpText' => variable_get_value('help_text_search_page'),
+    'ClassificationHelpText' => variable_get_value('help_text_harmonization_potential_page'),
+    'showSearchBox' => variable_get_value('mica_show_search_box'),
+    'showSearchBrowser' => variable_get_value('mica_show_search_browser'),
     'targetTabsOrder' => $get_array_value('mica_target_tabs_order'),
     'showAllFacetedTaxonomies' => false,
     'variableTaxonomiesOrder' => $get_array_value('mica_variable_taxonomies_order'),

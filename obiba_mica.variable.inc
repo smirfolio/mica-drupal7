@@ -128,25 +128,39 @@ function _obiba_mica_variable_search_page(&$variable) {
     'default' => 'Search',
   );
 
-    $variable['default_query_search'] = array(
-      'title' => t('Default query search'),
-      'description' => t('The default search query performed from the Search menu (?query=< YOUR QUERY >)'),
-      'type' => 'string',
-      'default' => '',
-    );
+  $variable['mica_show_search_box'] = array(
+      'title' => t('Show search box on faceted navigation'),
+      'description' => t('Show search input box on faceted navigation'),
+      'type' => 'boolean',
+      'default' => TRUE,
+  );
 
-    $variable['coverage_group_by'] = array(
-      'title' => t('Grouped by coverage settings'),
-      'description' => t('Please select the group-by criteria for the coverage.'),
-      'type' => 'options',
-      'default' => array(
-        'study' => 'study',
-        'dce' => 'dce',
-        'dataset' => 'dataset',
-        'dataschema' => 'dataschema',
-        'network' => 'network',
-      ),
-    );
+  $variable['mica_show_search_browser'] = array(
+      'title' => t('Show search taxonomies browser on faceted navigation'),
+      'description' => t('Show search taxonomies browser on faceted navigation'),
+      'type' => 'boolean',
+      'default' => TRUE,
+  );
+
+  $variable['default_query_search'] = array(
+    'title' => t('Default query search'),
+    'description' => t('The default search query performed from the Search menu (?query=< YOUR QUERY >)'),
+    'type' => 'string',
+    'default' => '',
+  );
+
+  $variable['coverage_group_by'] = array(
+    'title' => t('Grouped by coverage settings'),
+    'description' => t('Please select the group-by criteria for the coverage.'),
+    'type' => 'options',
+    'default' => array(
+      'study' => 'study',
+      'dce' => 'dce',
+      'dataset' => 'dataset',
+      'dataschema' => 'dataschema',
+      'network' => 'network',
+    ),
+  );
 }
 
 /**
