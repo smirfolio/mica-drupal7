@@ -158,7 +158,8 @@ function obiba_mica_commons_datatables_multi_Lang() {
     "sLengthMenu" => t("Show @menu entries", array("@menu" => "_MENU_")),
     "sLoadingRecords" => t("Loading..."),
     "sProcessing" => t("Processing..."),
-    "sSearch" => t("Search :"),
+    "search" => "_INPUT_",
+    "searchPlaceholder" => t("Search ..."),
     "sZeroRecords" => t("No matching records found"),
     "oPaginate" => array(
       "sFirst" => t("First"),

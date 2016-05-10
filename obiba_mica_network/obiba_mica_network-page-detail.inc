@@ -385,12 +385,12 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
 
 function obiba_mica_network_study_table_headers() {
   return array(
-    array("title" => t('Acronym')),
-    array("title" => t('Name'), 'width' => '45%'),
-    array("title" => t('Study Design'), 'width' => '20%'),
-    array("title" => t('Participants'), 'width' => '15%'),
-    array("title" => t('Country')),
-    array("title" => t('Variables'))
+    array("title" => t('Acronym'), 'width' => '10%'),
+    array("title" => t('Name'), 'width' => '40%'),
+    array("title" => t('Study Design'), 'width' => '15%'),
+    array("title" => t('Participants'), 'width' => '10%'),
+    array("title" => t('Country'), 'width' => '20%'),
+    array("title" => t('Variables'), 'width' => '5%')
   );
 }
 
