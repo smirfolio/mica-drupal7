@@ -65,25 +65,25 @@ function obiba_mica_variable_info($options) {
       'default' => '',
   );
 
-  $variable['mica_study_taxonomies_order'] = array(
-      'title' => t('Study taxonomy facets order'),
-      'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
-      'type' => 'string',
-      'default' => '',
+  $variable['mica_dataset_taxonomy_facet'] = array(
+      'title' => t('Show dataset taxonomy as facet'),
+      'description' => t('If selected the dataset taxonomy will be displayed as a block of facets on the left.'),
+      'type' => 'boolean',
+      'default' => FALSE,
   );
 
-  $variable['mica_dataset_taxonomies_order'] = array(
-      'title' => t('Dataset taxonomy facets order'),
-      'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
-      'type' => 'string',
-      'default' => '',
+  $variable['mica_study_taxonomy_facet'] = array(
+      'title' => t('Show study taxonomy as facet'),
+      'description' => t('If selected the study taxonomy will be displayed as a block of facets on the left.'),
+      'type' => 'boolean',
+      'default' => FALSE,
   );
 
-  $variable['mica_network_taxonomies_order'] = array(
-      'title' => t('Network taxonomy facets order'),
-      'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
-      'type' => 'string',
-      'default' => '',
+  $variable['mica_network_taxonomy_facet'] = array(
+      'title' => t('Show network taxonomy as facet'),
+      'description' => t('If selected the network taxonomy will be displayed as a block of facets on the left.'),
+      'type' => 'boolean',
+      'default' => FALSE,
   );
 
   $variable['mica_search_tabs_order'] = array(
