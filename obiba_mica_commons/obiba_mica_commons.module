@@ -74,9 +74,12 @@ function obiba_mica_commons_library_alter(&$libraries, $module) {
     $libraries['charts_google']['js'][0]['type'] = 'file | (Callback) file();';
     $libraries['charts_google']['dependencies'][0][0] = 'charts_google';
     $libraries['charts_google']['dependencies'][0][1] = 'visualization';
-    drupal_add_js($mica_common_chart_js . '/js/charts_google.js', array('type' => 'file', 'scope' => 'footer'));
+    drupal_add_js($mica_common_chart_js . '/js/charts_google.js', array(
+      'type' => 'file',
+      'scope' => 'footer'
+    ));
   }
-    $search_path = 'mica/repository#/search?query=';
+  $search_path = 'mica/repository#/search?query=';
   drupal_add_js(array('chartSettings' => array('searchPath' => $search_path)), 'setting');
 }
 
@@ -113,14 +116,16 @@ function obiba_mica_commons_get_localized_field($std, $field, $lang = NULL) {
   $value = NULL;
   if (!empty($std->{$field})) {
     foreach ($std->{$field} as $field_value) {
-      if (!empty($lang) && $lang == $field_value->lang) {
-        return $field_value->value;
+      $field_lang_std = !empty($field_value->lang) ? $field_value->lang : $field_value->locale;
+      $field_value_std = !empty($field_value->value) ? $field_value->value : $field_value->text;
+      if (!empty($lang) && $lang == $field_lang_std) {
+        return $field_value_std;
       }
-      elseif ($field_value->lang == 'en') {
-        $value = $field_value->value;
+      elseif ($field_lang_std == 'en') {
+        $value = $field_value_std;
       }
       else {
-        $value = $field_value->value;
+        $value = $field_value_std;
       }
     }
   }
@@ -293,8 +298,7 @@ function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters
           else {
             print $field;
           }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
           print $field;
         }
       }
@@ -724,19 +728,25 @@ function obiba_mica_commons_is_authorized_agate_user() {
 /**
  * Helper return the taxonomies filter on an array format
  */
-function obiba_mica_commons_taxonomies_filter_array() {
-  $mica_taxonomy_figures = trim(variable_get_value('mica_taxonomy_figures'));
+function obiba_mica_commons_taxonomies_filter_array($key_variables) {
+  $mica_taxonomy_figures = variable_get_value($key_variables);
   if (empty($mica_taxonomy_figures)) {
     return NULL;
   }
-  return explode(',', $mica_taxonomy_figures);
+  $mica_taxonomies = array();
+  foreach ($mica_taxonomy_figures as $taxonomy) {
+    if ($taxonomy['enable'] === 1) {
+      $mica_taxonomies[$taxonomy['value']] = $taxonomy['value'];
+    }
+  }
+  return $mica_taxonomies;
 }
 
 /**
  * Helper to set cache for current user
  */
 function obiba_mica_commons_set_cache($key, $value) {
-  _obiba_mica_commons_set_cache($key, 'cache' ,$value);
+  _obiba_mica_commons_set_cache($key, 'cache', $value);
 }
 
 /**
@@ -750,7 +760,7 @@ function obiba_mica_commons_get_cache($key) {
  * Helper to set images cache for current user
  */
 function obiba_mica_commons_set_images_cache($key, $value) {
-  _obiba_mica_commons_set_cache($key, 'cache_image' ,$value);
+  _obiba_mica_commons_set_cache($key, 'cache_image', $value);
 }
 
 /**

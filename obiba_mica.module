@@ -100,6 +100,48 @@ function obiba_mica_theme_registry_alter(&$theme_registry) {
   }
 }
 
+function obiba_mica_theme($existing, $type, $theme, $path) {
+  $themes = array(
+    'obiba_mica_drag_components' => array(
+      'render element' => 'element'
+    ),
+  );
+  return $themes;
+}
+
+function theme_obiba_mica_drag_components($vars) {
+  $element = $vars['element'];
+  $header = array(
+    '',
+    t('Value'),
+    t('Description'),
+    t('Weight'),
+    t('Enable/Disable'),
+  );
+  $rows = array();
+  foreach (element_children($element) as $field) {
+    $rows[] = array(
+      'data' => array(
+        '',
+        drupal_render($element[$field]['value_name']),
+        drupal_render($element[$field]['description']),
+        drupal_render($element[$field]['weight']),
+        drupal_render($element[$field]['enable']),
+      ),
+      'class' => array('draggable'),
+    );
+  }
+
+  $table_id = $element['#id'];
+  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('id' => $table_id),
+  ));
+  drupal_add_tabledrag($table_id, 'order', 'sibling', 'taxonomies-item-weight');
+  return $output;
+}
+
 /**
  * Implements hook_chart_definition_alter().
  */
@@ -156,8 +198,7 @@ function obiba_mica_user_view($account, $view_mode, $langcode) {
     if ($user_name) {
       drupal_set_title($user_name);
     }
-  }
-  catch (Exception $e) {
+  } catch (Exception $e) {
   }
 
 }
