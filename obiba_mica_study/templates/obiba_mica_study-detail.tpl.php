@@ -37,8 +37,16 @@
 
   </div>
 
-  <div class="btn-group pull-right md-bottom-margin">
-      <?php if (variable_get_value('studies_list_show_search_button')): ?>
+  <div class="pull-right md-bottom-margin">
+    <?php if (canEditDraftDocument($study_dto)): ?>
+      <a title="<?php print t('Edit') ?>"
+         target="_blank"
+         href="<?php print MicaClientPathProvider::study_draft_url($study_dto->id) ?>"
+         class="btn btn-default">
+        <i class="fa fa-pencil-square-o"></i> <?php print t('Edit')?></a>
+    <?php endif; ?>
+
+    <?php if (variable_get_value('studies_list_show_search_button')): ?>
         <?php print MicaClientAnchorHelper::studyVariables(NULL, $study_dto->id, TRUE) ?>
     <?php endif; ?>
   </div>

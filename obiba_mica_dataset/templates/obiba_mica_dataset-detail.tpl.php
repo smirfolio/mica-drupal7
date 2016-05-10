@@ -27,14 +27,21 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   <?php endif; ?>
 
   <div class="pull-right md-bottom-margin">
+    <?php if (canEditDraftDocument($dataset_dto)): ?>
+      <a title="<?php print t('Edit') ?>"
+         target="_blank"
+         href="<?php print MicaClientPathProvider::dataset_draft_url($dataset_dto) ?>"
+         class="btn btn-default">
+        <i class="fa fa-pencil-square-o"></i> <?php print t('Edit')?></a>
+    <?php endif; ?>
+
     <?php if (variable_get_value('mica_statistics')) : ?>
       <?php print MicaClientAnchorHelper::datasetCrosstab($dataset_dto, TRUE); ?>
     <?php endif; ?>
-    <div class="btn-group">
-      <?php if (variable_get_value('datasets_list_show_search_button')): ?>
-        <?php print MicaClientAnchorHelper::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary indent')) ?>
-      <?php endif; ?>
-    </div>
+
+    <?php if (variable_get_value('datasets_list_show_search_button')): ?>
+      <?php print MicaClientAnchorHelper::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary')) ?>
+    <?php endif; ?>
   </div>
 
 </div>

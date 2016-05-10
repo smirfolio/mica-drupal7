@@ -31,10 +31,17 @@
     </div>
   <?php endif; ?>
 
+  <div class="pull-right md-bottom-margin">
+  <?php if (canEditDraftDocument($network_dto)): ?>
+    <a title="<?php print t('Edit') ?>"
+       target="_blank"
+       href="<?php print MicaClientPathProvider::network_draft_url($network_dto->id) ?>"
+       class="btn btn-default">
+      <i class="fa fa-pencil-square-o"></i> <?php print t('Edit')?></a>
+  <?php endif; ?>
   <?php if (!empty($network_dto->studyIds)): ?>
-    <div class="btn-group pull-right md-bottom-margin">
       <?php if (variable_get_value('networks_list_show_search_button')): ?>
-        <?php  print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary indent')); ?>
+        <?php  print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary')); ?>
       <?php endif; ?>
     </div>
   <?php endif; ?>
