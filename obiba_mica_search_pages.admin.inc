@@ -156,9 +156,9 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
 
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_target_tabs_order');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_variable_taxonomies_order');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_study_taxonomies_order');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_dataset_taxonomies_order');
-  $add_form_field($form['search_display_settings']['page_settings'], 'mica_network_taxonomies_order');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_dataset_taxonomy_facet', NULL, 'checkbox');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_study_taxonomy_facet', NULL, 'checkbox');
+  $add_form_field($form['search_display_settings']['page_settings'], 'mica_network_taxonomy_facet', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_search_tabs_order');
   $add_form_field($form['search_display_settings']['page_settings'], 'mica_result_tabs_order');
 }
