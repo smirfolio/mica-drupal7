@@ -21,18 +21,18 @@ function obiba_mica_variable_info($options) {
   _obiba_mica_variable_study_content($variable);
   _obiba_mica_variable_dataset_content($variable);
   _obiba_mica_variable_variable_content($variable);
-  _obiba_mica_variable_statistics_content($variable);
 
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures filter'),
     'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Classification figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
     'type' => 'string',
     'default' => '',
+    'placeholder' => 'e.g. Mlstr_area',
   );
 
   $variable['mica_taxonomy_order'] = array(
     'title' => t('Taxonomy order'),
-    'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI.'),
+    'description' => t('List of taxonomy names (case sensitive, comma separated) determining their order of appearance in the search and classification pages.'),
     'type' => 'string',
     'default' => '',
   );
@@ -52,10 +52,11 @@ function obiba_mica_variable_info($options) {
   );
 
   $variable['mica_target_tabs_order'] = array(
-    'title' => t('Target tabs order'),
-    'description' => t('List of targets (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI. Values should be: variable, dataset, study, network.'),
+    'title' => t('Taxonomy targets order'),
+    'description' => t('List of taxonomy targets (case sensitive, comma separated) determining their order of appearance in the search and classification pages. Values should be: variable, dataset, study, network.'),
     'type' => 'string',
-    'default' => 'variable,dataset,study,network',
+    'default' => 'variable, dataset, study, network',
+    'placeholder' => 'e.g. variable, dataset, study, network',
   );
 
   $variable['mica_variable_taxonomies_order'] = array(
@@ -63,6 +64,7 @@ function obiba_mica_variable_info($options) {
       'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
       'type' => 'string',
       'default' => '',
+      'placeholder' => 'e.g. Mlstr_area, Mica_variable, Mlstr_additional',
   );
 
   $variable['mica_dataset_taxonomy_facet'] = array(
@@ -87,17 +89,19 @@ function obiba_mica_variable_info($options) {
   );
 
   $variable['mica_search_tabs_order'] = array(
-    'title' => t('Search tabs order'),
-    'description' => t('List of search tabs (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI. Values should be: graphics, list, coverage.'),
+    'title' => t('Result types order'),
+    'description' => t('List of result types (case sensitive, comma separated) determining their order of appearance in the result section of the search page. If omitted, a result type will not be shown. Values should be: graphics, list, coverage.'),
     'type' => 'string',
-    'default' => 'list,coverage,graphics',
+    'default' => 'list, coverage, graphics',
+    'placeholder' => 'e.g. list, coverage, graphics'
   );
 
   $variable['mica_result_tabs_order'] = array(
-    'title' => t('Result tabs order'),
-    'description' => t('List of result tabs (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search and classification UI. Values should be: variable, dataset, study, network.'),
+    'title' => t('List result targets order'),
+    'description' => t('List of target names (case sensitive, comma separated) determining their order of appearance in the list result region of the search page. Values should be: variable, dataset, study, network.'),
     'type' => 'string',
-    'default' => 'variable,dataset,study,network',
+    'default' => 'variable, dataset, study, network',
+    'placeholder' => 'e.g. variable, dataset, study, network'
   );
 
   return $variable;
@@ -129,15 +133,15 @@ function _obiba_mica_variable_search_page(&$variable) {
   );
 
   $variable['mica_show_search_box'] = array(
-      'title' => t('Show search box on faceted navigation'),
-      'description' => t('Show search input box on faceted navigation'),
+      'title' => t('Show search box'),
+      'description' => t('Show search input box (make sure you have also set taxonomies as facets).'),
       'type' => 'boolean',
       'default' => TRUE,
   );
 
   $variable['mica_show_search_browser'] = array(
-      'title' => t('Show search taxonomies browser on faceted navigation'),
-      'description' => t('Show search taxonomies browser on faceted navigation'),
+      'title' => t('Show search taxonomies browser'),
+      'description' => t('Show search taxonomies browser (the list of links under the search box).'),
       'type' => 'boolean',
       'default' => TRUE,
   );
@@ -150,7 +154,7 @@ function _obiba_mica_variable_search_page(&$variable) {
   );
 
   $variable['coverage_group_by'] = array(
-    'title' => t('Grouped by coverage settings'),
+    'title' => t('Coverage group-by'),
     'description' => t('Please select the group-by criteria for the coverage.'),
     'type' => 'options',
     'default' => array(
@@ -476,8 +480,8 @@ function _obiba_mica_variable_network_content(&$variable) {
   );
 
   $variable['networks_list_show_search_button'] = array(
-    'title' => t('Show the search networks button in list and detailed networks page'),
-    'description' => t('If selected the search networks button will be displayed in list and detailed  networks page'),
+    'title' => t('Show the search button in list and detailed network pages'),
+    'description' => t('If selected the search button will be displayed in list and detailed network pages'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -524,8 +528,8 @@ function _obiba_mica_variable_study_content(&$variable) {
     'default' => TRUE,
   );
   $variable['studies_list_show_search_button'] = array(
-    'title' => t('Show the search studies button in list and detailed studies page'),
-    'description' => t('If selected the search studies button will be displayed in list and detailed studies page'),
+    'title' => t('Show the search button in list and detailed study pages'),
+    'description' => t('If selected the search button will be displayed in list and detailed study pages'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -563,8 +567,8 @@ function _obiba_mica_variable_dataset_content(&$variable) {
   );
 
   $variable['datasets_list_show_search_button'] = array(
-    'title' => t('Show the search datasets button in list and detailed datasets page'),
-    'description' => t('If selected the search datasets button will be displayed in list and detailed datasets page'),
+    'title' => t('Show the search button in list and detailed dataset pages'),
+    'description' => t('If selected the search button will be displayed in list and detailed dataset pages'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -620,19 +624,6 @@ function _obiba_mica_variable_variable_content(&$variable) {
   $variable['mica_statistics'] = array(
     'title' => t('Show data statistics'),
     'description' => t('If selected, variable pages will include a statistics summary section and a link to the crosstab page.'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
-}
-
-/**
- * Setting Variable statistic content.
- */
-function _obiba_mica_variable_statistics_content(&$variable) {
-
-  $variable['mica_statistics_coverage'] = array(
-    'title' => t('Show variable classification'),
-    'description' => t('If selected, a link to the classification page will be available from different pages (network, study, search etc.).'),
     'type' => 'boolean',
     'default' => TRUE,
   );
