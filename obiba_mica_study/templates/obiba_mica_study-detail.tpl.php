@@ -46,7 +46,7 @@
         <i class="fa fa-pencil-square-o"></i> <?php print t('Edit')?></a>
     <?php endif; ?>
 
-    <?php if (variable_get_value('studies_list_show_search_button')): ?>
+    <?php if (variable_get_value('study_detail_show_search_button')): ?>
         <?php print MicaClientAnchorHelper::studyVariables(NULL, $study_dto->id, TRUE) ?>
     <?php endif; ?>
   </div>
