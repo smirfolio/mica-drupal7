@@ -126,8 +126,8 @@ function _obiba_mica_variable_search_page(&$variable) {
   );
 
   $variable['search_page_title'] = array(
-    'title' => t('Default Search Page Title'),
-    'description' => t('Default Search Page Title to display on the Search page'),
+    'title' => t('Menu and page title'),
+    'description' => t('Title of the menu and of the search page.'),
     'type' => 'string',
     'default' => 'Search',
   );
@@ -148,7 +148,7 @@ function _obiba_mica_variable_search_page(&$variable) {
 
   $variable['default_query_search'] = array(
     'title' => t('Default query search'),
-    'description' => t('The default search query performed from the Search menu (?query=< YOUR QUERY >)'),
+    'description' => t('The default search query performed from the Search menu, for instance a query that shows all the studies: ') . '<code>query=study(exists(Mica_study.id))&type=studies</code>',
     'type' => 'string',
     'default' => '',
   );

@@ -59,7 +59,6 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
       '#default_value' => variable_get_value('search_page_title'),
       '#maxlength' => 255,
       '#description' => $info['description'],
-      '#attributes' => array('placeholder' => 'query=study(exists(Mica_study.id))&type=studies')
   );
 
   $info = variable_get_info('default_query_search');
@@ -70,7 +69,6 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
       '#default_value' => variable_get_value('default_query_search'),
       '#maxlength' => 255,
       '#description' => $info['description'],
-      '#attributes' => array('placeholder' => 'query=study(exists(Mica_study.id))&type=studies')
   );
 
   $info = variable_get_info('help_text_search_page');

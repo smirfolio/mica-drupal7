@@ -42,7 +42,7 @@ class VariableStatistics {
         return $this->asFrequenciesTable();
       }
     }
-    return '<div class="alert alert-info">No statistics found for this variable (which nature is "' . strtolower($this->variable->nature) . '").</div>';
+    return '<div class="alert alert-info">' . t('No statistics found for this variable.') . '</div>';
   }
 
   /**
