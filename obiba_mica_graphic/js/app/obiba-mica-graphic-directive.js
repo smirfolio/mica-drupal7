@@ -20,4 +20,16 @@ mica.ObibaGraphicCharts
       templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/graphic-main',
       controller: 'GraphicNetworkMainController'
     };
+  }])
+
+  .directive('graphicChartContainer', [function () {
+    return {
+      restrict: 'EA',
+      replace: true,
+      scope: {
+        type: '='
+      },
+      templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/graphic-chart-container',
+      controller: 'ChartController'
+    };
   }]);

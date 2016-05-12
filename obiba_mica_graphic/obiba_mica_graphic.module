@@ -54,6 +54,10 @@ function obiba_mica_graphic_theme($existing, $type, $theme, $path) {
       'template' => 'graphic-main',
       'path' => $path_views_theme
     ),
+    'graphic-chart-container' => array(
+      'template' => 'graphic-chart-container',
+      'path' => $path_views_theme
+    ),
   );
 }
 
