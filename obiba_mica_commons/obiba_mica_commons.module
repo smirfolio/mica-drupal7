@@ -731,7 +731,7 @@ function obiba_mica_commons_is_authorized_agate_user() {
 function obiba_mica_commons_taxonomies_filter_array($key_variables) {
   $mica_taxonomy_figures = variable_get_value($key_variables);
   if (empty($mica_taxonomy_figures)) {
-    return NULL;
+    return [];
   }
   $mica_taxonomies = array();
   foreach ($mica_taxonomy_figures as $taxonomy) {
