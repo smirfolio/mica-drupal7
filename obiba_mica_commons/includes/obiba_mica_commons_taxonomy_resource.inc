@@ -27,9 +27,9 @@ class MicaTaxonomyResource extends MicaClient {
    * @return object
    *   The taxonomy summaries wrapper.
    */
-  public function getTaxonomySummaries() {
+  public function getTaxonomySummaries($resource) {
     $this->setLastResponse(NULL);
-    $url_studies = $this->micaUrl . '/taxonomies/_filter';
+    $url_studies = $this->micaUrl . '/taxonomies/'.$resource;
     $request = new HttpClientRequest($url_studies, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(

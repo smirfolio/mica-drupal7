@@ -45,7 +45,6 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     );
   };
 
-  $taxonomies_items = _obiba_mica_admin_taxonomies_items();
   $form['search_display_settings']['page_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Search Settings'),
@@ -107,32 +106,32 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
   $form['search_display_settings']['page_settings']['facet_region_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Facets region'),
-    '#description' => t('Taxonomies can be shown as facets on the left in the search page, available server values : ') . _obiba_mica_admin_get_taxonomy_summaries(),
+    '#description' => t('Taxonomies can be shown as facets on the left in the search page.'),
     '#collapsible' => FALSE,
   );
 
-  // Draggable form widget
-  $info = variable_get_info('mica_variable_taxonomies_order');
-  $form_mica_variable_taxonomies_order = array(
-    '#prefix' => '<div><label class="control-label">' . $info['title'] . '</label>',
-    '#suffix' => '</div>',
-    '#tree' => TRUE,
-    '#theme' => 'obiba_mica_drag_components',
-    '#title' => $info['title'],
-    '#required' => FALSE,
-    '#description' => $info['description'],
-  );
+  $taxonomies_items = _obiba_mica_admin_taxonomies_items('_filter');
   if (!empty($taxonomies_items)) {
+    // Draggable form widget
+    $info = variable_get_info('mica_variable_taxonomies_order');
+    $form_mica_variable_taxonomies_order = array(
+      '#prefix' => '<div><label class="control-label">' . $info['title'] . '</label>',
+      '#suffix' => '</div>',
+      '#tree' => TRUE,
+      '#theme' => 'obiba_mica_drag_components',
+      '#title' => $info['title'],
+      '#required' => FALSE,
+      '#description' => $info['description'],
+    );
     $wrapped_variable_taxonomies_draggable_form = _obiba_mica_admin_get_draggable_form($form_mica_variable_taxonomies_order, $taxonomies_items, 'mica_variable_taxonomies_order');
     $form['search_display_settings']['page_settings']['facet_region_settings']['mica_variable_taxonomies_order'] = array_merge($form_mica_variable_taxonomies_order, $wrapped_variable_taxonomies_draggable_form);
+    $form['search_display_settings']['page_settings']['facet_region_settings']['facet_region_settings_action_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save the Variable taxonomy facets order'),
+      '#current_value' => 'mica_variable_taxonomies_order',
+      '#submit' => array('_obiba_mica_settings_search_submit_draggable'),
+    );
   }
-
-  $form['search_display_settings']['page_settings']['facet_region_settings']['facet_region_settings_action_submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save the Variable taxonomy facets order'),
-    '#current_value' => 'mica_variable_taxonomies_order',
-    '#submit' => array('_obiba_mica_settings_search_submit_draggable'),
-  );
 
   $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_dataset_taxonomy_facet', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_study_taxonomy_facet', NULL, 'checkbox');
@@ -161,54 +160,73 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
   $form['search_display_settings']['page_settings']['other_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Other search usage'),
-    '#collapsible' => FALSE,
-    '#description' => t('For the Taxonomy in figures filter, available server values : ') . _obiba_mica_admin_get_taxonomy_summaries()
+    '#collapsible' => FALSE
   );
 
-  $info = variable_get_info('networks_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['networks_list_show_search_button'] = array(
+  $info = variable_get_info('network_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['network_list_show_search_button'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('networks_list_show_search_button'),
+    '#default_value' => variable_get_value('network_list_show_search_button'),
     '#description' => $info['description'],
   );
-  $info = variable_get_info('studies_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['studies_list_show_search_button'] = array(
+  $info = variable_get_info('study_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['study_list_show_search_button'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('studies_list_show_search_button'),
+    '#default_value' => variable_get_value('study_list_show_search_button'),
     '#description' => $info['description'],
   );
-  $info = variable_get_info('datasets_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['datasets_list_show_search_button'] = array(
+  $info = variable_get_info('dataset_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['dataset_list_show_search_button'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('datasets_list_show_search_button'),
-    '#description' => $info['description'],
-  );
-
-  // Draggable form widget
-  $info = variable_get_info('mica_taxonomy_figures');
-  $form_mica_taxonomy_figures = array(
-    '#prefix' => '<div><label class="control-label">' . $info['title'] . '</label>',
-    '#suffix' => '</div>',
-    '#tree' => TRUE,
-    '#theme' => 'obiba_mica_drag_components',
-    '#title' => $info['title'],
-    '#required' => FALSE,
+    '#default_value' => variable_get_value('dataset_list_show_search_button'),
     '#description' => $info['description'],
   );
 
   if (!empty($taxonomies_items)) {
+    // Draggable form widget
+    $info = variable_get_info('mica_taxonomy_figures');
+    $form_mica_taxonomy_figures = array(
+      '#prefix' => '<div><label class="control-label">' . $info['title'] . '</label>',
+      '#suffix' => '</div>',
+      '#tree' => TRUE,
+      '#theme' => 'obiba_mica_drag_components',
+      '#title' => $info['title'],
+      '#required' => FALSE,
+      '#description' => $info['description'],
+    );
+    $taxonomies_items = _obiba_mica_admin_search_filter_taxonomies_by_item($taxonomies_items, 'Mica_variable');
     $wrapped_taxonomies_draggable_form = _obiba_mica_admin_get_draggable_form($form_mica_taxonomy_figures, $taxonomies_items, 'mica_taxonomy_figures');
     $form['search_display_settings']['page_settings']['other_settings']['mica_taxonomy_figures'] = array_merge($form_mica_taxonomy_figures, $wrapped_taxonomies_draggable_form);
+
+    $form['search_display_settings']['page_settings']['other_settings']['other_settings_action_submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Save the figures taxonomies ordered'),
+      '#current_value' => 'mica_taxonomy_figures',
+      '#submit' => array('_obiba_mica_settings_search_submit_draggable'),
+    );
   }
-  $form['search_display_settings']['page_settings']['other_settings']['other_settings_action_submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save the figures taxonomies ordered'),
-    '#current_value' => 'mica_taxonomy_figures',
-    '#submit' => array('_obiba_mica_settings_search_submit_draggable'),
-  );
+}
+
+/**
+ * Remove item from array of taxonomies>.
+ *
+ * @param $taxonomies_items
+ * @param $item
+ * @return array
+ */
+function _obiba_mica_admin_search_filter_taxonomies_by_item($taxonomies_items, $item) {
+  return array_filter(array_map(function ($taxonomy) use ($item) {
+    if ($taxonomy->name === $item) {
+      unset($taxonomy);
+    }
+    if (!empty($taxonomy)) {
+      return $taxonomy;
+    }
+  }, $taxonomies_items));
+
 }
 
 /**
@@ -659,31 +677,15 @@ function _obiba_mica_settings_search_variables_form(&$form) {
 }
 
 /**
- * Retrieves taxonomies
- * TODO this should become a dragtable action callback so clients can always refresh the list when desired
- * @return string
- */
-function _obiba_mica_admin_get_taxonomy_summaries() {
-  $service = new MicaTaxonomyResource();
-  $taxonomies = $service->getTaxonomySummaries();
-  $list = array();
-
-  if (!empty($taxonomies) && !empty($taxonomies->summaries)) {
-    foreach ($taxonomies->summaries as $summary) {
-      $list[] = $summary->name;
-    }
-  }
-
-  return implode(',', $list);
-}
-
-/**
  * Resource to get the taxonomies from mica server.
  * @return object
  */
-function _obiba_mica_admin_taxonomies_items() {
+function _obiba_mica_admin_taxonomies_items($resource) {
   $service = new MicaTaxonomyResource();
-  $taxonomies = $service->getTaxonomySummaries();
+  $taxonomies = $service->getTaxonomySummaries($resource);
+  if (!empty($taxonomies->summaries)) {
+    return $taxonomies->summaries;
+  }
   return $taxonomies;
 }
 
