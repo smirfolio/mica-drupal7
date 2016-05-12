@@ -135,7 +135,7 @@ function obiba_mica_graphic_block_view($delta = '') {
     $graphics_bocks = variable_get_value('graphics_blocks');
     $colors_options = obiba_mica_graphic_charts_colors_options_settings();
     $study_design_options =
-      !empty($colors_options)?
+      !empty($colors_options) ?
         array_merge(array(
           'bars' => 'horizontal',
           'series' => array(
@@ -144,11 +144,15 @@ function obiba_mica_graphic_block_view($delta = '') {
           ),
           'axes' => array(
             'x' => array(
-              'nbrStudies' => array('side' => 'top', 'label' => t('Number of Studies')),
+              'nbrStudies' => array(
+                'side' => 'top',
+                'label' => t('Number of Studies')
+              ),
               'nbrParticipants' => array('label' => t('Number of Participants'))
             )
           ),
-          'legend' => array('position' => 'none')), $colors_options):
+          'legend' => array('position' => 'none')
+        ), $colors_options) :
         array(
           'bars' => 'horizontal',
           'series' => array(
@@ -157,18 +161,34 @@ function obiba_mica_graphic_block_view($delta = '') {
           ),
           'axes' => array(
             'x' => array(
-              'nbrStudies' => array('side' => 'top', 'label' => t('Number of Studies')),
+              'nbrStudies' => array(
+                'side' => 'top',
+                'label' => t('Number of Studies')
+              ),
               'nbrParticipants' => array('label' => t('Number of Participants'))
             )
           ),
-          'legend' => array('position' => 'none'));
+          'legend' => array('position' => 'none')
+        );
     $number_participants_options =
-      !empty($colors_options)?
-        array_merge(array('legend' => array('position' => 'right'), 'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))), $colors_options):
-        array('legend' => array('position' => 'right'), 'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color')));
-    $bio_samples_options =  !empty($colors_options)?
-      array_merge(array('legend' => array('position' => 'right'), 'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))), $colors_options):
-      array('legend' => array('position' => 'right'), 'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color')));
+      !empty($colors_options) ?
+        array_merge(array(
+          'legend' => array('position' => 'right'),
+          'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
+        ), $colors_options) :
+        array(
+          'legend' => array('position' => 'right'),
+          'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
+        );
+    $bio_samples_options = !empty($colors_options) ?
+      array_merge(array(
+        'legend' => array('position' => 'right'),
+        'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
+      ), $colors_options) :
+      array(
+        'legend' => array('position' => 'right'),
+        'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
+      );
     switch ($delta) {
       case NetworkStatistics::GEO_NBR_STAT:
         if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
@@ -182,7 +202,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('geoChartOptions',
                     array('graphics.country', 'graphics.nbr-studies'),
-                    'graphics.geo-chart-title', array('colorAxis' =>  $colors_options))
+                    'graphics.geo-chart-title', array('colorAxis' => $colors_options))
                 ),
             ),
               'setting');
@@ -201,7 +221,11 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'entityType' => 'studies',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('studiesDesigns',
-                    array('graphics.study-design', 'graphics.nbr-studies', 'graphics.number-participants'),
+                    array(
+                      'graphics.study-design',
+                      'graphics.nbr-studies',
+                      'graphics.number-participants'
+                    ),
                     'graphics.study-design-chart-title', $study_design_options),
                 ),
             ),
@@ -221,7 +245,10 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'entityType' => 'studies',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('numberParticipants',
-                    array('graphics.number-participants', 'graphics.nbr-studies'),
+                    array(
+                      'graphics.number-participants',
+                      'graphics.nbr-studies'
+                    ),
                     'graphics.number-participants-chart-title', $number_participants_options),
                 ),
             ),
@@ -306,7 +333,7 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $header
 function obiba_mica_graphic_charts_colors_options_settings() {
   $options_colors = array();
   $colors = variable_get_value('graphics_nbr_colors');
-  if(empty($colors) || $colors=='none'){
+  if (empty($colors) || $colors == 'none') {
     return NULL;
   }
   $colors_setting = array_filter($colors, function ($color) {
@@ -329,16 +356,11 @@ function obiba_mica_graphic_charts_colors_options_settings() {
  */
 function obiba_mica_graphic_search_query_charts($query, $default_dto_search = NULL, $chart_title = NULL, $entity_id = NULL) {
   $search_resources = new ObibaSearchResources();
-      $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', false);
+  $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
   $taxonomy_charts = array();
-
   if (!empty($coverages->taxonomies)) {
-    $taxonomies_filter = obiba_mica_commons_taxonomies_filter_array();
-    $allowed_taxonomies = empty($taxonomies_filter) ? array_map(function($t) {
-      return $t->taxonomy->name;
-    }, $coverages->taxonomies) : $taxonomies_filter;
-
-    foreach ($allowed_taxonomies as $allowed_taxonomy) {
+    $taxonomies_filter = obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures');
+    foreach ($taxonomies_filter as $allowed_taxonomy => $taxonomy) {
       foreach ($coverages->taxonomies as $taxonomy_coverage) {
         $labels = array();
         $data = array();
@@ -358,17 +380,18 @@ function obiba_mica_graphic_search_query_charts($query, $default_dto_search = NU
                     foreach ($term->buckets as $key_bucket => $bucket) {
                       if (!empty($data[$bucket->value])) {
                         $data[$bucket->value][$key_vocabulary] += $bucket->hits;
-                      } else {
+                      }
+                      else {
                         $data[$bucket->value][$key_vocabulary] = $bucket->hits;
                       }
 
                       $link[$bucket->value][$key_vocabulary] = MicaClient::chartQueryBuilders(
-                          NULL,
-                          $bucket,
-                          $taxonomy_coverage->taxonomy->name,
-                          $vocabulary_coverage->vocabulary->name,
-                          $terms,
-                          $entity_id
+                        NULL,
+                        $bucket,
+                        $taxonomy_coverage->taxonomy->name,
+                        $vocabulary_coverage->vocabulary->name,
+                        $terms,
+                        $entity_id
                       );
                     }
                   }
@@ -379,12 +402,12 @@ function obiba_mica_graphic_search_query_charts($query, $default_dto_search = NU
                 $data[t('Variables')][] = $vocabulary_coverage->count;
                 if (!empty($terms)) {
                   $link[t('Variables')][] = MicaClient::chartQueryBuilders(
-                      $query,
-                      NULL,
-                      $taxonomy_coverage->taxonomy->name,
-                      $vocabulary_coverage->vocabulary->name,
-                      $terms,
-                      $entity_id
+                    $query,
+                    NULL,
+                    $taxonomy_coverage->taxonomy->name,
+                    $vocabulary_coverage->vocabulary->name,
+                    $terms,
+                    $entity_id
                   );
                 }
               }
@@ -402,9 +425,9 @@ function obiba_mica_graphic_search_query_charts($query, $default_dto_search = NU
             $title = t('Number of variables');
             if (!empty($default_dto_search['group-by'])) {
               $group_by_names = array(
-                  'studyIds' => t('study'),
-                  'dceIds' => t('data collection event'),
-                  'datasetId' => t('dataset'),
+                'studyIds' => t('study'),
+                'dceIds' => t('data collection event'),
+                'datasetId' => t('dataset'),
               );
               $title = $title . ' (' . t('group by') . ' ' . $group_by_names[$default_dto_search['group-by']] . ')';
             }
@@ -412,8 +435,8 @@ function obiba_mica_graphic_search_query_charts($query, $default_dto_search = NU
               $title = $chart_title;
             }
             $taxonomy_charts[] = array(
-                'taxonomy' => $taxonomy_coverage->taxonomy,
-                'chart' => obiba_mica_graphic_stacked_column_chart($labels, $parser_data, $title, NULL, 450, 'none')
+              'taxonomy' => $taxonomy_coverage->taxonomy,
+              'chart' => obiba_mica_graphic_stacked_column_chart($labels, $parser_data, $title, NULL, 450, 'none')
             );
           }
         }
@@ -435,9 +458,9 @@ function obiba_mica_graphic_stacked_column_chart($labels, $data, $title, $width 
 
   // make sure links keys are a sequence
   $raw_options['links'] = array();
-  foreach($data['links'] as $k => $links) {
+  foreach ($data['links'] as $k => $links) {
     $raw_options['links'][$k] = array();
-    foreach($links as $link) {
+    foreach ($links as $link) {
       $raw_options['links'][$k][] = $link;
     }
   }
@@ -445,7 +468,7 @@ function obiba_mica_graphic_stacked_column_chart($labels, $data, $title, $width 
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'column',
-    '#colors' =>  current(obiba_mica_graphic_charts_colors_options_settings()),
+    '#colors' => current(obiba_mica_graphic_charts_colors_options_settings()),
     '#stacking' => TRUE,
     '#width' => $chart_width,
     '#height' => $height,
@@ -458,7 +481,7 @@ function obiba_mica_graphic_stacked_column_chart($labels, $data, $title, $width 
   foreach ($data['data'] as $key => $datum) {
     // make sure datum keys are a sequence
     $datum2 = array();
-    foreach($datum as $d) {
+    foreach ($datum as $d) {
       $datum2[] = $d;
     }
     $chart[$key] = array(
@@ -470,7 +493,7 @@ function obiba_mica_graphic_stacked_column_chart($labels, $data, $title, $width 
 
   // make sure label keys are a sequence
   $labels2 = array();
-  foreach($labels as $label) {
+  foreach ($labels as $label) {
     $labels2[] = $label;
   }
   $chart['xaxis'] = array(
@@ -488,7 +511,7 @@ function obiba_mica_graphic_pie_chart($labels, $data, $title, $width = 250, $hei
   $chart = array(
     '#type' => 'chart',
     '#chart_type' => 'pie',
-    '#colors' =>  current(obiba_mica_graphic_charts_colors_options_settings()),
+    '#colors' => current(obiba_mica_graphic_charts_colors_options_settings()),
     '#width' => $width,
     '#height' => $height,
     '#title' => empty($title) ? ' ' : $title,

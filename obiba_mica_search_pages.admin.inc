@@ -32,7 +32,7 @@ function obiba_mica_search_pages_admin_settings() {
  * @param $form
  */
 function _obiba_mica_settings_search(&$form, &$form_state) {
-  $add_form_field = function (&$form, $field_name, $info = NULL, $type = 'textfield', $maxlength=255) {
+  $add_form_field = function (&$form, $field_name, $info = NULL, $type = 'textfield', $maxlength = 255) {
     $info = empty($info) ? variable_get_info($field_name) : $info;
     $form[$field_name] = array(
       '#type' => $type,
@@ -45,78 +45,104 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     );
   };
 
+  $taxonomies_items = _obiba_mica_admin_taxonomies_items();
   $form['search_display_settings']['page_settings'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Search Settings'),
-      '#collapsible' => FALSE,
+    '#type' => 'fieldset',
+    '#title' => t('Search Settings'),
+    '#collapsible' => FALSE,
   );
 
   $info = variable_get_info('search_page_title');
   $form['search_display_settings']['page_settings']['search_page_title'] = array(
-      '#type' => 'textfield',
-      '#title' => $info['title'],
-      '#required' => FALSE,
-      '#default_value' => variable_get_value('search_page_title'),
-      '#maxlength' => 255,
-      '#description' => $info['description'],
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('search_page_title'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+    '#attributes' => array('placeholder' => 'query=study(exists(Mica_study.id))&type=studies')
   );
 
   $info = variable_get_info('default_query_search');
   $form['search_display_settings']['page_settings']['default_query_search'] = array(
-      '#type' => 'textfield',
-      '#title' => $info['title'],
-      '#required' => FALSE,
-      '#default_value' => variable_get_value('default_query_search'),
-      '#maxlength' => 255,
-      '#description' => $info['description'],
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('default_query_search'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+    '#attributes' => array('placeholder' => 'query=study(exists(Mica_study.id))&type=studies')
   );
 
   $info = variable_get_info('help_text_search_page');
   $form['search_display_settings']['page_settings']['help_text_search_page'] = array(
-      '#type' => 'textarea',
-      '#title' => $info['title'],
-      '#required' => FALSE,
-      '#default_value' => variable_get_value('help_text_search_page'),
-      '#maxlength' => 512,
-      '#description' => $info['description'],
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('help_text_search_page'),
+    '#maxlength' => 512,
+    '#description' => $info['description'],
   );
 
   $info = variable_get_info('help_text_harmonization_potential_page');
   $form['search_display_settings']['page_settings']['help_text_harmonization_potential_page'] = array(
-      '#type' => 'textarea',
-      '#title' => $info['title'],
-      '#required' => FALSE,
-      '#default_value' => variable_get_value('help_text_harmonization_potential_page'),
-      '#maxlength' => 512,
-      '#description' => $info['description'],
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('help_text_harmonization_potential_page'),
+    '#maxlength' => 512,
+    '#description' => $info['description'],
   );
 
   $form['search_display_settings']['page_settings']['search_region_settings'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Search region'),
-      '#description' => t('Configure how to display the results (applies to any search queries).'),
-      '#collapsible' => FALSE,
+    '#type' => 'fieldset',
+    '#title' => t('Search region'),
+    '#description' => t('Configure how to display the results (applies to any search queries).'),
+    '#collapsible' => FALSE,
   );
   $add_form_field($form['search_display_settings']['page_settings']['search_region_settings'], 'mica_show_search_box', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['search_region_settings'], 'mica_show_search_browser', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['search_region_settings'], 'mica_target_tabs_order');
 
   $form['search_display_settings']['page_settings']['facet_region_settings'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Facets region'),
-      '#description' => t('Taxonomies can be shown as facets on the left in the search page.'),
-      '#collapsible' => FALSE,
+    '#type' => 'fieldset',
+    '#title' => t('Facets region'),
+    '#description' => t('Taxonomies can be shown as facets on the left in the search page, available server values : ') . _obiba_mica_admin_get_taxonomy_summaries(),
+    '#collapsible' => FALSE,
   );
-  $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_variable_taxonomies_order');
+
+  // Draggable form widget
+  $info = variable_get_info('mica_variable_taxonomies_order');
+  $form_mica_variable_taxonomies_order = array(
+    '#prefix' => '<div><label class="control-label">' . $info['title'] . '</label>',
+    '#suffix' => '</div>',
+    '#tree' => TRUE,
+    '#theme' => 'obiba_mica_drag_components',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#description' => $info['description'],
+  );
+  if (!empty($taxonomies_items)) {
+    $wrapped_variable_taxonomies_draggable_form = _obiba_mica_admin_get_draggable_form($form_mica_variable_taxonomies_order, $taxonomies_items, 'mica_variable_taxonomies_order');
+    $form['search_display_settings']['page_settings']['facet_region_settings']['mica_variable_taxonomies_order'] = array_merge($form_mica_variable_taxonomies_order, $wrapped_variable_taxonomies_draggable_form);
+  }
+
+  $form['search_display_settings']['page_settings']['facet_region_settings']['facet_region_settings_action_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save the Variable taxonomy facets order'),
+    '#current_value' => 'mica_variable_taxonomies_order',
+    '#submit' => array('_obiba_mica_settings_search_submit_draggable'),
+  );
+
   $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_dataset_taxonomy_facet', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_study_taxonomy_facet', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_network_taxonomy_facet', NULL, 'checkbox');
 
   $form['search_display_settings']['page_settings']['result_region_settings'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Results region'),
-      '#description' => t('Configure how to display the results (applies to any search queries).'),
-      '#collapsible' => FALSE,
+    '#type' => 'fieldset',
+    '#title' => t('Results region'),
+    '#description' => t('Configure how to display the results (applies to any search queries).'),
+    '#collapsible' => FALSE,
   );
   $add_form_field($form['search_display_settings']['page_settings']['result_region_settings'], 'mica_search_tabs_order');
   $add_form_field($form['search_display_settings']['page_settings']['result_region_settings'], 'mica_result_tabs_order');
@@ -124,76 +150,113 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
   $coverage_group_by_options = obiba_mica_coverage_group_by_options();
   $info = variable_get_info('coverage_group_by');
   $form['search_display_settings']['page_settings']['result_region_settings']['coverage_group_by'] = array(
-      '#type' => 'checkboxes',
-      '#multiple' => TRUE,
-      '#default_value' => variable_get_value('coverage_group_by'),
-      '#title' => $info['title'],
-      '#options' => $coverage_group_by_options,
-      '#description' => $info['description'],
+    '#type' => 'checkboxes',
+    '#multiple' => TRUE,
+    '#default_value' => variable_get_value('coverage_group_by'),
+    '#title' => $info['title'],
+    '#options' => $coverage_group_by_options,
+    '#description' => $info['description'],
   );
 
   $form['search_display_settings']['page_settings']['other_settings'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Other search usage'),
-      '#collapsible' => FALSE,
+    '#type' => 'fieldset',
+    '#title' => t('Other search usage'),
+    '#collapsible' => FALSE,
+    '#description' => t('For the Taxonomy in figures filter, available server values : ') . _obiba_mica_admin_get_taxonomy_summaries()
   );
 
-  $info = variable_get_info('network_detail_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['network_detail_show_search_button'] = array(
+  $info = variable_get_info('networks_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['networks_list_show_search_button'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('network_detail_show_search_button'),
+    '#default_value' => variable_get_value('networks_list_show_search_button'),
     '#description' => $info['description'],
   );
-  $info = variable_get_info('network_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['network_list_show_search_button'] = array(
+  $info = variable_get_info('studies_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['studies_list_show_search_button'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('network_list_show_search_button'),
+    '#default_value' => variable_get_value('studies_list_show_search_button'),
     '#description' => $info['description'],
   );
-
-  $info = variable_get_info('study_detail_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['study_detail_show_search_button'] = array(
+  $info = variable_get_info('datasets_list_show_search_button');
+  $form['search_display_settings']['page_settings']['other_settings']['datasets_list_show_search_button'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('study_detail_show_search_button'),
-    '#description' => $info['description'],
-  );
-  $info = variable_get_info('study_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['study_list_show_search_button'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('study_list_show_search_button'),
+    '#default_value' => variable_get_value('datasets_list_show_search_button'),
     '#description' => $info['description'],
   );
 
-  $info = variable_get_info('dataset_list_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['dataset_list_show_search_button'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('dataset_list_show_search_button'),
-      '#description' => $info['description'],
-  );
-  $info = variable_get_info('dataset_detail_show_search_button');
-  $form['search_display_settings']['page_settings']['other_settings']['dataset_detail_show_search_button'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('dataset_detail_show_search_button'),
-    '#description' => $info['description'],
-  );
-
+  // Draggable form widget
   $info = variable_get_info('mica_taxonomy_figures');
-  $form['search_display_settings']['page_settings']['other_settings']['mica_taxonomy_figures'] = array(
-      '#type' => 'textfield',
-      '#title' => $info['title'],
-      '#required' => FALSE,
-      '#default_value' => variable_get_value('mica_taxonomy_figures'),
-      '#description' => $info['description'],
-      '#attributes' => empty($info['placeholder']) ? array() : array('placeholder' => $info['placeholder'])
+  $form_mica_taxonomy_figures = array(
+    '#prefix' => '<div><label class="control-label">' . $info['title'] . '</label>',
+    '#suffix' => '</div>',
+    '#tree' => TRUE,
+    '#theme' => 'obiba_mica_drag_components',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#description' => $info['description'],
+  );
+
+  if (!empty($taxonomies_items)) {
+    $wrapped_taxonomies_draggable_form = _obiba_mica_admin_get_draggable_form($form_mica_taxonomy_figures, $taxonomies_items, 'mica_taxonomy_figures');
+    $form['search_display_settings']['page_settings']['other_settings']['mica_taxonomy_figures'] = array_merge($form_mica_taxonomy_figures, $wrapped_taxonomies_draggable_form);
+  }
+  $form['search_display_settings']['page_settings']['other_settings']['other_settings_action_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save the figures taxonomies ordered'),
+    '#current_value' => 'mica_taxonomy_figures',
+    '#submit' => array('_obiba_mica_settings_search_submit_draggable'),
   );
 }
 
+/**
+ * Action when saving the enabled taxonomies order the default save of the
+ * form can't save the status of this widget.
+ *
+ * @param $form
+ * @param $form_state
+ */
+
+function _obiba_mica_settings_search_submit_draggable(&$form, &$form_state) {
+  $current_key_value = _obiba_mica_settings_search_get_passed_submit_arguments($form_state['clicked_button']['#id'],
+    $form_state['buttons']
+  );
+  $taxonomy_form = $form_state['values'][$current_key_value];
+  uasort($taxonomy_form, '_obiba_mica_array_sort_variable');
+  variable_set($current_key_value, $taxonomy_form);
+}
+
+/**
+ * Get the current form key to save
+ * @param $button_id
+ * @param $buttons_form
+ * @return mixed
+ */
+function _obiba_mica_settings_search_get_passed_submit_arguments($button_id, $buttons_form) {
+  foreach ($buttons_form as $button) {
+    if ($button['#id'] === $button_id) {
+      return $button['#current_value'];
+    }
+  }
+}
+
+/**
+ * Custom array sort function by weight to save the mica_taxonomy_figures array
+ * items in correct order.
+ *
+ * taxonomies in the admin form.
+ * @param $a
+ * @param $b
+ * @return int
+ */
+function _obiba_mica_array_sort_variable($a, $b) {
+  if (isset($a['weight']) && isset($b['weight'])) {
+    return $a['weight'] < $b['weight'] ? -1 : 1;
+  }
+  return 0;
+}
 
 function _obiba_mica_settings_search_networks_form(&$form) {
   $form['search_display_settings']['networks_form'] = array(
@@ -247,17 +310,17 @@ function _obiba_mica_settings_search_networks_form(&$form) {
   );
   $info = variable_get_info('networks_column_study_variables');
   $form['search_display_settings']['networks_form']['networks_column']['networks_column_study_variables'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('networks_column_study_variables'),
-      '#description' => $info['description'],
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_column_study_variables'),
+    '#description' => $info['description'],
   );
   $info = variable_get_info('networks_column_dataschema_variables');
   $form['search_display_settings']['networks_form']['networks_column']['networks_column_dataschema_variables'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('networks_column_dataschema_variables'),
-      '#description' => $info['description'],
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('networks_column_dataschema_variables'),
+    '#description' => $info['description'],
   );
 
   // labels
@@ -381,17 +444,17 @@ function _obiba_mica_settings_search_studies_form(&$form) {
   );
   $info = variable_get_info('studies_column_study_variables');
   $form['search_display_settings']['studies_form']['studies_column']['studies_column_study_variables'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('studies_column_study_variables'),
-      '#description' => $info['description'],
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_study_variables'),
+    '#description' => $info['description'],
   );
   $info = variable_get_info('studies_column_dataschema_variables');
   $form['search_display_settings']['studies_form']['studies_column']['studies_column_dataschema_variables'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('studies_column_dataschema_variables'),
-      '#description' => $info['description'],
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_dataschema_variables'),
+    '#description' => $info['description'],
   );
 
 
@@ -452,10 +515,10 @@ function _obiba_mica_settings_search_datasets_form(&$form) {
   );
   $info = variable_get_info('datasets_column_acronym');
   $form['search_display_settings']['datasets_form']['datasets_column']['datasets_column_acronym'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('datasets_column_acronym'),
-      '#description' => $info['description'],
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('datasets_column_acronym'),
+    '#description' => $info['description'],
   );
   $info = variable_get_info('datasets_column_type');
   $form['search_display_settings']['datasets_form']['datasets_column']['datasets_column_type'] = array(
@@ -541,10 +604,10 @@ function _obiba_mica_settings_search_variables_form(&$form) {
   );
   $info = variable_get_info('variables_column_type');
   $form['search_display_settings']['variables_form']['variables_column']['variables_column_type'] = array(
-      '#type' => 'checkbox',
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value('variables_column_type'),
-      '#description' => $info['description'],
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('variables_column_type'),
+    '#description' => $info['description'],
   );
   $info = variable_get_info('variables_column_study');
   $form['search_display_settings']['variables_form']['variables_column']['variables_column_study'] = array(
@@ -612,6 +675,76 @@ function _obiba_mica_admin_get_taxonomy_summaries() {
   }
 
   return implode(',', $list);
+}
+
+/**
+ * Resource to get the taxonomies from mica server.
+ * @return object
+ */
+function _obiba_mica_admin_taxonomies_items() {
+  $service = new MicaTaxonomyResource();
+  $taxonomies = $service->getTaxonomySummaries();
+  return $taxonomies;
+}
+
+/**
+ * Draggable widget form implementation.
+ *
+ * @param $draggable_form
+ * @param $draggable_items
+ * @param $variable_key
+ * @return mixed
+ */
+function _obiba_mica_admin_get_draggable_form($draggable_form, $draggable_items, $variable_key) {
+  $i = 0;
+  $default_value = variable_get_value($variable_key);
+  foreach ($draggable_items as $key_taxonomy => $summary) {
+    $draggable_form[$summary->name] =
+      array(
+        'value' => array(
+          '#type' => 'hidden',
+          '#title_display' => 'invisible',
+          '#default_value' => $summary->name,
+        ),
+        'value_name' => array(
+          '#markup' => $summary->name,
+        ),
+        'description' => array(
+          '#markup' => check_plain(obiba_mica_commons_get_localized_field($summary, 'title')),
+        ),
+        'weight' => array(
+          '#type' => 'weight',
+          '#default_value' => !empty($default_value[$summary->name]) ? $default_value[$summary->name]['weight'] : 0,
+          '#title_display' => 'invisible',
+          '#attributes' => array('class' => array('taxonomies-item-weight')),
+        ),
+        'enable' => array(
+          '#type' => 'checkbox',
+          '#default_value' => !empty($default_value[$summary->name]) ? $default_value[$summary->name]['enable'] : 0,
+          '#title_display' => 'invisible',
+        )
+      );
+    $i++;
+  }
+  uasort($draggable_form, '_obiba_mica_array_sort');
+  return $draggable_form;
+}
+
+// Custom array sort function by weight.
+
+/**
+ * Custom array sort function by weight to display the taxonomies widget items
+ * in correct order.
+ *
+ * @param $a
+ * @param $b
+ * @return int
+ */
+function _obiba_mica_array_sort($a, $b) {
+  if (isset($a['weight']['#default_value']) && isset($b['weight']['#default_value'])) {
+    return $a['weight']['#default_value'] < $b['weight']['#default_value'] ? -1 : 1;
+  }
+  return 0;
 }
 
 /**
