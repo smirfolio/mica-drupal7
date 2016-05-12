@@ -226,7 +226,6 @@ function obiba_mica_study_load_libs() {
     drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_highcharts.js', 'file');
   }
   else {
-    drupal_add_js('https://www.google.com/jsapi', 'external');
     drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_google.js',
       array('type' => 'file', 'scope' => 'footer'));
   }

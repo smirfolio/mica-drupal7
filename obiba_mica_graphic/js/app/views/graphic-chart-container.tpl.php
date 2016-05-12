@@ -16,7 +16,7 @@
   </div>
   <div class="col-md-6"
        obiba-table
-       chart-type="Table"
+       chart-type="{{'Table-' + chart.type}}"
        chart-aggregation-name="chart.aggregationName"
        chart-entity-dto="chart.entityDto"
        chart-options-name="chart.optionsName"
