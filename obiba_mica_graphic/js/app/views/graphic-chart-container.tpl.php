@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-6">
-    <div ng-if="chart.title" class="chart-title">
+    <div ng-if="canShowTitle() && chart.title" class="chart-title">
       {{directive.title | translate}}
     </div>
     <div obiba-chart

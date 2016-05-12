@@ -14,9 +14,22 @@ mica.ObibaGraphicCharts
   .controller('ChartController', ['$rootScope','$scope', 'GraphicChartsConfig', 'ChartType',
     function ($rootScope, $scope, GraphicChartsConfig, ChartType) {
 
+      /**
+       * Helper to test whether to show the chart title or not
+       *
+       * @returns {boolean}
+       */
+      var canShowTitle = function() {
+        return $scope.type >= 0 && [ChartType.NUMBER_PARTICIPANTS, ChartType.BIO_SAMPLES].indexOf($scope.type) === -1;
+      };
+
+      /**
+       * Depending on the type of the chart, returns the corresponding options
+       *
+       * @param type
+       */
       function getChartOptions(type) {
         var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
-
         switch (type) {
           case ChartType.GEO_CHARTS:
             $scope.directive = {title:charOptions.geoChartOptions.title};
@@ -88,7 +101,8 @@ mica.ObibaGraphicCharts
         }
 
       }
-    
+
+      $scope.canShowTitle = canShowTitle;
       $scope.$watch('type', function(type) {
         getChartOptions(type);
       });
