@@ -2,7 +2,7 @@
 
 
 class RqlQueryBuilder {
-  
+
   public static function network_query_charts($studyIds) {
     return self::createChartsQuery(
       "variable(in(studyIds,(%s)),sort(name),aggregate(%s,bucket(studyIds))),locale(%s)",
@@ -35,7 +35,7 @@ class RqlQueryBuilder {
     global $language;
 
     return sprintf(
-      $format ,
+      $format,
       is_array($args) ? join(',', $args) : $args,
       $language->language
     );
@@ -45,7 +45,7 @@ class RqlQueryBuilder {
     global $language;
 
     return sprintf(
-      $format ,
+      $format,
       is_array($args) ? join(',', $args) : $args,
       self::createAggregationQuery(),
       $language->language
@@ -54,13 +54,15 @@ class RqlQueryBuilder {
 
   private static function createAggregationQuery() {
     $figures = variable_get_value('mica_taxonomy_figures');
-    if (empty($figures)) return '';
-
-    $taxonomies = explode(',', $figures);
+    if (empty($figures)) {
+      return '';
+    }
+    $taxonomies = array_map(function ($figure) {
+      return $figure['value'];
+    }, $figures);
     foreach ($taxonomies as &$taxonomy) {
       $taxonomy .= '*';
     }
-
     return sprintf("re(%s)", implode(',', $taxonomies));
   }
 
