@@ -16,10 +16,6 @@ function obiba_mica_variable_page_detail($variable_id) {
     drupal_get_path('module', 'charts') .
     '/modules/charts_' . $library_chart .
     '/charts_' . $library_chart . '.js', 'file');
-  if ($library_chart == 'google') {
-    drupal_add_js('https://www.google.com/jsapi', 'file');
-  }
-
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_variable_harmo_algo_datatable_init.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_get_ajax_variables.js', 'file');
   drupal_add_js(array('obiba_mica_variable' => array('library' => $library_chart)), 'setting');
