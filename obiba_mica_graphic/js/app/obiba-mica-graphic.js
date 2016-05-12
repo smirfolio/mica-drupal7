@@ -22,26 +22,13 @@
 mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
     'obiba.mica.graphics'
   ])
-  .controller('GraphicNetworkMainController', [
-    '$rootScope',
-    '$scope',
-    '$filter',
-    function ($rootScope,
-              $scope) {
-      $scope.selectedTabGraphic = {
-        geoCharts: false,
-        studyDesign: false,
-        numberParticipants: false,
-        bioSamples: false
-      };
-
-      var selectTab = function (id) {
-        Object.keys($scope.selectedTabGraphic).forEach(function (key) {
-          $scope.selectedTabGraphic[key] = false;
-        });
-        $scope.selectedTabGraphic[id] = true;
-      };
-
-      $scope.selectTab = selectTab;
-      selectTab('geoCharts')
+  .constant('ChartType', {
+    GEO_CHARTS: 0,
+    STUDY_DESIGN: 1,
+    NUMBER_PARTICIPANTS: 2,
+    BIO_SAMPLES: 3
+  })
+  .controller('GraphicNetworkMainController', ['$scope', 'ChartType',
+    function ($scope, ChartType) {
+      $scope.activeTab = ChartType.GEO_CHARTS;
     }]);
