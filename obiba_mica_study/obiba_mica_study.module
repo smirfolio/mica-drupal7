@@ -137,22 +137,6 @@ function obiba_mica_study_block_info() {
 }
 
 /**
- * Implements hook_block_view().
- */
-function obiba_mica_study_block_view($delta = '') {
-//  switch ($delta) {
-//    case 'studies-tab-list' :
-//      $output = theme('obiba_mica_study_list', array('list_studies' => obiba_mica_study_get_studies()));
-//      $block['subject'] = '';
-//      $block['content'] = $output;
-//      return $block;
-//
-//    default:
-//      break;
-//  }
-}
-
-/**
  * @param $gender_val
  *
  * @return text value gender

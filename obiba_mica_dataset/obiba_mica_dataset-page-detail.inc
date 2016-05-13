@@ -138,7 +138,7 @@ function obiba_mica_dataset_get_population_dce($dataset_type_dto) {
   $data = array('study' => NULL, 'population' => NULL, 'dce' => NULL);
   $study_table = $dataset_type_dto->studyTable;
   $study_resource = new MicaStudyResource();
-  $study_dto = $study_resource->get_study($study_table->studyId);
+  $study_dto = $study_resource->getStudy($study_table->studyId);
   if (!empty($study_dto)) {
     $data['study'] = $study_dto;
     $population = array_filter($study_dto->populations, function ($population) use ($study_table) {
