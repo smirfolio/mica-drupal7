@@ -106,26 +106,26 @@ function _obiba_mica_variable_search_page(&$variable) {
     'title' => t('Search help text'),
     'description' => t('Help text to display on the search page.'),
     'type' => 'string',
-    'default' => '<div class="well"><i class="glyphicon glyphicon-info-sign"></i> Search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.</div>',
+    'default' => '<div class="well"><i class="glyphicon glyphicon-info-sign"></i> The search page allows to browse cataloged information such as partner networks, studies, datasets and variables.</div>',
   );
 
   $variable['help_text_harmonization_potential_page'] = array(
     'title' => t('Classification help text'),
     'description' => t('Help text to display on the variable classification page'),
     'type' => 'string',
-    'default' => '<div class="well"><i class="glyphicon glyphicon-info-sign"></i> The Repository search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.</div>',
+    'default' => '<div class="well"><i class="glyphicon glyphicon-info-sign"></i> The classifications page allows to browse the classification system applied to the partner networks, studies, datasets and variables.</div>',
   );
 
   $variable['help_link_label'] = array(
     'title' => t('Help link label'),
-    'description' => t('The help link label to display on the search page.'),
+    'description' => t('The label of the link to the search help page.'),
     'type' => 'string',
     'default' => 'Help',
   );
 
   $variable['help_link_url'] = array(
     'title' => t('Help link url'),
-    'description' => t('The help link url to search help page. If no link is specified, the link will not be shown.'),
+    'description' => t('The url of the link to the search help page. If no url is specified, the link will not be shown.'),
     'type' => 'string',
     'default' => NULL,
   );
