@@ -126,9 +126,9 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     $form['search_display_settings']['page_settings']['facet_region_settings']['mica_variable_taxonomies_order'] = array_merge($form_mica_variable_taxonomies_order, $wrapped_variable_taxonomies_draggable_form);
     $form['search_display_settings']['page_settings']['facet_region_settings']['facet_region_settings_action_submit'] = array(
       '#type' => 'submit',
-      '#value' => t('Save the Variable taxonomy facets order'),
+      '#value' => t('Save facets changes'),
       '#current_value' => 'mica_variable_taxonomies_order',
-      '#submit' => array('_obiba_mica_settings_search_submit_draggable'),
+      '#submit' => array('_obiba_mica_settings_search_save_facets_order'),
     );
   }
 
@@ -159,6 +159,7 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
   $form['search_display_settings']['page_settings']['other_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Other search usage'),
+    '#description' => t('Configure the integration of search in other pages.'),
     '#collapsible' => FALSE
   );
 
@@ -221,9 +222,9 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     $form['search_display_settings']['page_settings']['other_settings']['mica_taxonomy_figures'] = array_merge($form_mica_taxonomy_figures, $wrapped_taxonomies_draggable_form);
     $form['search_display_settings']['page_settings']['other_settings']['other_settings_action_submit'] = array(
       '#type' => 'submit',
-      '#value' => t('Save the figures taxonomies ordered'),
+      '#value' => t('Save figures changes'),
       '#current_value' => 'mica_taxonomy_figures',
-      '#submit' => array('_obiba_mica_settings_search_submit_draggable'),
+      '#submit' => array('_obiba_mica_settings_search_save_figures_order'),
     );
   }
 }
@@ -247,6 +248,15 @@ function _obiba_mica_admin_search_filter_taxonomies_by_item($taxonomies_items, $
 
 }
 
+
+function _obiba_mica_settings_search_save_facets_order(&$form, &$form_state) {
+  _obiba_mica_settings_search_submit_draggable($form, $form_state, 'mica_variable_taxonomies_order');
+}
+
+function _obiba_mica_settings_search_save_figures_order(&$form, &$form_state) {
+  _obiba_mica_settings_search_submit_draggable($form, $form_state, 'mica_taxonomy_figures');
+}
+
 /**
  * Construct the title and description of a draggable table field
  *
@@ -268,28 +278,10 @@ EOT;
  * @param $form
  * @param $form_state
  */
-
-function _obiba_mica_settings_search_submit_draggable(&$form, &$form_state) {
-  $current_key_value = _obiba_mica_settings_search_get_passed_submit_arguments($form_state['clicked_button']['#id'],
-    $form_state['buttons']
-  );
-  $taxonomy_form = $form_state['values'][$current_key_value];
+function _obiba_mica_settings_search_submit_draggable(&$form, &$form_state, $variable) {
+  $taxonomy_form = $form_state['values'][$variable];
   uasort($taxonomy_form, '_obiba_mica_array_sort_variable');
-  variable_set($current_key_value, $taxonomy_form);
-}
-
-/**
- * Get the current form key to save
- * @param $button_id
- * @param $buttons_form
- * @return mixed
- */
-function _obiba_mica_settings_search_get_passed_submit_arguments($button_id, $buttons_form) {
-  foreach ($buttons_form as $button) {
-    if ($button['#id'] === $button_id) {
-      return $button['#current_value'];
-    }
-  }
+  variable_set($variable, $taxonomy_form);
 }
 
 /**

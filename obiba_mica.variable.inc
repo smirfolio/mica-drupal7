@@ -24,7 +24,7 @@ function obiba_mica_variable_info($options) {
 
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures filter'),
-    'description' => t('List of taxonomy names that will be displayed in Variable Classification figures. If none is enabled, the taxonomies will not be displayed.'),
+    'description' => t('List of the taxonomies that will be displayed as Variable Classification figures in the network, study and dataset pages. If none is enabled, no figures will be displayed.'),
     'type' => 'string',
     'default' => '',
     'placeholder' => 'e.g. Mlstr_area',
@@ -54,7 +54,7 @@ function obiba_mica_variable_info($options) {
 
   $variable['mica_variable_taxonomies_order'] = array(
       'title' => t('Variable taxonomy facets order'),
-      'description' => t('List of taxonomy names determining their order of appearance in the search pages. If none is enabled, the taxonomies will not be displayed.'),
+      'description' => t('List of taxonomies that will be displayed as facets in the search page. If none is enabled, no taxonomy facet will be displayed.'),
       'type' => 'string',
   );
 
