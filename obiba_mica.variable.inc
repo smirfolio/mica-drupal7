@@ -116,6 +116,20 @@ function _obiba_mica_variable_search_page(&$variable) {
     'default' => '<div class="well"><i class="glyphicon glyphicon-info-sign"></i> The Repository search page allows users to browse all information catalogued, including partner networks, studies, datasets and variables.</div>',
   );
 
+  $variable['help_link_label'] = array(
+    'title' => t('Help link label'),
+    'description' => t('The help link label to display on the search page.'),
+    'type' => 'string',
+    'default' => 'Help',
+  );
+
+  $variable['help_link_url'] = array(
+    'title' => t('Help link url'),
+    'description' => t('The help link url to search help page. If no link is specified, the link will not be shown.'),
+    'type' => 'string',
+    'default' => NULL,
+  );
+
   $variable['search_page_title'] = array(
     'title' => t('Menu and page title'),
     'description' => t('Title of the menu and of the search page.'),
