@@ -125,7 +125,7 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
   if (!empty($_GET['page'])) {
     $from = $study_resource->paginationListSearchParameters($_GET['page'], 'studies', $size_response);
   }
-  $response = $study_resource->get_studies($query, $from, $size_response, $sort, $order);
+  $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order);
   if (!empty($response)) {
     $_SESSION['studies']['aggregations']['total_hits'] = $response->getTotalHits();
   }
