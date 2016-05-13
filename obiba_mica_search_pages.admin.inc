@@ -93,6 +93,25 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     '#description' => $info['description'],
   );
 
+  $info = variable_get_info('help_link_label');
+  $form['search_display_settings']['page_settings']['help_link_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('help_link_label'),
+    '#maxlength' => 512,
+    '#description' => $info['description'],
+  );
+  $info = variable_get_info('help_link_url');
+  $form['search_display_settings']['page_settings']['help_link_url'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('help_link_url'),
+    '#maxlength' => 512,
+    '#description' => $info['description'],
+  );
+
   $form['search_display_settings']['page_settings']['search_region_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Search region'),
