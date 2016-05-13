@@ -24,17 +24,10 @@ function obiba_mica_variable_info($options) {
 
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures filter'),
-    'description' => t('List of taxonomy names (ordered, case sensitive, comma separated) that will be displayed in Variable Classification figures. If none is specified, all taxonomies (alphabetically ordered) will be displayed.'),
+    'description' => t('List of taxonomy names that will be displayed in Variable Classification figures. If none is enabled, the taxonomies will not be displayed.'),
     'type' => 'string',
     'default' => '',
     'placeholder' => 'e.g. Mlstr_area',
-  );
-
-  $variable['mica_taxonomy_order'] = array(
-    'title' => t('Taxonomy order'),
-    'description' => t('List of taxonomy names (case sensitive, comma separated) determining their order of appearance in the search and classification pages.'),
-    'type' => 'string',
-    'default' => '',
   );
 
   $variable['mica_disable_translation'] = array(
@@ -61,10 +54,8 @@ function obiba_mica_variable_info($options) {
 
   $variable['mica_variable_taxonomies_order'] = array(
       'title' => t('Variable taxonomy facets order'),
-      'description' => t('List of taxonomy names (case sensitive, comma separated, without blank spaces) determining their order of appearance in the search faceted navigation.'),
+      'description' => t('List of taxonomy names determining their order of appearance in the search pages. If none is enabled, the taxonomies will not be displayed.'),
       'type' => 'string',
-      'default' => '',
-      'placeholder' => 'e.g. Mlstr_area, Mica_variable, Mlstr_additional',
   );
 
   $variable['mica_dataset_taxonomy_facet'] = array(

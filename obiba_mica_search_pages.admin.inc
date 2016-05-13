@@ -115,8 +115,7 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     // Draggable form widget
     $info = variable_get_info('mica_variable_taxonomies_order');
     $form_mica_variable_taxonomies_order = array(
-      '#prefix' => '<div><label class="control-label">' . $info['title'] . '</label>',
-      '#suffix' => '</div>',
+      '#prefix' => _obiba_mica_admin_search_title_description_draggable_field($info['title'], $info['description']),
       '#tree' => TRUE,
       '#theme' => 'obiba_mica_drag_components',
       '#title' => $info['title'],
@@ -210,8 +209,7 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     // Draggable form widget
     $info = variable_get_info('mica_taxonomy_figures');
     $form_mica_taxonomy_figures = array(
-      '#prefix' => '<div><label class="control-label">' . $info['title'] . '</label>',
-      '#suffix' => '</div>',
+      '#prefix' => _obiba_mica_admin_search_title_description_draggable_field($info['title'], $info['description']),
       '#tree' => TRUE,
       '#theme' => 'obiba_mica_drag_components',
       '#title' => $info['title'],
@@ -221,7 +219,6 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     $taxonomies_items = _obiba_mica_admin_search_filter_taxonomies_by_item($taxonomies_items, 'Mica_variable');
     $wrapped_taxonomies_draggable_form = _obiba_mica_admin_get_draggable_form($form_mica_taxonomy_figures, $taxonomies_items, 'mica_taxonomy_figures');
     $form['search_display_settings']['page_settings']['other_settings']['mica_taxonomy_figures'] = array_merge($form_mica_taxonomy_figures, $wrapped_taxonomies_draggable_form);
-
     $form['search_display_settings']['page_settings']['other_settings']['other_settings_action_submit'] = array(
       '#type' => 'submit',
       '#value' => t('Save the figures taxonomies ordered'),
@@ -248,6 +245,20 @@ function _obiba_mica_admin_search_filter_taxonomies_by_item($taxonomies_items, $
     }
   }, $taxonomies_items));
 
+}
+
+/**
+ * Construct the title and description of a draggable table field
+ *
+ * @param $title
+ * @param $description
+ * @return string
+ */
+function _obiba_mica_admin_search_title_description_draggable_field($title, $description){
+  return <<<EOT
+    <label class="control-label">$title</label>
+    <div class="help-block">$description</div>
+EOT;
 }
 
 /**
