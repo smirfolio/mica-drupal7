@@ -209,7 +209,6 @@ function obiba_mica_user_view($account, $view_mode, $langcode) {
  * Adds the obiba progressbar JS file.
  */
 function obiba_mica_js_alter(&$javascript) {
-  drupal_add_js('https://www.google.com/jsapi', array('type' => 'external', 'group' => JS_LIBRARY));
   $js_file = obiba_mica_get_progressbar_path('.js');
   if (!empty($js_file)) {
     $javascript[$js_file] = drupal_js_defaults($js_file);
