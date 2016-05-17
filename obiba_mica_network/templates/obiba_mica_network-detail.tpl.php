@@ -13,7 +13,7 @@
 
 <div>
   <?php if (!empty($network_dto->description)): ?>
-    <div class="row">
+    <div class="row md-bottom-margin">
       <?php if (!empty($network_dto->logo->id)): ?>
         <div class="col-xs-12 col-md-6">
           <a
