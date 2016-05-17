@@ -29,7 +29,7 @@ class MicaConfigResource extends MicaClient {
    */
   public function getConfig() {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . CONFIG_WS_URL;
+    $url = $this->micaUrl . self::CONFIG_WS_URL;
     $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -97,4 +97,18 @@ class MicaConfigResource extends MicaClient {
     }
   }
 
+  /**
+   * Get public URL from the server configuration.
+   *
+   * @return null
+   */
+  public function getPublicURL() {
+    $config = $this->getConfig();
+    if(empty($config) || empty($config->publicUrl)) {
+      return NULL;
+    }
+    else {
+      return $config->publicUrl;
+    }
+  }
 }

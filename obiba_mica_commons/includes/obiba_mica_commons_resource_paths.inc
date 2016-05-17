@@ -68,7 +68,7 @@ class MicaClientPathProvider {
    * @return string
    */
   public static function study_draft_url($id) {
-    return sprintf("%s/#/study/%s", variable_get_value('mica_url'), $id);  
+    return sprintf("%s/#/study/%s", self::get_mica_url(), $id);
   }
   
   /**
@@ -92,7 +92,7 @@ class MicaClientPathProvider {
    * @return string
    */
   public static function network_draft_url($id) {
-    return sprintf("%s/#/network/%s", variable_get_value('mica_url'), $id);
+    return sprintf("%s/#/network/%s", self::get_mica_url(), $id);
   }
 
   /**
@@ -129,11 +129,10 @@ class MicaClientPathProvider {
    */
   public static function dataset_draft_url($dataset) {
       return sprintf("%s/#/%s/%s",
-      variable_get_value('mica_url'),
-      $dataset->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset',
-      $dataset->id);
+          self::get_mica_url(),
+          $dataset->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset',
+          $dataset->id);
   }
-
 
   /**
    * The study dataset detail url.
@@ -190,6 +189,17 @@ class MicaClientPathProvider {
       self::HARMONIZATION_VARIABLE,
       1
     );
+  }
+
+  /**
+   * Get the public URL if defined in the server otherwise get the mica url as defined in drupal.
+   *
+   * @return null
+   */
+  private static function get_mica_url() {
+    $mica_config = new MicaConfigResource();
+    $url = $mica_config->getPublicURL();
+    return empty($url) ? variable_get_value('mica_url') : $url;
   }
 
 }

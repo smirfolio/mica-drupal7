@@ -19,7 +19,7 @@
   <?php endforeach ?>
 <?php endif; ?>
 <div>
-  <div class="row">
+  <div class="row md-bottom-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
       <div class="col-xs-12 col-md-6">
         <a
