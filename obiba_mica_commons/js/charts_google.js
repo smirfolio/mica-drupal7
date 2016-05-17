@@ -15,6 +15,10 @@
      */
     function loadGoogleChartApi(onDoneCallback) {
 
+      function error() {
+        console.error("Failed to load https://www.google.com/jsapi.");
+      }
+
       function canExecute() {
         return (typeof google !== 'undefined' && google.load);
       }
@@ -25,7 +29,7 @@
             onDoneCallback();
           }
         } else {
-          console.error("Failed to load https://www.google.com/jsapi.");
+          error();
         }
       }
 
@@ -34,13 +38,14 @@
         return;
       }
 
-      $.getScript("https://www.google.com/jsapi")
-        .done(function(){
-          execute();
-        })
-        .fail(function() {
-          console.error("Failed to load https://www.google.com/jsapi.");
-        });
+      $.ajax({
+        type: "GET",
+        url: "https://www.google.com/jsapi",
+        complete: execute,
+        error: error,
+        dataType: "script",
+        cache: true
+      });
     }
 
     /**
