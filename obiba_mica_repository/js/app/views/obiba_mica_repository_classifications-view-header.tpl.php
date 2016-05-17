@@ -8,20 +8,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<div>
-  <div ng-if="options.ClassificationHelpText">
-    <div class="row well">
-      <div class="col-md-10">
-        <i class="glyphicon glyphicon-info-sign"></i> <span
-          ng-bind-html="options.ClassificationHelpText"></span>
-      </div>
-      <div class="col-md-2">
-        <h4 ng-click="closeClassificationHelpBox()"
-                                title="{{'close' | translate}}"
-                                class="pull-right" style="cursor: pointer">
-          <i class="fa fa-close"></i>
-        </h4>
-      </div>
-    </div>
+<div ng-if="options.ClassificationHelpText">
+  <div class="alert well alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="closeClassificationHelpBox()"><span aria-hidden="true">&times;</span></button>
+    <span ng-bind-html="options.ClassificationHelpText"></span>
   </div>
 </div>
