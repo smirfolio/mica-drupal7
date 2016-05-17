@@ -774,15 +774,15 @@ function obiba_mica_commons_get_images_cache($key) {
  * Helper to set cache for current user
  */
 function _obiba_mica_commons_set_cache($key, $bin, $value) {
-  if (variable_get_value('cache') == 1) {
-    $key = md5($key);
-    global $user;
-    if (in_array('anonymous user', $user->roles, TRUE)) {
+  $key = md5($key);
+  global $user;
+  if (in_array('anonymous user', $user->roles, TRUE)) {
+    if (variable_get_value('cache') == 1) {
       cache_set($key . '-' . 'anonymous_user', $value, $bin, CACHE_TEMPORARY);
     }
-    else {
-      cache_set($key . '-' . $user->sid, $value, $bin, CACHE_TEMPORARY);
-    }
+  }
+  else {
+    cache_set($key . '-' . $user->sid, $value, $bin, CACHE_TEMPORARY);
   }
 }
 
@@ -790,18 +790,17 @@ function _obiba_mica_commons_set_cache($key, $bin, $value) {
  * Helper to get cache for current user
  */
 function _obiba_mica_commons_get_cache($key, $bin) {
-  if (variable_get_value('cache') == 1) {
-    $key = md5($key);
-    global $user;
-    if (in_array('anonymous user', $user->roles, TRUE)) {
+  $key = md5($key);
+  $cache_object = NULL;
+  global $user;
+  if (in_array('anonymous user', $user->roles, TRUE)) {
+    if (variable_get_value('cache') == 1) {
       $cache_object = cache_get($key . '-' . 'anonymous_user', $bin);
     }
-    else {
-      $cache_object = cache_get($key . '-' . $user->sid, $bin);
-    }
-
-    return empty($cache_object) ? FALSE : $cache_object->data;
   }
-  return FALSE;
+  else {
+    $cache_object = cache_get($key . '-' . $user->sid, $bin);
+  }
+  return empty($cache_object) ? FALSE : $cache_object->data;
 }
 
