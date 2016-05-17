@@ -192,8 +192,12 @@ function obiba_mica_repository_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_repository_main_app',
       'path' => $path_template,
     ),
-    'obiba_angular_search_view_header' => array(
-      'template' => 'obiba_angular_search_view_header',
+    'obiba_mica_repository_classifications-view-header' => array(
+      'template' => 'obiba_mica_repository_classifications-view-header',
+      'path' => $path_views,
+    ),
+    'obiba_mica_repository_search-view-header' => array(
+      'template' => 'obiba_mica_repository_search-view-header',
       'path' => $path_views,
     ),
   );

@@ -306,6 +306,11 @@ function obiba_mica_app_angular_load_angular_library() {
           'scope' => 'footer',
         ),
         $lib_path
+        . '/angular-cookies/angular-cookies.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
+        $lib_path
         . '/angular-sanitize/angular-sanitize.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
