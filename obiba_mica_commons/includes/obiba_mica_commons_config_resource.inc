@@ -29,26 +29,30 @@ class MicaConfigResource extends MicaClient {
    */
   public function getConfig() {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . self::CONFIG_WS_URL;
-    $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-                'Accept' => array(parent::HEADER_JSON),
-            )
-        ),
-    ));
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
+    $this->getCache(self::CONFIG_WS_URL);
+    if (!isset($this->result_resource_query)) {
+      $url = $this->micaUrl . self::CONFIG_WS_URL;
 
-      return json_decode($data);
+      $request = new HttpClientRequest($url, array(
+          'method' => HttpClientRequest::METHOD_GET,
+          'headers' => $this->authorizationHeader(array(
+                  'Accept' => array(parent::HEADER_JSON),
+              )
+          ),
+      ));
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $this->result_resource_query = json_decode($data);
+        obiba_mica_commons_set_cache(self::CONFIG_WS_URL, $this->result_resource_query);
+      } catch (HttpClientException $e) {
+        watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
+            array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+        return array();
+      }
     }
-    catch (HttpClientException $e) {
-      watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
-      return array();
-    }
+    return $this->result_resource_query;
   }
 
   /**
