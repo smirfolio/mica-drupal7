@@ -149,7 +149,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 <th><?php print t('Acronym') ?></th>
                 <td>
                   <p>
-                    <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'acronym'); ?>
+                    <?php print MicaClientAnchorHelper::study($dataset_type_dto->studyTable->studySummary); ?>
                   </p>
                 </td>
               </tr>
@@ -157,7 +157,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 <th><?php print t('Name') ?></th>
                 <td>
                   <p>
-                    <?php print MicaClientAnchorHelper::study($dataset_type_dto->studyTable->studySummary); ?>
+                    <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'); ?>
                   </p>
                 </td>
               </tr>

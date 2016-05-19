@@ -51,8 +51,8 @@
               <td>
                 <?php if ($variable_dto->variableType == 'Dataschema'): ?>
                   <ul class="list-unstyled">
-                    <?php foreach ($variable_dto->studySummaries as $study_ummary): ?>
-                      <li><?php print MicaClientAnchorHelper::study($study_ummary); ?></li>
+                    <?php foreach ($variable_dto->studySummaries as $study_summary): ?>
+                      <li><?php print MicaClientAnchorHelper::study($study_summary); ?></li>
                     <?php endforeach ?>
                   </ul>
                 <?php elseif (!empty($variable_dto->studySummaries)): ?>

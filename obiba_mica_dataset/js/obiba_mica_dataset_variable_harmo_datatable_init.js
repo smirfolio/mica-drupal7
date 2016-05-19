@@ -25,7 +25,6 @@
             "columns": settings.table_headers,
             "iDisplayLength": 25,
             "responsive": true,
-            "scrollX": true,
             "bFilter": false,
             "bInfo": false,
             "scrollCollapse": true,

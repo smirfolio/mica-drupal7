@@ -267,15 +267,7 @@ function obiba_mica_network_networks_datatable_init($network_summaries, $network
   drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/obiba_mica_network_networks_datatable_init.js', 'file');
 
   drupal_add_js(array(
-    'table_network_networks_headers' => array(
-      array("title" => t('Acronym')),
-      array("title" => t('Name')),
-      array("title" => t('Studies')),
-      array("title" => t('Participants')),
-      array("title" => t('Countries')),
-      array("title" => t('Study Variables')),
-      array("title" => t('DataSchema Variables'))
-    ),
+    'table_network_networks_headers' => obiba_mica_network_network_table_headers(),
     'table_network_networks_data' => obiba_mica_network_links_table_rows($network_summaries, $network_details)
   ), 'setting');
 }
@@ -310,14 +302,20 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
   if (!empty($network_details) && !empty($network_details->networks)) {
     foreach ($network_details->networks as $network) {
       $extra = $get_participants_countries($network);
+      $study_variables = empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyVariables) ? '-' :
+        MicaClientAnchorHelper::networkVariables(obiba_mica_commons_format_number($network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyVariables),
+          $network->id, array(), 'dataset(in(Mica_dataset.className,StudyDataset))');
+      $dataschema_variables = empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->dataschemaVariables) ? '-' :
+        MicaClientAnchorHelper::networkVariables(obiba_mica_commons_format_number($network->{'obiba.mica.CountStatsDto.networkCountStats'}->dataschemaVariables),
+          $network->id, array(), 'dataset(in(Mica_dataset.className,HarmonizationDataset))');
       $rows[] = array(
-        obiba_mica_commons_get_localized_field($network, 'acronym'),
         MicaClientAnchorHelper::network($network),
+        obiba_mica_commons_get_localized_field($network, 'name'),
         $network->{'obiba.mica.CountStatsDto.networkCountStats'}->studies,
         $extra['targets'],
         $extra['countries'],
-        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyVariables,
-        $network->{'obiba.mica.CountStatsDto.networkCountStats'}->dataschemaVariables
+        $study_variables,
+        $dataschema_variables
       );
     }
   }
@@ -370,8 +368,8 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
     foreach ($study_summaries as $study_summary) {
       $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
       $rows[] = array(
-        obiba_mica_commons_get_localized_field($study_summary, 'acronym'),
         $study_summary->getPublished() ? MicaClientAnchorHelper::study($study_summary) : t($name),
+        obiba_mica_commons_get_localized_field($study_summary, 'name'),
         implode(', ', obiba_mica_commons_clean_string($study_summary->designs)),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL,
@@ -387,12 +385,24 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
 
 function obiba_mica_network_study_table_headers() {
   return array(
-    array("title" => t('Acronym'), 'width' => '10%'),
+    array("title" => t('Acronym'), 'width' => '15%'),
     array("title" => t('Name'), 'width' => '40%'),
     array("title" => t('Study Design'), 'width' => '15%'),
     array("title" => t('Participants'), 'width' => '10%'),
-    array("title" => t('Country'), 'width' => '20%'),
+    array("title" => t('Country'), 'width' => '15%'),
     array("title" => t('Variables'), 'width' => '5%')
+  );
+}
+
+function obiba_mica_network_network_table_headers() {
+  return array(
+    array("title" => t('Acronym'), 'width' => '15%'),
+    array("title" => t('Name'), 'width' => '40%'),
+    array("title" => t('Studies'), 'width' => '5%'),
+    array("title" => t('Participants'), 'width' => '10%'),
+    array("title" => t('Countries'), 'width' => '20%'),
+    array("title" => t('Study Variables'), 'width' => '5%'),
+    array("title" => t('DataSchema Variables'), 'width' => '5%')
   );
 }
 
