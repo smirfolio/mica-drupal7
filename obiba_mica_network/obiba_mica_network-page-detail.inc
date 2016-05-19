@@ -296,12 +296,14 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
     $targets = 0;
     foreach($network->studySummaries as $summary) {
       $targets += empty($summary->targetNumber) ? 0 : $summary->targetNumber->number;
-      $countries[] = implode(',', $summary->countries);
+      if (!empty($summary->countries)) {
+        $countries[] = implode(',', $summary->countries);
+      }
     };
 
     return array(
       'targets' => $targets,
-      'countries' => array_unique($countries)
+      'countries' => obiba_mica_commons_countries(array_unique($countries))
     );
   };
 
