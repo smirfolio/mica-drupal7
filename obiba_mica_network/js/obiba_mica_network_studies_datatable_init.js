@@ -3,8 +3,7 @@
 
     attach: function (context, settings) {
       if (context === document) {
-        var divStudies = $('#table-studies');
-        divStudies.dataTable(
+        $('#table-studies').dataTable(
           {
             "data": settings.table_data,
             "columns": settings.table_headers,

@@ -126,8 +126,8 @@ function obiba_mica_network_networks_table_rows($networks) {
       $stats = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
       $study_count = MicaClientAnchorHelper::networkStudies($stats->studies, $network->id);
       $rows[] = array(
-        obiba_mica_commons_get_localized_field($network, 'acronym'),
         MicaClientAnchorHelper::network($network),
+        obiba_mica_commons_get_localized_field($network, 'name'),
         $study_count,
       );
     }

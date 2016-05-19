@@ -59,7 +59,6 @@
         });
         var dataTable = divTableVariable.dataTable({
           "responsive": true,
-          "scrollX": true,
           "scrollCollapse": true,
           "processing": true,
           "sDom": '<"table-var-wrapper" <"md-top-margin" i>rt<"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',

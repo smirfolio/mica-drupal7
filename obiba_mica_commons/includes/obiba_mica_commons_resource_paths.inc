@@ -257,7 +257,7 @@ class MicaClientAnchorHelper {
    *   The url of the study detail.
    */
   public static function study($study) {
-    $name = obiba_mica_commons_get_localized_field($study, 'name');
+    $name = obiba_mica_commons_get_localized_field($study, 'acronym');
     return l($name, MicaClientPathProvider::study($study->id), array());
   }
 
@@ -430,7 +430,7 @@ class MicaClientAnchorHelper {
    *   Formatted list.
    */
   public static function network($network) {
-    $name = obiba_mica_commons_get_localized_field($network, 'name');
+    $name = obiba_mica_commons_get_localized_field($network, 'acronym');
     return l($name, MicaClientPathProvider::network($network->id), array());
   }
 

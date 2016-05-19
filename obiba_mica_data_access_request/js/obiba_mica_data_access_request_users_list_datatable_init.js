@@ -15,7 +15,6 @@
             "iDisplayLength": 25,
             "order": [[1, "asc"]],
             "responsive": true,
-            "scrollX": true,
             "sDom": '<"table-var-wrapper" <<"md-top-margin pull-left" i><"pull-right" f>><"clear-fix" ><"no-float-tab" rt><"clear-fix" ><"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
             "language": {
               "url": Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/datatable-international'
