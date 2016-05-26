@@ -83,16 +83,16 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               <p>
                 <?php
                 if (!empty($dataset_type_dto->project)):
-                  echo t('Harmonization dataset');
+                  echo t('Harmonization Dataset');
                 else:
-                  echo t('Study dataset');
+                  echo t('Study Dataset');
                 endif;
                 ?>
               </p>
             </td>
           </tr>
           <tr>
-            <th><?php print t('Number of variables') ?></th>
+            <th><?php print t('Number of Variables') ?></th>
             <td>
               <p>
                 <?php print MicaClientAnchorHelper::datasetVariables(empty($variables_dataset->total) ? 0 :
@@ -197,7 +197,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 </td>
               </tr>
               <tr>
-                <th><?php print t('Target number of participants') ?></th>
+                <th><?php print t('Target Number of Participants') ?></th>
                 <td>
                   <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
                     isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ?

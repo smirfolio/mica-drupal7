@@ -93,7 +93,8 @@
             <th><?php print t('Variable Type'); ?></th>
             <td>
               <p>
-                <?php print t('@type variable', array('@type' => $variable_dto->variableType)); ?>
+                <?php print t('@type Variable', array('@type' =>
+                  $variable_dto->variableType)); ?>
                 <?php if ($variable_dto->variableType == 'Harmonized'): ?>
                   <?php print '(' . MicaClientAnchorHelper::variableHarmonized($variable_dto) . ')'; ?>
                 <?php endif; ?>
@@ -194,7 +195,7 @@
       <?php
       $column_for_detail_statistics = 6;
       if (!variable_get_value('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema') : ?>
-        <p><?php print t('Cumulative summary of all studies:') ?></p>
+        <p><?php print t('Cumulative Summary of All Atudies:') ?></p>
       <?php endif; ?>
       <?php if ($variable_dto->variableType == 'Dataschema' && variable_get_value('dataset_detailed_var_stats')): ?>
         <div class="scroll-content-tab">

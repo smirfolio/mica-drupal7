@@ -130,7 +130,7 @@
   </section>
   <?php if (!empty($statistics)): ?>
     <section>
-      <h2><?php print t('Summary statistics'); ?></h2>
+      <h2><?php print t('Summary Statistics'); ?></h2>
       <?php print render($statistics); ?>
     </section>
   <?php endif; ?>

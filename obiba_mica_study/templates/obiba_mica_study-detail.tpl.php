@@ -197,12 +197,12 @@
 
           <?php if (!empty($study_dto->numberOfParticipants->participant->number)): ?>
             <tr>
-              <th><?php print t('Target number of participants') ?></th>
+              <th><?php print t('Target Number of Participants') ?></th>
               <td>
                 <p>
                   <?php print obiba_mica_commons_format_number($study_dto->numberOfParticipants->participant->number); ?>
                   <?php if (!empty($study_dto->numberOfParticipants->participant->noLimit)): ?>
-                    (<?php print t('No limit'); ?>)
+                    (<?php print t('No Limit'); ?>)
                   <?php endif; ?>
                 </p>
               </td>
@@ -211,12 +211,13 @@
 
           <?php if (!empty($study_dto->numberOfParticipants->sample->number)): ?>
             <tr>
-              <th><?php print t('Target number of participants with biological samples') ?></th>
+              <th><?php print t('Target Number of Participants with
+              Biological Samples') ?></th>
               <td>
                 <p>
                   <?php print obiba_mica_commons_format_number($study_dto->numberOfParticipants->sample->number); ?>
                   <?php if (!empty($study_dto->numberOfParticipants->sample->noLimit)): ?>
-                    (<?php print t('No limit'); ?>)
+                    (<?php print t('No Limit'); ?>)
                   <?php endif; ?>
                 </p>
               </td>
@@ -225,7 +226,8 @@
 
           <?php if (!empty($study_dto->numberOfParticipants->info)): ?>
             <tr>
-              <th><?php print t('Supplementary information about target number of participants') ?></th>
+              <th><?php print t('Supplementary Information About Target
+              Number of Participants') ?></th>
               <td>
                 <p><?php print obiba_mica_commons_get_localized_field($study_dto->numberOfParticipants, 'info'); ?></p>
               </td>
@@ -234,7 +236,7 @@
 
           <?php if (!empty($study_dto->methods->info)): ?>
             <tr>
-              <th><?php print t('Supplementary information') ?></th>
+              <th><?php print t('Supplementary Information') ?></th>
               <td>
                 <p><?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'info'); ?></p>
               </td>
@@ -281,7 +283,7 @@
             </tr>
 
             <tr>
-              <th><?php print t('Biological samples'); ?></th>
+              <th><?php print t('Biological Samples'); ?></th>
               <td>
                 <p>
                   <?php if (in_array('bio_samples', $study_dto->access)): ?>
