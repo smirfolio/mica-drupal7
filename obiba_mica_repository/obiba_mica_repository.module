@@ -107,11 +107,11 @@ function obiba_mica_repository_get_js($weight_js) {
     );
   $bio_samples_options = !empty($colors_options) ?
     array_merge(array(
-      'legend' => array('position' => 'right'),
+      'legend' => array('position' => 'none'),
       'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
     ), $colors_options) :
     array(
-      'legend' => array('position' => 'right'),
+      'legend' => array('position' => 'none'),
       'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
     );
   $chart_options = array_merge(
