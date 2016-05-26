@@ -20,7 +20,7 @@ mica.ObibaGraphicCharts
        * @returns {boolean}
        */
       var canShowTitle = function() {
-        return $scope.type >= 0 && [ChartType.NUMBER_PARTICIPANTS, ChartType.BIO_SAMPLES].indexOf($scope.type) === -1;
+        return $scope.type >= 0 && [ChartType.NUMBER_PARTICIPANTS, ChartType.BIO_SAMPLES, ChartType.STUDY_DESIGN].indexOf($scope.type) === -1;
       };
 
       /**
@@ -50,7 +50,7 @@ mica.ObibaGraphicCharts
           case ChartType.STUDY_DESIGN:
             $scope.directive = {title:charOptions.studiesDesigns.title};
             $scope.chart = {
-              type: 'google.charts.Bar',
+              type: 'BarChart',
               title: charOptions.studiesDesigns.title,
               options: charOptions.studiesDesigns.options,
               header: charOptions.studiesDesigns.header,

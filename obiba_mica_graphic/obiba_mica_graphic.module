@@ -228,7 +228,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                     array(
                       'graphics.study-design',
                       'graphics.nbr-studies',
-                      'graphics.number-participants'
+             //         'graphics.number-participants'
                     ),
                     'graphics.study-design-chart-title', $study_design_options),
                 ),
