@@ -304,36 +304,6 @@ function obiba_mica_data_access_request_get_js($weight_js) {
 }
 
 /**
- * A list data access request in dataTable.
- */
-function obiba_mica_data_access_requests_datatable_init() {
-  if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
-    drupal_add_library('obiba_mica_dataset', 'datatables');
-  }
-  else {
-    obiba_mica_commons_datatables_external_source();
-  }
-
-  global $user;
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_data_access_request') .
-    '/js/obiba_mica_data_access_request_datatable_init.js', 'file');
-  drupal_add_js(array(
-    'user' => $user,
-    'table_headers' => array(
-      array("title" => ''),
-      array("title" => t('ID')),
-      array("title" => t('Applicant')),
-      array("title" => t('Title'), 'width' => '35%'),
-      array("title" => t('Last Update')),
-      array("title" => t('Submission Date')),
-      array("title" => t('Status')),
-      array("title" => t('Actions')),
-    ),
-    'table_data' => obiba_mica_data_access_request_table_rows(),
-  ), 'setting');
-}
-
-/**
  * Implements hook_permission().
  */
 function obiba_mica_data_access_request_permission() {
@@ -361,57 +331,6 @@ function obiba_mica_data_access_request_user_permission($action) {
 }
 
 /**
- * Get and format data access request list.
- */
-function obiba_mica_data_access_request_table_rows() {
-  // Reuse the same translation as the angular app code
-  global $language;
-  $js_dictionary_file =
-    drupal_get_path('module', 'obiba_mica_app_angular') .
-    '/i18n/' . $language->language . '.json';
-  $js_dictionary = json_decode(file_get_contents($js_dictionary_file), TRUE);
-  $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->getRequests();
-  if (empty($requests->responseCode) && !empty($requests)) {
-    $res = array_map(function ($r) use ($js_dictionary) {
-      $r->submission_date = NULL;
-      if ($r->status != 'OPENED') {
-        foreach ($r->statusChangeHistory as $change) {
-          if ($change->to == 'SUBMITTED') {
-            $r->submission_date = $change->changedOn;
-          }
-        }
-      }
-
-      $r->full_name = obiba_mica_data_access_request_profile_full_name($r);
-      $applicant_mail =
-        obiba_mica_data_access_request_profile_attribute(
-          $r->profile->attributes, 'email');
-      return array(
-        $r->full_name,
-        l($r->id, 'mica/data-access/request',
-          array('fragment' => '/view/' . $r->id)),
-        '<a id="applicantProfile" href="" data-toggle="modal"
-        data-target="#UserDetailModal"
-        data-id-applicant="' . $r->profile->username . '"
-        data-name-applicant="' . $r->full_name . '"
-        data-email-applicant="' . $applicant_mail . '">' . $r->full_name . '</a>',
-        empty($r->title) ? '' : $r->title,
-        date_format(date_create(empty($r->timestamps->lastUpdate) ?
-          $r->timestamps->created :
-          $r->timestamps->lastUpdate), "Y-m-d H:i:s"),
-        empty($r->submission_date) ? '' :
-          date_format(date_create($r->submission_date), "Y-m-d H:i:s"),
-        $js_dictionary[$r->status],
-        $r->actions,
-        $r->id
-      );
-    }, $requests);
-    return $res;
-  }
-  return FALSE;
-}
-
-/**
  * Get a value attribute.
  */
 function obiba_mica_data_access_request_profile_attribute($user_attributes, $key) {
@@ -421,24 +340,6 @@ function obiba_mica_data_access_request_profile_attribute($user_attributes, $key
     }
   }
   return NULL;
-}
-
-/**
- * Get the full name applicant of the data access request.
- */
-function obiba_mica_data_access_request_profile_full_name($request) {
-  $full_name = $request->applicant;
-  $first_name = obiba_mica_data_access_request_profile_attribute($request->profile->attributes, 'firstName');
-  if (!empty($first_name)) {
-    $full_name = $first_name;
-  }
-  $last_name = obiba_mica_data_access_request_profile_attribute($request->profile->attributes, 'lastName');
-  if (!empty($last_name)) {
-    $full_name = $full_name . ' ' . $last_name;
-  }
-
-  return $full_name;
-
 }
 
 function obiba_mica_data_access_request_users_list_page() {

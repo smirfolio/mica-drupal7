@@ -58,10 +58,11 @@
           }
         });
         var dataTable = divTableVariable.dataTable({
+          "bAutoWidth": false,
           "responsive": true,
           "scrollCollapse": true,
           "processing": true,
-          "sDom": '<"table-var-wrapper" <"md-top-margin" i>rt<"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
+          "sDom": '<"table-var-wrapper" <"md-top-margin" i>r<"scroll-content-tab" t><"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
           "bServerSide": true,
           "iDisplayLength": 25,
           "sAjaxSource": Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,

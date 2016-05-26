@@ -21,8 +21,9 @@
     }
     else {
       divTablePersons.dataTable({
+        "bAutoWidth": false,
         "responsive": true,
-        "sDom": '<"table-var-wrapper"r<"pull-left"f><"#buttonPlaceholder.pull-right">tp>',
+        "sDom": '<"table-var-wrapper"r<"pull-left"f><"#buttonPlaceholder.pull-right"><"scroll-content-tab" t>p>',
         "bServerSide": false,
         "iDisplayLength": 10,
         "sAjaxSource": Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.resourcePathPersons + encodeURIComponent(JSON.stringify(entitiesId)) + '/ws',
