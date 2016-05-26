@@ -651,6 +651,12 @@ function _obiba_mica_variable_variable_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['variable_algorithm'] = array(
+    'title' => t('Show Harmonization Algorithms'),
+    'description' => t('If selected, variable pages will include a Harmonization Algorithms section.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
 }
 
 /**

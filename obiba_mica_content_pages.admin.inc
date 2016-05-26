@@ -388,4 +388,12 @@ function obiba_mica_settings_variable_content(&$form) {
     '#default_value' => variable_get_value('dataset_detailed_var_stats'),
     '#description' => $info['description'],
   );
+
+  $info = variable_get_info('variable_algorithm');
+  $form['content_display_settings']['variable_form']['variable_algorithm'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('variable_algorithm'),
+    '#description' => $info['description'],
+  );
 }

@@ -259,7 +259,7 @@
           <?php obiba_mica_dataset_variable_get_harmonizations($variable_dto); ?>
         </div>
         <?php if (!empty($variable_harmonization_algorithms)): ?>
-
+          <?php if (!empty(variable_get_value('variable_algorithm'))): ?>
           <button id="harmo-algo"
             data-loading-text="<?php print t('Loading...') ?>"
             type="button"
@@ -272,11 +272,13 @@
             title-button-var="<?php print t('Harmonization Algorithms'); ?>"
             >
 
-            <?php print t('Show Harmonization Algorithms') ?>
-          </button>
-          <div id="harmo-algo" class="collapse">
+              <?php print t('Show Harmonization Algorithms') ?>
+            </button>
+            <div id="harmo-algo" class="collapse">
 
-          </div>
+            </div>
+          <?php endif; ?>
+
         <?php endif; ?>
       <?php else: ?>
         <div class="row">
@@ -318,20 +320,21 @@
 
           </div>
         </div>
-
-        <?php if ($variable_harmonization['status'] == 'complete'): ?>
-          <?php if (!empty($variable_harmonization['algorithm'])): ?>
-            <h2><?php print t('Algorithm') ?></h2>
-            <div class="row">
-              <div class="col-md-6 col-sm-12">
-                <?php print $variable_harmonization['algorithm']; ?>
+        <?php if (!empty(variable_get_value('variable_algorithm'))): ?>
+          <?php if ($variable_harmonization['status'] == 'complete'): ?>
+            <?php if (!empty($variable_harmonization['algorithm'])): ?>
+              <h2><?php print t('Algorithm') ?></h2>
+              <div class="row">
+                <div class="col-md-6 col-sm-12">
+                  <?php print $variable_harmonization['algorithm']; ?>
+                </div>
               </div>
-            </div>
-          <?php else: ?>
-            <h4><?php print t('Script'); ?></h4>
-            <pre class="prettyprint lang-js">
+            <?php else: ?>
+              <h4><?php print t('Script'); ?></h4>
+              <pre class="prettyprint lang-js">
             <?php print $variable_harmonization['script']; ?>
           </pre>
+            <?php endif; ?>
           <?php endif; ?>
         <?php endif; ?>
 
