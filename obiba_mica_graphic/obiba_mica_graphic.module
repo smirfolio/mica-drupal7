@@ -186,11 +186,11 @@ function obiba_mica_graphic_block_view($delta = '') {
         );
     $bio_samples_options = !empty($colors_options) ?
       array_merge(array(
-        'legend' => array('position' => 'right'),
+        'legend' => array('position' => 'none'),
         'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
       ), $colors_options) :
       array(
-        'legend' => array('position' => 'right'),
+        'legend' => array('position' => 'none'),
         'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
       );
     switch ($delta) {
