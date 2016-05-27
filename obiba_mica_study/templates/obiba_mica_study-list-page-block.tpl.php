@@ -112,13 +112,13 @@
             <?php print MicaClientAnchorHelper::studyDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id, 'btn-default btn-xxs') ?>
         <?php endif ?>
         <?php if (!empty($vars) && variable_get_value('studies_column_variables')): ?>
-            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $var_caption, array('@count' => $vars)), $study->id, TRUE, NULL, 'btn-default btn-xxs') ?>
+            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $var_caption, array('@count' => obiba_mica_commons_format_number($vars))), $study->id, TRUE, NULL, 'btn-default btn-xxs') ?>
         <?php endif ?>
         <?php if (!empty($study_vars) && variable_get_value('studies_column_study_variables')): ?>
-          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $study_var_caption, array('@count' => $study_vars)), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Study))', 'btn-default btn-xxs') ?>
+          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $study_var_caption, array('@count' => obiba_mica_commons_format_number($study_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Study))', 'btn-default btn-xxs') ?>
         <?php endif ?>
         <?php if (!empty($dataschema_vars) && variable_get_value('studies_column_dataschema_variables')): ?>
-          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $dataschema_var_caption, array('@count' => $dataschema_vars)), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Dataschema))', 'btn-default btn-xxs') ?>
+          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $dataschema_var_caption, array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Dataschema))', 'btn-default btn-xxs') ?>
         <?php endif ?>
       </div>
     <?php endif; ?>

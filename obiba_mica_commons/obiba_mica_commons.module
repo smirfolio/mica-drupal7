@@ -668,19 +668,19 @@ function obiba_mica_commons_format_number($number, $nbr_decimals = 0) {
   global $language;
   switch ($language->language) {
     case 'fr':
-      if (is_float($number)) {
+      if (!is_float($number)) {
         return number_format($number, $nbr_decimals, ',', ' ');
       }
       else {
-        return $number;
+        return number_format($number, 2, ',', ' ');
       }
 
     default:
-      if (is_float($number)) {
+      if (!is_float($number)) {
         return number_format($number, $nbr_decimals, '.', ',');
       }
       else {
-        return $number;
+        return number_format($number, 2, ',', ' ');
       }
   }
 }
