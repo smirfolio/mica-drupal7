@@ -32,4 +32,47 @@ mica.ObibaGraphicCharts
       templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/graphic-chart-container',
       controller: 'ChartController'
     };
+  }])
+  .directive('graphicChartBockContainerCountriesIso', [function () {
+    return {
+      restrict: 'EA',
+      replace: true,
+      scope: {
+        type: '@'
+      },
+      templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/graphic-chart-block-container',
+      controller: 'ChartBlockController'
+    };
+  }]).directive('graphicChartBockContainerMethodsDesigns', [function () {
+    return {
+      restrict: 'EA',
+      replace: true,
+      scope: {
+        type: '@'
+      },
+      templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/graphic-chart-block-container',
+      controller: 'ChartBlockController'
+    };
+  }])
+  .directive('graphicChartBockContainerNumberParticipants', [function () {
+    return {
+      restrict: 'EA',
+      replace: true,
+      scope: {
+        type: '@'
+      },
+      templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/graphic-chart-block-container',
+      controller: 'ChartBlockController'
+    };
+  }])
+  .directive('graphicChartBockContainerPopulationDceBioSamples', [function () {
+    return {
+      restrict: 'EA',
+      replace: true,
+      scope: {
+        type: '@'
+      },
+      templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/graphic-chart-block-container',
+      controller: 'ChartBlockController'
+    };
   }]);

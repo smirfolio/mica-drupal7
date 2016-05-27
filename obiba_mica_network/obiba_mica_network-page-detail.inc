@@ -165,7 +165,6 @@ function obiba_mica_network_statistics_angular_options($networks_id) {
         'bars' => 'horizontal',
         'series' => array(
           0 => array('axis' => 'nbrStudies'),
-    //      1 => array('axis' => 'nbrParticipants'),
         ),
         'axes' => array(
           'x' => array(
@@ -173,7 +172,6 @@ function obiba_mica_network_statistics_angular_options($networks_id) {
               'side' => 'top',
               'label' => t('Number of Studies')
             ),
-      //      'nbrParticipants' => array('label' => t('Number of Participants'))
           )
         ),
         'legend' => array('position' => 'none')
