@@ -90,7 +90,9 @@ class MicaNetworkResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $response = json_decode($data);
-        $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
+        if (!empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
+          $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
+        }
         obiba_mica_commons_set_cache($resource_query, $result_resource_query);
         return $result_resource_query;
       }
