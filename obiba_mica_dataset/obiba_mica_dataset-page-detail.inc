@@ -33,6 +33,24 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   $dataset_dto = $dataset_resource->getDataset($dataset_id);
 
   if (!empty($dataset_dto)) {
+    switch ($dataset_dto->variableType) {
+      case ('Study') :
+        $dataset_type = 'study-dataset';
+        break;
+      default:
+        $dataset_type = 'harmonization-dataset';
+    }
+    if ($dataset_type == 'study-dataset') {
+      $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
+    }
+    else {
+      $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
+    }
+
+    if ($dataset_type != 'study-dataset' && variable_get_value('dataset_show_studies')) {
+      obiba_mica_dataset_studies_datatable_init($dataset_type_dto);
+    }
+
     $dataset_cache_coverage = obiba_mica_commons_get_cache('dataset_coverage-' . $dataset_dto->id);
     if (!empty($dataset_cache_coverage)) {
       $coverage = $dataset_cache_coverage;
@@ -48,18 +66,9 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   }
   else {
     if (!empty($dataset_dto)) {
-      switch ($dataset_dto->variableType) {
-        case ('Study') :
-          $dataset_type = 'study-dataset';
-          break;
-        default:
-          $dataset_type = 'harmonization-dataset';
-      }
-
       $flat_study_attachments = NULL;
       $variables_dataset = $dataset_resource->getVariables($dataset_type, $dataset_id, 0, 1);
       if ($dataset_type == 'study-dataset') {
-        $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.StudyDatasetDto.type');
         $has_coverage = !empty($coverage['has_coverage']) ? $coverage['has_coverage'] : NULL;
 
         $study_id = $dataset_type_dto->studyTable->studyId;
@@ -74,10 +83,6 @@ function obiba_mica_dataset_page_detail($dataset_id) {
           $has_coverage,
           $flat_study_attachments
         );
-      }
-      else {
-        $dataset_type_dto = $dataset_dto->getExtensionList('obiba.mica.HarmonizationDatasetDto.type');
-        obiba_mica_dataset_studies_datatable_init($dataset_type_dto);
       }
       $acronym = obiba_mica_commons_get_localized_field($dataset_dto, 'acronym');
       $name = obiba_mica_commons_get_localized_field($dataset_dto, 'name');
