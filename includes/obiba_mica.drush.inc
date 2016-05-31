@@ -346,7 +346,7 @@ function obiba_mica_drush_download_js_dependencies(){
     $repository = $args[1];
   }
   else {
-    $repository = variable_get('mica-drupal-js-libraries-version', '1.1.2');
+    $repository = variable_get('mica-drupal-js-libraries-version', '1.1.3');
   }
 
   $path .= '/sites/all/libraries';
