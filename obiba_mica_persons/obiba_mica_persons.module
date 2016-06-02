@@ -98,6 +98,17 @@ function obiba_mica_persons_table_headers() {
 }
 
 /**
+ * Generates a jQuery-safe ID for referencing the person modal.
+ *
+ * @param $type_person
+ * @param $study_id
+ * @param $person
+ */
+function obiba_mica_person_generate_target_id($type_person, $document_id, $person) {
+  return MicaClientPathHelpers::normalizeModalTarget($type_person . '_' . $document_id . '_' . $person);
+}
+
+/**
  * Create modal DOM for Contacts/investigators.
  *
  * @param $study_id
@@ -107,7 +118,7 @@ function obiba_mica_persons_table_headers() {
 function obiba_mica_persons_get_person_detail($type_person, $study_id, $persons) {
   $page_render_persons = '';
   foreach ($persons as $key_person => $person) {
-    $id_person = $type_person . '_' . $study_id . '_' . $key_person;
+    $id_person = obiba_mica_person_generate_target_id($type_person, $study_id, $key_person);
     $page_render_persons .= theme('mica_person_detail', array(
       'study_id' => $study_id,
       'person_uid' => $id_person,

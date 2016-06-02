@@ -318,7 +318,7 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
               'external' => TRUE,
               'attributes' => array(
                 'data-toggle' => 'modal',
-                'data-target' => '#dce-' . $study_table->studyId . '-' . $study_table->populationId . '-' . $study_table->dataCollectionEventId,
+                'data-target' => MicaClientPathHelpers::studyPopulationDceModalTarget($study_table->studyId, $study_table->populationId , $study_table->dataCollectionEventId),
               ),
             )) . '</li>';
           $dce_names[] = $dce_name;
@@ -335,7 +335,7 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
       'external' => TRUE,
       'attributes' => array(
         'data-toggle' => 'modal',
-        'data-target' => '#dce-' . $study_table->studyId . '-' . $study_table->populationId . '-' . $study_table->dataCollectionEventId,
+        'data-target' => MicaClientPathHelpers::studyPopulationDceModalTarget($study_table->studyId, $study_table->populationId, $study_table->dataCollectionEventId)
       ),
     ));
   }

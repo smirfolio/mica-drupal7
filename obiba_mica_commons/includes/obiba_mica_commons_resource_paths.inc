@@ -22,6 +22,29 @@ class MicaClientPathHelpers {
   public static function replacePlusInUrl($path) {
     return preg_replace('/\+/', '-', $path, 1);
   }
+
+  /**
+   * Normalized the modal target to make a jQuery-safe reference.
+   *
+   * @param $target
+   * @return mixed
+   */
+  public static function normalizeModalTarget($target) {
+    return self::replacePlusInUrl(preg_replace('/\./', '___', $target));
+  }
+
+  /**
+   * The target of a population dce modal.
+   *
+   * @param $study_id
+   * @param $population_id
+   * @param $dce
+   * @return mixed
+   */
+  public static function studyPopulationDceModalTarget($study_id, $population_id, $dce) {
+    return MicaClientPathHelpers::normalizeModalTarget('#dce-' . $study_id . '-' . $population_id . '-' .
+      (is_string($dce) ? $dce : $dce->id));
+  }
 }
 
 class MicaClientPathProvider {
@@ -275,13 +298,13 @@ class MicaClientAnchorHelper {
       'external' => TRUE,
       'attributes' => array(
         'data-toggle' => 'modal',
-        'data-target' => '#population-' . $population->id,
+        'data-target' => MicaClientPathHelpers::normalizeModalTarget('#population-' . $population->id),
       ),
     ));
   }
 
   /**
-   * The population detail url.
+   * The DCE anchor for a study.
    *
    * @param string $study_id
    *   The study id.
@@ -298,7 +321,7 @@ class MicaClientAnchorHelper {
       'external' => TRUE,
       'attributes' => array(
         'data-toggle' => 'modal',
-        'data-target' => '#dce-' . $study_id . '-' . $population_id . '-' . $dce->id,
+        'data-target' => MicaClientPathHelpers::studyPopulationDceModalTarget($study_id, $population_id, $dce),
       ),
     ));
   }

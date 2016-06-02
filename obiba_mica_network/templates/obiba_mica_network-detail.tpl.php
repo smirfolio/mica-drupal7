@@ -90,7 +90,7 @@
                     <?php foreach ($membership->members as  $key_member => $member) : ?>
                       <li>
                         <a href="#" data-toggle="modal"
-                           data-target="#<?php print $membership->role ?>_<?php print $network_dto->id ?>_<?php print $key_member ?>">
+                           data-target="#<?php print obiba_mica_person_generate_target_id($membership->role, $network_dto->id, $key_member); ?>">
                           <?php print $member->title; ?>
                           <?php print $member->firstName; ?>
                           <?php print $member->lastName; ?>
