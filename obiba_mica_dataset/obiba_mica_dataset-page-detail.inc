@@ -226,7 +226,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
           'study_id' => $study_id,
           'population_id' => $population_id,
           'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
-          'dce_id_target' => MicaClientPathHelpers::replacePlusInUrl($study_id . '-' . $population_id . '-' . $dce->id),
+          'dce_id_target' => MicaClientPathHelpers::normalizeModalTarget($study_id . '-' . $population_id . '-' . $dce->id),
           'dce' => $dce,
           'attachments' => !empty($themed_dce_attachment) ? $themed_dce_attachment : NULL,
           'file_browser' => theme('obiba_mica_files_browser', array(

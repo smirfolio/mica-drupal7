@@ -17,7 +17,7 @@
       }
 
       function timelinePopupIdFormatter(study, pop, dce) {
-        return ('#dce-' + study.id + '-' + pop.id + '-' + dce.id).replace(/\+/g, '-');
+        return ('#dce-' + study.id + '-' + pop.id + '-' + dce.id).replace(/\+/g, '-').replace(/\./, '___');
       }
     }
   }
