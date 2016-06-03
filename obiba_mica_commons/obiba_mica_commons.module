@@ -665,6 +665,9 @@ function obiba_mica_commons_is_ajax() {
  *   The formatted number.
  */
 function obiba_mica_commons_format_number($number, $nbr_decimals = 0) {
+  if (is_null($number)) {
+    return '-';
+  }
   global $language;
   switch ($language->language) {
     case 'fr':
