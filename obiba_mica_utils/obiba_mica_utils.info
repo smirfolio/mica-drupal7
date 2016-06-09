@@ -1,0 +1,4 @@
+name = "Obiba Mica Utils"
+description = "Common utility functions used in OBiBa Mica Drupal products."
+package = Obiba
+core = 7.x
