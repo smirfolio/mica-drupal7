@@ -30,7 +30,7 @@ class MicaClientPathHelpers {
    * @return mixed
    */
   public static function normalizeModalTarget($target) {
-    return self::replacePlusInUrl(preg_replace('/\./', '___', $target));
+    return self::replacePlusInUrl(str_replace(' ', '_', preg_replace('/\./', '___', $target)));
   }
 
   /**
