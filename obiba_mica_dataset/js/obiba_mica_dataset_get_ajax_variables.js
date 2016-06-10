@@ -30,7 +30,7 @@
             'dataType': 'html',
             'data': '',
             'success': function (data) {
-              try {console.log(jQuery.parseJSON(data));
+              try {
                 var data_decoded = jQuery.parseJSON(data);
               } catch (e) {
                 console.log(e.message);

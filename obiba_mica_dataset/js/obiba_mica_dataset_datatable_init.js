@@ -80,11 +80,6 @@
           }
         });
 
-        // NOTE: this breaks the paging and table state, keep an eye for an update
-        new $.fn.dataTable.FixedColumns(dataTable, {
-          leftColumns: 2
-        });
-
         function updateTooltip() {
           $('span', dataTable.fnGetNodes()).tooltip({
             "delay": 0,
