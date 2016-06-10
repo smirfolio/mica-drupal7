@@ -183,10 +183,10 @@ function obiba_mica_commons_datatables_multi_Lang() {
  * Add external js dataTables.
  */
 function obiba_mica_commons_datatables_external_source() {
-  drupal_add_js('http://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js', 'external');
-  drupal_add_js('http://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', 'external');
-  drupal_add_js('http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', 'external');
-  drupal_add_css('http://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', 'external');
+  drupal_add_js('https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js', array('external', 'scope' => 'footer', 'weight' => 10));
+  drupal_add_js('https://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', array('external', 'scope' => 'footer', 'weight' => 20));
+  drupal_add_js('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', array('external', 'scope' => 'footer', 'weight' => 30));
+  drupal_add_css('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', array('external', 'scope' => 'footer', 'weight' => 40));
 }
 
 /**
