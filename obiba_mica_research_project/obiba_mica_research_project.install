@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Copyright (c) 2016 OBiBa. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function obiba_mica_research_project_install() {
+  obiba_mica_research_project_create_node();
+}
+
+function obiba_mica_research_project_create_node() {
+  $research_project_node_page = obiba_mica_commons_add_page(st('Approved Research Projects'), '');
+  variable_set('research_project_page', $research_project_node_page->nid);
+}

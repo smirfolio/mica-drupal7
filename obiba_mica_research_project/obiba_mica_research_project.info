@@ -1,0 +1,8 @@
+name = "Obiba Mica Research Project"
+description = "Mica Client -- Research Project"
+package = Obiba
+core = 7.x
+
+dependencies[] = http_client
+
+files[] = includes/obiba_mica_research_project_resource.inc

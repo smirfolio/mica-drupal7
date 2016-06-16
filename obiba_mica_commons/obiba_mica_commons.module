@@ -461,8 +461,8 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
       $sort_acronym => t('Acronym'),
     ), $context['options']);
   }
-  else {
-    $options = array_merge(array($sort_name => t('Name')), $context['options']);
+  if (!$no_name && !$no_acronym) {
+    $options = $context['options'];
   }
 
   $default_sort = empty($_GET['search-sort']) ?
@@ -493,26 +493,28 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
     );
   }
 
-  $form['search-sort'] = array(
-    '#type' => 'select',
-    '#theme_wrappers' => array(), // remove the wrapper
-    '#title' => '',
-    '#description' => t('Sort by'),
-    '#options' => $options,
-    '#default_value' => $default_sort,
-  );
+  if ($no_acronym || $no_name || !empty($context['options'])) {
+    $form['search-sort'] = array(
+      '#type' => 'select',
+      '#theme_wrappers' => array(), // remove the wrapper
+      '#title' => '',
+      '#description' => t('Sort by'),
+      '#options' => $options,
+      '#default_value' => $default_sort,
+    );
 
-  $form['search-sort-order'] = array(
-    '#type' => 'select',
-    '#theme_wrappers' => array(), // remove the wrapper
-    '#title' => '',
-    '#description' => t('Sort order'),
-    '#options' => array(
-      'asc' => t('Asc.'),
-      'desc' => t('Desc.'),
-    ),
-    '#default_value' => $default_sort_order,
-  );
+    $form['search-sort-order'] = array(
+      '#type' => 'select',
+      '#theme_wrappers' => array(), // remove the wrapper
+      '#title' => '',
+      '#description' => t('Sort order'),
+      '#options' => array(
+        'asc' => t('Asc.'),
+        'desc' => t('Desc.'),
+      ),
+      '#default_value' => $default_sort_order,
+    );
+  }
 
   $form['search-query'] = array(
     '#type' => 'textfield',

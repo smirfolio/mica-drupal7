@@ -66,6 +66,9 @@ class MicaClientPathProvider {
   const DATA_ACCESS_HOME = 'mica/data_access/home';
   const DATA_ACCESS_LIST = 'mica/data_access/requests';
   const DATA_ACCESS_USERS_LIST = 'mica/data_access/users';
+  const PROJECT = 'mica/research/project/{id}';
+  const RESEARCH_PROJECT = 'mica/research';
+  const RESEARCH_PROJECT_APPROVED = 'mica/research/projects';
   const AGATE_REGISTER = 'agate/register';
   const AGATE_PROFILE = 'agate/user/profile';
   const REPOSITORY_SEARCH = 'mica/repository';
@@ -81,6 +84,22 @@ class MicaClientPathProvider {
    */
   public static function study($id) {
     return preg_replace('/\\{id\\}/', $id, self::STUDY, 1);
+  }
+
+  /**
+   * The project detail url.
+   * 
+   * @param $id
+   * @return mixed
+   */
+  public static function project($id) {
+    global $base_url;
+    return $base_url . '/' . preg_replace('/\\{id\\}/', $id, self::PROJECT, 1);
+  }
+
+  public static  function data_access_request($id) {
+    global $base_url;
+    return $base_url . '/mica/data-access/request#/data-access-request/' . $id;
   }
 
   /**

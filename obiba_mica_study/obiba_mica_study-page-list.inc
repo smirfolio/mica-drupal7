@@ -188,8 +188,3 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
     obiba_mica_commons_countries($study_summary->countries),
   );
 }
-
-
-
-
-
