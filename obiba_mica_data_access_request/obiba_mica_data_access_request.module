@@ -351,6 +351,52 @@ function obiba_mica_data_access_request_users_list_page() {
   ));
 }
 
+function obiba_mica_data_access_get_icon_status($status) {
+  switch ($status) {
+    case 'OPENED':
+      return '<i class="glyphicon glyphicon-saved" title="'.t('Opened').'"></i>';
+    case 'SUBMITTED':
+      return '<i class="glyphicon glyphicon-export" title="'.t('Submitted').'"></i>';
+    case 'REVIEWED':
+      return '<i class="glyphicon glyphicon-check" title="'.t('Reviewed').'"></i>';
+
+    case 'APPROVED':
+      return '<i class="glyphicon glyphicon-ok" title="'.t('Approved').'"></i>';
+    case 'REJECTED':
+      return '<i class="glyphicon glyphicon-remove" title="'.t('Rejected').'"></i>';
+
+  }
+}
+
+function obiba_mica_data_access_user_request_list($data_access_request) {
+  $status_icon = obiba_mica_data_access_get_icon_status($data_access_request->status);
+  $base_path = base_path();
+  $output = <<<EOT
+  <div><span class="pull-left"><a href="$base_path/mica/data-access/request#/data-access-request/$data_access_request->id">$data_access_request->id</a></span>
+  <span class="pull-right">$status_icon</span></div>
+EOT;
+  return $output;
+}
+
+function obiba_mica_data_access_requests_dar_users($data_access_requests, $users) {
+  $users_dar = array_filter($users, function ($value_user) use ($data_access_requests) {
+    $id_dars = array();
+    if (array_filter($data_access_requests, function ($dar) use ($value_user, &$id_dars) {
+      if ($value_user->username === $dar->profile->username) {
+        $id_dars[] = obiba_mica_data_access_user_request_list($dar);
+        return TRUE;
+      }
+      else {
+        return FALSE;
+      }
+    })) {
+      $value_user->dars = $id_dars;
+      return $value_user;
+    }
+  });
+  return $users_dar;
+}
+
 function obiba_mica_data_access_requests_users_list_datatable_init() {
   $user_list_rows = array();
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
@@ -361,7 +407,9 @@ function obiba_mica_data_access_requests_users_list_datatable_init() {
   }
 
   global $user;
-  $users = (new MicaDataAccessRequest())->getUsersList();
+  $agate_users = (new MicaDataAccessRequest())->getUsersList();
+  $requests = (new MicaDataAccessRequests(NULL, 'METHOD_GET'))->getRequests();
+  $users = obiba_mica_data_access_requests_dar_users($requests, $agate_users);
   if (!isset($users->error)) {
     $user_list_rows = obiba_mica_data_access_request_table_users_list_rows($users);
   }
@@ -375,7 +423,8 @@ function obiba_mica_data_access_requests_users_list_datatable_init() {
     'user' => $user,
     'table_headers' => array(
       array("title" => t('Username'), 'width' => '25%'),
-      array("title" => t('User'), 'width' => '35%'),
+      array("title" => t('User'), 'width' => '25%'),
+      array("title" => t('Data Access Request'), 'width' => '15%'),
       array("title" => t('Registration')),
       array("title" => t('Last Login'))
     ),
@@ -402,6 +451,7 @@ function obiba_mica_data_access_request_table_users_list_rows($users) {
         data-id-applicant="' . $user->username . '"
         data-name-applicant="' . $user_full_name . '"
         data-email-applicant="' . $user_email . '">' . $user_full_name . '</a>',
+      $user->dars,
       date_format(date_create(
         obiba_mica_data_access_request_profile_attribute(
           $user->attributes, 'createdDate')

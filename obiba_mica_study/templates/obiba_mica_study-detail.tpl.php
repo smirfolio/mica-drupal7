@@ -385,7 +385,7 @@
               <?php foreach ($populations as $key => $population): ?>
                 <li <?php if ($key == array_keys($populations)[0]) {
                   print 'class="active"';
-                } ?>>
+                } ?>
                   <a href="#population-<?php print $key; ?>" data-toggle="pill">
                     <?php print obiba_mica_commons_get_localized_field($population['data'], 'name'); ?>
                   </a>
