@@ -131,8 +131,10 @@ class MicaTempFileResource extends MicaClient {
       'Content-Type' => 'multipart/form-data',
     ));
 
-    foreach ($header['Cookie'] as $cookie) {
-      curl_setopt($curl_handle, CURLOPT_COOKIE, $cookie);
+    if (!empty($header['Cookie'])) {
+      foreach ($header['Cookie'] as $cookie) {
+        curl_setopt($curl_handle, CURLOPT_COOKIE, $cookie);
+      }
     }
 
     return $curl_handle;

@@ -124,10 +124,44 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
    *   The data server response.
    */
   public function downloadAttachment($id_request, $id_file) {
+    $url_requests = $this->micaUrl . '/data-access-request/' . $id_request . '/attachments/' . $id_file . '/_download';
+
+    return $this->downloadAttachmentInternal($url_requests);
+  }
+
+  /**
+   * Download data access request form attachment.
+   *
+   * @param $path_request
+   *  request path - <entity-name>/<id>. Here entity-path will be 'data-access-request'
+   * @param $file_name
+   * @param $file_id
+   * @return array
+   *  The data server response.
+   * @throws Exception
+   * @internal param string $id_request The data access request id.*   The data access request id.
+   * @internal param string $id_file The data access request id.*   The data access request id.
+   *
+   */
+  public function downloadFormAttachment($path_request, $file_name, $file_id) {
+    if (empty($path_request)) {
+      throw new Exception('Request path cannot be null');
+    }
+
+    $parts = explode('/', ltrim($path_request, '/'));
+    $url_requests = sprintf("%s/data-access-request/%s/form/attachments/%s/%s/_download",
+      $this->micaUrl,
+      $parts[1],
+      $file_name,
+      $file_id
+    );
+
+    return $this->downloadAttachmentInternal($url_requests);
+  }
+
+  private function downloadAttachmentInternal($url_requests) {
     $constant_method = constant('HttpClientRequest::' . $this->method);
     $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . '/data-access-request/' . $id_request . '/' . 'attachments/' . $id_file . '/_download';
-
     $request = new HttpClientRequest($url_requests, array(
       'method' => $constant_method,
       'headers' => $this->authorizationHeader(array(
