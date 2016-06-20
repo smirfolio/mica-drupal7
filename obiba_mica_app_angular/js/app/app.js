@@ -53,6 +53,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestsResource', 'requests/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestResource', 'request/:id/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestAttachmentDownloadResource', 'request/:id/attachments/:attachmentId/_download/ws');
+    ngObibaMicaUrlProvider.setUrl('SchemaFormAttachmentDownloadResource', 'request/form/attachments/:attachmentName/:attachmentId/_download/ws?path=:path');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestDownloadPdfResource', 'request/:id/_pdf/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestCommentsResource', 'request/:id/comments/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestCommentResource', 'request/:id/comment/:commentId/ws');

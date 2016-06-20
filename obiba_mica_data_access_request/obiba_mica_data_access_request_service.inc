@@ -99,6 +99,21 @@ function obiba_mica_data_access_request_attachment($id_data_request, $id_file) {
 }
 
 /**
+ * Get data access request attachments.
+ */
+function obiba_mica_data_access_request_form_attachment($file_name, $file_id) {
+  $dataset_resource = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+  $responses = $dataset_resource->downloadFormAttachment(drupal_get_query_parameters()['path'], $file_name, $file_id);
+  if (!empty($responses)) {
+    drupal_add_http_header('Content-Disposition', $responses['headers']['Content-Disposition'][0]);
+    echo $responses['response']->body;
+    flush();
+    // Stop drupal execution error : 'Headers already sent'.
+    die();
+  }
+}
+
+/**
  * Download a pdf of the data access request.
  */
 function obiba_mica_data_access_request_download_pdf($id_data_request) {
