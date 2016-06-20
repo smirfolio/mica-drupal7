@@ -105,6 +105,9 @@ function obiba_mica_theme($existing, $type, $theme, $path) {
     'obiba_mica_drag_components' => array(
       'render element' => 'element'
     ),
+    'obiba_mica_table_widget_components' => array(
+      'render element' => 'element'
+    ),
   );
   return $themes;
 }
@@ -139,6 +142,35 @@ function theme_obiba_mica_drag_components($vars) {
     'attributes' => array('id' => $table_id),
   ));
   drupal_add_tabledrag($table_id, 'order', 'sibling', 'taxonomies-item-weight');
+  return $output;
+}
+
+function theme_obiba_mica_table_widget_components($vars) {
+  $element = $vars['element'];
+  $header = array(
+    '',
+    t('Aggregation'),
+    t('Custom Css'),
+    t('Enable/Disable'),
+  );
+  $rows = array();
+  foreach (element_children($element) as $field) {
+    $rows[] = array(
+      'data' => array(
+        '',
+        drupal_render($element[$field]['description']),
+        drupal_render($element[$field]['value_name']),
+        drupal_render($element[$field]['enable']),
+      ),
+    );
+  }
+
+  $table_id = $element['#id'];
+  $output = theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('id' => $table_id),
+  ));
   return $output;
 }
 

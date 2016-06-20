@@ -48,49 +48,35 @@ function obiba_mica_graphic_settings_form($form, &$form_state) {
   return system_settings_form($form);
 }
 
-function obiba_mica_graphic_settings_form_general_display(&$form){
+function obiba_mica_graphic_settings_form_general_display(&$form) {
   $form['obiba_mica_graphic']['graphic_display']['general_display'] = array(
     '#type' => 'fieldset',
     '#title' => t('General display'),
     '#collapsible' => FALSE,
   );
 
-
   $color_fields = obiba_mica_graphic_get_nbr_colors();
-  $info = variable_get_info('graphics_nbr_colors');
-
-  $form['obiba_mica_graphic']['graphic_display']['general_display']['graphics_nbr_colors'] = array(
-    '#type' => 'checkboxes',
-    '#multiple' => TRUE,
+  // Draggable form widget
+  $info = variable_get_info('mica_graphic_colors');
+  $form_obiba_mica_graphic_colors = array(
+    '#prefix' => _obiba_mica_admin_search_title_description_draggable_field($info['title'], $info['description']),
+    '#tree' => TRUE,
+    '#theme' => 'obiba_mica_drag_components',
     '#title' => $info['title'],
-    '#options' => $color_fields,
+    '#required' => FALSE,
     '#description' => $info['description'],
   );
-  $graphics_nbr_colors = variable_get_value('graphics_nbr_colors');
-  if (!empty($graphics_nbr_colors) && $graphics_nbr_colors != 'none') {
-    $form['obiba_mica_graphic']['graphic_display']['general_display']['graphics_nbr_colors']['#default_value'] =
-      variable_get_value('graphics_nbr_colors');
-  }
 
-  foreach($color_fields as $nbr_color => $colors){
-      $info = variable_get_info('color_' . $nbr_color);
-      $form['obiba_mica_graphic']['graphic_display']['general_display']['color_' . $nbr_color] = array(
-        '#type' => 'textfield',
-        '#states' => array(
-          'visible' => array(
-            ':input[name="graphics_nbr_colors[' . $nbr_color . ']"]' => array('checked' => TRUE),
-          ),
-        ),
-        '#title' => $info['title'],
-        '#default_value' => variable_get_value('color_' . $nbr_color),
-        '#maxlength' => 255,
-        '#description' => $info['description'],
-      );
-  }
+  $wrapped_obiba_mica_graphic_colors_form = _obiba_mica_graphic_admin_get_draggable_colors_form($form_obiba_mica_graphic_colors, $color_fields, 'mica_graphic_colors');
+  $form['obiba_mica_graphic']['graphic_display']['general_display']['mica_graphic_colors'] = array_merge($form_obiba_mica_graphic_colors, $wrapped_obiba_mica_graphic_colors_form);
+
 
   $info = variable_get_info('pie_slice_text_style_color');
   $form['obiba_mica_graphic']['graphic_display']['general_display']['pie_slice_text_style_color'] = array(
     '#type' => 'textfield',
+    '#prefix' => '<div class="col-md-2">',
+    '#suffix' => '</div>',
+    '#attributes' => array('TYPE' => 'color'),
     '#title' => $info['title'],
     '#default_value' => variable_get_value('pie_slice_text_style_color'),
     '#maxlength' => 255,
@@ -98,6 +84,62 @@ function obiba_mica_graphic_settings_form_general_display(&$form){
   );
 
 
+}
+
+/**
+ * Action when saving the enabled taxonomies order the default save of the
+ * form can't save the status of this widget.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function _obiba_mica_graphic_submit_draggable(&$form, &$form_state, $variable) {
+  $color_form = $form_state['values'][$variable];
+  variable_set($variable, $color_form);
+}
+
+/**
+ * Draggable widget form implementation.
+ *
+ * @param $draggable_form
+ * @param $draggable_items
+ * @param $variable_key
+ * @return mixed
+ */
+function _obiba_mica_graphic_admin_get_draggable_colors_form($draggable_form, $draggable_items, $variable_key) {
+  $default_value = variable_get_value($variable_key);
+  $items = $default_value ? $default_value : $draggable_items;
+  foreach ($items as $key_color => $color) {
+    $draggable_form[$key_color] =
+      array(
+        'value' => array(
+          '#type' => 'hidden',
+          '#title_display' => 'invisible',
+          '#default_value' => $key_color,
+        ),
+        'value_name' => array(
+          '#type' => 'textfield',
+          '#attributes' => array('TYPE' => 'color'),
+          '#default_value' => !empty($default_value[$key_color]) ? $default_value[$key_color]['value_name'] : '#000',
+        ),
+        'description' => array(
+          '#markup' => $draggable_items[$key_color],
+        ),
+        'weight' => array(
+          '#type' => 'weight',
+          '#default_value' => !empty($default_value[$key_color]) ? $default_value[$key_color]['weight'] : 0,
+          '#title_display' => 'invisible',
+          '#attributes' => array('class' => array('taxonomies-item-weight')),
+        ),
+        'enable' => array(
+          '#type' => 'checkbox',
+          '#default_value' => !empty($default_value[$key_color]) ? $default_value[$key_color]['enable'] : 0,
+          '#title_display' => 'invisible',
+        )
+      );
+  }
+  uasort($draggable_form, '_obiba_mica_graphic_colors_options_array_sort');
+  return $draggable_form;
 }
 
 function obiba_mica_graphic_settings_form_display_block(&$form) {
@@ -128,40 +170,55 @@ function obiba_mica_graphic_settings_form_display_block(&$form) {
     '#default_value' => variable_get_value('graphics_blocks_networks'),
     '#description' => $info['description'],
   );
-
+  $block_aggregations = obiba_mica_graphic_get_aggregations();
   $info = variable_get_info('graphics_blocks_aggregations');
-
-  $form['obiba_mica_graphic']['graphic_display']['blocks']['graphics_blocks_aggregations'] = array(
-    '#type' => 'checkboxes',
-    '#multiple' => TRUE,
+  $form_obiba_mica_graphics_blocks_aggregations = array(
+    '#prefix' => _obiba_mica_admin_search_title_description_draggable_field($info['title'], $info['description']),
+    '#tree' => TRUE,
+    '#theme' => 'obiba_mica_table_widget_components',
     '#title' => $info['title'],
-    '#options' => obiba_mica_graphic_get_aggregations(),
+    '#required' => FALSE,
     '#description' => $info['description'],
   );
-  $graphics_blocks_aggregations = variable_get_value('graphics_blocks_aggregations');
-  if (!empty($graphics_blocks_aggregations) && $graphics_blocks_aggregations != 'none') {
-    $form['obiba_mica_graphic']['graphic_display']['blocks']['graphics_blocks_aggregations']['#default_value'] =
-      variable_get_value('graphics_blocks_aggregations');
-  }
+  $wrapped_obiba_mica_graphic_blocks_aggregations_form = _obiba_mica_graphic_admin_get_draggable_blocks_form($form_obiba_mica_graphics_blocks_aggregations, $block_aggregations, 'graphics_blocks_aggregations');
+  $form['obiba_mica_graphic']['graphic_display']['blocks']['graphics_blocks_aggregations'] = array_merge($form_obiba_mica_graphics_blocks_aggregations, $wrapped_obiba_mica_graphic_blocks_aggregations_form);
+}
 
-
-  $block_delta_pam = NetworkStatistics::deltaAggregationsMap();
-  foreach ($block_delta_pam as $delta => $aggregations) {
-    $info = variable_get_info($delta . '_css');
-    $form['obiba_mica_graphic']['graphic_display']['blocks'][$delta . '_css'] = array(
-      '#type' => 'textfield',
-      '#states' => array(
-        'visible' => array(
-          ':input[name="graphics_blocks_aggregations[' . $aggregations . ']"]' => array('checked' => TRUE),
+/**
+ * Draggable widget form implementation.
+ *
+ * @param $draggable_form
+ * @param $draggable_items
+ * @param $variable_key
+ * @return mixed
+ */
+function _obiba_mica_graphic_admin_get_draggable_blocks_form($draggable_form, $draggable_items, $variable_key) {
+  $default_value = variable_get_value($variable_key);
+  $items = $default_value ? $default_value : $draggable_items;
+  foreach ($items as $key_aggregation => $aggregation) {
+    $draggable_form[$key_aggregation] =
+      array(
+        'value' => array(
+          '#type' => 'hidden',
+          '#title_display' => 'invisible',
+          '#default_value' => $key_aggregation,
         ),
-      ),
-      '#title' => $info['title'],
-      '#default_value' => variable_get_value($delta . '_css'),
-      '#maxlength' => 255,
-      '#description' => $info['description'],
-    );
+        'value_name' => array(
+          '#type' => 'textfield',
+          '#title_display' => 'invisible',
+          '#default_value' => !empty($default_value[$key_aggregation]['value_name']) ? $default_value[$key_aggregation]['value_name'] : '',
+        ),
+        'description' => array(
+          '#markup' => $draggable_items[$key_aggregation],
+        ),
+        'enable' => array(
+          '#type' => 'checkbox',
+          '#default_value' => !empty($default_value[$key_aggregation]['enable']) ? $default_value[$key_aggregation]['enable'] : 0,
+          '#title_display' => 'invisible',
+        )
+      );
   }
-
+  return $draggable_form;
 }
 
 function obiba_mica_graphic_settings_form_display_content(&$form) {
@@ -180,7 +237,6 @@ function obiba_mica_graphic_settings_form_display_content(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
-
 }
 
 function obiba_mica_graphic_get_networks_id() {
@@ -198,24 +254,24 @@ function obiba_mica_graphic_get_networks_id() {
 
 function obiba_mica_graphic_get_aggregations() {
   return array(
-    'populations-selectionCriteria-countriesIso' => t('Country of residence'),
-    'methods-designs' => t('Study design'),
-    'numberOfParticipants-participant-range' => t('Number of Participants'),
-    'populations-dataCollectionEvents-bioSamples' => t('Biological Samples'),
+    NetworkStatistics::GEO_NBR_STAT => t('Country of residence'),
+    NetworkStatistics::METHODS_DESIGNS => t('Study design'),
+    NetworkStatistics::NUMBER_PARTICIPANTS => t('Number of Participants'),
+    NetworkStatistics::BIO_SAMPLES => t('Biological Samples'),
   );
 }
 
 function obiba_mica_graphic_get_nbr_colors() {
   return array(
-    '1' => t('Colors 1'),
-    '2' => t('Colors 2'),
-    '3' => t('Colors 3'),
-    '4' => t('Colors 4'),
-    '5' => t('Colors 5'),
-    '6' => t('Colors 6'),
-    '7' => t('Colors 7'),
-    '8' => t('Colors 8'),
-    '9' => t('Colors 9'),
-    '10' => t('Colors 10'),
+    'color1' => t('Color 1'),
+    'color2' => t('Color 2'),
+    'color3' => t('Color 3'),
+    'color4' => t('Color 4'),
+    'color5' => t('Color 5'),
+    'color6' => t('Color 6'),
+    'color7' => t('Color 7'),
+    'color8' => t('Color 8'),
+    'color9' => t('Color 9'),
+    'color10' => t('Color 10'),
   );
 }

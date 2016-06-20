@@ -277,20 +277,6 @@ function _obiba_mica_settings_search_save_figures_order(&$form, &$form_state) {
 }
 
 /**
- * Construct the title and description of a draggable table field
- *
- * @param $title
- * @param $description
- * @return string
- */
-function _obiba_mica_admin_search_title_description_draggable_field($title, $description){
-  return <<<EOT
-    <label class="control-label">$title</label>
-    <div class="help-block">$description</div>
-EOT;
-}
-
-/**
  * Action when saving the enabled taxonomies order the default save of the
  * form can't save the status of this widget.
  *

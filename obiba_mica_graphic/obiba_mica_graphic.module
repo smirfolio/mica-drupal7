@@ -34,20 +34,20 @@ function obiba_mica_graphic_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
   $path_views_theme = $path . '/js/app/views';
   return array(
-    'obiba_mica_angular_app_geo_charts' => array(
-      'template' => 'obiba_mica_angular_app_geo_charts',
+    'obiba_mica_angular_app_charts_'.NetworkStatistics::GEO_NBR_STAT => array(
+      'template' => 'obiba_mica_angular_app_charts_'.NetworkStatistics::GEO_NBR_STAT,
       'path' => $path_theme
     ),
-    'obiba_mica_angular_app_study_design_charts' => array(
-      'template' => 'obiba_mica_angular_app_study_design_charts',
+    'obiba_mica_angular_app_charts_'.NetworkStatistics::METHODS_DESIGNS => array(
+      'template' => 'obiba_mica_angular_app_charts_'.NetworkStatistics::METHODS_DESIGNS,
       'path' => $path_theme
     ),
-    'obiba_mica_angular_app_biological_samples_charts' => array(
-      'template' => 'obiba_mica_angular_app_biological_samples_charts',
+    'obiba_mica_angular_app_charts_'.NetworkStatistics::NUMBER_PARTICIPANTS => array(
+      'template' => 'obiba_mica_angular_app_charts_'.NetworkStatistics::NUMBER_PARTICIPANTS,
       'path' => $path_theme
     ),
-    'obiba_mica_angular_app_number_participants_charts' => array(
-      'template' => 'obiba_mica_angular_app_number_participants_charts',
+    'obiba_mica_angular_app_charts_'.NetworkStatistics::BIO_SAMPLES => array(
+      'template' => 'obiba_mica_angular_app_charts_'.NetworkStatistics::BIO_SAMPLES,
       'path' => $path_theme
     ),
     'graphic-main' => array(
@@ -58,6 +58,11 @@ function obiba_mica_graphic_theme($existing, $type, $theme, $path) {
       'template' => 'graphic-chart-container',
       'path' => $path_views_theme
     ),
+
+    'graphic-chart-block-container' => array(
+      'template' => 'graphic-chart-block-container',
+      'path' => $path_views_theme
+    ),
   );
 }
 
@@ -65,27 +70,28 @@ function obiba_mica_graphic_theme($existing, $type, $theme, $path) {
  * Default blocks definition
  */
 function obiba_mica_graphic_default_block() {
+  $graphics_blocks_aggregations = variable_get_value('graphics_blocks_aggregations');
   return array(
     NetworkStatistics::GEO_NBR_STAT => array(
       'info' => t('Geographical distribution for studies'),
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => '<front>',
-      'weight' => '-13',
+      'weight' => -13,
     ),
     NetworkStatistics::METHODS_DESIGNS => array(
       'info' => t('Study design'),
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => '<front>',
-      'weight' => '-12',
+      'weight' => -12,
     ),
     NetworkStatistics::NUMBER_PARTICIPANTS => array(
       'info' => t('Number of Participants'),
       'region' => 'content',
       'visibility' => BLOCK_VISIBILITY_LISTED,
       'pages' => '<front>',
-      'weight' => '-11',
+      'weight' => -11,
     ),
     NetworkStatistics::BIO_SAMPLES =>
       array(
@@ -93,7 +99,7 @@ function obiba_mica_graphic_default_block() {
         'region' => 'content',
         'visibility' => BLOCK_VISIBILITY_LISTED,
         'pages' => '<front>',
-        'weight' => '-10',
+        'weight' => -10,
       ),
   );
 }
@@ -112,14 +118,13 @@ function obiba_mica_graphic_preprocess_block(&$variables) {
       case NetworkStatistics::METHODS_DESIGNS :
       case NetworkStatistics::NUMBER_PARTICIPANTS :
       case NetworkStatistics::BIO_SAMPLES :
-        $block_classes = explode(',', variable_get_value($variables['block']->delta . '_css'));
-        foreach ($block_classes as $class) {
-          $variables['classes_array'][] = drupal_html_class($class);
-        }
+      $graphics_blocks_aggregations = variable_get_value('graphics_blocks_aggregations');
+      $variables['classes_array'][] = drupal_html_class($graphics_blocks_aggregations[$variables['block']->delta]['value_name']);
     }
   }
 
 }
+
 
 /**
  * Implements hook_block_view().
@@ -195,14 +200,13 @@ function obiba_mica_graphic_block_view($delta = '') {
       );
     switch ($delta) {
       case NetworkStatistics::GEO_NBR_STAT:
-        if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
-          $display_countries_geo = in_array($block_delta_parameters[$delta], $aggregations_to_show, TRUE);
-          if (!empty($graphics_bocks) && $display_countries_geo) {
-            $block['content'] = theme('obiba_mica_angular_app_geo_charts');
+        if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::GEO_NBR_STAT]['enable'] !== 0) {
+          if (!empty($graphics_bocks)) {
+            $block['content'] = theme('obiba_mica_angular_app_charts_'.NetworkStatistics::GEO_NBR_STAT);
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
-                  'entityType' => 'studies',
+                  'entityType' => 'network',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('geoChartOptions',
                     array('graphics.country', 'graphics.nbr-studies'),
@@ -215,20 +219,19 @@ function obiba_mica_graphic_block_view($delta = '') {
         break;
 
       case NetworkStatistics::METHODS_DESIGNS:
-        if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
-          $display_design = in_array($block_delta_parameters[NetworkStatistics::METHODS_DESIGNS], $aggregations_to_show, TRUE);
-          if (!empty($graphics_bocks) && $display_design) {
-            $block['content'] = theme('obiba_mica_angular_app_study_design_charts');
+        if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::METHODS_DESIGNS]['enable'] !== 0) {
+          if (!empty($graphics_bocks)) {
+            $block['content'] = theme('obiba_mica_angular_app_charts_'.NetworkStatistics::METHODS_DESIGNS);
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
-                  'entityType' => 'studies',
+                  'entityType' => 'network',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('studiesDesigns',
                     array(
                       'graphics.study-design',
                       'graphics.nbr-studies',
-             //         'graphics.number-participants'
+                      'graphics.number-participants'
                     ),
                     'graphics.study-design-chart-title', $study_design_options),
                 ),
@@ -239,14 +242,13 @@ function obiba_mica_graphic_block_view($delta = '') {
         break;
 
       case NetworkStatistics::NUMBER_PARTICIPANTS:
-        if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
-          $display_nbr_participants = in_array($block_delta_parameters[NetworkStatistics::NUMBER_PARTICIPANTS], $aggregations_to_show, TRUE);
-          if (!empty($graphics_bocks) && $display_nbr_participants) {
-            $block['content'] = theme('obiba_mica_angular_app_number_participants_charts');
+        if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::NUMBER_PARTICIPANTS]['enable'] !== 0) {
+          if (!empty($graphics_bocks)) {
+            $block['content'] = theme('obiba_mica_angular_app_charts_'.NetworkStatistics::NUMBER_PARTICIPANTS);
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
-                  'entityType' => 'studies',
+                  'entityType' => 'network',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('numberParticipants',
                     array(
@@ -262,14 +264,13 @@ function obiba_mica_graphic_block_view($delta = '') {
         break;
 
       case NetworkStatistics::BIO_SAMPLES:
-        if (!empty($aggregations_to_show) && $aggregations_to_show !== 'none') {
-          $display_bio_samples = in_array($block_delta_parameters[NetworkStatistics::BIO_SAMPLES], $aggregations_to_show, TRUE);
-          if (!empty($graphics_bocks) && $display_bio_samples) {
-            $block['content'] = theme('obiba_mica_angular_app_biological_samples_charts');
+        if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::BIO_SAMPLES]['enable'] !== 0) {
+          if (!empty($graphics_bocks)) {
+            $block['content'] = theme('obiba_mica_angular_app_charts_'.NetworkStatistics::BIO_SAMPLES);
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
-                  'entityType' => 'studies',
+                  'entityType' => 'network',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('biologicalSamples',
                     array('graphics.bio-samples', 'graphics.nbr-studies'),
@@ -336,19 +337,36 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $header
  */
 function obiba_mica_graphic_charts_colors_options_settings() {
   $options_colors = array();
-  $colors = variable_get_value('graphics_nbr_colors');
+  $colors = variable_get_value('mica_graphic_colors');
   if (empty($colors) || $colors == 'none') {
     return NULL;
   }
   $colors_setting = array_filter($colors, function ($color) {
-    return !empty($color);
+    return !empty($color['enable']);
   });
-  foreach ($colors_setting as $nbr => $colors) {
-    $options_colors[] = variable_get_value('color_' . $nbr);
+  uasort($colors_setting, '_obiba_mica_graphic_colors_options_array_sort');
+  foreach ($colors_setting as $nbr => $color) {
+    $options_colors[] = $color['value_name'];
   }
   if (!empty($options_colors)) {
     return array('colors' => $options_colors);
   }
+}
+
+
+/**
+ * Custom array sort function by weight to display the taxonomies widget items
+ * in correct order.
+ *
+ * @param $a
+ * @param $b
+ * @return int
+ */
+function _obiba_mica_graphic_colors_options_array_sort($a, $b) {
+  if (isset($a['weight']) && isset($b['weight'])) {
+    return $a['weight'] < $b['weight'] ? -1 : 1;
+  }
+  return 0;
 }
 
 /**
@@ -458,6 +476,7 @@ function obiba_mica_graphic_stacked_column_chart($labels, $data, $title, $width 
     $chart_width = count($labels) * 20 + $height;
   }
   $raw_options['vAxis']['logScale'] = FALSE;
+  $raw_options['vAxis']['format'] = 'decimal';
   $raw_options['vAxis']['minorGridlines']['count'] = 0;
 
   // make sure links keys are a sequence
