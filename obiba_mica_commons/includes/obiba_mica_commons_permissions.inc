@@ -8,3 +8,8 @@ function canEditDraftDocument($document) {
     && !empty($document->permissions) //
     && $document->permissions->edit; //
 }
+
+function obiba_mica_user_has_role($role) {
+  global $user;
+  return in_array($role, $user->roles);
+}

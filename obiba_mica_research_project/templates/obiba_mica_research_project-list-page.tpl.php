@@ -17,11 +17,13 @@
       </div>
     </div>
   </div>
-  
+  <p>&nbsp;</p>
   <div id="refresh-list">
-    <?php if (!empty($list_projects)): ?>
-      <?php print render($list_projects); ?>
-    <?php endif; ?>
+    <?php 
+    if (!empty($list_projects)) :
+      print render($list_projects); 
+    endif; 
+    ?>      
   </div>
   <div class="clearfix"></div>
   <div><?php print $pager_wrap; ?></div>

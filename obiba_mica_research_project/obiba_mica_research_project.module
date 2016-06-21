@@ -25,7 +25,7 @@ function obiba_mica_research_project_menu() {
     'expanded' => TRUE,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 3
+    'weight' => 4
   );
 
   $items[MicaClientPathProvider::RESEARCH_PROJECT_APPROVED] = array(
@@ -59,8 +59,16 @@ function obiba_mica_research_project_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_research_project-list-page',
       'path' => $path_theme
     ),
+    'obiba_mica_research_project-list-page-authenticated' => array(
+      'template' => 'obiba_mica_research_project-list-page-authenticated',
+      'path' => $path_theme
+    ),    
     'obiba_mica_research_project-list-page-block' => array(
       'template' => 'obiba_mica_research_project-list-page-block',
+      'path' => $path_theme
+    ),
+    'obiba_mica_research_project-list-page-authenticated-block' => array(
+      'template' => 'obiba_mica_research_project-list-page-authenticated-block',
       'path' => $path_theme
     ),
     'obiba_mica_research_project-detail-page' => array(
@@ -103,4 +111,8 @@ function obiba_mica_research_project() {
     variable_set('research_project_page', $research_project_node_page->nid);
     return node_view(node_load(variable_get_value('research_project_page')));
   }
+}
+
+function convert_and_format_string_date($str_date, $format = 'd-m-Y') {
+  return format_date(strtotime($str_date), 'custom', $format);
 }

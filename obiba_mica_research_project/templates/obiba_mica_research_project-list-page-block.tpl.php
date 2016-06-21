@@ -20,17 +20,28 @@
         </a>
       </h4>
     </div>
-    <hr class="no-margin">
     <p class="md-top-margin">
       <small>
-        <?php print MicaClientAnchorHelper::ellipses(
-          t('Read more'),
-          obiba_mica_commons_get_localized_field($project, 'summary'),
-          MicaClientPathProvider::project($project->id));
-        ?>
+        <?php print obiba_mica_commons_get_localized_field($project, 'summary') ?>
       </small>
     </p>
+    <p class="md-top-margin">
+      <div class="row">
+        <div class="col-xs-3">
+          <?php
+            if (!empty($content->startDate)) :
+              print(t('Start Date') . ': ' . convert_and_format_string_date($content->startDate, 'd-m-Y'));
+            endif;
+          ?>
+        </div>
+        <div class="col-xs-3">
+          <?php
+            if (!empty($content->endDate)) :
+              print(t('End Date') . ': ' . convert_and_format_string_date($content->endDate, 'd-m-Y'));
+            endif;
+          ?>
+        </div>
+      </div>
+    </p>
   </div>
-  <?php if (!empty($project->request)) : ?>
-  <?php endif; ?>
 </div>

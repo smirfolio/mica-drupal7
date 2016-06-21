@@ -12,29 +12,99 @@
  */
 ?>
 
-<div>
-  <div class="row md-bottom-margin">
-    <?php if(!empty($project->timestamps)) : ?>
-    <div class="col-xs-6"><?php print t('Project created the ') . convert_and_format_string_date($project->timestamps->created); ?></div>
-    <?php endif; ?>
+<article class="bordered-article">
 
-    <?php if (!empty($project->request)) : ?>
-    <div class="col-xs-6">
-      <span><?php print t('Data Access Request') . ': ' ?></span>
-      <a href="<?php print MicaClientPathProvider::data_access_request($project->request->id) ?>"><?php print $project->request->id ?></a>
+  <section>
+    <h2><?php print t('General Information') ?></h2>
+
+    <div class="row">
+      <div class="col-lg-6 col-xs-12 lg-right-indent">
+        <table class="table table-striped">
+          <tbody>
+          <tr>
+            <th><?php print t('Title') ?></th>
+            <td>
+              <p><?php print obiba_mica_commons_get_localized_field($project, 'title') ?></p>
+            </td>
+          </tr>
+          <tr>
+            <th><?php print t('Description') ?></th>
+            <td>
+              <p><?php print obiba_mica_commons_get_localized_field($project, 'summary') ?></p>
+            </td>
+          </tr>
+          <?php if(!empty($content->startDate)) : ?>
+            <tr>
+              <th><?php print t('Start Date') ?></th>
+              <td>
+                <p><?php print convert_and_format_string_date($content->startDate, 'd-m-Y') ?></p>
+              </td>
+            </tr>
+          <?php endif; ?>
+
+          <?php if(!empty($content->endDate)) : ?>
+            <tr>
+              <th><?php print t('End Date') ?></th>
+              <td>
+                <p><?php print convert_and_format_string_date($content->endDate, 'd-m-Y') ?></p>
+              </td>
+            </tr>  
+          <?php endif; ?>
+
+          <?php if (!empty($project->request) && $project->request->viewable) : ?>
+            <tr>
+              <th><?php print t('Data Access Request') ?></th>
+              <td>
+                <p>
+                  <a href="<?php print MicaClientPathProvider::data_access_request($project->request->id) ?>">
+                    <?php print $project->request->id ?>
+                  </a>
+                </p>
+              </td>
+            </tr>
+          <?php endif; ?>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <?php endif; ?>
-  </div>
+  </section>
 
-  <hr class="row">
+  <?php if(!empty($content->name) || !empty($content->institution)) : ?>
+  <section>
+    <h2><?php print t('Contact Details') ?></h2>
+    
+    <div class="row">
+      <div class="col-lg-6 col-xs-12 lg-right-indent">
+        <table class="table table-striped">
+          <tbody>
+          <?php if(!empty($content->name)) : ?>
+            <tr>
+              <th><?php print t('Name') ?></th>
+              <td>
+                <p><?php print $content->name ?></p>
+              </td>
+            </tr>
+          <?php endif; ?>
+          <?php if (!empty($content->institution)) : ?>
+            <tr>
+              <th><?php print t('Institution') ?></th>
+              <td>
+                <p><?php print $content->institution ?></p>
+              </td>
+            </tr>
+          <?php endif; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <?php endif; ?>
 
-  <div class="row md-bottom-margin">
-    <p><?php print obiba_mica_commons_get_localized_field($project, 'title'); ?></p>
+  <?php if (!empty($attachments)): ?>
+    <section>
+      <h2><?php print variable_get_value('files_documents_label'); ?></h2>
+      <?php print (!empty($file_browser) ? $file_browser : $attachments); ?>
+    </section>
+  <?php endif; ?>
 
-    <p><?php print obiba_mica_commons_get_localized_field($project, 'summary'); ?></p>
-
-    <p><?php print $researcher ?></p>
-
-    <p><?php print $institution ?></p>
-  </div>
-</div>
+</article>
