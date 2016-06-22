@@ -15,7 +15,7 @@
  *   The file resource id.
  */
 function obiba_mica_files_download_attachment($entity_id, $entity_type, $file_name) {
-  _obiba_mica_files_download_attachment($entity_id, $entity_type, $_POST['file_path'], $file_name);
+  _obiba_mica_files_download_attachment($entity_id, $entity_type, $_POST['file_path'], $file_name, FALSE);
 }
 
 function obiba_mica_files_get_file() {

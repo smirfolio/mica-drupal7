@@ -44,7 +44,7 @@ function obiba_mica_network_page_detail($network_id) {
       if (!empty($network_dto->studyIds)) {
         $studies_network_ids = $network_dto->studyIds;
       }
-      if ($network_dto->networkSummaries) {
+      if (!empty($network_dto->networkSummaries)) {
         foreach ($network_dto->networkSummaries as $network_summary) {
           if (!empty($network_summary->studyIds)) {
             $studies_network_ids = array_merge($studies_network_ids, $network_summary->studyIds);
@@ -319,7 +319,7 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
   }
 
   $unpublished_networks = array_filter($network_summaries, function ($summary) {
-    return !$summary->getPublished();
+    return !$summary->published;
   });
 
   if (!empty($unpublished_networks)) {
@@ -367,12 +367,12 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
       $acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
       $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
       $rows[] = array(
-        $study_summary->getPublished() ? MicaClientAnchorHelper::study($study_summary) : $acronym,
+        $study_summary->published ? MicaClientAnchorHelper::study($study_summary) : $acronym,
         $name,
         implode(', ', obiba_mica_commons_clean_string($study_summary->designs)),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
           isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL,
-        obiba_mica_commons_countries($study_summary->countries),
+        isset($study_summary->countries)?obiba_mica_commons_countries($study_summary->countries):NULL,
         empty($study_summary->variables)
           ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, FALSE, $query)
       );

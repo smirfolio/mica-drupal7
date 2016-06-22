@@ -12,7 +12,6 @@ class MicaStudyResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
   }
 
   /**
@@ -71,7 +70,7 @@ class MicaStudyResource extends MicaClient {
    *
    * @param $study_id
    *
-   * @return array|Protobuf\Message|null
+   * @return array
    */
   public function getStudy($study_id) {
     $resource_query = '/study/' . rawurlencode($study_id);
@@ -82,7 +81,7 @@ class MicaStudyResource extends MicaClient {
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_BINARY),
+            'Accept' => array(parent::HEADER_JSON),
           )
         ),
       ));
@@ -91,9 +90,7 @@ class MicaStudyResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $dtoObj = '\obiba\mica\StudyDto';
-        DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
-        $this->result_resource_query = $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
+        $this->result_resource_query = $data ? json_decode($data) : NULL;
         obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
         return $this->result_resource_query;
       }

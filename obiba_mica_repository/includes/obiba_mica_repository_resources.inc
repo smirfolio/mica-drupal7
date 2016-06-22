@@ -118,7 +118,6 @@ class ObibaSearchResources extends MicaClient {
         )
       ),
       'parameters' => $request_parameters,
-      'data' => !empty($dto_param) ? $dto_param : $this->dtoFilterConstruct($type, NULL, 0, NULL),
     ));
 
     $client = $this->client();

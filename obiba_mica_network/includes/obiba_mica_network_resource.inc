@@ -12,7 +12,6 @@ class MicaNetworkResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
   }
 
   /**get_networks
@@ -113,7 +112,7 @@ class MicaNetworkResource extends MicaClient {
    * Get a network by its ID.
    *
    * @param $network_id
-   * @return array|Protobuf\Message|null
+   * @return array
    */
   public function get_network($network_id) {
     $resource_query = '/network/' . rawurlencode($network_id);
@@ -124,7 +123,7 @@ class MicaNetworkResource extends MicaClient {
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_BINARY),
+            'Accept' => array(parent::HEADER_JSON),
           )
         ),
       ));
@@ -133,9 +132,7 @@ class MicaNetworkResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $dtoObj = '\obiba\mica\NetworkDto';
-        DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary);
-        $this->result_resource_query = $data ? DrSlump\Protobuf::decode($dtoObj, $data) : NULL;
+        $this->result_resource_query = $data ? json_decode($data) : NULL;
         obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
         return $this->result_resource_query;
       }

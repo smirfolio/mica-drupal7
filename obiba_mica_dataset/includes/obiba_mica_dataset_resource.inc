@@ -19,7 +19,6 @@ class MicaDatasetResource extends MicaClient {
    */
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Json());
   }
 
   /**
@@ -112,7 +111,7 @@ class MicaDatasetResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetDto', $data) : NULL;
+        $this->result_resource_query = $data ? json_decode($data) : NULL;
         obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
         return $this->result_resource_query;
       }
@@ -170,7 +169,7 @@ class MicaDatasetResource extends MicaClient {
       if (!empty($detail)) {
         return json_decode($data);
       }
-      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariablesDto', $data) : NULL;
+      return $data ? json_decode($data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -212,8 +211,7 @@ class MicaDatasetResource extends MicaClient {
       if (!empty($detail)) {
         return json_decode($data);
       }
-      $dto_object = ($resource == 'study-dataset') ? '\obiba\mica\DatasetVariableContingencyDto' : '\obiba\mica\DatasetVariableContingenciesDto';
-      return $data ? DrSlump\Protobuf::decode($dto_object, $data) : NULL;
+      return $data ? json_decode($data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -300,7 +298,7 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariablesHarmonizationsDto', $data) : NULL;
+      return $data ? json_decode($data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();
@@ -369,7 +367,7 @@ class MicaDatasetResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariableDto', $data) : NULL;
+        $this->result_resource_query = $data ? json_decode($data) : NULL;
         obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
         return $this->result_resource_query;
       }
@@ -434,7 +432,7 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return $data ? DrSlump\Protobuf::decode('\obiba\mica\DatasetVariableHarmonizationDto', $data) : NULL;
+      return $data ? json_decode($data) : NULL;
     }
     catch (HttpClientException $e) {
       return array();

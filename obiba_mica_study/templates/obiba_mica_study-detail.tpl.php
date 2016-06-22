@@ -89,6 +89,7 @@
 
           <?php if (!empty($study_dto->memberships)): ?>
             <?php foreach ($study_dto->memberships as $membership): ?>
+              <?php if (!empty($membership->members)): ?>
               <tr>
                 <th><?php print ucfirst(t($membership->role)) ?></th>
                 <td>
@@ -97,9 +98,9 @@
                       <li>
                         <a href="#" data-toggle="modal"
                            data-target="#<?php print obiba_mica_person_generate_target_id($membership->role, $study_dto->id, $key_member); ?>">
-                          <?php print $member->title; ?>
-                          <?php print $member->firstName; ?>
-                          <?php print $member->lastName; ?>
+                          <?php print !empty($member->title)?$member->title:''; ?>
+                          <?php print !empty($member->firstName)?$member->firstName:''; ?>
+                          <?php print !empty($member->lastName)?$member->lastName:''; ?>
                           <?php if (!empty($member->academicLevel)) {
                             print ', ' . $member->academicLevel;
                           } ?>
@@ -111,6 +112,7 @@
                   </ul>
                 </td>
               </tr>
+              <?php endif; ?>
             <?php endforeach; ?>
           <?php endif; ?>
 
@@ -273,7 +275,7 @@
               <th><?php print t('Data (questionnaire-derived, measured...)'); ?></th>
               <td>
                 <p>
-                  <?php if (in_array('data', $study_dto->access)): ?>
+                  <?php if (!empty($study_dto->access) && in_array('data', $study_dto->access)): ?>
                     <span class="glyphicon glyphicon-ok"></span>
                   <?php else : ?>
                     <span class="glyphicon glyphicon-remove"></span>
@@ -286,7 +288,7 @@
               <th><?php print t('Biological Samples'); ?></th>
               <td>
                 <p>
-                  <?php if (in_array('bio_samples', $study_dto->access)): ?>
+                  <?php if (!empty($study_dto->access) && in_array('bio_samples', $study_dto->access)): ?>
                     <span class="glyphicon glyphicon-ok"></span>
                   <?php else : ?>
                     <span class="glyphicon glyphicon-remove"></span>
@@ -295,7 +297,7 @@
               </td>
             </tr>
 
-            <?php if (in_array('other', $study_dto->access)): ?>
+            <?php if (!empty($study_dto->access) && in_array('other', $study_dto->access)): ?>
               <tr>
                 <th><?php print t('Other'); ?></th>
                 <td>
@@ -385,9 +387,9 @@
               <?php foreach ($populations as $key => $population): ?>
                 <li <?php if ($key == array_keys($populations)[0]) {
                   print 'class="active"';
-                } ?>
+                } ?>>
                   <a href="#population-<?php print $key; ?>" data-toggle="pill">
-                    <?php print obiba_mica_commons_get_localized_field($population['data'], 'name'); ?>
+                    <?php print obiba_mica_commons_get_localized_field($population['data']['data'], 'name'); ?>
                   </a>
                 </li>
 

@@ -17,7 +17,10 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3
-          class="modal-title"><?php print $person->title; ?> <?php print $person->firstName; ?>  <?php print $person->lastName; ?>
+          class="modal-title">
+          <?php print !empty($person->title)?$person->title:''; ?>
+          <?php print !empty($person->firstName)?$person->firstName:''; ?>
+          <?php print !empty($person->lastName)?$person->lastName:''; ?>
           <?php if (!empty($person->academicLevel)) {
             print ', ' . $person->academicLevel;
           } ?></h3>

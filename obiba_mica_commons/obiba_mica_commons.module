@@ -5,7 +5,6 @@
  * Code for obiba_mica_commons module.
  */
 
-const HEADER_BINARY = 'application/x-protobuf';
 const HEADER_JSON = 'application/json';
 
 /**
