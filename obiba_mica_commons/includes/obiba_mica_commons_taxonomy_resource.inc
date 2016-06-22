@@ -18,7 +18,6 @@ class MicaTaxonomyResource extends MicaClient {
    */
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
-    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Binary());
   }
 
   /**

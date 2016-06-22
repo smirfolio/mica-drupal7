@@ -132,10 +132,11 @@ function obiba_mica_study_page_detail($study_id) {
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;
     $member_detail_modal='';
     if (module_exists('obiba_mica_persons') && !empty($study_dto)) {
-      $investigator_detail_modal = obiba_mica_persons_get_person_detail('investigator', $study_dto->id, $study_dto->investigators);
-      $contact_detail_modal = obiba_mica_persons_get_person_detail('contact', $study_dto->id, $study_dto->contacts);
+
       foreach($study_dto->memberships as $membership){
-          $member_detail_modal .= obiba_mica_persons_get_person_detail($membership->role, $study_dto->id, $membership->members);
+        if(!empty($membership->members)){
+        $member_detail_modal .= obiba_mica_persons_get_person_detail($membership->role, $study_dto->id, $membership->members);
+        }
       }
     }
     if (module_exists('obiba_mica_files')) {
@@ -256,8 +257,8 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
         $dce_rows = obiba_mica_study_get_dce_table($population->dataCollectionEvents, $study_detail->id, $population->id);
         uasort($dce_rows, 'obiba_mica_study_sort_dce');
         obiba_mica_commons_normalize_rows($dce_rows);
-
-        $population['dce-tab'] = theme(
+        $population_content_render['data'] = $population;
+        $population_content_render['dce-tab'] = theme(
           'table',
           array(
             'header' => array(
@@ -272,7 +273,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
             'attributes' => array('id' => 'variables_overview')
           )
         );
-        $population['dce-modal'] = obiba_mica_study_get_dce_detail(
+        $population_content_render['dce-modal'] = obiba_mica_study_get_dce_detail(
           $study_detail->id, $population->id,
           $population->dataCollectionEvents,
           $dce_variables_nbr,
@@ -286,14 +287,14 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
       }
 
       $page_render_populations[$population->id] = array(
-        'data' => $population,
+        'data' => $population_content_render,
         'html' => theme('mica_population_detail', array(
           'population_content' => theme('mica_population_content_detail', array(
             'dce_uids' => $dce_uids,
             'population' => $population,
             'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
           )),
-          'population' => $population,
+          'population' => $population_content_render,
         ))
       );
     }

@@ -91,9 +91,9 @@
                       <li>
                         <a href="#" data-toggle="modal"
                            data-target="#<?php print obiba_mica_person_generate_target_id($membership->role, $network_dto->id, $key_member); ?>">
-                          <?php print $member->title; ?>
-                          <?php print $member->firstName; ?>
-                          <?php print $member->lastName; ?>
+                          <?php print !empty($member->title)?$member->title:''; ?>
+                          <?php print !empty($member->firstName)?$member->firstName:''; ?>
+                          <?php print !empty($member->lastName)?$member->lastName:''; ?>
                           <?php if (!empty($member->academicLevel)) {
                             print ', ' . $member->academicLevel;
                           } ?>

@@ -5,7 +5,7 @@
  * MicaClient class
  */
 
-include_once "obiba_mica_commons_query_dto_builders.inc";
+
 include_once "obiba_mica_commons_query_rql_builders.inc";
 include_once "obiba_mica_commons_query_response_wrappers.inc";
 include_once "obiba_mica_commons_permissions.inc";
@@ -22,7 +22,7 @@ class MicaClient {
   const SET_COOKIE_HEADER = 'Set-Cookie';
   const OBIBA_COOKIE = 'obibaid';
   const MICA_COOKIE = 'micasid';
-  const HEADER_BINARY = 'application/x-protobuf';
+  const HEADER_BINARY = 'application/octet-stream';
   const HEADER_JSON = 'application/json';
   const HEADER_CSV = 'text/csv';
   const HEADER_EXCEL_SHEET = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -348,9 +348,6 @@ class MicaClient {
       CURLOPT_SSL_VERIFYPEER => FALSE,
       CURLOPT_ENCODING => TRUE,
     );
-
-    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Json());
-
     return $client;
   }
 
@@ -423,36 +420,6 @@ class MicaClient {
     }
 
     return $from;
-  }
-
-  /**
-   * Dto filter construction.
-   *
-   * @param string $type
-   *   Entity type.
-   * @param object $request_param
-   *   The request parameters.
-   * @param int $from
-   *   The next page offset.
-   * @param string $group_by
-   *   Group by parameters.
-   * @param bool $with_facets
-   *   With facet or not.
-   *
-   * @return string
-   *   A json of constructed filter request.
-   */
-  protected function dtoFilterConstruct($type, $request_param = NULL, $from = 0, $group_by = NULL, $with_facets = TRUE) {
-    global $language;
-    $lang = $language->language;
-    $page_size = MicaClient::getResponsePageSize();
-    $query_dto_builder = JoinQueryDtoBuilder::newBuilder(json_decode($request_param), $page_size, $lang, $with_facets);
-    DrSlump\Protobuf::setDefaultCodec(new DrSlump\Protobuf\Codec\Json());
-    $json_query_encoded
-      = DrSlump\Protobuf::encode($query_dto_builder->documentQuery($type, $from, $page_size, $group_by)
-      ->build());
-
-    return $json_query_encoded;
   }
 
   /**

@@ -450,7 +450,7 @@ function obiba_mica_dataset_attributes_tab($attributes = NULL, $namespace = NULL
 function obiba_mica_dataset_variable_attributes_detail($variable, $name, $namespaces = array()) {
   if (!empty($variable->attributes)) {
     foreach ($variable->attributes as $attribute) {
-      if ((empty($namespaces) && empty($attribute->namespace)) || (is_array($namespaces) && in_array($attribute->namespace, $namespaces))) {
+      if (!empty($attribute->namespace) && (in_array($attribute->namespace, $namespaces))) {
         if (!empty($attribute->name) && $attribute->name == $name) {
           return obiba_mica_commons_get_localized_field($attribute, 'values');
         }
