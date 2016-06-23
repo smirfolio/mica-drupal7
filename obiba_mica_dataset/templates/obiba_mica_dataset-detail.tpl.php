@@ -204,12 +204,14 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                       obiba_mica_commons_format_number($dataset_type_dto->studyTable->studySummary->targetNumber->number) : NULL; ?>
                 </td>
               </tr>
+              <?php if (!empty($dataset_type_dto->studyTable->studySummary->countries)) : ?>
               <tr>
                 <th><?php print t('Countries') ?></th>
                 <td>
                   <?php print obiba_mica_commons_countries($dataset_type_dto->studyTable->studySummary->countries); ?>
                 </td>
               </tr>
+              <?php endif; ?>
               </tbody>
             </table>
           </div>
