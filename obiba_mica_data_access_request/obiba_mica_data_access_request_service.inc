@@ -157,6 +157,19 @@ function obiba_mica_data_access_request_action($id_data_request) {
 }
 
 /**
+ * Update attachments of the data access request.
+ *
+ * @param $id_data_request
+ */
+function obiba_mica_data_access_request_attachments_update($id_data_request) {
+  if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+      $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
+      $data_access_request = $mica_client->saveAttachments(file_get_contents('php://input'), $id_data_request);
+      drupal_json_output($data_access_request);
+  }
+}
+
+/**
  * Delete the data access request.
  */
 function obiba_mica_data_access_request_delete_request_access($id_request) {
