@@ -64,6 +64,41 @@ class MicaDataAccessRequestResources extends MicaClient {
   }
 
   /**
+   * Update attachments of a data access request.
+   *
+   * @param string $data
+   *   The data access request json data.
+   * @param string $id_data_access
+   *   The required data access request id.
+   *
+   * @return array
+   *   The data server response.
+   */
+  public function saveAttachments($data, $id_data_access = NULL) {
+    $constant_method = constant('HttpClientRequest::' . $this->method);
+    $url_data_access = $this->micaUrl . '/data-access-request/' . $id_data_access . '/_attachments';
+    $request = new HttpClientRequest($url_data_access, array(
+        'method' => $constant_method,
+        'headers' => $this->authorizationHeader(array(
+                'Accept' => array(parent::HEADER_JSON),
+                'Content-Type' => array(parent::HEADER_JSON),
+
+            )
+        ),
+        'data' => $data,
+    ));
+
+    $this->execute($request);
+    $headers = $this->getLastResponseHeaders();
+    if (!empty($headers) && !empty($headers['Location'])) {
+      drupal_add_http_header('Location', $headers['Location'][0]);
+    }
+
+    drupal_add_http_header('Status', $this->getLastResponseStatusCode());
+    return $this->getLastResponse();
+  }
+
+  /**
    * A common method to execute client request.
    *
    * @param object $request
