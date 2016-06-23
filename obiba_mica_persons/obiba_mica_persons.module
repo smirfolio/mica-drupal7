@@ -117,13 +117,15 @@ function obiba_mica_person_generate_target_id($type_person, $document_id, $perso
  */
 function obiba_mica_persons_get_person_detail($type_person, $study_id, $persons) {
   $page_render_persons = '';
-  foreach ($persons as $key_person => $person) {
-    $id_person = obiba_mica_person_generate_target_id($type_person, $study_id, $key_person);
-    $page_render_persons .= theme('mica_person_detail', array(
-      'study_id' => $study_id,
-      'person_uid' => $id_person,
-      'person' => $person,
-    ));
+  if (!empty($persons)) {
+    foreach ($persons as $key_person => $person) {
+      $id_person = obiba_mica_person_generate_target_id($type_person, $study_id, $key_person);
+      $page_render_persons .= theme('mica_person_detail', array(
+        'study_id' => $study_id,
+        'person_uid' => $id_person,
+        'person' => $person,
+      ));
+    }
   }
   return $page_render_persons;
 }

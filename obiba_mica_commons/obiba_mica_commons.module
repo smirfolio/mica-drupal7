@@ -821,3 +821,14 @@ function _obiba_mica_admin_search_title_description_draggable_field($title, $des
     <div class="help-block">$description</div>
 EOT;
 }
+
+/**
+ * Converts a date string to a Date object the formats it.
+ *
+ * @param $str_date
+ * @param string $format
+ * @return mixed
+ */
+function obiba_mica_commons_convert_and_format_string_date($str_date, $format = 'd-m-Y') {
+  return format_date(strtotime($str_date), 'custom', $format);
+}

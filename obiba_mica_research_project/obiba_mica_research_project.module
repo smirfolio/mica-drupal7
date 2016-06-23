@@ -112,7 +112,3 @@ function obiba_mica_research_project() {
     return node_view(node_load(variable_get_value('research_project_page')));
   }
 }
-
-function convert_and_format_string_date($str_date, $format = 'd-m-Y') {
-  return format_date(strtotime($str_date), 'custom', $format);
-}
