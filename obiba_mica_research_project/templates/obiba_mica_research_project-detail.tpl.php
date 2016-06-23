@@ -37,7 +37,7 @@
             <tr>
               <th><?php print t('Start Date') ?></th>
               <td>
-                <p><?php print convert_and_format_string_date($content->startDate, 'd-m-Y') ?></p>
+                <p><?php print obiba_mica_commons_convert_and_format_string_date($content->startDate, 'd-m-Y') ?></p>
               </td>
             </tr>
           <?php endif; ?>
@@ -46,7 +46,7 @@
             <tr>
               <th><?php print t('End Date') ?></th>
               <td>
-                <p><?php print convert_and_format_string_date($content->endDate, 'd-m-Y') ?></p>
+                <p><?php print obiba_mica_commons_convert_and_format_string_date($content->endDate, 'd-m-Y') ?></p>
               </td>
             </tr>  
           <?php endif; ?>

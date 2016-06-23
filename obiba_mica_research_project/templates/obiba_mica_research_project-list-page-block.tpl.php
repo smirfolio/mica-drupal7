@@ -30,14 +30,14 @@
         <div class="col-xs-3">
           <?php
             if (!empty($content->startDate)) :
-              print(t('Start Date') . ': ' . convert_and_format_string_date($content->startDate, 'd-m-Y'));
+              print(t('Start Date') . ': ' . obiba_mica_commons_convert_and_format_string_date($content->startDate, 'd-m-Y'));
             endif;
           ?>
         </div>
         <div class="col-xs-3">
           <?php
             if (!empty($content->endDate)) :
-              print(t('End Date') . ': ' . convert_and_format_string_date($content->endDate, 'd-m-Y'));
+              print(t('End Date') . ': ' . obiba_mica_commons_convert_and_format_string_date($content->endDate, 'd-m-Y'));
             endif;
           ?>
         </div>

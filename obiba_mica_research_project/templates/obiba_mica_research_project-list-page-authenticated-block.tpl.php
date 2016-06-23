@@ -12,8 +12,14 @@
 ?>
 
 <tr>
-  <?php if(!empty($project->request) && obiba_mica_user_has_role('mica-data-access-officer')) : ?>
-  <td><?php print $project->request->applicant ?></td>
+  <?php if(obiba_mica_user_has_role('mica-data-access-officer')) : ?>
+  <td>
+    <?php
+      if (!empty($project->request)) :
+        print($project->request->applicant);
+      endif;
+    ?>
+  </td>
   <?php endif; ?>
   <td>
     <a href="<?php print MicaClientPathProvider::project($project->id) ?>">
@@ -32,14 +38,14 @@
   <td>
     <?php
     if (!empty($content->startDate)) :
-      print(convert_and_format_string_date($content->startDate, 'D. d-m-Y'));
+      print(obiba_mica_commons_convert_and_format_string_date($content->startDate, 'D. d-m-Y'));
     endif;
     ?>
   </td>
   <td>
     <?php
     if (!empty($content->endDate)) :
-      print(convert_and_format_string_date($content->endDate, 'D. d-m-Y'));
+      print(obiba_mica_commons_convert_and_format_string_date($content->endDate, 'D. d-m-Y'));
     endif;
     ?>
   </td>

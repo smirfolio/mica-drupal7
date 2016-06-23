@@ -64,9 +64,9 @@ function obiba_mica_network_page_detail($network_id) {
 
     $investigator_detail_modal =
       obiba_mica_persons_get_person_detail('investigator', $network_dto->id,
-        $network_dto->investigators);
+        !empty($network_dto->investigators) ? $network_dto->investigators : NULL);
     $contact_detail_modal = obiba_mica_persons_get_person_detail('contact',
-      $network_dto->id, $network_dto->contacts);
+      $network_dto->id, !empty($network_dto->contacts) ? $network_dto->contacts : NULL);
 
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
@@ -369,10 +369,10 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
       $rows[] = array(
         $study_summary->published ? MicaClientAnchorHelper::study($study_summary) : $acronym,
         $name,
-        implode(', ', obiba_mica_commons_clean_string($study_summary->designs)),
+        implode(', ', isset($study_summary->designs) ?  obiba_mica_commons_clean_string($study_summary->designs) : array()),
         isset($study_summary->targetNumber->noLimit) ? t('No Limit') :
-          isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL,
-        isset($study_summary->countries)?obiba_mica_commons_countries($study_summary->countries):NULL,
+          (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
+        isset($study_summary->countries)?obiba_mica_commons_countries($study_summary->countries) : NULL,
         empty($study_summary->variables)
           ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, FALSE, $query)
       );

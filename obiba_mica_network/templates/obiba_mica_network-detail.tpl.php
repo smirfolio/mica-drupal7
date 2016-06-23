@@ -87,21 +87,23 @@
                 <th><?php print ucfirst(t($membership->role)) ?></th>
                 <td>
                   <ul class="list-unstyled">
-                    <?php foreach ($membership->members as  $key_member => $member) : ?>
-                      <li>
-                        <a href="#" data-toggle="modal"
-                           data-target="#<?php print obiba_mica_person_generate_target_id($membership->role, $network_dto->id, $key_member); ?>">
-                          <?php print !empty($member->title)?$member->title:''; ?>
-                          <?php print !empty($member->firstName)?$member->firstName:''; ?>
-                          <?php print !empty($member->lastName)?$member->lastName:''; ?>
-                          <?php if (!empty($member->academicLevel)) {
-                            print ', ' . $member->academicLevel;
-                          } ?>
-                          (<?php print obiba_mica_commons_get_localized_field($member->institution, 'name'); ?>
-                          )
-                        </a>
-                      </li>
-                    <?php endforeach; ?>
+                    <?php if (!empty($membership->members)) : ?>
+                      <?php foreach ($membership->members as  $key_member => $member) : ?>
+                        <li>
+                          <a href="#" data-toggle="modal"
+                             data-target="#<?php print obiba_mica_person_generate_target_id($membership->role, $network_dto->id, $key_member); ?>">
+                            <?php print !empty($member->title)?$member->title:''; ?>
+                            <?php print !empty($member->firstName)?$member->firstName:''; ?>
+                            <?php print !empty($member->lastName)?$member->lastName:''; ?>
+                            <?php if (!empty($member->academicLevel)) {
+                              print ', ' . $member->academicLevel;
+                            } ?>
+                            (<?php print obiba_mica_commons_get_localized_field($member->institution, 'name'); ?>
+                            )
+                          </a>
+                        </li>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
                   </ul>
                 </td>
               </tr>
