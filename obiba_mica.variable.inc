@@ -259,14 +259,14 @@ function _obiba_mica_variable_info_access(&$variable) {
     'title' => t('Documents section title'),
     'description' => t('Data access request "Documents" section title.'),
     'type' => 'string',
-    'default' => 'Documents',
+    'default' => 'Additional Documents',
   );
 
   $variable['access_documents_section_help_text'] = array(
     'title' => t('Documents section help text'),
     'description' => t('Data access request "Documents" section help text.'),
     'type' => 'string',
-    'default' => 'Select one or several documents to be attached to the application form.',
+    'default' => 'Select one or more documents to be attached to the data access request.',
   );
   $variable['access_download_button'] = array(
     'title' => t('Download button caption'),
