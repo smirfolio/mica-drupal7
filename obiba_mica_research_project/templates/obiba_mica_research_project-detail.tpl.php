@@ -44,7 +44,7 @@
             </tr>  
           <?php endif; ?>
 
-          <?php if (!empty($project->request) && $project->request->viewable) : ?>
+          <?php if (module_exists('obiba_mica_data_access_request') && (!empty($project->request) && $project->request->viewable)) : ?>
             <tr>
               <th><?php print t('Data Access Request') ?></th>
               <td>
