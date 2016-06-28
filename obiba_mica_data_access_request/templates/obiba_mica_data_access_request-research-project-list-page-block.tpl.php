@@ -13,13 +13,13 @@
 
 <tr>
   <?php if(obiba_mica_user_has_role('mica-data-access-officer')) : ?>
-  <td>
-    <?php
+    <td>
+      <?php
       if (!empty($project->request)) :
         print($project->request->applicant);
       endif;
-    ?>
-  </td>
+      ?>
+    </td>
   <?php endif; ?>
   <td>
     <a href="<?php print MicaClientPathProvider::project($project->id) ?>">

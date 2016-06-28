@@ -26,11 +26,12 @@ function obiba_mica_research_project_page_detail($project_id) {
     obiba_mica_app_angular_load_js_resources('obiba_mica_files');
   }
 
-  drupal_set_title(t('Research Project') . ' ' . $project_id);
+  drupal_set_title(obiba_mica_commons_get_localized_field($response, 'title'));
 
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
-    l(t('Research Projects'), MicaClientPathProvider::RESEARCH_PROJECT_APPROVED),
+    l(t('Research'), MicaClientPathProvider::RESEARCH_PROJECT),
+    l(t('Approved Projects'), MicaClientPathProvider::RESEARCH_PROJECT_APPROVED),
   ));
 
   return theme('obiba_mica_research_project-detail-page', array(

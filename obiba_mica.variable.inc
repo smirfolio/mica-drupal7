@@ -241,7 +241,7 @@ function _obiba_mica_variable_info_access(&$variable) {
     'title' => t('Request Page title'),
     'description' => t('Data Access request page title.'),
     'type' => 'string',
-    'default' => 'Data Access Request',
+    'default' => 'Data Access Requests',
   );
   $variable['access_my_requests_button'] = array(
     'title' => t('My requests button'),
@@ -305,10 +305,10 @@ function _obiba_mica_variable_info_access(&$variable) {
  */
 function _obiba_mica_variable_info_project(&$variable) {
   $variable['project_approved_page_title'] = array(
-    'title' => t('Approved Research Projects'),
+    'title' => t('Approved Projects'),
     'description' => 'The list of approved research projects',
     'type' => 'string',
-    'default' => 'Approved Research Projects'
+    'default' => 'Approved Projects'
   );
   $variable['project_empty_label'] = array(
     'title' => t('No project label'),
@@ -321,6 +321,12 @@ function _obiba_mica_variable_info_project(&$variable) {
     'description' => 'The detail page of a research project',
     'type' => 'string',
     'default' => 'Research Project Page'
+  );
+  $variable['data_access_request_research_projects_title'] = array(
+    'title' => t('My Research Projects'),
+    'description' => 'A list of approved research projects',
+    'type' => 'string',
+    'default' => 'My Research Projects'
   );
 }
 

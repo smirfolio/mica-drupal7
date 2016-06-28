@@ -20,9 +20,16 @@
         </a>
       </h4>
     </div>
+    <hr class="no-margin">
     <p class="md-top-margin">
       <small>
-        <?php print obiba_mica_commons_get_localized_field($project, 'summary') ?>
+        <?php
+          print MicaClientAnchorHelper::ellipses(
+            t('Read more'),
+            obiba_mica_commons_get_localized_field($project, 'summary'),
+            MicaClientPathProvider::project($project->id)
+          );
+        ?>
       </small>
     </p>
     <p class="md-top-margin">

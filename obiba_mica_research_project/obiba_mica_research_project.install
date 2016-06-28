@@ -19,6 +19,6 @@ function obiba_mica_research_project_install() {
 }
 
 function obiba_mica_research_project_create_node() {
-  $research_project_node_page = obiba_mica_commons_add_page(st('Approved Research Projects'), '');
+  $research_project_node_page = obiba_mica_commons_add_page(st('Approved Projects'), '');
   variable_set('research_project_page', $research_project_node_page->nid);
 }
