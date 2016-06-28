@@ -5,6 +5,7 @@ core = 7.x
 
 dependencies[] = http_client
 dependencies[] = obiba_agate
+dependencies[] = obiba_mica_research_project
 
 files[] = includes/obiba_mica_data_access_request.inc
 files[] = includes/obiba_mica_data_access_requests.inc

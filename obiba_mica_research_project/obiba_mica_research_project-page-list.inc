@@ -48,43 +48,23 @@ function obiba_mica_research_project_page_list() {
       if (!empty($project->content)) {
         $content = (json_decode($project->content));
       }
-      
-      if (user_is_anonymous()) {
-        $themed_projects .= theme('obiba_mica_research_project-list-page-block', array(
-          'project' => $project,
-          'content' => $content
-        ));
-        $themed_projects .= '<hr class="row">';
-      } else {               
-        $themed_projects .= theme('obiba_mica_research_project-list-page-authenticated-block', array(
-          'project' => $project,
-          'content' => $content
-        ));
-      }
+      $themed_projects .= theme('obiba_mica_research_project-list-page-block', array(
+        'project' => $project,
+        'content' => $content
+      ));
     }
   } else {
     $themed_projects = variable_get_value('project_empty_label');
   }
 
-  $page_template = 'obiba_mica_research_project-list-page';
-
-  if (user_is_anonymous()) {
-    return theme($page_template, array(
-      'form_search' => drupal_get_form('obiba_mica_research_project_create_form'),
-      'node_content' => $node_rendered,
-      'list_projects' => $themed_projects,
-      'total_items' => $total_projects,
-      'pager_wrap' => $pager_output
-    ));
-  } else {
-    $page_template = 'obiba_mica_research_project-list-page-authenticated';
-
-    return theme($page_template, array(
-      'node_content' => $node_rendered,
-      'list_projects' => $themed_projects,
-      'total_items' => $total_projects
-    ));
-  }
+  $page_template = 'obiba_mica_research_project-list-page';  
+  return theme($page_template, array(
+    'form_search' => drupal_get_form('obiba_mica_research_project_create_form'),
+    'node_content' => $node_rendered,
+    'list_projects' => $themed_projects,
+    'total_items' => $total_projects,
+    'pager_wrap' => $pager_output
+  ));
 }
 
 function obiba_mica_research_project_create_form() {

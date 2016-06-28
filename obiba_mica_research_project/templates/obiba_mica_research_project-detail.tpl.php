@@ -12,6 +12,15 @@
  */
 ?>
 
+<div>
+  <div class="md-top-margin col-xs-12">
+    <div class="markdown">
+      <p><?php print obiba_mica_commons_get_localized_field($project, 'summary') ?></p>
+    </div>
+  </div>
+</div>
+<div class="clearfix">&nbsp;</div>
+
 <article class="bordered-article">
 
   <section>
@@ -21,18 +30,6 @@
       <div class="col-lg-6 col-xs-12 lg-right-indent">
         <table class="table table-striped">
           <tbody>
-          <tr>
-            <th><?php print t('Title') ?></th>
-            <td>
-              <p><?php print obiba_mica_commons_get_localized_field($project, 'title') ?></p>
-            </td>
-          </tr>
-          <tr>
-            <th><?php print t('Description') ?></th>
-            <td>
-              <p><?php print obiba_mica_commons_get_localized_field($project, 'summary') ?></p>
-            </td>
-          </tr>
           <?php if(!empty($content->startDate)) : ?>
             <tr>
               <th><?php print t('Start Date') ?></th>
