@@ -267,7 +267,7 @@ function obiba_mica_app_angular_get_angular_translation($lang) {
   else {
     $mica_config = new MicaConfigResource();
     $translation = $mica_config->getTranslations($lang);
-    obiba_mica_commons_set_cache('translation-' . $lang, $translation, 'cache', time() + (60 * 60));
+    obiba_mica_commons_set_cache('translation-' . $lang, $translation);
   }
 
   print $translation;

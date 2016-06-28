@@ -777,10 +777,10 @@ function obiba_mica_commons_get_images_cache($key) {
  * Helper to set cache for current user
  */
 function _obiba_mica_commons_set_cache($key, $bin, $value) {
-  $key = md5($key);
-  global $user;
+  global $user, $language;
+  $key = md5($key.'-'.$language->language);
   if (in_array('anonymous user', $user->roles, TRUE)) {
-    if (variable_get_value('cache') == 1) {
+    if (variable_get_value('cache') == 1 && !empty($value)) {
       cache_set($key . '-' . 'anonymous_user', $value, $bin, CACHE_TEMPORARY);
     }
   }
@@ -793,9 +793,9 @@ function _obiba_mica_commons_set_cache($key, $bin, $value) {
  * Helper to get cache for current user
  */
 function _obiba_mica_commons_get_cache($key, $bin) {
-  $key = md5($key);
   $cache_object = NULL;
-  global $user;
+  global $user, $language;
+  $key = md5($key.'-'.$language->language);
   if (in_array('anonymous user', $user->roles, TRUE)) {
     if (variable_get_value('cache') == 1) {
       $cache_object = cache_get($key . '-' . 'anonymous_user', $bin);

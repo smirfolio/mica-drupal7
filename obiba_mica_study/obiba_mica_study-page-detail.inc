@@ -80,7 +80,7 @@ function obiba_mica_study_page_detail_datasets($study_id, $dataset_name = NULL, 
       $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_network($study_id, $dataset_name, $network_id) : NULL;
     } else {
       $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_studies($study_id, $dataset_name) : NULL;
-    }   
+    }
 
     if (empty($dataset_output)) {
       $themed_datasets = 'empty';
