@@ -12,22 +12,18 @@
  */
 ?>
 
-<div>
-  <div class="md-top-margin col-xs-12">
-    <div class="markdown">
-      <p><?php print obiba_mica_commons_get_localized_field($project, 'summary') ?></p>
-    </div>
+
+<div class="row md-top-margin">
+  <div class="col-xs-12">
+    <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($project, 'summary')) ?>
   </div>
 </div>
-<div class="clearfix">&nbsp;</div>
 
-<article class="bordered-article">
-
+<article class="bordered-article md-top-margin">
   <section>
-    <h2><?php print t('General Information') ?></h2>
-
     <div class="row">
-      <div class="col-lg-6 col-xs-12 lg-right-indent">
+      <div class="col-lg-6 col-xs-12">
+        <h2><?php print t('General Information') ?></h2>
         <table class="table table-striped">
           <tbody>
           <?php if(!empty($content->startDate)) : ?>
@@ -63,15 +59,9 @@
           </tbody>
         </table>
       </div>
-    </div>
-  </section>
-
-  <?php if(!empty($content->name) || !empty($content->institution)) : ?>
-  <section>
-    <h2><?php print t('Contact Details') ?></h2>
-    
-    <div class="row">
-      <div class="col-lg-6 col-xs-12 lg-right-indent">
+      <?php if(!empty($content->name) || !empty($content->institution)) : ?>
+      <div class="col-lg-6 col-xs-12">
+        <h2><?php print t('Contact Details') ?></h2>
         <table class="table table-striped">
           <tbody>
           <?php if(!empty($content->name)) : ?>
@@ -93,9 +83,9 @@
           </tbody>
         </table>
       </div>
+      <?php endif; ?>
     </div>
   </section>
-  <?php endif; ?>
 
   <?php if (!empty($attachments)): ?>
     <section>
