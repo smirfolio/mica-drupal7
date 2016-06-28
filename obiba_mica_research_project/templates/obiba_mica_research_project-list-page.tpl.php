@@ -11,8 +11,8 @@
       <span id="refresh-count"><?php print $caption ?></span>
     </div>
     
-    <div class="col-xs-8 col-sm-10 min-height-align pull-right">
-      <div class="hidden-xs inline pull-right">
+    <div class="col-xs-8 col-sm-10 min-height-align">
+      <div class="hidden-xs inline">
         <?php print render($form_search); ?>
       </div>
     </div>
