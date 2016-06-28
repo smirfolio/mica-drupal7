@@ -17,22 +17,31 @@ class MicaStudyResource extends MicaClient {
   /**
    * Get the list of studies.
    *
-   * @param null $query
-   * @param int $from
-   * @param $limit
-   * @param null $sort field name to sort by
-   * @param null $order "asc" or "desc"
+   * @param null $query.
+   * @param int $from.
+   * @param $limit.
+   * @param null $sort field name to sort by.
+   * @param null $order "asc" or "desc".
+   * @param null $study_rql_query rql query "in(Mica_study.id,(epoa,ici-vph)".
    *
    * @return array|mixed
    */
   public function getStudies($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
+    global $language;
     $this->setLastResponse(NULL);
-    $params = empty($from) ? 'from=0' : 'from=' . $from;
-    $params .= empty($limit) ? '&limit=5' : '&limit=' . $limit;
-    $params .= empty($sort) ? '' : '&sort=' . $sort;
-    $params .= empty($order) ? '' : '&order=' . $order;
-    $params .= empty($query) ? '' : '&query=' . $query;
-    $resource_query = '/studies/_search?' . $params;
+    $from = empty($from) ? '0' : $from;
+    $limit = empty($limit) ? '5' : $limit;
+    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
+    $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
+    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
+    if (empty($query)) {
+      $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket)";
+    }
+    else {
+      $params = "study(limit($from,$limit)$query$sort_rql_bucket)";
+    }
+    $params .= ",locale($language->language)";
+    $resource_query = '/studies/_rql?query=' . $params;
 
     $this->getCache($resource_query);
     if (!isset($this->result_resource_query)) {
