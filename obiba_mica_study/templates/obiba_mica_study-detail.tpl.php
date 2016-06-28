@@ -87,8 +87,8 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->memberships)): ?>
-            <?php foreach ($study_dto->memberships as $membership): ?>
+          <?php if (!empty($ordered_membership)): ?>
+            <?php foreach ($ordered_membership as $membership): ?>
               <?php if (!empty($membership->members)): ?>
               <tr>
                 <th><?php print ucfirst(t($membership->role)) ?></th>
