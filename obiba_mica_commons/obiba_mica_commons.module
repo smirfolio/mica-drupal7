@@ -449,12 +449,11 @@ function obiba_mica_commons_get_current_theme() {
  *   Drupal markup form.
  */
 function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no_name = TRUE) {
-  global $language;
   if ($no_name) {
-    $sort_name = 'name.' . $language->language;
+    $sort_name = 'name';
   }
   if ($no_acronym) {
-    $sort_acronym = 'acronym.' . $language->language;
+    $sort_acronym = 'acronym';
     $options = array_merge(array(
       $sort_name => t('Name'),
       $sort_acronym => t('Acronym'),

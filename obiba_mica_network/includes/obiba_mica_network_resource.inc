@@ -25,15 +25,24 @@ class MicaNetworkResource extends MicaClient {
    * @param null $order "asc" or "desc"
    * @return array|mixed
    */
-  public function get_networks($study_id = NULL, $query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
+  public function getNetworks($study_id = NULL, $query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
+    global $language;
     $this->setLastResponse(NULL);
-    $params = empty($from) ? 'from=0' : 'from=' . $from;
-    $params .= empty($limit) ? '&limit=5' : '&limit=' . $limit;
-    $params .= empty($sort) ? '' : '&sort=' . $sort;
-    $params .= empty($order) ? '' : '&order=' . $order;
-    $params .= empty($query) ? '' : '&query=' . $query;
-    $params .= empty($study_id) ? '' : '&study=' . rawurlencode($study_id);
-    $resource_query = '/networks/_search?' . $params;
+    $from = empty($from) ? '0' : $from;
+    $limit = empty($limit) ? '5' : $limit;
+    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
+    $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
+    $query = empty($query) ? NULL : ",match($query,(Mica_network.name,Mica_network.acronym,Mica_network.description))";
+    $studies_query = empty($study_id)?'':",in(Mica_network.studyIds," . rawurlencode($study_id) . ")";
+    if (!empty($query || $studies_query)) {
+      $params = "network(limit($from,$limit)$query$studies_query$sort_rql_bucket)";
+    }
+    else {
+      $params = "network(exists(Mica_network.id),limit($from,$limit)$sort_rql_bucket)";
+    }
+    $params .= ",locale($language->language)";
+    $resource_query = '/networks/_rql?query=' . $params;
+
     $result_resource_query = obiba_mica_commons_get_cache($resource_query);
     if (empty($result_resource_query)) {
       $url_networks = $this->micaUrl . $resource_query;

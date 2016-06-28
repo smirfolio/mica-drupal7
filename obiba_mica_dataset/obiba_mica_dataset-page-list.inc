@@ -90,9 +90,9 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
  */
 function obiba_mica_dataset_correct_resource_server($dataset_resource) {
   $resource = array(
-    'datasets' => 'datasets',
-    'harmonization_datasets' => 'datasets/harmonization',
-    'study_datasets' => 'datasets/study',
+    'datasets' => NULL,
+    'harmonization_datasets' => 'HarmonizationDataset',
+    'study_datasets' => 'StudyDataset',
   );
   return $resource[$dataset_resource];
 }
@@ -129,7 +129,7 @@ function obiba_mica_dataset_create_form() {
  * Ajax callback to retrieve datasets.
  */
 function obiba_mica_dataset_retrieve_datasets($query, $sort = NULL, $sort_order = NULL) {
-  $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'datasets');
+  $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, NULL);
   drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
 }
 
@@ -137,7 +137,7 @@ function obiba_mica_dataset_retrieve_datasets($query, $sort = NULL, $sort_order 
  * Ajax callback to retrieve harmonized datasets.
  */
 function obiba_mica_dataset_retrieve_harmonizationDatasets($query, $sort = NULL, $sort_order = NULL) {
-  $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'datasets/harmonization');
+  $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'HarmonizationDataset');
   drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
 }
 
@@ -145,7 +145,7 @@ function obiba_mica_dataset_retrieve_harmonizationDatasets($query, $sort = NULL,
  * Ajax callback to retrieve study datasets.
  */
 function obiba_mica_dataset_retrieve_studyDatasets($query, $sort = NULL, $sort_order = NULL) {
-  $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'datasets/study');
+  $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'StudyDataset');
   drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
 }
 

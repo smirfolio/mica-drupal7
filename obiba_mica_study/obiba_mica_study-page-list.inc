@@ -99,7 +99,6 @@ function obiba_mica_study_create_form() {
       'options' => //
         array( //
           'numberOfParticipants.participant.number' => t('Target Number'), //
-          'populations.selectionCriteria.countriesIso' => t('Countries') //
         ) //
     );
 

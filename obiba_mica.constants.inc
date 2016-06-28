@@ -25,8 +25,3 @@ class ObibaDatasetConstants {
     return !empty($impossible_icon) ? ($impossible_icon . $color_icon) : (ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON . $color_icon);
   }
 }
-
-class ObibaFacetSearchBlockConstants {
-  const EXPAND_GROUPS = 'expand_groups';
-  const EXPAND_ALL = 'expand_all';
-}

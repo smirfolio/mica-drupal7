@@ -241,7 +241,7 @@ function obiba_mica_graphic_settings_form_display_content(&$form) {
 
 function obiba_mica_graphic_get_networks_id() {
   $resource = new MicaNetworkResource();
-  $networks = $resource->get_networks(NULL, NULL, NULL, 9999, NULL, NULL);
+  $networks = $resource->getNetworks(NULL, NULL, NULL, 9999, NULL, NULL);
   $networks_options = array();
   $has_summary = $networks->hasSummaries();
   if (!empty($has_summary)) {
