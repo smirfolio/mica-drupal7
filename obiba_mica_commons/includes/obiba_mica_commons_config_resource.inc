@@ -10,6 +10,7 @@
  */
 class MicaConfigResource extends MicaClient {
   const CONFIG_WS_URL = '/config/_public';
+  const ALL_CONFIG_WS_URL = '/config';
 
   /**
    * Instance initialisation.
@@ -28,10 +29,44 @@ class MicaConfigResource extends MicaClient {
    *   The Mica server public configuration.
    */
   public function getConfig() {
+    return $this->config();
+  }
+
+  /**
+   * Get roles memberships .
+   *
+   * @param $configs
+   *   The config to query.
+   *
+   * @return object
+   *   The specific configurations.
+   */
+  public function getSpecificConfigs($configs = array()) {
+    $specific_configs = array();
+    $all_config = $this->config(self::ALL_CONFIG_WS_URL);
+    if (!empty($configs)) {
+      foreach($configs as $config){
+        $specific_configs[$config]=$all_config->{$config};
+      }
+      return $specific_configs;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Get public configuration.
+   *
+   * @param $config_resource
+   *   The config resource url.
+   *
+   * @return object
+   *   The Mica server public configuration.
+   */
+  private function config($config_resource = self::CONFIG_WS_URL) {
     $this->setLastResponse(NULL);
-    $this->getCache(self::CONFIG_WS_URL);
+    $this->getCache($config_resource);
     if (!isset($this->result_resource_query)) {
-      $url = $this->micaUrl . self::CONFIG_WS_URL;
+      $url = $this->micaUrl . $config_resource;
 
       $request = new HttpClientRequest($url, array(
           'method' => HttpClientRequest::METHOD_GET,
@@ -45,7 +80,7 @@ class MicaConfigResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = json_decode($data);
-        obiba_mica_commons_set_cache(self::CONFIG_WS_URL, $this->result_resource_query);
+        obiba_mica_commons_set_cache($config_resource, $this->result_resource_query);
       } catch (HttpClientException $e) {
         watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
             array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);

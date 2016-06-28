@@ -132,10 +132,21 @@ function obiba_mica_study_page_detail($study_id) {
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;
     $member_detail_modal='';
     if (module_exists('obiba_mica_persons') && !empty($study_dto)) {
+      if (!empty($study_dto->memberships)) {
+        $config_resources = new MicaConfigResource();
+        $members_roles = $config_resources->getSpecificConfigs(array('roles'));
+        $ordered_membership = array_map(function($members_role)use($study_dto){
+          foreach ($study_dto->memberships as $membership) {
+            if($members_role == $membership->role){
+              return $membership;
+            }
+          }
+        }, $members_roles['roles']);
 
-      foreach($study_dto->memberships as $membership){
-        if(!empty($membership->members)){
-        $member_detail_modal .= obiba_mica_persons_get_person_detail($membership->role, $study_dto->id, $membership->members);
+        foreach ($study_dto->memberships as $membership) {
+          if (!empty($membership->members)) {
+            $member_detail_modal .= obiba_mica_persons_get_person_detail($membership->role, $study_dto->id, $membership->members);
+          }
         }
       }
     }
@@ -157,7 +168,10 @@ function obiba_mica_study_page_detail($study_id) {
       obiba_mica_commons_set_cache('populations_detail_cache-' . $study_id, $populations);
     }
 
-    obiba_mica_study_get_timeline_detail($study_dto);
+    if (obiba_mica_study_have_timeline($study_dto)) {
+      obiba_mica_study_get_timeline_detail($study_dto);
+      $timeline_wrapper = '<div id="vis" style="width=100%"></div>';
+    }
     $options_study_content = array(
       'showNetwork' => variable_get_value('study_show_networks'),
       'showDatasets' => variable_get_value('study_show_datasets'),
@@ -175,13 +189,14 @@ function obiba_mica_study_page_detail($study_id) {
     else {
       $study_theme = theme('obiba_mica_study_detail',
         array(
+          'ordered_membership' => !empty($ordered_membership)?$ordered_membership:NULL,
           'investigators_modal' => !empty($investigator_detail_modal) ? $investigator_detail_modal : NULL,
           'contacts_modal' => !empty($contact_detail_modal) ? $contact_detail_modal : NULL,
           'members_modal' => !empty($member_detail_modal) ? $member_detail_modal : NULL,
           'study_dto' => $study_dto,
           'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
           'file_browser' => theme('obiba_mica_files_browser', array('doc_path' => '/study', 'doc_id' => $study_id)),
-          'timeline' => '<div id="vis" style="width=100%"></div>',
+          'timeline' => !empty($timeline_wrapper) ? $timeline_wrapper : NULL,
           'populations' => $populations,
           'opal' => $opal_output,
           'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
@@ -195,6 +210,20 @@ function obiba_mica_study_page_detail($study_id) {
     drupal_set_title(t('Study not found'));
     return '';
   }
+}
+
+function obiba_mica_study_have_timeline($study_dto) {
+  if (empty($study_dto->populations)) {
+    return FALSE;
+  }
+  else {
+    foreach ($study_dto->populations as $population) {
+      if (!empty($population->dataCollectionEvents)) {
+        return TRUE;
+      }
+    }
+  }
+  return FALSE;
 }
 
 function obiba_mica_study_get_opal_url($opal_url) {
