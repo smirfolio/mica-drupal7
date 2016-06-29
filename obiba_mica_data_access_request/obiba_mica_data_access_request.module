@@ -308,7 +308,7 @@ function obiba_mica_data_access_request_page() {
   $data_access_register_user = FALSE;
 
   $node_rendred = obiba_mica_data_access_request();
-  drupal_set_title(variable_get_value('access_home_page_title'));
+  drupal_set_title(variable_get_value('access_request_page_title'));
 
   $node_rendred['#node']->title = '';
   if (user_is_logged_in()) {
