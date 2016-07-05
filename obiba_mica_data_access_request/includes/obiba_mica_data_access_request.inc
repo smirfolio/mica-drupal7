@@ -80,10 +80,14 @@ class MicaDataAccessRequest extends MicaDataAccessRequestResources {
    * @return array
    *   The data server response.
    */
-  public function downloadPdf($id) {
+  public function downloadPdf($id, $lang) {
     $constant_method = constant('HttpClientRequest::' . $this->method);
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/data-access-request/' . $id . '/_pdf';
+
+    if(isset($lang)) {
+      $url_requests .= '?lang=' . $lang;
+    }
 
     $request = new HttpClientRequest($url_requests, array(
       'method' => $constant_method,

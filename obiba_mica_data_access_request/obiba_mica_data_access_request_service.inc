@@ -119,7 +119,7 @@ function obiba_mica_data_access_request_form_attachment($file_name, $file_id) {
 function obiba_mica_data_access_request_download_pdf($id_data_request) {
   if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $dataset_resource = new MicaDataAccessRequest(NULL, 'METHOD_GET');
-    $responses = $dataset_resource->downloadPdf($id_data_request);
+    $responses = $dataset_resource->downloadPdf($id_data_request, $_GET['lang']);
     if (!empty($responses)) {
       drupal_add_http_header('Content-Disposition', $responses['headers']['Content-Disposition'][0]);
       echo $responses['response']->body;
