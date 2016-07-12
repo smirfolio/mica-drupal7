@@ -138,6 +138,16 @@ function obiba_mica_network_page_detail($network_id) {
   }
 }
 
+function obiba_mica_network_page_detail_datasets($network_id) {
+  $output = NULL;
+  $network_resource = new MicaNetworkResource();
+  $network_dto = $network_resource->get_network($network_id);
+
+  $studies = $network_dto != null ? $network_dto->studyIds : array();
+
+  obiba_mica_study_page_detail_datasets(implode(',', $studies), 'HarmonizationDataset', $network_id);
+}
+
 function obiba_mica_network_statistics_angular_options($networks_id) {
   $colors_options = obiba_mica_graphic_charts_colors_options_settings();
 

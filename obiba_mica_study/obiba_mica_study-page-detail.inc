@@ -63,7 +63,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
   print $themed_study_networks;
 }
 
-function obiba_mica_study_page_detail_datasets($study_id) {
+function obiba_mica_study_page_detail_datasets($study_id, $dataset_name = NULL, $network_id = NULL) {
   if (!variable_get_value('study_show_datasets')) {
     exit;
   }
@@ -75,7 +75,12 @@ function obiba_mica_study_page_detail_datasets($study_id) {
     }
   }
   else {
-    $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_all_datasets_studies($study_id) : NULL;
+
+    if (!is_null($network_id)) {
+      $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_network($study_id, $dataset_name, $network_id) : NULL;
+    } else {
+      $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_studies($study_id, $dataset_name) : NULL;
+    }   
 
     if (empty($dataset_output)) {
       $themed_datasets = 'empty';

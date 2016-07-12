@@ -185,6 +185,11 @@
     <p><?php print t('Loading...') ?></p>
   </section>
 
+  <!-- DATASETS placeholder -->
+  <section id="datasets">
+    <div><?php print t('Loading ...') ?></div>
+  </section>
+
   <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
   <div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
 
