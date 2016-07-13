@@ -21,9 +21,24 @@
             .fail(function () {
               $('#coverage').remove();
             });
+
+          $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + settings.currentPath + '/datasets')
+              .done(function (data) {
+                if (!data) {
+                  $('#datasets').remove();
+                  return;
+                }
+                $('#datasets').html(data).show();
+                var datasets = $('#datasetsDisplay').data();
+              })
+              .fail(function () {
+                $('#datasets').remove();
+              });
+              
         }
         else{
           $('#coverage').remove();
+          $('#datasets').remove();
         }
       }
     }
