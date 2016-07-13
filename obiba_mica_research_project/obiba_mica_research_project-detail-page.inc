@@ -11,9 +11,9 @@ function obiba_mica_research_project_page_detail($project_id) {
   
   $response = $research_project_resource->getProject($project_id);
 
-  $content = NULL;
+  $model = NULL;
   if (!empty($response->content)) {
-    $content = json_decode($response->content);
+    $model = json_decode($response->content);
   }
 
   if (module_exists('obiba_mica_files')) {
@@ -36,7 +36,7 @@ function obiba_mica_research_project_page_detail($project_id) {
 
   return theme('obiba_mica_research_project-detail-page', array(
     'project' => $response,
-    'content' => $content,
+    'model' => $model,
     'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
     'file_browser' => theme('obiba_mica_files_browser', array(
       'doc_path' => '/project',
