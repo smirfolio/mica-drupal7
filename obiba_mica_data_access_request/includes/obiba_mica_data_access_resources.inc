@@ -90,11 +90,13 @@ class MicaDataAccessRequestResources extends MicaClient {
 
     $this->execute($request);
     $headers = $this->getLastResponseHeaders();
+
     if (!empty($headers) && !empty($headers['Location'])) {
       drupal_add_http_header('Location', $headers['Location'][0]);
     }
 
     drupal_add_http_header('Status', $this->getLastResponseStatusCode());
+
     return $this->getLastResponse();
   }
 
