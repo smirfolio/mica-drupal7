@@ -831,3 +831,49 @@ EOT;
 function obiba_mica_commons_convert_and_format_string_date($str_date, $format = 'd-m-Y') {
   return format_date(strtotime($str_date), 'custom', $format);
 }
+
+/**
+ * Compute the percentage of time representing the progress of a task given a start and a end date.
+ *
+ * @param $start_date
+ * @param $end_date
+ * @return float|int|null
+ */
+function obiba_mica_commons_progress($start_date, $end_date) {
+  if (empty($start_date)) return NULL;
+
+  $start_time = strtotime($start_date);
+  $now = time();
+  $end_time = $now;
+
+  if (!empty($end_date)) {
+    $end_time = strtotime($end_date);
+  }
+
+  if ($now > $end_time) {
+    return 100;
+  }
+
+  $progress = round(($now - $start_time) * 100 / ($end_time - $start_time));
+
+  return $progress;
+}
+
+/**
+ * Make a progress bar markup from the provided dates.
+ * 
+ * @param $start_date
+ * @param $end_date
+ * @return string
+ */
+function obiba_mica_commons_progress_bar($start_date, $end_date) {
+  $progress = obiba_mica_commons_progress($start_date, $end_date);
+
+  if(empty($progress)) return '';
+
+  return '<div class="progress">
+  <div class="progress-bar" role="progressbar" aria-valuenow="' . $progress . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $progress . '%;">
+    ' . $progress . '%
+  </div>
+</div>';
+}

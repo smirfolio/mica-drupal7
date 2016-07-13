@@ -23,23 +23,26 @@
   <section>
     <div class="row">
       <div class="col-lg-6 col-xs-12">
-        <h2><?php print t('General Information') ?></h2>
+        <h2><?php print t('Status') ?></h2>
+
+        <?php print render((obiba_mica_commons_progress_bar($model->startDate, $model->endDate))); ?>
+
         <table class="table table-striped">
           <tbody>
-          <?php if(!empty($content->startDate)) : ?>
+          <?php if(!empty($model->startDate)) : ?>
             <tr>
               <th><?php print t('Start Date') ?></th>
               <td>
-                <p><?php print obiba_mica_commons_convert_and_format_string_date($content->startDate, 'd-m-Y') ?></p>
+                <p><?php print obiba_mica_commons_convert_and_format_string_date($model->startDate, 'd-m-Y') ?></p>
               </td>
             </tr>
           <?php endif; ?>
 
-          <?php if(!empty($content->endDate)) : ?>
+          <?php if(!empty($model->endDate)) : ?>
             <tr>
               <th><?php print t('End Date') ?></th>
               <td>
-                <p><?php print obiba_mica_commons_convert_and_format_string_date($content->endDate, 'd-m-Y') ?></p>
+                <p><?php print obiba_mica_commons_convert_and_format_string_date($model->endDate, 'd-m-Y') ?></p>
               </td>
             </tr>  
           <?php endif; ?>
@@ -59,30 +62,30 @@
           </tbody>
         </table>
       </div>
-      <?php if(!empty($content->name) || !empty($content->institution)) : ?>
-      <div class="col-lg-6 col-xs-12">
-        <h2><?php print t('Contact Details') ?></h2>
-        <table class="table table-striped">
-          <tbody>
-          <?php if(!empty($content->name)) : ?>
-            <tr>
-              <th><?php print t('Name') ?></th>
-              <td>
-                <p><?php print $content->name ?></p>
-              </td>
-            </tr>
-          <?php endif; ?>
-          <?php if (!empty($content->institution)) : ?>
-            <tr>
-              <th><?php print t('Institution') ?></th>
-              <td>
-                <p><?php print $content->institution ?></p>
-              </td>
-            </tr>
-          <?php endif; ?>
-          </tbody>
-        </table>
-      </div>
+      <?php if(!empty($model->name) || !empty($model->institution)) : ?>
+        <div class="col-lg-6 col-xs-12">
+          <h2><?php print t('Contact Details') ?></h2>
+          <table class="table table-striped">
+            <tbody>
+            <?php if(!empty($model->name)) : ?>
+              <tr>
+                <th><?php print t('Name') ?></th>
+                <td>
+                  <p><?php print $model->name ?></p>
+                </td>
+              </tr>
+            <?php endif; ?>
+            <?php if (!empty($model->institution)) : ?>
+              <tr>
+                <th><?php print t('Institution') ?></th>
+                <td>
+                  <p><?php print $model->institution ?></p>
+                </td>
+              </tr>
+            <?php endif; ?>
+            </tbody>
+          </table>
+        </div>
       <?php endif; ?>
     </div>
   </section>
