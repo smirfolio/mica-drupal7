@@ -146,8 +146,9 @@ function obiba_mica_data_access_request_action($id_data_request) {
 
     case 'PUT':
       $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
-      $data_access_request = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-request', $id_data_request);
-      drupal_json_output($data_access_request);
+      $response = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-request', $id_data_request);
+
+      if (isset($response) && $response->responseCode != 204) drupal_json_output($response); #MK-966: apache proxy ignores body on 204
       break;
 
     case 'DELETE':
@@ -164,8 +165,8 @@ function obiba_mica_data_access_request_action($id_data_request) {
 function obiba_mica_data_access_request_attachments_update($id_data_request) {
   if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
       $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
-      $data_access_request = $mica_client->saveAttachments(file_get_contents('php://input'), $id_data_request);
-      drupal_json_output($data_access_request);
+      $response = $mica_client->saveAttachments(file_get_contents('php://input'), $id_data_request);
+      if (isset($response) && $response->responseCode != 204) drupal_json_output($response); #MK-966: apache proxy ignores body on 204
   }
 }
 
