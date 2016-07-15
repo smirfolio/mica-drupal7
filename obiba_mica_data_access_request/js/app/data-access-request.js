@@ -10,7 +10,8 @@
 
 mica.DataAccessRequest = angular.module('mica.DataAccessRequest', [
   'obiba.mica.access',
-  'sfObibaFileUpload'
+  'sfObibaFileUpload',
+  'sfCheckboxgroup'
 ])
   .config(['ngObibaMicaAccessTemplateUrlProvider',
     function (ngObibaMicaAccessTemplateUrlProvider) {
