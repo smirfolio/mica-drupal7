@@ -25,7 +25,7 @@
       <div class="col-lg-6 col-xs-12">
         <h2><?php print t('Status') ?></h2>
 
-        <?php print render((obiba_mica_commons_progress_bar($model->startDate, $model->endDate))); ?>
+        <?php if (!empty($model->startDate) && !empty($model->endDate)) { print render((obiba_mica_commons_progress_bar($model->startDate, $model->endDate))); } ?>
 
         <table class="table table-striped">
           <tbody>
