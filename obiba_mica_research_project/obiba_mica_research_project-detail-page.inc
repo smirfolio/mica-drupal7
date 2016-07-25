@@ -11,7 +11,7 @@ function obiba_mica_research_project_page_detail($project_id) {
   
   $response = $research_project_resource->getProject($project_id);
 
-  $model = NULL;
+  $model = new stdClass();
   if (!empty($response->content)) {
     $model = json_decode($response->content);
   }
