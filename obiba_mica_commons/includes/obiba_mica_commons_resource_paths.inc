@@ -62,7 +62,7 @@ class MicaClientPathProvider {
   const CROSSTAB = 'mica/variables';
   const COVERAGE = 'mica/coverage';
   const DATA_ACCESS = 'mica/data_access';
-  const DATA_ACCESS_REQUEST = 'mica/data-access/request';
+  const DATA_ACCESS_REQUEST = 'mica/data_access/request';
   const DATA_ACCESS_HOME = 'mica/data_access/home';
   const DATA_ACCESS_LIST = 'mica/data_access/requests';
   const DATA_ACCESS_USERS_LIST = 'mica/data_access/users';
