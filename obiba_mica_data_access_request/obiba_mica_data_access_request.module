@@ -192,7 +192,7 @@ function obiba_mica_data_access_request_load_menus() {
   $items = array();
 
   $items[MicaClientPathProvider::DATA_ACCESS_REQUEST] = array(
-    'access callback' => TRUE,
+    'access callback' => 'obiba_mica_data_access_request_permission_check',
     'title' => variable_get('access_request_page_title', 'Data Access Request'),
     'module_caller' => 'obiba_mica_data_access_request',
   );
