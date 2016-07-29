@@ -42,7 +42,7 @@
     ?>
     <?php if ($can_access) : ?>
       <?php
-      print l(variable_get_value('access_my_requests_button'), 'mica/data-access/request',
+      print l(variable_get_value('access_my_requests_button'), MicaClientPathProvider::DATA_ACCESS_LIST,
         array(
           'attributes' => array('class' => array('btn', 'btn-primary')),
           'fragment' => 'data-access-requests',
@@ -54,7 +54,7 @@
     ?>
     <?php if ($can_create_access) : ?>
       <?php
-      print l('<i class="fa fa-plus"></i> ' . variable_get_value('access_new_request_button'), 'mica/data-access/request',
+      print l('<i class="fa fa-plus"></i> ' . variable_get_value('access_new_request_button'), MicaClientPathProvider::DATA_ACCESS_REQUEST,
         array(
           'attributes' => array('class' => array('btn', 'btn-info', 'indent')),
           'fragment' => 'data-access-request/new',
