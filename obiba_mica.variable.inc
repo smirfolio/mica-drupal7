@@ -540,6 +540,12 @@ function _obiba_mica_variable_study_content(&$variable) {
     'type' => 'string',
     'default' => TRUE,
   );
+  $variable['study_list_name_acronym_sort'] = array(
+    'title' => t('Set the study result sort order'),
+    'description' => t('Select the sort type for the study list'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
   $variable['study_show_networks'] = array(
     'title' => t('Show networks'),
     'description' => t('If selected the Networks section will be displayed'),
