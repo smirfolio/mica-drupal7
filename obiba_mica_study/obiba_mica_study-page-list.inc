@@ -112,6 +112,18 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
   if (!empty($_GET['page'])) {
     $from = $study_resource->paginationListSearchParameters($_GET['page'], 'studies', $size_response);
   }
+
+  if (empty($sort)) {
+    $study_list_sort_option = variable_get_value('study_list_name_acronym_sort');
+    if (!empty($study_list_sort_option)) {
+      if ($study_list_sort_option == 1) {
+        $sort = 'name';
+      } else if ($study_list_sort_option == 2) {
+        $sort = 'acronym';
+      }
+    }
+  }
+
   $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order);
   if (!empty($response)) {
     $_SESSION['studies']['aggregations']['total_hits'] = $response->getTotalHits();

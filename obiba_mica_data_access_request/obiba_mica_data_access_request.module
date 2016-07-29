@@ -200,7 +200,7 @@ function obiba_mica_data_access_request_load_menus() {
 
   $items[MicaClientPathProvider::DATA_ACCESS_LIST] = array(
     'access callback' => 'obiba_mica_data_access_request_permission_check',
-    'title' => variable_get('access_request_page_title', 'My Access Requests'),
+    'title' => variable_get('access_requests_page_title', 'My Access Requests'),
     'menu_name' => 'main-menu',
     'options' => array('fragment' => 'data-access-requests'),
     'weight' => 0,
