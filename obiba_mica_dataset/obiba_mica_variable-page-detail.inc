@@ -36,9 +36,9 @@ function obiba_mica_variable_page_detail($variable_id) {
   if ($variable->variableType == "Dataschema") {
     $algos = TRUE;
   }
-  $variable->label = obiba_mica_dataset_variable_attributes_detail($variable, 'label');
-  $variable->description = obiba_mica_dataset_variable_attributes_detail($variable, 'description');
-  $variable->comment = obiba_mica_dataset_variable_attributes_detail($variable, 'comment');
+  $variable->label = obiba_mica_dataset_variable_category_detail($variable, 'label');
+  $variable->description = obiba_mica_dataset_variable_category_detail($variable, 'description');
+  $variable->comment = obiba_mica_dataset_variable_category_detail($variable, 'comment');
 
   obiba_mica_dataset_remove_harmonization_taxonomy($variable);
 
@@ -304,7 +304,7 @@ function obiba_mica_dataset_variable_get_categories($categories = NULL) {
     foreach ($categories as $category) {
       $rows[] = array(
         $category->name,
-        obiba_mica_dataset_variable_attributes_detail($category, 'label'),
+        obiba_mica_dataset_variable_category_detail($category, 'label'),
         $category->missing ? '<span class="glyphicon glyphicon-ok"></span>' : NULL,
       );
     }
