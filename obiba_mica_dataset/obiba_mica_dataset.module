@@ -541,6 +541,34 @@ function obiba_mica_dataset_variable_attributes_detail($variable, $name, $namesp
 }
 
 /**
+ * Get localized value for variable attribute
+ *
+ * @param $variable
+ * @param $name
+ * @return string value for the current language
+ */
+function obiba_mica_dataset_variable_category_detail($variable, $name) {
+  global $language;
+  $lang = $language->language;
+  $value = NULL;
+  if (!empty($variable->attributes)) {
+    foreach ($variable->attributes as $attribute) {
+      if (!empty($attribute->name) && $attribute->name == $name) {
+        foreach ($attribute->values as $field_value) {
+          if (!empty($lang) && $lang == $field_value->lang) {
+            return $field_value->value;
+          }
+          elseif (empty($value) && ($field_value->lang == 'und' || $field_value->lang == 'en')) {
+            $value = $field_value->value;
+          }
+        }
+      }
+    }
+  }
+  return $value;
+}
+
+/**
  * GEt variable domains list.
  */
 function obiba_mica_dataset_variable_domains_list($variable) {
