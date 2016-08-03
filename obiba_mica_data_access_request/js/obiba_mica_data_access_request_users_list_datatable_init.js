@@ -3,7 +3,6 @@
 
     attach: function (context, settings) {
       console.log(settings.table_data);
-      var basePath = Drupal.settings.basePath + 'mica/data-access/request';
       if (context === document) {
 
 
