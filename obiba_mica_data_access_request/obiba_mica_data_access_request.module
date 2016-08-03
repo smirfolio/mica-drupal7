@@ -432,7 +432,7 @@ function obiba_mica_data_access_user_request_list($data_access_request) {
   $status_icon = obiba_mica_data_access_get_icon_status($data_access_request->status);
   $base_path = base_path();
   $output = <<<EOT
-  <div><span class="pull-left"><a href="$base_path/mica/data_access/request#/data-access-request/$data_access_request->id">$data_access_request->id</a></span>
+  <div><span class="pull-left"><a href="{$base_path}mica/data_access/request#/data-access-request/$data_access_request->id">$data_access_request->id</a></span>
   <span class="pull-right">$status_icon</span></div>
 EOT;
   return $output;
