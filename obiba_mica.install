@@ -65,7 +65,7 @@ function obiba_mica_theme_configuration() {
 /**
  * Hook to remove old unused modules.
  */
-function obiba_mica__update_7100() {
+function obiba_mica_update_7100() {
   $modules = array(
     'obiba_mica_search'
   );
