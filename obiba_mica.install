@@ -61,3 +61,16 @@ function obiba_mica_theme_configuration() {
   variable_set('obiba-progressbar-lib', 'obiba-progressbar-1.0.0');
   variable_set('obiba-progressbar-file', 'dist/obiba-progressbar');
 }
+
+/**
+ * Hook to remove old unused modules.
+ */
+function obiba_mica__update_7100() {
+  $modules = array(
+    'obiba_mica_search'
+  );
+  db_delete('system')
+    ->condition('name', $modules, 'IN')
+    ->condition('type', 'module')
+    ->execute();
+}
