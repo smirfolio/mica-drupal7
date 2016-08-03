@@ -100,7 +100,7 @@ class MicaClientPathProvider {
 
   public static  function data_access_request($id) {
     global $base_url;
-    return $base_url . '/mica/data-access/request#/data-access-request/' . $id;
+    return $base_url . '/' . MicaClientPathProvider::DATA_ACCESS_REQUEST . '#/data-access-request/' . $id;
   }
 
   /**
