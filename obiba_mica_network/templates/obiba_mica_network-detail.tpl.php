@@ -68,13 +68,13 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($network_dto->website)): ?>
+          <?php if (!empty($network_dto->model->website)): ?>
             <tr>
               <th><?php print t('Website') ?></th>
               <td>
                 <p><?php
                   print l(obiba_mica_commons_get_localized_field($network_dto, 'acronym') . ' ' . t('website'),
-                    $network_dto->website,
+                    $network_dto->model->website,
                     array('attributes' => array('target' => '_blank')));
                   ?></p>
               </td>

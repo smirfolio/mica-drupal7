@@ -378,8 +378,8 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
   $dce_rows = array();
   foreach ($data_collection_events as $key_dce => $dce_wrapper) {
     $dce_description = NULL;
-    if (!empty($dce_wrapper->description)) {
-      $dce_description = truncate_utf8(strip_tags(obiba_mica_commons_get_localized_field($dce_wrapper, 'description')), 50, TRUE, TRUE);
+    if (!empty($dce_wrapper->model->description)) {
+      $dce_description = truncate_utf8(strip_tags(obiba_mica_commons_get_localized_field($dce_wrapper->model, 'description')), 50, TRUE, TRUE);
     }
     // Hide DCE that are not published on study published page
 

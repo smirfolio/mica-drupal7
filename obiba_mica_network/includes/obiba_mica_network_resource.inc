@@ -142,6 +142,7 @@ class MicaNetworkResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? json_decode($data) : NULL;
+        $this->updateModel($this->result_resource_query);
         obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
         return $this->result_resource_query;
       }
@@ -150,7 +151,16 @@ class MicaNetworkResource extends MicaClient {
         return array();
       }
     }
+
     return $this->result_resource_query;
   }
 
+
+  private function updateModel($obj) {
+    if (!empty($obj->content)) {
+      $obj->model = json_decode($obj->content);
+    } else {
+      $obj->model = new stdClass();
+    }
+  }
 }

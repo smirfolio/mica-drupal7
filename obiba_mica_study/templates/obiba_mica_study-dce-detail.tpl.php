@@ -12,9 +12,9 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
       <div class="modal-body">
         <section>
           <div>
-            <?php if (!empty($dce->description)): ?>
+            <?php if (!empty($dce->model->description)): ?>
               <p>
-                <?php print obiba_mica_commons_get_localized_field($dce, 'description'); ?>
+                <?php print obiba_mica_commons_get_localized_field($dce->model, 'description'); ?>
               </p>
             <?php endif; ?>
           </div>
@@ -37,19 +37,19 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
               </tr>
             <?php endif; ?>
 
-            <?php if (!empty($dce->dataSources)): ?>
+            <?php if (!empty($dce->model->dataSources)): ?>
               <tr>
                 <th><?php print t('Data Sources') ?></th>
                 <td>
                   <ul>
-                    <?php foreach ($dce->dataSources as $dataSource): ?>
+                    <?php foreach ($dce->model->dataSources as $dataSource): ?>
                       <li>
                         <?php print obiba_mica_commons_clean_string($dataSource); ?>
                       </li>
                     <?php endforeach; ?>
-                    <?php if (!empty($dce->otherDataSources)): ?>
+                    <?php if (!empty($dce->model->otherDataSources)): ?>
                       <li>
-                        <?php print obiba_mica_commons_get_localized_field($dce, 'otherDataSources'); ?>
+                        <?php print obiba_mica_commons_get_localized_field($dce->model, 'otherDataSources'); ?>
                       </li>
                     <?php endif; ?>
                   </ul>
@@ -57,12 +57,12 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
               </tr>
             <?php endif; ?>
 
-            <?php if (!empty($dce->administrativeDatabases)): ?>
+            <?php if (!empty($dce->model->administrativeDatabases)): ?>
               <tr>
                 <th><?php print t('Administrative Databases') ?></th>
                 <td>
                   <ul>
-                    <?php foreach ($dce->administrativeDatabases as $database): ?>
+                    <?php foreach ($dce->model->administrativeDatabases as $database): ?>
                       <li>
                         <?php print obiba_mica_commons_clean_string($database); ?>
                       </li>
@@ -72,19 +72,19 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
               </tr>
             <?php endif; ?>
 
-            <?php if (!empty($dce->bioSamples)): ?>
+            <?php if (!empty($dce->model->bioSamples)): ?>
               <tr>
                 <th><?php print t('Biological Samples') ?></th>
                 <td>
                   <ul>
-                    <?php foreach ($dce->bioSamples as $samples): ?>
+                    <?php foreach ($dce->model->bioSamples as $samples): ?>
                       <li>
                         <?php print obiba_mica_commons_clean_string($samples); ?>
                       </li>
                     <?php endforeach; ?>
-                    <?php if (!empty($dce->otherBioSamples)): ?>
+                    <?php if (!empty($dce->model->otherBioSamples)): ?>
                       <li>
-                        <?php print obiba_mica_commons_get_localized_field($dce, 'otherBioSamples'); ?>
+                        <?php print obiba_mica_commons_get_localized_field($dce->model, 'otherBioSamples'); ?>
                       </li>
                     <?php endif; ?>
                   </ul>
@@ -92,10 +92,10 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
               </tr>
             <?php endif; ?>
 
-            <?php if (!empty($dce->tissueTypes)): ?>
+            <?php if (!empty($dce->model->tissueTypes)): ?>
               <tr>
                 <th><?php print t('Tissue Types') ?></th>
-                <td><p><?php print obiba_mica_commons_get_localized_field($dce, 'tissueTypes'); ?></p></td>
+                <td><p><?php print obiba_mica_commons_get_localized_field($dce->model, 'tissueTypes'); ?></p></td>
               </tr>
             <?php endif; ?>
             </tbody>

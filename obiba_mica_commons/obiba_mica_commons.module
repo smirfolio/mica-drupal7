@@ -109,38 +109,53 @@ function obiba_mica_commons_fixed_sidebar($template) {
  */
 function obiba_mica_commons_get_localized_field($std, $field, $lang = NULL) {
   global $language;
-  if (empty($lang)) {
-    $lang = $language->language;
-  }
   $value = NULL;
-  if (!empty($std->{$field})) {
-    foreach ($std->{$field} as $field_value) {
-      $field_lang_std = !empty($field_value->lang) ? $field_value->lang : $field_value->locale;
-      $field_value_std = !empty($field_value->value) ? $field_value->value : $field_value->text;
-      if (!empty($lang) && $lang == $field_lang_std) {
-        return $field_value_std;
+
+    if (empty($lang)) {
+      $lang = $language->language;
+    }
+
+    if (!empty($std->{$field})) {
+      $localizedString = $std->{$field};
+
+      if (!is_array($localizedString)) {
+        $asObject = function($key) use ($localizedString){
+          $obj = new stdClass();
+          $obj->lang = $key;
+          $obj->value = $localizedString->{$key};
+          return $obj;
+        };
+
+        $localizedString = array_map($asObject,  array_keys(get_object_vars($localizedString)));
       }
-      elseif ($field_lang_std == 'en') {
-        $value = $field_value_std;
-      }
-      else {
-        $value = $field_value_std;
+
+      foreach ($localizedString as $field_value) {
+        $field_lang_std = !empty($field_value->lang) ? $field_value->lang : $field_value->locale;
+        $field_value_std = !empty($field_value->value) ? $field_value->value : $field_value->text;
+
+        if (!empty($lang) && $lang == $field_lang_std) {
+          return $field_value_std;
+        } elseif ($field_lang_std == 'en') {
+          $value = $field_value_std;
+        } else {
+          $value = $field_value_std;
+        }
       }
     }
-  }
-  elseif (is_array($std) && !empty($std[$field])) {
-    foreach ($std[$field] as $field_value) {
-      if (!empty($lang) && $lang == $field_value['lang']) {
-        return $field_value['value'];
-      }
-      elseif ($field_value['lang'] == 'en') {
-        $value = $field_value['value'];
-      }
-      else {
-        $value = $field_value['value'];
+    elseif (is_array($std) && !empty($std[$field])) {
+      foreach ($std[$field] as $field_value) {
+        if (!empty($lang) && $lang == $field_value['lang']) {
+          return $field_value['value'];
+        }
+        elseif ($field_value['lang'] == 'en') {
+          $value = $field_value['value'];
+        }
+        else {
+          $value = $field_value['value'];
+        }
       }
     }
-  }
+
   return $value;
 }
 
