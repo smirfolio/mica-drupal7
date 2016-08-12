@@ -8,62 +8,62 @@
   </p>
 <?php endif; ?>
 
-<?php if (!empty($population->recruitment->generalPopulationSources)
-  || !empty($population->recruitment->studies)
-  || !empty($population->recruitment->specificPopulationSources)
-  || !empty($population->recruitment->otherSpecificPopulationSource)
-  || !empty($population->recruitment->otherSource)
-  || !empty($population->recruitment->info)
+<?php if (!empty($population->model->recruitment->generalPopulationSources)
+  || !empty($population->model->recruitment->studies)
+  || !empty($population->model->recruitment->specificPopulationSources)
+  || !empty($population->model->recruitment->otherSpecificPopulationSource)
+  || !empty($population->model->recruitment->otherSource)
+  || !empty($population->model->recruitment->info)
 ): ?>
   <h4><?php print t('Sources of Recruitment') ?></h4>
 
   <div class="scroll-content-tab">
     <table class="table table-striped">
       <tbody>
-      <?php if (!empty($population->recruitment->generalPopulationSources)): ?>
+      <?php if (!empty($population->model->recruitment->generalPopulationSources)): ?>
         <tr>
           <th><?php print t('General Population') ?></th>
-          <td><?php obiba_mica_commons_iterate_field($population->recruitment->generalPopulationSources); ?></td>
+          <td><?php obiba_mica_commons_iterate_field($population->model->recruitment->generalPopulationSources); ?></td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->recruitment->studies)): ?>
+      <?php if (!empty($population->model->recruitment->studies)): ?>
         <tr>
           <th><?php print t('Participants from Existing Studies') ?></th>
           <td>
             <?php
-            $studies = obiba_mica_commons_get_localized_dtos_field($population->recruitment, 'studies');
+            $studies = obiba_mica_commons_get_localized_dtos_field($population->model->recruitment, 'studies');
             ?>
             <?php obiba_mica_commons_iterate_field($studies); ?>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->recruitment->specificPopulationSources)): ?>
+      <?php if (!empty($population->model->recruitment->specificPopulationSources)): ?>
         <tr>
           <th><?php print t('Specific Population') ?></th>
-          <td><?php obiba_mica_commons_iterate_field($population->recruitment->specificPopulationSources); ?></td>
+          <td><?php obiba_mica_commons_iterate_field($population->model->recruitment->specificPopulationSources); ?></td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->recruitment->otherSpecificPopulationSource)): ?>
+      <?php if (!empty($population->model->recruitment->otherSpecificPopulationSource)): ?>
         <tr>
           <th><?php print t('Other Specific Population') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->recruitment, 'otherSpecificPopulationSource'); ?></td>
+          <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSpecificPopulationSource'); ?></td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->recruitment->otherSource)): ?>
         <tr>
           <th><?php print t('Supplementary Information') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->recruitment, 'otherSource'); ?></td>
+          <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSource'); ?></td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->recruitment->info)): ?>
+      <?php if (!empty($population->model->recruitment->info)): ?>
         <tr>
           <th><?php print t('Supplementary Information') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->recruitment, 'info'); ?></td>
+          <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'info'); ?></td>
         </tr>
       <?php endif; ?>
       </tbody>
@@ -71,89 +71,91 @@
   </div>
 <?php endif; ?>
 
-<?php if ((isset($population->selectionCriteria->gender) && ($population->selectionCriteria->gender === 0 || $population->selectionCriteria->gender === 1))
-  || !empty($population->selectionCriteria->ageMin) || !empty($population->selectionCriteria->ageMax)
-  || !empty($population->selectionCriteria->countriesIso)
-  || !empty($population->selectionCriteria->territory)
-  || !empty($population->selectionCriteria->ethnicOrigin)
-  || !empty($population->selectionCriteria->healthStatus)
-  || !empty($population->selectionCriteria->otherCriteria)
-  || !empty($population->selectionCriteria->info)
+<?php if ((isset($population->model->selectionCriteria->gender) && (
+            $population->model->selectionCriteria->gender === 0 || $population->model->selectionCriteria->gender === 1))
+  || !empty($population->model->selectionCriteria->ageMin)
+  || !empty($population->model->selectionCriteria->ageMax)
+  || !empty($population->model->selectionCriteria->countriesIso)
+  || !empty($population->model->selectionCriteria->territory)
+  || !empty($population->model->selectionCriteria->ethnicOrigin)
+  || !empty($population->model->selectionCriteria->healthStatus)
+  || !empty($population->model->selectionCriteria->otherCriteria)
+  || !empty($population->model->selectionCriteria->info)
 ): ?>
   <h4><?php print t('Selection Criteria') ?></h4>
   <div class="scroll-content-tab">
     <table class="table table-striped">
       <tbody>
-      <?php if (isset($population->selectionCriteria->gender) && ($population->selectionCriteria->gender === 0 || $population->selectionCriteria->gender === 1)): ?>
+      <?php if (isset($population->model->selectionCriteria->gender) && ($population->model->selectionCriteria->gender === 0 || $population->model->selectionCriteria->gender === 1)): ?>
         <tr>
           <th><?php print t('Gender') ?></th>
-          <td><?php print  obiba_mica_study_get_gender($population->selectionCriteria->gender); ?></td>
+          <td><?php print  obiba_mica_study_get_gender($population->model->selectionCriteria->gender); ?></td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->selectionCriteria->ageMin) || !empty($population->selectionCriteria->ageMax)): ?>
+      <?php if (!empty($population->model->selectionCriteria->ageMin) || !empty($population->model->selectionCriteria->ageMax)): ?>
         <tr>
           <th><?php print t('Age') ?></th>
           <td>
-            <?php !empty($population->selectionCriteria->ageMin) ? print t('Minimum') . ' '
-              .$population->selectionCriteria->ageMin
-              . ((!empty($population->selectionCriteria->ageMax))? ', ':'' ): NULL;?>
-            <?php !empty($population->selectionCriteria->ageMax) ? print t('Maximum') . ' '
-              . $population->selectionCriteria->ageMax : NULL; ?>
+            <?php !empty($population->model->selectionCriteria->ageMin) ? print t('Minimum') . ' '
+              .$population->model->selectionCriteria->ageMin
+              . ((!empty($population->model->selectionCriteria->ageMax))? ', ':'' ): NULL;?>
+            <?php !empty($population->model->selectionCriteria->ageMax) ? print t('Maximum') . ' '
+              . $population->model->selectionCriteria->ageMax : NULL; ?>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->selectionCriteria->countriesIso)): ?>
+      <?php if (!empty($population->model->selectionCriteria->countriesIso)): ?>
         <tr>
           <th><?php print t('Country'); ?></th>
           <td>
-            <?php obiba_mica_commons_iterate_field($population->selectionCriteria->countriesIso,
+            <?php obiba_mica_commons_iterate_field($population->model->selectionCriteria->countriesIso,
               'countries_country_lookup', 'iso3', 'name'); ?>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->selectionCriteria->territory)): ?>
+      <?php if (!empty($population->model->selectionCriteria->territory)): ?>
         <tr>
           <th><?php print t('Territory') ?></th>
           <td>
-            <?php print obiba_mica_commons_get_localized_field($population->selectionCriteria, 'territory'); ?>
+            <?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'territory'); ?>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->selectionCriteria->ethnicOrigin)): ?>
+      <?php if (!empty($population->model->selectionCriteria->ethnicOrigin)): ?>
         <tr>
           <th><?php print t('Ethnic Origin') ?></th>
           <td>
-            <?php $ehtnic_origins = obiba_mica_commons_get_localized_dtos_field($population->selectionCriteria, 'ethnicOrigin'); ?>
+            <?php $ehtnic_origins = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'ethnicOrigin'); ?>
             <?php obiba_mica_commons_iterate_field($ehtnic_origins); ?>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->selectionCriteria->healthStatus)): ?>
+      <?php if (!empty($population->model->selectionCriteria->healthStatus)): ?>
         <tr>
           <th><?php print t('Health Status') ?></th>
           <td>
-            <?php $health_status = obiba_mica_commons_get_localized_dtos_field($population->selectionCriteria, 'healthStatus'); ?>
+            <?php $health_status = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'healthStatus'); ?>
             <?php obiba_mica_commons_iterate_field($health_status); ?>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->selectionCriteria->otherCriteria)): ?>
+      <?php if (!empty($population->model->selectionCriteria->otherCriteria)): ?>
         <tr>
           <th><?php print t('Other') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->selectionCriteria, 'otherCriteria'); ?></td>
+          <td><?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'otherCriteria'); ?></td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->selectionCriteria->info)): ?>
+      <?php if (!empty($population->model->selectionCriteria->info)): ?>
         <tr>
           <th><?php print t('Supplementary Information') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->selectionCriteria, 'info'); ?></td>
+          <td><?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'info'); ?></td>
         </tr>
       <?php endif; ?>
       </tbody>
@@ -161,9 +163,9 @@
   </div>
 <?php endif; ?>
 
-<?php if (!empty($population->numberOfParticipants->participant->number)
-  || !empty($population->numberOfParticipants->sample->number)
-  || !empty($population->info)
+<?php if (!empty($population->model->numberOfParticipants->participant->number)
+  || !empty($population->model->numberOfParticipants->sample->number)
+  || !empty($population->model->info)
 ): ?>
   <h4><?php print t('Sample Size') ?></h4>
 
@@ -171,32 +173,32 @@
     <table class="table table-striped">
       <tbody>
 
-      <?php if (!empty($population->numberOfParticipants->participant->number)): ?>
+      <?php if (!empty($population->model->numberOfParticipants->participant->number)): ?>
         <tr>
           <th><?php print t('Number of Participants') ?></th>
           <td>
             <p>
-              <?php print obiba_mica_commons_format_number($population->numberOfParticipants->participant->number) ?>
-              <?php if (!empty($population->numberOfParticipants->participant->noLimit)): ?>
+              <?php print obiba_mica_commons_format_number($population->model->numberOfParticipants->participant->number) ?>
+              <?php if (!empty($population->model->numberOfParticipants->participant->noLimit)): ?>
                 (<?php print t('No Limit'); ?>)
               <?php endif; ?>
-              <?php if (!empty($population->numberOfParticipants->info)): ?>
+              <?php if (!empty($population->model->numberOfParticipants->info)): ?>
 
-            <p><?php print obiba_mica_commons_get_localized_field($population->numberOfParticipants, 'info'); ?></p>
+            <p><?php print obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'); ?></p>
             <?php endif; ?>
             </p>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->numberOfParticipants->sample->number)): ?>
+      <?php if (!empty($population->model->numberOfParticipants->sample->number)): ?>
         <tr>
           <th><?php print t('Number of Participants with Biological Samples')
             ?></th>
           <td>
             <p>
-              <?php print obiba_mica_commons_format_number($population->numberOfParticipants->sample->number) ?>
-              <?php if (!empty($population->numberOfParticipants->sample->noLimit)): ?>
+              <?php print obiba_mica_commons_format_number($population->model->numberOfParticipants->sample->number) ?>
+              <?php if (!empty($population->model->numberOfParticipants->sample->noLimit)): ?>
                 (<?php print t('No Limit'); ?>)
               <?php endif; ?>
             </p>
@@ -204,10 +206,10 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->info)): ?>
+      <?php if (!empty($population->model->info)): ?>
         <tr>
           <th><?php print t('Supplementary Information') ?></th>
-          <td><p> <?php print obiba_mica_commons_get_localized_field($population, 'info'); ?></p></td>
+          <td><p> <?php print obiba_mica_commons_get_localized_field($population->model, 'info'); ?></p></td>
         </tr>
       <?php endif; ?>
 

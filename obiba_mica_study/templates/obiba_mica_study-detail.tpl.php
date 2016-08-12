@@ -74,13 +74,13 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->website)): ?>
+          <?php if (!empty($study_dto->model->website)): ?>
             <tr>
               <th><?php print t('Website') ?></th>
               <td>
                 <p><?php
                   print l(obiba_mica_commons_get_localized_field($study_dto, 'acronym') . ' ' . t('website'),
-                    $study_dto->website,
+                    $study_dto->model->website,
                     array('attributes' => array('target' => '_blank')));
                   ?></p>
               </td>
@@ -116,17 +116,17 @@
             <?php endforeach; ?>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->startYear)): ?>
+          <?php if (!empty($study_dto->model->startYear)): ?>
             <tr>
               <th><?php print t('Study Start Year') ?></th>
-              <td><p><?php print $study_dto->startYear; ?></p></td>
+              <td><p><?php print $study_dto->model->startYear; ?></p></td>
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->endYear)): ?>
+          <?php if (!empty($study_dto->model->endYear)): ?>
             <tr>
               <th><?php print t('Study End Year') ?></th>
-              <td><p><?php print $study_dto->endYear; ?></p></td>
+              <td><p><?php print $study_dto->model->endYear; ?></p></td>
             </tr>
           <?php endif; ?>
 
@@ -152,16 +152,16 @@
         <table class="table table-striped">
           <tbody>
 
-          <?php if (!empty($study_dto->methods->designs)): ?>
+          <?php if (!empty($study_dto->model->methods->designs)): ?>
             <tr>
               <th><?php print t('Study Design') ?></th>
               <td>
                 <ul class="list-unstyled">
-                  <?php foreach ($study_dto->methods->designs as $design): ?>
+                  <?php foreach ($study_dto->model->methods->designs as $design): ?>
                     <li>
                       <?php print obiba_mica_commons_clean_string($design); ?>
                       <?php if ($design == 'other'): ?>
-                        : <?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherDesign'); ?>
+                        : <?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherDesign'); ?>
                       <?php endif; ?>
                     </li>
                   <?php endforeach; ?>
@@ -170,25 +170,25 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->methods->followUpInfo)): ?>
+          <?php if (!empty($study_dto->model->methods->followUpInfo)): ?>
             <tr>
               <th><?php print t('General Information on Follow Up (profile and frequency)') ?></th>
               <td>
-                <p><?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'followUpInfo'); ?></p>
+                <p><?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'followUpInfo'); ?></p>
               </td>
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->methods->recruitments)): ?>
+          <?php if (!empty($study_dto->model->methods->recruitments)): ?>
             <tr>
               <th><?php print t('Recruitment Target') ?></th>
               <td>
                 <ul class="list-unstyled">
-                  <?php foreach ($study_dto->methods->recruitments as $recruitment): ?>
+                  <?php foreach ($study_dto->model->methods->recruitments as $recruitment): ?>
                     <li>
                       <?php print obiba_mica_commons_clean_string($recruitment) ?>
                       <?php if ($recruitment == 'other'): ?>
-                        : <?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'otherRecruitment'); ?>
+                        : <?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherRecruitment'); ?>
                       <?php endif; ?>
                     </li>
                   <?php endforeach; ?>
@@ -197,13 +197,13 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->numberOfParticipants->participant->number)): ?>
+          <?php if (!empty($study_dto->model->numberOfParticipants->participant->number)): ?>
             <tr>
               <th><?php print t('Target Number of Participants') ?></th>
               <td>
                 <p>
-                  <?php print obiba_mica_commons_format_number($study_dto->numberOfParticipants->participant->number); ?>
-                  <?php if (!empty($study_dto->numberOfParticipants->participant->noLimit)): ?>
+                  <?php print obiba_mica_commons_format_number($study_dto->model->numberOfParticipants->participant->number); ?>
+                  <?php if (!empty($study_dto->model->numberOfParticipants->participant->noLimit)): ?>
                     (<?php print t('No Limit'); ?>)
                   <?php endif; ?>
                 </p>
@@ -211,14 +211,14 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->numberOfParticipants->sample->number)): ?>
+          <?php if (!empty($study_dto->model->numberOfParticipants->sample->number)): ?>
             <tr>
               <th><?php print t('Target Number of Participants with
               Biological Samples') ?></th>
               <td>
                 <p>
-                  <?php print obiba_mica_commons_format_number($study_dto->numberOfParticipants->sample->number); ?>
-                  <?php if (!empty($study_dto->numberOfParticipants->sample->noLimit)): ?>
+                  <?php print obiba_mica_commons_format_number($study_dto->model->numberOfParticipants->sample->number); ?>
+                  <?php if (!empty($study_dto->model->numberOfParticipants->sample->noLimit)): ?>
                     (<?php print t('No Limit'); ?>)
                   <?php endif; ?>
                 </p>
@@ -226,21 +226,21 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->numberOfParticipants->info)): ?>
+          <?php if (!empty($study_dto->model->numberOfParticipants->info)): ?>
             <tr>
               <th><?php print t('Supplementary Information About Target
               Number of Participants') ?></th>
               <td>
-                <p><?php print obiba_mica_commons_get_localized_field($study_dto->numberOfParticipants, 'info'); ?></p>
+                <p><?php print obiba_mica_commons_get_localized_field($study_dto->model->numberOfParticipants, 'info'); ?></p>
               </td>
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->methods->info)): ?>
+          <?php if (!empty($study_dto->model->methods->info)): ?>
             <tr>
               <th><?php print t('Supplementary Information') ?></th>
               <td>
-                <p><?php print obiba_mica_commons_get_localized_field($study_dto->methods, 'info'); ?></p>
+                <p><?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'info'); ?></p>
               </td>
             </tr>
           <?php endif; ?>
@@ -259,9 +259,9 @@
         <!-- ACCESS -->
         <h2 id="access"><?php print t('Access') ?></h2>
 
-        <?php if (!empty($study_dto->access) && (in_array('data', $study_dto->access) ||
-            in_array('bio_samples', $study_dto->access) ||
-            in_array('other', $study_dto->access))
+        <?php if (!empty($study_dto->model->access) && (in_array('data', $study_dto->model->access) ||
+            in_array('bio_samples', $study_dto->model->access) ||
+            in_array('other', $study_dto->model->access))
         ): ?>
 
           <p><?php print t('Access to external researchers or third parties provided or foreseen for:'); ?></p>
@@ -275,7 +275,7 @@
               <th><?php print t('Data (questionnaire-derived, measured...)'); ?></th>
               <td>
                 <p>
-                  <?php if (!empty($study_dto->access) && in_array('data', $study_dto->access)): ?>
+                  <?php if (!empty($study_dto->model->access) && in_array('data', $study_dto->model->access)): ?>
                     <span class="glyphicon glyphicon-ok"></span>
                   <?php else : ?>
                     <span class="glyphicon glyphicon-remove"></span>
@@ -288,7 +288,7 @@
               <th><?php print t('Biological Samples'); ?></th>
               <td>
                 <p>
-                  <?php if (!empty($study_dto->access) && in_array('bio_samples', $study_dto->access)): ?>
+                  <?php if (!empty($study_dto->model->access) && in_array('bio_samples', $study_dto->model->access)): ?>
                     <span class="glyphicon glyphicon-ok"></span>
                   <?php else : ?>
                     <span class="glyphicon glyphicon-remove"></span>
@@ -297,15 +297,15 @@
               </td>
             </tr>
 
-            <?php if (!empty($study_dto->access) && in_array('other', $study_dto->access)): ?>
+            <?php if (!empty($study_dto->model->access) && in_array('other', $study_dto->model->access)): ?>
               <tr>
                 <th><?php print t('Other'); ?></th>
                 <td>
-                  <?php if (in_array('other', $study_dto->access)): ?>
+                  <?php if (in_array('other', $study_dto->model->access)): ?>
                     <span class="glyphicon glyphicon-ok right-indent"></span>
                   <?php endif; ?>
-                  <?php if (!empty($study_dto->otherAccess)): ?>
-                    <?php print obiba_mica_commons_get_localized_field($study_dto, 'otherAccess'); ?>
+                  <?php if (!empty($study_dto->model->otherAccess)): ?>
+                    <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'otherAccess'); ?>
                   <?php endif; ?>
                 </td>
               </tr>
@@ -316,17 +316,17 @@
       </div>
       <div class="col-lg-6 col-xs-12">
         <!-- MARKER PAPER -->
-        <?php if (!empty($study_dto->markerPaper) || !empty($study_dto->pubmedId)): ?>
+        <?php if (!empty($study_dto->model->markerPaper) || !empty($study_dto->model->pubmedId)): ?>
           <h2 id="marker"><?php print t('Marker Paper') ?></h2>
-          <?php if (!empty($study_dto->markerPaper)): ?>
-            <p><?php print $study_dto->markerPaper; ?></p>
+          <?php if (!empty($study_dto->model->markerPaper)): ?>
+            <p><?php print $study_dto->model->markerPaper; ?></p>
           <?php endif; ?>
-          <?php if (!empty($study_dto->pubmedId)): ?>
+          <?php if (!empty($study_dto->model->pubmedId)): ?>
             <p>
               <a
-                href="http://www.ncbi.nlm.nih.gov/pubmed/<?php print $study_dto->pubmedId; ?>"
+                href="http://www.ncbi.nlm.nih.gov/pubmed/<?php print $study_dto->model->pubmedId; ?>"
                 target="_blank">
-                PUBMED <?php print $study_dto->pubmedId; ?>
+                PUBMED <?php print $study_dto->model->pubmedId; ?>
               </a>
             </p>
           <?php endif; ?>
@@ -337,11 +337,11 @@
   </section>
 
   <!-- SUPPLEMENTARY INFORMATION -->
-  <?php if (!empty($study_dto->info)): ?>
+  <?php if (!empty($study_dto->model->info)): ?>
     <section>
       <h2 id="info"><?php print t('Supplementary Information'); ?></h2>
 
-      <p><?php print obiba_mica_commons_get_localized_field($study_dto, 'info'); ?></p>
+      <p><?php print obiba_mica_commons_get_localized_field($study_dto->model, 'info'); ?></p>
     </section>
   <?php endif; ?>
 

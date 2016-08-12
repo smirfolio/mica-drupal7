@@ -88,11 +88,11 @@ class MicaStudyResource extends MicaClient {
     $url = $this->micaUrl . $resource_query;
     if (!isset($this->result_resource_query)) {
       $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
+          'method' => HttpClientRequest::METHOD_GET,
+          'headers' => $this->authorizationHeader(array(
+                  'Accept' => array(parent::HEADER_JSON),
+              )
+          ),
       ));
 
       $client = $this->client();
@@ -100,6 +100,21 @@ class MicaStudyResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? json_decode($data) : NULL;
+
+        if (!empty($this->result_resource_query)) {
+          $this->updateModel($this->result_resource_query);
+          if (!empty($this->result_resource_query->populations)) {
+            foreach ($this->result_resource_query->populations as $population) {
+              $this->updateModel($population);
+              if (!empty($population->dataCollectionEvents)) {
+                foreach ($population->dataCollectionEvents as $dce) {
+                  $this->updateModel($dce);
+                }
+              }
+            }
+          }
+        }
+
         obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
         return $this->result_resource_query;
       }
@@ -111,4 +126,11 @@ class MicaStudyResource extends MicaClient {
     return $this->result_resource_query;
   }
 
+  private function updateModel($obj) {
+    if (!empty($obj->content)) {
+      $obj->model = json_decode($obj->content);
+    } else {
+      $obj->model = new stdClass();
+    }
+  }
 }
