@@ -478,7 +478,8 @@ function obiba_mica_app_angular_get_access_config() {
     'documentsSectionHelpText' => variable_get_value('access_documents_section_help_text'),
     'downloadButtonCaption' => variable_get_value('access_download_button'),
     'commentsEnabled' => variable_get_value('access_comments_enabled'),
-    'userListPageTitle' => variable_get_value('user_list_page_title')
+    'userListPageTitle' => variable_get_value('user_list_page_title'),
+    'newRequestButtonHelpText' => variable_get_value('access_new_request_button_info')
   );
 }
 

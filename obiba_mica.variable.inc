@@ -255,6 +255,12 @@ function _obiba_mica_variable_info_access(&$variable) {
     'type' => 'string',
     'default' => 'New Data Access Request',
   );
+  $variable['access_new_request_button_info'] = array(
+    'title' => t('New request button help text'),
+    'description' => t('Data access new request button help text.'),
+    'type' => 'string',
+    'default' => 'New request button help text'
+  );
   $variable['access_documents_section_title'] = array(
     'title' => t('Documents section title'),
     'description' => t('Data access request "Documents" section title.'),
