@@ -15,7 +15,9 @@ var modules = [
   'obiba.comments',
   'angularUtils.directives.dirPagination',
   'pascalprecht.translate',
-  'ngObibaMica'
+  'ngObibaMica',
+  'sfObibaFileUpload',
+  'sfCheckboxgroup'
 ];
 var sanitizeModules = function (origArr) {
   var newArr = [],
