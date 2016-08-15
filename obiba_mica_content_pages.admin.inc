@@ -127,6 +127,14 @@ function obiba_mica_settings_data_access_content(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
+  $info = variable_get_info('access_new_request_button_info');
+  $form['content_display_settings']['access_form']['access_new_request_button_info'] = array(
+    '#type' => 'textarea',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('access_new_request_button_info'),
+    '#maxlength' => 255,
+    '#description' => $info['description']
+  );
   $info = variable_get_info('access_signup_button');
   $form['content_display_settings']['access_form']['access_signup_button'] = array(
     '#type' => 'textfield',
