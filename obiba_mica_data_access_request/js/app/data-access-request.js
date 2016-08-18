@@ -11,7 +11,8 @@
 mica.DataAccessRequest = angular.module('mica.DataAccessRequest', [
   'obiba.mica.access',
   'sfObibaFileUpload',
-  'sfCheckboxgroup'
+  'sfCheckboxgroup',
+  'schemaForm-datepicker'
 ])
   .config(['ngObibaMicaAccessTemplateUrlProvider',
     function (ngObibaMicaAccessTemplateUrlProvider) {

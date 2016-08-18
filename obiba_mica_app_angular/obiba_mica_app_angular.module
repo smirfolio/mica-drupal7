@@ -115,18 +115,7 @@ function obiba_mica_app_angular_load_external_menus_definitions() {
  * Hook implementation to load external angular app js.
  */
 function obiba_mica_app_angular_load_external_app_js($module_caller = NULL, $weight_js = NULL) {
-  foreach (module_implements('get_js') as $key => $module) {
-    // Calling all modules implementing hook_hook_name
-    // and load its js.
-    if ($module_caller == $module) {
-      $module = module_invoke($module, 'get_js', $weight_js);
-      if (!empty($module)) {
-        return TRUE;
-      }
-    }
-  }
-  return FALSE;
-
+  return module_invoke_all('get_js', $weight_js);
 }
 
 /**
@@ -137,19 +126,7 @@ function obiba_mica_app_angular_load_external_app_js($module_caller = NULL, $wei
  *   that use obiba_mica_app_angular module.
  */
 function obiba_mica_app_angular_load_ng_module($module_caller) {
-  $ng_modules = array();
-  foreach (module_implements('get_ng_module_to_load') as $key => $module) {
-    // Calling all modules implementing hook_get_ng_module_to_load
-    if ($module_caller == $module) {
-      $ng_modules[] = module_invoke($module, 'get_ng_module_to_load');
-    }
-  }
-  if (!empty($ng_modules)) {
-    return $ng_modules;
-  }
-  else {
-    return FALSE;
-  }
+  return array_filter(module_invoke_all('get_ng_module_to_load'));
 }
 
 /**

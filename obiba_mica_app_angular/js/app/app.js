@@ -15,11 +15,17 @@ var modules = [
   'obiba.comments',
   'angularUtils.directives.dirPagination',
   'pascalprecht.translate',
-  'ngObibaMica',
-  'sfObibaFileUpload',
-  'sfCheckboxgroup'
+  'ngObibaMica'
 ];
 var sanitizeModules = function (origArr) {
+  if (!Array.isArray(origArr)) {
+    var res = [];
+    for (var i in origArr) {
+      res.push(origArr[i]);
+    }
+    origArr = res;
+  }
+
   var newArr = [],
     origLen = origArr.length,
     found, x, y;
@@ -37,7 +43,7 @@ var sanitizeModules = function (origArr) {
     }
   }
   return newArr;
-}
+};
 var drupalModules = sanitizeModules(Drupal.settings.angularjsApp.modules);
 
 /* App Module */
