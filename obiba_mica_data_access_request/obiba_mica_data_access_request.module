@@ -266,7 +266,8 @@ function obiba_mica_data_access_request_library() {
  * Implements hook_library_alter().
  */
 function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
-  if (($module == 'obiba_mica_data_access_request' || $module == 'system') && current_path() == 'mica/data_access/request') {
+  if (($module == 'obiba_mica_data_access_request' || $module == 'system') &&
+    (current_path() == MicaClientPathProvider::DATA_ACCESS_REQUEST || current_path() == MicaClientPathProvider::DATA_ACCESS_LIST)) {
     $path = drupal_get_path('module', 'jquery_update');
     jquery_update_jquery_replace($javascript, NULL, $path, NULL, '1.10');
   }
@@ -338,7 +339,7 @@ function obiba_mica_data_access_request_page() {
  * Implements hook_get_ng_module_to_load().
  */
 function obiba_mica_data_access_request_get_ng_module_to_load() {
-  if (current_path() == MicaClientPathProvider::DATA_ACCESS_REQUEST) {
+  if (current_path() == MicaClientPathProvider::DATA_ACCESS_REQUEST || current_path() == MicaClientPathProvider::DATA_ACCESS_LIST) {
     return 'mica.DataAccessRequest';
   }
   return FALSE;
@@ -348,7 +349,7 @@ function obiba_mica_data_access_request_get_ng_module_to_load() {
  * Implements hook_get_js().
  */
 function obiba_mica_data_access_request_get_js($weight_js) {
-  if (current_path() == MicaClientPathProvider::DATA_ACCESS_REQUEST) {
+  if (current_path() == MicaClientPathProvider::DATA_ACCESS_REQUEST || current_path() == MicaClientPathProvider::DATA_ACCESS_LIST) {
     $module_path = drupal_get_path('module', 'obiba_mica_data_access_request');
     $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
     ksort($js);
