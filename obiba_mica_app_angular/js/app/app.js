@@ -58,6 +58,7 @@ var mica = angular.module('mica', modules);
 mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
   function (ngObibaMicaSearchProvider, ngObibaMicaUrlProvider) {
     ngObibaMicaUrlProvider.setUrl('DataAccessFormConfigResource', 'data-access-form/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestsExportCsvResource', 'requests/csv/ws?lang=:lang');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestsResource', 'requests/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestResource', 'request/:id/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestAttachmentsUpdateResource', 'request/:id/_attachments/ws');

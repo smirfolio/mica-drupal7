@@ -47,4 +47,30 @@ class MicaDataAccessRequests extends MicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
+  public function downloadCsvExport($lang) {
+
+    $url_studies_person = $this->micaUrl . '/data-access-requests/csv?lang=' . $lang;
+
+    $request = new HttpClientRequest($url_studies_person, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_CSV),
+        )
+      ),
+    ));
+    $client = $this->client();
+    try {
+      $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return $client->lastResponse;
+    }
+    catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
+      return array();
+    }
+  }
 }
