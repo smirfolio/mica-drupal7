@@ -27,7 +27,7 @@ function obiba_mica_data_access_request_menu() {
   );
 
   $items[MicaClientPathProvider::DATA_ACCESS_HOME] = array(
-    'title' => variable_get('access_request_page_title', 'Data Access Requests'),
+    'title' => variable_get('access_home_page_title', 'Data Access Process'),
     'description' => 'Data access',
     'access callback' => TRUE,
     'menu_name' => 'main-menu',
@@ -196,12 +196,14 @@ function obiba_mica_data_access_request_load_menus() {
   $items[MicaClientPathProvider::DATA_ACCESS_REQUEST] = array(
     'access callback' => 'obiba_mica_data_access_request_permission_check',
     'module_caller' => 'obiba_mica_data_access_request',
+    'title callback' => 'obiba_mica_data_access_request_dar_title_callback',
     'type' => MENU_CALLBACK,
   );
 
   $items[MicaClientPathProvider::DATA_ACCESS_LIST] = array(
     'access callback' => 'obiba_mica_data_access_request_permission_check',
     'title' => variable_get('access_requests_page_title', 'My Access Requests'),
+    'title callback' => 'obiba_mica_data_access_request_dar_title_callback',
     'menu_name' => 'main-menu',
     'options' => array('fragment' => 'data-access-requests'),
     'type' => MENU_NORMAL_ITEM,
@@ -301,6 +303,13 @@ and intellectual property policies.</p> </div>";
  */
 function obiba_mica_data_access_request_title_callback() {
   return obiba_mica_user_has_role('mica-data-access-officer') ? t('Research Projects') : t('My Research Projects');
+}
+
+/**
+ * Data Access Request Title Callback
+ */
+function obiba_mica_data_access_request_dar_title_callback() {
+  return obiba_mica_user_has_role('mica-data-access-officer') ? variable_get_value('access_requests_page_title') : variable_get_value('access_request_my_page_title');
 }
 
 /**
