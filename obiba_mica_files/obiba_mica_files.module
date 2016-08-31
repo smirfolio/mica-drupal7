@@ -25,24 +25,28 @@ function obiba_mica_files_menu() {
     'file' => 'obiba_mica_files_services.inc',
     'access callback' => TRUE,
     'page arguments' => array(1, 2, 3),
+    'type' => MENU_CALLBACK
   );
   
   $items['mica/file'] = array(
     'page callback' => 'obiba_mica_files_get_file',
     'file' => 'obiba_mica_files_services.inc',
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
   );
 
   $items['mica/files/search'] = array(
     'page callback' => 'obiba_mica_files_search_files',
     'file' => 'obiba_mica_files_services.inc',
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
   );
   
   $items['mica/file/download'] = array(
     'page callback' => 'obiba_mica_file_download',
     'file' => 'obiba_mica_files_services.inc',
-    'access callback' => TRUE
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK
   );
 
   return $items;

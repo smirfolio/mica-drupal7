@@ -30,21 +30,25 @@ function obiba_mica_app_angular_menu() {
   $items['obiba-angular-app'] = array(
     'page callback' => 'obiba_mica_app_angular_main_page',
     'access callback' => TRUE,
+    'type' => MENU_CALLBACK
   );
 
   $items['obiba_mica_app_angular_view_template/%'] = array(
     'page callback' => 'obiba_mica_app_angular_get_angular_template',
     'access callback' => TRUE,
     'page arguments' => array(1),
+    'type' => MENU_CALLBACK
   );
   $items['obiba_mica_app_angular/translation/%'] = array(
     'page callback' => 'obiba_mica_app_angular_get_angular_translation',
     'page arguments' => array(2),
     'access callback' => TRUE,
+    'type' => MENU_CALLBACK
   );
   $items['un-authorized-error'] = array(
     'page callback' => 'obiba_mica_app_angular_set_drupal_message_error',
     'access callback' => TRUE,
+    'type' => MENU_CALLBACK
   );
   return $items + $external_items;
 }
