@@ -49,9 +49,9 @@ class MicaDataAccessRequests extends MicaDataAccessRequestResources {
 
   public function downloadCsvExport($lang) {
 
-    $url_studies_person = $this->micaUrl . '/data-access-requests/csv?lang=' . $lang;
+    $url_data_access_request_csv_export = $this->micaUrl . '/data-access-requests/csv?lang=' . $lang;
 
-    $request = new HttpClientRequest($url_studies_person, array(
+    $request = new HttpClientRequest($url_data_access_request_csv_export, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_CSV),
