@@ -21,7 +21,12 @@ function obiba_mica_content_pages_admin_settings() {
   obiba_mica_settings_study_content($form);
   obiba_mica_settings_dataset_content($form);
   obiba_mica_settings_variable_content($form);
-  obiba_mica_settings_data_access_content($form);
+  if (module_exists('obiba_mica_data_access_request')) {
+    obiba_mica_settings_data_access_content($form);
+  }
+  if (module_exists('obiba_mica_research_project')) {
+    obiba_mica_settings_research_project_content($form);
+  }
 
   $form['translation'] = array(
     '#type' => 'fieldset',
@@ -309,6 +314,50 @@ function obiba_mica_settings_study_content(&$form) {
     '#description' => $info['description'],
   );
 
+}
+
+function obiba_mica_settings_research_project_content(&$form) {
+  $form['content_display_settings']['research_project_form'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Research Project Content'),
+    '#collapsible' => FALSE
+  );
+
+  $info = variable_get_info('project_approved_page_title');
+  $form['content_display_settings']['research_project_form']['project_approved_page_title'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('project_approved_page_title'),
+    '#description' => $info['description']
+  );
+  $info = variable_get_info('project_empty_label');
+  $form['content_display_settings']['research_project_form']['project_empty_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('project_empty_label'),
+    '#description' => $info['description']
+  );
+  $info = variable_get_info('project_page_title');
+  $form['content_display_settings']['research_project_form']['project_page_title'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('project_page_title'),
+    '#description' => $info['description']
+  );
+  $info = variable_get_info('data_access_request_my_research_projects_title');
+  $form['content_display_settings']['research_project_form']['data_access_request_my_research_projects_title'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('data_access_request_my_research_projects_title'),
+    '#description' => $info['description']
+  );
+  $info = variable_get_info('data_access_request_research_projects_title');
+  $form['content_display_settings']['research_project_form']['data_access_request_research_projects_title'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('data_access_request_research_projects_title'),
+    '#description' => $info['description']
+  );
 }
 
 /**

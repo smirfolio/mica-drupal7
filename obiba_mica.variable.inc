@@ -334,11 +334,17 @@ function _obiba_mica_variable_info_project(&$variable) {
     'type' => 'string',
     'default' => 'Research Project Page'
   );
-  $variable['data_access_request_research_projects_title'] = array(
+  $variable['data_access_request_my_research_projects_title'] = array(
     'title' => t('My Research Projects'),
-    'description' => 'A list of approved research projects',
+    'description' => t('A list of published research projects with a linked Data Access Request'),
     'type' => 'string',
     'default' => 'My Research Projects'
+  );
+  $variable['data_access_request_research_projects_title'] = array(
+    'title' => t('Research Projects'),
+    'description' => t('A list of published research projects with a linked Data Access Request for DAO'),
+    'type' => 'string',
+    'default' => 'Research Projects'
   );
 }
 
