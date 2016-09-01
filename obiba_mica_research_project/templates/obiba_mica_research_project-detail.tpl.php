@@ -52,9 +52,7 @@
               <th><?php print t('Data Access Request') ?></th>
               <td>
                 <p>
-                  <a href="<?php print MicaClientPathProvider::data_access_request($project->request->id) ?>">
-                    <?php print $project->request->id ?>
-                  </a>
+                  <?php print MicaClientPathProvider::data_access_request($project->request->id) ?>                    
                 </p>
               </td>
             </tr>

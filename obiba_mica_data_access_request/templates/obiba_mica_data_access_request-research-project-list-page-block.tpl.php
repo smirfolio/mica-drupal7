@@ -22,14 +22,12 @@
     </td>
   <?php endif; ?>
   <td>
-    <a href="<?php print MicaClientPathProvider::project($project->id) ?>">
-      <?php print obiba_mica_commons_get_localized_field($project, 'title') ?>
-    </a>
+    <?php print MicaClientPathProvider::project($project->id, obiba_mica_commons_get_localized_field($project, 'title')) ?>
   </td>
   <td>
     <?php if (!empty($project->request)) : ?>
       <?php if ($project->request->viewable) : ?>
-        <a href="<?php print MicaClientPathProvider::data_access_request($project->request->id) ?>"><?php print $project->request->id ?></a>
+        <?php print MicaClientPathProvider::data_access_request($project->request->id) ?>
       <?php else : ?>
         <span><?php print $project->request->id ?></span>
       <?php endif; ?>
