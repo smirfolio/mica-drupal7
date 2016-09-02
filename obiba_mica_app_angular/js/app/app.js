@@ -117,6 +117,10 @@ mica.provider('SessionProxy',
     };
   });
 
+mica.run(['amMoment' , function(amMoment){
+  amMoment.changeLocale(Drupal.settings.angularjsApp.locale);
+}]);
+
 mica.controller('MainController', [
   function () {
   }]);
