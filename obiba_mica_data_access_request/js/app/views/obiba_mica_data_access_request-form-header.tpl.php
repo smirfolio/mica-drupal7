@@ -18,8 +18,7 @@
 
 <div>
   <h3 class="page-header">
-    <a href="<?php print url(MicaClientPathProvider::DATA_ACCESS_LIST, array('fragment' => 'data-access-requests')); ?>"
-      title="<?php print variable_get_value('access_my_requests_button'); ?>">
+    <a href="#/data-access-requests" title="<?php print variable_get_value('access_my_requests_button') ?>">
       <i class="glyphicon glyphicon-chevron-left"></i>
     </a>
     <span ng-if="newRequest">

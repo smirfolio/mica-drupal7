@@ -88,19 +88,29 @@ class MicaClientPathProvider {
   }
 
   /**
-   * The project detail url.
+   * The project detail url or link if no text is present.
+   * 
+   * @param $id
+   * @param $text
+   * @return mixed
+   */
+  public static function project($id, $text = NULL) {
+    if (empty($text)) {
+      global $base_url;
+      return $base_url . '/' . preg_replace('/\\{id\\}/', $id, self::PROJECT, 1);
+    } else {
+      return l($text, preg_replace('/\\{id\\}/', $id, self::PROJECT, 1));
+    }
+  }
+
+  /**
+   * The data acess request detail link
    * 
    * @param $id
    * @return mixed
    */
-  public static function project($id) {
-    global $base_url;
-    return $base_url . '/' . preg_replace('/\\{id\\}/', $id, self::PROJECT, 1);
-  }
-
-  public static  function data_access_request($id) {
-    global $base_url;
-    return $base_url . '/' . MicaClientPathProvider::DATA_ACCESS_REQUEST . '#/data-access-request/' . $id;
+  public static function data_access_request($id) {
+    return l($id, MicaClientPathProvider::DATA_ACCESS_REQUEST, array('fragment' => '/data-access-request/' . $id));
   }
 
   /**

@@ -15,9 +15,7 @@
   <div class="col-xs-12">
     <div>
       <h4>
-        <a href="<?php print MicaClientPathProvider::project($project->id); ?>">
-          <?php print obiba_mica_commons_get_localized_field($project, 'title') ?>
-        </a>
+        <?php print MicaClientPathProvider::project($project->id, obiba_mica_commons_get_localized_field($project, 'title')); ?>
       </h4>
     </div>
     <hr class="no-margin">

@@ -77,11 +77,11 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', Drupal.settings.basePath + 'mica/repository/:type/_rql/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageResource', Drupal.settings.basePath + 'mica/repository/variables/_coverage/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageDownloadResource',  Drupal.settings.basePath + 'mica/repository/variables/_coverage_download/:query/ws');
-    ngObibaMicaUrlProvider.setUrl('VariablePage', Drupal.settings.basePath + 'mica/variable/:variable');
-    ngObibaMicaUrlProvider.setUrl('NetworkPage', Drupal.settings.basePath + 'mica/network/:network');
-    ngObibaMicaUrlProvider.setUrl('StudyPage', Drupal.settings.basePath + 'mica/study/:study');
-    ngObibaMicaUrlProvider.setUrl('StudyPopulationsPage', Drupal.settings.basePath + 'mica/study/:study/#population-:population');
-    ngObibaMicaUrlProvider.setUrl('DatasetPage', Drupal.settings.basePath + 'mica/:type/:dataset');
+    ngObibaMicaUrlProvider.setUrl('VariablePage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variable/:variable');
+    ngObibaMicaUrlProvider.setUrl('NetworkPage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/network/:network');
+    ngObibaMicaUrlProvider.setUrl('StudyPage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/:study');
+    ngObibaMicaUrlProvider.setUrl('StudyPopulationsPage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/:study/#population-:population');
+    ngObibaMicaUrlProvider.setUrl('DatasetPage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/:type/:dataset');
     ngObibaMicaUrlProvider.setUrl('BaseUrl', Drupal.settings.basePath);
     ngObibaMicaUrlProvider.setUrl('FileBrowserFileResource', Drupal.settings.basePath + 'mica/file');
     ngObibaMicaUrlProvider.setUrl('FileBrowserSearchResource', Drupal.settings.basePath + 'mica/files/search');
