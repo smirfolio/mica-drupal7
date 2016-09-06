@@ -43,7 +43,7 @@
         $("body").on("click", "#table-users tbody #applicantProfile", function (e) {
           e.preventDefault();
           $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix +
-            'mica/data-access/user/' + $(this).attr("data-id-applicant") + '/ws')
+            'mica/data_access/user/' + $(this).attr("data-id-applicant") + '/ws')
             .done(function (data) {
               modalProfile(this).find('#user-attributes').html(data.profile_html);
               return false;
@@ -60,9 +60,6 @@
           modal.find('a#data-email-applicant').attr("href", 'mailto:' + $(localProfile).attr("data-email-applicant"));
           return modal;
         }
-
-
-
       }
     }
   }

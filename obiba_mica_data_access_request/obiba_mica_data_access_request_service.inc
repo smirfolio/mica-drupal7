@@ -184,7 +184,7 @@ function obiba_mica_data_access_request_delete_request_access($id_request) {
  */
 function obiba_mica_data_access_request_redirect($operation, $id_request) {
   global $base_url;
-  $url = $base_url . '/' . 'mica/data-access/request#/' . $operation . '/' . $id_request;
+  $url = $base_url . '/' . 'mica/data_access/request#/' . $operation . '/' . $id_request;
   header('Location: ' . $url, TRUE);
   drupal_exit($url);
 }
