@@ -185,7 +185,7 @@ mica.factory('ForbiddenDrupalRedirect', function () {
       var regExp = new RegExp('(view|edit)\/(.*)$');
       var results = regExp.exec(path);
       if (results && results.length > 1) {
-        return '?destination=mica/data-access/request/redirect/' + results[1] + '/' + results[2];
+        return '?destination=mica/data_access/request/redirect/' + results[1] + '/' + results[2];
       }
 
       return '';
