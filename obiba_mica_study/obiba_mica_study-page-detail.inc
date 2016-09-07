@@ -394,9 +394,9 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
         )),
         'desc' => $dce_description,
         'start_year' => $dce_wrapper->startYear,
-        'start_month' => $dce_wrapper->startMonth,
+        'start_month' => !empty($dce_wrapper->startMonth) ? $dce_wrapper->startMonth : NULL,
         'end_year' => $dce_wrapper->endYear,
-        'end_month' => $dce_wrapper->endMonth,
+        'end_month' => !empty($dce_wrapper->endMonth) ? $dce_wrapper->endMonth : NULL,
       )
     );
   }
