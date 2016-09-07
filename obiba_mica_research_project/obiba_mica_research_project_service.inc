@@ -12,10 +12,19 @@
  */
 
 /**
+ * Get the dar research project
+ */
+function obiba_mica_research_project_get_dar_projects() {
+  $research_project_resource = new MicaResearchProjectResource(NULL);
+  $response = $research_project_resource->getProjectsWithAccessibleDAR();
+  return $response;
+}
+
+/**
  * Get the research project form config
  */
 function obiba_mica_project_form_get_config() {
   $mica_client = new MicaResearchProjectResource(NULL);
   $config = $mica_client->getFormDefinition();
-  drupal_json_output($config);
+  return $config;
 }

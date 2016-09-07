@@ -22,3 +22,18 @@ function obiba_mica_research_project_create_node() {
   $research_project_node_page = obiba_mica_commons_add_page(st('Approved Projects'), '');
   variable_set('research_project_page', $research_project_node_page->nid);
 }
+function obiba_mica_research_project_uninstall() {
+  variable_del('research_project_page');
+  variable_del('project_approved_page_title');
+  variable_del('project_research_menu_title');
+  variable_del('project_empty_label');
+  variable_del('data_access_request_my_research_projects_title');
+  variable_del('data_access_request_research_projects_title');
+  variable_del('project_approved_list_show_count_caption');
+  variable_del('project_approved_list_show_search_form');
+  variable_del('dar_research_project_list_applicant');
+  variable_del('dar_research_project_list_title');
+  variable_del('dar_research_project_list_dar_label');
+  variable_del('dar_research_project_list_start_date');
+  variable_del('dar_research_project_list_end_date');
+}

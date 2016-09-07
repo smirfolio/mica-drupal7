@@ -14,9 +14,8 @@ class MicaResearchProjectResource extends MicaClient {
    * MicaResearchProjectResource constructor.
    *
    * @param null|string $mica_url
-   * @param string $method
    */
-  public function __construct($mica_url, $method = 'METHOD_POST') {
+  public function __construct($mica_url) {
     parent::__construct($mica_url);
   }
 
@@ -129,7 +128,7 @@ class MicaResearchProjectResource extends MicaClient {
   }
 
   public function getFormDefinition() {
-    $url = $this->micaUrl . '/config/project-form';
+    $url = $this->micaUrl . '/config/project/form';
     $this->setLastResponse(NULL);
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
