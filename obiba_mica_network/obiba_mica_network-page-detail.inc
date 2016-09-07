@@ -101,6 +101,7 @@ function obiba_mica_network_page_detail($network_id) {
     drupal_add_js(drupal_get_path('module', 'obiba_mica_network') .
       '/js/mica-network-detail.js', 'file');
     drupal_add_js(array(
+      'networkUrl' => rawurlencode($network_id),
       'study_ids' => $network_dto->studyIds
     ), 'setting');
     $network_theme = obiba_mica_commons_get_cache('network_theme_cache-' . $network_id);
