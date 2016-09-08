@@ -10,7 +10,6 @@
 function obiba_mica_variable_info($options) {
   _obiba_mica_variable_info_mica_server($variable);
   _obiba_mica_variable_info_access($variable);
-  _obiba_mica_variable_info_project($variable);
 
   _obiba_mica_variable_search_page($variable);
   _obiba_mica_variable_search_networks($variable);
@@ -309,42 +308,6 @@ function _obiba_mica_variable_info_access(&$variable) {
     'description' => t('The list registered users title page.'),
     'type' => 'string',
     'default' => 'Registered Users',
-  );
-}
-
-/**
- * Setting Variable project page
- */
-function _obiba_mica_variable_info_project(&$variable) {
-  $variable['project_approved_page_title'] = array(
-    'title' => t('Approved Projects'),
-    'description' => 'The list of approved research projects',
-    'type' => 'string',
-    'default' => 'Approved Projects'
-  );
-  $variable['project_empty_label'] = array(
-    'title' => t('No project label'),
-    'description' => t('Text to be displayed when no network is found.'),
-    'type' => 'string',
-    'default' => 'No project found'
-  );
-  $variable['project_page_title'] = array(
-    'title' => t('Research Project Page'),
-    'description' => 'The detail page of a research project',
-    'type' => 'string',
-    'default' => 'Research Project Page'
-  );
-  $variable['data_access_request_my_research_projects_title'] = array(
-    'title' => t('My Research Projects'),
-    'description' => t('A list of research projects linked to the corresponding data access request (if any).'),
-    'type' => 'string',
-    'default' => 'My Research Projects'
-  );
-  $variable['data_access_request_research_projects_title'] = array(
-    'title' => t('Research Projects'),
-    'description' => t('A list of research projects linked to the corresponding data access request (if any) for DAO.'),
-    'type' => 'string',
-    'default' => 'Research Projects'
   );
 }
 

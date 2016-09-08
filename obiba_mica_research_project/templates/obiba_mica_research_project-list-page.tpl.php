@@ -7,8 +7,10 @@
       $caption = $count < 2 ? t('Project') : t('Projects');
     ?>
     <div class="col-xs-4 col-sm-2 min-height-align search-count">
+      <?php if (variable_get_value('project_approved_list_show_count_caption')): ?>
       <span id="refresh-count"><?php print $count ?></span>
       <span id="refresh-count"><?php print $caption ?></span>
+      <?php endif; ?>
     </div>
     
     <div class="col-xs-8 col-sm-10 min-height-align">

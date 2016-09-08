@@ -7,7 +7,7 @@ include_once('includes/obiba_mica_research_project_resource.inc');
  * @return mixed
  */
 function obiba_mica_research_project_page_detail($project_id) {
-  $research_project_resource = new MicaResearchProjectResource(NULL, 'METHOD_GET');   
+  $research_project_resource = new MicaResearchProjectResource(NULL);
   
   $response = $research_project_resource->getProject($project_id);
 
