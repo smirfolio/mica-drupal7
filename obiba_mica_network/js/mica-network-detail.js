@@ -22,7 +22,7 @@
               $('#coverage').remove();
             });
 
-          $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + settings.currentPath + '/datasets')
+          $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/network/' + settings.networkUrl + '/datasets')
               .done(function (data) {
                 if (!data) {
                   $('#datasets').remove();
