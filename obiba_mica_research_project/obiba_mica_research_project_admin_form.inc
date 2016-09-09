@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @file
  * Copyright (c) 2016 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
