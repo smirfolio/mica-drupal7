@@ -419,6 +419,8 @@ function obiba_mica_data_access_get_icon_status($status) {
 
     case 'APPROVED':
       return '<i class="glyphicon glyphicon-ok" title="'.t('Approved').'"></i>';
+    case 'CONDITIONALLY_APPROVED':
+      return '<i class="glyphicon glyphicon-unchecked" title="'.t('Conditionally approved').'"></i>';
     case 'REJECTED':
       return '<i class="glyphicon glyphicon-remove" title="'.t('Rejected').'"></i>';
 
@@ -427,9 +429,11 @@ function obiba_mica_data_access_get_icon_status($status) {
 
 function obiba_mica_data_access_user_request_list($data_access_request) {
   $status_icon = obiba_mica_data_access_get_icon_status($data_access_request->status);
-  $base_path = base_path();
+  $dar_url = url("mica/data_access/request", array(
+    'fragment' => "/data-access-request/$data_access_request->id"
+  ));
   $output = <<<EOT
-  <div><span class="pull-left"><a href="{$base_path}mica/data_access/request#/data-access-request/$data_access_request->id">$data_access_request->id</a></span>
+  <div><span class="pull-left"><a href="$dar_url">$data_access_request->id</a></span>
   <span class="pull-right">$status_icon</span></div>
 EOT;
   return $output;
@@ -481,7 +485,7 @@ function obiba_mica_data_access_requests_users_list_datatable_init() {
     'table_headers' => array(
       array("title" => t('Username'), 'width' => '25%'),
       array("title" => t('User'), 'width' => '25%'),
-      array("title" => t('Data Access Request'), 'width' => '15%'),
+      array("title" => variable_get_value('access_request_page_title'), 'width' => '15%'),
       array("title" => t('Registration')),
       array("title" => t('Last Login'))
     ),

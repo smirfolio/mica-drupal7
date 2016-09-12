@@ -8,7 +8,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use strict';
+'use strict';
 
 mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
     'obiba.mica.graphics'
