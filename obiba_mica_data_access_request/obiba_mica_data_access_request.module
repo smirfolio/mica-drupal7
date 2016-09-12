@@ -435,8 +435,8 @@ EOT;
   return $output;
 }
 
-function obiba_mica_data_access_requests_dar_users($data_access_requests, $users) {
-  $users_dar = array_filter($users, function ($value_user) use ($data_access_requests) {
+function obiba_mica_data_access_requests_dar_users($data_access_requests, $users = array()) {
+  $users_dar = is_object($users) ? array() : array_filter($users, function ($value_user) use ($data_access_requests) {
     $id_dars = array();
     if (array_filter($data_access_requests, function ($dar) use ($value_user, &$id_dars) {
       if ($value_user->username === $dar->profile->username) {
@@ -489,9 +489,9 @@ function obiba_mica_data_access_requests_users_list_datatable_init() {
   ), 'setting');
 }
 
-function obiba_mica_data_access_request_table_users_list_rows($users) {
+function obiba_mica_data_access_request_table_users_list_rows($users = array()) {
   $rows = array();
-  foreach ($users as $user) {
+  foreach ((is_object($users) ? array() : $users) as $user) {
     $user_full_name =
       obiba_mica_data_access_request_profile_attribute($user->attributes,
         'firstName') .
