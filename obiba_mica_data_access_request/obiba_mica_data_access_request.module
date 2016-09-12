@@ -1,7 +1,6 @@
 <?php
 /**
- * @file
- * Copyright (c) 2015 OBiBa. All rights reserved.
+ * Copyright (c) 2016 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -212,7 +211,6 @@ function obiba_mica_data_access_request_load_menus() {
 
   $items[MicaClientPathProvider::DATA_ACCESS_LIST] = array(
     'access callback' => 'obiba_mica_data_access_request_permission_check',
-    'title' => variable_get('access_requests_page_title', 'My Access Requests'),
     'title callback' => 'obiba_mica_data_access_request_dar_title_callback',
     'menu_name' => 'main-menu',
     'options' => array('fragment' => 'data-access-requests'),
