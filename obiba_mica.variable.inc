@@ -238,7 +238,7 @@ function _obiba_mica_variable_info_access(&$variable) {
     'title' => t('Home Page title'),
     'description' => t('Data Access home page title.'),
     'type' => 'string',
-    'default' => 'Data Access',
+    'default' => 'Data Access Process',
   );
   $variable['access_requests_page_title'] = array(
     'title' => t('Requests Page title'),
