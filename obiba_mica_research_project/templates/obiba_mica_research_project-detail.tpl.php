@@ -22,7 +22,7 @@
   <section>
     <div class="row">
       <div class="col-lg-6 col-xs-12">
-        <h2><?php print t('Status') ?></h2>
+        <h2><?php print t('Overview') ?></h2>
 
         <?php if (!empty($model->startDate) && !empty($model->endDate)) { print render((obiba_mica_commons_progress_bar($model->startDate, $model->endDate))); } ?>
 
