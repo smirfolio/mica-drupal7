@@ -153,8 +153,9 @@ function obiba_mica_research_project_dar_research_projects_list_page() {
         (!empty($content->startDate) && $field_start_date_exist)?obiba_mica_commons_convert_and_format_string_date($content->startDate, 'D. d-m-Y'):'',
         (!empty($content->endDate) && $field_end_date_exist)?obiba_mica_commons_convert_and_format_string_date($content->endDate, 'D. d-m-Y'):''
       );
+      $rows[]= !empty($row_applicant)?array_merge($row_applicant,$row ):$row;
     }
-    $rows[]= !empty($row_applicant)?array_merge($row_applicant,$row ):$row;
+
   }
   return theme('table',array(
     'header' => $header,
