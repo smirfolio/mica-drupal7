@@ -901,3 +901,23 @@ function obiba_mica_commons_progress_bar($start_date, $end_date) {
   </div>
 </div>';
 }
+
+/**
+ * Title  callback for menu.
+ */
+function obiba_mica_commons_get_menu_title($title_variable){
+  return variable_get_value($title_variable);
+}
+
+/**
+ * Title  callback for menu.
+ */
+function obiba_mica_commons_setting_menu_title_from_callback(&$variables){
+  if(!empty($variables['element']['#original_link']['title_callback']))
+    if(!empty($variables['element']['#original_link']['title_arguments'])){
+      $variables['element']['#title']=$variables['element']['#original_link']['title_callback'](unserialize($variables['element']['#original_link']['title_arguments'])[0]);
+    }
+    else{
+      $variables['element']['#title']=$variables['element']['#original_link']['title_callback']();
+    }
+}

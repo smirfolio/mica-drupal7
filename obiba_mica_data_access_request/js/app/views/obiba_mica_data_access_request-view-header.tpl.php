@@ -27,10 +27,9 @@
 
 <div>
   <h3 class="page-header">
-    <a href="#/data-access-requests" title="<?php print variable_get_value('access_my_requests_button') ?>">
+    <a href="#/data-access-requests" title="<?php print obiba_mica_data_access_request_dar_title_callback(); ?>">
       <i class="glyphicon glyphicon-chevron-left"></i>
     </a>
-    <?php print variable_get_value('access_request_page_title'); ?>:
-    {{dataAccessRequest.id}}
+    <span translate>data-access-requests</span> : {{dataAccessRequest.id}}
   </h3>
 </div>

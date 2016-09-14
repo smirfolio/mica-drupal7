@@ -52,7 +52,7 @@
     ?>
     <?php if ($can_access) : ?>
       <?php
-      print l(variable_get_value('access_my_requests_button'), MicaClientPathProvider::DATA_ACCESS_LIST,
+      print l(obiba_mica_data_access_request_dar_title_callback(), MicaClientPathProvider::DATA_ACCESS_LIST,
         array(
           'attributes' => array('class' => array('btn', 'btn-primary')),
           'fragment' => 'data-access-requests',

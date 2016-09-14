@@ -36,7 +36,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
         <i class="fa fa-pencil-square-o"></i> <?php print t('Edit')?></a>
     <?php endif; ?>
 
-    <?php if (variable_get_value('mica_statistics')) : ?>
+    <?php if (variable_get_value('dataset_detailed_crosstab')) : ?>
       <?php print MicaClientAnchorHelper::datasetCrosstab($dataset_dto, TRUE); ?>
     <?php endif; ?>
 
