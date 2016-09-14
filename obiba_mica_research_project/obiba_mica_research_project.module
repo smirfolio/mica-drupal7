@@ -18,7 +18,8 @@ function obiba_mica_research_project_menu() {
   $items = array();
 
   $items[MicaClientPathProvider::RESEARCH_PROJECT] = array(
-    'title' => variable_get('project_research_menu_title', 'Research'),
+    'title callback' => 'obiba_mica_commons_get_menu_title',
+    'title arguments' => array('project_research_menu_title'),
     'description' => 'Research project',
     'page callback' => 'obiba_mica_research_project_page_list',
     'file' => 'obiba_mica_research_project-page-list.inc',
@@ -30,7 +31,8 @@ function obiba_mica_research_project_menu() {
   );
 
   $items[MicaClientPathProvider::RESEARCH_PROJECT_APPROVED] = array(
-    'title' => variable_get('project_approved_page_title', 'Approved Projects'),
+    'title callback' => 'obiba_mica_commons_get_menu_title',
+    'title arguments' =>array('project_approved_page_title'),
     'description' => 'Approved research projects',
     'access callback' => TRUE,
     'menu_name' => 'main-menu',
@@ -54,7 +56,6 @@ function obiba_mica_research_project_menu() {
 function obiba_mica_research_project_menu_alter(&$items) {
   $path_module_research_projects = drupal_get_path('module', 'obiba_mica_research_project');
   $items[MicaClientPathProvider::DATA_ACCESS_PROJECTS] = array(
-    'title' => variable_get_value('data_access_request_research_projects_title'),
     'title callback' => 'obiba_mica_research_project_list_page_title_callback',
     'description' => 'List Research Projects',
     'menu_name' => 'main-menu',
@@ -65,6 +66,17 @@ function obiba_mica_research_project_menu_alter(&$items) {
     'weight' => 3
   );
 }
+
+/**
+ * Implements hook_preprocess_menu_link().
+ */
+function obiba_mica_research_project_preprocess_menu_link(&$variables) {
+  if(strstr($variables['element']['#href'], 'mica/research'))
+  {
+    obiba_mica_commons_setting_menu_title_from_callback($variables);
+  }
+}
+
 /**
  * Implements hook_theme().
  */

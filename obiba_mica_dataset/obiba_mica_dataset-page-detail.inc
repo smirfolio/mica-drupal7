@@ -760,7 +760,7 @@ function _obiba_mica_dataset_variables_crosstab_download($doc_type, $dataset_typ
 /**
  * Variables information.
  */
-function obiba_mica_dataset_variable_info($variable_id) {
+function obiba_mica_dataset_get_variable_info($variable_id) {
   $dataset_resource = new MicaDatasetResource();
   $variable_dto = $dataset_resource->getVariable($variable_id);
   drupal_json_output($variable_dto);

@@ -13,17 +13,6 @@
  * Implements hook_menu().
  */
 function obiba_mica_app_angular_menu() {
-  $external_items = array();
-  $external_items += obiba_mica_app_angular_load_external_menus_definitions();
-
-  foreach ($external_items as $key_item => $external_item) {
-    $external_items[$key_item]['page callback']
-      = 'obiba_mica_app_angular_main_page';
-    if (!empty($external_item['module_caller'])) {
-      $external_items[$key_item]['page arguments']
-        = array($external_item['module_caller']);
-    }
-  }
   $items = array();
 
   $items['obiba-angular-app'] = array(
@@ -49,9 +38,26 @@ function obiba_mica_app_angular_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK
   );
-  return $items + $external_items;
+  return $items;
 }
 
+/**
+ * Implements hook_menu().
+ */
+function obiba_mica_app_angular_menu_alter(&$items) {
+  $external_items = array();
+  $external_items += obiba_mica_app_angular_load_external_menus_definitions();
+
+  foreach ($external_items as $key_item => $external_item) {
+    $external_items[$key_item]['page callback']
+      = 'obiba_mica_app_angular_main_page';
+    if (!empty($external_item['module_caller'])) {
+      $external_items[$key_item]['page arguments']
+        = array($external_item['module_caller']);
+    }
+  }
+  $items += $external_items;
+}
 /**
  * Implements hook_library().
  */

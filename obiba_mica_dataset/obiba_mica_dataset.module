@@ -14,6 +14,8 @@
  * Code for obiba_mica_dataset module.
  */
 
+include_once('obiba_mica_dataset_admin_form.inc');
+
 /**
  * Implements hook_menu().
  */
@@ -110,7 +112,7 @@ function obiba_mica_dataset_menu() {
   );
 
   $items['mica/variable/%/ws'] = array(
-    'page callback' => 'obiba_mica_dataset_variable_info',
+    'page callback' => 'obiba_mica_dataset_get_variable_info',
     'file' => 'obiba_mica_dataset-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2),
@@ -192,6 +194,13 @@ function obiba_mica_dataset_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function  obiba_mica_dataset_form_obiba_mica_content_pages_admin_settings_alter(&$form, &$form_state, $form_id){
+  obiba_mica_dataset_admin_settings($form);
 }
 
 /**

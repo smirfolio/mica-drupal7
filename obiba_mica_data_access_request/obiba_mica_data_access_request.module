@@ -17,7 +17,8 @@ function obiba_mica_data_access_request_menu() {
   $items = array();
 
   $items[MicaClientPathProvider::DATA_ACCESS] = array(
-    'title' => variable_get('access_request_page_title', 'Data Access'),
+    'title callback' => 'obiba_mica_commons_get_menu_title',
+    'title arguments' => array('access_request_page_title'),
     'page callback' => 'obiba_mica_data_access_request_page',
     'access callback' => TRUE,
     'expanded' => TRUE,
@@ -27,8 +28,9 @@ function obiba_mica_data_access_request_menu() {
   );
 
   $items[MicaClientPathProvider::DATA_ACCESS_HOME] = array(
-    'title' => variable_get('access_home_page_title', 'Data Access Process'),
-    'description' => 'Data access',
+    'title callback' => 'obiba_mica_commons_get_menu_title',
+    'title arguments' => array('access_home_page_title'),
+    'description' => 'Data access process',
     'access callback' => TRUE,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
@@ -154,7 +156,8 @@ function obiba_mica_data_access_request_menu() {
   );
 
   $items[MicaClientPathProvider::DATA_ACCESS_USERS_LIST] = array(
-    'title' => variable_get_value('user_list_page_title'),
+    'title callback' => 'obiba_mica_commons_get_menu_title',
+    'title arguments' => array('user_list_page_title'),
     'page callback' => 'obiba_mica_data_access_request_users_list_page',
     'description' => 'List Researchers',
     'access callback' => 'obiba_mica_data_access_request_permission_check',
@@ -164,6 +167,16 @@ function obiba_mica_data_access_request_menu() {
     'weight' => 1000
   );
   return $items;
+}
+
+/**
+ * Implements hook_preprocess_menu_link().
+ */
+function obiba_mica_data_access_request_preprocess_menu_link(&$variables) {
+  if(strstr($variables['element']['#href'], 'mica/data_access'))
+  {
+    obiba_mica_commons_setting_menu_title_from_callback($variables);
+  }
 }
 
 /**
