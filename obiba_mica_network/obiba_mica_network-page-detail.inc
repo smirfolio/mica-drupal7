@@ -149,13 +149,23 @@ function obiba_mica_network_page_detail($network_id) {
 }
 
 function obiba_mica_network_page_detail_datasets($network_id) {
-  $output = NULL;
-  $network_resource = new MicaNetworkResource();
-  $network_dto = $network_resource->get_network($network_id);
+  if (!variable_get_value('study_show_datasets')) {
+    exit;
+  }
 
-  $studies = $network_dto != null ? $network_dto->studyIds : array();
+  $cached_datasets = obiba_mica_commons_get_cache('network-datasets-cache-' . $network_id);
 
-  obiba_mica_study_page_detail_datasets(implode(',', $studies), 'HarmonizationDataset', $network_id);
+  if (!empty($cached_datasets)) {
+    $themed_datasets = $cached_datasets;
+  } else {
+    $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_network(NULL, 'HarmonizationDataset', $network_id) : NULL;
+    $themed_datasets = empty($dataset_output) ? 'empty' : theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
+    obiba_mica_commons_set_cache('network-datasets-cache-' . $network_id, $themed_datasets);
+  }
+
+  if($themed_datasets !== 'empty') {
+    print $themed_datasets;
+  }
 }
 
 function obiba_mica_network_statistics_angular_options($networks_id) {
