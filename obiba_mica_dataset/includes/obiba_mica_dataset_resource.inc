@@ -369,7 +369,8 @@ class MicaDatasetResource extends MicaClient {
    *   The server response.
    */
   public function getVariable($variable_id) {
-    $resource_query = '/variable/' . rawurlencode($variable_id);
+    global $language;
+    $resource_query = sprintf("/variable/%s?locale=%s", rawurlencode($variable_id), $language->language);
     $this->setLastResponse(NULL);
     $this->getCache($resource_query);
     if (!isset($this->result_resource_query)) {
