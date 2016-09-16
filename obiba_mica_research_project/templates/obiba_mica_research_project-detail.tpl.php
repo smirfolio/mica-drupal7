@@ -48,7 +48,7 @@
 
           <?php if (module_exists('obiba_mica_data_access_request') && (!empty($project->request) && $project->request->viewable)) : ?>
             <tr>
-              <th><?php print variable_get_value('access_request_page_title') ?></th>
+              <th><?php print variable_get_value('dar_research_project_list_dar_label') ?></th>
               <td>
                 <p>
                   <?php print MicaClientPathProvider::data_access_request($project->request->id) ?>                    
