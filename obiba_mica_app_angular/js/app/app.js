@@ -67,6 +67,7 @@ var mica = angular.module('mica', modules);
  */
 mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
   function (ngObibaMicaSearchProvider, ngObibaMicaUrlProvider) {
+    ngObibaMicaUrlProvider.setUrl('DataAccessClientDetailPath', 'mica/data_access/request');
     ngObibaMicaUrlProvider.setUrl('DataAccessFormConfigResource', 'data-access-form/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestsExportCsvResource', 'requests/csv/ws?lang=:lang');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestsResource', 'requests/ws');
@@ -92,7 +93,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('StudyPage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/:study');
     ngObibaMicaUrlProvider.setUrl('StudyPopulationsPage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/:study/#population-:population');
     ngObibaMicaUrlProvider.setUrl('DatasetPage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/:type/:dataset');
-    ngObibaMicaUrlProvider.setUrl('BaseUrl', Drupal.settings.basePath);
+    ngObibaMicaUrlProvider.setUrl('BaseUrl', Drupal.settings.basePath + Drupal.settings.pathPrefix);
     ngObibaMicaUrlProvider.setUrl('FileBrowserFileResource', Drupal.settings.basePath + 'mica/file');
     ngObibaMicaUrlProvider.setUrl('FileBrowserSearchResource', Drupal.settings.basePath + 'mica/files/search');
     ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', Drupal.settings.basePath + 'mica/file/download?path=:path&inline=:inline');
