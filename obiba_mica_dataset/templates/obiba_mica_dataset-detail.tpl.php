@@ -198,7 +198,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 </td>
               </tr>
               <tr>
-                <th><?php print t('Target Number of Participants') ?></th>
+                <th><?php print variable_get_value('study_target_number_participant_label') ?></th>
                 <td>
                   <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
                     isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ?

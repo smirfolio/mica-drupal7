@@ -79,7 +79,7 @@
             <?php endif; ?>
             <?php
             if (!empty($study->targetNumber)):
-              print (empty($study->designs) ? '' : '; ') . t('Target number of participants');
+              print (empty($study->designs) ? '' : '; ') . variable_get_value('study_target_number_participant_label');
               ?>:
               <span>
               <?php print $study->targetNumber->noLimit === TRUE

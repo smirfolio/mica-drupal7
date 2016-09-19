@@ -198,7 +198,7 @@
 
           <?php if (!empty($study_dto->model->numberOfParticipants->participant->number)): ?>
             <tr>
-              <th><?php print t('Target Number of Participants') ?></th>
+              <th><?php print variable_get_value('study_target_number_participant_label') ?></th>
               <td>
                 <p>
                   <?php print obiba_mica_commons_format_number($study_dto->model->numberOfParticipants->participant->number); ?>
@@ -212,8 +212,7 @@
 
           <?php if (!empty($study_dto->model->numberOfParticipants->sample->number)): ?>
             <tr>
-              <th><?php print t('Target Number of Participants with
-              Biological Samples') ?></th>
+              <th><?php print variable_get_value('study_target_number_participant_with_sample_label') ?></th>
               <td>
                 <p>
                   <?php print obiba_mica_commons_format_number($study_dto->model->numberOfParticipants->sample->number); ?>
@@ -227,8 +226,7 @@
 
           <?php if (!empty($study_dto->model->numberOfParticipants->info)): ?>
             <tr>
-              <th><?php print t('Supplementary Information About Target
-              Number of Participants') ?></th>
+              <th><?php print variable_get_value('study_supplementary_information_about_target_number_participant') ?></th>
               <td>
                 <p><?php print obiba_mica_commons_get_localized_field($study_dto->model->numberOfParticipants, 'info'); ?></p>
               </td>
