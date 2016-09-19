@@ -30,6 +30,6 @@
     <a href="#/data-access-requests" title="<?php print obiba_mica_data_access_request_dar_title_callback(); ?>">
       <i class="glyphicon glyphicon-chevron-left"></i>
     </a>
-    <span translate>data-access-requests</span> : {{dataAccessRequest.id}}
+    <span ><?php print variable_get_value('access_request_page_title'); ?></span> : {{dataAccessRequest.id}}
   </h3>
 </div>
