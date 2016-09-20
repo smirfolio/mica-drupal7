@@ -28,7 +28,7 @@
 
 <div>
   <h3 class="page-header">
-    <a href="#/data-access-requests" title="<?php print obiba_mica_data_access_request_dar_title_callback(); ?>">
+    <a href="{{getDataAccessListPageUrl}}#/data-access-requests" title="<?php print obiba_mica_data_access_request_dar_title_callback(); ?>">
       <i class="glyphicon glyphicon-chevron-left"></i>
     </a>
     <span ng-if="newRequest" translate>new-data-access-request</span>
