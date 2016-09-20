@@ -51,7 +51,7 @@ class MicaDatasetResource extends MicaClient {
    * @return array
    *   Server response.
    */
-  public function getDatasets($resource = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL) {
+  public function getDatasets($resource = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $network_id=NULL) {
     global $language;
     $this->setLastResponse(NULL);
     $from = empty($from) ? '0' : $from;
@@ -60,13 +60,15 @@ class MicaDatasetResource extends MicaClient {
     $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
     $query = empty($query) ? '' : ",match($query,(Mica_dataset.name,Mica_dataset.acronym,Mica_dataset.description))";
     $resource_params = empty($resource) ? '' : ",in(Mica_dataset.className,$resource)";
+    $network_params = empty($network_id) ? '' : ",in(Mica_dataset.networkId,$network_id)";
     $studies_param = empty($study_id) ? '' :",study(in(Mica_study.id,(" . rawurlencode($study_id) . ")))";
+
     if (!empty($query) || !empty($resource_params) || !empty($studies_param)) {
-      $params = "dataset(limit($from,$limit)$resource_params$query$sort_rql_bucket)$studies_param";
-    }
-    else {
+      $params = "dataset(limit($from,$limit)$resource_params$network_params$query$sort_rql_bucket)$studies_param";
+    } else {
       $params = "dataset(exists(Mica_dataset.id),limit($from,$limit)$sort_rql_bucket)";
     }
+
     $params .= ",locale($language->language)";
     $resource_query = '/datasets/_rql?query=' . $params;
     $this->getCache($resource_query);
