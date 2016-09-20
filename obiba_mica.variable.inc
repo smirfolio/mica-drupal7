@@ -571,6 +571,24 @@ function _obiba_mica_variable_study_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['study_target_number_participant_label'] = array(
+    'title' => t('Target Number of Participants label'),
+    'description' => t('Set the label for target number of participants'),
+    'type' => 'string',
+    'default' => t('Target Number of Participants')
+  );
+  $variable['study_target_number_participant_with_sample_label'] = array(
+    'title' => t('Target Number of Participants with Samples label'),
+    'description' => t('Set the label for target number of participants with samples'),
+    'type' => 'string',
+    'default' => t('Target Number of Participants with Samples')
+  );
+  $variable['study_supplementary_information_about_target_number_participant'] = array(
+    'title' => t('Supplementary Information about Target Number of Participants label'),
+    'description' => t('Set the label for supplementary information about target number of participants'),
+    'type' => 'string',
+    'default' => t('Supplementary Information About Target Number of Participants')
+  );
   $variable['study_detail_show_search_button'] = array(
     'title' => t('Show the search variables button in the study page'),
     'description' => t('If selected the search variables button will be displayed in the study page'),
@@ -636,7 +654,7 @@ function _obiba_mica_variable_search_datasets(&$variable) {
     'title' => t('Datasets search label'),
     'description' => t('Text to be displayed in links to dataset search.'),
     'type' => 'string',
-    'default' => 'Search Datasets',
+    'default' => t('Search Datasets'),
   );
   $variable['datasets_empty_label'] = array(
     'title' => t('No dataset label'),

@@ -181,7 +181,7 @@ function obiba_mica_settings_data_access_content(&$form) {
 }
 
 /**
- * Study content form setting.
+ * Network content form setting.
  *
  * @param array $form
  *   The admin setting form.
@@ -220,6 +220,30 @@ function obiba_mica_settings_study_content(&$form) {
     '#type' => 'fieldset',
     '#title' => t('Study Content'),
     '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('study_target_number_participant_label');
+  $form['content_display_settings']['study_form']['study_target_number_participant_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => $info['default'],
+    '#description' => $info['description']
+  );
+
+  $info = variable_get_info('study_target_number_participant_with_sample_label');
+  $form['content_display_settings']['study_form']['study_target_number_participant_with_sample_label'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => $info['default'],
+    '#description' => $info['description']
+  );
+
+  $info = variable_get_info('study_supplementary_information_about_target_number_participant');
+  $form['content_display_settings']['study_form']['study_supplementary_information_about_target_number_participant'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => $info['default'],
+    '#description' => $info['description']
   );
 
   $form['content_display_settings']['study_form']['study_details'] = array(
