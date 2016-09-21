@@ -277,6 +277,10 @@ function obiba_mica_dataset_variable_get_harmonization($harmonized_variable) {
       'maelstrom',
       'Mlstr_harmo',
     )),
+    'status_detail' => obiba_mica_dataset_variable_attributes_detail($harmonized_variable, 'status_detail', array(
+      'maelstrom',
+      'Mlstr_harmo',
+    )),
     'comment' => obiba_mica_dataset_variable_attributes_detail($harmonized_variable, 'comment', array(
       'maelstrom',
       'Mlstr_harmo',

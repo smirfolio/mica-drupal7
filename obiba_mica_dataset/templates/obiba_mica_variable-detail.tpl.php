@@ -311,6 +311,14 @@
                 </td>
               </tr>
               <tr>
+                <th><?php print t('Status details'); ?></th>
+                <td>
+                  <?php if (!empty($variable_harmonization['status_detail'])): ?>
+                  <span><?php print t(ucfirst($variable_harmonization['status_detail'])) ?></span>
+                  <?php endif ?>
+                </td>
+              </tr>
+              <tr>
                 <th><?php print t('Comment'); ?></th>
                 <td>
                   <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : $variable_harmonization['comment']; ?></p>
