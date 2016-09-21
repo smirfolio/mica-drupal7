@@ -351,6 +351,7 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
   if (!empty($dataset_summary->{'obiba.mica.HarmonizationDatasetDto.type'})) {
     $dce_list = '<ul>';
     $dce_names = array();
+
     foreach ($dataset_summary->{'obiba.mica.HarmonizationDatasetDto.type'}->studyTables as $study_table) {
       if (empty($study_id) || $study_table->studyId == $study_id) {
         $dce_name = obiba_mica_dataset_get_dce_name_from_dataset($study_table);
@@ -366,6 +367,7 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
         }
       }
     }
+
     $dce_list .= '</ul>';
   }
 
