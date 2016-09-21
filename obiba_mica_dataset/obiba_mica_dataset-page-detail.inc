@@ -259,6 +259,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
  */
 function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_id) {
   $cached_header_variable_table = obiba_mica_commons_get_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id);
+
   if (!empty($cached_header_variable_table)) {
     $data = $cached_header_variable_table;
   }
@@ -276,6 +277,7 @@ function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_
     $data['header'] = $header;
     obiba_mica_commons_set_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id, $data);
   }
+
   return drupal_json_output($data);
 }
 
@@ -420,7 +422,9 @@ function obiba_mica_dataset_studies_table_data($variables_dataset) {
 function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_type_dto) {
   $nbr_studies = count($dataset_type_dto->studyTables);
   $witdh_column_study = (100 - (1 + 25)) / $nbr_studies;
-  if (!empty($dataset_type_dto->studyTables)) {
+  $opal_tables = _obiba_mica_dataset_harmonizations_get_all_opal_tables($dataset_type_dto);
+
+  if (!empty($opal_tables)) {
     $header[] = array(
       "sTitle" => '',
       "data" => "index",
@@ -437,18 +441,26 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
       "width" => "25%",
       "class" => "study-title",
     );
-    foreach ($dataset_type_dto->studyTables as $study_table) {
-      $study_summary = $study_table->studySummary;
-      $acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
-      $title_header = l($acronym, 'mica/study/' . $study_summary->id);
+
+    foreach ($opal_tables as $opal_table) {
+      if (empty($opal_table->studySummary)) {
+        $entity_summary = $opal_table->networkSummary;
+        $entity_url = 'mica/network/' . $entity_summary->id;
+      } else {
+        $entity_summary = $opal_table->studySummary;
+        $entity_url = 'mica/study/' . $entity_summary->id;
+      }
+
+      $acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
+      $title_header = l($acronym, $entity_url);
       $title_header = str_replace('"', '\'', $title_header);
-      if (!empty($study_table->name)) {
-        $name = ' <small title="' . obiba_mica_commons_get_localized_field($study_table, 'description') . '">' . obiba_mica_commons_get_localized_field($study_table, 'name') . '</small>';
+      if (!empty($opal_table->name)) {
+        $name = ' <small title="' . obiba_mica_commons_get_localized_field($opal_table, 'description') . '">' . obiba_mica_commons_get_localized_field($opal_table, 'name') . '</small>';
         $name = str_replace('"', '\'', $name);
         $header[] = array(
-          "data" => str_replace(' ', '_', $acronym . obiba_mica_commons_get_localized_field($study_table, 'name')),
+          "data" => str_replace(' ', '_', $acronym . obiba_mica_commons_get_localized_field($opal_table, 'name')),
           "sTitle" => $title_header . $name,
-          "name" => str_replace(' ', '_', $acronym . obiba_mica_commons_get_localized_field($study_table, 'name')),
+          "name" => str_replace(' ', '_', $acronym . obiba_mica_commons_get_localized_field($opal_table, 'name')),
           "orderable" => FALSE,
           "width" => $witdh_column_study . "%",
           "class" => "text-center study-title",
@@ -470,6 +482,21 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
 }
 
 /**
+ * @param $dataset_type_dto
+ * @return array
+ */
+function _obiba_mica_dataset_harmonizations_get_all_opal_tables($dataset_type_dto)
+{
+  $opal_tables = array_merge($dataset_type_dto->studyTables ?: array(), $dataset_type_dto->networkTables ?: array());
+
+  usort($opal_tables, function ($a, $b) {
+    return $a->weight - $b->weight;
+  });
+
+  return $opal_tables;
+}
+
+/**
  * Get harmonization dataset table.
  */
 function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $dataset_harmonizations_dto) {
@@ -486,35 +513,44 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
           "variable" => l($variable_harmonization->resolver->name, 'mica/variable/' . $variable_harmonization->resolver->id),
         );
 
-        foreach ($dataset_type_dto->studyTables as $study_table) {
+        $opal_tables = _obiba_mica_dataset_harmonizations_get_all_opal_tables($dataset_type_dto);
+
+        foreach ($opal_tables as $opal_table) {
           $found = FALSE;
-          /*********************/
-          $study_summary = $study_table->studySummary;
-          $acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
-          if (!empty($study_table->name)) {
-            $key_row = $acronym . obiba_mica_commons_get_localized_field($study_table, 'name');
-          }
-          else {
+          $entity_summary = empty($opal_table->studySummary) ? $opal_table->networkSummary : $opal_table->studySummary;
+          $acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
+
+          if (!empty($opal_table->name)) {
+            $key_row = $acronym . obiba_mica_commons_get_localized_field($opal_table, 'name');
+          } else {
             $key_row = $acronym;
           }
+
           $key_row = str_replace(' ', '_', $key_row);
-          /*********************/
+
           foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
-            if ($variable_summary->resolver->studyId == $study_table->studyId
-              && $variable_summary->resolver->project == $study_table->project
-              && $variable_summary->resolver->table == $study_table->table
-            ) {
+            if ($variable_summary->resolver->studyId == $opal_table->studyId
+              &&$variable_summary->resolver->networkId == $opal_table->networkId
+              && $variable_summary->resolver->project == $opal_table->project
+              && $variable_summary->resolver->table == $opal_table->table) {
               $status = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
                 'maelstrom',
                 'Mlstr_harmo',
               ))));
+              $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
+                  'maelstrom',
+                  'Mlstr_harmo',
+              ))));
+              $status_detail = empty($status_detail) ? $status_detail : t(ucfirst($status_detail));
               $harmonized_variable_id = $variable_summary->resolver->id;
-              $variable_title = $variable_summary->resolver->name . ' -- ' . obiba_mica_commons_get_localized_field($study_table->studySummary, 'acronym');
-              if (!empty($study_table->name)) {
-                $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($study_table, 'name') . ')';
+              $variable_title = $variable_summary->resolver->name . ' -- ' . $acronym;
+
+              if (!empty($opal_table->name)) {
+                $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
               }
+
               if (empty($status)) {
-                $icon_alert_no_status = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . t('No status') . '"></span>';
+                $icon_alert_no_status = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . $status_detail . '"></span>';
                 $row[$key_row] = l($icon_alert_no_status, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
@@ -522,9 +558,8 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                       'title' => $variable_title,
                     ),
                   ));
-              }
-              elseif ($status == 'complete') {
-                $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" data-original-title="' . t('Complete') . '"></span>';
+              } elseif ($status == 'complete') {
+                $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" data-original-title="' . $status_detail . '"></span>';
                 $row[$key_row] = l($icon_success_complete, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
@@ -534,10 +569,9 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                   ));
               }
               elseif ($status == 'impossible') {
-
                 $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
                   ObibaDatasetConstants::getIcon()
-                  . '" data-original-title="' . variable_get_value('dataset_harmonization_impossible_label') . '"></span>';
+                  . '" data-original-title="' . $status_detail . '"></span>';
                 $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
@@ -547,7 +581,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                   ));
               }
               elseif ($status == 'undetermined') {
-                $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . t('Undetermined') . '"></span>';
+                $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . $status_detail . '"></span>';
                 $row[$key_row] = l($icon_warning_undetermined, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
@@ -560,6 +594,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                 $no_value = '-';
                 $row[$key_row] = l($no_value, 'mica/variable/' . $harmonized_variable_id);
               }
+
               $found = TRUE;
               break;
             }
