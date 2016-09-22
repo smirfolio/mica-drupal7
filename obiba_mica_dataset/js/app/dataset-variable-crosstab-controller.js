@@ -375,23 +375,28 @@
 
             /**
              * Retrieves study table info for the result page
-             * @param studtTable
+             * @param opalTable
              * @returns {{summary: *, population: *, dce: *, project: *, table: *}}
              */
-            var extractStudySummaryInfo = function (studtTable) {
-              var summary = studtTable.studySummary;
-              var pop = summary.populationSummaries ? summary.populationSummaries[0] : null;
-              var dce = pop && pop.dataCollectionEventSummaries
-                ? pop.dataCollectionEventSummaries.filter(function (dce) {
-                return dce.id === studtTable.dataCollectionEventId;
-              })
-                : null;
+            var extractSummaryInfo = function (opalTable) {
+              var summary = opalTable.studySummary || opalTable.networkSummary;
+
+              if (opalTable.studySummary) {
+                var studySummary = opalTable.studySummary;
+                var pop = studySummary.populationSummaries ? studySummary.populationSummaries[0] : null;
+                var dce = pop && pop.dataCollectionEventSummaries
+                    ? pop.dataCollectionEventSummaries.filter(function (dce) {
+                  return dce.id === opalTable.dataCollectionEventId;
+                })
+                    : null;
+              }
+
               return {
                 summary: LocalizedStringService.getValue(summary.acronym),
                 population: pop ? LocalizedStringService.getValue(pop.name) : '',
                 dce: dce ? LocalizedStringService.getValue(dce[0].name) : '',
-                project: studtTable.project,
-                table: studtTable.table
+                project: opalTable.project,
+                table: opalTable.table
               }
             };
 
@@ -443,7 +448,7 @@
             $scope.getPrivacyErrorMessage = getPrivacyErrorMessage;
             $scope.canExchangeVariables = canExchangeVariables;
             $scope.exchangeVariables = exchangeVariables;
-            $scope.extractStudySummaryInfo = extractStudySummaryInfo;
+            $scope.extractSummaryInfo = extractSummaryInfo;
             $scope.lhsVariableCategory = lhsVariableCategory;
             $scope.rhsVariableCategory = rhsVariableCategory;
             $scope.clear = clear;
