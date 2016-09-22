@@ -14,6 +14,7 @@
  * Code for variable details page.
  */
 
+include_once 'includes/obiba_mica_dataset_commons.inc';
 include_once 'includes/obiba_mica_dataset_resource.inc';
 include_once 'includes/obiba_mica_variable_statistics.inc';
 
@@ -177,7 +178,7 @@ function obiba_mica_dataset_variable_get_harmonizations($variable) {
 
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_variable_harmo_datatable_init.js', 'file');
   drupal_add_js(array(
-    'table_headers' => obiba_mica_dataset_variable_get_harmonization_table_headers(),
+    'table_headers' => obiba_mica_dataset_variable_get_harmonization_table_headers($variable),
     'table_data' => obiba_mica_dataset_variable_get_harmonization_table_rows($variable),
   ), 'setting');
 }
@@ -185,12 +186,30 @@ function obiba_mica_dataset_variable_get_harmonizations($variable) {
 /**
  * GEt harmonized variable header table.
  */
-function obiba_mica_dataset_variable_get_harmonization_table_headers() {
+function obiba_mica_dataset_variable_get_harmonization_table_headers($variable) {
+  $separator = ' / ';
+
+  switch (MicaDatasetUtils::getDataschemaVariableTableType($variable)) {
+
+    case MicaDatasetUtils::TABLE_STUDY_NETWORK:
+      $table_title = t('Study') . $separator . t('Network');
+      $dce_dataset_title = t('Data Collection Event');
+      break;
+    case MicaDatasetUtils::TABLE_NETWORK:
+      $table_title = t('Network');
+      $dce_dataset_title = t('Dataset');
+      break;
+    default:
+      $table_title = $table_title = t('Study');
+      $dce_dataset_title = t('Data Collection Event');
+  }
+
   return array(
     array("title" => t('Harmonized Variable'), 'width' => '20%'),
-    array("title" => t('Study')),
-    array("title" => t('Data Collection Event'), 'width' => '40%'),
-    array("title" => t('Status'), 'width' => '15%'),
+    array("title" => $table_title),
+    array("title" => $dce_dataset_title, 'width' => '40%'),
+    array("title" => t('Status'), 'width' => '5%'),
+    array("title" => t('Status Detail'), 'width' => '10%'),
     array("title" => t('Comment')),
   );
 }
@@ -208,14 +227,28 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
     foreach ($variable_harmonizations->datasetVariableSummaries as $variable_harmonization) {
       $variable_resolver = $variable_harmonization->resolver;
       $harmonized_variable_id = $variable_resolver->id;
-      $study_id = $variable_resolver->studyId;
-      $study_summary = _obiba_mica_variable_study_summary($variable, $study_id);
-      $study_acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
-      $variable_title = $variable->name . ' -- ' . $study_acronym;
-      $variable_title_key = $variable->name . ' -- ' . $study_id;
-      if (!empty($variable_harmonization->studyTable->name)) {
-        $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
-        $variable_title_key .= ' (' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'name') . ')';
+
+      if (property_exists($variable_harmonization, 'studyTable')) {
+        $opal_table = $variable_harmonization->studyTable;
+        $entity_id = $variable_resolver->studyId;
+        $entity_summary = _obiba_mica_variable_study_summary($variable, $entity_id);
+        $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
+        $dce_dataset_title = obiba_mica_dataset_get_dce_name_from_dataset($opal_table, $entity_summary);
+        $entity_link = l($entity_acronym, 'mica/study/' . $entity_id);
+      } else if (property_exists($variable_harmonization, 'networkTable')) {
+        $opal_table = $variable_harmonization->networkTable;
+        $entity_id = $variable_resolver->networkTableId;
+        $entity_summary = _obiba_mica_variable_network_summary($variable, $entity_id);
+        $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
+        $dce_dataset_title = '';
+        $entity_link = l($entity_acronym, 'mica/network/' . $entity_id);
+      }
+
+      $variable_title = $variable->name . ' -- ' . $entity_acronym;
+      $variable_title_key = $variable->name . ' -- ' . $entity_id;
+      if (!empty($opal_table->name)) {
+        $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
+        $variable_title_key .= ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
       }
 
       $status = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status', array(
@@ -239,21 +272,27 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
         $status = '<span class="glyphicon glyphicon-question-sign alert-warningr" title="' . t('No status') . '"></span>';
       }
 
+      $status_detail= obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status_detail', array(
+        'maelstrom',
+        'Mlstr_harmo',
+      ));
+
       $rows[] = array(
         '<p>' .
         l($variable_title, 'mica/variable/' . $harmonized_variable_id, array(
           'query' => array(
             'title' => $variable_title,
           ),
-        )) . '</p><p class="help-block">' . obiba_mica_commons_get_localized_field($variable_harmonization->studyTable, 'description') . '</p>',
-        l($study_acronym, 'mica/study/' . $study_id),
-        obiba_mica_dataset_get_dce_name_from_dataset($variable_harmonization->studyTable, $study_summary),
+        )) . '</p><p class="help-block">' . obiba_mica_commons_get_localized_field($opal_table, 'description') . '</p>',
+        $entity_link,
+        $dce_dataset_title,
         l($status, 'mica/variable/' . $harmonized_variable_id, array(
           'html' => TRUE,
           'query' => array(
             'title' => $variable_title,
           ),
         )),
+        $status_detail,
         obiba_mica_dataset_variable_html_truncated(
           obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'comment', array(
             'maelstrom',
@@ -380,7 +419,23 @@ function _obiba_mica_variable_study_summary($variable, $study_id) {
   }
   // Not found in the dto, then fetch it.
   $study_resource = new MicaStudyResource();
-  return $study_resource->study($study_id);
+  return $study_resource->getStudy($study_id);
+}
+
+/**
+ * Get the network summary found in the variable.
+ *
+ * If not found, fetch the network summary directly.
+ */
+function _obiba_mica_variable_network_summary($variable, $network_table_id) {
+  foreach ($variable->networkSummaries as $network) {
+    if ($network->id == $network_table_id) {
+      return $network;
+    }
+  }
+  // Not found in the dto, then fetch it.
+  $network_resource = new MicaNetworkResource();
+  return $network_resource->get_network($network_table_id);
 }
 
 /**
@@ -390,6 +445,15 @@ function _obiba_mica_variable_study_summary($variable, $study_id) {
  */
 function _obiba_mica_variable_study_acronym($variable, $study_id) {
   return obiba_mica_commons_get_localized_field(_obiba_mica_variable_study_summary($variable, $study_id), 'acronym');
+}
+
+/**
+ * Get the study acronym from the network summary found in the variable.
+ *
+ * If not found, fetch the study summary directly.
+ */
+function _obiba_mica_variable_network_acronym($variable, $study_id) {
+  return obiba_mica_commons_get_localized_field(_obiba_mica_variable_network_summary($variable, $study_id), 'acronym');
 }
 
 /**
