@@ -39,13 +39,15 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (variable_get_value('variable_show_studies') && !empty($variable_dto->studySummaries)): ?>
+          <?php if (variable_get_value('variable_show_studies') && (!empty($variable_dto->studySummaries) || !empty($variable_dto->networkSummaries))): ?>
             <tr>
               <th>
                 <?php if ($variable_dto->variableType == 'Dataschema') :
                   print t('Studies');
-                else :
+                elseif (!empty($variable_dto->studySummaries)) :
                   print t('Study');
+                else:
+                  print t('Network');
                 endif;
                 ?>
               </th>
@@ -56,9 +58,11 @@
                       <li><?php print MicaClientAnchorHelper::study($study_summary); ?></li>
                     <?php endforeach ?>
                   </ul>
-                <?php elseif (!empty($variable_dto->studySummaries)): ?>
-                  <?php print MicaClientAnchorHelper::study($variable_dto->studySummaries[0]); ?>
-                <?php endif ?>
+                <?php elseif (!empty($variable_dto->studySummaries)):
+                  print MicaClientAnchorHelper::study($variable_dto->studySummaries[0]);
+                elseif (!empty($variable_dto->networkSummaries)):
+                  print MicaClientAnchorHelper::network($variable_dto->networkSummaries[0]);
+                endif ?>
               </td>
             </tr>
           <?php endif; ?>
@@ -310,14 +314,14 @@
                   <?php endif ?>
                 </td>
               </tr>
+              <?php if (!empty($variable_harmonization['status_detail'])): ?>
               <tr>
                 <th><?php print t('Status details'); ?></th>
                 <td>
-                  <?php if (!empty($variable_harmonization['status_detail'])): ?>
                   <span><?php print t(ucfirst($variable_harmonization['status_detail'])) ?></span>
-                  <?php endif ?>
                 </td>
               </tr>
+              <?php endif ?>
               <tr>
                 <th><?php print t('Comment'); ?></th>
                 <td>
