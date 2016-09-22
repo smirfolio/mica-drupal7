@@ -381,6 +381,26 @@ class VariableStatistics {
     ));
   }
 
+  private function getFrequenciesTableHeader($aggregation) {
+    if ($aggregation->studyTable) {
+      $study_id = $aggregation->studyTable->studyId;
+      $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
+      if (!empty($aggregation->studyTable->name)) {
+        $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
+      }
+      return $header;
+    } else if ($aggregation->networkTable) {
+      $network_id = $aggregation->networkTable->networkId;
+      $header = l(_obiba_mica_variable_network_acronym($this->variable, $network_id), 'mica/network/' . $network_id);
+      if (!empty($aggregation->networkTable->name)) {
+        $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->networkTable, 'name');
+      }
+      return $header;
+    }
+
+    return '';
+  }
+
   /**
    * Table of value frequencies.
    */
@@ -394,12 +414,7 @@ class VariableStatistics {
       if (!empty($this->variableStat->aggregations)) {
         $aggregations = $this->variableStat->aggregations;
         foreach ($aggregations as $aggregation) {
-          $study_id = $aggregation->studyTable->studyId;
-          $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
-          if (!empty($aggregation->studyTable->name)) {
-            $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
-          }
-          $headers[] = $header;
+          $headers[] = $this->getFrequenciesTableHeader($aggregation);
         }
         if (count($aggregations) > 1) {
           $headers[] = t('All');
