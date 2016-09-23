@@ -121,6 +121,14 @@ function _obiba_mica_dataset_settings_variable_content(&$form) {
     '#description' => $info['description'],
   );
 
+  $info = variable_get_info('variable_show_networks');
+  $form['content_display_settings']['variable_form']['variable_show_networks'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('variable_show_networks'),
+    '#description' => $info['description'],
+  );
+
   $info = variable_get_info('dataset_detailed_var_stats');
   $form['content_display_settings']['variable_form']['dataset_detailed_var_stats'] = array(
     '#type' => 'checkbox',

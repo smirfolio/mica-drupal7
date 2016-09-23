@@ -39,6 +39,21 @@
             </tr>
           <?php endif; ?>
 
+          <?php if ($variable_dto->variableType == 'Dataschema' && variable_get_value('variable_show_networks') && !empty($variable_dto->networkSummaries)): ?>
+            <tr>
+              <th>
+                <?php print t('Networks'); ?>
+              </th>
+              <td>
+                <ul class="list-unstyled">
+                  <?php foreach ($variable_dto->networkSummaries as $network_summary): ?>
+                    <li><?php print MicaClientAnchorHelper::network($network_summary); ?></li>
+                  <?php endforeach ?>
+                </ul>
+              </td>
+            </tr>
+          <?php endif; ?>
+
           <?php if (variable_get_value('variable_show_studies') && (!empty($variable_dto->studySummaries) || !empty($variable_dto->networkSummaries))): ?>
             <tr>
               <th>
