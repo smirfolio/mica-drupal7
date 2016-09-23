@@ -187,27 +187,10 @@ function obiba_mica_dataset_variable_get_harmonizations($variable) {
  * GEt harmonized variable header table.
  */
 function obiba_mica_dataset_variable_get_harmonization_table_headers($variable) {
-  $separator = ' / ';
-
-  switch (MicaDatasetUtils::getDataschemaVariableTableType($variable)) {
-
-    case MicaDatasetUtils::TABLE_STUDY_NETWORK:
-      $table_title = t('Study') . $separator . t('Network');
-      $dce_dataset_title = t('Data Collection Event');
-      break;
-    case MicaDatasetUtils::TABLE_NETWORK:
-      $table_title = t('Network');
-      $dce_dataset_title = t('Dataset');
-      break;
-    default:
-      $table_title = $table_title = t('Study');
-      $dce_dataset_title = t('Data Collection Event');
-  }
-
   return array(
     array("title" => t('Harmonized Variable'), 'width' => '20%'),
-    array("title" => $table_title),
-    array("title" => $dce_dataset_title, 'width' => '40%'),
+    array("title" => t('Study')),
+    array("title" => t('Data Collection Event'), 'width' => '40%'),
     array("title" => t('Status'), 'width' => '5%'),
     array("title" => t('Status Detail'), 'width' => '10%'),
     array("title" => t('Comment')),

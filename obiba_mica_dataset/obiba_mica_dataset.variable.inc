@@ -97,6 +97,12 @@ function _obiba_mica_dataset_variable_variable_content(&$variable) {
     'type' => 'string',
     'default' => TRUE,
   );
+  $variable['variable_show_networks'] = array(
+    'title' => t('Show networks'),
+    'description' => t('If selected the Networks section will be displayed'),
+    'type' => 'string',
+    'default' => TRUE,
+  );
   $variable['dataset_detailed_var_stats'] = array(
     'title' => t('Show detailed harmonization variable data statistics'),
     'description' => t('If selected, detailed data summary and crosstab statistics about each harmonized variables will be displayed when querying the harmonization variable data statistics.'),
