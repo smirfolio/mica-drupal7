@@ -24,13 +24,13 @@ function obiba_mica_network_page_detail($network_id) {
   }
   $themed_attachment = NULL;
   $network_resource = new MicaNetworkResource();
-  $network_dto = $network_resource->get_network($network_id);
+  $network_dto = $network_resource->getNetwork($network_id);
 
   $studies_statistics = '';
   if (!empty($network_dto)) {
 
     if (!empty($network_dto->networkSummaries)) {
-      $ids = array_map(function($summary){
+      $ids = array_map(function ($summary) {
         return $summary->id;
       }, $network_dto->networkSummaries);
       obiba_mica_network_networks_datatable_init($network_dto->networkSummaries, $network_resource->get_network_details($ids));
@@ -82,8 +82,10 @@ function obiba_mica_network_page_detail($network_id) {
         '/js/obiba_mica_files_attachment_download.js');
       $flat_network_attachments =
         obiba_mica_files_get_flat_attachments('network', $network_id);
-      $filtered_tree_path =
-        $flat_network_attachments->findNodeFullPath('/network/' . $network_id);
+      if (!empty($flat_network_attachments)) {
+        $filtered_tree_path =
+          $flat_network_attachments->findNodeFullPath('/network/' . $network_id);
+      }
       if (!empty($filtered_tree_path)) {
         $themed_attachment =
           $flat_network_attachments->themeFolders($filtered_tree_path,
@@ -157,13 +159,14 @@ function obiba_mica_network_page_detail_datasets($network_id) {
 
   if (!empty($cached_datasets)) {
     $themed_datasets = $cached_datasets;
-  } else {
+  }
+  else {
     $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_network(NULL, 'HarmonizationDataset', $network_id) : NULL;
     $themed_datasets = empty($dataset_output) ? 'empty' : theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
     obiba_mica_commons_set_cache('network-datasets-cache-' . $network_id, $themed_datasets);
   }
 
-  if($themed_datasets !== 'empty') {
+  if ($themed_datasets !== 'empty') {
     print $themed_datasets;
   }
 }
@@ -238,7 +241,7 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
       return array('targets' => 0, 'countries' => '');
     }
     $targets = 0;
-    foreach($network->studySummaries as $summary) {
+    foreach ($network->studySummaries as $summary) {
       $targets += empty($summary->targetNumber) ? 0 : $summary->targetNumber->number;
       if (!empty($summary->countries)) {
         $countries[] = implode(',', $summary->countries);
@@ -323,10 +326,10 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
       $rows[] = array(
         $study_summary->published ? MicaClientAnchorHelper::study($study_summary) : $acronym,
         $name,
-        implode(', ', isset($study_summary->designs) ?  obiba_mica_commons_clean_string($study_summary->designs) : array()),
+        implode(', ', isset($study_summary->designs) ? obiba_mica_commons_clean_string($study_summary->designs) : array()),
         !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? t('No Limit') :
           (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
-        isset($study_summary->countries)?obiba_mica_commons_countries($study_summary->countries) : NULL,
+        isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
         empty($study_summary->variables)
           ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, FALSE, $query)
       );
@@ -360,13 +363,13 @@ function obiba_mica_network_network_table_headers() {
 }
 
 function obiba_mica_network_coverage($study_ids) {
-    $query = RqlQueryBuilder::network_query_charts($study_ids);
-    return obiba_mica_graphic_search_query_charts(
-      $query,
-      array('group-by' => 'studyIds', 'with-facets' => 'false'),
-      NULL,
-      $study_ids
-    );
+  $query = RqlQueryBuilder::network_query_charts($study_ids);
+  return obiba_mica_graphic_search_query_charts(
+    $query,
+    array('group-by' => 'studyIds', 'with-facets' => 'false'),
+    NULL,
+    $study_ids
+  );
 }
 
 function _obiba_mica_network_has_variables($study_summaries) {

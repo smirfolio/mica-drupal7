@@ -71,7 +71,7 @@ class MicaDatasetResource extends MicaClient {
 
     $params .= ",locale($language->language)";
     $resource_query = '/datasets/_rql?query=' . $params;
-    $this->getCache($resource_query);
+    $this->drupalCache->MicaGetCache($resource_query);
     if(!isset($this->result_resource_query)){
     $url_datasets = $this->micaUrl . $resource_query;
     $request = new HttpClientRequest($url_datasets, array(
@@ -85,8 +85,11 @@ class MicaDatasetResource extends MicaClient {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      $this->result_resource_query = new DatasetJoinResponseWrapper(json_decode($data));
-      obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+      $datasets = json_decode($data);
+      if($datasets->datasetResultDto->totalCount!==0){
+      $this->result_resource_query = new DatasetJoinResponseWrapper($datasets);
+      $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+      }
       return $this->result_resource_query;
     }
     catch (HttpClientException $e) {
@@ -116,7 +119,7 @@ class MicaDatasetResource extends MicaClient {
   public function getDataset($dataset_id, $resource = 'dataset') {
     $resource_query = (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
     $this->setLastResponse(NULL);
-    $this->getCache($resource_query);
+    $this->drupalCache->MicaGetCache($resource_query);
     $url = $this->micaUrl . '/' . $resource_query;
     if (!isset($this->result_resource_query)) {
       $request = new HttpClientRequest($url, array(
@@ -132,7 +135,9 @@ class MicaDatasetResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? json_decode($data) : NULL;
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        if(!empty($this->result_resource_query)){
+        $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {
@@ -374,7 +379,7 @@ class MicaDatasetResource extends MicaClient {
     global $language;
     $resource_query = sprintf("/variable/%s?locale=%s", rawurlencode($variable_id), $language->language);
     $this->setLastResponse(NULL);
-    $this->getCache($resource_query);
+    $this->drupalCache->MicaGetCache($resource_query);
     if (!isset($this->result_resource_query)) {
       $url = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url, array(
@@ -389,7 +394,9 @@ class MicaDatasetResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $this->result_resource_query = $data ? json_decode($data) : NULL;
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        if(!empty($this->result_resource_query)){
+        $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
       }
       catch (HttpClientException $e) {

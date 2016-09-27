@@ -418,7 +418,7 @@ function _obiba_mica_variable_network_summary($variable, $network_table_id) {
   }
   // Not found in the dto, then fetch it.
   $network_resource = new MicaNetworkResource();
-  return $network_resource->get_network($network_table_id);
+  return $network_resource->getNetwork($network_table_id);
 }
 
 /**

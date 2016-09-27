@@ -104,7 +104,9 @@ function obiba_mica_research_project_get_projects($query = NULL, $limit = NULL, 
     $from = $research_project_resource->paginationListSearchParameters($_GET['page'], 'projects', $size_response);
   }
   $response = $research_project_resource->getProjects($query, $from, $size_response, $sort, $order);
+  if(!empty($response->total)){
   $_SESSION['projects']['aggregations']['total_hits'] = $response->total;
+  }
   return $response;
 }
 

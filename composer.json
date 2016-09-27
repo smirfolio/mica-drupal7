@@ -1,5 +1,11 @@
 {
   "require": {
     "erusev/parsedown": "^1.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Obiba\\ObibaMicaClient\\": "includes/"
+
+    }
   }
 }

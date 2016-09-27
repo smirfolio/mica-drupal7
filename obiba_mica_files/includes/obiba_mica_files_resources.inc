@@ -38,30 +38,33 @@ class MicaFilesResource extends MicaClient {
    * @return array
    */
   public function getAttachment($entity_type, $entity_id) {
+    $attachment = array();
     $this->setLastResponse(NULL);
     $path_attachments = '/' . $entity_type . '/' . $entity_id;
     $resource_query = '/files-search' . $this->encode_path_parts($path_attachments) .
       '?order=asc&query=&recursively=true&sort=name';
-    $url = $this->micaUrl . $resource_query;
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
+    $this->drupalCache->MicaGetCache($resource_query);
 
-    $client = $this->client();
-    $this->getCache($resource_query);
     if (!isset($this->result_resource_query)) {
+      $url = $this->micaUrl . $resource_query;
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+      ));
+      $client = $this->client();
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $this->wrapAttachments($entity_type, $entity_id, json_decode($data));
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        $attachment = json_decode($data);
+          if (!empty($attachment)) {
+          $this->result_resource_query = $this->wrapAttachments($entity_type, $entity_id, $attachment);
+          $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
-      }
-      catch (HttpClientException $e) {
+      } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
           array(
@@ -98,16 +101,17 @@ class MicaFilesResource extends MicaClient {
     ));
 
     $client = $this->client();
-    $this->getCache($resource_query);
+    $this->drupalCache->MicaGetCache($resource_query);
     if (!isset($this->result_resource_query)) {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $data;
-        obiba_mica_commons_set_cache($resource_query, $data);
+        if (!empty($data)) {
+          $this->result_resource_query = $data;
+          $this->drupalCache->MicaSetCache($resource_query, $data);
+        }
         return $data;
-      }
-      catch (HttpClientException $e) {
+      } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
           array(
@@ -130,25 +134,26 @@ class MicaFilesResource extends MicaClient {
     $this->setLastResponse(NULL);
     $resource_query = '/files-search' . $this->encode_path_parts($path) . '?' . http_build_query($query_params);
     $url = $this->micaUrl . $resource_query;
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-
-    $client = $this->client();
-    $this->getCache($resource_query);
+    $this->drupalCache->MicaGetCache($resource_query);
     if (!isset($this->result_resource_query)) {
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+      ));
+
+      $client = $this->client();
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $data;
-        obiba_mica_commons_set_cache($resource_query, $data);
+        if (!empty($data)) {
+          $this->result_resource_query = $data;
+          $this->drupalCache->MicaSetCache($resource_query, $data);
+        }
         return $data;
-      }
-      catch (HttpClientException $e) {
+      } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
           array(
@@ -251,8 +256,7 @@ class MicaFilesResource extends MicaClient {
         'raw_header_array' => parent::parseHeaders($client->lastResponse->headers),
       );
       return $raw_data;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
@@ -436,7 +440,7 @@ class Tree {
         ));
         $has_files++;
       }
-      else{
+      else {
         $folder_theme .= theme('obiba_mica_files_themed_folders_list', array(
           'indent' => $indent == 2 ? $indent - 2 : $indent,
           'folder_path' => $node->getPath() !== $id_entity ? $node->getPath() : NULL,

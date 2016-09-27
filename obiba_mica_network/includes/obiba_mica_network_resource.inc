@@ -42,7 +42,7 @@ class MicaNetworkResource extends MicaClient {
     $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
     $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
     $query = empty($query) ? NULL : ",match($query,(Mica_network.name,Mica_network.acronym,Mica_network.description))";
-    $studies_query = empty($study_id)?'':",in(Mica_network.studyIds," . rawurlencode($study_id) . ")";
+    $studies_query = empty($study_id) ? '' : ",in(Mica_network.studyIds," . rawurlencode($study_id) . ")";
     if (!empty($query || $studies_query)) {
       $params = "network(limit($from,$limit)$query$studies_query$sort_rql_bucket)";
     }
@@ -69,8 +69,7 @@ class MicaNetworkResource extends MicaClient {
         $result_resource_query = new NetworkJoinResponseWrapper(json_decode($data));
         obiba_mica_commons_set_cache($resource_query, $result_resource_query);
         return $result_resource_query;
-      }
-      catch (HttpClientException $e) {
+      } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
             '@code' => $e->getCode(),
@@ -112,8 +111,7 @@ class MicaNetworkResource extends MicaClient {
         }
         obiba_mica_commons_set_cache($resource_query, $result_resource_query);
         return $result_resource_query;
-      }
-      catch (HttpClientException $e) {
+      } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
             '@code' => $e->getCode(),
@@ -132,12 +130,12 @@ class MicaNetworkResource extends MicaClient {
    * @param $network_id
    * @return array
    */
-  public function get_network($network_id) {
+  public function getNetwork($network_id) {
     $resource_query = '/network/' . rawurlencode($network_id);
     $this->setLastResponse(NULL);
-    $this->getCache($resource_query);
-    $url = $this->micaUrl . $resource_query;
+    $this->drupalCache->MicaGetCache($resource_query);
     if (!isset($this->result_resource_query)) {
+      $url = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -150,17 +148,19 @@ class MicaNetworkResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $data ? json_decode($data) : NULL;
-        $this->updateModel($this->result_resource_query);
-        obiba_mica_commons_set_cache($resource_query, $this->result_resource_query);
+        $array_response = json_decode($data);
+        $is_empty_stored_data = $this->drupalCache->IsEmptyStoredData($resource_query, $array_response);
+        if (!$is_empty_stored_data) {
+          $this->result_resource_query = $data ? $array_response : NULL;
+          $this->updateModel($this->result_resource_query);
+          $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        }
         return $this->result_resource_query;
-      }
-      catch (HttpClientException $e) {
+      } catch (HttpClientException $e) {
         $this->result_resource_query = NULL;
         return array();
       }
     }
-
     return $this->result_resource_query;
   }
 
@@ -168,7 +168,8 @@ class MicaNetworkResource extends MicaClient {
   private function updateModel($obj) {
     if (!empty($obj->content)) {
       $obj->model = json_decode($obj->content);
-    } else {
+    }
+    else {
       $obj->model = new stdClass();
     }
   }
