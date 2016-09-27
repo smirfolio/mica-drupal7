@@ -22,7 +22,9 @@ class ObibaSearchResources extends MicaClient {
   }
 
   private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
-    if (!isset($this->result_resource_query)) {
+    $stored_data = $this->drupalCache->MicaGetCache($resources);
+    $is_empty_stored_data = $this->drupalCache->IsEmptyStoredData($resources, $stored_data->MicaClient->result_resource_query);
+    if ($is_empty_stored_data) {
       $url = $this->micaUrl . $resources;
 
       $request = new HttpClientRequest($url, array(
@@ -38,11 +40,13 @@ class ObibaSearchResources extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $array_response = json_decode($data);
-        $this->result_resource_query = $array_response;
-        obiba_mica_commons_set_cache($resources, $array_response);
+        $is_empty_stored_data = $this->drupalCache->IsEmptyStoredData($resources, $array_response);
+        if (!$is_empty_stored_data) {
+          $this->result_resource_query = $array_response;
+          $this->drupalCache->MicaSetCache($resources, $array_response);
+        }
         return $this->result_resource_query;
-      }
-      catch (HttpClientException $e) {
+      } catch (HttpClientException $e) {
         if ($e->getCode() == 403) {
           drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
         }
@@ -60,29 +64,29 @@ class ObibaSearchResources extends MicaClient {
 
   public function searchQuery($type, $query) {
     $resource = '/' . $type . '/_rql?query=' . $query;
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->httpRequestGetBuilder($resource);
   }
 
   public function taxonomiesSearch($query, $target, $locale) {
     $resource = '/taxonomies/_search?query=' . rawurlencode($query)
       . (!empty($target) ? '&target=' . $target : '')
       . (!empty($locale) ? '&locale=' . $locale : '');
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->httpRequestGetBuilder($resource);
   }
 
   public function taxonomiesFilter($target) {
     $resource = '/taxonomies/_filter?target=' . $target;
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->httpRequestGetBuilder($resource);
   }
 
   public function taxonomyFilter($name, $target) {
     $resource = '/taxonomy/' . $name . '/_filter?target=' . $target;
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->httpRequestGetBuilder($resource);
   }
 
   public function variablesCoverage($query) {
     $resource = '/variables/_coverage?query=' . $query;
-    return $this->getCache($resource)->httpRequestGetBuilder($resource);
+    return $this->httpRequestGetBuilder($resource);
   }
 
   public function variablesCoverageDownload($query, $header_accept) {
@@ -139,7 +143,10 @@ class ObibaSearchResources extends MicaClient {
         drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
       }
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
       return array();
     }
   }

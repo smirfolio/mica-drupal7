@@ -21,6 +21,7 @@ include_once "obiba_mica_commons_permissions.inc";
 include_once "obiba_mica_commons_resource_paths.inc";
 include_once "obiba_mica_commons_config_resource.inc";
 
+use Obiba\ObibaMicaClient\MicaCache as MicaCache;
 
 /**
  * Class MicaClient
@@ -42,7 +43,7 @@ class MicaClient {
   const PAGINATE_NETWORKS = 3;
 
   protected $micaUrl;
-  protected $result_resource_query;
+  public $result_resource_query;
 
   private $lastResponse;
   private static $responsePageSizeSmall = 10;
@@ -60,6 +61,7 @@ class MicaClient {
    *   parameter
    */
   public function __construct($mica_url = NULL) {
+    $this->drupalCache = new MicaCache\MicaDrupalClientCache($this);
     $this->micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
     self::$responsePageSize = variable_get_value('mica_response_page_size');
     self::$responsePageSizeSmall = variable_get_value('mica_response_page_size_small');
@@ -599,21 +601,5 @@ class MicaClient {
       );
     }
 
-  }
-
-  /**
-   * query the cache.
-   *
-   * @param string $resource
-   *   Study, dce, network ...
-   *
-   * @return $this
-   */
-  protected function getCache($resource) {
-    $cached_result = obiba_mica_commons_get_cache($resource);
-    if (!empty($cached_result)) {
-      $this->result_resource_query = $cached_result;
-    }
-    return $this;
   }
 }
