@@ -70,6 +70,18 @@ function obiba_mica_dataset_page_detail($dataset_id) {
       obiba_mica_commons_set_cache('dataset_coverage-' . $dataset_dto->id, $coverage);
     }
   }
+
+  $acronym = obiba_mica_commons_get_localized_field($dataset_dto, 'acronym');
+  $name = obiba_mica_commons_get_localized_field($dataset_dto, 'name');
+  $page_title = (variable_get_value('dataset_title_acronym_setup') ? ($acronym . ' - ') : '') . $name;
+  drupal_set_title($page_title);
+
+  drupal_set_breadcrumb(array(
+    l(t('Home'), '<front>'),
+    l(t('Datasets'), 'mica/datasets'),
+    l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
+  ));
+
   $dataset_theme = obiba_mica_commons_get_cache('dataset_theme-' . $dataset_id);
   if (!empty($dataset_theme)) {
     return $dataset_theme;
@@ -94,16 +106,6 @@ function obiba_mica_dataset_page_detail($dataset_id) {
           $flat_study_attachments
         );
       }
-      $acronym = obiba_mica_commons_get_localized_field($dataset_dto, 'acronym');
-      $name = obiba_mica_commons_get_localized_field($dataset_dto, 'name');
-      $page_title = (variable_get_value('dataset_title_acronym_setup') ? ($acronym . ' - ') : '') . $name;
-      drupal_set_title($page_title);
-
-      drupal_set_breadcrumb(array(
-        l(t('Home'), '<front>'),
-        l(t('Datasets'), 'mica/datasets'),
-        l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
-      ));
 
       if (module_exists('obiba_mica_files')) {
         drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
