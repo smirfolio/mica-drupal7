@@ -226,7 +226,7 @@ function obiba_mica_settings_study_content(&$form) {
   $form['content_display_settings']['study_form']['study_target_number_participant_label'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
-    '#default_value' => $info['default'],
+    '#default_value' => variable_get_value('study_target_number_participant_label'),
     '#description' => $info['description']
   );
 
@@ -234,7 +234,7 @@ function obiba_mica_settings_study_content(&$form) {
   $form['content_display_settings']['study_form']['study_target_number_participant_with_sample_label'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
-    '#default_value' => $info['default'],
+    '#default_value' => variable_get_value('study_target_number_participant_with_sample_label'),
     '#description' => $info['description']
   );
 
@@ -242,7 +242,7 @@ function obiba_mica_settings_study_content(&$form) {
   $form['content_display_settings']['study_form']['study_supplementary_information_about_target_number_participant'] = array(
     '#type' => 'textfield',
     '#title' => $info['title'],
-    '#default_value' => $info['default'],
+    '#default_value' => variable_get_value('study_supplementary_information_about_target_number_participant'),
     '#description' => $info['description']
   );
 
