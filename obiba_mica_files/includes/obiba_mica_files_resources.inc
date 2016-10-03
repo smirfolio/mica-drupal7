@@ -14,6 +14,8 @@
  * MicaFilesResource class
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+
 /**
  * Class MicaStudyResource
  */
@@ -23,8 +25,7 @@ class MicaFilesResource extends MicaClient {
   const DCE = 'data-collection-event';
 
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
-    $this->result_resource_query = NULL;
+    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
   }
 
   /**
@@ -43,9 +44,11 @@ class MicaFilesResource extends MicaClient {
     $path_attachments = '/' . $entity_type . '/' . $entity_id;
     $resource_query = '/files-search' . $this->encode_path_parts($path_attachments) .
       '?order=asc&query=&recursively=true&sort=name';
-    $this->drupalCache->MicaGetCache($resource_query);
-
-    if (!isset($this->result_resource_query)) {
+    $cached_attachment = $this->drupalCache->MicaGetCache($resource_query);
+    if (!empty($cached_attachment)) {
+      return $cached_attachment;
+    }
+    else {
       $url = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -59,11 +62,11 @@ class MicaFilesResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $attachment = json_decode($data);
-          if (!empty($attachment)) {
-          $this->result_resource_query = $this->wrapAttachments($entity_type, $entity_id, $attachment);
-          $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        if (!empty($attachment)) {
+          $attachment_result = $this->wrapAttachments($entity_type, $entity_id, $attachment);
+          $this->drupalCache->MicaSetCache($resource_query, $attachment_result);
+          return $attachment_result;
         }
-        return $this->result_resource_query;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
@@ -71,11 +74,9 @@ class MicaFilesResource extends MicaClient {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage(),
           ), WATCHDOG_WARNING);
-        $this->result_resource_query = NULL;
         return $this->wrapAttachments($entity_type, $entity_id, array());
       }
     }
-    return $this->result_resource_query;
   }
 
   /**
@@ -101,16 +102,18 @@ class MicaFilesResource extends MicaClient {
     ));
 
     $client = $this->client();
-    $this->drupalCache->MicaGetCache($resource_query);
-    if (!isset($this->result_resource_query)) {
+    $cached_file = $this->drupalCache->MicaGetCache($resource_query);
+    if (!empty($cached_file)) {
+      return $cached_file;
+    }
+    else {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         if (!empty($data)) {
-          $this->result_resource_query = $data;
           $this->drupalCache->MicaSetCache($resource_query, $data);
+          return $data;
         }
-        return $data;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
@@ -120,22 +123,23 @@ class MicaFilesResource extends MicaClient {
           ), WATCHDOG_WARNING);
 
         drupal_add_http_header('Status', $e->getCode());
-        $this->result_resource_query = NULL;
         return json_encode(array(
           'code' => $e->getCode(),
           'message' => $e->getMessage(),
         ));
       }
     }
-    return $this->result_resource_query;
   }
 
   public function searchFiles($path, $query_params) {
     $this->setLastResponse(NULL);
     $resource_query = '/files-search' . $this->encode_path_parts($path) . '?' . http_build_query($query_params);
     $url = $this->micaUrl . $resource_query;
-    $this->drupalCache->MicaGetCache($resource_query);
-    if (!isset($this->result_resource_query)) {
+    $cached_result_files = $this->drupalCache->MicaGetCache($resource_query);
+    if (!empty($cached_result_files)) {
+      return $cached_result_files;
+    }
+    else {
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -149,10 +153,9 @@ class MicaFilesResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         if (!empty($data)) {
-          $this->result_resource_query = $data;
           $this->drupalCache->MicaSetCache($resource_query, $data);
+          return $data;
         }
-        return $data;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
@@ -160,17 +163,13 @@ class MicaFilesResource extends MicaClient {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage(),
           ), WATCHDOG_WARNING);
-
         drupal_add_http_header('Status', $e->getCode());
-        $this->result_resource_query = NULL;
         return json_encode(array(
           'code' => $e->getCode(),
           'message' => $e->getMessage(),
         ));
       }
     }
-    return $this->result_resource_query;
-
   }
 
   /**

@@ -9,6 +9,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+
 /**
  * @file
  * Mica networks file
@@ -17,14 +19,19 @@ class ObibaSearchResources extends MicaClient {
   const MICA_REPOSITORY = 'mica/repository';
 
   function __construct() {
-    parent::__construct();
-    $this->result_resource_query = NULL;
+    parent::__construct(NULL, new MicaCache\MicaDrupalClientCache());
   }
 
   private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
-    $stored_data = $this->drupalCache->MicaGetCache($resources);
-    $is_empty_stored_data = $this->drupalCache->IsEmptyStoredData($resources, $stored_data->MicaClient->result_resource_query);
-    if ($is_empty_stored_data) {
+    $is_not_empty_stored_data = FALSE;
+    $stored_data = $this->drupalCache->MicaGetCache('repository-' . $resources);
+    if(!empty($stored_data)){
+    $is_not_empty_stored_data = $this->drupalCache->IsNotEmptyStoredData('repository-' . $resources, $stored_data);
+    }
+    if($is_not_empty_stored_data){
+      return $stored_data;
+    }
+    else {
       $url = $this->micaUrl . $resources;
 
       $request = new HttpClientRequest($url, array(
@@ -40,12 +47,11 @@ class ObibaSearchResources extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $array_response = json_decode($data);
-        $is_empty_stored_data = $this->drupalCache->IsEmptyStoredData($resources, $array_response);
-        if (!$is_empty_stored_data) {
-          $this->result_resource_query = $array_response;
-          $this->drupalCache->MicaSetCache($resources, $array_response);
+        $is_not_empty_stored_data = $this->drupalCache->IsNotEmptyStoredData('repository-' . $resources, $array_response);
+        if ($is_not_empty_stored_data) {
+          $this->drupalCache->MicaSetCache('repository-' . $resources, $array_response);
+          return $array_response;
         }
-        return $this->result_resource_query;
       } catch (HttpClientException $e) {
         if ($e->getCode() == 403) {
           drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
@@ -55,11 +61,9 @@ class ObibaSearchResources extends MicaClient {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
           ), WATCHDOG_WARNING);
-        $this->result_resource_query = NULL;
         return array();
       }
     }
-    return $this->result_resource_query;
   }
 
   public function searchQuery($type, $query) {

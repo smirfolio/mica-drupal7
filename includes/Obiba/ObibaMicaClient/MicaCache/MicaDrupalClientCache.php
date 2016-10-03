@@ -12,10 +12,8 @@
 namespace Obiba\ObibaMicaClient\MicaCache;
 
 class MicaDrupalClientCache implements MicaCacheInterface {
-  public $MicaClient;
 
-  function __construct($object) {
-    $this->MicaClient = $object;
+  function __construct() {
   }
 
   /**
@@ -29,61 +27,63 @@ class MicaDrupalClientCache implements MicaCacheInterface {
   public function MicaGetCache($resource_query) {
     $cached_result = obiba_mica_commons_get_cache($resource_query);
     if (!empty($cached_result)) {
-      $this->MicaClient->result_resource_query = $cached_result;
+      return $cached_result;
     }
-    return $this;
+    return FALSE;
   }
 
   public function MicaSetCache($resource_query, $value) {
     obiba_mica_commons_set_cache($resource_query, $value);
   }
 
-  public function IsEmptyStoredData($resources, $stored_data) {
+  public function IsNotEmptyStoredData($resources, $stored_data) {
     $entity_resource = explode('/', $resources);
     switch ($entity_resource[1]) {
       case 'taxonomy':
-        if (!isset($stored_data)) {
+        if (!empty($stored_data)) {
           return TRUE;
         }
         break;
       case 'taxonomies' :
-        if (!isset($stored_data)) {
+        if (!empty($stored_data)) {
           return TRUE;
         }
         break;
-
       case 'variables' :
         $coverage_resource = explode('?', $entity_resource[2]);
         if ($coverage_resource[0] !== '_coverage') {
-          if (!isset($stored_data->variableResultDto->totalHits)) {
+          if (!empty($stored_data->variableResultDto->totalHits)) {
             return TRUE;
           }
         }
-        else{
-          return TRUE;
+        else {
+          if (!empty($stored_data->taxonomyHeaders) ||
+            !empty($stored_data->vocabularyHeaders) ||
+            !empty($stored_data->termHeaders) ||
+            !empty($stored_data->rows)
+          ) {
+            return TRUE;
+          }
         }
         break;
       case 'datasets' :
-        if (!isset($stored_data->datasetResultDto->totalHits)) {
+        if (!empty($stored_data->datasetResultDto->totalHits)) {
           return TRUE;
         }
         break;
       case 'studies' :
-        if (!isset($stored_data->studyResultDto->totalHits)) {
+        if (!empty($stored_data->studyResultDto->totalHits)) {
           return TRUE;
         }
         break;
       case 'networks' :
-        if (!isset($stored_data->networkResultDto->totalHits)) {
+        if (!empty($stored_data->networkResultDto->totalHits)) {
           return TRUE;
         }
         break;
       default :
-        if (!isset($stored_data)) {
-          return FALSE;
-        }
-
+        return FALSE;
     }
-    return FALSE;
   }
+
 }

@@ -43,7 +43,7 @@ class MicaClient {
   const PAGINATE_NETWORKS = 3;
 
   protected $micaUrl;
-  public $result_resource_query;
+  protected $drupalCache;
 
   private $lastResponse;
   private static $responsePageSizeSmall = 10;
@@ -59,9 +59,11 @@ class MicaClient {
    * @param string $mica_url
    *   IF given,  the Mica server url, the  default value is a a setting
    *   parameter
+   * @param MicaCache\MicaDrupalClientCache $micaCache
+   *
    */
-  public function __construct($mica_url = NULL) {
-    $this->drupalCache = new MicaCache\MicaDrupalClientCache($this);
+  public function __construct($mica_url = NULL, MicaCache\MicaDrupalClientCache $micaCache) {
+    $this->drupalCache = $micaCache;
     $this->micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
     self::$responsePageSize = variable_get_value('mica_response_page_size');
     self::$responsePageSizeSmall = variable_get_value('mica_response_page_size_small');

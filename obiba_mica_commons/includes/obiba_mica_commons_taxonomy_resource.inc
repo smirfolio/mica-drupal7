@@ -14,6 +14,7 @@
  * MicaStudyResource class
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 /**
  * Class MicaStudyResource
  */
@@ -26,7 +27,7 @@ class MicaTaxonomyResource extends MicaClient {
    *   The Mica server url.
    */
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
   }
 
   /**

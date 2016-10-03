@@ -14,6 +14,8 @@
  * Class definition server resources.
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+
 /**
  * Class MicaStudyResource
  */
@@ -25,7 +27,7 @@ class MicaPersonsResource extends MicaClient {
    *   The mica server url.
    */
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
   }
 
   /**
