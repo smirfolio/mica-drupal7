@@ -180,7 +180,7 @@
 
   <!-- COVERAGE placeholder -->
   <section id="coverage">
-    <h2><?php print t('Variable Classification') ?></h2>
+    <h2><?php print t('Variables Classification') ?></h2>
     <p><?php print t('Loading...') ?></p>
   </section>
 

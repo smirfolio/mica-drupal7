@@ -14,6 +14,7 @@
  * TempFile resource class used to communicate with backend server
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 /**
  * Class MicaConfigResource
  */
@@ -28,7 +29,7 @@ class MicaConfigResource extends MicaClient {
    *   The mica server url.
    */
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
   }
 
   /**
@@ -73,8 +74,11 @@ class MicaConfigResource extends MicaClient {
    */
   private function config($config_resource = self::CONFIG_WS_URL) {
     $this->setLastResponse(NULL);
-    $this->drupalCache->MicaGetCache($config_resource);
-    if (!isset($this->result_resource_query)) {
+    $cached_config = $this->drupalCache->MicaGetCache($config_resource);
+    if(!empty($cached_config)){
+      return $cached_config;
+    }
+    else {
       $url = $this->micaUrl . $config_resource;
 
       $request = new HttpClientRequest($url, array(
@@ -90,8 +94,8 @@ class MicaConfigResource extends MicaClient {
         $this->setLastResponse($client->lastResponse);
         $config_client = json_decode($data);
         if (!empty($config_client)) {
-          $this->result_resource_query = $config_client;
           $this->drupalCache->MicaSetCache($config_resource, $config_client);
+          return $config_client;
         }
       } catch (HttpClientException $e) {
         watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -102,7 +106,6 @@ class MicaConfigResource extends MicaClient {
         return array();
       }
     }
-    return $this->result_resource_query;
   }
 
   /**
@@ -115,25 +118,35 @@ class MicaConfigResource extends MicaClient {
    */
   public function getTranslations($locale) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/config/i18n/' . $locale . '.json';
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => array(
-        'Accept' => array(parent::HEADER_JSON),
-      ),
-    ));
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $data;
-    } catch (HttpClientException $e) {
-      watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        ), WATCHDOG_WARNING);
-      return array();
+    $lang_resource = '/config/i18n/' . $locale . '.json';
+    $url = $this->micaUrl . $lang_resource;
+    $cached_lang = $this->drupalCache->MicaGetCache($lang_resource);
+    if(!empty($cached_lang)){
+      return $cached_lang;
+    }
+    else{
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => array(
+          'Accept' => array(parent::HEADER_JSON),
+        ),
+      ));
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        if(!empty($data)){
+          $this->drupalCache->MicaSetCache($lang_resource, $data);
+          return $data;
+        }
+      } catch (HttpClientException $e) {
+        watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        return array();
+      }
     }
   }
 

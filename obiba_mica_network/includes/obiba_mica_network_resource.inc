@@ -14,13 +14,15 @@
  * MicaNetworkResource class
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+
 /**
  * Class MicaNetworkResource
  */
 class MicaNetworkResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
   }
 
   /**get_networks
@@ -133,8 +135,11 @@ class MicaNetworkResource extends MicaClient {
   public function getNetwork($network_id) {
     $resource_query = '/network/' . rawurlencode($network_id);
     $this->setLastResponse(NULL);
-    $this->drupalCache->MicaGetCache($resource_query);
-    if (!isset($this->result_resource_query)) {
+    $cached_network = $this->drupalCache->MicaGetCache($resource_query);
+    if(!empty($cached_network)){
+      return $cached_network;
+    }
+    else {
       $url = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -148,20 +153,17 @@ class MicaNetworkResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $array_response = json_decode($data);
-        $is_empty_stored_data = $this->drupalCache->IsEmptyStoredData($resource_query, $array_response);
+        $network_response = json_decode($data);
+        $is_empty_stored_data = $this->drupalCache->IsNotEmptyStoredData($resource_query, $network_response);
         if (!$is_empty_stored_data) {
-          $this->result_resource_query = $data ? $array_response : NULL;
-          $this->updateModel($this->result_resource_query);
-          $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+          $this->updateModel($network_response);
+          $this->drupalCache->MicaSetCache($resource_query, $network_response);
+          return $network_response;
         }
-        return $this->result_resource_query;
       } catch (HttpClientException $e) {
-        $this->result_resource_query = NULL;
         return array();
       }
     }
-    return $this->result_resource_query;
   }
 
 

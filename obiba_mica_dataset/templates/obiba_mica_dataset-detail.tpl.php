@@ -224,7 +224,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   <!-- COVERAGE -->
   <?php if (!empty($coverage)): ?>
     <section>
-      <h2><?php print t('Variable Classification') ?></h2>
+      <h2><?php print t('Variables Classification') ?></h2>
       <?php foreach ($coverage as $taxonomy_coverage): ?>
         <h3><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h3>
         <p class="help-block">

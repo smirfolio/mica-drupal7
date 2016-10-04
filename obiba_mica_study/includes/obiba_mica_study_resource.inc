@@ -14,21 +14,23 @@
  * MicaStudyResource class
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+
 /**
  * Class MicaStudyResource
  */
 class MicaStudyResource extends MicaClient {
 
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
   }
 
   /**
    * Get the list of studies.
    *
-   * @param null $query.
-   * @param int $from.
-   * @param $limit.
+   * @param null $query .
+   * @param int $from .
+   * @param $limit .
    * @param null $sort field name to sort by.
    * @param null $order "asc" or "desc".
    * @param null $study_rql_query rql query "in(Mica_study.id,(epoa,ici-vph)".
@@ -52,8 +54,11 @@ class MicaStudyResource extends MicaClient {
     $params .= ",locale($language->language)";
     $resource_query = '/studies/_rql?query=' . $params;
 
-    $this->drupalCache->MicaGetCache($resource_query);
-    if (!isset($this->result_resource_query)) {
+    $cached_studies = $this->drupalCache->MicaGetCache($resource_query);
+    if(!empty($cached_studies)){
+      return $cached_studies;
+    }
+    else {
       $url_studies = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url_studies, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -68,21 +73,19 @@ class MicaStudyResource extends MicaClient {
         $this->setLastResponse($client->lastResponse);
         $response_wrapper = json_decode($data);
         if ($response_wrapper->studyResultDto->totalCount !== 0) {
-          $this->result_resource_query = new StudyJoinResponseWrapper(json_decode($data));
-          $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+          $return_studies = new StudyJoinResponseWrapper(json_decode($data));
+          $this->drupalCache->MicaSetCache($resource_query, $return_studies);
+          return $return_studies;
         }
-        return $this->result_resource_query;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
           ), WATCHDOG_WARNING);
-        $this->result_resource_query = NULL;
         return array();
       }
     }
-    return $this->result_resource_query;
   }
 
   /**
@@ -95,9 +98,12 @@ class MicaStudyResource extends MicaClient {
   public function getStudy($study_id) {
     $resource_query = '/study/' . rawurlencode($study_id);
     $this->setLastResponse(NULL);
-    $this->drupalCache->MicaGetCache($resource_query);
+    $cached_study = $this->drupalCache->MicaGetCache($resource_query);
     $url = $this->micaUrl . $resource_query;
-    if (!isset($this->result_resource_query)) {
+    if(!empty($cached_study)){
+      return $cached_study;
+    }
+    else {
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -110,12 +116,12 @@ class MicaStudyResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $data ? json_decode($data) : NULL;
+        $result_study = $data ? json_decode($data) : NULL;
 
-        if (!empty($this->result_resource_query)) {
-          $this->updateModel($this->result_resource_query);
-          if (!empty($this->result_resource_query->populations)) {
-            foreach ($this->result_resource_query->populations as $population) {
+        if (!empty($result_study)) {
+          $this->updateModel($result_study);
+          if (!empty($result_study->populations)) {
+            foreach ($result_study->populations as $population) {
               $this->updateModel($population);
               if (!empty($population->dataCollectionEvents)) {
                 foreach ($population->dataCollectionEvents as $dce) {
@@ -124,15 +130,13 @@ class MicaStudyResource extends MicaClient {
               }
             }
           }
-          $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+          $this->drupalCache->MicaSetCache($resource_query, $result_study);
+          return $result_study;
         }
-        return $this->result_resource_query;
       } catch (HttpClientException $e) {
-        $this->result_resource_query = NULL;
+        return array();
       }
-      return array();
     }
-    return $this->result_resource_query;
   }
 
   private function updateModel($obj) {

@@ -702,7 +702,7 @@ function _obiba_mica_variable_search_variables(&$variable) {
     'title' => t('Variable classification label'),
     'description' => t('Text to be displayed in links to variable classification.'),
     'type' => 'string',
-    'default' => 'Variable Classification',
+    'default' => 'Variables Classification',
   );
   $variable['variables_search_label'] = array(
     'title' => t('Variables search label'),

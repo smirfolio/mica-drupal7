@@ -14,6 +14,8 @@
  * Research project resource class
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+
 /**
  * Class MicaResearchProjectResource
  */
@@ -25,7 +27,7 @@ class MicaResearchProjectResource extends MicaClient {
    * @param null|string $mica_url
    */
   public function __construct($mica_url) {
-    parent::__construct($mica_url);
+    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
   }
 
   /**
@@ -45,8 +47,11 @@ class MicaResearchProjectResource extends MicaClient {
     $params .= empty($query) ? '' : '&query=' . $query;
     $resource_query = '/projects?' . $params;
 
-    $this->drupalCache->MicaGetCache($resource_query);
-    if (!isset($this->result_resource_query)) {
+    $cached_projects = $this->drupalCache->MicaGetCache($resource_query);
+    if (!empty($cached_projects)) {
+      return $cached_projects;
+    }
+    else {
       $url_projects = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url_projects, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -59,10 +64,10 @@ class MicaResearchProjectResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $projects = json_decode($data);
-        if(!empty($projects->total)){
-          $this->result_resource_query = $projects;
-          $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        $result_projects = json_decode($data);
+        if (!empty($result_projects->total)) {
+          $this->drupalCache->MicaSetCache($resource_query, $result_projects);
+          return $result_projects;
         }
 
       } catch (HttpClientException $e) {
@@ -71,11 +76,9 @@ class MicaResearchProjectResource extends MicaClient {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
           ), WATCHDOG_WARNING);
-        $this->result_resource_query = NULL;
         return array();
       }
     }
-    return $this->result_resource_query;
   }
 
   /**
@@ -85,8 +88,11 @@ class MicaResearchProjectResource extends MicaClient {
     $this->setLastResponse(NULL);
     $resource_query = '/projects/dar_accessible';
     $url_projects = $this->micaUrl . $resource_query;
-    $this->drupalCache->MicaGetCache($resource_query);
-    if(!isset($this->result_resource_query)){
+    $cached_dar_projects = $this->drupalCache->MicaGetCache($resource_query);
+    if (!empty($cached_dar_projects)) {
+      return $cached_dar_projects;
+    }
+    else {
       $request = new HttpClientRequest($url_projects, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -98,10 +104,10 @@ class MicaResearchProjectResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $projects = json_decode($data);
-        if(!empty($projects->total)) {
-          $this->result_resource_query = $projects;
-          $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        $result_dar_projects = json_decode($data);
+        if (!empty($result_dar_projects->total)) {
+          $this->drupalCache->MicaSetCache($resource_query, $result_dar_projects);
+          return $result_dar_projects;
         }
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -109,11 +115,9 @@ class MicaResearchProjectResource extends MicaClient {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
           ), WATCHDOG_WARNING);
-        $this->result_resource_query = NULL;
         return array();
       }
     }
-    return $this->result_resource_query;
   }
 
   /**
@@ -123,9 +127,12 @@ class MicaResearchProjectResource extends MicaClient {
   public function getProject($project_id) {
     $resource_query = '/project/' . rawurlencode($project_id);
     $this->setLastResponse(NULL);
-    $this->drupalCache->MicaGetCache($resource_query);
+    $cached_project = $this->drupalCache->MicaGetCache($resource_query);
     $url = $this->micaUrl . $resource_query;
-    if (!isset($this->result_resource_query)) {
+    if(!empty($cached_project)){
+      return $cached_project;
+    }
+    else {
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -137,16 +144,15 @@ class MicaResearchProjectResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = json_decode($data);
-        $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
-        return $this->result_resource_query;
+        $result_project = json_decode($data);
+        if (!empty($result_project)) {
+          $this->drupalCache->MicaSetCache($resource_query, $result_project);
+          return $result_project;
+        }
       } catch (HttpClientException $e) {
-        $this->result_resource_query = NULL;
+        return array();
       }
-      return array();
-      
-    }    
-    return $this->result_resource_query;
+    }
   }
 
   public function getFormDefinition() {

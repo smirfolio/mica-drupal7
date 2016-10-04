@@ -15,12 +15,12 @@
  */
 
 const HEADER_JSON = 'application/json';
-
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 /**
  * Implements hook_user_logout().
  */
 function obiba_mica_commons_user_logout() {
-  $mica_client = new MicaClient();
+  $mica_client = new MicaClient(NULL, new MicaCache\MicaDrupalClientCache());
   $mica_client->logout();
 }
 
@@ -622,7 +622,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
     }
     else {
       if (!empty($file_resource)) {
-        $mica_client = new MicaClient();
+        $mica_client = new MicaClient(NULL, new MicaCache\MicaDrupalClientCache());
         $raw_data = $mica_client->downloadFile($entity_type, $entity_id,
           $file_resource->id);
         if (!empty($raw_data) && empty($raw_data['code'])) {

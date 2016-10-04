@@ -13,7 +13,7 @@
  * @file
  * Data access request resources class
  */
-
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 
 /**
  * Class MicaDataAccessRequestResources

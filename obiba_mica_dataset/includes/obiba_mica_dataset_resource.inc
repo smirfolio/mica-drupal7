@@ -14,6 +14,7 @@
  * MicaStudyResource class
  */
 
+use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 
 /**
  * Class MicaStudyResource
@@ -27,7 +28,7 @@ class MicaDatasetResource extends MicaClient {
    *   The mica server url.
    */
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
   }
 
   /**
@@ -51,7 +52,7 @@ class MicaDatasetResource extends MicaClient {
    * @return array
    *   Server response.
    */
-  public function getDatasets($resource = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $network_id=NULL) {
+  public function getDatasets($resource = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $network_id = NULL) {
     global $language;
     $this->setLastResponse(NULL);
     $from = empty($from) ? '0' : $from;
@@ -61,48 +62,49 @@ class MicaDatasetResource extends MicaClient {
     $query = empty($query) ? '' : ",match($query,(Mica_dataset.name,Mica_dataset.acronym,Mica_dataset.description))";
     $resource_params = empty($resource) ? '' : ",in(Mica_dataset.className,$resource)";
     $network_params = empty($network_id) ? '' : ",in(Mica_dataset.networkId,$network_id)";
-    $studies_param = empty($study_id) ? '' :",study(in(Mica_study.id,(" . rawurlencode($study_id) . ")))";
+    $studies_param = empty($study_id) ? '' : ",study(in(Mica_study.id,(" . rawurlencode($study_id) . ")))";
 
     if (!empty($query) || !empty($resource_params) || !empty($studies_param)) {
       $params = "dataset(limit($from,$limit)$resource_params$network_params$query$sort_rql_bucket)$studies_param";
-    } else {
+    }
+    else {
       $params = "dataset(exists(Mica_dataset.id),limit($from,$limit)$sort_rql_bucket)";
     }
 
     $params .= ",locale($language->language)";
     $resource_query = '/datasets/_rql?query=' . $params;
-    $this->drupalCache->MicaGetCache($resource_query);
-    if(!isset($this->result_resource_query)){
-    $url_datasets = $this->micaUrl . $resource_query;
-    $request = new HttpClientRequest($url_datasets, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $datasets = json_decode($data);
-      if($datasets->datasetResultDto->totalCount!==0){
-      $this->result_resource_query = new DatasetJoinResponseWrapper($datasets);
-      $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+    $cached_datasets = $this->drupalCache->MicaGetCache($resource_query);
+    if(!empty($cached_datasets)){
+      return $cached_datasets;
+    }
+    else {
+      $url_datasets = $this->micaUrl . $resource_query;
+      $request = new HttpClientRequest($url_datasets, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+      ));
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $datasets = json_decode($data);
+        if ($datasets->datasetResultDto->totalCount !== 0) {
+          $datasets_result = new DatasetJoinResponseWrapper($datasets);
+          $this->drupalCache->MicaSetCache($resource_query, $datasets_result);
+          return $datasets_result;
+        }
+      } catch (HttpClientException $e) {
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        return array();
       }
-      return $this->result_resource_query;
     }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        ), WATCHDOG_WARNING);
-      $this->result_resource_query = NULL;
-      return array();
-    }
-    }
-    return $this->result_resource_query;
   }
 
   /**
@@ -119,9 +121,12 @@ class MicaDatasetResource extends MicaClient {
   public function getDataset($dataset_id, $resource = 'dataset') {
     $resource_query = (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
     $this->setLastResponse(NULL);
-    $this->drupalCache->MicaGetCache($resource_query);
+    $cached_dataset = $this->drupalCache->MicaGetCache($resource_query);
     $url = $this->micaUrl . '/' . $resource_query;
-    if (!isset($this->result_resource_query)) {
+    if(!empty($cached_dataset)){
+      return $cached_dataset;
+    }
+    else {
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -134,18 +139,16 @@ class MicaDatasetResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $data ? json_decode($data) : NULL;
-        if(!empty($this->result_resource_query)){
-        $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        $result_dataset = $data ? json_decode($data) : NULL;
+        if (!empty($result_dataset)) {
+          $this->drupalCache->MicaSetCache($resource_query, $result_dataset);
+          return $result_dataset;
         }
-        return $this->result_resource_query;
-      }
-      catch (HttpClientException $e) {
-        $this->result_resource_query = NULL;
+
+      } catch (HttpClientException $e) {
         return array();
       }
     }
-    return $this->result_resource_query;
   }
 
   /**
@@ -195,8 +198,7 @@ class MicaDatasetResource extends MicaClient {
         return json_decode($data);
       }
       return $data ? json_decode($data) : NULL;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       return array();
     }
   }
@@ -237,8 +239,7 @@ class MicaDatasetResource extends MicaClient {
         return json_decode($data);
       }
       return $data ? json_decode($data) : NULL;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       return array();
     }
   }
@@ -277,8 +278,7 @@ class MicaDatasetResource extends MicaClient {
       $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return $client->lastResponse;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       return array();
     }
   }
@@ -324,8 +324,7 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return $data ? json_decode($data) : NULL;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       return array();
     }
   }
@@ -360,8 +359,7 @@ class MicaDatasetResource extends MicaClient {
       $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return $client->lastResponse;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       return array();
     }
   }
@@ -379,8 +377,11 @@ class MicaDatasetResource extends MicaClient {
     global $language;
     $resource_query = sprintf("/variable/%s?locale=%s", rawurlencode($variable_id), $language->language);
     $this->setLastResponse(NULL);
-    $this->drupalCache->MicaGetCache($resource_query);
-    if (!isset($this->result_resource_query)) {
+    $cached_variable = $this->drupalCache->MicaGetCache($resource_query);
+    if(!empty($cached_variable)){
+      return $cached_variable;
+    }
+    else {
       $url = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -393,18 +394,15 @@ class MicaDatasetResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $this->result_resource_query = $data ? json_decode($data) : NULL;
-        if(!empty($this->result_resource_query)){
-        $this->drupalCache->MicaSetCache($resource_query, $this->result_resource_query);
+        $result_variable = $data ? json_decode($data) : NULL;
+        if (!empty($result_variable)) {
+          $this->drupalCache->MicaSetCache($resource_query, $result_variable);
+          return $result_variable;
         }
-        return $this->result_resource_query;
-      }
-      catch (HttpClientException $e) {
-        $this->result_resource_query = NULL;
+      } catch (HttpClientException $e) {
         return array();
       }
     }
-    return $this->result_resource_query;
   }
 
   /**
@@ -431,8 +429,7 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return json_decode($data);
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       return array();
     }
   }
@@ -461,8 +458,7 @@ class MicaDatasetResource extends MicaClient {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return $data ? json_decode($data) : NULL;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       return array();
     }
   }
