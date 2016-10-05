@@ -23,8 +23,9 @@ function obiba_mica_drush_command() {
     'aliases' => array('dlmdeps'),
     'bootstrap' => DRUSH_BOOTSTRAP_DRUSH,
     'description' => dt('Download Mica JavaScript dependencies for the production environment.'),
-    'arguments' => array(
-      'path' => dt('Optional. The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries</code>).'),
+    'options' => array(
+      'path' => dt('The path to the download folder. If omitted, Drush will use the default location (<code>sites/all/libraries</code>).'),
+      'repo' => dt('The name of the Git repository.')
     ),
   );
 
@@ -344,22 +345,12 @@ function obiba_mica_drush_obiba_progressbar() {
  * Curl is required.
  */
 function obiba_mica_drush_download_js_dependencies(){
- $args = func_get_args();
-  if ($args[0]) {
-    $path = $args[0];
-  }
-  else {
-    $path = drush_get_context('DRUSH_DRUPAL_ROOT');
-  }
 
-  if ($args[1]) {
-    $repository = $args[1];
-  }
-  else {
-    $repository = variable_get('mica-drupal-js-libraries-version', '1.2.3');
-  }
+  $path = drush_get_option('path', drush_get_context('DRUSH_DRUPAL_ROOT')) . '/sites/all/libraries';
+  $repository = drush_get_option('repo', variable_get('mica-drupal-js-libraries-version', '1.2.3'));
 
-  $path .= '/sites/all/libraries';
+  drush_log(dt(">> Download root path: $path"), 'success');
+  drush_log(dt(">> Repository name: $repository"), 'success');
 
   // Create the libraries path if it does not exist.
   if (!is_dir($path)) {
