@@ -249,7 +249,7 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
     };
 
     return array(
-      'targets' => $targets,
+      'targets' => obiba_mica_commons_format_number($targets),
       'countries' => obiba_mica_commons_countries(array_unique($countries))
     );
   };
