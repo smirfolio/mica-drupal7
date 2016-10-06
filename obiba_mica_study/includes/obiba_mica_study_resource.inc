@@ -40,19 +40,7 @@ class MicaStudyResource extends MicaClient {
   public function getStudies($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
     global $language;
     $this->setLastResponse(NULL);
-    $from = empty($from) ? '0' : $from;
-    $limit = empty($limit) ? '5' : $limit;
-    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
-    $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
-    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
-    if (empty($query)) {
-      $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket)";
-    }
-    else {
-      $params = "study(limit($from,$limit)$query$sort_rql_bucket)";
-    }
-    $params .= ",locale($language->language)";
-    $resource_query = '/studies/_rql?query=' . $params;
+    $resource_query = $this->generateRqlQuery($query, $from, $limit, $sort, $order, $language);
 
     $cached_studies = $this->drupalCache->MicaGetCache($resource_query);
     if(!empty($cached_studies)){
@@ -146,5 +134,30 @@ class MicaStudyResource extends MicaClient {
     else {
       $obj->model = new stdClass();
     }
+  }
+
+  /**
+   * @param $query
+   * @param $from
+   * @param $limit
+   * @param $sort
+   * @param $order
+   * @param $language
+   * @return string
+   */
+  private function generateRqlQuery($query, $from, $limit, $sort, $order, $language) {
+    $from = empty($from) ? '0' : $from;
+    $limit = empty($limit) ? '5' : $limit;
+    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
+    $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
+    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
+    if (empty($query)) {
+      $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket)";
+    } else {
+      $params = "study(limit($from,$limit)$query$sort_rql_bucket)";
+    }
+    $params .= ",locale($language->language)";
+    $resource_query = '/studies/_rql?query=' . $params;
+    return $resource_query;
   }
 }
