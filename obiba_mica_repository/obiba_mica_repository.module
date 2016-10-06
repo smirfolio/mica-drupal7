@@ -34,6 +34,13 @@ function obiba_mica_repository_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/%/_rql_csv/%/ws'] = array(
+    'page callback' => 'obiba_mica_repository_query_as_csv',
+    'file' => 'obiba_mica_repository_services.inc',
+    'page arguments' => array(2, 4),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   $items[ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage/%/ws'] = array(
     'page callback' => 'obiba_mica_repository_variable_coverage',
     'file' => 'obiba_mica_repository_services.inc',

@@ -71,6 +71,36 @@ class ObibaSearchResources extends MicaClient {
     return $this->httpRequestGetBuilder($resource);
   }
 
+  public function searchQueryAsCsv($type, $query) {
+    $resource = $this->micaUrl . '/' . $type . '/_rql_csv?query=' . $query;
+    return $this->downloadCsvExport($resource);
+  }
+
+  public function downloadCsvExport($resource) {
+
+    $request = new HttpClientRequest($resource, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_CSV),
+        )
+      ),
+    ));
+    $client = $this->client();
+    try {
+      $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return $client->lastResponse;
+    }
+    catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
+      return array();
+    }
+  }
+
   public function taxonomiesSearch($query, $target, $locale) {
     $resource = '/taxonomies/_search?query=' . rawurlencode($query)
       . (!empty($target) ? '&target=' . $target : '')
