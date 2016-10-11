@@ -298,6 +298,7 @@ function obiba_mica_study_get_timeline_detail($study_detail) {
 
 function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_nbr = NULL, $has_coverage = NULL, $flat_study_attachments = NULL) {
   $page_render_populations = array();
+  $population_content_render = array();
   $themed_attachment = NULL;
   if (!empty($study_detail->populations)) {
     foreach ($study_detail->populations as $population) {

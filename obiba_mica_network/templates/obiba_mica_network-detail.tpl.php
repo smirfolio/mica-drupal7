@@ -178,15 +178,15 @@
     </section>
   <?php endif; ?>
 
+  <!-- DATASETS placeholder -->
+  <section id="datasets">
+    <div><?php print t('Loading ...') ?></div>
+  </section>
+
   <!-- COVERAGE placeholder -->
   <section id="coverage">
     <h2><?php print t('Variables Classification') ?></h2>
     <p><?php print t('Loading...') ?></p>
-  </section>
-
-  <!-- DATASETS placeholder -->
-  <section id="datasets">
-    <div><?php print t('Loading ...') ?></div>
   </section>
 
   <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
