@@ -155,7 +155,7 @@
             function selectHandler() {
               var selectedItem = wrap.getChart().getSelection()[0].row + 1;
               if (selectedItem) {
-                window.location.href = Drupal.settings.basePath + Drupal.settings.chartSettings.searchPath +
+                window.location.href = Drupal.settings.basePath + Drupal.settings.pathPrefix + Drupal.settings.chartSettings.searchPath +
                   config.options.links[wrap.getChart().getSelection()[0].column - 1][wrap.getChart().getSelection()[0].row];
               }
             }
