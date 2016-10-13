@@ -172,13 +172,9 @@ function obiba_mica_network_page_detail_datasets($network_id) {
 }
 
 function obiba_mica_network_statistics_angular_options($networks_id) {
-  drupal_add_js(array(
-    'GraphicChartsOptions' => array(
-      'entityType' => 'network',
-      'entityIds' => implode(',', $networks_id)
-    )
-  ),
-    'setting');
+    obiba_mica_graphic_local_graphics_options(
+    array('entityType' => 'network',
+          'entityIds' => implode(',', $networks_id)));
   return theme('obiba_mica_network-charts');
 }
 

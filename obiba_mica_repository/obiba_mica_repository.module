@@ -123,6 +123,7 @@ function obiba_mica_repository_load_menus() {
  */
 function obiba_mica_repository_get_ng_module_to_load() {
   if (current_path() == MicaClientPathProvider::REPOSITORY_SEARCH) {
+    obiba_mica_graphic_local_graphics_options();
     return 'mica.ObibaSearch';
   }
   return FALSE;
