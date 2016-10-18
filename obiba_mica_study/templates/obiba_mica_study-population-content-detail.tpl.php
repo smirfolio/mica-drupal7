@@ -17,7 +17,7 @@
 
 <?php if (!empty($population->description)): ?>
   <p>
-    <?php print obiba_mica_commons_get_localized_field($population, 'description'); ?>
+    <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($population, 'description')); ?>
   </p>
 <?php endif; ?>
 
@@ -47,7 +47,7 @@
             <?php
             $studies = obiba_mica_commons_get_localized_dtos_field($population->model->recruitment, 'studies');
             ?>
-            <?php obiba_mica_commons_iterate_field($studies); ?>
+            <?php print implode(', ', $studies); ?>
           </td>
         </tr>
       <?php endif; ?>
@@ -142,18 +142,31 @@
         <tr>
           <th><?php print t('Ethnic Origin') ?></th>
           <td>
-            <?php $ehtnic_origins = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'ethnicOrigin'); ?>
-            <?php obiba_mica_commons_iterate_field($ehtnic_origins); ?>
+            <?php $ethnic_origins = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'ethnicOrigin'); ?>
+            <?php implode(', ', $ethnic_origins); ?>
           </td>
+
         </tr>
       <?php endif; ?>
+
+      <?php if (!empty($population->model->selectionCriteria->criteria)): ?>
+        <t>
+          <th><?php print t('Criteria') ?></th>
+          <?php
+          $criteria = array_map(function ($str) {
+          return obiba_mica_commons_clean_string($str);
+          }, $population->model->selectionCriteria->criteria);
+          ?>
+          <td><?php print implode(', ', $criteria) ?></td>
+        </t>
+      <?php endif ?>
 
       <?php if (!empty($population->model->selectionCriteria->healthStatus)): ?>
         <tr>
           <th><?php print t('Health Status') ?></th>
           <td>
             <?php $health_status = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'healthStatus'); ?>
-            <?php obiba_mica_commons_iterate_field($health_status); ?>
+            <?php implode(', ', $health_status); ?>
           </td>
         </tr>
       <?php endif; ?>
@@ -195,14 +208,25 @@
               <?php if (!empty($population->model->numberOfParticipants->participant->noLimit)): ?>
                 (<?php print t('No Limit'); ?>)
               <?php endif; ?>
-              <?php if (!empty($population->model->numberOfParticipants->info)): ?>
-
-            <p><?php print obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'); ?></p>
-            <?php endif; ?>
             </p>
           </td>
         </tr>
       <?php endif; ?>
+
+      <?php if (!empty($population->model->numberOfParticipants->info)): ?>
+        <tr>
+          <th><?php print t('Supplementary Information about the Number of Participants') ?></th>
+          <td>
+
+              <?php if (!empty($population->model->numberOfParticipants->info)): ?>
+
+            <p><?php print obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'); ?></p>
+            <?php endif; ?>
+
+          </td>
+        </tr>
+      <?php endif; ?>
+
 
       <?php if (!empty($population->model->numberOfParticipants->sample->number)): ?>
         <tr>

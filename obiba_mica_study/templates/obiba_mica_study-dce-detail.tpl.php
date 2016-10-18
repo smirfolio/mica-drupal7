@@ -57,13 +57,11 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                     <?php foreach ($dce->model->dataSources as $dataSource): ?>
                       <li>
                         <?php print obiba_mica_commons_clean_string($dataSource); ?>
+                        <?php if ($dataSource == 'others'): ?>
+                          <?php print obiba_mica_commons_get_localized_field($dce->model, 'otherDataSources'); ?>
+                        <?php endif; ?>
                       </li>
                     <?php endforeach; ?>
-                    <?php if (!empty($dce->model->otherDataSources)): ?>
-                      <li>
-                        <?php print obiba_mica_commons_get_localized_field($dce->model, 'otherDataSources'); ?>
-                      </li>
-                    <?php endif; ?>
                   </ul>
                 </td>
               </tr>
@@ -83,7 +81,12 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                 </td>
               </tr>
             <?php endif; ?>
-
+            <?php if (!empty($dce->model->tissueTypes)): ?>
+             <?php $tissue_types =  obiba_mica_commons_get_localized_field($dce->model, 'tissueTypes'); ?>
+            <?php endif; ?>
+            <?php if (!empty($dce->model->otherBioSamples)): ?>
+              <?php $other_bio_samples =  obiba_mica_commons_get_localized_field($dce->model, 'otherBioSamples'); ?>
+            <?php endif; ?>
             <?php if (!empty($dce->model->bioSamples)): ?>
               <tr>
                 <th><?php print t('Biological Samples') ?></th>
@@ -92,22 +95,16 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                     <?php foreach ($dce->model->bioSamples as $samples): ?>
                       <li>
                         <?php print obiba_mica_commons_clean_string($samples); ?>
+                          <?php if ($samples == "tissues" && !empty($tissue_types)): ?>
+                             <?php print  $tissue_types; ?>
+                          <?php endif; ?>
+                        <?php if ($samples == "others" && !empty($other_bio_samples)): ?>
+                          <?php print  $other_bio_samples; ?>
+                        <?php endif; ?>
                       </li>
                     <?php endforeach; ?>
-                    <?php if (!empty($dce->model->otherBioSamples)): ?>
-                      <li>
-                        <?php print obiba_mica_commons_get_localized_field($dce->model, 'otherBioSamples'); ?>
-                      </li>
-                    <?php endif; ?>
                   </ul>
                 </td>
-              </tr>
-            <?php endif; ?>
-
-            <?php if (!empty($dce->model->tissueTypes)): ?>
-              <tr>
-                <th><?php print t('Tissue Types') ?></th>
-                <td><p><?php print obiba_mica_commons_get_localized_field($dce->model, 'tissueTypes'); ?></p></td>
               </tr>
             <?php endif; ?>
             </tbody>
