@@ -12,7 +12,7 @@
   Drupal.behaviors.obiba_mica_network_detail = {
     attach: function (context, settings) {
       if (context === document) {
-        if (settings.study_ids.length>0) {
+        if (settings.study_ids.length>0 && Drupal.settings.displayCoverage) {
           var resource_url = Drupal.settings.basePath
             + Drupal.settings.pathPrefix
             + 'mica/coverage/network/'

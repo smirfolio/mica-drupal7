@@ -23,12 +23,9 @@ class ObibaSearchResources extends MicaClient {
   }
 
   private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
-    $is_not_empty_stored_data = FALSE;
-    $stored_data = $this->drupalCache->MicaGetCache('repository-' . $resources);
+    $stored_data = NULL;
+    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
     if(!empty($stored_data)){
-    $is_not_empty_stored_data = $this->drupalCache->IsNotEmptyStoredData('repository-' . $resources, $stored_data);
-    }
-    if($is_not_empty_stored_data){
       return $stored_data;
     }
     else {
@@ -47,9 +44,8 @@ class ObibaSearchResources extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $array_response = json_decode($data);
-        $is_not_empty_stored_data = $this->drupalCache->IsNotEmptyStoredData('repository-' . $resources, $array_response);
-        if ($is_not_empty_stored_data) {
-          $this->drupalCache->MicaSetCache('repository-' . $resources, $array_response);
+        if (!empty($array_response)) {
+          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $array_response);
           return $array_response;
         }
       } catch (HttpClientException $e) {

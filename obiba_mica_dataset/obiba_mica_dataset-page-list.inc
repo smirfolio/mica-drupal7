@@ -50,49 +50,51 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
   $context['url'] = '/drupal/mica/refresh_list_datasets_' . $dataset_resource;
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
   drupal_add_js(array('context' => $context), 'setting');
-  $query = NULL;
-  $sort = NULL;
-  $sort_by = NULL;
   $list_datasets = '';
-  $dataset_limits = NULL;
-  if (!empty($_GET['search-query'])) {
-    $query = $_GET['search-query'];
-  }
-  if (!empty($_GET['search-sort'])) {
-    $sort = $_GET['search-sort'];
-  }
-  if (!empty($_GET['search-sort-order'])) {
-    $sort_by = $_GET['search-sort-order'];
-  }
-  if (!empty($_GET['search-nbr-result'])) {
-    $dataset_limits = $_GET['search-nbr-result'];
-  }
+
+  $page_number = !empty($_GET['page']) ? $_GET['page'] : NULL;
+  $query = !empty($_GET['search-query']) ? $_GET['search-query'] : NULL;
+  $sort = !empty($_GET['search-sort']) ? $_GET['search-sort'] : NULL;
+  $sort_by = !empty($_GET['search-sort-order']) ? $_GET['search-sort-order'] : NULL;
+  $dataset_limits = !empty($_GET['search-nbr-result']) ? $_GET['search-nbr-result'] : NULL;
+
   $node_view['#node']->title = '';
-  $resource_dataset = obiba_mica_dataset_correct_resource_server($dataset_resource);
-  $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset, $dataset_limits);
-  $total_hits = empty($response) ? 0 : $response->getTotalHits();
-  $dataset_limits = !empty($dataset_limits) ? $dataset_limits : MicaClient::getResponsePageSizeSmall();
-  pager_default_initialize($total_hits, $dataset_limits);
-  $pager_output = theme('pager', array('quantity' => $dataset_limits));
-  $summaries = empty($response) ? array() : $response->getSummaries();
-  if (!empty($summaries)) {
-    foreach ($summaries as $dataset) {
-      $list_datasets .= theme('obiba_mica_dataset-list-page-block', array(
-        'dataset' => $dataset,
-      ));
-    }
+  $resource_key = $page_number . $dataset_resource . $query . $sort . $sort_by . $dataset_limits;
+  $cached_themed_list_datasets = obiba_mica_commons_get_cache('cached_'. __FUNCTION__ . $resource_key);
+  if (!empty($cached_themed_list_datasets)) {
+    return $cached_themed_list_datasets;
   }
   else {
-    $list_datasets = variable_get_value('datasets_empty_label');
+    $resource_dataset = obiba_mica_dataset_correct_resource_server($dataset_resource);
+    $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset, $dataset_limits);
+    $total_hits = empty($response) ? 0 : $response->getTotalHits();
+    $dataset_limits = !empty($dataset_limits) ? $dataset_limits : MicaClient::getResponsePageSizeSmall();
+    pager_default_initialize($total_hits, $dataset_limits);
+    $pager_output = theme('pager', array('quantity' => $dataset_limits));
+    $summaries = empty($response) ? array() : $response->getSummaries();
+    if (!empty($summaries)) {
+      foreach ($summaries as $dataset) {
+        $list_datasets .= theme('obiba_mica_dataset-list-page-block', array(
+          'dataset' => $dataset,
+        ));
+      }
+    }
+    else {
+      $list_datasets = variable_get_value('datasets_empty_label');
+    }
+    $themed_datasets_list = theme('obiba_mica_dataset-list', array(
+      "form_search" => drupal_get_form('obiba_mica_dataset_create_form'),
+      'node_page' => $node_view,
+      "total_items" => $total_hits,
+      'list_datasets' => $list_datasets,
+      'pager_wrap' => $pager_output,
+      'dataset_type' => $dataset_resource,
+    ));
+    if ($total_hits !== 0) {
+      obiba_mica_commons_set_cache('cached_'. __FUNCTION__ . $resource_key, $themed_datasets_list);
+    }
+    return $themed_datasets_list;
   }
-  return theme('obiba_mica_dataset-list', array(
-    "form_search" => drupal_get_form('obiba_mica_dataset_create_form'),
-    'node_page' => $node_view,
-    "total_items" => $total_hits,
-    'list_datasets' => $list_datasets,
-    'pager_wrap' => $pager_output,
-    'dataset_type' => $dataset_resource,
-  ));
 }
 
 /**
@@ -172,40 +174,6 @@ Function obiba_mica_dataset_themed_list_dataset($list_datasets) {
   $data['list'] = $list_datasets_rendered;
   $data['total'] = $list_datasets->getTotalHits();
   return $data;
-}
-
-/**
- * GEt datasets table.
- */
-function _obiba_mica_dataset_get_datasets_table($datasets, $type) {
-  $dataset_rows = array();
-  foreach ($datasets as $key_dataset => $dataset_dto) {
-    $dce_description = NULL;
-    if (!empty($dataset_dto->description)) {
-      $dataset_description = theme('box',
-        truncate_utf8(strip_tags(obiba_mica_commons_get_localized_field($dataset_dto, 'description')), 50, TRUE, TRUE));
-    }
-    $dataset_name = obiba_mica_commons_get_localized_field($dataset_dto, 'name');
-
-    $dataset_rows[$key_dataset] = array(
-      'data' => array(
-        'label' => l($dataset_name, 'mica/' . $type . '/' . $dataset_dto->id),
-        'desc' => !empty($dataset_description) ? $dataset_description : '-',
-      ),
-    );
-  }
-
-  $dataset = theme(
-    'table',
-    array(
-      'header' => array(t('Name'), t('Description')),
-      'rows' => $dataset_rows,
-      'empty' => variable_get_value('datasets_empty_label'),
-      'sticky' => FALSE,
-      'attributes' => array('id' => 'variables_overview'),
-    )
-  );
-  return $dataset;
 }
 
 /**

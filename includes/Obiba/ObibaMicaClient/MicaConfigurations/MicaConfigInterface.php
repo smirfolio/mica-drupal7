@@ -10,14 +10,11 @@
  */
 
 
-namespace Obiba\ObibaMicaClient\MicaCache;
+namespace Obiba\ObibaMicaClient\MicaConfigurations;
 
-interface MicaCacheInterface{
+interface MicaConfigInterface{
 
-  function MicaGetCache($key);
-  function MicaSetCache($key, $value);
-  function clientKeyCacheGeneration($resource);
-  function clientGetCache($key);
-  function clientSetCache($key, $value);
+  public function MicaGetConfig($key);
+  public function MicaSetConfig($key, $value);
 
 }

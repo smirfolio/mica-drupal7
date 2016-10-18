@@ -15,11 +15,15 @@
  */
 
 const HEADER_JSON = 'application/json';
+
+//TODO have to remove from here must be in obiba\ObibaMicaClient Module only
 use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+
 /**
  * Implements hook_user_logout().
  */
 function obiba_mica_commons_user_logout() {
+  //TODO have to Not instantiate MicaCLient from here have to use an intermediate class that extend them
   $mica_client = new MicaClient(NULL, new MicaCache\MicaDrupalClientCache());
   $mica_client->logout();
 }
@@ -120,50 +124,52 @@ function obiba_mica_commons_get_localized_field($std, $field, $lang = NULL) {
   global $language;
   $value = NULL;
 
-    if (empty($lang)) {
-      $lang = $language->language;
+  if (empty($lang)) {
+    $lang = $language->language;
+  }
+
+  if (!empty($std->{$field})) {
+    $localizedString = $std->{$field};
+
+    if (!is_array($localizedString)) {
+      $asObject = function ($key) use ($localizedString) {
+        $obj = new stdClass();
+        $obj->lang = $key;
+        $obj->value = $localizedString->{$key};
+        return $obj;
+      };
+
+      $localizedString = array_map($asObject, array_keys(get_object_vars($localizedString)));
     }
 
-    if (!empty($std->{$field})) {
-      $localizedString = $std->{$field};
+    foreach ($localizedString as $field_value) {
+      $field_lang_std = !empty($field_value->lang) ? $field_value->lang : $field_value->locale;
+      $field_value_std = !empty($field_value->value) ? $field_value->value : $field_value->text;
 
-      if (!is_array($localizedString)) {
-        $asObject = function($key) use ($localizedString){
-          $obj = new stdClass();
-          $obj->lang = $key;
-          $obj->value = $localizedString->{$key};
-          return $obj;
-        };
-
-        $localizedString = array_map($asObject,  array_keys(get_object_vars($localizedString)));
+      if (!empty($lang) && $lang == $field_lang_std) {
+        return $field_value_std;
       }
-
-      foreach ($localizedString as $field_value) {
-        $field_lang_std = !empty($field_value->lang) ? $field_value->lang : $field_value->locale;
-        $field_value_std = !empty($field_value->value) ? $field_value->value : $field_value->text;
-
-        if (!empty($lang) && $lang == $field_lang_std) {
-          return $field_value_std;
-        } elseif ($field_lang_std == 'en') {
-          $value = $field_value_std;
-        } else {
-          $value = $field_value_std;
-        }
+      elseif ($field_lang_std == 'en') {
+        $value = $field_value_std;
+      }
+      else {
+        $value = $field_value_std;
       }
     }
-    elseif (is_array($std) && !empty($std[$field])) {
-      foreach ($std[$field] as $field_value) {
-        if (!empty($lang) && $lang == $field_value['lang']) {
-          return $field_value['value'];
-        }
-        elseif ($field_value['lang'] == 'en') {
-          $value = $field_value['value'];
-        }
-        else {
-          $value = $field_value['value'];
-        }
+  }
+  elseif (is_array($std) && !empty($std[$field])) {
+    foreach ($std[$field] as $field_value) {
+      if (!empty($lang) && $lang == $field_value['lang']) {
+        return $field_value['value'];
+      }
+      elseif ($field_value['lang'] == 'en') {
+        $value = $field_value['value'];
+      }
+      else {
+        $value = $field_value['value'];
       }
     }
+  }
 
   return $value;
 }
@@ -206,10 +212,26 @@ function obiba_mica_commons_datatables_multi_Lang() {
  * Add external js dataTables.
  */
 function obiba_mica_commons_datatables_external_source() {
-  drupal_add_js('https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js', array('external', 'scope' => 'footer', 'weight' => 10));
-  drupal_add_js('https://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', array('external', 'scope' => 'footer', 'weight' => 20));
-  drupal_add_js('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', array('external', 'scope' => 'footer', 'weight' => 30));
-  drupal_add_css('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', array('external', 'scope' => 'footer', 'weight' => 40));
+  drupal_add_js('https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js', array(
+    'external',
+    'scope' => 'footer',
+    'weight' => 10
+  ));
+  drupal_add_js('https://cdn.datatables.net/fixedcolumns/3.0.2/js/dataTables.fixedColumns.min.js', array(
+    'external',
+    'scope' => 'footer',
+    'weight' => 20
+  ));
+  drupal_add_js('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.js', array(
+    'external',
+    'scope' => 'footer',
+    'weight' => 30
+  ));
+  drupal_add_css('https://cdn.datatables.net/plug-ins/9dcbecd42ad/integration/bootstrap/3/dataTables.bootstrap.css', array(
+    'external',
+    'scope' => 'footer',
+    'weight' => 40
+  ));
 }
 
 /**
@@ -622,6 +644,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
     }
     else {
       if (!empty($file_resource)) {
+        //TODO have to Not instantiate MicaCLient from here have to use an intermediate class that extend them
         $mica_client = new MicaClient(NULL, new MicaCache\MicaDrupalClientCache());
         $raw_data = $mica_client->downloadFile($entity_type, $entity_id,
           $file_resource->id);
@@ -801,15 +824,8 @@ function obiba_mica_commons_get_images_cache($key) {
  * Helper to set cache for current user
  */
 function _obiba_mica_commons_set_cache($key, $bin, $value) {
-  global $user, $language;
-  $key = md5($key.'-'.$language->language);
-  if (in_array('anonymous user', $user->roles, TRUE)) {
-    if (variable_get_value('cache') == 1 && !empty($value)) {
-      cache_set($key . '-' . 'anonymous_user', $value, $bin, CACHE_TEMPORARY);
-    }
-  }
-  else {
-    cache_set($key . '-' . $user->sid, $value, $bin, CACHE_TEMPORARY);
+  if (variable_get_value('cache') == 1 && !empty($value)) {
+    cache_set($key, $value, $bin, CACHE_TEMPORARY);
   }
 }
 
@@ -818,15 +834,8 @@ function _obiba_mica_commons_set_cache($key, $bin, $value) {
  */
 function _obiba_mica_commons_get_cache($key, $bin) {
   $cache_object = NULL;
-  global $user, $language;
-  $key = md5($key.'-'.$language->language);
-  if (in_array('anonymous user', $user->roles, TRUE)) {
-    if (variable_get_value('cache') == 1) {
-      $cache_object = cache_get($key . '-' . 'anonymous_user', $bin);
-    }
-  }
-  else {
-    $cache_object = cache_get($key . '-' . $user->sid, $bin);
+  if (variable_get_value('cache') == 1 && !empty($key)) {
+    $cache_object = cache_get($key, $bin);
   }
   return empty($cache_object) ? FALSE : $cache_object->data;
 }
@@ -838,7 +847,7 @@ function _obiba_mica_commons_get_cache($key, $bin) {
  * @param $description
  * @return string
  */
-function _obiba_mica_admin_search_title_description_draggable_field($title, $description){
+function _obiba_mica_admin_search_title_description_draggable_field($title, $description) {
   return <<<EOT
     <label class="control-label">$title</label>
     <div class="help-block">$description</div>
@@ -864,7 +873,9 @@ function obiba_mica_commons_convert_and_format_string_date($str_date, $format = 
  * @return float|int|null
  */
 function obiba_mica_commons_progress($start_date, $end_date) {
-  if (empty($start_date)) return NULL;
+  if (empty($start_date)) {
+    return NULL;
+  }
 
   $start_time = strtotime($start_date);
   $now = time();
@@ -885,7 +896,7 @@ function obiba_mica_commons_progress($start_date, $end_date) {
 
 /**
  * Make a progress bar markup from the provided dates.
- * 
+ *
  * @param $start_date
  * @param $end_date
  * @return string
@@ -893,7 +904,9 @@ function obiba_mica_commons_progress($start_date, $end_date) {
 function obiba_mica_commons_progress_bar($start_date, $end_date) {
   $progress = obiba_mica_commons_progress($start_date, $end_date);
 
-  if(empty($progress)) return '';
+  if (empty($progress)) {
+    return '';
+  }
 
   return '<div class="progress">
   <div class="progress-bar" role="progressbar" aria-valuenow="' . $progress . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $progress . '%;">
@@ -905,20 +918,61 @@ function obiba_mica_commons_progress_bar($start_date, $end_date) {
 /**
  * Title  callback for menu.
  */
-function obiba_mica_commons_get_menu_title($title_variable){
+function obiba_mica_commons_get_menu_title($title_variable) {
   return variable_get_value($title_variable);
 }
 
 /**
  * Title  callback for menu.
  */
-function obiba_mica_commons_setting_menu_title_from_callback(&$variables){
-  if(!empty($variables['element']['#original_link']['title_callback']) && $variables['element']['#original_link']['title_callback'] != 't'){
-    if(!empty($variables['element']['#original_link']['title_arguments'])){
-      $variables['element']['#title']=$variables['element']['#original_link']['title_callback'](unserialize($variables['element']['#original_link']['title_arguments'])[0]);
+function obiba_mica_commons_setting_menu_title_from_callback(&$variables) {
+  if (!empty($variables['element']['#original_link']['title_callback']) && $variables['element']['#original_link']['title_callback'] != 't') {
+    if (!empty($variables['element']['#original_link']['title_arguments'])) {
+      $variables['element']['#title'] = $variables['element']['#original_link']['title_callback'](unserialize($variables['element']['#original_link']['title_arguments'])[0]);
     }
-    else{
-      $variables['element']['#title']=$variables['element']['#original_link']['title_callback']();
+    else {
+      $variables['element']['#title'] = $variables['element']['#original_link']['title_callback']();
     }
   }
+}
+
+/**
+ * $entity contain or not an coverage
+ */
+function obiba_mica_commons_has_coverage($entity, $entity_id) {
+  $query = NULL;
+  switch ($entity) {
+    case 'dataset':
+      $query = RqlQueryBuilder::dataset_query_charts($entity_id);
+      break;
+    case 'study':
+      $query = RqlQueryBuilder::study_query_charts($entity_id);
+      break;
+    case 'network':
+      $query = RqlQueryBuilder::network_query_charts($entity_id);
+      break;
+    default;
+  }
+  if (!empty($query)) {
+    $search_resources = new ObibaSearchResources();
+    $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
+    $enabled_coverage = obiba_mica_commons_enabled_coverage();
+    if (!empty($coverages) && $enabled_coverage) {
+      $coverage['has_coverage'] = TRUE;
+      return $coverage;
+    }
+  }
+  else {
+    return FALSE;
+  }
+}
+
+function obiba_mica_commons_enabled_coverage(){
+  $enabled_coverage = variable_get_value('mica_taxonomy_figures');
+  foreach($enabled_coverage as $coverage){
+    if($coverage['enable']){
+      return TRUE;
+    }
+  }
+  return FALSE;
 }

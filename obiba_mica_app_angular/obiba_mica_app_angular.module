@@ -247,17 +247,9 @@ function obiba_mica_app_angular_get_angular_template($angular_template) {
  *   The translation string of the AngularJs app.
  */
 function obiba_mica_app_angular_get_angular_translation($lang) {
-  $cached_translation = obiba_mica_commons_get_cache('translation-' . $lang);
-  if (!empty($cached_translation)) {
-    $translation = $cached_translation;
-  }
-  else {
     $mica_config = new MicaConfigResource();
     $translation = $mica_config->getTranslations($lang);
-    obiba_mica_commons_set_cache('translation-' . $lang, $translation);
-  }
-
-  print $translation;
+    drupal_json_output(json_decode($translation));
 }
 
 /**
