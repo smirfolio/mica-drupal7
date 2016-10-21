@@ -213,21 +213,6 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->numberOfParticipants->info)): ?>
-        <tr>
-          <th><?php print t('Supplementary Information about the Number of Participants') ?></th>
-          <td>
-
-              <?php if (!empty($population->model->numberOfParticipants->info)): ?>
-
-            <p><?php print obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'); ?></p>
-            <?php endif; ?>
-
-          </td>
-        </tr>
-      <?php endif; ?>
-
-
       <?php if (!empty($population->model->numberOfParticipants->sample->number)): ?>
         <tr>
           <th><?php print t('Number of Participants with Biological Samples')
@@ -239,6 +224,20 @@
                 (<?php print t('No Limit'); ?>)
               <?php endif; ?>
             </p>
+          </td>
+        </tr>
+      <?php endif; ?>
+
+      <?php if (!empty($population->model->numberOfParticipants->info)): ?>
+        <tr>
+          <th><?php print t('Supplementary Information about the Number of Participants') ?></th>
+          <td>
+
+            <?php if (!empty($population->model->numberOfParticipants->info)): ?>
+
+              <p><?php print obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'); ?></p>
+            <?php endif; ?>
+
           </td>
         </tr>
       <?php endif; ?>
