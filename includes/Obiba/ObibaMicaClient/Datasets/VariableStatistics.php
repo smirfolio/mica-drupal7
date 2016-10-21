@@ -8,22 +8,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 /**
  * @file
  * Code to deal with variable statics.
  */
+namespace Obiba\ObibaMicaClient\Datasets;
+
+use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 
 /**
  * VariableStatistics class
  */
 class VariableStatistics {
-
   private $variable;
-
   private $variableStat;
-
-  private $datasetDetailedVarStats;
+  private $micaConfig;
+  public $datasetDetailedVarStats;
 
   /**
    * Instance initialisation.
@@ -32,38 +32,47 @@ class VariableStatistics {
    *   The variable to extract statistics.
    * @param object $variable_stat
    *   The variable aggregations.
+   * @param MicaConfig\MicaConfigInterface $micaConfig .
+   *   The interface injected
    */
-  public function __construct($variable, $variable_stat) {
+  public function __construct($variable, $variable_stat, MicaConfig\MicaConfigInterface $micaConfig) {
+    $this->micaConfig = $micaConfig;
     $this->variable = $variable;
     $this->variableStat = $variable_stat;
-    $this->datasetDetailedVarStats = variable_get_value('dataset_detailed_var_stats');
+    $this->datasetDetailedVarStats = $this->micaConfig->MicaGetConfig('dataset_detailed_var_stats');
   }
 
   /**
    * Table of descriptive statistics or frequencies.
    */
   public function asTable() {
-    if (!empty($this->variableStat->total)) {
-      if (!empty($this->variableStat->statistics)) {
-        return $this->asDescriptiveTable();
+    if (!empty($this->datasetDetailedVarStats)) {
+      if (!empty($this->variableStat->total)) {
+        if (!empty($this->variableStat->statistics)) {
+          return $this->asDescriptiveTable();
+        }
+        if (!empty($this->variableStat->frequencies)) {
+          return $this->asFrequenciesTable();
+        }
       }
-      if (!empty($this->variableStat->frequencies)) {
-        return $this->asFrequenciesTable();
-      }
+      return '<div class="alert alert-info">' . t('No statistics found for this variable.') . '</div>';
     }
-    return '<div class="alert alert-info">' . t('No statistics found for this variable.') . '</div>';
+    return FALSE;
   }
 
   /**
    * Chart of frequencies only.
    */
   public function asChart() {
-    if (!empty($this->variableStat->statistics)) {
-      return FALSE;
-      // May be need to review :
-      // return $this->asStackedBarChart();
+    if (!empty($this->datasetDetailedVarStats)) {
+      if (!empty($this->variableStat->statistics)) {
+        return FALSE;
+        // May be need to review :
+        // return $this->asStackedBarChart();
+      }
+      return $this->asPieChart();
     }
-    return $this->asPieChart();
+    return FALSE;
   }
 
   /**
@@ -72,7 +81,6 @@ class VariableStatistics {
   private function asStackedBarChart() {
     if (!empty($this->variableStat->frequencies)) {
       $aggregations = $this->getAggregations();
-
       $labels = array();
       $data = array();
       // Add category frequencies first.
@@ -118,9 +126,8 @@ class VariableStatistics {
           $data[$header][] = empty($aggregation->n) ? 0 : $aggregation->n;
         }
       }
-
       if (!empty($data)) {
-          $to_render = obiba_mica_graphic_stacked_column_chart($labels, $data, t('Valid and other values frequencies'), NULL, 400, 'none');
+        $to_render = obiba_mica_graphic_stacked_column_chart($labels, $data, t('Valid and other values frequencies'), NULL, 400, 'none');
         return render($to_render);
       }
       else {
@@ -147,7 +154,6 @@ class VariableStatistics {
     if (empty($aggregation->n)) {
       return FALSE;
     }
-
     $labels = array();
     $data = array();
     foreach ($aggregation->frequencies as $frequency) {
@@ -157,13 +163,11 @@ class VariableStatistics {
         $data[] = $frequency->count;
       }
     }
-
     if (!empty($data) && count($data) > 1) {
       if (!empty($this->datasetDetailedVarStats) && $this->variable->variableType == 'Dataschema') {
         $raw_options = array();
       }
-
-        $to_render = obiba_mica_graphic_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right', $raw_options);
+      $to_render = obiba_mica_graphic_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right', $raw_options);
       return render($to_render);
     }
     else {
@@ -192,7 +196,6 @@ class VariableStatistics {
     if ($value == NULL || $value == '' || empty($this->variable->categories)) {
       return $value;
     }
-
     foreach ($this->variable->categories as $category) {
       if ($value == $category->name) {
         $label = obiba_mica_dataset_variable_attributes_detail($category, 'label');
@@ -259,7 +262,6 @@ class VariableStatistics {
     if (empty($this->variable->categories)) {
       return FALSE;
     }
-
     foreach ($this->variable->categories as $category) {
       if ($value == $category->name) {
         return TRUE;
@@ -274,7 +276,6 @@ class VariableStatistics {
   private function asDescriptiveTable() {
     $rows = array();
     $aggregations = array();
-
     if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
       if (!empty($this->variableStat->aggregations)) {
         $aggregations = $this->variableStat->aggregations;
@@ -283,7 +284,6 @@ class VariableStatistics {
     else {
       array_push($aggregations, $this->variableStat);
     }
-
     // Frequencies of missing.
     $missings = array();
     if (!empty($this->variableStat->frequencies)) {
@@ -332,14 +332,12 @@ class VariableStatistics {
       $row[] = empty($aggregation->total) ? '-' : obiba_mica_commons_format_number($aggregation->total);
       $rows[] = $row;
     }
-
     // Combined statistics.
     if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
       $row = array();
       if ($this->datasetDetailedVarStats) {
         $row[] = array('data' => '<strong>' . t('All') . '</strong>');
       }
-
       $row = array_merge($row, $this->statisticsToRow($this->variableStat));
       $aggregation = $this->variableStat;
       foreach ($missings as $missing) {
@@ -360,7 +358,6 @@ class VariableStatistics {
       $row[] = empty($aggregation->total) ? '-' : obiba_mica_commons_format_number($aggregation->total);
       $rows[] = $row;
     }
-
     // Headers.
     $headers = array();
     if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
@@ -373,7 +370,6 @@ class VariableStatistics {
       array_push($headers, $label);
     }
     array_push($headers, t('Total'));
-
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,
@@ -389,15 +385,17 @@ class VariableStatistics {
         $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
       }
       return $header;
-    } else if ($aggregation->networkTable) {
-      $network_id = $aggregation->networkTable->networkId;
-      $header = l(_obiba_mica_variable_network_acronym($this->variable, $network_id), 'mica/network/' . $network_id);
-      if (!empty($aggregation->networkTable->name)) {
-        $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->networkTable, 'name');
-      }
-      return $header;
     }
-
+    else {
+      if ($aggregation->networkTable) {
+        $network_id = $aggregation->networkTable->networkId;
+        $header = l(_obiba_mica_variable_network_acronym($this->variable, $network_id), 'mica/network/' . $network_id);
+        if (!empty($aggregation->networkTable->name)) {
+          $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->networkTable, 'name');
+        }
+        return $header;
+      }
+    }
     return '';
   }
 
@@ -426,7 +424,6 @@ class VariableStatistics {
       array_push($headers, t('Frequency'));
       array_push($aggregations, $this->variableStat);
     }
-
     // Counts per valid/missing values.
     $colspan = count($aggregations) + 1;
     $rows[] = array(
@@ -441,7 +438,6 @@ class VariableStatistics {
         'colspan' => $colspan,
       ),
     );
-
     // Categories first.
     if (!empty($this->variable->categories)) {
       foreach ($this->variable->categories as $category) {
@@ -482,7 +478,6 @@ class VariableStatistics {
         }
       }
     }
-
     // Observed values.
     $observed_values = $this->getObservedValues($aggregations);
     foreach ($observed_values as $observed_value) {
@@ -518,14 +513,12 @@ class VariableStatistics {
         $missing_rows[] = $row;
       }
     }
-
     // Subtotal valid values.
     $row = array('<i>' . t('Subtotal') . '</i>');
     foreach ($aggregations as $aggregation) {
       $row[] = $this->countMarkup($aggregation->n, $aggregation->total);
     }
     $rows[] = $row;
-
     // Subtotal missing values.
     if (count($missing_rows) > 1) {
       // Total missing.
@@ -534,10 +527,8 @@ class VariableStatistics {
         $row[] = $this->countMarkup($aggregation->total - $aggregation->n, $aggregation->total);
       }
       $missing_rows[] = $row;
-
       $rows = array_merge($rows, $missing_rows);
     }
-
     // Grand total.
     $row = array(
       array(
@@ -545,7 +536,6 @@ class VariableStatistics {
         'class' => array('active'),
       ),
     );
-
     foreach ($aggregations as $aggregation) {
       $row[] = array(
         'data' => obiba_mica_commons_format_number($aggregation->total),
@@ -553,7 +543,6 @@ class VariableStatistics {
       );
     }
     $rows[] = $row;
-
     return theme('table', array(
       'header' => $headers,
       'rows' => $rows,
@@ -572,7 +561,6 @@ class VariableStatistics {
       return obiba_mica_commons_format_number($count)
       . '<div class="help-inline" data-toggle="tooltip" title="" data-original-title="' . $total_title . '">' .
       obiba_mica_commons_format_number($percent_total, 1) . '%</div><div class="help-inline" data-toggle="tooltip" title="" data-original-title="' .
-
       $title . '"><i>(' . obiba_mica_commons_format_number($percent, 1) . '%)</i></div>';
     }
     return obiba_mica_commons_format_number($count) .
@@ -607,5 +595,4 @@ class VariableStatistics {
       );
     }
   }
-
 }

@@ -61,13 +61,13 @@ function obiba_mica_dataset_page_detail($dataset_id) {
       obiba_mica_dataset_studies_datatable_init($dataset_type_dto);
     }
 
-    $dataset_cache_coverage = obiba_mica_commons_get_cache('dataset_coverage-' . $dataset_dto->id);
+    $dataset_cache_coverage = obiba_mica_commons_get_cache(__FUNCTION__ .'dataset_coverage-' . $dataset_dto->id);
     if (!empty($dataset_cache_coverage)) {
       $coverage = $dataset_cache_coverage;
     }
     else {
       $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
-      obiba_mica_commons_set_cache('dataset_coverage-' . $dataset_dto->id, $coverage);
+      obiba_mica_commons_set_cache(__FUNCTION__ .'dataset_coverage-' . $dataset_dto->id, $coverage);
     }
   }
 
@@ -82,7 +82,7 @@ function obiba_mica_dataset_page_detail($dataset_id) {
     l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
   ));
 
-  $dataset_theme = obiba_mica_commons_get_cache('dataset_theme-' . $dataset_id);
+  $dataset_theme = obiba_mica_commons_get_cache(__FUNCTION__ .'dataset_theme-' . $dataset_id);
   if (!empty($dataset_theme)) {
     return $dataset_theme;
   }
@@ -139,7 +139,7 @@ function obiba_mica_dataset_page_detail($dataset_id) {
           'doc_id' => $dataset_id
         ))
       ));
-      obiba_mica_commons_set_cache('dataset_theme-' . $dataset_id, $dataset_theme);
+      obiba_mica_commons_set_cache(__FUNCTION__ .'dataset_theme-' . $dataset_id, $dataset_theme);
       return $dataset_theme;
     }
     else {
@@ -264,7 +264,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
  * Ajax Variable table Call header.
  */
 function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_id) {
-  $cached_header_variable_table = obiba_mica_commons_get_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id);
+  $cached_header_variable_table = obiba_mica_commons_get_cache(__FUNCTION__ .'variable-table-header-cache-' . $dataset_type . '-' . $dataset_id);
 
   if (!empty($cached_header_variable_table)) {
     $data = $cached_header_variable_table;
@@ -281,7 +281,7 @@ function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_
     }
 
     $data['header'] = $header;
-    obiba_mica_commons_set_cache('variable-table-header-cache-' . $dataset_type . '-' . $dataset_id, $data);
+    obiba_mica_commons_set_cache(__FUNCTION__ .'variable-table-header-cache-' . $dataset_type . '-' . $dataset_id, $data);
   }
 
   return drupal_json_output($data);
@@ -309,7 +309,6 @@ function obiba_mica_dataset_get_sorted_by_column() {
  * Ajax Variable table Call data.
  */
 function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset) {
-  $dataset_resource = new MicaDatasetResource();
   $from = 0;
   $size = 10;
   $dataset_sort_by = NULL;
@@ -322,11 +321,12 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
     $size = $_GET['iDisplayLength'];
   }
 
-  $variable_data = obiba_mica_commons_get_cache('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size);
+  $variable_data = obiba_mica_commons_get_cache(__FUNCTION__ .'Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size);
   if (!empty($variable_data)) {
     $data = $variable_data;
   }
   else {
+    $dataset_resource = new MicaDatasetResource();
     $sort = obiba_mica_dataset_get_sorted_by_column();
 
     $dataset_dto = $dataset_resource->getDataset($id_dataset);
@@ -357,7 +357,7 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
     $data['iTotalRecords'] = $variables_dataset->total;
     $data['iTotalDisplayRecords'] = $variables_dataset->total;
     $data['aaData'] = $data_variable;
-    obiba_mica_commons_set_cache('Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size, $data);
+    obiba_mica_commons_set_cache(__FUNCTION__ .'Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size, $data);
   }
   // Must be update in each request (DataTable requirement in ajx call context)
   $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
@@ -730,19 +730,6 @@ function obiba_mica_dataset_page_detail_download($dataset_id) {
     print empty($csv_altered) ? $csv_response : $csv_altered[0];
     exit;
   }
-}
-
-/**
- * Get the facets of the variables for this dataset.
- */
-function obiba_mica_dataset_get_variables($dataset_id) {
-  $dataset_resource = new MicaDatasetResource();
-  return $dataset_resource->variables_search(array(
-    0 => array(
-      'field' => 'datasetId',
-      'terms' => array($dataset_id),
-    ),
-  ), 0);
 }
 
 /**

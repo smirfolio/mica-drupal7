@@ -16,7 +16,10 @@
 
 include_once 'includes/obiba_mica_dataset_commons.inc';
 include_once 'includes/obiba_mica_dataset_resource.inc';
-include_once 'includes/obiba_mica_variable_statistics.inc';
+
+use Obiba\ObibaMicaClient\Datasets as Datasets;
+//TODO have to remove from here must be in obiba\ObibaMicaClient Module only
+use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 
 /**
  * Variable page detail.
@@ -375,7 +378,8 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
     $variable = $variable_resource->getVariable($variable_id);
     $variable_stat = $variable_resource->getVariableAggregation($variable_id);
     if (!empty($variable_stat)) {
-      $statistics = new VariableStatistics($variable, $variable_stat);
+      //TODO have to Not instantiate VariableStatistics from here have to use an intermediate class that extend them
+      $statistics = new Datasets\VariableStatistics($variable, $variable_stat, new MicaConfig\MicaDrupalConfig());
       $stat_tab['table'] = $statistics->asTable();
       $stat_tab['chart'] = $statistics->asChart();
       $statistics_variable = $stat_tab;

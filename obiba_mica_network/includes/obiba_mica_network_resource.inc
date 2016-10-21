@@ -52,10 +52,13 @@ class MicaNetworkResource extends MicaClient {
       $params = "network(exists(Mica_network.id),limit($from,$limit)$sort_rql_bucket)";
     }
     $params .= ",locale($language->language)";
-    $resource_query = '/networks/_rql?query=' . $params;
+    $resource_query ='/networks/_rql?query=' . $params;
 
-    $result_resource_query = obiba_mica_commons_get_cache($resource_query);
-    if (empty($result_resource_query)) {
+    $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
+    if (!empty($cache_stored_data)) {
+      return $cache_stored_data;
+    }
+    else {
       $url_networks = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url_networks, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -68,9 +71,13 @@ class MicaNetworkResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $result_resource_query = new NetworkJoinResponseWrapper(json_decode($data));
-        obiba_mica_commons_set_cache($resource_query, $result_resource_query);
-        return $result_resource_query;
+        $result_data = json_decode($data);
+        $result_resource_query = new NetworkJoinResponseWrapper($result_data);
+        $has_summary = $result_resource_query->hasSummaries();
+        if (!empty($has_summary)) {
+          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
+          return $result_resource_query;
+        }
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
@@ -80,7 +87,7 @@ class MicaNetworkResource extends MicaClient {
         return array();
       }
     }
-    return $result_resource_query;
+    return False;
   }
 
 
@@ -90,11 +97,14 @@ class MicaNetworkResource extends MicaClient {
    * @param null $networkIds
    * @return array|mixed
    */
-  public function get_network_details($networkIds) {
+  public function getNetworkDetails($networkIds) {
     $this->setLastResponse(NULL);
     $resource_query = '/networks/_rql?query=' . RqlQueryBuilder::networks($networkIds);
-    $result_resource_query = obiba_mica_commons_get_cache($resource_query);
-    if (empty($result_resource_query)) {
+    $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
+    if (!empty($cache_stored_data)) {
+      return $cache_stored_data;
+    }
+    else{
       $url_networks = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url_networks, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -111,8 +121,10 @@ class MicaNetworkResource extends MicaClient {
         if (!empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
           $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
         }
-        obiba_mica_commons_set_cache($resource_query, $result_resource_query);
+        if(!empty($result_resource_query)){
+        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
         return $result_resource_query;
+        }
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
@@ -123,7 +135,7 @@ class MicaNetworkResource extends MicaClient {
         return array();
       }
     }
-    return $result_resource_query;
+    return FALSE;
   }
 
   /**
@@ -135,7 +147,7 @@ class MicaNetworkResource extends MicaClient {
   public function getNetwork($network_id) {
     $resource_query = '/network/' . rawurlencode($network_id);
     $this->setLastResponse(NULL);
-    $cached_network = $this->drupalCache->MicaGetCache($resource_query);
+    $cached_network = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if(!empty($cached_network)){
       return $cached_network;
     }
@@ -154,10 +166,10 @@ class MicaNetworkResource extends MicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $network_response = json_decode($data);
-        $is_empty_stored_data = $this->drupalCache->IsNotEmptyStoredData($resource_query, $network_response);
-        if (!$is_empty_stored_data) {
+
+        if (!empty($network_response)) {
           $this->updateModel($network_response);
-          $this->drupalCache->MicaSetCache($resource_query, $network_response);
+          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_response);
           return $network_response;
         }
       } catch (HttpClientException $e) {

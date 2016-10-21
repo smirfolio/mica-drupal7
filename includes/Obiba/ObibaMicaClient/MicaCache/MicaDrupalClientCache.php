@@ -11,8 +11,9 @@
 
 namespace Obiba\ObibaMicaClient\MicaCache;
 
-class MicaDrupalClientCache implements MicaCacheInterface {
+use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 
+class MicaDrupalClientCache implements MicaCacheInterface {
   function __construct() {
   }
 
@@ -25,7 +26,8 @@ class MicaDrupalClientCache implements MicaCacheInterface {
    * @return $this
    */
   public function MicaGetCache($resource_query) {
-    $cached_result = obiba_mica_commons_get_cache($resource_query);
+    $cacheKey = $this->clientKeyCacheGeneration($resource_query);
+    $cached_result = $this->clientGetCache($cacheKey);
     if (!empty($cached_result)) {
       return $cached_result;
     }
@@ -33,7 +35,30 @@ class MicaDrupalClientCache implements MicaCacheInterface {
   }
 
   public function MicaSetCache($resource_query, $value) {
-    obiba_mica_commons_set_cache($resource_query, $value);
+    $cacheKey = $this->clientKeyCacheGeneration($resource_query);
+    self::clientSetCache($cacheKey, $value);
+  }
+
+   function clientKeyCacheGeneration($resource) {
+    global $user, $language;
+    $key_lang = md5($resource . '-' . $language->language);
+    if (in_array('anonymous user', $user->roles, TRUE)) {
+      $key = $key_lang . '-' . 'anonymous_user';
+    }
+    else {
+      $key = $key_lang . '-' . $user->sid;
+    }
+    return $key;
+  }
+
+  public function clientGetCache($key) {
+    $client_get_cache = MicaConfig\MicaDrupalConfig::CLIENT_GET_CACHE;
+    return $client_get_cache($key);
+  }
+
+  public function clientSetCache($key, $value) {
+    $client_set_cache = MicaConfig\MicaDrupalConfig::CLIENT_SET_CACHE;
+    $client_set_cache($key, $value);
   }
 
   public function IsNotEmptyStoredData($resources, $stored_data) {
@@ -78,6 +103,12 @@ class MicaDrupalClientCache implements MicaCacheInterface {
         break;
       case 'networks' :
         if (!empty($stored_data->networkResultDto->totalHits)) {
+          return TRUE;
+        }
+        break;
+      case 'network' :
+        $stored_data;
+        if (!empty($stored_data->networkSummaries)) {
           return TRUE;
         }
         break;
