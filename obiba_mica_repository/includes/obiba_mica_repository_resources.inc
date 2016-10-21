@@ -144,41 +144,49 @@ class ObibaSearchResources extends MicaClient {
   }
 
   public function taxonomiesCoverageRql($query, $type, $aggregation_type, $strict) {
-    if (!empty($_SESSION['errorsQuery'])) {
-      unset($_SESSION['errorsQuery']);
-    }
-
     $request_parameters = array(
       'query' => $query,
       'strict' => $strict ? 'true' : 'false'
     );
-
-    $url = sprintf("%s/%s/legacy/_%s", $this->micaUrl, $type, $aggregation_type);
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON)
-        )
-      ),
-      'parameters' => $request_parameters,
-    ));
-
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return empty($data) ? array() : json_decode($data);
-    } catch (HttpClientException $e) {
-      if ($e->getCode() == 403) {
-        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
-      }
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        ), WATCHDOG_WARNING);
-      return array();
+    $resources = $query . $type . $aggregation_type;
+    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
+    if(!empty($stored_data)){
+      return $stored_data;
     }
+    else{
+      $url = sprintf("%s/%s/legacy/_%s", $this->micaUrl, $type, $aggregation_type);
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON)
+          )
+        ),
+        'parameters' => $request_parameters,
+      ));
+
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        if(!empty($data)){
+          $result_data = json_decode($data);
+          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $result_data);
+          return $result_data;
+        }
+
+      } catch (HttpClientException $e) {
+        if ($e->getCode() == 403) {
+          drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
+        }
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        return array();
+      }
+    }
+    return array();
   }
 
   /**

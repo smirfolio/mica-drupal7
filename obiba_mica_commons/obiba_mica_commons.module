@@ -969,9 +969,12 @@ function obiba_mica_commons_has_coverage($entity, $entity_id) {
 
 function obiba_mica_commons_enabled_coverage(){
   $enabled_coverage = variable_get_value('mica_taxonomy_figures');
-  foreach($enabled_coverage as $coverage){
-    if($coverage['enable']){
-      return TRUE;
+  if(!empty($enabled_coverage))
+  {
+    foreach ($enabled_coverage as $coverage) {
+      if ($coverage['enable']) {
+        return TRUE;
+      }
     }
   }
   return FALSE;
