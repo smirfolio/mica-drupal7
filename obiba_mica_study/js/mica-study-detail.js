@@ -18,7 +18,7 @@
 
         if (optionsStudyContent) {
 
-          if (optionsStudyContent.showCoverage) {
+          if (optionsStudyContent.showCoverage && optionsStudyContent.haveCoverage) {
             qCoverage = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/coverage')
               .done(function (data) {
                 if (! data) {

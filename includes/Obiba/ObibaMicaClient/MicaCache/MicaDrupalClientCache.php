@@ -26,8 +26,7 @@ class MicaDrupalClientCache implements MicaCacheInterface {
    * @return $this
    */
   public function MicaGetCache($resource_query) {
-    $cacheKey = $this->clientKeyCacheGeneration($resource_query);
-    $cached_result = $this->clientGetCache($cacheKey);
+    $cached_result = $this->clientGetCache($resource_query);
     if (!empty($cached_result)) {
       return $cached_result;
     }
@@ -35,20 +34,7 @@ class MicaDrupalClientCache implements MicaCacheInterface {
   }
 
   public function MicaSetCache($resource_query, $value) {
-    $cacheKey = $this->clientKeyCacheGeneration($resource_query);
-    self::clientSetCache($cacheKey, $value);
-  }
-
-   function clientKeyCacheGeneration($resource) {
-    global $user, $language;
-    $key_lang = md5($resource . '-' . $language->language);
-    if (in_array('anonymous user', $user->roles, TRUE)) {
-      $key = $key_lang . '-' . 'anonymous_user';
-    }
-    else {
-      $key = $key_lang . '-' . $user->sid;
-    }
-    return $key;
+    $this->clientSetCache($resource_query, $value);
   }
 
   public function clientGetCache($key) {

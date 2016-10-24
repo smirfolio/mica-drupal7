@@ -16,7 +16,6 @@ interface MicaCacheInterface{
 
   function MicaGetCache($key);
   function MicaSetCache($key, $value);
-  function clientKeyCacheGeneration($resource);
   function clientGetCache($key);
   function clientSetCache($key, $value);
 

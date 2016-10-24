@@ -42,7 +42,7 @@ class MicaStudyResource extends MicaClient {
     $this->setLastResponse(NULL);
     $resource_query = $this->generateRqlQuery($query, $from, $limit, $sort, $order, $language);
 
-    $cached_studies = $this->drupalCache->MicaGetCache($resource_query);
+    $cached_studies = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if(!empty($cached_studies)){
       return $cached_studies;
     }
@@ -62,7 +62,7 @@ class MicaStudyResource extends MicaClient {
         $response_wrapper = json_decode($data);
         if ($response_wrapper->studyResultDto->totalCount !== 0) {
           $return_studies = new StudyJoinResponseWrapper(json_decode($data));
-          $this->drupalCache->MicaSetCache($resource_query, $return_studies);
+          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $return_studies);
           return $return_studies;
         }
       } catch (HttpClientException $e) {
@@ -86,7 +86,7 @@ class MicaStudyResource extends MicaClient {
   public function getStudy($study_id) {
     $resource_query = '/study/' . rawurlencode($study_id);
     $this->setLastResponse(NULL);
-    $cached_study = $this->drupalCache->MicaGetCache($resource_query);
+    $cached_study = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     $url = $this->micaUrl . $resource_query;
     if(!empty($cached_study)){
       return $cached_study;
@@ -118,7 +118,7 @@ class MicaStudyResource extends MicaClient {
               }
             }
           }
-          $this->drupalCache->MicaSetCache($resource_query, $result_study);
+          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_study);
           return $result_study;
         }
       } catch (HttpClientException $e) {
