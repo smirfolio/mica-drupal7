@@ -793,17 +793,34 @@ function obiba_mica_commons_taxonomies_filter_array($key_variables) {
 }
 
 /**
+ * Helper to generate an hash key cache
+ */
+function obiba_mica_commons_Key_cache_generation($resource) {
+  global $user, $language;
+  $key_lang = md5($resource . '-' . $language->language);
+  if (in_array('anonymous user', $user->roles, TRUE)) {
+    $key = $key_lang . '-' . 'anonymous_user';
+  }
+  else {
+    $key = $key_lang . '-' . $user->sid;
+  }
+  return $key;
+}
+
+/**
  * Helper to set cache for current user
  */
-function obiba_mica_commons_set_cache($key, $value) {
-  _obiba_mica_commons_set_cache($key, 'cache', $value);
+function obiba_mica_commons_set_cache($resource, $value) {
+  $hashed_key = obiba_mica_commons_Key_cache_generation($resource);
+  _obiba_mica_commons_set_cache($hashed_key, 'cache', $value);
 }
 
 /**
  * Helper to get cache for current user
  */
-function obiba_mica_commons_get_cache($key) {
-  return _obiba_mica_commons_get_cache($key, 'cache');
+function obiba_mica_commons_get_cache($resource) {
+  $hashed_key = obiba_mica_commons_Key_cache_generation($resource);
+  return _obiba_mica_commons_get_cache($hashed_key, 'cache');
 }
 
 /**

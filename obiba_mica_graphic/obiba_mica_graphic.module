@@ -44,20 +44,20 @@ function obiba_mica_graphic_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
   $path_views_theme = $path . '/js/app/views';
   return array(
-    'obiba_mica_angular_app_charts_'.NetworkStatistics::GEO_NBR_STAT => array(
-      'template' => 'obiba_mica_angular_app_charts_'.NetworkStatistics::GEO_NBR_STAT,
+    'obiba_mica_angular_app_charts_' . NetworkStatistics::GEO_NBR_STAT => array(
+      'template' => 'obiba_mica_angular_app_charts_' . NetworkStatistics::GEO_NBR_STAT,
       'path' => $path_theme
     ),
-    'obiba_mica_angular_app_charts_'.NetworkStatistics::METHODS_DESIGNS => array(
-      'template' => 'obiba_mica_angular_app_charts_'.NetworkStatistics::METHODS_DESIGNS,
+    'obiba_mica_angular_app_charts_' . NetworkStatistics::METHODS_DESIGNS => array(
+      'template' => 'obiba_mica_angular_app_charts_' . NetworkStatistics::METHODS_DESIGNS,
       'path' => $path_theme
     ),
-    'obiba_mica_angular_app_charts_'.NetworkStatistics::NUMBER_PARTICIPANTS => array(
-      'template' => 'obiba_mica_angular_app_charts_'.NetworkStatistics::NUMBER_PARTICIPANTS,
+    'obiba_mica_angular_app_charts_' . NetworkStatistics::NUMBER_PARTICIPANTS => array(
+      'template' => 'obiba_mica_angular_app_charts_' . NetworkStatistics::NUMBER_PARTICIPANTS,
       'path' => $path_theme
     ),
-    'obiba_mica_angular_app_charts_'.NetworkStatistics::BIO_SAMPLES => array(
-      'template' => 'obiba_mica_angular_app_charts_'.NetworkStatistics::BIO_SAMPLES,
+    'obiba_mica_angular_app_charts_' . NetworkStatistics::BIO_SAMPLES => array(
+      'template' => 'obiba_mica_angular_app_charts_' . NetworkStatistics::BIO_SAMPLES,
       'path' => $path_theme
     ),
     'graphic-main' => array(
@@ -128,8 +128,8 @@ function obiba_mica_graphic_preprocess_block(&$variables) {
       case NetworkStatistics::METHODS_DESIGNS :
       case NetworkStatistics::NUMBER_PARTICIPANTS :
       case NetworkStatistics::BIO_SAMPLES :
-      $graphics_blocks_aggregations = variable_get_value('graphics_blocks_aggregations');
-      $variables['classes_array'][] = drupal_html_class($graphics_blocks_aggregations[$variables['block']->delta]['value_name']);
+        $graphics_blocks_aggregations = variable_get_value('graphics_blocks_aggregations');
+        $variables['classes_array'][] = drupal_html_class($graphics_blocks_aggregations[$variables['block']->delta]['value_name']);
     }
   }
 
@@ -160,7 +160,7 @@ function obiba_mica_graphic_block_view($delta = '') {
       case NetworkStatistics::GEO_NBR_STAT:
         if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::GEO_NBR_STAT]['enable'] !== 0) {
           if (!empty($graphics_bocks)) {
-            $block['content'] = theme('obiba_mica_angular_app_charts_'.NetworkStatistics::GEO_NBR_STAT);
+            $block['content'] = theme('obiba_mica_angular_app_charts_' . NetworkStatistics::GEO_NBR_STAT);
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
@@ -179,7 +179,7 @@ function obiba_mica_graphic_block_view($delta = '') {
       case NetworkStatistics::METHODS_DESIGNS:
         if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::METHODS_DESIGNS]['enable'] !== 0) {
           if (!empty($graphics_bocks)) {
-            $block['content'] = theme('obiba_mica_angular_app_charts_'.NetworkStatistics::METHODS_DESIGNS);
+            $block['content'] = theme('obiba_mica_angular_app_charts_' . NetworkStatistics::METHODS_DESIGNS);
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
@@ -202,7 +202,7 @@ function obiba_mica_graphic_block_view($delta = '') {
       case NetworkStatistics::NUMBER_PARTICIPANTS:
         if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::NUMBER_PARTICIPANTS]['enable'] !== 0) {
           if (!empty($graphics_bocks)) {
-            $block['content'] = theme('obiba_mica_angular_app_charts_'.NetworkStatistics::NUMBER_PARTICIPANTS);
+            $block['content'] = theme('obiba_mica_angular_app_charts_' . NetworkStatistics::NUMBER_PARTICIPANTS);
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
@@ -224,7 +224,7 @@ function obiba_mica_graphic_block_view($delta = '') {
       case NetworkStatistics::BIO_SAMPLES:
         if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::BIO_SAMPLES]['enable'] !== 0) {
           if (!empty($graphics_bocks)) {
-            $block['content'] = theme('obiba_mica_angular_app_charts_'.NetworkStatistics::BIO_SAMPLES);
+            $block['content'] = theme('obiba_mica_angular_app_charts_' . NetworkStatistics::BIO_SAMPLES);
             drupal_add_js(array(
               'GraphicChartsOptions' =>
                 array(
@@ -294,11 +294,11 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $header
 /**
  * Get Local charts Options.
  *
- * @param $graphics_options.
+ * @param $graphics_options .
  *
  * @return array.
  */
-function obiba_mica_graphic_local_graphics_options($graphics_options = NULL){
+function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
   $colors_options = obiba_mica_graphic_charts_colors_options_settings();
   $study_design_options = obiba_mica_graphic_study_design_options($colors_options);
   $number_participants_options = obiba_mica_graphic_number_participants_options($colors_options);
@@ -326,14 +326,14 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL){
       'graphics.number-participants-chart-title', $number_participants_options)
   );
 
-  if(!empty($graphics_options)){
+  if (!empty($graphics_options)) {
     $Graphic_charts_options = array_merge($graphics_options, array(
-      'ChartsOptions' => !empty($charts_option)?$charts_option:NULL
+      'ChartsOptions' => !empty($charts_option) ? $charts_option : NULL
     ));
   }
-  else{
+  else {
     $Graphic_charts_options = array(
-      'ChartsOptions' => !empty($charts_option)?$charts_option:NULL
+      'ChartsOptions' => !empty($charts_option) ? $charts_option : NULL
     );
   }
   drupal_add_js(array(
@@ -349,42 +349,42 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL){
  *
  * @return array $options.
  */
-function obiba_mica_graphic_study_design_options($colors_options = NULL){
+function obiba_mica_graphic_study_design_options($colors_options = NULL) {
   return !empty($colors_options) ?
-      array_merge(array(
-        'bars' => 'horizontal',
-        'series' => array(
-          0 => array('axis' => 'nbrStudies'),
-          1 => array('axis' => 'nbrParticipants'),
-        ),
-        'axes' => array(
-          'x' => array(
-            'nbrStudies' => array(
-              'side' => 'top',
-              'label' => t('Number of Studies')
-            ),
-            'nbrParticipants' => array('label' => t('Number of Participants'))
-          )
-        ),
-        'legend' => array('position' => 'none')
-      ), $colors_options) :
-      array(
-        'bars' => 'horizontal',
-        'series' => array(
-          0 => array('axis' => 'nbrStudies'),
-          1 => array('axis' => 'nbrParticipants'),
-        ),
-        'axes' => array(
-          'x' => array(
-            'nbrStudies' => array(
-              'side' => 'top',
-              'label' => t('Number of Studies')
-            ),
-            'nbrParticipants' => array('label' => t('Number of Participants'))
-          )
-        ),
-        'legend' => array('position' => 'none')
-      );
+    array_merge(array(
+      'bars' => 'horizontal',
+      'series' => array(
+        0 => array('axis' => 'nbrStudies'),
+        1 => array('axis' => 'nbrParticipants'),
+      ),
+      'axes' => array(
+        'x' => array(
+          'nbrStudies' => array(
+            'side' => 'top',
+            'label' => t('Number of Studies')
+          ),
+          'nbrParticipants' => array('label' => t('Number of Participants'))
+        )
+      ),
+      'legend' => array('position' => 'none')
+    ), $colors_options) :
+    array(
+      'bars' => 'horizontal',
+      'series' => array(
+        0 => array('axis' => 'nbrStudies'),
+        1 => array('axis' => 'nbrParticipants'),
+      ),
+      'axes' => array(
+        'x' => array(
+          'nbrStudies' => array(
+            'side' => 'top',
+            'label' => t('Number of Studies')
+          ),
+          'nbrParticipants' => array('label' => t('Number of Participants'))
+        )
+      ),
+      'legend' => array('position' => 'none')
+    );
 }
 
 /**
@@ -393,8 +393,8 @@ function obiba_mica_graphic_study_design_options($colors_options = NULL){
  *
  * @return array $options.
  */
-function obiba_mica_graphic_number_participants_options($colors_options = NULL){
-  return  !empty($colors_options) ?
+function obiba_mica_graphic_number_participants_options($colors_options = NULL) {
+  return !empty($colors_options) ?
     array_merge(array(
       'legend' => array('position' => 'right'),
       'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
@@ -411,16 +411,16 @@ function obiba_mica_graphic_number_participants_options($colors_options = NULL){
  *
  * @return array $options.
  */
-function obiba_mica_graphic_bio_samples_options($colors_options = NULL){
-return !empty($colors_options) ?
-  array_merge(array(
-    'legend' => array('position' => 'none'),
-    'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
-  ), $colors_options) :
-  array(
-    'legend' => array('position' => 'none'),
-    'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
-  );
+function obiba_mica_graphic_bio_samples_options($colors_options = NULL) {
+  return !empty($colors_options) ?
+    array_merge(array(
+      'legend' => array('position' => 'none'),
+      'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
+    ), $colors_options) :
+    array(
+      'legend' => array('position' => 'none'),
+      'pieSliceTextStyle' => array('color' => variable_get_value('pie_slice_text_style_color'))
+    );
 }
 
 /**
@@ -471,93 +471,102 @@ function obiba_mica_graphic_search_query_charts($query, $default_dto_search = NU
   $search_resources = new ObibaSearchResources();
   $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
   $taxonomy_charts = array();
+  $taxonomies_filter = obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures');
+  $key_taxonomies = implode(',', $taxonomies_filter);
   if (!empty($coverages->taxonomies)) {
-    $taxonomies_filter = obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures');
-    foreach ($taxonomies_filter as $allowed_taxonomy => $taxonomy) {
-      foreach ($coverages->taxonomies as $taxonomy_coverage) {
-        $labels = array();
-        $data = array();
-        $links = array();
-        $link = array();
+    $cached_chart_by_query = obiba_mica_commons_get_cache(__FUNCTION__ . $key_taxonomies . $query .'variables' . 'coverage');
+    if (!empty($cached_chart_by_query)) {
+      return $cached_chart_by_query;
+    }
+    else {
+      foreach ($taxonomies_filter as $allowed_taxonomy => $taxonomy) {
+        foreach ($coverages->taxonomies as $taxonomy_coverage) {
+          $labels = array();
+          $data = array();
+          $links = array();
+          $link = array();
 
-        if ($taxonomy_coverage->taxonomy->name === $allowed_taxonomy) {
-          foreach ($taxonomy_coverage->vocabularies as $key_vocabulary => $vocabulary_coverage) {
-            if (!empty($vocabulary_coverage->count)) {
-              $labels[$key_vocabulary] = obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
+          if ($taxonomy_coverage->taxonomy->name === $allowed_taxonomy) {
+            foreach ($taxonomy_coverage->vocabularies as $key_vocabulary => $vocabulary_coverage) {
+              if (!empty($vocabulary_coverage->count)) {
+                $labels[$key_vocabulary] = obiba_mica_commons_get_localized_field($vocabulary_coverage->vocabulary, 'titles');
 
-              $terms = array();
-              foreach ($vocabulary_coverage->terms as $key_term => $term) {
-                array_push($terms, $term->term->name);
-                if (!empty($vocabulary_coverage->buckets)) {
-                  if (!empty($term->buckets)) {
-                    foreach ($term->buckets as $key_bucket => $bucket) {
-                      if (!empty($data[$bucket->value])) {
-                        $data[$bucket->value][$key_vocabulary] += $bucket->hits;
+                $terms = array();
+                foreach ($vocabulary_coverage->terms as $key_term => $term) {
+                  array_push($terms, $term->term->name);
+                  if (!empty($vocabulary_coverage->buckets)) {
+                    if (!empty($term->buckets)) {
+                      foreach ($term->buckets as $key_bucket => $bucket) {
+                        if (!empty($data[$bucket->value])) {
+                          $data[$bucket->value][$key_vocabulary] += $bucket->hits;
+                        }
+                        else {
+                          $data[$bucket->value][$key_vocabulary] = $bucket->hits;
+                        }
+
+                        $link[$bucket->value][$key_vocabulary] = MicaClient::chartQueryBuilders(
+                          NULL,
+                          $bucket,
+                          $taxonomy_coverage->taxonomy->name,
+                          $vocabulary_coverage->vocabulary->name,
+                          $terms,
+                          $entity_id
+                        );
                       }
-                      else {
-                        $data[$bucket->value][$key_vocabulary] = $bucket->hits;
-                      }
-
-                      $link[$bucket->value][$key_vocabulary] = MicaClient::chartQueryBuilders(
-                        NULL,
-                        $bucket,
-                        $taxonomy_coverage->taxonomy->name,
-                        $vocabulary_coverage->vocabulary->name,
-                        $terms,
-                        $entity_id
-                      );
                     }
                   }
                 }
-              }
 
-              if (empty($vocabulary_coverage->buckets)) {
-                $data[t('Variables')][] = $vocabulary_coverage->count;
-                if (!empty($terms)) {
-                  $link[t('Variables')][] = MicaClient::chartQueryBuilders(
-                    $query,
-                    NULL,
-                    $taxonomy_coverage->taxonomy->name,
-                    $vocabulary_coverage->vocabulary->name,
-                    $terms,
-                    $entity_id
-                  );
+                if (empty($vocabulary_coverage->buckets)) {
+                  $data[t('Variables')][] = $vocabulary_coverage->count;
+                  if (!empty($terms)) {
+                    $link[t('Variables')][] = MicaClient::chartQueryBuilders(
+                      $query,
+                      NULL,
+                      $taxonomy_coverage->taxonomy->name,
+                      $vocabulary_coverage->vocabulary->name,
+                      $terms,
+                      $entity_id
+                    );
+                  }
                 }
               }
             }
-          }
 
-          //transform string index key to integer index key
-          foreach ($link as $key) {
-            $links[] = $key;
-          }
+            //transform string index key to integer index key
+            foreach ($link as $key) {
+              $links[] = $key;
+            }
 
-          if (!empty($data)) {
-            $parser_data['data'] = $data;
-            $parser_data['links'] = !empty($links) ? $links : NULL;
-            $title = t('Number of variables');
-            if (!empty($default_dto_search['group-by'])) {
-              $group_by_names = array(
-                'studyIds' => t('study'),
-                'dceIds' => t('data collection event'),
-                'datasetId' => t('dataset'),
+            if (!empty($data)) {
+              $parser_data['data'] = $data;
+              $parser_data['links'] = !empty($links) ? $links : NULL;
+              $title = t('Number of variables');
+              if (!empty($default_dto_search['group-by'])) {
+                $group_by_names = array(
+                  'studyIds' => t('study'),
+                  'dceIds' => t('data collection event'),
+                  'datasetId' => t('dataset'),
+                );
+                $title = $title . ' (' . t('group by') . ' ' . $group_by_names[$default_dto_search['group-by']] . ')';
+              }
+              if (!empty($chart_title)) {
+                $title = $chart_title;
+              }
+              $taxonomy_charts[] = array(
+                'taxonomy' => $taxonomy_coverage->taxonomy,
+                'chart' => obiba_mica_graphic_stacked_column_chart($labels, $parser_data, $title, NULL, 450, 'none')
               );
-              $title = $title . ' (' . t('group by') . ' ' . $group_by_names[$default_dto_search['group-by']] . ')';
             }
-            if (!empty($chart_title)) {
-              $title = $chart_title;
-            }
-            $taxonomy_charts[] = array(
-              'taxonomy' => $taxonomy_coverage->taxonomy,
-              'chart' => obiba_mica_graphic_stacked_column_chart($labels, $parser_data, $title, NULL, 450, 'none')
-            );
           }
         }
       }
+      obiba_mica_commons_set_cache(__FUNCTION__ . $key_taxonomies . $query .'variables' . 'coverage', $taxonomy_charts);
+      return $taxonomy_charts;
     }
   }
 
-  return $taxonomy_charts;
+  return NULL;
 }
 
 function obiba_mica_graphic_stacked_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
