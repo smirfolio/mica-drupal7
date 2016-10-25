@@ -85,6 +85,9 @@ class MicaStudyResource extends MicaClient {
    */
   public function getStudy($study_id) {
     $resource_query = '/study/' . rawurlencode($study_id);
+    global $language;
+    if ($language)
+      $resource_query .= '?locale=' . $language->language;
     $this->setLastResponse(NULL);
     $cached_study = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     $url = $this->micaUrl . $resource_query;
