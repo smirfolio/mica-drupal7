@@ -14,8 +14,7 @@
  * Obiba Mica client module settings UI.
  */
 
-$path_module_commons = drupal_get_path('module', 'obiba_mica_commons');
-include_once($path_module_commons . '/includes/obiba_mica_commons_taxonomy_resource.inc');
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClient;
 
 /**
  * Provides settings pages.
@@ -719,7 +718,7 @@ function _obiba_mica_settings_search_variables_form(&$form) {
  * @return object
  */
 function _obiba_mica_admin_taxonomies_items($resource) {
-  $service = new MicaTaxonomyResource();
+  $service = new DrupalMicaClient\DrupalMicaClientTaxonomyResource();
   $taxonomies = $service->getTaxonomySummaries($resource);
   if (!empty($taxonomies->summaries)) {
     return $taxonomies->summaries;

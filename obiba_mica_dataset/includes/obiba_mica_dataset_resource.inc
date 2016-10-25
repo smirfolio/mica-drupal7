@@ -19,7 +19,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 /**
  * Class MicaStudyResource
  */
-class MicaDatasetResource extends MicaClient {
+class DrupalMicaDatasetResource extends DrupalMicaClient {
 
   /**
    * Instance initialisation.

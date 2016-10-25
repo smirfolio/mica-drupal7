@@ -19,7 +19,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 /**
  * Class MicaStudyResource
  */
-class MicaFilesResource extends MicaClient {
+class DrupalMicaFilesResource extends DrupalMicaClient {
 
   const POPULATION = 'population';
   const DCE = 'data-collection-event';

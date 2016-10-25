@@ -15,7 +15,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
  * @file
  * Mica networks file
  */
-class ObibaSearchResources extends MicaClient {
+class ObibaSearchResources extends DrupalMicaClient {
   const MICA_REPOSITORY = 'mica/repository';
 
   function __construct() {
@@ -223,5 +223,26 @@ class ObibaSearchResources extends MicaClient {
     }
     $query_search .= ')))&display=list&type=variables';
     return $query_search;
+  }
+
+  /**
+   * The query builder for charts.
+   *
+   * @param string $query
+   *   The query for the charts.
+   * @param object $bucket
+   *   The bucket.
+   * @param string $taxonomy_name
+   *   The taxonomy name.
+   * @param string $vocabulary_name
+   *   The vocabulary name.
+   * @param array $terms
+   *   The terms.
+   *
+   * @return string
+   *   A json query.
+   */
+  public static function chartQueryBuilders($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, array $terms = NULL, $entity_id = NULL) {
+    return ObibaSearchResources::repositoryRqlBuilder($query, $bucket, $taxonomy_name, $vocabulary_name, $entity_id);
   }
 }

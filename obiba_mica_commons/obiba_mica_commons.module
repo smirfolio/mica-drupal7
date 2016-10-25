@@ -24,7 +24,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
  */
 function obiba_mica_commons_user_logout() {
   //TODO have to Not instantiate MicaCLient from here have to use an intermediate class that extend them
-  $mica_client = new MicaClient(NULL, new MicaCache\MicaDrupalClientCache());
+  $mica_client = new DrupalMicaClient(NULL, new MicaCache\MicaDrupalClientCache());
   $mica_client->logout();
 }
 
@@ -32,7 +32,7 @@ function obiba_mica_commons_user_logout() {
  * Implements hook_user_login().
  */
 function obiba_mica_commons_user_login() {
-  MicaClient::clear();
+  DrupalMicaClient::clear();
 }
 
 /**
@@ -584,7 +584,7 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
  *   Drupal markup form.
  */
 function obiba_mica_commons_create_size_select_form($context) {
-  $default_size_parameter = MicaClient::getResponsePageSize();
+  $default_size_parameter = DrupalMicaClient::getResponsePageSize();
   $default_size = !empty($default_size_parameter) ?
     $default_size_parameter : $context['options'];
   $form = array();
@@ -645,7 +645,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
     else {
       if (!empty($file_resource)) {
         //TODO have to Not instantiate MicaCLient from here have to use an intermediate class that extend them
-        $mica_client = new MicaClient(NULL, new MicaCache\MicaDrupalClientCache());
+        $mica_client = new DrupalMicaClient(NULL, new MicaCache\MicaDrupalClientCache());
         $raw_data = $mica_client->downloadFile($entity_type, $entity_id,
           $file_resource->id);
         if (!empty($raw_data) && empty($raw_data['code'])) {
@@ -957,26 +957,29 @@ function obiba_mica_commons_setting_menu_title_from_callback(&$variables) {
  * $entity contain or not an coverage
  */
 function obiba_mica_commons_has_coverage($entity, $entity_id) {
-  $query = NULL;
-  switch ($entity) {
-    case 'dataset':
-      $query = RqlQueryBuilder::dataset_query_charts($entity_id);
-      break;
-    case 'study':
-      $query = RqlQueryBuilder::study_query_charts($entity_id);
-      break;
-    case 'network':
-      $query = RqlQueryBuilder::network_query_charts($entity_id);
-      break;
-    default;
-  }
-  if (!empty($query)) {
-    $search_resources = new ObibaSearchResources();
-    $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
-    $enabled_coverage = obiba_mica_commons_enabled_coverage();
-    if (!empty($coverages) && $enabled_coverage) {
-      $coverage['has_coverage'] = TRUE;
-      return $coverage;
+  $enabled_coverage = obiba_mica_commons_enabled_coverage();
+  if (!empty($enabled_coverage)) {
+    $query = NULL;
+    switch ($entity) {
+      case 'dataset':
+        $query = RqlQueryBuilder::dataset_query_charts($entity_id);
+        break;
+      case 'study':
+        $query = RqlQueryBuilder::study_query_charts($entity_id);
+        break;
+      case 'network':
+        $query = RqlQueryBuilder::network_query_charts($entity_id);
+        break;
+      default;
+    }
+    if (!empty($query)) {
+      $search_resources = new ObibaSearchResources();
+      $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
+
+      if ($coverages) {
+        $coverage['has_coverage'] = TRUE;
+        return $coverage;
+      }
     }
   }
   else {
@@ -984,10 +987,9 @@ function obiba_mica_commons_has_coverage($entity, $entity_id) {
   }
 }
 
-function obiba_mica_commons_enabled_coverage(){
+function obiba_mica_commons_enabled_coverage() {
   $enabled_coverage = variable_get_value('mica_taxonomy_figures');
-  if(!empty($enabled_coverage))
-  {
+  if (!empty($enabled_coverage)) {
     foreach ($enabled_coverage as $coverage) {
       if ($coverage['enable']) {
         return TRUE;
@@ -995,4 +997,16 @@ function obiba_mica_commons_enabled_coverage(){
     }
   }
   return FALSE;
+}
+
+function obiba_mica_commons_get_http_client($authentication = NULL, $formatter = NULL, $request_alter = FALSE, $delegate = NULL) {
+  return new HttpClient($authentication, $formatter, $request_alter, $delegate);
+}
+
+function obiba_mica_commons_get_http_client_request($url = NULL, $values = array()) {
+  return new HttpClientRequest($url, $values);
+}
+
+function obiba_mica_commons_get_http_client_request_static_method($method) {
+  return constant("HttpClientRequest::$method");
 }

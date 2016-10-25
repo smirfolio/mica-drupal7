@@ -15,10 +15,11 @@
  */
 
 use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+use \Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClient;
 /**
  * Class MicaConfigResource
  */
-class MicaConfigResource extends MicaClient {
+class DrupalMicaConfigResource extends DrupalMicaClient\MicaClient {
   const CONFIG_WS_URL = '/config/_public';
   const ALL_CONFIG_WS_URL = '/config';
 

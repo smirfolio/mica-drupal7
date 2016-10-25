@@ -14,11 +14,14 @@
  * MicaStudyResource class
  */
 
-use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
+
+use Obiba\ObibaMicaClient\MicaCache as MicaCache;
+use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 /**
  * Class MicaStudyResource
  */
-class MicaTaxonomyResource extends MicaClient {
+class DrupalMicaClientTaxonomyResource extends MicaClient {
 
   /**
    * Instance initialisation.
@@ -39,8 +42,10 @@ class MicaTaxonomyResource extends MicaClient {
   public function getTaxonomySummaries($resource) {
     $this->setLastResponse(NULL);
     $url_studies = $this->micaUrl . '/taxonomies/'.$resource;
-    $request = new HttpClientRequest($url_studies, array(
-      'method' => HttpClientRequest::METHOD_GET,
+    $getHttpClientRequest = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST;
+    $getHttpClientMethod = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST_STATIC_METHOD;
+    $request = $getHttpClientRequest($url_studies, array(
+      'method' => $getHttpClientMethod('METHOD_GET'),
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_JSON),
         )

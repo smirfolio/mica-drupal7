@@ -29,13 +29,13 @@ function obiba_mica_files_download_attachment($entity_id, $entity_type, $file_na
 }
 
 function obiba_mica_files_get_file() {
-  $mica_file = new MicaFilesResource();
+  $mica_file = new DrupalMicaFilesResource();
   drupal_json_output(json_decode($mica_file->getFile(drupal_get_query_parameters()['path'])));
 }
 
 function obiba_mica_files_search_files() {
   $query_params = drupal_get_query_parameters();
-  $mica_file = new MicaFilesResource();
+  $mica_file = new DrupalMicaFilesResource();
   $path = $query_params['path'];
   unset($query_params['path']);
   drupal_json_output(json_decode($mica_file->searchFiles($path, $query_params)));
@@ -62,7 +62,7 @@ function  obiba_mica_file_download() {
  *   The file resource id.
  */
 function _obiba_mica_files_download_attachment($entity_id, $entity_type, $file_path, $file_name, $inline) {
-  $mica_file = new MicaFilesResource();
+  $mica_file = new DrupalMicaFilesResource();
   $raw_data = $mica_file->downloadAttachmentFile($file_path, $file_name, $inline);
   if (!empty($raw_data) && empty($raw_data['code'])) {
     drupal_add_http_header('Content-Type',

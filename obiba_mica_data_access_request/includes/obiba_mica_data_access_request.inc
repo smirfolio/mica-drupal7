@@ -21,7 +21,7 @@ include_once $path_module_data_access . '/includes/obiba_mica_data_access_resour
 /**
  * Class MicaDataAccessRequest
  */
-class MicaDataAccessRequest extends MicaDataAccessRequestResources {
+class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
   const LIST_DATA_ACCESS = 'list-data-access';
   const NEW_DATA_ACCESS = 'new-data-access';
   const LIST_USERS_DATA_ACCESS = 'list-user-data-access';

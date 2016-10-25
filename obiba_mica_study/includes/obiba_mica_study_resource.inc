@@ -19,7 +19,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 /**
  * Class MicaStudyResource
  */
-class MicaStudyResource extends MicaClient {
+class DrupalMicaStudyResource extends DrupalMicaClient {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());

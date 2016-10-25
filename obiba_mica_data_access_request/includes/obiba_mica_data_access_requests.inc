@@ -21,7 +21,7 @@ include_once $path_module_data_access . '/includes/obiba_mica_data_access_resour
 /**
  * Class MicaDataAccessRequests
  */
-class MicaDataAccessRequests extends MicaDataAccessRequestResources {
+class MicaDataAccessRequests extends DrupalMicaDataAccessRequestResources {
 
   /**
    * Instance initialisation.
