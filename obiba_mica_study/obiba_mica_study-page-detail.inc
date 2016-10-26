@@ -68,7 +68,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
 }
 
 function obiba_mica_study_page_detail_datasets($study_id, $dataset_name = NULL, $network_id = NULL) {
-  if (!variable_get_value('study_show_datasets')) {
+  if (!variable_get_value('study_show_datasets') && empty($network_id)) {
     exit;
   }
   $cached_datasets = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $study_id);
