@@ -19,7 +19,7 @@ include_once($path_module_study . '/obiba_mica_study-page-detail.inc');
 
 function obiba_mica_network_page_detail($network_id) {
   $url_param = explode('?', request_uri());
-  $network_resource = new MicaNetworkResource();
+  $network_resource = new DrupalMicaNetworkResource();
   if (!empty($url_param[1])) {
     parse_str($url_param[1], $parts);
   }

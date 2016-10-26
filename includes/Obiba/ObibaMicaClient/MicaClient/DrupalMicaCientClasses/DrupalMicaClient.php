@@ -14,17 +14,19 @@
  * MicaClient class
  */
 
-
-include_once "obiba_mica_commons_query_rql_builders.inc";
-include_once "obiba_mica_commons_query_response_wrappers.inc";
-include_once "obiba_mica_commons_permissions.inc";
-include_once "obiba_mica_commons_resource_paths.inc";
-include_once "obiba_mica_commons_config_resource.inc";
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
 
 use Obiba\ObibaMicaClient\MicaCache as MicaCache;
+use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
+
+include_once "DrupalMicaClientQueryRqlBuilders.php";
+include_once "DrupalMicaClientQueryResponseWrappers.php";
+include_once "obiba_mica_commons_permissions.inc";
+include_once "DrupalMicaClientResourcePaths.php";
+include_once "DrupalMicaClientConfigResource.inc";
 
 /**
- * Class MicaClient
+ * Class DrupalMicaClient
  */
 class MicaClient {
   const AUTHORIZATION_HEADER = 'Authorization';
@@ -67,6 +69,7 @@ class MicaClient {
     $this->micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
     self::$responsePageSize = variable_get_value('mica_response_page_size');
     self::$responsePageSizeSmall = variable_get_value('mica_response_page_size_small');
+
   }
 
   /**
@@ -148,8 +151,10 @@ class MicaClient {
    */
   public function logout() {
     $url = $this->micaUrl . '/auth/session/_current';
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_DELETE,
+    $getHttpClientRequest = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST;
+    $getHttpClientMethod = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST_STATIC_METHOD;
+    $request = $getHttpClientRequest($url, array(
+      'method' => $getHttpClientMethod('METHOD_DELETE'),
       'headers' => $this->authorizationHeader(array(
         'Accept' => array(HEADER_JSON),
       )),
@@ -161,8 +166,7 @@ class MicaClient {
       $this->lastResponse = $client->lastResponse;
       $this->setLastResponseCookies();
       unset($_SESSION[self::MICA_COOKIE]);
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       // Clear anyway.
       watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
         array(
@@ -349,8 +353,8 @@ class MicaClient {
     $default_headers_setter = function ($request) {
       $request->setHeader('Accept-Encoding', 'gzip, deflate');
     };
-
-    $client = new HttpClient(NULL, NULL, $default_headers_setter);
+    $getHttpClient = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT;
+    $client = $getHttpClient(FALSE, FALSE, $default_headers_setter);
 
     if (!isset($client->options['curlopts'])) {
       $client->options['curlopts'] = array();
@@ -433,27 +437,6 @@ class MicaClient {
     }
 
     return $from;
-  }
-
-  /**
-   * The query builder for charts.
-   *
-   * @param string $query
-   *   The query for the charts.
-   * @param object $bucket
-   *   The bucket.
-   * @param string $taxonomy_name
-   *   The taxonomy name.
-   * @param string $vocabulary_name
-   *   The vocabulary name.
-   * @param array $terms
-   *   The terms.
-   *
-   * @return string
-   *   A json query.
-   */
-  public static function chartQueryBuilders($query = NULL, $bucket = NULL, $taxonomy_name = NULL, $vocabulary_name = NULL, array $terms = NULL, $entity_id = NULL) {
-      return ObibaSearchResources::repositoryRqlBuilder($query, $bucket, $taxonomy_name, $vocabulary_name, $entity_id);
   }
 
   /**
@@ -566,8 +549,10 @@ class MicaClient {
    */
   public function downloadFile($entity_type, $entity_id, $file_id) {
     $url = $this->micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_id . "/_download";
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
+    $getHttpClientRequest = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST;
+    $getHttpClientMethod = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST_STATIC_METHOD;
+    $request = $getHttpClientRequest($url, array(
+      'method' => $getHttpClientMethod('METHOD_GET'),
       'headers' => self::authorizationHeader(array(
           'Accept' => array(self::HEADER_BINARY),
         )
@@ -590,8 +575,7 @@ class MicaClient {
         'raw_header_array' => $this->parseHeaders($client->lastResponse->headers),
       );
       return $raw_data;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),

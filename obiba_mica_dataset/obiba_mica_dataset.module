@@ -293,7 +293,7 @@ function obiba_mica_dataset_theme($existing, $type, $theme, $path) {
  */
 function obiba_mica_dataset_get_datasets_studies($study_id, $resource = NULL) {
   $output = NULL;
-  $dataset_resource = new MicaDatasetResource();
+  $dataset_resource = new DrupalMicaDatasetResource();
   $datasets = $dataset_resource->getDatasets($resource, $study_id, NULL, 0, 50, 'studyTable.populationId', 'asc');
 
   if (!empty($datasets)) {
@@ -305,7 +305,7 @@ function obiba_mica_dataset_get_datasets_studies($study_id, $resource = NULL) {
 
 function obiba_mica_dataset_get_datasets_network($study_id, $resource = NULL, $network_id = NULL) {
   $output = NULL;
-  $dataset_resource = new MicaDatasetResource();
+  $dataset_resource = new DrupalMicaDatasetResource();
   $datasets = $dataset_resource->getDatasets($resource, $study_id, NULL, 0, 50, 'studyTable.populationId', 'asc', $network_id);
 
   if (!empty($datasets)) {

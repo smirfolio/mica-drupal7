@@ -12,8 +12,12 @@
 namespace Obiba\ObibaMicaClient\MicaConfigurations;
 
 class MicaDrupalConfig implements MicaConfigInterface {
-const CLIENT_GET_CACHE = "obiba_mica_commons_get_cache";
-const CLIENT_SET_CACHE = "obiba_mica_commons_set_cache";
+  const CLIENT_GET_CACHE = "obiba_mica_commons_get_cache";
+  const CLIENT_SET_CACHE = "obiba_mica_commons_set_cache";
+  const GET_HTTP_CLIENT = 'obiba_mica_commons_get_http_client';
+  const GET_HTTP_CLIENT_REQUEST_STATIC_METHOD = 'obiba_mica_commons_get_http_client_request_static_method';
+  const GET_HTTP_CLIENT_REQUEST = 'obiba_mica_commons_get_http_client_request';
+  const GET_HTTP_CLIENT_EXCEPTION = 'obiba_mica_commons_get_http_client_exception';
 
   function __construct() {
   }

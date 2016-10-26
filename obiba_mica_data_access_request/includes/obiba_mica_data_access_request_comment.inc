@@ -21,7 +21,7 @@ include_once $path_module_data_access . '/includes/obiba_mica_data_access_resour
 /**
  * Class MicaDataAccessRequestComment
  */
-class MicaDataAccessRequestComment extends MicaDataAccessRequestResources {
+class MicaDataAccessRequestComment extends DrupalMicaDataAccessRequestResources {
 
   const RESOURCE_PATH = '%s/%s/comment/%s';
 

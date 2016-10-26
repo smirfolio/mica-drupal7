@@ -18,7 +18,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 /**
  * Class MicaDataAccessRequestResources
  */
-class MicaDataAccessRequestResources extends MicaClient {
+class DrupalMicaDataAccessRequestResources extends DrupalMicaClient {
 
   protected $method;
 

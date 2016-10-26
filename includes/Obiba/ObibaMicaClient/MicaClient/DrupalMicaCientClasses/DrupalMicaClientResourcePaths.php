@@ -259,7 +259,7 @@ class MicaClientPathProvider {
    * @return null
    */
   private static function get_mica_url() {
-    $mica_config = new MicaConfigResource();
+    $mica_config = new DrupalMicaConfigResource();
     $url = $mica_config->getPublicURL();
     return empty($url) ? variable_get_value('mica_url') : $url;
   }

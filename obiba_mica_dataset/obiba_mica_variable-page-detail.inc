@@ -40,7 +40,7 @@ function obiba_mica_variable_page_detail($variable_id) {
     parse_str($url_param[1], $url_query);
   }
 
-  $variable_resource = new MicaDatasetResource();
+  $variable_resource = new DrupalMicaDatasetResource();
   $variable = $variable_resource->getVariable($variable_id);
 
   if (empty($variable)) {
@@ -93,7 +93,7 @@ function obiba_mica_variable_page_detail($variable_id) {
  */
 function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variable_names) {
   $sorted_variables = json_decode($sorted_variable_names, TRUE);
-  $variable_resource = new MicaDatasetResource();
+  $variable_resource = new DrupalMicaDatasetResource();
   $harmonization_variables = $variable_resource->getVariableHarmonizations($variable_id);
   foreach ($harmonization_variables->datasetVariableSummaries as $harmonization_variable) {
     $variable_resolver = $harmonization_variable->resolver;
@@ -205,7 +205,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_headers($variable) 
  */
 function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
   $rows = array();
-  $variable_resource = new MicaDatasetResource();
+  $variable_resource = new DrupalMicaDatasetResource();
 
   $variable_harmonizations = $variable_resource->getVariableHarmonizations($variable->id);
 
@@ -374,7 +374,7 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
   }
   else {
     $stat_tab = FALSE;
-    $variable_resource = new MicaDatasetResource();
+    $variable_resource = new DrupalMicaDatasetResource();
     $variable = $variable_resource->getVariable($variable_id);
     $variable_stat = $variable_resource->getVariableAggregation($variable_id);
     if (!empty($variable_stat)) {
@@ -405,7 +405,7 @@ function _obiba_mica_variable_study_summary($variable, $study_id) {
     }
   }
   // Not found in the dto, then fetch it.
-  $study_resource = new MicaStudyResource();
+  $study_resource = new DrupalMicaStudyResource();
   return $study_resource->getStudy($study_id);
 }
 
@@ -421,7 +421,7 @@ function _obiba_mica_variable_network_summary($variable, $network_table_id) {
     }
   }
   // Not found in the dto, then fetch it.
-  $network_resource = new MicaNetworkResource();
+  $network_resource = new DrupalMicaNetworkResource();
   return $network_resource->getNetwork($network_table_id);
 }
 

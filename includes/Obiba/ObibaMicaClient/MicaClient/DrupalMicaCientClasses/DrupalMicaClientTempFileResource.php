@@ -17,7 +17,7 @@
 /**
  * Class MicaDataAccessRequest
  */
-class MicaTempFileResource extends MicaClient {
+class DrupalMicaTempFileResource extends DrupalMicaClient {
   const FILES_WS_URL = '/files/temp';
   const FILE_WS_URL = '/files/temp/{id}';
 

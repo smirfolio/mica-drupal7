@@ -128,7 +128,7 @@ function obiba_mica_files_get_ng_module_to_load() {
  * @return array
  */
 function obiba_mica_files_get_flat_attachments($entity_type, $entity_id) {
-  $files_resources = new MicaFilesResource();
+  $files_resources = new DrupalMicaFilesResource();
   $flat_attachments = $files_resources->getAttachment($entity_type, $entity_id);
   return $flat_attachments;
 }

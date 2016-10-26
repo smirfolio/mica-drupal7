@@ -40,7 +40,7 @@ function obiba_mica_network_page_list() {
   else {
     $response = obiba_mica_network_get_networks(NULL, $query, $sort, $sort_by, $network_limits);
     $total_networks = empty($response) ? 0 : $response->getTotalHits();
-    $network_limits = !empty($network_limits) ? $network_limits : MicaClient::getResponsePageSizeSmall();
+    $network_limits = !empty($network_limits) ? $network_limits : DrupalMicaClient::getResponsePageSizeSmall();
     pager_default_initialize($total_networks, $network_limits);
     $pager_output = theme('pager', array('quantity' => $network_limits));
     $summaries = empty($response) ? array() : $response->getSummaries();
@@ -79,15 +79,12 @@ function obiba_mica_network_page_list() {
 
 function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL, $sort_by = NULL, $network_limits = NULL) {
   $from = 0;
-  $study_resource = new MicaNetworkResource();
-  $size_response = !empty($network_limits) ? $network_limits : MicaClient::getResponsePageSizeSmall();
+  $study_resource = new DrupalMicaNetworkResource();
+  $size_response = !empty($network_limits) ? $network_limits : DrupalMicaClient::getResponsePageSizeSmall();
   if (!empty($_GET['page'])) {
     $from = $study_resource->paginationListSearchParameters($_GET['page'], 'networks', $size_response);
   }
   $networks = $study_resource->getNetworks($study_id, $query, $from, $size_response, $sort, $sort_by);
-  if (!empty($networks)) {
-    $_SESSION['networks']['aggregations']['total_hits'] = $networks->getTotalHits();
-  }
   return $networks;
 }
 
@@ -118,9 +115,9 @@ function obiba_mica_network_networks_table($networks_result) {
 
   $args = array(
     'quantity' => $total,
-    'element' => MicaNetworkResource::PAGINATE_NETWORKS
+    'element' => DrupalMicaNetworkResource::PAGINATE_NETWORKS
   );
-  $current_page = pager_default_initialize($total, $per_page, MicaNetworkResource::PAGINATE_NETWORKS);
+  $current_page = pager_default_initialize($total, $per_page, DrupalMicaNetworkResource::PAGINATE_NETWORKS);
   $chunks = array_chunk($rows, $per_page, TRUE);
   return $themed_network_table = theme(
       'table',

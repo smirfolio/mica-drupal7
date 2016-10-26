@@ -30,7 +30,7 @@ function obiba_mica_persons_list($entities_id) {
     }
     $query_person .= "networkMemberships.parentId:(" . implode('+', $entities_id->networksId) . ")";
   }
-  $persons_resources = new MicaPersonsResource();
+  $persons_resources = new DrupalMicaPersonsResource();
   $persons = $persons_resources->search($query_person);
   drupal_json_output(array(
     "recordsTotal" => $persons->total,
@@ -53,7 +53,7 @@ function obiba_mica_persons_list_csv_download($entities_id) {
     }
     $query_person .= "networkMemberships.parentId:(" . implode('+', $entities_id->networksId) . ")";
   }
-  $persons_resources = new MicaPersonsResource();
+  $persons_resources = new DrupalMicaPersonsResource();
   $response = $persons_resources->download($query_person);
   if (!empty($response)) {
     $headers = $persons_resources->getLastResponseHeaders();

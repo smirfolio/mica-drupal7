@@ -48,7 +48,7 @@ function obiba_mica_research_project_page_list() {
 
   $response = obiba_mica_research_project_get_projects($project_query, $project_limits, $project_sort, $project_sort_by);
   $total_projects = empty($response) ? 0 : $response->total;
-  $project_limits = !(empty($project_limits)) ? $project_limits : MicaClient::getResponsePageSizeSmall();
+  $project_limits = !(empty($project_limits)) ? $project_limits : DrupalMicaClient::getResponsePageSizeSmall();
 
   pager_default_initialize($total_projects, $project_limits);
   $pager_output = theme('pager', array('quantity' => $project_limits));
@@ -98,8 +98,8 @@ function obiba_mica_research_project_create_form() {
 
 function obiba_mica_research_project_get_projects($query = NULL, $limit = NULL, $sort = NULL, $order = NULL) {
   $from = 0;
-  $research_project_resource = new MicaResearchProjectResource(NULL);
-  $size_response = intval($limit) > 0 ? $limit : MicaClient::getResponsePageSizeSmall();
+  $research_project_resource = new DrupalMicaResearchProjectResource(NULL);
+  $size_response = intval($limit) > 0 ? $limit : DrupalMicaClient::getResponsePageSizeSmall();
   if (!empty($_GET['page'])) {
     $from = $research_project_resource->paginationListSearchParameters($_GET['page'], 'projects', $size_response);
   }
