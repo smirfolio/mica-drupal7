@@ -396,7 +396,6 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
   else {
     $dataset_rows = array();
     $summaries = $datasets->getSummaries();
-    $total_nb_variables = NULL;
     if (empty($summaries)) {
       return NULL;
     }
@@ -411,38 +410,35 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
             'network(in(Mica_network.id,' . $network_id . '))'
           );
         }
+        $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
+        $dataset_type = $summary->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
+        $dataset_type_name = $summary->variableType == 'Study' ? t('Study dataset') : t('Harmonization dataset');
+
+        $dataset_rows[$key_dataset] = array(
+          'data' => array(
+            'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id),
+            'type' => $dataset_type_name,
+            'desc' => !empty($nb_variables) ? $nb_variables : '-',
+          ),
+        );
       }
-      $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
-      $dataset_type = $summary->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
-      $dataset_type_name = $summary->variableType == 'Study' ? t('Study dataset') : t('Harmonization dataset');
 
-      $dataset_rows[$key_dataset] = array(
-        'data' => array(
-          'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id),
-          'type' => $dataset_type_name,
-          'desc' => !empty($nb_variables) ? $nb_variables : '-',
-        ),
+      $dataset['dataset-tab'] = theme(
+        'table',
+        array(
+          'header' => array(
+            t('Name'),
+            t('Type'),
+            t('Variables'),
+          ),
+          'rows' => $dataset_rows,
+          'empty' => variable_get_value('datasets_empty_label'),
+          'sticky' => FALSE,
+        )
       );
+      obiba_mica_commons_set_cache(__FUNCTION__ . $network_id, $dataset);
+      return $dataset;
     }
-    if (!empty($total_nb_variables)) {
-      $dataset['total_variable_nbr'] = $total_nb_variables;
-    }
-
-    $dataset['dataset-tab'] = theme(
-      'table',
-      array(
-        'header' => array(
-          t('Name'),
-          t('Type'),
-          t('Variables'),
-        ),
-        'rows' => $dataset_rows,
-        'empty' => variable_get_value('datasets_empty_label'),
-        'sticky' => FALSE,
-      )
-    );
-    obiba_mica_commons_set_cache(__FUNCTION__ . $network_id, $dataset);
-    return $dataset;
   }
 }
 

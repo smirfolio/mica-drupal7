@@ -12,41 +12,44 @@
   Drupal.behaviors.obiba_mica_network_detail = {
     attach: function (context, settings) {
       if (context === document) {
-        if (settings.study_ids.length>0 && Drupal.settings.displayCoverage) {
-          var resource_url = Drupal.settings.basePath
-            + Drupal.settings.pathPrefix
-            + 'mica/coverage/network/'
-            + encodeURIComponent(JSON.stringify(settings.study_ids ? settings.study_ids : []));
+        if (settings.study_ids.length > 0) {
+          if (Drupal.settings.displayCoverage) {
+            var resource_url = Drupal.settings.basePath
+              + Drupal.settings.pathPrefix
+              + 'mica/coverage/network/'
+              + encodeURIComponent(JSON.stringify(settings.study_ids ? settings.study_ids : []));
 
-          $.ajax(resource_url)
-            .done(function (data) {
-              if (! data) {
-                $('#coverage').remove();
-                return;
-              }
-
-              $('#coverage').html(data).show();
-              Drupal.attachBehaviors($('#coverage')[0], settings);
-            })
-            .fail(function () {
-              $('#coverage').remove();
-            });
-
-          $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/network/' + settings.networkUrl + '/datasets')
+            $.ajax(resource_url)
               .done(function (data) {
                 if (!data) {
-                  $('#datasets').remove();
+                  $('#coverage').remove();
                   return;
                 }
-                $('#datasets').html(data).show();
-                var datasets = $('#datasetsDisplay').data();
+
+                $('#coverage').html(data).show();
+                Drupal.attachBehaviors($('#coverage')[0], settings);
               })
               .fail(function () {
-                $('#datasets').remove();
+                $('#coverage').remove();
               });
-              
+          }
+
+
+          $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/network/' + settings.networkUrl + '/datasets')
+            .done(function (data) {
+              if (!data) {
+                $('#datasets').remove();
+                return;
+              }
+              $('#datasets').html(data).show();
+              var datasets = $('#datasetsDisplay').data();
+            })
+            .fail(function () {
+              $('#datasets').remove();
+            });
+
         }
-        else{
+        else {
           $('#coverage').remove();
           $('#datasets').remove();
         }
