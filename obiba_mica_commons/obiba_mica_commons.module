@@ -130,7 +130,7 @@ function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NUL
 if(!empty($std->{$lang})){
   return $std->{$lang};
 }
-  if (!empty($std->{$field})) {
+  if (!empty($field) && !empty($std->{$field})) {
     $localizedString = $std->{$field};
 
     if (!is_array($localizedString)) {
