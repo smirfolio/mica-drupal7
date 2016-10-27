@@ -120,15 +120,17 @@ function obiba_mica_commons_fixed_sidebar($template) {
  *   The localized value for this field, with this priority order: $lang,
  *   $language->language, 'en' or the first other locale found.
  */
-function obiba_mica_commons_get_localized_field($std, $field, $lang = NULL) {
+function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NULL) {
   global $language;
   $value = NULL;
 
   if (empty($lang)) {
     $lang = $language->language;
   }
-
-  if (!empty($std->{$field})) {
+if(!empty($std->{$lang})){
+  return $std->{$lang};
+}
+  if (!empty($field) && !empty($std->{$field})) {
     $localizedString = $std->{$field};
 
     if (!is_array($localizedString)) {

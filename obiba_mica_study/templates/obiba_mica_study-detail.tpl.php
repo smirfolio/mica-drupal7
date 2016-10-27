@@ -151,20 +151,14 @@
         <table class="table table-striped">
           <tbody>
 
-          <?php if (!empty($study_dto->model->methods->designs)): ?>
+          <?php if (!empty($study_dto->model->methods->design)): ?>
             <tr>
               <th><?php print t('Study Design') ?></th>
               <td>
-                <ul class="list-unstyled">
-                  <?php foreach ($study_dto->model->methods->designs as $design): ?>
-                    <li>
-                      <?php print obiba_mica_commons_clean_string($design); ?>
-                      <?php if ($design == 'other'): ?>
-                         :<?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherDesign'); ?>
-                      <?php endif; ?>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
+                  <?php print $study_dto->model->methods->design; ?>
+                  <?php if (!empty($study_dto->model->methods->otherDesign)): ?>
+                    :<?php print obiba_mica_commons_get_localized_field($study_dto->model->methods->otherDesign); ?>
+                  <?php endif; ?>
               </td>
             </tr>
           <?php endif; ?>
@@ -285,7 +279,7 @@
               <th><?php print t('Biological Samples'); ?></th>
               <td>
                 <p>
-                  <?php if (!empty($study_dto->model->access) && in_array('bio_samples', $study_dto->model->access)): ?>
+                  <?php if (!empty($study_dto->model->access) && in_array('biosamples', $study_dto->model->access)): ?>
                     <span class="glyphicon glyphicon-ok"></span>
                   <?php else : ?>
                     <span class="glyphicon glyphicon-remove"></span>
