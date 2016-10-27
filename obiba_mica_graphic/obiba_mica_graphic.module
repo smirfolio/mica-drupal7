@@ -572,7 +572,7 @@ function obiba_mica_graphic_search_query_charts($query, $default_dto_search = NU
 function obiba_mica_graphic_stacked_column_chart($labels, $data, $title, $width = 250, $height = 175, $legend_position = 'none') {
   $chart_param = variable_get_value('charts_default_settings');
   $chart_width = $width;
-  if (empty($width) && count($labels) < 10) {
+  if (empty($width) && count($labels) < 8) {
     $chart_width = count($labels) * 20 + $height;
   }
   $raw_options['vAxis']['logScale'] = FALSE;
