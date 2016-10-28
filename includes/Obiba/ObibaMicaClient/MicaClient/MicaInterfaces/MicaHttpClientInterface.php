@@ -14,11 +14,12 @@
  * MicaClient class
  */
 
-namespace  Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
 
 interface MicaHttpClientInterface{
   function getMicaHttpClientStaticMethod($method);
   function getMicaHttpClient($authentication = NULL, $formatter = NULL, $request_alter = FALSE, $delegate = NULL);
   function getMicaHttpClientRequest($url, $values = array());
+  function MicaClientAddHttpHeader($headerParameter, $value);
   function getMicaHttpClientException();
 }

@@ -27,7 +27,7 @@ class DrupalMicaResearchProjectResource extends DrupalMicaClient {
    * @param null|string $mica_url
    */
   public function __construct($mica_url) {
-    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
+    parent::__construct($mica_url);
   }
 
   /**

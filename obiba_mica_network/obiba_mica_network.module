@@ -14,7 +14,7 @@
  * Mica networks file
  */
 
-include_once('obiba_mica_network-page-list.inc');
+include_once 'obiba_mica_network-page-list.inc';
 
 function obiba_mica_network_menu() {
   $items = array();

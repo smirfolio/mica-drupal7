@@ -19,7 +19,7 @@ class ObibaSearchResources extends DrupalMicaClient {
   const MICA_REPOSITORY = 'mica/repository';
 
   function __construct() {
-    parent::__construct(NULL, new MicaCache\MicaDrupalClientCache());
+    parent::__construct(NULL);
   }
 
   private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {

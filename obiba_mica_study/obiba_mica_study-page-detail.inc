@@ -19,6 +19,8 @@ if (module_exists('obiba_mica_dataset')) {
   include_once($path_module_dataset . '/includes/obiba_mica_dataset_resource.inc');
 }
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+
 function obiba_mica_study_page_detail_coverage($study_id) {
 
   if (!variable_get_value('study_show_coverage_graphs')) {
@@ -142,7 +144,7 @@ function obiba_mica_study_page_detail($study_id) {
     if (module_exists('obiba_mica_persons') && !empty($study_dto)) {
       if (!empty($study_dto->memberships)) {
         $config_resources = new DrupalMicaConfigResource();
-        $members_roles = $config_resources->getSpecificConfigs(array('roles'));
+        $members_roles = $config_resources->micaClientConfigResource->getSpecificConfigs(array('roles'));
         $ordered_membership = array_map(function ($members_role) use ($study_dto) {
           foreach ($study_dto->memberships as $membership) {
             if ($members_role == $membership->role) {
@@ -199,8 +201,11 @@ function obiba_mica_study_page_detail($study_id) {
       return $study_theme_cache;
     }
     else {
+      $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+      $can_edit_draf_document = $permissionResource->canEditDraftDocument($study_dto);
       $study_theme = theme('obiba_mica_study_detail',
         array(
+          'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
           'ordered_membership' => !empty($ordered_membership) ? $ordered_membership : NULL,
           'investigators_modal' => !empty($investigator_detail_modal) ? $investigator_detail_modal : NULL,
           'contacts_modal' => !empty($contact_detail_modal) ? $contact_detail_modal : NULL,

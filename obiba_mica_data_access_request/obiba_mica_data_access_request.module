@@ -9,6 +9,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+
 /**
  * Implements hook_menu().
  */
@@ -315,7 +317,10 @@ and intellectual property policies.</p> </div>";
  * Data Access Request Title Callback
  */
 function obiba_mica_data_access_request_dar_title_callback() {
-  return obiba_mica_user_has_role('mica-data-access-officer') ? variable_get_value('access_requests_page_title') : variable_get_value('access_request_my_page_title');
+  $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+  return $permissionResource->userHasRole('mica-data-access-officer') ?
+    variable_get_value('access_requests_page_title') :
+    variable_get_value('access_request_my_page_title');
 }
 
 /**

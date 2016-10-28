@@ -9,10 +9,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
+/**
  * @file code for list networks page
- * */
-include_once('includes/obiba_mica_network_resource.inc');
+ */
 
 function obiba_mica_network_page_list() {
   $context['url'] = 'refresh_list_networks';

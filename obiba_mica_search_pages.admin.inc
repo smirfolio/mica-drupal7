@@ -14,7 +14,7 @@
  * Obiba Mica client module settings UI.
  */
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClient;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
 
 /**
  * Provides settings pages.
@@ -718,7 +718,7 @@ function _obiba_mica_settings_search_variables_form(&$form) {
  * @return object
  */
 function _obiba_mica_admin_taxonomies_items($resource) {
-  $service = new DrupalMicaClient\DrupalMicaClientTaxonomyResource();
+  $service = new DrupalMicaClientClasses\DrupalMicaClientTaxonomyResource();
   $taxonomies = $service->getTaxonomySummaries($resource);
   if (!empty($taxonomies->summaries)) {
     return $taxonomies->summaries;

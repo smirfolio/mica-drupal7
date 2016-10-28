@@ -37,7 +37,7 @@
   </div>
 
   <div class="pull-right md-bottom-margin">
-    <?php if (canEditDraftDocument($study_dto)): ?>
+    <?php if ($can_edit_draf_document): ?>
       <a title="<?php print t('Edit') ?>"
          target="_blank"
          href="<?php print MicaClientPathProvider::study_draft_url($study_dto->id) ?>"

@@ -9,7 +9,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
+
 class RqlQueryBuilder {
+  function __construct() {
+
+  }
 
   public static function network_query_charts($studyIds) {
     return self::createChartsQuery(
@@ -60,8 +65,10 @@ class RqlQueryBuilder {
     );
   }
 
+
   private static function createAggregationQuery() {
-    $figures = variable_get_value('mica_taxonomy_figures');
+    $config = new MicaConfig\MicaDrupalConfig();
+    $figures = $config->MicaGetConfig('mica_taxonomy_figures');
     if (empty($figures)) {
       return '';
     }

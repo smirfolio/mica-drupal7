@@ -14,7 +14,6 @@
  * MicaFilesResource class
  */
 
-use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 
 /**
  * Class MicaStudyResource
@@ -25,7 +24,7 @@ class DrupalMicaFilesResource extends DrupalMicaClient {
   const DCE = 'data-collection-event';
 
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
+    parent::__construct($mica_url);
   }
 
   /**
@@ -39,7 +38,6 @@ class DrupalMicaFilesResource extends DrupalMicaClient {
    * @return array
    */
   public function getAttachment($entity_type, $entity_id) {
-    $attachment = array();
     $this->setLastResponse(NULL);
     $path_attachments = '/' . $entity_type . '/' . $entity_id;
     $resource_query = '/files-search' . $this->encode_path_parts($path_attachments) .
@@ -74,8 +72,8 @@ class DrupalMicaFilesResource extends DrupalMicaClient {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage(),
           ), WATCHDOG_WARNING);
-        return $this->wrapAttachments($entity_type, $entity_id, array());
       }
+      return $this->wrapAttachments($entity_type, $entity_id, array());
     }
   }
 

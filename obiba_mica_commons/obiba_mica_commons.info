@@ -6,3 +6,4 @@ core = 7.x
 dependencies[] = http_client
 
 files[] = includes/obiba_mica_commons_autoload.inc
+files[] = includes/obiba_mica_commons_resource_paths.inc
