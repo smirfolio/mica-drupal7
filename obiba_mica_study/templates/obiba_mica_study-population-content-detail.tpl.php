@@ -99,7 +99,7 @@
   <div class="scroll-content-tab">
     <table class="table table-striped">
       <tbody>
-      <?php if (isset($population->model->selectionCriteria->gender) && ($population->model->selectionCriteria->gender === 0 || $population->model->selectionCriteria->gender === 1)): ?>
+      <?php if (isset($population->model->selectionCriteria->gender)): ?>
         <tr>
           <th><?php print t('Gender') ?></th>
           <td><?php print  obiba_mica_study_get_gender($population->model->selectionCriteria->gender); ?></td>
@@ -143,7 +143,7 @@
           <th><?php print t('Ethnic Origin') ?></th>
           <td>
             <?php $ethnic_origins = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'ethnicOrigin'); ?>
-            <?php implode(', ', $ethnic_origins); ?>
+            <?php print implode(', ', $ethnic_origins); ?>
           </td>
 
         </tr>
@@ -166,7 +166,7 @@
           <th><?php print t('Health Status') ?></th>
           <td>
             <?php $health_status = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'healthStatus'); ?>
-            <?php implode(', ', $health_status); ?>
+            <?php print implode(', ', $health_status); ?>
           </td>
         </tr>
       <?php endif; ?>
