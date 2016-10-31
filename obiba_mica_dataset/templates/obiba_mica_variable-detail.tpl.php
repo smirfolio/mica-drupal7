@@ -331,7 +331,7 @@
               </tr>
               <?php if (!empty($variable_harmonization['status_detail'])): ?>
               <tr>
-                <th><?php print t('Status details'); ?></th>
+                <th><?php print t('Status Detail'); ?></th>
                 <td>
                   <span><?php print t(ucfirst($variable_harmonization['status_detail'])) ?></span>
                 </td>
