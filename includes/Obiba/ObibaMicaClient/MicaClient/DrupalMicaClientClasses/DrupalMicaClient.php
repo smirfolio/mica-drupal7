@@ -18,17 +18,18 @@ namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
 
 use Obiba\ObibaMicaClient\MicaCache as MicaCache;
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
+use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
 
 include_once "DrupalMicaClientQueryRqlBuilders.php";
 include_once "DrupalMicaClientQueryResponseWrappers.php";
 include_once "obiba_mica_commons_permissions.inc";
-include_once "DrupalMicaClientResourcePaths.php";
-include_once "DrupalMicaClientConfigResource.inc";
+
+
 
 /**
  * Class DrupalMicaClient
  */
-class MicaClient {
+class MicaClient extends DrupalMicaHttpClient{
   const AUTHORIZATION_HEADER = 'Authorization';
   const COOKIE_HEADER = 'Cookie';
   const SET_COOKIE_HEADER = 'Set-Cookie';
@@ -46,6 +47,8 @@ class MicaClient {
 
   protected $micaUrl;
   public $drupalCache;
+  public $drupalConfig;
+  public $drupalWatchDog;
 
   private $lastResponse;
   private static $responsePageSizeSmall = 10;
@@ -62,13 +65,21 @@ class MicaClient {
    *   IF given,  the Mica server url, the  default value is a a setting
    *   parameter
    * @param MicaCache\MicaCacheInterface $micaCache
+   * @param MicaConfig\MicaConfigInterface $micaConfig
+   * @param MicaWatchDog\MicaWatchDogInterface $micaWatchDog
    *
    */
-  public function __construct($mica_url = NULL, MicaCache\MicaDrupalClientCache $micaCache) {
+  public function __construct($mica_url = NULL,
+                              MicaCache\MicaCacheInterface $micaCache,
+                              MicaConfig\MicaConfigInterface $micaConfig,
+                              MicaWatchDog\MicaWatchDogInterface $micaWatchDog
+  ) {
     $this->drupalCache = $micaCache;
-    $this->micaUrl = (isset($mica_url) ? $mica_url : variable_get_value('mica_url')) . '/ws';
-    self::$responsePageSize = variable_get_value('mica_response_page_size');
-    self::$responsePageSizeSmall = variable_get_value('mica_response_page_size_small');
+    $this->drupalConfig = $micaConfig;
+    $this->drupalWatchDog = $micaWatchDog;
+    $this->micaUrl = (isset($mica_url) ? $mica_url : $this->drupalConfig->MicaGetConfig('mica_url')) . '/ws';
+    self::$responsePageSize = $this->drupalConfig->MicaGetConfig('mica_response_page_size');
+    self::$responsePageSizeSmall = $this->drupalConfig->MicaGetConfig('mica_response_page_size_small');
 
   }
 
@@ -151,10 +162,8 @@ class MicaClient {
    */
   public function logout() {
     $url = $this->micaUrl . '/auth/session/_current';
-    $getHttpClientRequest = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST;
-    $getHttpClientMethod = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST_STATIC_METHOD;
-    $request = $getHttpClientRequest($url, array(
-      'method' => $getHttpClientMethod('METHOD_DELETE'),
+    $request = $this->getMicaHttpClientRequest($url, array(
+      'method' => $this->getMicaHttpClientStaticMethod('METHOD_DELETE'),
       'headers' => $this->authorizationHeader(array(
         'Accept' => array(HEADER_JSON),
       )),
@@ -166,13 +175,12 @@ class MicaClient {
       $this->lastResponse = $client->lastResponse;
       $this->setLastResponseCookies();
       unset($_SESSION[self::MICA_COOKIE]);
-    } catch (HttpClientException $e) {
-      // Clear anyway.
-      watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
+    } catch (\HttpClientException $e) {
+      $this->drupalWatchDog->MicaWatchDog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
+        ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
       $this->lastResponse = $client->lastResponse;
       $this->setLastResponseCookies();
       unset($_SESSION[self::MICA_COOKIE]);
@@ -208,8 +216,10 @@ class MicaClient {
       $keys = array_keys($cookie);
       $name = $keys[0];
       $value = $cookie[$name];
-      watchdog('Mica Client', 'Cookie: name=@name, value=@value',
-        array('@name' => $name, '@value' => $value), WATCHDOG_DEBUG);
+      $this->drupalWatchDog->MicaWatchDog('Mica Client',
+        'Cookie: name=@name, value=@value',
+        array('@name' => $name, '@value' => $value),
+        $this->drupalWatchDog->MicaWatchDogSeverity('DEBUG'));
       if (empty($value)) {
         if (!empty($_SESSION[$name])) {
           unset($_SESSION[$name]);
@@ -234,18 +244,18 @@ class MicaClient {
     if (isset($_SESSION[self::OBIBA_COOKIE])) {
       // Authenticate by cookies coming from request (case of regular user
       // logged in via Agate).
-      watchdog('obiba_mica', 'Auth by cookies from request');
+      $this->drupalWatchDog->MicaWatchDog('obiba_mica', 'Auth by cookies from request');
       $headers = $this->addCookieHeader($headers, $_SESSION[self::OBIBA_COOKIE],
         isset($_SESSION[self::MICA_COOKIE]) ?
           $_SESSION[self::MICA_COOKIE] : NULL);
     }
     else {
-      watchdog('obiba_mica', 'Auth by anonymous credentials');
-      $current_anonymous_pass = variable_get_value('mica_anonymous_password');
-      $saved_anonymous_pass = variable_get_value('mica_anonymous_password_saved');
+      $this->drupalWatchDog->MicaWatchDog('obiba_mica', 'Auth by anonymous credentials');
+      $current_anonymous_pass = $this->drupalConfig->MicaGetConfig('mica_anonymous_password');
+      $saved_anonymous_pass = $this->drupalConfig->MicaGetConfig('mica_anonymous_password_saved');
 
       // always append credentials in case of mica session has expired
-      $credentials = variable_get_value('mica_anonymous_name') . ':' . $current_anonymous_pass;
+      $credentials = $this->drupalConfig->MicaGetConfig('mica_anonymous_name') . ':' . $current_anonymous_pass;
       $headers[self::AUTHORIZATION_HEADER] = array(
         'Basic '
         . base64_encode($credentials),
@@ -260,7 +270,8 @@ class MicaClient {
       }
       else {
         session_unset();
-        variable_set_value('mica_anonymous_password_saved', variable_get_value('mica_anonymous_password'));
+        $this->drupalConfig->MicaSetConfig('mica_anonymous_password_saved',
+          $this->drupalConfig->MicaGetConfig('mica_anonymous_password'));
       }
     }
     return $headers;
@@ -549,10 +560,8 @@ class MicaClient {
    */
   public function downloadFile($entity_type, $entity_id, $file_id) {
     $url = $this->micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_id . "/_download";
-    $getHttpClientRequest = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST;
-    $getHttpClientMethod = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST_STATIC_METHOD;
-    $request = $getHttpClientRequest($url, array(
-      'method' => $getHttpClientMethod('METHOD_GET'),
+    $request = $this->getMicaHttpClientRequest($url, array(
+      'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
       'headers' => self::authorizationHeader(array(
           'Accept' => array(self::HEADER_BINARY),
         )
@@ -575,12 +584,15 @@ class MicaClient {
         'raw_header_array' => $this->parseHeaders($client->lastResponse->headers),
       );
       return $raw_data;
-    } catch (HttpClientException $e) {
-      watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
+    } catch (\HttpClientException $e) {
+      $this->drupalWatchDog->MicaWatchDog(
+        'MicaClient',
+        'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
+        ),
+        $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
       return $raw_data = array(
         'code' => $e->getCode(),
         'message' => $e->getMessage(),

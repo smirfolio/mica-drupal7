@@ -248,7 +248,7 @@ function obiba_mica_app_angular_get_angular_template($angular_template) {
  */
 function obiba_mica_app_angular_get_angular_translation($lang) {
     $mica_config = new DrupalMicaConfigResource();
-    $translation = $mica_config->getTranslations($lang);
+    $translation = $mica_config->micaClientConfigResource->getTranslations($lang);
     drupal_json_output(json_decode($translation));
 }
 

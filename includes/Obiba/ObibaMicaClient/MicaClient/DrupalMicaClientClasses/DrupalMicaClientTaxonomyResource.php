@@ -18,6 +18,7 @@ namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
 
 use Obiba\ObibaMicaClient\MicaCache as MicaCache;
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
+use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
 /**
  * Class MicaStudyResource
  */
@@ -30,7 +31,10 @@ class DrupalMicaClientTaxonomyResource extends MicaClient {
    *   The Mica server url.
    */
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
+    parent::__construct($mica_url,
+      new MicaCache\MicaDrupalClientCache(),
+      new MicaConfig\MicaDrupalConfig(),
+      new MicaWatchDog\MicaDrupalClientWatchDog());
   }
 
   /**
@@ -42,10 +46,8 @@ class DrupalMicaClientTaxonomyResource extends MicaClient {
   public function getTaxonomySummaries($resource) {
     $this->setLastResponse(NULL);
     $url_studies = $this->micaUrl . '/taxonomies/'.$resource;
-    $getHttpClientRequest = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST;
-    $getHttpClientMethod = MicaConfig\MicaDrupalConfig::GET_HTTP_CLIENT_REQUEST_STATIC_METHOD;
-    $request = $getHttpClientRequest($url_studies, array(
-      'method' => $getHttpClientMethod('METHOD_GET'),
+    $request = $this->getMicaHttpClientRequest($url_studies, array(
+      'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_JSON),
         )
@@ -58,9 +60,11 @@ class DrupalMicaClientTaxonomyResource extends MicaClient {
 
       return json_decode($data);
     }
-    catch (HttpClientException $e) {
-      watchdog('MicaTaxonomyResource', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()), WATCHDOG_WARNING);
+    catch (\HttpClientException $e) {
+      $this->drupalWatchDog->MicaWatchDog('MicaTaxonomyResource',
+        'Connection to server fail,  Error serve code : @code, message: @message',
+        array('@code' => $e->getCode(), '@message' => $e->getMessage()),
+        $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
       return array();
     }
   }

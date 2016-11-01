@@ -31,7 +31,7 @@
   <?php endif; ?>
 
   <div class="pull-right md-bottom-margin">
-  <?php if (canEditDraftDocument($network_dto)): ?>
+  <?php if ($can_edit_draf_document): ?>
     <a title="<?php print t('Edit') ?>"
        target="_blank"
        href="<?php print MicaClientPathProvider::network_draft_url($network_dto->id) ?>"

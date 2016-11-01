@@ -28,7 +28,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   <?php endif; ?>
 
   <div class="pull-right md-bottom-margin">
-    <?php if (canEditDraftDocument($dataset_dto)): ?>
+    <?php if ($can_edit_draf_document): ?>
       <a title="<?php print t('Edit') ?>"
          target="_blank"
          href="<?php print MicaClientPathProvider::dataset_draft_url($dataset_dto) ?>"

@@ -12,6 +12,9 @@
 /*
  * @file code for network detail pages
  * */
+
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+
 include_once('includes/obiba_mica_network_resource.inc');
 
 $path_module_study = drupal_get_path('module', 'obiba_mica_study');
@@ -123,7 +126,10 @@ function obiba_mica_network_page_detail($network_id) {
       return $network_theme;
     }
     else {
+      $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+      $can_edit_draf_document = $permissionResource->canEditDraftDocument($network_dto);
       $network_theme = theme('obiba_mica_network-detail', array(
+        'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
         'investigators_modal' => !empty($investigator_detail_modal) ?
           $investigator_detail_modal : NULL,
         'contacts_modal' => !empty($contact_detail_modal) ?

@@ -22,7 +22,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 class DrupalMicaNetworkResource extends DrupalMicaClient {
 
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
+    parent::__construct($mica_url);
   }
 
   /**get_networks

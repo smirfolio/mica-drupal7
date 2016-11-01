@@ -14,8 +14,6 @@
  * MicaStudyResource class
  */
 
-use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
-
 /**
  * Class MicaStudyResource
  */
@@ -28,7 +26,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClient {
    *   The mica server url.
    */
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
+    parent::__construct($mica_url);
   }
 
   /**

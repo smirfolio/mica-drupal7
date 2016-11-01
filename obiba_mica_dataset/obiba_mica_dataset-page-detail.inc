@@ -16,6 +16,8 @@
 
 include_once 'includes/obiba_mica_dataset_resource.inc';
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+
 /**
  * The dataset Detail page.
  */
@@ -133,8 +135,10 @@ function obiba_mica_dataset_page_detail($dataset_id) {
         }
         obiba_mica_app_angular_load_js_resources('obiba_mica_files');
       }
-
+      $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+      $can_edit_draf_document = $permissionResource->canEditDraftDocument($dataset_dto);
       $dataset_theme = theme('obiba_mica_dataset-detail', array(
+        'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
         'dataset_dto' => $dataset_dto,
         'coverage' => !empty($coverage) ? $coverage['charts'] : NULL,
         'dataset_type_dto' => $dataset_type_dto,

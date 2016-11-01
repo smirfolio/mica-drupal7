@@ -13,14 +13,19 @@
  * @file
  * TempFile resource class used to communicate with backend server
  */
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
+
+use Obiba\ObibaMicaClient\MicaCache as MicaCache;
+use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
+use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
 
 /**
  * Class MicaDataAccessRequest
  */
-class DrupalMicaTempFileResource extends DrupalMicaClient {
+class DrupalMicaTempFileResource extends MicaClient {
   const FILES_WS_URL = '/files/temp';
   const FILE_WS_URL = '/files/temp/{id}';
-
+public $method;
   /**
    * Instance initialisation.
    *
@@ -30,7 +35,10 @@ class DrupalMicaTempFileResource extends DrupalMicaClient {
    *   THe method to query the server.
    */
   public function __construct($mica_url = NULL, $method = 'METHOD_POST') {
-    parent::__construct($mica_url);
+    parent::__construct($mica_url,
+      new MicaCache\MicaDrupalClientCache(),
+      new MicaConfig\MicaDrupalConfig(),
+      new MicaWatchDog\MicaDrupalClientWatchDog());
     $this->method = $method;
   }
 
@@ -62,10 +70,10 @@ class DrupalMicaTempFileResource extends DrupalMicaClient {
     $headers = $this->getHeaders($result);
 
     if (!empty($headers) && !empty($headers['Location'])) {
-      drupal_add_http_header('Location', $headers['Location'][0]);
+      $this->MicaClientAddHttpHeader('Location', $headers['Location'][0]);
     }
 
-    drupal_add_http_header('Status', $http_code);
+    $this->MicaClientAddHttpHeader('Status', $http_code);
 
     return array('code' => $http_code, 'message' => trim($match));
   }
@@ -80,11 +88,10 @@ class DrupalMicaTempFileResource extends DrupalMicaClient {
    *   The data server response.
    */
   public function getFile($id_file) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . preg_replace('/\\{id\\}/', $id_file, self::FILE_WS_URL, 1);
-    $request = new HttpClientRequest($url_requests, array(
-      'method' => $constant_method,
+    $request = $this->getMicaHttpClientRequest($url_requests, array(
+      'method' => $this->getMicaHttpClientStaticMethod($this->method),
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_JSON),
         )
@@ -104,12 +111,13 @@ class DrupalMicaTempFileResource extends DrupalMicaClient {
    *   The data server response.
    */
   public function deleteFile($id_file) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . preg_replace('/\\{id\\}/', $id_file, self::FILE_WS_URL, 1);
-    $request = new HttpClientRequest($url_requests, array('method' => $constant_method));
 
-    drupal_add_http_header('Status', $this->getLastResponseStatusCode());
+    $request = $this->getMicaHttpClientRequest($url_requests,
+      array('method' => $this->getMicaHttpClientStaticMethod($this->method)));
+
+    $this->MicaClientAddHttpHeader('Status', $this->getLastResponseStatusCode());
     return array('Status' => $request->statusCode);
   }
 
@@ -119,9 +127,9 @@ class DrupalMicaTempFileResource extends DrupalMicaClient {
    * @return resource
    */
   private function initializeCurl(array $file) {
-    $file_info = new finfo(FILEINFO_MIME);
+    $file_info = new \finfo(FILEINFO_MIME);
     $mime_file = $file_info->file($file['file']['tmp_name']);
-    $cfile = new CurlFile($file['file']['tmp_name'], $mime_file, $file['file']['name']);
+    $cfile = new \CurlFile($file['file']['tmp_name'], $mime_file, $file['file']['name']);
     $data_file = array('file' => $cfile);
     $url = $this->micaUrl . self::FILES_WS_URL;
     $curl_handle = curl_init();
@@ -160,11 +168,12 @@ class DrupalMicaTempFileResource extends DrupalMicaClient {
     if ($http_code != 201 && preg_match_all('/(?<=HTTP\/1\.1).*/', $result, $error_meesage)) {
       foreach ($error_meesage[0] as $message) {
         if (!preg_match('/(?<= 100 ).*/', $message, $code)) {
-          watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          $this->drupalWatchDog->MicaWatchDog('Mica Client',
+            'Connection to server fail,  Error serve code : @code, message: @message',
             array(
               '@code' => $http_code,
               '@message' => $message,
-            ), WATCHDOG_WARNING);
+            ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
           return array('code' => $http_code, 'message' => $message);
         }
       }
@@ -180,14 +189,15 @@ class DrupalMicaTempFileResource extends DrupalMicaClient {
       $this->setLastResponse($client->lastResponse);
       return json_decode($response);
     }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+    catch (\HttpClientException $e) {
+      $this->drupalWatchDog->MicaWatchDog('Mica Client',
+        'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
+        ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
 
-      drupal_add_http_header('Status', $e->getCode());
+      $this->MicaClientAddHttpHeader('Status', $e->getCode());
       return empty($client->lastResponse->body) ? FALSE : json_decode($client->lastResponse->body);
     }
 

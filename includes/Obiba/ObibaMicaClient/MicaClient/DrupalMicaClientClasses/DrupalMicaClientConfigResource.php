@@ -14,12 +14,16 @@
  * TempFile resource class used to communicate with backend server
  */
 
-use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
-use \Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClient;
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
+
+use Obiba\ObibaMicaClient\MicaCache as MicaCache;
+use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
+use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
+
 /**
  * Class MicaConfigResource
  */
-class DrupalMicaConfigResource extends DrupalMicaClient\MicaClient {
+class MicaClientConfigResource extends MicaClient {
   const CONFIG_WS_URL = '/config/_public';
   const ALL_CONFIG_WS_URL = '/config';
 
@@ -30,7 +34,11 @@ class DrupalMicaConfigResource extends DrupalMicaClient\MicaClient {
    *   The mica server url.
    */
   public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url, new MicaCache\MicaDrupalClientCache());
+    parent::__construct($mica_url,
+      new MicaCache\MicaDrupalClientCache(),
+      new MicaConfig\MicaDrupalConfig(),
+      new MicaWatchDog\MicaDrupalClientWatchDog()
+      );
   }
 
   /**
@@ -81,9 +89,8 @@ class DrupalMicaConfigResource extends DrupalMicaClient\MicaClient {
     }
     else {
       $url = $this->micaUrl . $config_resource;
-
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
+      $request = $this->getMicaHttpClientRequest($url, array(
+        'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
         'headers' => $this->authorizationHeader(array(
             'Accept' => array(parent::HEADER_JSON),
           )
@@ -98,12 +105,12 @@ class DrupalMicaConfigResource extends DrupalMicaClient\MicaClient {
           $this->drupalCache->MicaSetCache($config_resource, $config_client);
           return $config_client;
         }
-      } catch (HttpClientException $e) {
-        watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
+      } catch (\HttpClientException $e) {
+        $this->drupalWatchDog->MicaWatchDog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
+          ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
         return array();
       }
     }
@@ -126,8 +133,8 @@ class DrupalMicaConfigResource extends DrupalMicaClient\MicaClient {
       return $cached_lang;
     }
     else{
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
+      $request = $this->getMicaHttpClientRequest($url, array(
+        'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
         'headers' => array(
           'Accept' => array(parent::HEADER_JSON),
         ),
@@ -140,12 +147,12 @@ class DrupalMicaConfigResource extends DrupalMicaClient\MicaClient {
           $this->drupalCache->MicaSetCache($lang_resource, $data);
           return $data;
         }
-      } catch (HttpClientException $e) {
-        watchdog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
+      } catch (\HttpClientException$e) {
+        $this->drupalWatchDog->MicaWatchDog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
+          ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
         return array();
       }
     }

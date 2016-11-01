@@ -15,6 +15,7 @@
  */
 use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 
+
 /**
  * Class MicaDataAccessRequestResources
  */
