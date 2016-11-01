@@ -180,7 +180,6 @@ function obiba_mica_dataset_variable_has_satus_detail_harmonizations($variable) 
   if (!empty($variable_harmonizations->datasetVariableSummaries)) {
     foreach ($variable_harmonizations->datasetVariableSummaries as $variable_harmonization) {
       $status_detail = obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status_detail', array(
-        'maelstrom',
         'Mlstr_harmo',
       ));
       if (!empty($status_detail)) {
