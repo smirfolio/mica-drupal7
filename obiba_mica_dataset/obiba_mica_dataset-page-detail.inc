@@ -635,7 +635,6 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                 'Mlstr_harmo',
               ))));
               $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
-                'maelstrom',
                 'Mlstr_harmo',
               ))));
               $status_detail = empty($status_detail) ? $status_detail : t(ucfirst($status_detail));
@@ -646,7 +645,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                 $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
               }
 
-              if (empty($status)) {
+              if (empty($status) && !empty($status_detail)) {
                 $icon_alert_no_status = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . $status_detail . '"></span>';
                 $row[$key_row] = l($icon_alert_no_status, 'mica/variable/' . $harmonized_variable_id,
                   array(
@@ -657,7 +656,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                   ));
               }
               elseif ($status == 'complete') {
-                $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" data-original-title="' . $status_detail . '"></span>';
+                $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" data-original-title="' . $status . '"></span>';
                 $row[$key_row] = l($icon_success_complete, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
@@ -669,7 +668,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
               elseif ($status == 'impossible') {
                 $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
                   ObibaDatasetConstants::getIcon()
-                  . '" data-original-title="' . $status_detail . '"></span>';
+                  . '" data-original-title="' . $status . '"></span>';
                 $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,
@@ -679,7 +678,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                   ));
               }
               elseif ($status == 'undetermined') {
-                $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . $status_detail . '"></span>';
+                $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" data-original-title="' . $status . '"></span>';
                 $row[$key_row] = l($icon_warning_undetermined, 'mica/variable/' . $harmonized_variable_id,
                   array(
                     'html' => TRUE,

@@ -169,41 +169,65 @@ function obiba_mica_dataset_variable_load_chart_libraries() {
 }
 
 /**
+ * Check if the variables has harmonizations status detail
+ *
+ * @param $variable
+ * @return bool
+ */
+function obiba_mica_dataset_variable_has_satus_detail_harmonizations($variable) {
+  $variable_resource = new DrupalMicaDatasetResource();
+  $variable_harmonizations = $variable_resource->getVariableHarmonizations($variable->id);
+  if (!empty($variable_harmonizations->datasetVariableSummaries)) {
+    foreach ($variable_harmonizations->datasetVariableSummaries as $variable_harmonization) {
+      $status_detail = obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status_detail', array(
+        'Mlstr_harmo',
+      ));
+      if (!empty($status_detail)) {
+          return TRUE;
+        }
+    }
+  }
+  return FALSE;
+}
+
+/**
  * Called to get js that inject a harmonization dataset dataTable.
  */
 function obiba_mica_dataset_variable_get_harmonizations($variable) {
+  $has_status_destail= NULL;
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
   }
   else {
     obiba_mica_commons_datatables_external_source();
   }
-
+  $has_status_detail = obiba_mica_dataset_variable_has_satus_detail_harmonizations($variable);
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_variable_harmo_datatable_init.js', 'file');
   drupal_add_js(array(
-    'table_headers' => obiba_mica_dataset_variable_get_harmonization_table_headers($variable),
-    'table_data' => obiba_mica_dataset_variable_get_harmonization_table_rows($variable),
+    'table_headers' => obiba_mica_dataset_variable_get_harmonization_table_headers($variable, $has_status_detail),
+    'table_data' => obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $has_status_detail),
   ), 'setting');
 }
 
 /**
  * GEt harmonized variable header table.
  */
-function obiba_mica_dataset_variable_get_harmonization_table_headers($variable) {
-  return array(
+function obiba_mica_dataset_variable_get_harmonization_table_headers($variable, $has_status_detail = NULL) {
+  $header =  array(
     array("title" => t('Harmonized Variable'), 'width' => '20%'),
     array("title" => t('Study')),
     array("title" => t('Data Collection Event'), 'width' => '40%'),
     array("title" => t('Status'), 'width' => '5%'),
-    array("title" => t('Status Detail'), 'width' => '10%'),
+    array($has_status_detail?"title":"" => $has_status_detail?t('Status Detail'):"", $has_status_detail?'width':'' => $has_status_detail?'10%':''),
     array("title" => t('Comment')),
   );
+  return array_filter($header);
 }
 
 /**
  * GEt harmonized variable row data table.
  */
-function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
+function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $has_status_detail = NULL) {
   $rows = array();
   $variable_resource = new DrupalMicaDatasetResource();
 
@@ -258,7 +282,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
         $status = '<span class="glyphicon glyphicon-question-sign alert-warningr" title="' . t('No status') . '"></span>';
       }
 
-      $status_detail= obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status_detail', array(
+      $status_detail = obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status_detail', array(
         'maelstrom',
         'Mlstr_harmo',
       ));
@@ -278,7 +302,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
             'title' => $variable_title,
           ),
         )),
-        $status_detail,
+        $has_status_detail ? ucfirst($status_detail) : '' ,
         obiba_mica_dataset_variable_html_truncated(
           obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'comment', array(
             'maelstrom',
@@ -290,7 +314,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable) {
     }
   }
 
-  return $rows;
+  return array_filter($rows);
 }
 
 /**
