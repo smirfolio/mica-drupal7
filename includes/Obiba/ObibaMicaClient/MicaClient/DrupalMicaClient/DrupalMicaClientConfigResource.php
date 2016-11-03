@@ -14,7 +14,7 @@
  * TempFile resource class used to communicate with backend server
  */
 
-namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
 
 use Obiba\ObibaMicaClient\MicaCache as MicaCache;
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;

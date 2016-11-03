@@ -15,7 +15,7 @@
  */
 
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 /**
  * Mica client path helper Class.
@@ -262,7 +262,7 @@ class MicaClientPathProvider {
    * @return null
    */
   private static function get_mica_url() {
-    $mica_config = new DrupalMicaClientClasses\MicaClientConfigResource();
+    $mica_config = new DrupalMicaClient\MicaClientConfigResource();
     $url = $mica_config->getPublicURL();
     return empty($url) ? variable_get_value('mica_url') : $url;
   }

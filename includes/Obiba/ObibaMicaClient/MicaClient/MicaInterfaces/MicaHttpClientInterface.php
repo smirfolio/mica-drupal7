@@ -14,7 +14,7 @@
  * MicaClient class
  */
 
-namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
 
 interface MicaHttpClientInterface{
   function getMicaHttpClientStaticMethod($method);

@@ -54,7 +54,7 @@ function obiba_mica_study_page_list() {
 
   $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_by, $study_limits);
   $total_studies = empty($response) ? 0 : $response->getTotalHits();
-  $study_limits = !empty($study_limits) ? $study_limits : DrupalMicaClient::getResponsePageSizeSmall();
+  $study_limits = !empty($study_limits) ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
 
   pager_default_initialize($total_studies, $study_limits);
   $pager_output = theme('pager', array('quantity' => $study_limits));
@@ -117,7 +117,7 @@ function obiba_mica_study_create_form() {
 function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL, $study_limits = NULL) {
   $from = 0;
   $study_resource = new DrupalMicaStudyResource();
-  $size_response = intval($study_limits) > 0 ? $study_limits : DrupalMicaClient::getResponsePageSizeSmall();
+  $size_response = intval($study_limits) > 0 ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
   if (!empty($_GET['page'])) {
     $from = $study_resource->paginationListSearchParameters($_GET['page'], 'studies', $size_response);
   }

@@ -19,7 +19,7 @@ if (module_exists('obiba_mica_dataset')) {
   include_once($path_module_dataset . '/includes/obiba_mica_dataset_resource.inc');
 }
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 function obiba_mica_study_page_detail_coverage($study_id) {
 
@@ -201,7 +201,7 @@ function obiba_mica_study_page_detail($study_id) {
       return $study_theme_cache;
     }
     else {
-      $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+      $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($study_dto);
       $study_theme = theme('obiba_mica_study_detail',
         array(
@@ -426,7 +426,7 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
 }
 
 function obiba_mica_study_coverage($study_id) {
-  $query = RqlQueryBuilder::study_query_charts($study_id);
+  $query = DrupalMicaClient\RqlQueryBuilder::study_query_charts($study_id);
   $coverage['charts'] = obiba_mica_graphic_search_query_charts(
     $query,
     array('group-by' => 'dceIds', 'with-facets' => 'false'),

@@ -18,7 +18,7 @@
 /**
  * Class MicaStudyResource
  */
-class DrupalMicaFilesResource extends DrupalMicaClient {
+class DrupalMicaFilesResource extends DrupalMicaClientResource {
 
   const POPULATION = 'population';
   const DCE = 'data-collection-event';

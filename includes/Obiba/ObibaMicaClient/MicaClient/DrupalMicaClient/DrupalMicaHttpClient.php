@@ -15,7 +15,7 @@
  */
 
 
-namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
 
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 

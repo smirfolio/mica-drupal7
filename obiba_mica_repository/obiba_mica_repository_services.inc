@@ -92,7 +92,7 @@ function obiba_mica_repository_variable_coverage($query) {
  */
 function obiba_mica_repository_variable_coverage_download($query) {
   $search_resource = new ObibaSearchResources();
-  $search_resource->variablesCoverageDownload($query, DrupalMicaClient::HEADER_CSV);
+  $search_resource->variablesCoverageDownload($query, DrupalMicaClientResource::HEADER_CSV);
   $response = !empty($search_resource->getLastResponse()->body) ? $search_resource->getLastResponse()->body : NULL;
   if (!empty($response)) {
     $headers = $search_resource->getLastResponseHeaders();

@@ -1,23 +1,14 @@
 <?php
 
-
-
-
-
-
-//$path_module_study = drupal_get_path('module', 'obiba_mica');
-//include($path_module_study . '/includes/Obiba/ObibaMicaClient/MicaClient/DrupalMicaClientClasses/DrupalMicaClient.php');
-//include($path_module_study . '/includes/Obiba/ObibaMicaClient/MicaClient/DrupalMicaClientClasses/DrupalMicaClientConfigResource.php');
-
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as MicaClientClasses;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
 
 
 
-if(class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses\MicaClient')) {
-  class DrupalMicaClient extends MicaClientClasses\MicaClient {
+if(class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')) {
+  class DrupalMicaClientResource extends DrupalMicaClient\MicaClient {
     protected $micaClient;
 
     function __construct($mica_url) {
@@ -29,14 +20,14 @@ if(class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses\MicaCl
   }
 }
 else{
-  class DrupalMicaClient {
+  class DrupalMicaClientResource {
   }
 }
 
 class DrupalMicaConfigResource   {
   public $micaClientConfigResource;
   function __construct($mica_url = NULL) {
-    $this->micaClientConfigResource = new MicaClientClasses\MicaClientConfigResource($mica_url);
+    $this->micaClientConfigResource = new DrupalMicaClient\MicaClientConfigResource($mica_url);
     return $this->micaClientConfigResource;
   }
 }

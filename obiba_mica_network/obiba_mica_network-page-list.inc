@@ -39,7 +39,7 @@ function obiba_mica_network_page_list() {
   else {
     $response = obiba_mica_network_get_networks(NULL, $query, $sort, $sort_by, $network_limits);
     $total_networks = empty($response) ? 0 : $response->getTotalHits();
-    $network_limits = !empty($network_limits) ? $network_limits : DrupalMicaClient::getResponsePageSizeSmall();
+    $network_limits = !empty($network_limits) ? $network_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
     pager_default_initialize($total_networks, $network_limits);
     $pager_output = theme('pager', array('quantity' => $network_limits));
     $summaries = empty($response) ? array() : $response->getSummaries();
@@ -79,7 +79,7 @@ function obiba_mica_network_page_list() {
 function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL, $sort_by = NULL, $network_limits = NULL) {
   $from = 0;
   $study_resource = new DrupalMicaNetworkResource();
-  $size_response = !empty($network_limits) ? $network_limits : DrupalMicaClient::getResponsePageSizeSmall();
+  $size_response = !empty($network_limits) ? $network_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
   if (!empty($_GET['page'])) {
     $from = $study_resource->paginationListSearchParameters($_GET['page'], 'networks', $size_response);
   }

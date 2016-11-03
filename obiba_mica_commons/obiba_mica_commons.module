@@ -16,12 +16,14 @@
 
 const HEADER_JSON = 'application/json';
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
+
 /**
  * Implements hook_user_logout().
  */
 function obiba_mica_commons_user_logout() {
   //TODO have to Not instantiate MicaCLient from here have to use an intermediate class that extend them
-  $mica_client = new DrupalMicaClient(NULL);
+  $mica_client = new DrupalMicaClientResource(NULL);
   $mica_client->logout();
 }
 
@@ -29,7 +31,7 @@ function obiba_mica_commons_user_logout() {
  * Implements hook_user_login().
  */
 function obiba_mica_commons_user_login() {
-  DrupalMicaClient::clear();
+  DrupalMicaClientResource::clear();
 }
 
 /**
@@ -583,7 +585,7 @@ function obiba_mica_commons_create_search_form($context, $no_acronym = TRUE, $no
  *   Drupal markup form.
  */
 function obiba_mica_commons_create_size_select_form($context) {
-  $default_size_parameter = DrupalMicaClient::getResponsePageSize();
+  $default_size_parameter = DrupalMicaClientResource::getResponsePageSize();
   $default_size = !empty($default_size_parameter) ?
     $default_size_parameter : $context['options'];
   $form = array();
@@ -644,7 +646,7 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
     else {
       if (!empty($file_resource)) {
         //TODO have to Not instantiate MicaCLient from here have to use an intermediate class that extend them
-        $mica_client = new DrupalMicaClient(NULL);
+        $mica_client = new DrupalMicaClientResource(NULL);
         $raw_data = $mica_client->downloadFile($entity_type, $entity_id,
           $file_resource->id);
         if (!empty($raw_data) && empty($raw_data['code'])) {
@@ -961,13 +963,13 @@ function obiba_mica_commons_has_coverage($entity, $entity_id) {
     $query = NULL;
     switch ($entity) {
       case 'dataset':
-        $query = RqlQueryBuilder::dataset_query_charts($entity_id);
+        $query = DrupalMicaClient\RqlQueryBuilder::dataset_query_charts($entity_id);
         break;
       case 'study':
-        $query = RqlQueryBuilder::study_query_charts($entity_id);
+        $query = DrupalMicaClient\RqlQueryBuilder::study_query_charts($entity_id);
         break;
       case 'network':
-        $query = RqlQueryBuilder::network_query_charts($entity_id);
+        $query = DrupalMicaClient\RqlQueryBuilder::network_query_charts($entity_id);
         break;
       default;
     }

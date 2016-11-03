@@ -14,7 +14,7 @@
  * Mica client research projects retrieve published Research Projects list.
  */
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 include_once "obiba_mica_research_project_service.inc";
 
@@ -50,7 +50,7 @@ function obiba_mica_research_project_page_list() {
 
   $response = obiba_mica_research_project_get_projects($project_query, $project_limits, $project_sort, $project_sort_by);
   $total_projects = empty($response) ? 0 : $response->total;
-  $project_limits = !(empty($project_limits)) ? $project_limits : DrupalMicaClient::getResponsePageSizeSmall();
+  $project_limits = !(empty($project_limits)) ? $project_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
 
   pager_default_initialize($total_projects, $project_limits);
   $pager_output = theme('pager', array('quantity' => $project_limits));
@@ -102,7 +102,7 @@ function obiba_mica_research_project_create_form() {
 function obiba_mica_research_project_get_projects($query = NULL, $limit = NULL, $sort = NULL, $order = NULL) {
   $from = 0;
   $research_project_resource = new DrupalMicaResearchProjectResource(NULL);
-  $size_response = intval($limit) > 0 ? $limit : DrupalMicaClient::getResponsePageSizeSmall();
+  $size_response = intval($limit) > 0 ? $limit : DrupalMicaClientResource::getResponsePageSizeSmall();
   if (!empty($_GET['page'])) {
     $from = $research_project_resource->paginationListSearchParameters($_GET['page'], 'projects', $size_response);
   }
@@ -116,7 +116,7 @@ function obiba_mica_research_project_get_projects($query = NULL, $limit = NULL, 
 
 function obiba_mica_research_project_dar_research_projects_list_page() {
   drupal_set_title(obiba_mica_research_project_list_page_title_callback());
-  $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+  $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
   $header_applicant = array();
   $header_tab_dynamic = array();
   $response = NULL;

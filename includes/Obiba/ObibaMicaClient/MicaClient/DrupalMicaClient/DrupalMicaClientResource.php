@@ -14,17 +14,11 @@
  * MicaClient class
  */
 
-namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses;
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
 
 use Obiba\ObibaMicaClient\MicaCache as MicaCache;
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
-
-include_once "DrupalMicaClientQueryRqlBuilders.php";
-include_once "DrupalMicaClientQueryResponseWrappers.php";
-include_once "obiba_mica_commons_permissions.inc";
-
-
 
 /**
  * Class DrupalMicaClient

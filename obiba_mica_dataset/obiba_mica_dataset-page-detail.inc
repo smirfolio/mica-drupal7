@@ -16,7 +16,7 @@
 
 include_once 'includes/obiba_mica_dataset_resource.inc';
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 /**
  * The dataset Detail page.
@@ -135,7 +135,7 @@ function obiba_mica_dataset_page_detail($dataset_id) {
         }
         obiba_mica_app_angular_load_js_resources('obiba_mica_files');
       }
-      $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+      $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($dataset_dto);
       $dataset_theme = theme('obiba_mica_dataset-detail', array(
         'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
@@ -699,7 +699,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
  * End harmonization variable ajax table.
  */
 function obiba_mica_dataset_coverage($dataset_id) {
-  $query = RqlQueryBuilder::dataset_query_charts($dataset_id);
+  $query = DrupalMicaClient\RqlQueryBuilder::dataset_query_charts($dataset_id);
   $coverage['charts'] = obiba_mica_graphic_search_query_charts($query, array('with-facets' => 'false'), NULL, $dataset_id);
   if (!empty($coverage['charts'])) {
     $coverage['has_coverage'] = TRUE;

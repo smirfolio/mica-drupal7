@@ -14,12 +14,13 @@
  * MicaStudyResource class
  */
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 
 /**
  * Class MicaStudyResource
  */
-class DrupalMicaStudyResource extends DrupalMicaClient {
+class DrupalMicaStudyResource extends DrupalMicaClientResource {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
@@ -61,7 +62,7 @@ class DrupalMicaStudyResource extends DrupalMicaClient {
         $this->setLastResponse($client->lastResponse);
         $response_wrapper = json_decode($data);
         if ($response_wrapper->studyResultDto->totalCount !== 0) {
-          $return_studies = new StudyJoinResponseWrapper(json_decode($data));
+          $return_studies = new DrupalMicaClient\StudyJoinResponseWrapper(json_decode($data));
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $return_studies);
           return $return_studies;
         }
