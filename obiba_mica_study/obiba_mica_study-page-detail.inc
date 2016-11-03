@@ -265,7 +265,8 @@ function obiba_mica_study_library() {
       'version' => '1.0.1',
       'js' => array(
         $lib_path . '/dist/d3.min.js' => array(),
-        $lib_path . '/dist/mica-study-timeline.min.js' => array()
+        $lib_path . '/dist/mica-study-timeline.min.js' => array('type' => 'file',
+          'scope' => 'footer',)
       ),
       'css' => array(
         $lib_path . '/dist/mica-study-timeline.min.css' => array(),
@@ -283,7 +284,8 @@ function obiba_mica_study_get_timeline_detail($study_detail) {
   $study_json = json_encode($study_detail);
   drupal_add_css(drupal_get_path('module', 'obiba_mica_study') . '/css/mica_studies.css', 'file');
   drupal_add_library('obiba_mica_study', 'mica-study-timeline');
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/obiba-mica-study-timeline.js', 'file');
+  drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/obiba-mica-study-timeline.js', array('type' => 'file',
+    'scope' => 'footer',));
   drupal_add_js(array('obiba_mica_study' => array('study_json' => $study_json)), 'setting');
 }
 
