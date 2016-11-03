@@ -312,20 +312,20 @@
                   <?php if (empty($variable_harmonization['status'])): ?>
                     <span
                       class="glyphicon glyphicon-question-sign alert-warning"
-                      title="<?php print t('No status') ?>"></span>
+                      data-placement="top" data-toggle="tooltip" title="<?php print t('No status') ?>"></span>
                   <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
                     <span class="glyphicon glyphicon-ok alert-success"
-                      title="<?php print t('Complete') ?>"></span>
+                          data-placement="top" data-toggle="tooltip" title="<?php print t('Complete') ?>"></span>
                     <?php
                   elseif ($variable_harmonization['status'] == 'impossible'): ?>
                     <span
                       class="glyphicon <?php print ObibaDatasetConstants::getIcon(); ?>"
-                      title="<?php print variable_get_value('dataset_harmonization_impossible_label') ?>"></span>
+                      data-placement="top" data-toggle="tooltip" title="<?php print variable_get_value('dataset_harmonization_impossible_label') ?>"></span>
                     <?php
                   elseif ($variable_harmonization['status'] == 'undetermined'): ?>
                     <span
                       class="glyphicon glyphicon-question-sign alert-warning"
-                      title="<?php print t('Undetermined') ?>"></span>
+                      data-placement="top" data-toggle="tooltip" title="<?php print t('Undetermined') ?>"></span>
                   <?php endif ?>
                 </td>
               </tr>
