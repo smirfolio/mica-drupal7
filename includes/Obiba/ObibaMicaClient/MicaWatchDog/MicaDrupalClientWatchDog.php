@@ -27,7 +27,7 @@ class MicaDrupalClientWatchDog implements MicaWatchDogInterface {
     return constant("self::$severity");
   }
 
-  function MicaWatchDog($context, $message, $messageParameters = NULL, $severity = NULL) {
+  function MicaWatchDog($context, $message, $messageParameters = NULL, $severity = 6) {
     $drupalWatchDog = MicaConfig\MicaDrupalConfig::CLIENT_WATCH_DOG;
     $drupalWatchDog($context, $message, $messageParameters, $severity);
   }
