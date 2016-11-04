@@ -13,13 +13,11 @@
  * @file
  * MicaNetworkResource class
  */
-
-use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
-
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 /**
  * Class MicaNetworkResource
  */
-class DrupalMicaNetworkResource extends DrupalMicaClient {
+class DrupalMicaNetworkResource extends DrupalMicaClientResource {
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
@@ -72,7 +70,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClient {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $result_data = json_decode($data);
-        $result_resource_query = new NetworkJoinResponseWrapper($result_data);
+        $result_resource_query = new DrupalMicaClient\NetworkJoinResponseWrapper($result_data);
         $has_summary = $result_resource_query->hasSummaries();
         if (!empty($has_summary)) {
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
@@ -99,7 +97,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClient {
    */
   public function getNetworkDetails($networkIds) {
     $this->setLastResponse(NULL);
-    $resource_query = '/networks/_rql?query=' . RqlQueryBuilder::networks($networkIds);
+    $resource_query = '/networks/_rql?query=' . DrupalMicaClient\RqlQueryBuilder::networks($networkIds);
     $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cache_stored_data)) {
       return $cache_stored_data;

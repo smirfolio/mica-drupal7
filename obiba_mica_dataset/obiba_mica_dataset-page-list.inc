@@ -68,7 +68,7 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
     $resource_dataset = obiba_mica_dataset_correct_resource_server($dataset_resource);
     $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset, $dataset_limits);
     $total_hits = empty($response) ? 0 : $response->getTotalHits();
-    $dataset_limits = !empty($dataset_limits) ? $dataset_limits : DrupalMicaClient::getResponsePageSizeSmall();
+    $dataset_limits = !empty($dataset_limits) ? $dataset_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
     pager_default_initialize($total_hits, $dataset_limits);
     $pager_output = theme('pager', array('quantity' => $dataset_limits));
     $summaries = empty($response) ? array() : $response->getSummaries();

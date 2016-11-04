@@ -9,6 +9,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
+
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 
 class RqlQueryBuilder {

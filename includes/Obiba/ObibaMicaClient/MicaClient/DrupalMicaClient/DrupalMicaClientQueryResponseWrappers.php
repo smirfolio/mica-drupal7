@@ -14,6 +14,8 @@
  * Code to implement response server wrapper.
  */
 
+namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
+
 abstract class AbstractResponseWrapper {
   const STUDY_RESULT_EXTENSION_ID = 'obiba.mica.StudyResultDto.result';
   const NETWORK_RESULT_EXTENSION_ID = 'obiba.mica.NetworkResultDto.result';

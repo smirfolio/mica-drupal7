@@ -11,7 +11,7 @@
 
 include_once('obiba_mica_research_project_admin_form.inc');
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 /**
  * Implements hook_menu().
@@ -142,7 +142,7 @@ function obiba_mica_research_project_form_obiba_mica_content_pages_admin_setting
  * Data Access Request Research Project Title Callback
  */
 function obiba_mica_research_project_list_page_title_callback() {
-  $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+  $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
   return $permissionResource->userHasRole('mica-data-access-officer') ?
     variable_get_value('data_access_request_research_projects_title') :
     variable_get_value('data_access_request_my_research_projects_title');

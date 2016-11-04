@@ -14,10 +14,11 @@
  * MicaStudyResource class
  */
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 /**
  * Class MicaStudyResource
  */
-class DrupalMicaDatasetResource extends DrupalMicaClient {
+class DrupalMicaDatasetResource extends DrupalMicaClientResource {
 
   /**
    * Instance initialisation.
@@ -90,7 +91,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClient {
         $this->setLastResponse($client->lastResponse);
         $datasets = json_decode($data);
         if ($datasets->datasetResultDto->totalCount !== 0) {
-          $datasets_result = new DatasetJoinResponseWrapper($datasets);
+          $datasets_result = new DrupalMicaClient\DatasetJoinResponseWrapper($datasets);
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $datasets_result);
           return $datasets_result;
         }

@@ -13,7 +13,7 @@
  * @file code for network detail pages
  * */
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 include_once('includes/obiba_mica_network_resource.inc');
 
@@ -126,7 +126,7 @@ function obiba_mica_network_page_detail($network_id) {
       return $network_theme;
     }
     else {
-      $permissionResource = new DrupalMicaClientClasses\DrupalMicaClientPermission();
+      $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($network_dto);
       $network_theme = theme('obiba_mica_network-detail', array(
         'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
@@ -378,7 +378,7 @@ function obiba_mica_network_network_table_headers() {
 }
 
 function obiba_mica_network_coverage($study_ids) {
-  $query = RqlQueryBuilder::network_query_charts($study_ids);
+  $query = DrupalMicaClient\RqlQueryBuilder::network_query_charts($study_ids);
   return obiba_mica_graphic_search_query_charts(
     $query,
     array('group-by' => 'studyIds', 'with-facets' => 'false'),

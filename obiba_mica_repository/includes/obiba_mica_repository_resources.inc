@@ -15,7 +15,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
  * @file
  * Mica networks file
  */
-class ObibaSearchResources extends DrupalMicaClient {
+class ObibaSearchResources extends DrupalMicaClientResource {
   const MICA_REPOSITORY = 'mica/repository';
 
   function __construct() {

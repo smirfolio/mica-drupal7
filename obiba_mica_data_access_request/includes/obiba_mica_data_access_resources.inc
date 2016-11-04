@@ -13,13 +13,11 @@
  * @file
  * Data access request resources class
  */
-use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
-
 
 /**
  * Class MicaDataAccessRequestResources
  */
-class DrupalMicaDataAccessRequestResources extends DrupalMicaClient {
+class DrupalMicaDataAccessRequestResources extends DrupalMicaClientResource {
 
   protected $method;
 

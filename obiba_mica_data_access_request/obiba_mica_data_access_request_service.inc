@@ -9,7 +9,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClientClasses as DrupalMicaClientClasses;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 /**
  * Get the data access request form config.
  */
@@ -199,7 +199,7 @@ function obiba_mica_data_access_request_update_request($id_request, $status) {
  * Update the data access request attachments.
  */
 function obiba_mica_data_access_request_upload_attachment() {
-  $mica_client = new DrupalMicaClientClasses\DrupalMicaTempFileResource(NULL, 'METHOD_POST');
+  $mica_client = new DrupalMicaClient\DrupalMicaTempFileResource(NULL, 'METHOD_POST');
   $response = $mica_client->uploadFile($_FILES);
   drupal_json_output($response);
 }
@@ -210,12 +210,12 @@ function obiba_mica_data_access_request_upload_attachment() {
 function obiba_mica_data_access_request_get_attachment($id_file) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-      $mica_client = new DrupalMicaClientClasses\DrupalMicaTempFileResource(NULL, 'METHOD_GET');
+      $mica_client = new DrupalMicaClient\DrupalMicaTempFileResource(NULL, 'METHOD_GET');
       $response = $mica_client->getFile($id_file);
       drupal_json_output($response);
       break;
     case 'DELETE':
-      $mica_client = new DrupalMicaClientClasses\DrupalMicaTempFileResource(NULL, 'METHOD_DELETE');
+      $mica_client = new DrupalMicaClient\DrupalMicaTempFileResource(NULL, 'METHOD_DELETE');
       $response = $mica_client->deleteFile($id_file);
       drupal_json_output($response);
       break;
