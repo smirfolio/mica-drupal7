@@ -417,9 +417,12 @@
   </section>
 
   <!-- COVERAGE placeholder -->
-  <section id="coverage">
-    <h2><?php print t('Variable Classification') ?></h2>
-    <p><?php print t('Loading...') ?></p>
+  <section id="coverage" ng-controller="VariableCoverageChartController">
+    <h2><?php print t('Variables Classification') ?></h2>
+
+    <div ng-repeat="d3Config in d3Configs">
+      <obiba-nv-chart chart-config="d3Config"></obiba-nv-chart>
+    </div>
   </section>
 
   <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>

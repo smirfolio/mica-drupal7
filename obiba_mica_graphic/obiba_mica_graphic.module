@@ -460,6 +460,62 @@ function _obiba_mica_graphic_colors_options_array_sort($a, $b) {
   return 0;
 }
 
+function obiba_mica_graphics_do_coverage_query($query) {
+  $search_resources = new ObibaSearchResources();
+  $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
+  return $coverages;
+}
+
+function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
+  $coverages = obiba_mica_graphics_do_coverage_query($query);
+
+  $shown = array_filter($coverages->taxonomies, function ($c) {
+    return in_array($c->taxonomy->name, obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures'));
+  });
+
+  $filtered = array_filter($shown, function ($s) { return $s->hits > 0; });
+
+  $response = new stdClass();
+  $response->charts = array();
+  foreach ($filtered as $d) {
+
+    $data = array();
+    $variable_data = array();
+    foreach ($d->vocabularies as $v) {
+
+      if (!empty($v->buckets)) {
+        foreach ($v->buckets as $b) {
+          $item = new stdClass();
+          $item->key = $b->value;
+          $item->value = $b->hits;
+          $item->title = obiba_mica_commons_get_localized_field($v->vocabulary, 'titles');
+          $item->link = base_path() . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders(NULL, $b, $d->taxonomy->name, $v->vocabulary->name, array_map(function ($t) { return $t->term->name; }, $v->terms), $entity_id);
+          array_push($data, $item);
+        }
+      } else {
+        $item = new stdClass();
+        $item->key = t('Variables');
+        $item->value = $v->count;
+        $item->title = obiba_mica_commons_get_localized_field($v->vocabulary, 'titles');
+        $item->link = base_path() . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders($query, NULL, $d->taxonomy->name, $v->vocabulary->name, array_map(function ($t) { return $t->term->name; }, $v->terms), $entity_id);
+        array_push($variable_data, $item);
+      }
+    }
+
+    $chart = array(
+      'title' => obiba_mica_commons_get_localized_field($d->taxonomy, 'titles'),
+      'subtitle' => obiba_mica_commons_get_localized_field($d->taxonomy, 'descriptions'),
+      'data' => $data,
+      'variableData' => $variable_data,
+      'color' => obiba_mica_graphic_charts_colors_options_settings()
+    );
+
+    array_push($response->charts, $chart);
+  }
+
+  return drupal_json_output($response);
+}
+
 /**
  * Make a chart from taxonomy coverage.
  *

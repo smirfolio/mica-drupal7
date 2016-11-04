@@ -230,9 +230,9 @@
             </div>
           </div>
         </div>
-        <div id="param-statistics-chart"
-          var-id="<?php print $variable_dto->id; ?>">
-          <div id="toemptychart">
+        <div ng-controller="VariableCoverageChartController">
+          <div ng-repeat="d3Config in d3Configs">
+            <obiba-nv-chart chart-config="d3Config"></obiba-nv-chart>
           </div>
         </div>
       <?php else: ?>
@@ -249,9 +249,9 @@
             </div>
           </div>
           <div class="col-md-6 col-sm-12">
-            <div id="param-statistics-chart"
-              var-id="<?php print $variable_dto->id; ?>">
-              <div id="toemptychart">
+            <div ng-controller="VariableCoverageChartController">
+              <div ng-repeat="d3Config in d3Configs">
+                <obiba-nv-chart chart-config="d3Config"></obiba-nv-chart>
               </div>
             </div>
           </div>

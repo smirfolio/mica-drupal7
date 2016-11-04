@@ -193,6 +193,20 @@ function obiba_mica_dataset_menu() {
     'page arguments' => array(2, 3, 4),
   );
 
+  $items['mica/ng/coverage/dataset/%'] = array(
+    'page callback' => 'obiba_mica_dataset_ng_coverage',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(4),
+  );
+
+  $items['mica/ng/coverage/variable/%'] = array(
+    'page callback' => 'obiba_mica_dataset_variable_ng_coverage',
+    'file' => 'obiba_mica_variable-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(4),
+  );
+
   return $items;
 }
 

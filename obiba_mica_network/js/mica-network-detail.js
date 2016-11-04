@@ -25,9 +25,6 @@
                   $('#coverage').remove();
                   return;
                 }
-
-                $('#coverage').html(data).show();
-                Drupal.attachBehaviors($('#coverage')[0], settings);
               })
               .fail(function () {
                 $('#coverage').remove();

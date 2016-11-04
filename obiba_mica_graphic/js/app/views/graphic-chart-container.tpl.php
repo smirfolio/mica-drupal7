@@ -1,8 +1,5 @@
 <div class="row">
   <div class="col-md-6">
-    <div ng-if="canShowTitle() && chart.title" class="chart-title">
-      {{directive.title | translate}}
-    </div>
     <div obiba-chart
          field-transformer="chart.fieldTransformer"
          chart-type="chart.type"

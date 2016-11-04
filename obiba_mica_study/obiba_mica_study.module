@@ -65,6 +65,13 @@ function obiba_mica_study_menu() {
     'page arguments' => array(2, 3, 4, 5)
   );
 
+  $items['mica/ng/coverage/study/%'] = array(
+    'page callback' => 'obiba_mica_study_ng_coverage',
+    'file' => 'obiba_mica_study-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(4),
+  );
+
   return $items;
 }
 
