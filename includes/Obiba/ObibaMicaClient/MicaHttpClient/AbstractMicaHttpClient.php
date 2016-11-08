@@ -87,7 +87,7 @@ abstract class AbstractMicaHttpClient {
   public function httpDelete($resource, $parameters) {
     $this->resource = $resource;
     $this->parameters = !empty($parameters)?$parameters:NULL;
-    $this->httpType = $this->drupalMicaHttpClient->getMicaHttpClientStaticMethod('METHOD_POST');
+    $this->httpType = $this->drupalMicaHttpClient->getMicaHttpClientStaticMethod('METHOD_DELETE');
     return $this;
   }
 
@@ -98,7 +98,7 @@ abstract class AbstractMicaHttpClient {
    * @return $this
    */
   public function send($data = NULL) {
-    $url = $this->micaUrl . '/' . $this->resource;
+    $url = $this->micaUrl . $this->resource;
     $requestOptions = array(
       'method' => $this->httpType,
       'headers' => $this->headers,
@@ -146,6 +146,65 @@ abstract class AbstractMicaHttpClient {
     return $client;
   }
 
+  /**
+   * Get the file extension from file resource.
+   *
+   * @param string $file_resource
+   *   The file name.
+   *
+   * @return string
+   *   The file extension.
+   */
+  protected function getFileExtension($file_resource) {
+    $file_array = explode('.', $file_resource);
+    $extension_file = count($file_array);
+
+    return $file_array[$extension_file - 1];
+  }
+
+  /**
+   * Perform the http query.
+   *
+   * @return $this
+   */
+  public function download() {
+    $url = $this->micaUrl . $this->resource;
+    $requestOptions = array(
+      'method' => $this->httpType,
+      'headers' => $this->headers,
+    );
+    $request = $this->drupalMicaHttpClient->getMicaHttpClientRequest($url, $requestOptions);
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->HttpSetLastResponse($client->lastResponse);
+      $file_name = $this->HttpGetPropertyValueFromHeaderArray($this->HttpParseHeaders($client->lastResponse->headers),
+        'filename',
+        'Content-Disposition'
+      );
+
+      $raw_data = array(
+        'extension' => $this->getFileExtension($file_name),
+        'data' => $data,
+        'filename' => $file_name,
+        'raw_header_array' => $this->HttpParseHeaders($client->lastResponse->headers),
+      );
+      return $raw_data;
+    } catch (\HttpClientException $e) {
+      $this->drupalWatchDog->MicaWatchDog(
+        'MicaClient',
+        'Connection to server fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage(),
+        ),
+        $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
+      return $raw_data = array(
+        'code' => $e->getCode(),
+        'message' => $e->getMessage(),
+      );
+    }
+  }
 
   /**
    * Set some http headers.
@@ -266,6 +325,78 @@ abstract class AbstractMicaHttpClient {
   }
 
   /**
+   * Return the value of a given key header attribute  (filename, charset).
+   *
+   * ToDo may be need to be extended to retrieve more attributes(User-Agent,..).
+   *
+   * @param array $header
+   *   The header to parse.
+   * @param string $property
+   *   The property to find.
+   * @param string $attribute
+   *   The attribute.
+   *
+   * @return string
+   *   The value of property.
+   */
+  protected function HttpGetPropertyValueFromHeaderArray(array $header, $property, $attribute = NULL) {
+    if (!empty($attribute)) {
+      return $this->HttpParseHeader($header[$attribute], $property);
+    }
+    else {
+      foreach ($header as $attributes) {
+        $find_property_value = $this->HttpParseHeader($attributes, $property);
+        if (!empty($find_property_value)) {
+          return $find_property_value;
+        }
+      }
+    }
+    return NULL;
+  }
+
+  /**
+   * Get property by given attribute.
+   *
+   * @param string $attribute
+   *   The Attribute to get.
+   * @param string $property
+   *   The property.
+   *
+   * @return string
+   *   The property value.
+   */
+  protected function HttpParseHeader($attribute, $property) {
+    $attributes_array = explode(';', $attribute);
+    foreach ($attributes_array as $property_string) {
+      if (strstr($property_string, $property)) {
+        return $property_value = str_replace('"', '', explode('=', $property_string)[1]);
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Parse a string header response and return an key/value array attributes.
+   *
+   * @param string $raw_headers
+   *   The raw header.
+   *
+   * @return array
+   *   The parsed header on an array.
+   */
+  protected function HttpParseHeaders($raw_headers) {
+    $headers = [];
+
+    foreach (explode("\n", $raw_headers) as $i => $h) {
+      $h = explode(':', $h, 2);
+
+      if (isset($h[1])) {
+        $headers[$h[0]] = trim($h[1]);
+      }
+    }
+    return $headers;
+  }
+  /**
    * Forwards the 'Set-Cookie' directive(s) to the drupal client.
    *
    * If the user was authenticated by Agate.
@@ -293,21 +424,26 @@ abstract class AbstractMicaHttpClient {
 
 
   /**
+   * Set the last response cookies after a http call.
+   *
+   * @param array $last_response
+   *   The server response.
+   */
+  protected function HttpSetLastResponse($last_response) {
+    $this->lastResponse = $last_response;
+    if (isset($last_response)) {
+      $this->HttpSetLastResponseCookies();
+    }
+  }
+
+  /**
    * Get the last response (if any).
    *
    * @return array
    *   The response server formatted as an array.
    */
   protected function httpGetLastResponse() {
-  }
-
-  /**
-   * Set the last response cookies after a http call.
-   *
-   * @param array $last_response
-   *   The server response.
-   */
-  function httpSetLastResponse($last_response) {
+    return $this->lastResponse;
   }
 
   /**
@@ -317,6 +453,10 @@ abstract class AbstractMicaHttpClient {
    *   The status code
    */
   function httpGetLastResponseStatusCode() {
+    if ($this->lastResponse != NULL) {
+      return $this->lastResponse->responseCode;
+    }
+    return NULL;
   }
 
   /**
@@ -326,6 +466,11 @@ abstract class AbstractMicaHttpClient {
    *   The header response server.
    */
   function httpGetLastResponseHeaders() {
+    if ($this->lastResponse) {
+      return $this->HttpGetHeaders($this->lastResponse->headers);
+    }
+
+    return array();
   }
 
   /**
@@ -334,6 +479,20 @@ abstract class AbstractMicaHttpClient {
    * @return mixed
    */
   function httpGetHeaders($headers) {
+    if ($headers != NULL) {
+      $result = array();
+      foreach (explode("\r\n", $headers) as $header) {
+        $h = explode(":", $header, 2);
+        if (count($h) == 2) {
+          if (!array_key_exists($h[0], $result)) {
+            $result[$h[0]] = array();
+          }
+          array_push($result[$h[0]], trim($h[1]));
+        }
+      }
+      return $result;
+    }
+    return array();
   }
 
   /**
@@ -346,6 +505,12 @@ abstract class AbstractMicaHttpClient {
    *   The value of header name.
    */
   function httpGetLastResponseHeader($header_name) {
+    $headers = $this->HttpGetLastResponseHeaders();
+
+    if (array_key_exists($header_name, $headers)) {
+      return $headers[$header_name];
+    }
+    return array();
   }
 
   /**
@@ -374,6 +539,17 @@ abstract class AbstractMicaHttpClient {
    *   The cookie array.
    */
   function httpParseCookie($cookie_str) {
+    $cookie = array();
+    foreach (explode(';', $cookie_str) as $entry_str) {
+      if (strpos($entry_str, '=')) {
+        $entry = explode('=', $entry_str);
+        $cookie[$entry[0]] = $entry[1];
+      }
+      else {
+        $cookie[$entry_str] = TRUE;
+      }
+    }
+    return $cookie;
   }
 
   /**

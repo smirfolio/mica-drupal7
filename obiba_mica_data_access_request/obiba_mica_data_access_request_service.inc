@@ -14,7 +14,7 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
  * Get the data access request form config.
  */
 function obiba_mica_data_access_request_form_get_config() {
-  $mica_client = new MicaDataAccessRequest();
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
   $config = $mica_client->getFormDefinition();
   drupal_json_output($config);
 }

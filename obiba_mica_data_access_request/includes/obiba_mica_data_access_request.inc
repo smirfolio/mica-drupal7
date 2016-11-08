@@ -31,7 +31,6 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *
    * @param string $mica_url
    *   The mica server url.
-   * @param string $method
    *   THe method to query the server.
    */
   public function __construct($mica_url = NULL, $method = 'METHOD_POST') {
@@ -45,16 +44,8 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *   Json definition of the form (Angular schema-Form).
    */
   public function getFormDefinition() {
-    $url_studies = $this->micaUrl . '/config/data-access-form';
-    $request = new HttpClientRequest($url_studies, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-
-    return $this->execute($request);
+$this->method;
+    return json_decode($this->sendGet('/config/data-access-form', $this->method));
   }
 
   /**
@@ -67,17 +58,7 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *   Json form definition of the data access request (Angular schema-Form).
    */
   public function getRequest($id) {
-    $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . '/data-access-request/' . $id;
-    $request = new HttpClientRequest($url_requests, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-
-    return $this->execute($request);
+    return json_decode($this->sendGet('/data-access-request/' . $id, $this->method));
   }
 
   /**
@@ -90,39 +71,12 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *   The data server response.
    */
   public function downloadPdf($id, $lang) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
-    $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . '/data-access-request/' . $id . '/_pdf';
+    $resource_query ='/data-access-request/' . $id . '/_pdf';
 
-    if(isset($lang)) {
-      $url_requests .= '?lang=' . $lang;
+    if (isset($lang)) {
+      $resource_query .= '?lang=' . $lang;
     }
-
-    $request = new HttpClientRequest($url_requests, array(
-      'method' => $constant_method,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-    $client = $this->client();
-    try {
-      $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $headers = $this->getLastResponseHeaders();
-      $responses['response'] = $this->getLastResponse();
-      $responses['headers'] = $headers;
-      return $responses;
-    }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
-      return $e->getResponse();
-    }
-
+    return $this->downloadFileGet($resource_query, $this->method);
   }
 
   /**
@@ -138,8 +92,7 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    */
   public function downloadAttachment($id_request, $id_file) {
     $url_requests = $this->micaUrl . '/data-access-request/' . $id_request . '/attachments/' . $id_file . '/_download';
-
-    return $this->downloadAttachmentInternal($url_requests);
+    return $this->downloadFileGet($url_requests, $this->method);
   }
 
   /**
@@ -169,38 +122,37 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
       $file_id
     );
 
-    return $this->downloadAttachmentInternal($url_requests);
+    return $this->downloadFileGet($url_requests, $this->method);
   }
 
-  private function downloadAttachmentInternal($url_requests) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
-    $this->setLastResponse(NULL);
-    $request = new HttpClientRequest($url_requests, array(
-      'method' => $constant_method,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-    $client = $this->client();
-    try {
-      $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $headers = $this->getLastResponseHeaders();
-      $responses['response'] = $this->getLastResponse();
-      $responses['headers'] = $headers;
-      return $responses;
-    }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
-      return $e->getResponse();
-    }
-
-  }
+//  private function downloadAttachmentInternal($url_requests) {
+//    $constant_method = constant('HttpClientRequest::' . $this->method);
+//    $this->setLastResponse(NULL);
+//    $request = new HttpClientRequest($url_requests, array(
+//      'method' => $constant_method,
+//      'headers' => $this->authorizationHeader(array(
+//          'Accept' => array(parent::HEADER_JSON),
+//        )
+//      ),
+//    ));
+//    $client = $this->client();
+//    try {
+//      $client->execute($request);
+//      $this->setLastResponse($client->lastResponse);
+//      $headers = $this->getLastResponseHeaders();
+//      $responses['response'] = $this->getLastResponse();
+//      $responses['headers'] = $headers;
+//      return $responses;
+//    } catch (HttpClientException $e) {
+//      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+//        array(
+//          '@code' => $e->getCode(),
+//          '@message' => $e->getMessage(),
+//        ), WATCHDOG_WARNING);
+//      return $e->getResponse();
+//    }
+//
+//  }
 
   /**
    * Delete an data access request.
@@ -212,19 +164,8 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *   The data server response.
    */
   public function deleteRequest($id) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
-    $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . '/data-access-request/' . $id;
-
-    $request = new HttpClientRequest($url_requests, array(
-      'method' => $constant_method,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-
-    return $this->execute($request);
+    $url_requests = '/data-access-request/' . $id;
+    return $this->sendDelete($url_requests, $this->method);
   }
 
   /**
@@ -254,7 +195,7 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
-  public function getUserProfile($user_id){
+  public function getUserProfile($user_id) {
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/user/' . $user_id . '/application/drupal';
     $request = new HttpClientRequest($url_requests, array(
@@ -268,7 +209,7 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
-  public function getUsersList(){
+  public function getUsersList() {
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/users/application/drupal';
     $request = new HttpClientRequest($url_requests, array(

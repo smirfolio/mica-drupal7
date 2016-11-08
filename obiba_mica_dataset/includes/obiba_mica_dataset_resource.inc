@@ -15,6 +15,7 @@
  */
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
+use Obiba\ObibaMicaClient\MicaHttpClient as MicaHttpClient;
 /**
  * Class MicaStudyResource
  */
@@ -53,7 +54,6 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    */
   public function getDatasets($resource = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $network_id = NULL) {
     global $language;
-    $this->setLastResponse(NULL);
     $from = empty($from) ? '0' : $from;
     $limit = empty($limit) ? '5' : $limit;
     $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
@@ -77,33 +77,21 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
       return $cached_datasets;
     }
     else {
-      $url_datasets = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url_datasets, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $datasets = json_decode($data);
-        if ($datasets->datasetResultDto->totalCount !== 0) {
-          $datasets_result = new DrupalMicaClient\DatasetJoinResponseWrapper($datasets);
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $datasets_result);
-          return $datasets_result;
+      $request = new MicaHttpClient\DrupalMicaHttpClient();
+      $request->httpGet($resource_query)
+        ->httpSetAcceptHeaders($request::HEADER_JSON)
+        ->httpAuthorizationHeader();
+      $response = $request->send();
+      if (!empty($response)) {
+        $response_wrapper = json_decode($response);
+        if ($response_wrapper->datasetResultDto->totalCount !== 0) {
+        $result_resource_query = new DrupalMicaClient\DatasetJoinResponseWrapper($response_wrapper);
+          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
+          return $result_resource_query;
         }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        return array();
       }
     }
+    return array();
   }
 
   /**

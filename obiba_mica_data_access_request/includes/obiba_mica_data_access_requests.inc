@@ -31,8 +31,8 @@ class MicaDataAccessRequests extends DrupalMicaDataAccessRequestResources {
    * @param string $method
    *   THe method to query the server.
    */
-  public function __construct($mica_url = NULL, $method = 'METHOD_POST') {
-    parent::__construct($mica_url, $method);
+  public function __construct($mica_url = NULL) {
+    parent::__construct($mica_url);
   }
 
   /**
@@ -42,18 +42,7 @@ class MicaDataAccessRequests extends DrupalMicaDataAccessRequestResources {
    *   The data server response.
    */
   public function getRequests() {
-    $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . '/data-access-requests';
-
-    $request = new HttpClientRequest($url_requests, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-    ));
-
-    return $this->execute($request);
+    return json_decode($this->sendGet('/data-access-requests', 'HEADER_JSON'));
   }
 
   public function downloadCsvExport($lang) {

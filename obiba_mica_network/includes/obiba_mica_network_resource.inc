@@ -14,7 +14,7 @@
  * MicaNetworkResource class
  */
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
-use Obiba\ObibaMicaClient\MicaHttpClient as MicaHttpClient;
+
 /**
  * Class MicaNetworkResource
  */
@@ -57,13 +57,8 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
       return $cache_stored_data;
     }
     else {
-      $url_networks = $this->micaUrl . $resource_query;
-      $request = new MicaHttpClient\DrupalMicaHttpClient();
-      $request->httpGet($url_networks)
-        ->httpSetAcceptHeaders($request::HEADER_JSON)
-        ->httpAuthorizationHeader();
-      $response = $request->send();
-      if(!empty($response)){
+      $response = $this->sendGet($resource_query, 'HEADER_JSON');
+      if (!empty($response)) {
         $result_data = json_decode($response);
         $result_resource_query = new DrupalMicaClient\NetworkJoinResponseWrapper($result_data);
         $has_summary = $result_resource_query->hasSummaries();
@@ -72,7 +67,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
           return $result_resource_query;
         }
       }
-  }
+    }
     return FALSE;
   }
 

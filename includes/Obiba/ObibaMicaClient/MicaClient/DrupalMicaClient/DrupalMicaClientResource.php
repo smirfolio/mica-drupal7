@@ -25,8 +25,7 @@ use Obiba\ObibaMicaClient\MicaHttpClient as MicaHttpClient;
  * Class DrupalMicaClient
  */
 class MicaClient {
-
-  private $lastResponse;
+  private $request;
   private static $responsePageSizeSmall = 10;
   private static $responsePageSize = 20;
 
@@ -52,12 +51,40 @@ class MicaClient {
     $this->drupalCache = $micaCache;
     $this->drupalConfig = $micaConfig;
     $this->drupalWatchDog = $micaWatchDog;
-    $this->micaUrl = (isset($micaUrl) ? $micaUrl : $this->drupalConfig->MicaGetConfig('mica_url')) . '/ws';
+    $this->micaUrl = (isset($micaUrl) ? $micaUrl : $this->drupalConfig->MicaGetConfig('mica_url'));
     self::$responsePageSize = $this->drupalConfig->MicaGetConfig('mica_response_page_size');
     self::$responsePageSizeSmall = $this->drupalConfig->MicaGetConfig('mica_response_page_size_small');
+    $this->request = new MicaHttpClient\DrupalMicaHttpClient($this->micaUrl);
+  }
+
+  public function sendGet($resource, $acceptType){
+    $this->request->httpGet($resource)
+      ->httpSetAcceptHeaders($this->request->getRequestConst($acceptType))
+      ->httpAuthorizationHeader();
+    return  $this->request->send();
+  }
+
+  public function sendPost($resource){
 
   }
 
+  public function sendDelete($resource, $acceptType){
+    $this->request->httpDelete($resource)
+      ->httpSetAcceptHeaders($this->request->getRequestConst($acceptType))
+      ->httpAuthorizationHeader();
+    return  $this->request->send();
+  }
+
+  public function downloadFileGet($resource, $acceptType){
+    $this->request->httpGet($resource)
+      ->httpSetAcceptHeaders($this->request->getRequestConst($acceptType))
+      ->httpAuthorizationHeader();
+    $response = $this->request->download();
+    if (!empty($response)) {
+      return $response;
+    }
+    return FALSE;
+  }
   /**
    * Make sure we are not using previous session state.
    */
@@ -69,17 +96,12 @@ class MicaClient {
    * Send a logout request to Mica and clean drupal client cookies.
    */
   public function logout() {
-    $request = new MicaHttpClient\DrupalMicaHttpClient($this->micaUrl);
-    $request->httpGet('/auth/session/_current')
-      ->httpSetAcceptHeaders($request::HEADER_JSON)
-      ->httpAuthorizationHeader();
-    $response = $request->send();
-
+    $response = $this->sendGet('/auth/session/_current', 'HEADER_JSON');
     if (!empty($response)) {
-      unset($_SESSION[$request::MICA_COOKIE]);
+      unset($_SESSION[$this->request->getRequestConst('MICA_COOKIE')]);
     }
     else {
-      unset($_SESSION[$request::MICA_COOKIE]);
+      unset($_SESSION[$this->request->getRequestConst('MICA_COOKIE')]);
     }
   }
 
@@ -150,24 +172,7 @@ class MicaClient {
       }
       $from = ($actual_page) * $size;
     }
-
     return $from;
-  }
-
-  /**
-   * Get the file extension from file resource.
-   *
-   * @param string $file_resource
-   *   The file name.
-   *
-   * @return string
-   *   The file extension.
-   */
-  protected function getFileExtension($file_resource) {
-    $file_array = explode('.', $file_resource);
-    $extension_file = count($file_array);
-
-    return $file_array[$extension_file - 1];
   }
 
   /**
@@ -190,45 +195,10 @@ class MicaClient {
    *    message : the error message
    */
   public function downloadFile($entity_type, $entity_id, $file_id) {
-    $url = $this->micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_id . "/_download";
-    $request = $this->getMicaHttpClientRequest($url, array(
-      'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
-      'headers' => self::authorizationHeader(array(
-          'Accept' => array(self::HEADER_BINARY),
-        )
-      ),
-    ));
-
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $file_name = $this->getPropertyValueFromHeaderArray($this->parseHeaders($client->lastResponse->headers),
-        'filename',
-        'Content-Disposition'
-      );
-
-      $raw_data = array(
-        'extension' => $this->getFileExtension($file_name),
-        'data' => $data,
-        'filename' => $file_name,
-        'raw_header_array' => $this->parseHeaders($client->lastResponse->headers),
-      );
-      return $raw_data;
-    } catch (\HttpClientException $e) {
-      $this->drupalWatchDog->MicaWatchDog(
-        'MicaClient',
-        'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage(),
-        ),
-        $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
-      return $raw_data = array(
-        'code' => $e->getCode(),
-        'message' => $e->getMessage(),
-      );
+    $resource_query = "/" . $entity_type . "/" . $entity_id . "/file/" . $file_id . "/_download";
+    $response = $this->downloadFileGet($resource_query, 'HEADER_BINARY');
+    if (!empty($response)) {
+      return $response;
     }
-
   }
 }

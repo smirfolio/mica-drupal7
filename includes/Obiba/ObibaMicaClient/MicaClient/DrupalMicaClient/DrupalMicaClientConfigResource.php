@@ -19,6 +19,7 @@ namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
 use Obiba\ObibaMicaClient\MicaCache as MicaCache;
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
+use Obiba\ObibaMicaClient\MicaHttpClient as MicaHttpClient;
 
 /**
  * Class MicaConfigResource
@@ -38,7 +39,7 @@ class MicaClientConfigResource extends MicaClient {
       new MicaCache\MicaDrupalClientCache(),
       new MicaConfig\MicaDrupalConfig(),
       new MicaWatchDog\MicaDrupalClientWatchDog()
-      );
+    );
   }
 
   /**
@@ -64,8 +65,8 @@ class MicaClientConfigResource extends MicaClient {
     $specific_configs = array();
     $all_config = $this->config(self::ALL_CONFIG_WS_URL);
     if (!empty($configs)) {
-      foreach($configs as $config){
-        $specific_configs[$config]=$all_config->{$config};
+      foreach ($configs as $config) {
+        $specific_configs[$config] = $all_config->{$config};
       }
       return $specific_configs;
     }
@@ -82,38 +83,22 @@ class MicaClientConfigResource extends MicaClient {
    *   The Mica server public configuration.
    */
   private function config($config_resource = self::CONFIG_WS_URL) {
-    $this->setLastResponse(NULL);
     $cached_config = $this->drupalCache->MicaGetCache($config_resource);
-    if(!empty($cached_config)){
+    if (!empty($cached_config)) {
       return $cached_config;
     }
     else {
-      $url = $this->micaUrl . $config_resource;
-      $request = $this->getMicaHttpClientRequest($url, array(
-        'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $config_client = json_decode($data);
-        if (!empty($config_client)) {
-          $this->drupalCache->MicaSetCache($config_resource, $config_client);
-          return $config_client;
-        }
-      } catch (\HttpClientException $e) {
-        $this->drupalWatchDog->MicaWatchDog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
-        return array();
+      $request = new MicaHttpClient\DrupalMicaHttpClient();
+      $request->httpGet($config_resource)
+        ->httpSetAcceptHeaders($request::HEADER_JSON)
+        ->httpAuthorizationHeader();
+      $response = $request->send();
+      if (!empty($response)) {
+        $this->drupalCache->MicaSetCache($config_resource, $response);
+        return $response;
       }
     }
+    return array();
   }
 
   /**
@@ -125,37 +110,24 @@ class MicaClientConfigResource extends MicaClient {
    *   The Mica server translations resource.
    */
   public function getTranslations($locale) {
-    $this->setLastResponse(NULL);
     $lang_resource = '/config/i18n/' . $locale . '.json';
-    $url = $this->micaUrl . $lang_resource;
+
     $cached_lang = $this->drupalCache->MicaGetCache($lang_resource);
-    if(!empty($cached_lang)){
+    if (!empty($cached_lang)) {
       return $cached_lang;
     }
-    else{
-      $request = $this->getMicaHttpClientRequest($url, array(
-        'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
-        'headers' => array(
-          'Accept' => array(parent::HEADER_JSON),
-        ),
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        if(!empty($data)){
-          $this->drupalCache->MicaSetCache($lang_resource, $data);
-          return $data;
-        }
-      } catch (\HttpClientException$e) {
-        $this->drupalWatchDog->MicaWatchDog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
-        return array();
+    else {
+      $request = new MicaHttpClient\DrupalMicaHttpClient();
+      $request->httpGet($lang_resource)
+        ->httpSetAcceptHeaders($request::HEADER_JSON)
+        ->httpAuthorizationHeader();
+      $response = $request->send();
+      if (!empty($response)) {
+        $this->drupalCache->MicaSetCache($lang_resource, $response);
+        return $response;
       }
     }
+    return array();
   }
 
   /**
