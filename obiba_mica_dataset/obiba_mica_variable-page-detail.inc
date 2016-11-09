@@ -34,6 +34,8 @@ function obiba_mica_variable_page_detail($variable_id) {
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_get_ajax_variables.js', 'file');
   drupal_add_js(array('obiba_mica_variable' => array('library' => $library_chart)), 'setting');
 
+  obiba_mica_app_angular_load_js_resources('obiba_mica_graphic');
+
   $url_param = explode('?', request_uri());
   $url_query = NULL;
   if (!empty($url_param[1])) {
@@ -383,6 +385,47 @@ function obiba_mica_dataset_variable_get_categories($categories = NULL) {
   }
 
   return FALSE;
+}
+
+function obiba_mica_dataset_variable_ng_coverage($variable_id = NULL) {
+  $coverages = json_encode(new stdClass());
+  if (!variable_get_value('mica_statistics')) {
+    return $coverages;
+  }
+
+  $variable_resource = new DrupalMicaDatasetResource();
+  $variable = $variable_resource->getVariable($variable_id);
+  $variable_stat = $variable_resource->getVariableAggregation($variable_id);
+
+  $response = new stdClass();
+  $response->charts = array();
+  if (!empty($variable_stat)) {
+    if (!empty($variable_stat->frequencies) && !empty($variable->categories)) {
+      $category_names = array_map(function ($c) { return $c->name; }, $variable->categories);
+
+      $filtered = array_filter($variable_stat->frequencies, function ($f) { return !$f->missing; });
+
+      $data = array();
+      foreach ($filtered as $f) {
+        if (in_array($f->value, $category_names)) {
+          $item = new stdClass();
+          $item->key = $f->value;
+          $item->title = $f->value;
+          $item->value = $f->count;
+
+          array_push($data, $item);
+        }
+      }
+      
+      array_push($response->charts, array(
+        'title' => t('Valid values frequencies'),
+        'data' => $data,
+        'color' => obiba_mica_graphic_charts_colors_options_settings()
+      ));
+    }
+    
+    return drupal_json_output($response);
+  }
 }
 
 /**

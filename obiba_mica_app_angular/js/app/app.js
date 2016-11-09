@@ -22,6 +22,7 @@ var modules = [
   'ngResource',
   'ui.bootstrap',
   'obiba.form',
+  'obiba.graphics',
   'obiba.comments',
   'angularUtils.directives.dirPagination',
   'pascalprecht.translate',

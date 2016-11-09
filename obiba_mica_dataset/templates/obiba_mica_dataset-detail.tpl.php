@@ -238,20 +238,15 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   </section>
 
   <!-- COVERAGE -->
-  <?php if (!empty($coverage)): ?>
-    <section>
+  <div ng-controller="VariableCoverageChartController">
+    <section id="coverage" ng-if="d3Config">
       <h2><?php print t('Variables Classification') ?></h2>
-      <?php foreach ($coverage as $taxonomy_coverage): ?>
-        <h3><?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'titles'); ?></h3>
-        <p class="help-block">
-          <?php print obiba_mica_commons_get_localized_field($taxonomy_coverage['taxonomy'], 'descriptions'); ?>
-        </p>
-        <div class="scroll-content-tab">
-          <?php print render($taxonomy_coverage['chart']); ?>
-        </div>
-      <?php endforeach ?>
+
+      <div ng-repeat="d3Config in d3Configs">
+        <obiba-nv-chart chart-config="d3Config"></obiba-nv-chart>
+      </div>
     </section>
-  <?php endif; ?>
+  </div>
 
   <!-- VARIABLES -->
   <?php if ($dataset_type != "study-dataset"): ?>

@@ -22,4 +22,7 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
   .controller('GraphicNetworkMainController', ['$scope', 'ChartType',
     function ($scope, ChartType) {
       $scope.activeTab = ChartType.GEO_CHARTS;
+    }])
+    .factory('CoverageResource', ['$resource', function ($resource) {
+      return $resource(Drupal.settings.basePath + 'mica/ng/coverage/:type/:id', {}, {'get': {method: 'GET'}});
     }]);

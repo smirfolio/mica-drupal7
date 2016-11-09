@@ -82,6 +82,8 @@ function obiba_mica_dataset_page_detail($dataset_id) {
     }
   }
 
+  obiba_mica_app_angular_load_js_resources('obiba_mica_graphic');
+
   $acronym = obiba_mica_commons_get_localized_field($dataset_dto, 'acronym');
   $name = obiba_mica_commons_get_localized_field($dataset_dto, 'name');
   $page_title = (variable_get_value('dataset_title_acronym_setup') ? ($acronym . ' - ') : '') . $name;
@@ -693,6 +695,11 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
   }
 
   return $rows;
+}
+
+function obiba_mica_dataset_ng_coverage($dataset_id) {
+  $query = DrupalMicaClient\RqlQueryBuilder::dataset_query_charts($dataset_id);
+  return obiba_mica_graphics_nvd3_query_charts($query, $dataset_id);
 }
 
 /**

@@ -209,6 +209,10 @@ class ObibaSearchResources extends DrupalMicaClientResource {
         $query_search = 'variable(and(exists(' . $taxonomy_name . '.' . $vocabulary_name . '),in(Mica_variable.';
       }
     }
+    if (is_array($entity_id)) {
+      $entity_id = implode(',', $entity_id);
+    }
+
     if (!empty($query)) {
       $query_search .= 'datasetId,' . $entity_id;
     }

@@ -21,6 +21,16 @@ if (module_exists('obiba_mica_dataset')) {
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
+function obiba_mica_study_ng_coverage($study_id) {
+  $coverages = json_encode(new stdClass());
+  if (!variable_get_value('study_show_coverage_graphs')) {
+   return $coverages;
+  }
+
+  $query = DrupalMicaClient\RqlQueryBuilder::study_query_charts($study_id);
+  return obiba_mica_graphics_nvd3_query_charts($query, $study_id);
+}
+
 function obiba_mica_study_page_detail_coverage($study_id) {
 
   if (!variable_get_value('study_show_coverage_graphs')) {
