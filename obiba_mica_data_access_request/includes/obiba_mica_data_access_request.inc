@@ -29,12 +29,11 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
   /**
    * Instance initialisation.
    *
-   * @param string $mica_url
    *   The mica server url.
    *   THe method to query the server.
    */
-  public function __construct($mica_url = NULL, $method = 'METHOD_POST') {
-    parent::__construct($mica_url, $method);
+  public function __construct($method = 'METHOD_POST') {
+    parent::__construct($method);
   }
 
   /**

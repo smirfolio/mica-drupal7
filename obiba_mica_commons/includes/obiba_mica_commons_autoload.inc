@@ -11,8 +11,8 @@ if(class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient'))
   class DrupalMicaClientResource extends DrupalMicaClient\MicaClient {
     protected $micaClient;
 
-    function __construct($mica_url) {
-      parent::__construct($mica_url,
+    function __construct() {
+      parent::__construct(NULL,
         new MicaCache\MicaDrupalClientCache(),
         new MicaConfig\MicaDrupalConfig(),
         new MicaWatchDog\MicaDrupalClientWatchDog());

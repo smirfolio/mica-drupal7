@@ -28,6 +28,11 @@ abstract class AbstractMicaHttpClient {
   const HEADER_CSV = 'text/csv';
   const HEADER_EXCEL_SHEET = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
   const HEADER_TEXT = 'text/plain';
+  const HEADER_TEXT_HTML = 'text/html';
+  const HEADER_APP_HTML_XML = 'application/xhtml+xml';
+  const HEADER_APP_XML = 'application/xml;q=0.9';
+  const HEADER_IMG_WEB = 'image/webp';
+  const HEADER_MIXIN = '*/*;q=0.8';
   const PAGINATE_STUDIES = 0;
   const PAGINATE_VARIABLES = 1;
   const PAGINATE_DATASETS = 2;
@@ -60,7 +65,7 @@ abstract class AbstractMicaHttpClient {
    */
   public function httpGet($resource, $parameters = NULL) {
     $this->resource = $resource;
-    $this->parameters = !empty($parameters)?$parameters:NULL;
+    $this->parameters = !empty($parameters) ? $parameters : NULL;
     $this->httpType = $this->drupalMicaHttpClient->getMicaHttpClientStaticMethod('METHOD_GET');
     return $this;
   }
@@ -73,7 +78,7 @@ abstract class AbstractMicaHttpClient {
    */
   public function httpPost($resource, $parameters) {
     $this->resource = $resource;
-    $this->parameters = !empty($parameters)?$parameters:NULL;
+    $this->parameters = !empty($parameters) ? $parameters : NULL;
     $this->httpType = $this->drupalMicaHttpClient->getMicaHttpClientStaticMethod('METHOD_POST');
     return $this;
   }
@@ -86,7 +91,7 @@ abstract class AbstractMicaHttpClient {
    */
   public function httpDelete($resource, $parameters) {
     $this->resource = $resource;
-    $this->parameters = !empty($parameters)?$parameters:NULL;
+    $this->parameters = !empty($parameters) ? $parameters : NULL;
     $this->httpType = $this->drupalMicaHttpClient->getMicaHttpClientStaticMethod('METHOD_DELETE');
     return $this;
   }
@@ -97,14 +102,14 @@ abstract class AbstractMicaHttpClient {
    * @param $data
    * @return $this
    */
-  public function send($data = NULL) {
+  public function send($data = NULL, $ajax = NULL) {
     $url = $this->micaUrl . $this->resource;
     $requestOptions = array(
       'method' => $this->httpType,
       'headers' => $this->headers,
     );
     if (!empty($data)) {
-      $requestOptions = array_merge($requestOptions, array('data' => $data));
+      $requestOptions = array_merge($requestOptions, $data);
     }
     $request = $this->drupalMicaHttpClient->getMicaHttpClientRequest($url, $requestOptions);
     $client = $this->client();
@@ -120,6 +125,13 @@ abstract class AbstractMicaHttpClient {
         ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
       $this->lastResponse = $client->lastResponse;
       unset($this->dataResponse);
+      if ($ajax) {
+        drupal_add_http_header('Status', $e->getCode());
+        return json_encode(array(
+          'code' => $e->getCode(),
+          'message' => $e->getMessage(),
+        ));
+      }
     }
     return NULL;
   }
@@ -229,7 +241,7 @@ abstract class AbstractMicaHttpClient {
    * @return $this
    */
   public function httpSetAcceptHeaders($acceptType) {
-    $this->httpSetHeaders(array('Accept' => array($acceptType)));
+    $this->httpSetHeaders(array('Accept' => $acceptType));
     return $this;
   }
 
@@ -396,6 +408,7 @@ abstract class AbstractMicaHttpClient {
     }
     return $headers;
   }
+
   /**
    * Forwards the 'Set-Cookie' directive(s) to the drupal client.
    *

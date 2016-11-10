@@ -20,8 +20,8 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
  */
 class DrupalMicaNetworkResource extends DrupalMicaClientResource {
 
-  public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+  public function __construct(){
+    parent::__construct();
   }
 
   /**get_networks
@@ -86,43 +86,16 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
       return $cache_stored_data;
     }
     else {
-      $url_networks = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url_networks, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        )
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $response = json_decode($data);
-        if (!empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
-          $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
-        }
-        if (!empty($result_resource_query)) {
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
-          return $result_resource_query;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
-        $message_parameters['placeholders'] = array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        );
-        $message_parameters['severity'] = 'error';
-        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
-          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
-        }
-        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
+      $response = $this->sendGet($resource_query, 'HEADER_JSON');
+      $response_network = json_decode($response);
+      if (!empty($response_network->networkResultDto) && !empty($response_network->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
+        $result_resource_query = $response_network->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
       }
+      if (!empty($result_resource_query)) {
+        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
+        return $result_resource_query;
+      }
+
     }
     return FALSE;
   }
@@ -135,50 +108,21 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
    */
   public function getNetwork($network_id) {
     $resource_query = '/network/' . rawurlencode($network_id);
-    $this->setLastResponse(NULL);
+
     $cached_network = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cached_network)) {
       return $cached_network;
     }
     else {
-      $url = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $network_response = json_decode($data);
-
-        if (!empty($network_response)) {
-          $this->updateModel($network_response);
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_response);
-          return $network_response;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
-        $message_parameters['placeholders'] = array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        );
-        $message_parameters['severity'] = 'error';
-        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
-          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
-        }
-        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
+      $response = $this->sendGet($resource_query, 'HEADER_JSON');
+      if (!empty($response)) {
+        $network_response = json_decode($response);
+        $this->updateModel($network_response);
+        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_response);
+        return $network_response;
       }
     }
+    return FALSE;
   }
 
 

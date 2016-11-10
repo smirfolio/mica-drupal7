@@ -25,7 +25,7 @@ class ObibaSearchResources extends DrupalMicaClientResource {
   private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
     $stored_data = NULL;
     $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
-    if(!empty($stored_data)){
+    if (!empty($stored_data)) {
       return $stored_data;
     }
     else {
@@ -86,8 +86,7 @@ class ObibaSearchResources extends DrupalMicaClientResource {
       $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return $client->lastResponse;
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
@@ -145,45 +144,23 @@ class ObibaSearchResources extends DrupalMicaClientResource {
 
   public function taxonomiesCoverageRql($query, $type, $aggregation_type, $strict) {
     $request_parameters = array(
-      'query' => $query,
-      'strict' => $strict ? 'true' : 'false'
+      'parameters' => array(
+        'query' => $query,
+        'strict' => $strict ? 'true' : 'false'
+      )
     );
     $resources = $query . $type . $aggregation_type;
     $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
-    if(!empty($stored_data)){
+    if (!empty($stored_data)) {
       return $stored_data;
     }
-    else{
-      $url = sprintf("%s/%s/legacy/_%s", $this->micaUrl, $type, $aggregation_type);
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON)
-          )
-        ),
-        'parameters' => $request_parameters,
-      ));
-
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        if(!empty($data)){
-          $result_data = json_decode($data);
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $result_data);
-          return $result_data;
-        }
-
-      } catch (HttpClientException $e) {
-        if ($e->getCode() == 403) {
-          drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
-        }
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        return array();
+    else {
+      $resource_query = sprintf("/%s/legacy/_%s", $type, $aggregation_type);
+      $response = $this->sendGet($resource_query, 'HEADER_JSON', TRUE, $request_parameters);
+      if (!empty($response)) {
+        $result_data = json_decode($response);
+        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $result_data);
+        return $result_data;
       }
     }
     return array();

@@ -23,12 +23,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
 
   /**
    * Instance initialisation.
-   *
-   * @param string $mica_url
-   *   The mica server url.
    */
-  public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+  public function __construct() {
+    parent::__construct();
   }
 
   /**

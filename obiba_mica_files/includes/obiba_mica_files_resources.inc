@@ -38,7 +38,6 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
    * @return array
    */
   public function getAttachment($entity_type, $entity_id) {
-    $this->setLastResponse(NULL);
     $path_attachments = '/' . $entity_type . '/' . $entity_id;
     $resource_query = '/files-search' . $this->encode_path_parts($path_attachments) .
       '?order=asc&query=&recursively=true&sort=name';
@@ -47,31 +46,12 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
       return $cached_attachment;
     }
     else {
-      $url = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $attachment = json_decode($data);
-        if (!empty($attachment)) {
-          $attachment_result = $this->wrapAttachments($entity_type, $entity_id, $attachment);
-          $this->drupalCache->MicaSetCache($resource_query, $attachment_result);
-          return $attachment_result;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
-      Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage(),
-          ), WATCHDOG_WARNING);
+      $response = $this->sendGet($resource_query, 'HEADER_JSON');
+      if (!empty($response)) {
+        $attachment = json_decode($response);
+        $attachment_result = $this->wrapAttachments($entity_type, $entity_id, $attachment);
+        $this->drupalCache->MicaSetCache($resource_query, $attachment_result);
+        return $attachment_result;
       }
       return $this->wrapAttachments($entity_type, $entity_id, array());
     }
@@ -88,49 +68,21 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
    * @return array
    */
   public function getFile($path) {
-    $this->setLastResponse(NULL);
     $resource_query = '/file' . $this->encode_path_parts($path);
-    $url = $this->micaUrl . $resource_query;
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-
-    $client = $this->client();
     $cached_file = $this->drupalCache->MicaGetCache($resource_query);
     if (!empty($cached_file)) {
       return $cached_file;
     }
     else {
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $this->drupalCache->MicaSetCache($resource_query, $data);
-          return $data;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
-      Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage(),
-          ), WATCHDOG_WARNING);
-
-        drupal_add_http_header('Status', $e->getCode());
-        return json_encode(array(
-          'code' => $e->getCode(),
-          'message' => $e->getMessage(),
-        ));
+      $response = $this->sendGet($resource_query, 'HEADER_JSON', TRUE);
+      if (!empty($response)) {
+        $this->drupalCache->MicaSetCache($resource_query, $response);
+        return $response;
       }
     }
   }
 
   public function searchFiles($path, $query_params) {
-    $this->setLastResponse(NULL);
     $resource_query = '/files-search' . $this->encode_path_parts($path) . '?' . http_build_query($query_params);
     $url = $this->micaUrl . $resource_query;
     $cached_result_files = $this->drupalCache->MicaGetCache($resource_query);
@@ -138,36 +90,13 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
       return $cached_result_files;
     }
     else {
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $this->drupalCache->MicaSetCache($resource_query, $data);
-          return $data;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
-      Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage(),
-          ), WATCHDOG_WARNING);
-        drupal_add_http_header('Status', $e->getCode());
-        return json_encode(array(
-          'code' => $e->getCode(),
-          'message' => $e->getMessage(),
-        ));
+      $response = $this->sendGet($resource_query, 'HEADER_JSON', TRUE);
+      if (!empty($response)) {
+        $this->drupalCache->MicaSetCache($resource_query, $response);
+        return $response;
       }
     }
+    return NULL;
   }
 
   /**
@@ -217,54 +146,17 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
    *    message : the error message
    */
   public function downloadAttachmentFile($file_path, $file_name, $inline) {
-    $url = sprintf("%s/file-dl/%s/%s?inline=%s",
-      $this->micaUrl,
+    $resource_query = sprintf("/file-dl/%s/%s?inline=%s",
       $this->encode_path_parts($file_path),
       rawurlencode($file_name),
       $inline);
-
-    $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => self::authorizationHeader(array(
-          'Accept' => array(
-            'text/html',
-            'application/xhtml+xml',
-            'application/xml;q=0.9',
-            'image/webp',
-            '*/*;q=0.8'
-          ),
-        )
-      ),
-    ));
-
-    $client = $this->client();
-
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $file_name = parent::getPropertyValueFromHeaderArray(parent::parseHeaders($client->lastResponse->headers),
-        'filename',
-        'Content-Disposition'
-      );
-      $raw_data = array(
-        'extension' => parent::getFileExtension($file_name),
-        'data' => $data,
-        'filename' => $file_name,
-        'raw_header_array' => parent::parseHeaders($client->lastResponse->headers),
-      );
-      return $raw_data;
-    } catch (HttpClientException $e) {
-      watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage(),
-        ), WATCHDOG_WARNING);
-      return $raw_data = array(
-        'code' => $e->getCode(),
-        'message' => $e->getMessage(),
-      );
-    }
-
+    return $this->downloadFileGet($resource_query,  array(
+      'HEADER_TEXT_HTML',
+      'HEADER_APP_HTML_XML',
+      'HEADER_APP_XML',
+      'HEADER_IMG_WEB',
+      'HEADER_MIXIN')
+    );
   }
 
   private function encode_path_parts($path) {

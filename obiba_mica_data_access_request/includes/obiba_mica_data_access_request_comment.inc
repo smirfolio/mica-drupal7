@@ -33,8 +33,8 @@ class MicaDataAccessRequestComment extends DrupalMicaDataAccessRequestResources 
    * @param string $method
    *   THe method to query the server.
    */
-  public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+  public function __construct() {
+    parent::__construct();
   }
 
   /**

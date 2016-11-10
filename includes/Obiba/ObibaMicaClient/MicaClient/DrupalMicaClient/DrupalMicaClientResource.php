@@ -57,11 +57,11 @@ class MicaClient {
     $this->request = new MicaHttpClient\DrupalMicaHttpClient($this->micaUrl);
   }
 
-  public function sendGet($resource, $acceptType){
+  public function sendGet($resource, $acceptType, $ajax = NULL, $parameters = NULL){
     $this->request->httpGet($resource)
-      ->httpSetAcceptHeaders($this->request->getRequestConst($acceptType))
+      ->httpSetAcceptHeaders($this->acceptHeaderArray($acceptType))
       ->httpAuthorizationHeader();
-    return  $this->request->send();
+    return  $this->request->send($parameters, $ajax);
   }
 
   public function sendPost($resource){
@@ -70,20 +70,31 @@ class MicaClient {
 
   public function sendDelete($resource, $acceptType){
     $this->request->httpDelete($resource)
-      ->httpSetAcceptHeaders($this->request->getRequestConst($acceptType))
+      ->httpSetAcceptHeaders($this->acceptHeaderArray($acceptType))
       ->httpAuthorizationHeader();
     return  $this->request->send();
   }
 
   public function downloadFileGet($resource, $acceptType){
     $this->request->httpGet($resource)
-      ->httpSetAcceptHeaders($this->request->getRequestConst($acceptType))
+      ->httpSetAcceptHeaders($this->acceptHeaderArray($acceptType))
       ->httpAuthorizationHeader();
     $response = $this->request->download();
     if (!empty($response)) {
       return $response;
     }
     return FALSE;
+  }
+
+  private function acceptHeaderArray($acceptType){
+    $acceptTypeHeaders = $acceptType;
+    if(is_array($acceptType)){
+      $acceptTypeHeaders = array_map(function($type){
+        return $this->request->getRequestConst($type);
+      },$acceptType);
+      return $acceptTypeHeaders;
+    }
+    return array($this->request->getRequestConst($acceptTypeHeaders));
   }
   /**
    * Make sure we are not using previous session state.
@@ -196,7 +207,7 @@ class MicaClient {
    */
   public function downloadFile($entity_type, $entity_id, $file_id) {
     $resource_query = "/" . $entity_type . "/" . $entity_id . "/file/" . $file_id . "/_download";
-    $response = $this->downloadFileGet($resource_query, 'HEADER_BINARY');
+    $response = $this->downloadFileGet($resource_query, array('HEADER_BINARY'));
     if (!empty($response)) {
       return $response;
     }
