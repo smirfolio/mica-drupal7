@@ -50,7 +50,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
       $params = "network(exists(Mica_network.id),limit($from,$limit)$sort_rql_bucket)";
     }
     $params .= ",locale($language->language)";
-    $resource_query ='/networks/_rql?query=' . $params;
+    $resource_query = '/networks/_rql?query=' . $params;
 
     $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cache_stored_data)) {
@@ -82,10 +82,19 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
           ), WATCHDOG_WARNING);
-        return array();
+        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
+        $message_parameters['placeholders'] = array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        );
+        $message_parameters['severity'] = 'error';
+        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
+          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
+        }
+        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
       }
     }
-    return False;
+    return FALSE;
   }
 
 
@@ -102,7 +111,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
     if (!empty($cache_stored_data)) {
       return $cache_stored_data;
     }
-    else{
+    else {
       $url_networks = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url_networks, array(
         'method' => HttpClientRequest::METHOD_GET,
@@ -119,9 +128,9 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
         if (!empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
           $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
         }
-        if(!empty($result_resource_query)){
-        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
-        return $result_resource_query;
+        if (!empty($result_resource_query)) {
+          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
+          return $result_resource_query;
         }
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -129,8 +138,16 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
           ), WATCHDOG_WARNING);
-
-        return array();
+        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
+        $message_parameters['placeholders'] = array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        );
+        $message_parameters['severity'] = 'error';
+        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
+          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
+        }
+        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
       }
     }
     return FALSE;
@@ -146,7 +163,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
     $resource_query = '/network/' . rawurlencode($network_id);
     $this->setLastResponse(NULL);
     $cached_network = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    if(!empty($cached_network)){
+    if (!empty($cached_network)) {
       return $cached_network;
     }
     else {
@@ -171,7 +188,21 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
           return $network_response;
         }
       } catch (HttpClientException $e) {
-        return array();
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
+        $message_parameters['placeholders'] = array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        );
+        $message_parameters['severity'] = 'error';
+        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
+          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
+        }
+        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
       }
     }
   }

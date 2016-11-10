@@ -17,6 +17,23 @@
 $path_module_study = drupal_get_path('module', 'obiba_mica_study');
 include_once($path_module_study . '/obiba_mica_study-page-list.inc');
 
+
+/**
+ * Implements hook_init().
+ *
+ * We cannot use hook_boot() because the url() function is
+ * not available at this time.
+ */
+function obiba_mica_init() {
+  if (class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')) {
+    register_shutdown_function(array(
+      'DrupalMicaClientResource',
+      'DrupalMicaErrorHandler'
+    ));
+    define('HIDE_PHP_FATAL_ERROR_URL', url(variable_get('custom_fatal_error_page', 'site-error')));
+  }
+}
+
 /**
  * Implements hook_menu().
  */
@@ -66,8 +83,75 @@ function obiba_mica_menu() {
     'file' => 'obiba_mica_content_pages.admin.inc',
     'weight' => 1,
   );
+
+
+  $items['site-error'] = array(
+    'title' => 'Site error',
+    'page callback' => 'obiba_mica_fatal_error_page',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   return $items;
 }
+
+/**
+ * Menu callback; display a nice error page.
+ */
+function obiba_mica_fatal_error_page() {
+  $parameters = drupal_get_query_parameters();
+  $error_message = t('The web server is returning an internal error.');
+  $destination = !empty($parameters['destination']) ? $parameters['destination'] : '';
+  $error_page_link = l(t('Try This Page Again'), $destination, array(
+    'attributes' => array(
+      'class' =>
+        array('btn btn-default btn-lg text-center')
+    )
+  ));
+  $my_header_body_content = <<<EOF
+    <div class='container'>
+  <div class='jumbotron'>
+    <h1><span class='glyphicon glyphicon-fire red'></span> $destination</h1>
+    <p class='lead'>$error_message<em><span id='display-domain'></span></em>.</p>
+    $error_page_link
+  </div>
+</div>
+EOF;
+
+
+  $drupal_error_page_node = obiba_mica_commons_get_translated_node(variable_get_value('drupal_error_page'));
+  if (!empty($drupal_error_page_node)) {
+    drupal_set_title($drupal_error_page_node['#node']->title);
+    $drupal_error_page = $drupal_error_page_node;
+  }
+  else {
+    $my_body_content = <<<EOF
+<div class='container'>
+  <div class='body-content'>
+    <div class='row'>
+      <div class='col-md-6'>
+        <h2>What happened?</h2>
+        <p class='lead'>A 500 error status implies there is a problem with the web server's software causing it to malfunction.</p>
+      </div>
+      <div class='col-md-6'>
+        <h2>What can I do?</h2>
+        <p class='lead'>If you're a site visitor</p>
+        <p>Nothing you can do at the moment. The administrators will resolve the problem as soon as possible. If you need immediate assistance, please send us an email instead. We apologize for any inconvenience.</p>
+        <p>Please Try again later</p>
+     </div>
+    </div>
+  </div>
+</div>
+EOF;
+
+    $drupal_error_page_node = obiba_mica_commons_add_page(t('Error Page'), $my_body_content);
+    variable_set('drupal_error_page', $drupal_error_page_node->nid);
+    $drupal_error_page = node_view(node_load(variable_get_value('drupal_error_page')));
+  }
+  $drupal_error_page_node['#node']->title = '';
+  return $my_header_body_content . render($drupal_error_page);
+}
+
 
 /**
  * Implements hook_permission().

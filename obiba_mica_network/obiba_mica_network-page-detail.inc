@@ -154,7 +154,7 @@ function obiba_mica_network_page_detail($network_id) {
     }
   }
   else {
-    drupal_set_title(t('Network not found'));
+    drupal_set_title('Something wrong with this network');
     return '';
   }
 }
