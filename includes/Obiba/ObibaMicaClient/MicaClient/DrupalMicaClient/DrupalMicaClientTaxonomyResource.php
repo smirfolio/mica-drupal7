@@ -44,29 +44,9 @@ class DrupalMicaClientTaxonomyResource extends MicaClient {
    *   The taxonomy summaries wrapper.
    */
   public function getTaxonomySummaries($resource) {
-    $this->setLastResponse(NULL);
-    $url_studies = $this->micaUrl . '/taxonomies/'.$resource;
-    $request = $this->getMicaHttpClientRequest($url_studies, array(
-      'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-    $client = $this->client();
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-
-      return json_decode($data);
-    }
-    catch (\HttpClientException $e) {
-      $this->drupalWatchDog->MicaWatchDog('MicaTaxonomyResource',
-        'Connection to server fail,  Error serve code : @code, message: @message',
-        array('@code' => $e->getCode(), '@message' => $e->getMessage()),
-        $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
-      return array();
-    }
+    $resources = '/taxonomies/'.$resource;
+    $response = $this->sendGet($resources, 'HEADER_JSON', FALSE);
+    return json_decode($response);
   }
 
 }

@@ -14,7 +14,7 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
  * Get the data access request form config.
  */
 function obiba_mica_data_access_request_form_get_config() {
-  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
+  $mica_client = new MicaDataAccessRequest('HEADER_GET');
   $config = $mica_client->getFormDefinition();
   drupal_json_output($config);
 }
@@ -26,7 +26,7 @@ function obiba_mica_data_access_requests_action() {
 
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-      $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_GET');
+      $mica_client = new MicaDataAccessRequests('METHOD_GET');
       $data_access_request = $mica_client->getRequests();
       drupal_json_output($data_access_request);
       break;
@@ -201,6 +201,7 @@ function obiba_mica_data_access_request_update_request($id_request, $status) {
 function obiba_mica_data_access_request_upload_attachment() {
   $mica_client = new DrupalMicaClient\DrupalMicaTempFileResource(NULL, 'METHOD_POST');
   $response = $mica_client->uploadFile($_FILES);
+  $test = $response;
   drupal_json_output($response);
 }
 

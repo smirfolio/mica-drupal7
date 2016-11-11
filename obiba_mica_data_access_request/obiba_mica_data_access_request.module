@@ -198,16 +198,16 @@ function obiba_mica_data_access_request_csv_download() {
   $lang = drupal_get_query_parameters()['lang'];
 
   $data_access_requests_resources = new MicaDataAccessRequests();
-  $response = $data_access_requests_resources->downloadCsvExport($lang);
-
-  if (!empty($response)) {
-    $headers = $data_access_requests_resources->getLastResponseHeaders();
-    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
-    ob_clean();
-    $csv_response = $response->body;
-    print $csv_response;
-    exit;
-  }
+  return $data_access_requests_resources->downloadCsvExport( '/data-access-requests/csv?lang=' . $lang);
+//  $data_access_requests_resources->downloadFileGet( '/data-access-requests/csv?lang=' . $lang, array('HEADER_CSV'));
+//  if (!empty($response)) {
+//    $headers = $data_access_requests_resources->getLastResponseHeaders();
+//    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+//    ob_clean();
+//    $csv_response = $response->body;
+//    print $csv_response;
+//    exit;
+//  }
 }
 
 /**

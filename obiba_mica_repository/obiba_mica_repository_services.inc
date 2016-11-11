@@ -56,7 +56,7 @@ function obiba_mica_angular_search_taxonomy_filter($name) {
  */
 function obiba_mica_repository_query($type, $query) {
   $search_resource = new ObibaSearchResources();
-  $search_result = $search_resource->searchQuery($type, $query);
+  $search_result = $search_resource->searchQuery($type, $query, TRUE);
   drupal_json_output($search_result);
 }
 
@@ -64,16 +64,13 @@ function obiba_mica_repository_query($type, $query) {
  * Get Vocabulary detail by $taxonomy as csv
  */
 function obiba_mica_repository_query_as_csv($type, $query) {
-
   $search_resource = new ObibaSearchResources();
   $response = $search_resource->searchQueryAsCsv($type, $query);
-
   if (!empty($response)) {
-    $headers = $search_resource->getLastResponseHeaders();
-    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+    drupal_add_http_header('Content-Disposition', $response['raw_header_array']['Content-Disposition']);
     ob_clean();
-    $csv_response = $response->body;
-    print $csv_response;
+    $csv_response = $response['data'];
+    print  $csv_response;
     exit;
   }
 }

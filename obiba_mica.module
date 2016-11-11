@@ -27,7 +27,7 @@ include_once($path_module_study . '/obiba_mica_study-page-list.inc');
 function obiba_mica_init() {
   if (class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')) {
     register_shutdown_function(array(
-      'DrupalMicaClientResource',
+      'Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient',
       'DrupalMicaErrorHandler'
     ));
     define('HIDE_PHP_FATAL_ERROR_URL', url(variable_get('custom_fatal_error_page', 'site-error')));

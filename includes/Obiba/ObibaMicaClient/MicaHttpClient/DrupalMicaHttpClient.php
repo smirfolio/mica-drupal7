@@ -20,7 +20,11 @@ class  DrupalMicaHttpClient extends AbstractMicaHttpClient {
     return $this;
   }
 
- public function getRequestConst($requestCont){
-    return constant("parent::$requestCont");
+  public function drupalMicaClientAddHttpHeader($header){
+   return  $this->drupalMicaHttpClient->micaClientAddHttpHeader($header);
+  }
+
+  public function drupalMicaClientGetLastResponse(){
+    return $this->httpGetLastResponse();
   }
 }

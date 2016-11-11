@@ -32,7 +32,7 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *   The mica server url.
    *   THe method to query the server.
    */
-  public function __construct($method = 'METHOD_POST') {
+  public function __construct($method = 'HEADER_POST') {
     parent::__construct($method);
   }
 
@@ -43,8 +43,7 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *   Json definition of the form (Angular schema-Form).
    */
   public function getFormDefinition() {
-$this->method;
-    return json_decode($this->sendGet('/config/data-access-form', $this->method));
+    return json_decode($this->sendGet('/config/data-access-form', 'HEADER_JSON', TRUE));
   }
 
   /**
@@ -57,7 +56,7 @@ $this->method;
    *   Json form definition of the data access request (Angular schema-Form).
    */
   public function getRequest($id) {
-    return json_decode($this->sendGet('/data-access-request/' . $id, $this->method));
+    return json_decode($this->sendGet('/data-access-request/' . $id, 'HEADER_JSON', TRUE));
   }
 
   /**
@@ -75,7 +74,7 @@ $this->method;
     if (isset($lang)) {
       $resource_query .= '?lang=' . $lang;
     }
-    return $this->downloadFileGet($resource_query, $this->method);
+    return $this->downloadFileGet($resource_query, 'HEADER_BINARY');
   }
 
   /**
@@ -91,7 +90,7 @@ $this->method;
    */
   public function downloadAttachment($id_request, $id_file) {
     $url_requests = $this->micaUrl . '/data-access-request/' . $id_request . '/attachments/' . $id_file . '/_download';
-    return $this->downloadFileGet($url_requests, $this->method);
+    return $this->downloadFileGet($url_requests, 'HEADER_BINARY');
   }
 
   /**
@@ -121,7 +120,7 @@ $this->method;
       $file_id
     );
 
-    return $this->downloadFileGet($url_requests, $this->method);
+    return $this->downloadFileGet($url_requests, 'HEADER_BINARY');
   }
 
 //  private function downloadAttachmentInternal($url_requests) {

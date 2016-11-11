@@ -49,7 +49,7 @@ class DrupalMicaHttpClientFactory{
     return $getHttpMethod($method);
   }
 
-  function MicaClientAddHttpHeader($headerParameter, $value) {
+  function micaClientAddHttpHeader($headerParameter, $value) {
     $addHttpHeader = MicaConfig\MicaDrupalConfig::CLIENT_ADD_HTTP_HEADER;
     $addHttpHeader($headerParameter, $value);
   }

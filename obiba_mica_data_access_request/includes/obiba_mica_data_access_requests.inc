@@ -45,30 +45,30 @@ class MicaDataAccessRequests extends DrupalMicaDataAccessRequestResources {
     return json_decode($this->sendGet('/data-access-requests', 'HEADER_JSON'));
   }
 
-  public function downloadCsvExport($lang) {
+  public function downloadCsvExport($resource) {
 
-    $url_data_access_request_csv_export = $this->micaUrl . '/data-access-requests/csv?lang=' . $lang;
-
-    $request = new HttpClientRequest($url_data_access_request_csv_export, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_CSV),
-        )
-      ),
-    ));
-    $client = $this->client();
-    try {
-      $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $client->lastResponse;
-    }
-    catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        ), WATCHDOG_WARNING);
-      return array();
-    }
+    return $this->downloadFileGet($resource, array('HEADER_CSV'));
+//
+//    $request = new HttpClientRequest($url_data_access_request_csv_export, array(
+//      'method' => HttpClientRequest::METHOD_GET,
+//      'headers' => $this->authorizationHeader(array(
+//          'Accept' => array(parent::HEADER_CSV),
+//        )
+//      ),
+//    ));
+//    $client = $this->client();
+//    try {
+//      $client->execute($request);
+//      $this->setLastResponse($client->lastResponse);
+//      return $client->lastResponse;
+//    }
+//    catch (HttpClientException $e) {
+//      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+//        array(
+//          '@code' => $e->getCode(),
+//          '@message' => $e->getMessage()
+//        ), WATCHDOG_WARNING);
+//      return array();
+//    }
   }
 }

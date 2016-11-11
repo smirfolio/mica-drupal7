@@ -18,6 +18,7 @@
  * Class MicaDataAccessRequestResources
  */
 class DrupalMicaDataAccessRequestResources extends DrupalMicaClientResource {
+  public $request;
 
   /**
    * Instance initialisation.
@@ -29,6 +30,7 @@ class DrupalMicaDataAccessRequestResources extends DrupalMicaClientResource {
    */
   public function __construct() {
     parent::__construct();
+    $this->request = $this->getResponseRequest();
   }
 
   /**
@@ -45,27 +47,12 @@ class DrupalMicaDataAccessRequestResources extends DrupalMicaClientResource {
    *   The data server response.
    */
   public function dataAccessSave($data, $resource, $id_data_access = NULL) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
-    $url_data_access = $this->micaUrl . $resource . ($id_data_access ? '/' . $id_data_access : '');
-    $request = new HttpClientRequest($url_data_access, array(
-      'method' => $constant_method,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-          'Content-Type' => array(parent::HEADER_JSON),
-
-        )
-      ),
-      'data' => $data,
+    $reousrce_data_access_request = $resource . ($id_data_access ? '/' . $id_data_access : '');
+   $this->sendPost($reousrce_data_access_request, 'HEADER_JSON', TRUE, array(
+      'headers' => array('Content-Type' => array('HEADER_JSON')),
+      'data' => $data
     ));
-
-    $this->execute($request);
-    $headers = $this->getLastResponseHeaders();
-    if (!empty($headers) && !empty($headers['Location'])) {
-      drupal_add_http_header('Location', $headers['Location'][0]);
-    }
-
-    drupal_add_http_header('Status', $this->getLastResponseStatusCode());
-    return $this->getLastResponse();
+    $headers = $this->request->httpGetLastResponseHeaders();
   }
 
   /**
@@ -80,29 +67,20 @@ class DrupalMicaDataAccessRequestResources extends DrupalMicaClientResource {
    *   The data server response.
    */
   public function saveAttachments($data, $id_data_access = NULL) {
-    $constant_method = constant('HttpClientRequest::' . $this->method);
-    $url_data_access = $this->micaUrl . '/data-access-request/' . $id_data_access . '/_attachments';
-    $request = new HttpClientRequest($url_data_access, array(
-        'method' => $constant_method,
-        'headers' => $this->authorizationHeader(array(
-                'Accept' => array(parent::HEADER_JSON),
-                'Content-Type' => array(parent::HEADER_JSON),
+    // $constant_method = constant('HttpClientRequest::' . $this->method);
 
-            )
-        ),
-        'data' => $data,
+    $data_access_request = '/data-access-request/' . $id_data_access . '/_attachments';
+
+    $this->sendPost($data_access_request, 'HEADER_JSON', TRUE, array(
+      'headers' => array('Content-Type' => array('HEADER_JSON')),
+      'data' => $data
     ));
-
-    $this->execute($request);
-    $headers = $this->getLastResponseHeaders();
-
+    $headers = $this->request->httpGetLastResponseHeaders();
     if (!empty($headers) && !empty($headers['Location'])) {
       drupal_add_http_header('Location', $headers['Location'][0]);
     }
-
-    drupal_add_http_header('Status', $this->getLastResponseStatusCode());
-
-    return $this->getLastResponse();
+    drupal_add_http_header('Status', $this->request->httpGetLastResponseStatusCode());
+    return $this->request->httpGetLastResponse();
   }
 
   /**
@@ -120,8 +98,7 @@ class DrupalMicaDataAccessRequestResources extends DrupalMicaClientResource {
       $response = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       return json_decode($response);
-    }
-    catch (HttpClientException $e) {
+    } catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),

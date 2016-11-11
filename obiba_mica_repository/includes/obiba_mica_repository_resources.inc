@@ -22,78 +22,31 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     parent::__construct(NULL);
   }
 
-  private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
+  private function httpRequestGetBuilder($resources, $header_accept = 'HEADER_JSON', $ajax = FALSE) {
     $stored_data = NULL;
     $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
     if (!empty($stored_data)) {
       return $stored_data;
     }
     else {
-      $url = $this->micaUrl . $resources;
-
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array($header_accept),
-            'Content-Type' => array($header_accept)
-          )
-        )
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $array_response = json_decode($data);
-        if (!empty($array_response)) {
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $array_response);
-          return $array_response;
-        }
-      } catch (HttpClientException $e) {
-        if ($e->getCode() == 403) {
-          drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
-        }
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        return array();
+      $response = $this->sendGet($resources, $header_accept, $ajax, array('headers'=> array('Content-Type' => array($header_accept))));
+      $array_response = json_decode($response);
+      if (!empty($array_response)) {
+        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $array_response);
+        return $array_response;
       }
     }
+    return FALSE;
   }
 
-  public function searchQuery($type, $query) {
+  public function searchQuery($type, $query, $ajax = FALSE) {
     $resource = '/' . $type . '/_rql?query=' . $query;
-    return $this->httpRequestGetBuilder($resource);
+    return $this->httpRequestGetBuilder($resource, 'HEADER_JSON', $ajax);
   }
 
   public function searchQueryAsCsv($type, $query) {
-    $resource = $this->micaUrl . '/' . $type . '/_rql_csv?query=' . $query;
-    return $this->downloadCsvExport($resource);
-  }
-
-  public function downloadCsvExport($resource) {
-
-    $request = new HttpClientRequest($resource, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_CSV),
-        )
-      ),
-    ));
-    $client = $this->client();
-    try {
-      $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      return $client->lastResponse;
-    } catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        ), WATCHDOG_WARNING);
-      return array();
-    }
+    $resource = '/' . $type . '/_rql_csv?query=' . $query;
+    return $this->downloadFileGet($resource, array('HEADER_CSV'));
   }
 
   public function taxonomiesSearch($query, $target, $locale) {

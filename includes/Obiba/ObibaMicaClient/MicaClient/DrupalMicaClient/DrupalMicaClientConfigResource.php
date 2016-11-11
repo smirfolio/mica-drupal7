@@ -89,7 +89,7 @@ class MicaClientConfigResource extends MicaClient {
     }
     else {
       $request = new MicaHttpClient\DrupalMicaHttpClient();
-      $request->httpGet($config_resource)
+        $request->httpGet($config_resource)
         ->httpSetAcceptHeaders(array($request::HEADER_JSON))
         ->httpAuthorizationHeader();
       $response = $request->send();

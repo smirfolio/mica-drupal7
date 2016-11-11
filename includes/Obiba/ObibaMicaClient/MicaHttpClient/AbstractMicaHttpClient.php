@@ -44,7 +44,7 @@ abstract class AbstractMicaHttpClient {
   public $drupalConfig;
   public $headers = [];
   public $parameters = [];
-  protected $drupalMicaHttpClient;
+  public $drupalMicaHttpClient;
   protected $httpType;
   protected $acceptHeaders;
   protected $lastResponse;
@@ -76,7 +76,7 @@ abstract class AbstractMicaHttpClient {
    * @param $parameters
    * @return $this
    */
-  public function httpPost($resource, $parameters) {
+  public function httpPost($resource, $parameters = NULL) {
     $this->resource = $resource;
     $this->parameters = !empty($parameters) ? $parameters : NULL;
     $this->httpType = $this->drupalMicaHttpClient->getMicaHttpClientStaticMethod('METHOD_POST');
@@ -97,25 +97,46 @@ abstract class AbstractMicaHttpClient {
   }
 
   /**
+   * Http PUT query
+   * @param $resource
+   * @param $parameters
+   * @return $this
+   */
+  public function httpPut($resource, $parameters = NULL) {
+    $this->resource = $resource;
+    $this->parameters = !empty($parameters) ? $parameters : NULL;
+    $this->httpType = $this->drupalMicaHttpClient->getMicaHttpClientStaticMethod('METHOD_PUT');
+    return $this;
+  }
+
+  /**
    * Perform the http query.
    *
    * @param $data
    * @return $this
    */
-  public function send($data = NULL, $ajax = NULL) {
+  public function send($parameters = NULL, $ajax = NULL) {
     $url = $this->micaUrl . $this->resource;
     $requestOptions = array(
       'method' => $this->httpType,
       'headers' => $this->headers,
     );
-    if (!empty($data)) {
-      $requestOptions = array_merge($requestOptions, $data);
+    if (!empty($parameters)) {
+      $requestOptions = array_merge_recursive($requestOptions, $parameters);
     }
     $request = $this->drupalMicaHttpClient->getMicaHttpClientRequest($url, $requestOptions);
     $client = $this->client();
     try {
       $dataResponse = $client->execute($request);
       $this->lastResponse = $client->lastResponse;
+      if ($ajax) {
+        $headers = $this->httpGetLastResponseHeaders();
+        if (!empty($headers) && !empty($headers['Location'])) {
+          $this->drupalMicaHttpClient->micaClientAddHttpHeader('Location', $headers['Location'][0]);
+        }
+        $this->drupalMicaHttpClient->micaClientAddHttpHeader('Status', $this->httpGetLastResponseStatusCode());
+     //   return $this->lastResponse->body;
+      }
       return $dataResponse;
     } catch (\HttpClientException $e) {
       $this->drupalWatchDog->MicaWatchDog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -126,14 +147,50 @@ abstract class AbstractMicaHttpClient {
       $this->lastResponse = $client->lastResponse;
       unset($this->dataResponse);
       if ($ajax) {
-        drupal_add_http_header('Status', $e->getCode());
+        $this->drupalMicaHttpClient->micaClientAddHttpHeader('Status', $e->getCode());
         return json_encode(array(
           'code' => $e->getCode(),
           'message' => $e->getMessage(),
         ));
       }
+      else {
+        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
+        $message_parameters['placeholders'] = array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        );
+        $message_parameters['severity'] = 'error';
+        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
+          DrupalMicaClient\MicaClient::DrupalMicaErrorHandler(TRUE, $message_parameters);
+        }
+        drupal_set_message(t($message_parameters['message'], $message_parameters['placeholders']), $message_parameters['severity']);
+      }
     }
     return NULL;
+  }
+
+  static function acceptHeaderArray($acceptType) {
+    $acceptTypeHeaders = $acceptType;
+    if (is_array($acceptType)) {
+      $acceptTypeHeaders = array_map(function ($type) {
+        $types = [];
+        if (is_array($type)) {
+          $types = array_map(function ($item) {
+            return self::getRequestConst($item);
+          }, $type);
+          return implode(', ', $types);
+        }
+        else {
+          return self::getRequestConst($type);
+        }
+      }, $acceptType);
+      return $acceptTypeHeaders;
+    }
+    return array(self::getRequestConst($acceptTypeHeaders));
+  }
+
+  static public function getRequestConst($type) {
+    return constant("self::$type");
   }
 
   /**
@@ -242,6 +299,17 @@ abstract class AbstractMicaHttpClient {
    */
   public function httpSetAcceptHeaders($acceptType) {
     $this->httpSetHeaders(array('Accept' => $acceptType));
+    return $this;
+  }
+
+  /**
+   * Set Accept  http headers.
+   *
+   * @param $acceptType
+   * @return $this
+   */
+  public function httpSetContentTypeHeaders($acceptType) {
+    $this->httpSetHeaders(array('Content-Type' => $acceptType));
     return $this;
   }
 

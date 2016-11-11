@@ -56,28 +56,59 @@ class MicaClient {
     self::$responsePageSizeSmall = $this->drupalConfig->MicaGetConfig('mica_response_page_size_small');
     $this->request = new MicaHttpClient\DrupalMicaHttpClient($this->micaUrl);
   }
-
+public function getResponseRequest(){
+  return $this->request;
+}
+  public function DrupalhttpGetLastResponse(){
+    return $this->request->drupalMicaClientGetLastResponse();
+  }
   public function sendGet($resource, $acceptType, $ajax = NULL, $parameters = NULL){
     $this->request->httpGet($resource)
-      ->httpSetAcceptHeaders($this->acceptHeaderArray($acceptType))
+      ->httpSetAcceptHeaders(MicaHttpClient\AbstractMicaHttpClient::acceptHeaderArray($acceptType))
       ->httpAuthorizationHeader();
+    if(!empty($parameters['headers']['Content-Type'])){
+      $this->request->httpSetContentTypeHeaders(
+        MicaHttpClient\AbstractMicaHttpClient::acceptHeaderArray($parameters['headers']['Content-Type']));
+      unset($parameters['headers']);
+    }
     return  $this->request->send($parameters, $ajax);
   }
 
-  public function sendPost($resource){
-
+  public function sendPost($resource, $acceptType, $ajax = NULL, $parameters = NULL){
+      $this->request->httpPost($resource,$parameters)
+      ->httpSetAcceptHeaders(MicaHttpClient\AbstractMicaHttpClient::acceptHeaderArray($acceptType))
+      ->httpAuthorizationHeader();
+    if(!empty($parameters['headers']['Content-Type'])){
+      $this->request->httpSetContentTypeHeaders(
+        MicaHttpClient\AbstractMicaHttpClient::acceptHeaderArray($parameters['headers']['Content-Type']));
+      unset($parameters['headers']);
+    }
+    return  $this->request->send($parameters, $ajax);
   }
+
+  public function sendPut($resource, $acceptType, $ajax = NULL, $parameters = NULL){
+    $this->request->httpPut($resource)
+      ->httpSetAcceptHeaders(MicaHttpClient\AbstractMicaHttpClient::acceptHeaderArray($acceptType))
+      ->httpAuthorizationHeader();
+    if(!empty($parameters['headers']['Content-Type'])){
+      $this->request->httpSetContentTypeHeaders(
+        MicaHttpClient\AbstractMicaHttpClient::acceptHeaderArray($parameters['headers']['Content-Type']));
+      unset($parameters['headers']);
+    }
+    return  $this->request->send($parameters, $ajax);
+  }
+
 
   public function sendDelete($resource, $acceptType){
     $this->request->httpDelete($resource)
-      ->httpSetAcceptHeaders($this->acceptHeaderArray($acceptType))
+      ->httpSetAcceptHeaders(MicaHttpClient\AbstractMicaHttpClient::acceptHeaderArray($acceptType))
       ->httpAuthorizationHeader();
     return  $this->request->send();
   }
 
   public function downloadFileGet($resource, $acceptType){
     $this->request->httpGet($resource)
-      ->httpSetAcceptHeaders($this->acceptHeaderArray($acceptType))
+      ->httpSetAcceptHeaders(MicaHttpClient\AbstractMicaHttpClient::acceptHeaderArray($acceptType))
       ->httpAuthorizationHeader();
     $response = $this->request->download();
     if (!empty($response)) {
@@ -86,16 +117,6 @@ class MicaClient {
     return FALSE;
   }
 
-  private function acceptHeaderArray($acceptType){
-    $acceptTypeHeaders = $acceptType;
-    if(is_array($acceptType)){
-      $acceptTypeHeaders = array_map(function($type){
-        return $this->request->getRequestConst($type);
-      },$acceptType);
-      return $acceptTypeHeaders;
-    }
-    return array($this->request->getRequestConst($acceptTypeHeaders));
-  }
   /**
    * Make sure we are not using previous session state.
    */
@@ -109,10 +130,10 @@ class MicaClient {
   public function logout() {
     $response = $this->sendGet('/auth/session/_current', 'HEADER_JSON');
     if (!empty($response)) {
-      unset($_SESSION[$this->request->getRequestConst('MICA_COOKIE')]);
+      unset($_SESSION[MicaHttpClient\AbstractMicaHttpClient::getRequestConst('MICA_COOKIE')]);
     }
     else {
-      unset($_SESSION[$this->request->getRequestConst('MICA_COOKIE')]);
+      unset($_SESSION[MicaHttpClient\AbstractMicaHttpClient::getRequestConst('MICA_COOKIE')]);
     }
   }
 
@@ -212,4 +233,44 @@ class MicaClient {
       return $response;
     }
   }
+
+  public static function DrupalMicaErrorHandler($force = NULL,  $message_parameters = NULL){
+    $current_path = current_path();
+    if($force){
+      drupal_set_message(t($message_parameters['message'],
+        $message_parameters['placeholders']),
+        $message_parameters['severity']);
+      throw new MyException('Server Error');
+      header('Location: ' . HIDE_PHP_FATAL_ERROR_URL . '?destination=' . $current_path, FALSE);
+    }
+    if((!is_null($error = error_get_last()) && $error['type'] === E_ERROR)) {
+      header('Location: ' . HIDE_PHP_FATAL_ERROR_URL . '?destination=' . $current_path);
+
+      // We need to reuse the code from _drupal_error_handler_real() to
+      // force the maintenance page.
+      require_once DRUPAL_ROOT . '/includes/errors.inc';
+
+      $types = drupal_error_levels();
+      list($severity_msg, $severity_level) = $types[$error['type']];
+
+      if (!function_exists('filter_xss_admin')) {
+        require_once DRUPAL_ROOT . '/includes/common.inc';
+      }
+
+      // We consider recoverable errors as fatal.
+      $error = array(
+        '%type' => isset($types[$error['type']]) ? $severity_msg : 'Unknown error',
+        // The standard PHP error handler considers that the error messages
+        // are HTML. We mimick this behavior here.
+        '!message' => filter_xss_admin($error['message']),
+        '%file' => $error['file'],
+        '%line' => $error['line'],
+        'severity_level' => $severity_level,
+      );
+
+      watchdog('php', '%type: !message (line %line of %file).', $error, $error['severity_level']);
+      exit;
+    }
+  }
+
 }

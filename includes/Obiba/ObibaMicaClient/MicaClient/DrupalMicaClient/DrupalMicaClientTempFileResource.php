@@ -25,7 +25,9 @@ use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
 class DrupalMicaTempFileResource extends MicaClient {
   const FILES_WS_URL = '/files/temp';
   const FILE_WS_URL = '/files/temp/{id}';
-public $method;
+  public $method;
+  public $curlAuth;
+  protected $request;
   /**
    * Instance initialisation.
    *
@@ -40,6 +42,7 @@ public $method;
       new MicaConfig\MicaDrupalConfig(),
       new MicaWatchDog\MicaDrupalClientWatchDog());
     $this->method = $method;
+    $this->request = $this->getResponseRequest();
   }
 
   /**
@@ -67,13 +70,13 @@ public $method;
 
     curl_close($curl_handle);
 
-    $headers = $this->getHeaders($result);
+    $headers = $this->request->HttpGetHeaders($result);
 
     if (!empty($headers) && !empty($headers['Location'])) {
-      $this->MicaClientAddHttpHeader('Location', $headers['Location'][0]);
+      $this->request->drupalMicaClientAddHttpHeader('Location', $headers['Location'][0]);
     }
 
-    $this->MicaClientAddHttpHeader('Status', $http_code);
+    $this->request->drupalMicaClientAddHttpHeader('Status', $http_code);
 
     return array('code' => $http_code, 'message' => trim($match));
   }
@@ -88,17 +91,7 @@ public $method;
    *   The data server response.
    */
   public function getFile($id_file) {
-    $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . preg_replace('/\\{id\\}/', $id_file, self::FILE_WS_URL, 1);
-    $request = $this->getMicaHttpClientRequest($url_requests, array(
-      'method' => $this->getMicaHttpClientStaticMethod($this->method),
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      ),
-    ));
-
-    return $this->execute($request);
+    return $this->sendGet(preg_replace('/\\{id\\}/', $id_file, self::FILE_WS_URL, 1),'HEADER_JSON');
   }
 
   /**
@@ -117,7 +110,7 @@ public $method;
     $request = $this->getMicaHttpClientRequest($url_requests,
       array('method' => $this->getMicaHttpClientStaticMethod($this->method)));
 
-    $this->MicaClientAddHttpHeader('Status', $this->getLastResponseStatusCode());
+    $this->micaClientAddHttpHeader('Status', $this->getLastResponseStatusCode());
     return array('Status' => $request->statusCode);
   }
 
@@ -131,9 +124,10 @@ public $method;
     $mime_file = $file_info->file($file['file']['tmp_name']);
     $cfile = new \CurlFile($file['file']['tmp_name'], $mime_file, $file['file']['name']);
     $data_file = array('file' => $cfile);
-    $url = $this->micaUrl . self::FILES_WS_URL;
+    $url = $this->micaUrl . '/ws'. self::FILES_WS_URL;
     $curl_handle = curl_init();
-    $header = $this->authorizationHeader(array());
+    $accept_header = $this->request->getRequestConst('HEADER_JSON');
+    $requestAuth = $this->request->httpAuthorizationHeader(array());
     curl_setopt($curl_handle, CURLOPT_URL, $url);
     curl_setopt($curl_handle, CURLOPT_HEADER, TRUE);
     curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, TRUE);
@@ -144,16 +138,25 @@ public $method;
     curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, FALSE);
     curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $data_file);
     curl_setopt($curl_handle, CURLOPT_HTTPHEADER, array(
-      'Accept' => $this::HEADER_JSON,
+      'Accept' => $accept_header,
       'Content-Type' => 'multipart/form-data',
     ));
 
-    if (!empty($header['Cookie'])) {
-      foreach ($header['Cookie'] as $cookie) {
+    if (!empty($requestAuth->headers['Cookie'])) {
+      foreach ($requestAuth->headers['Cookie'] as $cookie) {
         curl_setopt($curl_handle, CURLOPT_COOKIE, $cookie);
       }
     }
-
+$this->curlAuth = array(
+  'CURLOPT_URL' => $url,
+  'CURLOPT_POST' =>1,
+  'CURLOPT_POSTFIELDS' => $data_file,
+  'CURLOPT_HTTPHEADER' => array(
+    'Accept' => $accept_header,
+    'Content-Type' => 'multipart/form-data',
+  ),
+  'CURLOPT_COOKIE' => $cookie
+);
     return $curl_handle;
   }
 
@@ -197,7 +200,7 @@ public $method;
           '@message' => $e->getMessage(),
         ), $this->drupalWatchDog->MicaWatchDogSeverity('WARNING'));
 
-      $this->MicaClientAddHttpHeader('Status', $e->getCode());
+      $this->micaClientAddHttpHeader('Status', $e->getCode());
       return empty($client->lastResponse->body) ? FALSE : json_decode($client->lastResponse->body);
     }
 
