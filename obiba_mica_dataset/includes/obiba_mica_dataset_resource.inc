@@ -52,58 +52,10 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    *   Server response.
    */
   public function getDatasets($resource = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $network_id = NULL) {
-    global $language;
-    $this->setLastResponse(NULL);
-    $from = empty($from) ? '0' : $from;
-    $limit = empty($limit) ? '5' : $limit;
-    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
-    $sort_rql_bucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
-    $query = empty($query) ? '' : ",match($query,(Mica_dataset.name,Mica_dataset.acronym,Mica_dataset.description))";
-    $resource_params = empty($resource) ? '' : ",in(Mica_dataset.className,$resource)";
-    $network_params = empty($network_id) ? '' : ",in(Mica_dataset.networkId,$network_id)";
-    $studies_param = empty($study_id) ? '' : ",study(in(Mica_study.id,(" . rawurlencode($study_id) . ")))";
-
-    if (!empty($query) || !empty($resource_params) || !empty($studies_param)) {
-      $params = "dataset(limit($from,$limit)$resource_params$network_params$query$sort_rql_bucket)$studies_param";
-    }
-    else {
-      $params = "dataset(exists(Mica_dataset.id),limit($from,$limit)$sort_rql_bucket)";
-    }
-
-    $params .= ",locale($language->language)";
-    $resource_query = '/datasets/_rql?query=' . $params;
-    $cached_datasets = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    if (!empty($cached_datasets)) {
-      return $cached_datasets;
-    }
-    else {
-      $url_datasets = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url_datasets, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $datasets = json_decode($data);
-        if ($datasets->datasetResultDto->totalCount !== 0) {
-          $datasets_result = new DrupalMicaClient\DatasetJoinResponseWrapper($datasets);
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $datasets_result);
-          return $datasets_result;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        return array();
-      }
-    }
+    $parameters = compact('resource', 'study_id', 'query', 'from', 'limit', 'sort', 'order', 'network_id');
+    $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
+    $obiba->buildResourceQuery('getDatasets', $parameters);
+    return $obiba->getCollections('getDatasets');
   }
 
   /**

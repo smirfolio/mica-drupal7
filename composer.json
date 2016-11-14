@@ -1,8 +1,20 @@
 {
   "require": {
     "erusev/parsedown": "^1.5",
+    "obiba/obibamicadrupalclient": "@dev",
+    "obiba/obibamicaclient": "@dev",
     "flow/jsonpath": "0.3.4"
   },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "/home/samir/projects/obiba-mica-drupal"
+    },
+    {
+    "type": "path",
+    "url": "/home/samir/projects/obiba-mica-client-api"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "Obiba\\ObibaMicaClient\\": "includes/"

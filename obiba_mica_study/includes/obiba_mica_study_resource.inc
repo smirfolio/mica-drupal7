@@ -39,42 +39,10 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    * @return array|mixed
    */
   public function getStudies($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
-    global $language;
-    $this->setLastResponse(NULL);
-    $resource_query = $this->generateRqlQuery($query, $from, $limit, $sort, $order, $language);
-
-    $cached_studies = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    if (!empty($cached_studies)) {
-      return $cached_studies;
-    }
-    else {
-      $url_studies = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url_studies, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        )
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $response_wrapper = json_decode($data);
-        if ($response_wrapper->studyResultDto->totalCount !== 0) {
-          $return_studies = new DrupalMicaClient\StudyJoinResponseWrapper(json_decode($data));
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $return_studies);
-          return $return_studies;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        return array();
-      }
-    }
+    $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
+    $parameters = compact('query', 'from', 'limit', 'sort', 'order');
+    $obiba->buildResourceQuery('getStudies', $parameters);
+    return $obiba->getCollections('getStudies');
   }
 
   /**

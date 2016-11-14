@@ -23,7 +23,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
     parent::__construct($mica_url);
   }
 
-  /**get_networks
+  /**
    * Get the list of networks.
    *
    * @param null $study_id
@@ -35,73 +35,12 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
    * @return array|mixed
    */
   public function getNetworks($study_id = NULL, $query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
-    global $language;
-    $this->setLastResponse(NULL);
-    $from = empty($from) ? '0' : $from;
-    $limit = empty($limit) ? '5' : $limit;
-    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
-    $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
-    $query = empty($query) ? NULL : ",match($query,(Mica_network.name,Mica_network.acronym,Mica_network.description))";
-    $studies_query = empty($study_id) ? '' : ",in(Mica_network.studyIds," . rawurlencode($study_id) . ")";
-    if (!empty($query || $studies_query)) {
-      $params = "network(limit($from,$limit)$query$studies_query$sort_rql_bucket)";
-    }
-    else {
-      $params = "network(exists(Mica_network.id),limit($from,$limit)$sort_rql_bucket)";
-    }
-    $params .= ",locale($language->language)";
-    $resource_query = '/networks/_rql?query=' . $params;
-
-    $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-
-    if ($cache_stored_data !== FALSE) {
-      return $cache_stored_data;
-    }
-
-    $url_networks = $this->micaUrl . $resource_query;
-    $request = new HttpClientRequest($url_networks, array(
-      'method' => HttpClientRequest::METHOD_GET,
-      'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_JSON),
-        )
-      )
-    ));
-
-    $client = $this->client();
-
-    try {
-      $data = $client->execute($request);
-      $this->setLastResponse($client->lastResponse);
-      $result_data = json_decode($data);
-      $network_join_response_wrapper = new DrupalMicaClient\NetworkJoinResponseWrapper($result_data);
-      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_join_response_wrapper);
-      return $network_join_response_wrapper;
-
-    } catch (HttpClientException $e) {
-      watchdog('Mica Client', 'Connection to mica fail,  Error serve code : @code, message: @message',
-        array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        ), WATCHDOG_WARNING);
-      $message_parameters['message'] = 'Error contacting Mica, please try again later. Error serve code : @code, message: @message';
-      $message_parameters['placeholders'] = array(
-        '@code' => $e->getCode(),
-        '@message' => $e->getMessage()
-      );
-      $message_parameters['severity'] = 'error';
-      if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
-        DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
-      }
-      drupal_set_message(t($message_parameters['message'], $message_parameters['placeholders']), $message_parameters['severity']);
-
-      throw $e;
-    } catch (Exception $e) {
-      drupal_set_message('Error contacting Mica, please try again later.', 'error');
-      watchdog('Mica Client', 'Unexpected error, exception @exception', array('@exception' => $e), WATCHDOG_ERROR);
-      throw $e;
-    }
-    return FALSE;
+    $parameters = compact('study_id', 'query', 'from', 'limit', 'sort', 'order');
+    $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
+    $obiba->buildResourceQuery('getNetworks', $parameters);
+    return $obiba->getCollections('getNetworks');
   }
+
 
   /**
    * Get the list of network details.
@@ -152,7 +91,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
         if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
           DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
         }
-        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
+        drupal_set_message(t($message_parameters['message'], $message_parameters['placeholders']), $message_parameters['severity']);
       }
     }
     return FALSE;
