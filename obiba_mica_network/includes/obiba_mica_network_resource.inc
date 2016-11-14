@@ -13,7 +13,6 @@
  * @file
  * MicaNetworkResource class
  */
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 /**
  * Class MicaNetworkResource
