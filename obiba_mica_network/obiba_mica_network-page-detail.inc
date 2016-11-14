@@ -143,7 +143,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
       'networkUrl' => rawurlencode($network_id),
       'study_ids' => !empty($network_dto->studyIds) ? $network_dto->studyIds : array()
     ), 'setting');
-    $network_theme = $network_resource->drupalCache->MicaGetCache('network_theme_cache-' . $network_id);
+    $network_theme = obiba_mica_commons_get_cache('network_theme_cache-' . $network_id);
     if (!empty($network_theme)) {
       return $network_theme;
     }
@@ -175,7 +175,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
 
         'statistics' => $studies_statistics,
       ));
-      $network_resource->drupalCache->MicaSetCache('network_theme_cache-' . $network_id, $network_theme);
+      obiba_mica_commons_set_cache('network_theme_cache-' . $network_id, $network_theme);
       return $network_theme;
     }
   }

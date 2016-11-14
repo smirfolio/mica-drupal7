@@ -18,11 +18,7 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 /**
  * Class MicaNetworkResource
  */
-class DrupalMicaNetworkResource extends DrupalMicaClientResource {
-
-  public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
-  }
+class DrupalMicaNetworkResource  {
 
   /**
    * Get the list of networks.
