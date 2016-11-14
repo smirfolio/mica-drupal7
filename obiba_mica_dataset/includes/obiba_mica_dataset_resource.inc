@@ -55,7 +55,8 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
     $parameters = compact('resource', 'study_id', 'query', 'from', 'limit', 'sort', 'order', 'network_id');
     $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
     $obiba->buildResourceQuery('getDatasets', $parameters);
-    return $obiba->getCollections('getDatasets');
+    $Dtasets =  $obiba->getCollections('getDatasets');
+    return $Dtasets;
   }
 
   /**
