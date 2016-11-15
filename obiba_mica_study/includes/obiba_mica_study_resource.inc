@@ -14,16 +14,12 @@
  * MicaStudyResource class
  */
 
-use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
-use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
-
 /**
  * Class MicaStudyResource
  */
-class DrupalMicaStudyResource extends DrupalMicaClientResource {
+class DrupalMicaStudyResource{
 
-  public function __construct($mica_url = NULL) {
-    parent::__construct($mica_url);
+  public function __construct() {
   }
 
   /**
@@ -53,106 +49,8 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    * @return array
    */
   public function getStudy($study_id, $token_key = NULL) {
-    $cached_study = NULL;
-    $resource_query = '/study/' . rawurlencode($study_id);
-    if(!empty($token_key)){
-      $resource_query = '/draft/study/' . rawurlencode($study_id) . '?key=' . $token_key;
-    }
-    global $language;
-    if ($language){
-      // Omit to query with lang parameters to receive study Dto that will be translated using internal drupal mechanism.
-      // $resource_query .= '?locale=' . $language->language;
-    }
-    $this->setLastResponse(NULL);
-    $cached_study = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    if (!empty($cached_study)) {
-      return $cached_study;
-    }
-    else {
-      $url = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $result_study = $data ? json_decode($data) : NULL;
-
-        if (!empty($result_study)) {
-          $this->updateModel($result_study);
-          if (!empty($result_study->populations)) {
-            foreach ($result_study->populations as $population) {
-              $this->updateModel($population);
-              if (!empty($population->dataCollectionEvents)) {
-                foreach ($population->dataCollectionEvents as $dce) {
-                  $this->updateModel($dce);
-                }
-              }
-            }
-          }
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_study);
-          return $result_study;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message, called function : @function',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage(),
-            '@function' => __FUNCTION__
-          ), WATCHDOG_WARNING);
-        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
-        $message_parameters['placeholders'] = array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        );
-        $message_parameters['severity'] = 'error';
-        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
-          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
-          throw $e;
-        }
-        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
-      }
-    }
-  }
-
-  private function updateModel($obj) {
-    if (!empty($obj->content)) {
-      $obj->model = json_decode($obj->content);
-    }
-    else {
-      $obj->model = new stdClass();
-    }
-  }
-
-  /**
-   * @param $query
-   * @param $from
-   * @param $limit
-   * @param $sort
-   * @param $order
-   * @param $language
-   * @return string
-   */
-  private function generateRqlQuery($query, $from, $limit, $sort, $order, $language) {
-    $from = empty($from) ? '0' : $from;
-    $limit = empty($limit) ? '5' : $limit;
-    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
-    $sort_rql_bucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
-    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
-    if (empty($query)) {
-      $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket)";
-    }
-    else {
-      $params = "study(limit($from,$limit)$query$sort_rql_bucket)";
-    }
-    $params .= ",locale($language->language)";
-    $resource_query = '/studies/_rql?query=' . $params;
-    return $resource_query;
+    $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
+    return $obiba->buildResourceQuery('getStudy', $study_id)
+      ->getDocument('getStudy');
   }
 }

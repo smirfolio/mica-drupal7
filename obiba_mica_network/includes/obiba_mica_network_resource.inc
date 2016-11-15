@@ -19,6 +19,7 @@
  */
 class DrupalMicaNetworkResource  {
 
+  const PAGINATE_NETWORKS = 3;
   /**
    * Get the list of networks.
    *

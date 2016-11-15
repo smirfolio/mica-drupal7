@@ -32,7 +32,6 @@ function obiba_mica_commons_theme($existing, $type, $theme, $path) {
  * Implements hook_user_logout().
  */
 function obiba_mica_commons_user_logout() {
-  //TODO have to Not instantiate MicaCLient from here have to use an intermediate class that extend them
   $mica_client = new DrupalMicaClientResource(NULL);
   $mica_client->logout();
 }

@@ -55,7 +55,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
     $parameters = compact('resource', 'study_id', 'query', 'from', 'limit', 'sort', 'order', 'network_id');
     $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
     $obiba->buildResourceQuery('getDatasets', $parameters);
-    $Dtasets =  $obiba->getCollections('getDatasets');
+    $Dtasets = $obiba->getCollections('getDatasets');
     return $Dtasets;
   }
 
@@ -70,60 +70,14 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    * @return array
    *   The server response.
    */
-  public function getDataset($dataset_id, $resource = 'dataset', $token_key = NULL) {
-    $resource_query = (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
-    if(!empty($token_key)){
-      $resource_query = 'draft/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id . '?key=' . $token_key;
-    }
-    $this->setLastResponse(NULL);
-    $cached_dataset = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    $url = $this->micaUrl . '/' . $resource_query;
-    if (!empty($cached_dataset)) {
-      return $cached_dataset;
-    }
-    else {
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $result_dataset = $data ? json_decode($data) : NULL;
-        if (!empty($result_dataset)) {
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_dataset);
-          return $result_dataset;
-        }
-
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
-        $message_parameters['placeholders'] = array(
-          '@code' => $e->getCode(),
-          '@message' => $e->getMessage()
-        );
-        $message_parameters['severity'] = 'error';
-        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
-          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
-          throw $e;
-        }
-        if (obiba_mica_commons_is_ajax()) {
-          DrupalMicaClientResource::DrupalMicaErrorHandler(NULL, $message_parameters);
-        }
-        else {
-          drupal_set_message(t($message_parameters['message'], $message_parameters['placeholders']), $message_parameters['severity']);
-        }
-      }
-    }
+  public function getDataset($dataset_id, $resource = 'dataset', $token_key = NULL)) {
+    $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
+    $resource_param = array(
+      'id' => $dataset_id,
+      'resource' => $resource
+    );
+    return $obiba->buildResourceQuery('getDataset', $resource_param)
+      ->getDocument('getDataset');
   }
 
   /**
@@ -148,42 +102,10 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    *   The server response.
    */
   public function getVariables($resource, $dataset_id, $from = 0, $limit = -1, $sort = NULL, $order = NULL, $query = NULL) {
-    $this->setLastResponse(NULL);
-    $params = empty($from) ? 'from=0' : 'from=' . $from;
-    $params .= empty($limit) ? '&limit=-1' : '&limit=' . $limit;
-    $params .= empty($sort) ? '' : '&sort=' . $sort;
-    $params .= empty($order) ? '' : '&order=' . $order;
-    $params .= empty($query) ? '' : '&query=' . urlencode($query);
-    $resource_query = (empty($resource) ? 'dataset' : $resource) .
-      '/' . rawurlencode($dataset_id) .
-      '/variables' . (empty($query) ? ''
-        : '/_search') . '?' . $params;
-    $url = $this->micaUrl . '/' . $resource_query;
-    $cached_variables_dataset = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    if (!empty($cached_variables_dataset)) {
-      return $cached_variables_dataset;
-    }
-    else {
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $variables_result = json_decode($data);
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $variables_result);
-          return $variables_result;
-        }
-      } catch (HttpClientException $e) {
-        return array();
-      }
-    }
+    $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
+    $parameters = compact('resource', 'dataset_id', 'from', 'limit', 'sort', 'query', 'order');
+    $obiba->buildResourceQuery('getVariables', $parameters);
+    return $obiba->getCollections('getVariables');
   }
 
   /**
@@ -391,36 +313,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    *   The server response.
    */
   public function getVariable($variable_id) {
-    global $language;
-    $resource_query = sprintf("/variable/%s?locale=%s", rawurlencode($variable_id), $language->language);
-    $this->setLastResponse(NULL);
-    $cached_variable = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    if (!empty($cached_variable)) {
-      return $cached_variable;
-    }
-    else {
-      $url = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
-        ),
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $result_variable = $data ? json_decode($data) : NULL;
-        if (!empty($result_variable)) {
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_variable);
-          return $result_variable;
-        }
-      } catch (HttpClientException $e) {
-        return array();
-      }
-    }
-    return array();
+    $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
+    return $obiba->buildResourceQuery('getVariable', $variable_id)
+      ->getDocument('getVariable');
   }
 
   /**

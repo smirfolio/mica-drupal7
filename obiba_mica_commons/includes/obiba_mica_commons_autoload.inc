@@ -69,7 +69,6 @@ if (class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')
         }
       }
     }
-
   }
 }
 else {

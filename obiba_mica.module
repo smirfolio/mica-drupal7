@@ -26,9 +26,9 @@ include_once($path_module_study . '/includes/obiba_mica_commons_resource_paths.i
  * not available at this time.
  */
 function obiba_mica_init() {
-  if (class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')) {
+  if (class_exists('ObibaMicaClient\DrupalMicaError')) {
     register_shutdown_function(array(
-      'DrupalMicaClientResource',
+      'ObibaMicaClient\DrupalMicaError',
       'DrupalMicaErrorHandler'
     ));
     define('HIDE_PHP_FATAL_ERROR_URL', url(variable_get('custom_fatal_error_page', 'site-error')));
