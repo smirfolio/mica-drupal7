@@ -638,7 +638,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
               $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
                 'Mlstr_harmo',
               ))));
-              $status_detail = empty($status_detail) ? t(ucfirst($status)) : t(ucfirst($status_detail));
+              $status_detail = empty($status_detail) ? ucfirst(preg_replace('/[-_]+/', ' ', $status)) : ucfirst(preg_replace('/[-_]+/', ' ', $status_detail));
               $harmonized_variable_id = $variable_summary->resolver->id;
               $variable_title = $variable_summary->resolver->name . ' -- ' . $acronym;
 
