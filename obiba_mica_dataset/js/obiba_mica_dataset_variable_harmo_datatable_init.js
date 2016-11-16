@@ -53,11 +53,11 @@
             },
             "fnDrawCallback": function (oSettings) {
               if (oSettings._iDisplayLength > oSettings.aoData.length) {
-                $('.dataTables_paginate').hide();
-                $('.dataTables_length').hide();
+                $('#variable-harmonization-table .dataTables_paginate').hide();
+                $('#variable-harmonization-table .dataTables_length').hide();
               } else {
-                $('.dataTables_paginate').show();
-                $('.dataTables_length').show();
+                $('#variable-harmonization-table .dataTables_paginate').show();
+                $('#variable-harmonization-table .dataTables_length').show();
               }
             }
           }
