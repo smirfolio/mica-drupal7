@@ -113,22 +113,18 @@
             <th><?php print t('Variable Type'); ?></th>
             <td>
               <p>
+                <?php $variable_type = $variable_dto->variableType?>
+                <?php if (variable_get_value('mica_all_variables_dataschema')): ?>
+                  <?php $variable_type = t('Dataschema'); ?>
+                <?php endif; ?>
                 <?php print t('@type Variable', array('@type' =>
-                  $variable_dto->variableType)); ?>
+                  $variable_type)); ?>
                 <?php if ($variable_dto->variableType == 'Harmonized'): ?>
                   <?php print '(' . MicaClientAnchorHelper::variableHarmonized($variable_dto) . ')'; ?>
                 <?php endif; ?>
               </p>
             </td>
           </tr>
-
-          <?php if (!empty($variable_dto->comment)): ?>
-            <tr>
-              <th><?php print t('Comment'); ?></th>
-              <td><p><?php print $variable_dto->comment; ?></p></td>
-            </tr>
-          <?php endif; ?>
-
 
           </tbody>
         </table>
@@ -311,21 +307,17 @@
                 <td>
                   <?php if (empty($variable_harmonization['status'])): ?>
                     <span
-                      class="glyphicon glyphicon-question-sign alert-warning"
-                      data-placement="top" data-toggle="tooltip" title="<?php print t('No status') ?>"></span>
+                      class="glyphicon glyphicon-question-sign alert-warning" ></span>
                   <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
-                    <span class="glyphicon glyphicon-ok alert-success"
-                          data-placement="top" data-toggle="tooltip" title="<?php print t('Complete') ?>"></span>
+                    <span class="glyphicon glyphicon-ok alert-success"></span>
                     <?php
                   elseif ($variable_harmonization['status'] == 'impossible'): ?>
                     <span
-                      class="glyphicon <?php print ObibaDatasetConstants::getIcon(); ?>"
-                      data-placement="top" data-toggle="tooltip" title="<?php print variable_get_value('dataset_harmonization_impossible_label') ?>"></span>
+                      class="glyphicon <?php print ObibaDatasetConstants::getIcon(); ?>" ></span>
                     <?php
                   elseif ($variable_harmonization['status'] == 'undetermined'): ?>
                     <span
-                      class="glyphicon glyphicon-question-sign alert-warning"
-                      data-placement="top" data-toggle="tooltip" title="<?php print t('Undetermined') ?>"></span>
+                      class="glyphicon glyphicon-question-sign alert-warning"></span>
                   <?php endif ?>
                 </td>
               </tr>
@@ -340,7 +332,7 @@
               <tr>
                 <th><?php print t('Comment'); ?></th>
                 <td>
-                  <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : $variable_harmonization['comment']; ?></p>
+                  <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : obiba_mica_commons_markdown($variable_harmonization['comment']); ?></p>
                 </td>
               </tr>
               </tbody>
