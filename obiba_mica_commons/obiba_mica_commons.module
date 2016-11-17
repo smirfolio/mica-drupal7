@@ -1016,3 +1016,8 @@ function obiba_mica_commons_get_current_user(){
   global $user;
   return $user;
 }
+
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
+function obiba_mica_commons_mica_server_localisation() {
+   return new MicaLocalisation\MicaDrupalLocalization();
+}

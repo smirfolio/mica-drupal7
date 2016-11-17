@@ -124,7 +124,11 @@ class MicaClientConfigResource extends MicaClient {
    * @return object
    *   The Mica server translations resource.
    */
-  public function getTranslations($locale) {
+  public function getTranslations($locale = NULL) {
+    if(empty($locale)){
+      global $language;
+      $locale = $language->language;
+    }
     $this->setLastResponse(NULL);
     $lang_resource = '/config/i18n/' . $locale . '.json';
     $url = $this->micaUrl . $lang_resource;

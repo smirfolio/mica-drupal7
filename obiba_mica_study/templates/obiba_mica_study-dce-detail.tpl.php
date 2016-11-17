@@ -56,9 +56,9 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                   <ul>
                     <?php foreach ($dce->model->dataSources as $dataSource): ?>
                       <li>
-                        <?php print obiba_mica_commons_clean_string($dataSource); ?>
+                        <?php print  $localize->getTranslation('study_taxonomy.vocabulary.populations-dataCollectionEvents-dataSources.term.' . strtolower($dataSource) . '.title'); ?>
                         <?php if ($dataSource == 'others'): ?>
-                          :<?php print obiba_mica_commons_get_localized_field($dce->model, 'otherDataSources'); ?>
+                          : <?php print obiba_mica_commons_get_localized_field($dce->model, 'otherDataSources'); ?>
                         <?php endif; ?>
                       </li>
                     <?php endforeach; ?>
@@ -74,7 +74,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                   <ul>
                     <?php foreach ($dce->model->administrativeDatabases as $database): ?>
                       <li>
-                        <?php print obiba_mica_commons_clean_string($database); ?>
+                        <?php print   $localize->getTranslation('study_taxonomy.vocabulary.populations-dataCollectionEvents-administrativeDatabases.term.' . strtolower($database) . '.title'); ?>
                       </li>
                     <?php endforeach; ?>
                   </ul>
@@ -94,7 +94,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                   <ul>
                     <?php foreach ($dce->model->bioSamples as $samples): ?>
                       <li>
-                        <?php print obiba_mica_commons_clean_string($samples); ?>
+                        <?php print  $localize->getTranslation('study_taxonomy.vocabulary.populations-dataCollectionEvents-bioSamples.term.' . strtolower($samples) . '.title'); ?>
                           <?php if ($samples == "tissues" && !empty($tissue_types)): ?>
                             :<?php print  $tissue_types; ?>
                           <?php endif; ?>

@@ -105,6 +105,7 @@ function obiba_mica_study_page_detail_datasets($study_id, $dataset_name = NULL, 
 }
 
 function obiba_mica_study_page_detail($study_id) {
+  $localize = obiba_mica_commons_mica_server_localisation();
   obiba_mica_study_load_libs();
   drupal_add_js(drupal_get_path('module', 'obiba_mica_study') . '/js/mica-study-detail.js', 'file');
 
@@ -186,7 +187,7 @@ function obiba_mica_study_page_detail($study_id) {
       $populations = $cached_populations;
     }
     else {
-      $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $flat_study_attachments);
+      $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $flat_study_attachments, $localize);
       obiba_mica_commons_set_cache('populations_detail_cache-' . $study_id, $populations);
     }
 
@@ -215,6 +216,7 @@ function obiba_mica_study_page_detail($study_id) {
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($study_dto);
       $study_theme = theme('obiba_mica_study_detail',
         array(
+          'localize' => $localize,
           'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
           'ordered_membership' => !empty($ordered_membership) ? $ordered_membership : NULL,
           'investigators_modal' => !empty($investigator_detail_modal) ? $investigator_detail_modal : NULL,
@@ -303,7 +305,7 @@ function obiba_mica_study_get_timeline_detail($study_detail) {
  * Format populations schema
  * */
 
-function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_nbr = NULL, $has_coverage = NULL, $flat_study_attachments = NULL) {
+function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_nbr = NULL, $has_coverage = NULL, $flat_study_attachments = NULL, $localize = NULL) {
   $page_render_populations = array();
   $population_content_render = array();
   $themed_attachment = NULL;
@@ -340,7 +342,8 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
           $population->dataCollectionEvents,
           $dce_variables_nbr,
           $has_coverage,
-          $flat_study_attachments
+          $flat_study_attachments,
+          $localize
         );
 
         foreach ($population->dataCollectionEvents as $dce) {
@@ -352,6 +355,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
         'data' => $population_content_render,
         'html' => theme('mica_population_detail', array(
           'population_content' => theme('mica_population_content_detail', array(
+            'localize' =>$localize,
             'dce_uids' => $dce_uids,
             'population' => $population,
             'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
@@ -373,7 +377,8 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
  *
  * @return string
  */
-function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collection_events, $dce_variables_nbr = NULL, $has_coverage = NULL, $flat_study_attachments = NULL) {
+function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collection_events, $dce_variables_nbr = NULL, $has_coverage = NULL, $flat_study_attachments = NULL,
+                                         $localize = NULL) {
   $page_render_dces = '';
   $themed_dce_attachment = NULL;
   foreach ($data_collection_events as $dce) {
@@ -390,6 +395,7 @@ function obiba_mica_study_get_dce_detail($study_id, $population_id, $data_collec
       }
     }
     $page_render_dces .= theme('mica_dce_detail', array(
+      'localize' => $localize,
       'has_coverage' => $has_coverage,
       'dce_variables_nbr' => $dce_variables_nbr,
       'study_id' => $study_id,
