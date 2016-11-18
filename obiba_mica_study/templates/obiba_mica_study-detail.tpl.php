@@ -154,7 +154,7 @@
             <tr>
               <th><?php print t('Study Design') ?></th>
               <td>
-                <?php print $localize->getTranslation("study_taxonomy.vocabulary.methods-designs.term." . strtolower($study_dto->model->methods->design) . ".title"); ?>
+                <?php print $localize->getTranslation("study_taxonomy.vocabulary.methods-designs.term." . $study_dto->model->methods->design . ".title"); ?>
                   <?php if (!empty($study_dto->model->methods->otherDesign)): ?>
                     : <?php print obiba_mica_commons_get_localized_field($study_dto->model->methods->otherDesign); ?>
                   <?php endif; ?>
@@ -178,7 +178,7 @@
                 <ul class="list-unstyled">
                   <?php foreach ($study_dto->model->methods->recruitments as $recruitment): ?>
                     <li>
-                      <?php print $localize->getTranslation('study_taxonomy.vocabulary.methods-recruitments.term.' . strtolower($recruitment) . '.title') ; ?>
+                      <?php print $localize->getTranslation('study_taxonomy.vocabulary.methods-recruitments.term.' . $recruitment . '.title') ; ?>
                       <?php if (stristr($recruitment, 'other') && !empty($study_dto->model->methods->otherRecruitment)): ?>
                          : <?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherRecruitment'); ?>
                       <?php endif; ?>

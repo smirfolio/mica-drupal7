@@ -40,7 +40,7 @@
               <?php if ($key_source !== 0 ): ?>
                 ,
               <?php endif; ?>
-              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-generalPopulationSources.term.' . strtolower($source_recruitment) . '.title') ?>
+              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-generalPopulationSources.term.' . $source_recruitment . '.title') ?>
             <?php endforeach; ?>
           </td>
         </tr>
@@ -66,7 +66,7 @@
               <?php if ($key_specific !== 0 ): ?>
                 ,
               <?php endif; ?>
-              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . strtolower($specific_recruitment) . '.title') ?>
+              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . $specific_recruitment . '.title') ?>
             <?php endforeach; ?>
           </td>
         </tr>
@@ -170,7 +170,7 @@
               <?php if ($ky_criteria !== 0 ): ?>
                 ,
               <?php endif; ?>
-              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-criteria.term.' . strtolower($criteria) . '.title') ?>
+              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-criteria.term.' . $criteria . '.title') ?>
             <?php endforeach; ?>
           </td>
         </t>
