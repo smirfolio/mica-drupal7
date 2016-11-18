@@ -86,6 +86,26 @@ function _obiba_mica_dataset_variable_content(&$variable) {
     'type' => 'string',
     'default' => t('Undetermined'),
   );
+
+  $variable['dataset_harmonization_undetermined_description'] = array(
+    'title' => t("Description to show for the 'Undetermined' status"),
+    'description' => t("Text to display, for the description to show for 'Undetermined' harmonization status"),
+    'type' => 'string',
+    'default' => t('the harmonization potential of this variable has not yet been evaluated.'),
+  );
+  $variable['dataset_harmonization_impossible_description'] = array(
+    'title' => t("Description to show for the 'Impossible' status"),
+    'description' => t("Text to display, for the description to show for 'Impossible' harmonization status"),
+    'type' => 'string',
+    'default' => t('there is no information or insufficient information collected by this study to allow the construction of the variable as defined in the dataset.'),
+  );
+  $variable['dataset_harmonization_complete_description'] = array(
+    'title' => t("Description to show for the 'Complete' status"),
+    'description' => t("Text to display, for the description to show for 'Complete' harmonization status"),
+    'type' => 'string',
+    'default' => t('the study assessment item(s) (e.g. survey question, physical measure, biochemical measure) allow construction of the variable as defined in the dataset.'),
+  );
+
 }
 /**
  * Setting Variable content page.
@@ -102,6 +122,12 @@ function _obiba_mica_dataset_variable_variable_content(&$variable) {
     'description' => t('If selected the Networks section will be displayed'),
     'type' => 'string',
     'default' => TRUE,
+  );
+  $variable['mica_all_variables_dataschema'] = array(
+    'title' => t('Make all Variables type Dataschema'),
+    'description' => t('If selected, all variables will display their type as Dataschema. '),
+    'type' => 'boolean',
+    'default' => FALSE,
   );
   $variable['dataset_detailed_var_stats'] = array(
     'title' => t('Show detailed harmonization variable data statistics'),

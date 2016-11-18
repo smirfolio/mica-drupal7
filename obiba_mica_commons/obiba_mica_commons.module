@@ -145,7 +145,7 @@ if(!empty($std->{$lang})){
 
     foreach ($localizedString as $field_value) {
       $field_lang_std = !empty($field_value->lang) ? $field_value->lang : $field_value->locale;
-      $field_value_std = !empty($field_value->value) ? $field_value->value : $field_value->text;
+      $field_value_std = !empty($field_value->value) ? $field_value->value : (!empty($field_value->text)?$field_value->text:'');
 
       if (!empty($lang) && $lang == $field_lang_std) {
         return $field_value_std;

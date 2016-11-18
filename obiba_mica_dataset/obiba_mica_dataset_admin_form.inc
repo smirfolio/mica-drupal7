@@ -90,6 +90,33 @@ function _obiba_mica_dataset_settings_dataset_content(&$form) {
     '#default_value' => variable_get_value('dataset_harmonization_impossible_label'),
     '#description' => $info['description'],
   );
+
+  $info = variable_get_info('dataset_harmonization_complete_description');
+  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_complete_description'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#maxlength' => 255,
+    '#default_value' => variable_get_value('dataset_harmonization_complete_description'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('dataset_harmonization_impossible_description');
+  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_impossible_description'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#maxlength' => 255,
+    '#default_value' => variable_get_value('dataset_harmonization_impossible_description'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('dataset_harmonization_undetermined_description');
+  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_undetermined_description'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#maxlength' => 255,
+    '#default_value' => variable_get_value('dataset_harmonization_undetermined_description'),
+    '#description' => $info['description'],
+  );
 }
 
 /**
@@ -103,6 +130,14 @@ function _obiba_mica_dataset_settings_variable_content(&$form) {
     '#type' => 'fieldset',
     '#title' => t('Variable Content'),
     '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('mica_all_variables_dataschema');
+  $form['content_display_settings']['variable_form']['mica_all_variables_dataschema'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('mica_all_variables_dataschema'),
+    '#description' => $info['description'],
   );
 
   $info = variable_get_info('mica_statistics');

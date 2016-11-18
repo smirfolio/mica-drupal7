@@ -269,26 +269,29 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
       ))));
 
       if (empty($status)) {
-        $status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('No status') . '"></span>';
+        $status = '<span class="glyphicon glyphicon-question-sign alert-warning"></span>';
       }
       elseif ($status == 'complete') {
-        $status = '<span class="glyphicon glyphicon-ok alert-success" title="' . t('Complete') . '"></span>';
+        $status = '<span class="glyphicon glyphicon-ok alert-success"></span>';
       }
       elseif ($status == 'impossible') {
-        $status = '<span class="glyphicon ' . ObibaDatasetConstants::getIcon() . '" title="' . variable_get_value('dataset_harmonization_impossible_label') . '"></span>';
+        $status = '<span class="glyphicon ' . ObibaDatasetConstants::getIcon() . '"></span>';
       }
       elseif ($status == 'undetermined') {
-        $status = '<span class="glyphicon glyphicon-question-sign alert-warning" title="' . t('Undetermined') . '"></span>';
+        $status = '<span class="glyphicon glyphicon-question-sign alert-warning"></span>';
       }
       else {
-        $status = '<span class="glyphicon glyphicon-question-sign alert-warningr" title="' . t('No status') . '"></span>';
+        $status = '<span class="glyphicon glyphicon-question-sign alert-warningr"></span>';
       }
 
       $status_detail = obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status_detail', array(
         'maelstrom',
         'Mlstr_harmo',
       ));
-
+      $comment =  obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'comment', array(
+        'maelstrom',
+        'Mlstr_harmo',
+        ));
       $rows[] = array(
         '<p>' .
         l($variable_title, 'mica/variable/' . $harmonized_variable_id, array(
@@ -305,11 +308,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
           ),
         )),
         $has_status_detail ? ucfirst($status_detail) : '' ,
-        obiba_mica_dataset_variable_html_truncated(
-          obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'comment', array(
-            'maelstrom',
-            'Mlstr_harmo',
-          )), t('comment'), 200),
+         !empty($comment)?obiba_mica_commons_markdown($comment):'-',
         $variable_title_key,
       );
 

@@ -100,32 +100,35 @@ function obiba_mica_network_create_form() {
 
 function obiba_mica_network_networks_table($networks_result) {
   $rows = array();
-  $total = $networks_result->getTotalHits();
+  if (!empty($networks_result->getTotalHits())) {
+    $total = $networks_result->getTotalHits();
 
-  if ($total > 0) {
-    $rows = obiba_mica_network_networks_table_rows($networks_result->getSummaries());
+    if ($total > 0) {
+      $rows = obiba_mica_network_networks_table_rows($networks_result->getSummaries());
+    }
+    $headers = obiba_mica_network_networks_table_headers();
+    $per_page = 20;
+
+    if (empty($total)) {
+      return NULL;
+    }
+
+    $args = array(
+      'quantity' => $total,
+      'element' => DrupalMicaNetworkResource::PAGINATE_NETWORKS
+    );
+    $current_page = pager_default_initialize($total, $per_page, DrupalMicaNetworkResource::PAGINATE_NETWORKS);
+    $chunks = array_chunk($rows, $per_page, TRUE);
+    return $themed_network_table = theme(
+        'table',
+        array(
+          'header' => $headers,
+          'rows' => empty($chunks) ? array() : $chunks[$current_page],
+          'empty' => variable_get_value('networks_empty_label')
+        )
+      ) . theme('pager', $args);
   }
-  $headers = obiba_mica_network_networks_table_headers();
-  $per_page = 20;
-
-  if (empty($total)) {
-    return NULL;
-  }
-
-  $args = array(
-    'quantity' => $total,
-    'element' => DrupalMicaNetworkResource::PAGINATE_NETWORKS
-  );
-  $current_page = pager_default_initialize($total, $per_page, DrupalMicaNetworkResource::PAGINATE_NETWORKS);
-  $chunks = array_chunk($rows, $per_page, TRUE);
-  return $themed_network_table = theme(
-      'table',
-      array(
-        'header' => $headers,
-        'rows' => empty($chunks) ? array() : $chunks[$current_page],
-        'empty' => variable_get_value('networks_empty_label')
-      )
-    ) . theme('pager', $args);
+  return NULL;
 }
 
 function obiba_mica_network_networks_table_rows($networks) {
