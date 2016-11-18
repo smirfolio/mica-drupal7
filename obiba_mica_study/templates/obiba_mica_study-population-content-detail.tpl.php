@@ -8,7 +8,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 ?>
 
 <h3 class="no-top-margin">
@@ -36,7 +35,14 @@
       <?php if (!empty($population->model->recruitment->generalPopulationSources)): ?>
         <tr>
           <th><?php print t('General Population') ?></th>
-          <td><?php obiba_mica_commons_iterate_field($population->model->recruitment->generalPopulationSources); ?></td>
+          <td>
+            <?php foreach ($population->model->recruitment->generalPopulationSources as  $key_source => $source_recruitment): ?>
+              <?php if ($key_source !== 0 ): ?>
+                ,
+              <?php endif; ?>
+              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-generalPopulationSources.term.' . $source_recruitment . '.title') ?>
+            <?php endforeach; ?>
+          </td>
         </tr>
       <?php endif; ?>
 
@@ -55,7 +61,14 @@
       <?php if (!empty($population->model->recruitment->specificPopulationSources)): ?>
         <tr>
           <th><?php print t('Specific Population') ?></th>
-          <td><?php obiba_mica_commons_iterate_field($population->model->recruitment->specificPopulationSources); ?></td>
+          <td>
+            <?php foreach ($population->model->recruitment->specificPopulationSources as  $key_specific => $specific_recruitment): ?>
+              <?php if ($key_specific !== 0 ): ?>
+                ,
+              <?php endif; ?>
+              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . $specific_recruitment . '.title') ?>
+            <?php endforeach; ?>
+          </td>
         </tr>
       <?php endif; ?>
 
@@ -152,12 +165,14 @@
       <?php if (!empty($population->model->selectionCriteria->criteria)): ?>
         <t>
           <th><?php print t('Criteria') ?></th>
-          <?php
-          $criteria = array_map(function ($str) {
-          return obiba_mica_commons_clean_string($str);
-          }, $population->model->selectionCriteria->criteria);
-          ?>
-          <td><?php print implode(', ', $criteria) ?></td>
+          <td>
+            <?php foreach ($population->model->selectionCriteria->criteria as  $ky_criteria => $criteria): ?>
+              <?php if ($ky_criteria !== 0 ): ?>
+                ,
+              <?php endif; ?>
+              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-criteria.term.' . $criteria . '.title') ?>
+            <?php endforeach; ?>
+          </td>
         </t>
       <?php endif ?>
 

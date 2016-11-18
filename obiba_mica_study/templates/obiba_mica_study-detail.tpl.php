@@ -9,7 +9,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 ?>
-
 <?php if (!empty($populations)): ?>
   <?php foreach ($populations as $key => $population): ?>
     <?php if (!empty($population['data']) && !empty($population['data']['dce-modal'])): ?>
@@ -155,9 +154,9 @@
             <tr>
               <th><?php print t('Study Design') ?></th>
               <td>
-                  <?php print $study_dto->model->methods->design; ?>
+                <?php print $localize->getTranslation("study_taxonomy.vocabulary.methods-designs.term." . $study_dto->model->methods->design . ".title"); ?>
                   <?php if (!empty($study_dto->model->methods->otherDesign)): ?>
-                    :<?php print obiba_mica_commons_get_localized_field($study_dto->model->methods->otherDesign); ?>
+                    : <?php print obiba_mica_commons_get_localized_field($study_dto->model->methods->otherDesign); ?>
                   <?php endif; ?>
               </td>
             </tr>
@@ -179,9 +178,9 @@
                 <ul class="list-unstyled">
                   <?php foreach ($study_dto->model->methods->recruitments as $recruitment): ?>
                     <li>
-                      <?php print obiba_mica_commons_clean_string($recruitment) ?>
-                      <?php if ($recruitment == 'other'): ?>
-                         :<?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherRecruitment'); ?>
+                      <?php print $localize->getTranslation('study_taxonomy.vocabulary.methods-recruitments.term.' . $recruitment . '.title') ; ?>
+                      <?php if (stristr($recruitment, 'other') && !empty($study_dto->model->methods->otherRecruitment)): ?>
+                         : <?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherRecruitment'); ?>
                       <?php endif; ?>
                     </li>
                   <?php endforeach; ?>
@@ -189,7 +188,6 @@
               </td>
             </tr>
           <?php endif; ?>
-
           <?php if (!empty($study_dto->model->numberOfParticipants->participant->number)): ?>
             <tr>
               <th><?php print variable_get_value('study_target_number_participant_label') ?></th>
@@ -288,13 +286,10 @@
               </td>
             </tr>
 
-            <?php if (!empty($study_dto->model->access) && in_array('other', $study_dto->model->access)): ?>
+            <?php if (!empty($study_dto->model->access) && !empty($study_dto->model->otherAccess)): ?>
               <tr>
                 <th><?php print t('Other'); ?></th>
                 <td>
-                  <?php if (in_array('other', $study_dto->model->access)): ?>
-                    <span class="glyphicon glyphicon-ok right-indent"></span>
-                  <?php endif; ?>
                   <?php if (!empty($study_dto->model->otherAccess)): ?>
                      <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'otherAccess'); ?>
                   <?php endif; ?>
