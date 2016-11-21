@@ -18,7 +18,7 @@
     "filesize": "3.2.1",
     "angular-schema-form": "0.8.13",
     "angular-schema-form-bootstrap": "https://github.com/obiba/angular-schema-form-bootstrap.git#master",
-    "angular-schema-form-datetimepicker": "https://github.com/obiba/angular-schema-form-datetimepicker.git#~0.1.5",
+    "angular-schema-form-datetimepicker": "https://github.com/obiba/angular-schema-form-datetimepicker.git#master",
     "angular-utils-pagination": "0.11.1",
     "angular-recaptcha": "3.0.3",
     "angular-google-chart": "0.1.0",
