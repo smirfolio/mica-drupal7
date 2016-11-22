@@ -636,10 +636,16 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
               $status = obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
                 'Mlstr_harmo',
               ));
+              if($status == "impossible"){
+                $overridden_status = variable_get_value('dataset_harmonization_impossible_label');
+              }
+              else{
+                $overridden_status = trim(strtolower($status));
+              }
               $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
                 'Mlstr_harmo',
               ))));
-              $status_detail = empty($status_detail) ? '' : ucfirst(preg_replace('/[-_]+/', ' ', $status_detail));
+              $status_detail = empty($status_detail) ? ucfirst(preg_replace('/[-_]+/', ' ', $overridden_status)) : ucfirst(preg_replace('/[-_]+/', ' ', $status_detail));
               $harmonized_variable_id = $variable_summary->resolver->id;
               $variable_title = $variable_summary->resolver->name . ' -- ' . $acronym;
 
@@ -647,47 +653,42 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
                 $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
               }
 
-              if (empty($status)) {
-                $icon_alert_no_status = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" title="' . t('No status') . '"></span>';
-                $row[$key_row] = l($icon_alert_no_status, 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title,
-                    ),
-                  ));
-              }
-              elseif ($status == 'complete') {
-                $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" title="' . $status_detail . '"></span>';
-                $row[$key_row] = l($icon_success_complete, 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title,
-                    ),
-                  ));
-              }
-              elseif ($status == 'impossible') {
-                $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
-                  ObibaDatasetConstants::getIcon()
-                  . '" title="' . $status_detail . '"></span>';
-                $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title,
-                    ),
-                  ));
-              }
-              elseif ($status == 'undetermined') {
-                $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" title="' . $status_detail . '"></span>';
-                $row[$key_row] = l($icon_warning_undetermined, 'mica/variable/' . $harmonized_variable_id,
-                  array(
-                    'html' => TRUE,
-                    'query' => array(
-                      'title' => $variable_title,
-                    ),
-                  ));
+              switch($status){
+                case 'complete':
+                  $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" title="' . $status_detail . '"></span>';
+                  $row[$key_row] = l($icon_success_complete, 'mica/variable/' . $harmonized_variable_id,
+                    array(
+                      'html' => TRUE,
+                      'query' => array(
+                        'title' => $variable_title,
+                      ),
+                    ));
+                  break;
+                case 'impossible':
+                  $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
+                    ObibaDatasetConstants::getIcon()
+                    . '" title="' . $status_detail . '"></span>';
+                  $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
+                    array(
+                      'html' => TRUE,
+                      'query' => array(
+                        'title' => $variable_title,
+                      ),
+                    ));
+                  break;
+                case 'undetermined':
+                  $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" title="' . $status_detail . '"></span>';
+                  $row[$key_row] = l($icon_warning_undetermined, 'mica/variable/' . $harmonized_variable_id,
+                    array(
+                      'html' => TRUE,
+                      'query' => array(
+                        'title' => $variable_title,
+                      ),
+                    ));
+                  break;
+                default:
+                  $row[$key_row] ='-';
+                  break;
               }
             }
           }
