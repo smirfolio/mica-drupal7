@@ -95,6 +95,17 @@ function obiba_mica_menu() {
   return $items;
 }
 
+
+/**
+ * Implements hook_preprocess().
+ */
+function obiba_mica_preprocess(&$variables, $hook){
+  $localize = obiba_mica_commons_mica_server_localisation($hook);
+  if($localize){
+    $variables['localize'] = $localize;
+  }
+}
+
 /**
  * Menu callback; display a nice error page.
  */
