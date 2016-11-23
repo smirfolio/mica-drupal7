@@ -178,7 +178,7 @@
               }
 
               function cellChiSquared(value, expected) {
-                return Math.pow(value - expected, 2) / expected;
+                return expected === 0 ? 0 : Math.pow(value - expected, 2) / expected;
               }
 
               function degreeOfFreedom(rows, columns) {
@@ -271,16 +271,15 @@
              * @returns {*}
              */
             function normalizeData(contingencies) {
-              var v2Cats = $scope.crosstab.rhs.xVariable.categories.map(function (category) {
+              var v2Cats = $scope.crosstab.rhs.xVariable.categories ? $scope.crosstab.rhs.xVariable.categories.map(function (category) {
                 return category.name;
-              });
-              var v1Cats = $scope.crosstab.lhs.xVariable.categories.map(function (category) {
+              }) : undefined;
+              var v1Cats = $scope.crosstab.lhs.xVariable.categories ? $scope.crosstab.lhs.xVariable.categories.map(function (category) {
                 return category.name;
-              });
+              }) : undefined;
 
               if (contingencies) {
                 contingencies.forEach(function (contingency) {
-                  $log.debug('>', contingency);
                   // Show the details anyway.
                   contingency.totalPrivacyCheck = contingency.all.n !== - 1;
                   if (! contingency.totalPrivacyCheck || contingency.all.n > 0) {
@@ -323,7 +322,6 @@
                     v2: $scope.crosstab.rhs.xVariable.name
                   },
                   function onSuccess(response) {
-                    $log.debug('Crosstab Succeeded', response);
                     $scope.crosstab.contingencies = normalizeData(response.contingencies ? response.contingencies : [response]);
 
                     if ($scope.datasetHarmo) {
@@ -483,7 +481,6 @@
             if ($routeParams.varId) {
               DatasetVariableResource.get({varId: $routeParams.varId},
                 function onSuccess(response) {
-                  $log.debug('Variable LHS info', response);
                   $scope.crosstab.lhs.variable = response;
                   $scope.crosstab.lhs.variables = [response];
                   varCount ++;
@@ -498,7 +495,6 @@
             if ($routeParams.byId) {
               DatasetVariableResource.get({varId: $routeParams.byId},
                 function onSuccess(response) {
-                  $log.debug('Variable RHS info', response);
                   $scope.crosstab.rhs.variable = response;
                   $scope.crosstab.rhs.variables = [response];
                   varCount ++;
