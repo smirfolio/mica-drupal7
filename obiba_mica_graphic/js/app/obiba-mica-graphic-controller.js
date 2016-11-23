@@ -261,9 +261,9 @@
               } else {
                 config.options.chart.staggerLabels = true;
               }
+              config.options.chart.showLegend = false;
             }
-            
-            config.options.chart.showLegend = false;
+
             config.options.chart.color = chart.color.colors;
             config.options.chart.height = 500;
             $scope.d3Configs.push(config);

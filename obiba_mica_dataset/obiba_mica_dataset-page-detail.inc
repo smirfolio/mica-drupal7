@@ -324,7 +324,6 @@ function obiba_mica_dataset_get_sorted_by_column() {
  * Ajax Variable table Call data.
  */
 function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset) {
-  $dataset_resource = new MicaDatasetResource();
   $from = 0;
   $size = 10;
   $dataset_sort_by = NULL;
