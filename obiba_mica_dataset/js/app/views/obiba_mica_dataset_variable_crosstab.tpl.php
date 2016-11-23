@@ -83,7 +83,7 @@
 
     <div>
       <!-- table detail and stats options -->
-      <div class="btn-group">
+      <!--<div class="btn-group">
         <label class="btn" ng-class="{'btn-info': options.showDetails, 'btn-default': !options.showDetails}"
                ng-model="options.showDetails" btn-checkbox>{{'detailed' | translate}}</label>
         <div class="btn-group" ng-if="!isStatistical(crosstab.rhs.xVariable)">
@@ -92,7 +92,7 @@
           <label class="btn" ng-class="{'btn-info': options.statistics === StatType.RPERCENT, 'btn-default': options.statistics !== StatType.RPERCENT}"
                  ng-model="options.statistics" btn-radio="StatType.RPERCENT">{{'percentage' | translate}} <i class="fa fa-long-arrow-right"></i></label>
         </div>
-      </div>
+      </div>-->
 
       <!-- download menu -->
       <div class="pull-right sm-bottom-margin">
