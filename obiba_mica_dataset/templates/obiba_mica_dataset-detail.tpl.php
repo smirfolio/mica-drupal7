@@ -239,7 +239,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
   <!-- COVERAGE -->
   <div ng-controller="VariableCoverageChartController">
-    <section id="coverage" ng-if="d3Config">
+    <section id="coverage" ng-if="d3Configs && d3Configs.length">
       <h2><?php print t('Variables Classification') ?></h2>
 
       <div ng-repeat="d3Config in d3Configs">

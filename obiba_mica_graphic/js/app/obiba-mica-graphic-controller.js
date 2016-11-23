@@ -261,6 +261,7 @@
               } else {
                 config.options.chart.staggerLabels = true;
               }
+              config.options.chart.showLegend = false;
             }
 
             config.options.chart.color = chart.color.colors;
