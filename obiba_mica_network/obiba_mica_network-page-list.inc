@@ -100,7 +100,10 @@ function obiba_mica_network_create_form() {
 
 function obiba_mica_network_networks_table($networks_result) {
   $rows = array();
-  if (!empty($networks_result->getTotalHits())) {
+  //may this is a fix for "PHP Fatal error:  Call to a member function getTotalHits()" see log mails from root@mr-portal.obiba.oicr.on.ca
+  if(!method_exists($networks_result,'getTotalHits')){
+    return NULL;
+  }
     $total = $networks_result->getTotalHits();
 
     if ($total > 0) {
@@ -127,7 +130,6 @@ function obiba_mica_network_networks_table($networks_result) {
           'empty' => variable_get_value('networks_empty_label')
         )
       ) . theme('pager', $args);
-  }
   return NULL;
 }
 
