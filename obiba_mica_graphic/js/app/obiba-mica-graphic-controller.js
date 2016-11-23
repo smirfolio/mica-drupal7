@@ -217,7 +217,7 @@
 
       // type and id
       var absUrl = $location.absUrl();
-      var re = /drupal\/mica\/(\S+)\/(\S+)$/;
+      var re = /\/mica\/(\S+)\/(\S+)$/;
       var found = absUrl.match(re);
 
       if (found) {
