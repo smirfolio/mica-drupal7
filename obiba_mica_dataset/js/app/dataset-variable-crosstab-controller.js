@@ -190,6 +190,9 @@
                * @param aggregation
                */
               function normalize(aggregation) {
+                if (!aggregation.frequencies) {
+                  aggregation.frequencies = [];
+                }
                 var fCats = aggregation.frequencies.map(function (frq) {
                   return frq.value;
                 });
@@ -251,7 +254,7 @@
 
                 contingency.privacyCheck = true;
                 contingency.aggregations.forEach(function (aggregation) {
-                  aggregation.privacyCheck = aggregation.frequencies.length > 0;
+                  aggregation.privacyCheck =  aggregation.frequencies ? aggregation.frequencies.length > 0 : false;
                   contingency.privacyCheck = contingency.privacyCheck && aggregation.privacyCheck;
 
                   normalize(aggregation);
