@@ -6,8 +6,7 @@ use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
 
 
-
-if(class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')) {
+if (class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')) {
   class DrupalMicaClientResource extends DrupalMicaClient\MicaClient {
     protected $micaClient;
 
@@ -17,16 +16,24 @@ if(class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient'))
         new MicaConfig\MicaDrupalConfig(),
         new MicaWatchDog\MicaDrupalClientWatchDog());
     }
-    public static function DrupalMicaErrorHandler($force = NULL,  $message_parameters = NULL){
+
+    public static function DrupalMicaErrorHandler($force = NULL, $message_parameters = NULL) {
       $current_path = current_path();
-      if($force){
+      if ($force) {
         drupal_set_message(t($message_parameters['message'],
           $message_parameters['placeholders']),
           $message_parameters['severity']);
-        throw new MyException('Server Error');
+
+        watchdog('php', $message_parameters['message'],
+          $message_parameters['placeholders'],
+          $message_parameters['severity']);
+
+        $message = t($message_parameters['message'], $message_parameters['placeholders']);
+        error_log('PHP Parse error: ' . $message);
         header('Location: ' . HIDE_PHP_FATAL_ERROR_URL . '?destination=' . $current_path, FALSE);
+        exit;
       }
-      if((!is_null($error = error_get_last()) && $error['type'] === E_ERROR)) {
+      if ((!is_null($error = error_get_last()) && $error['type'] === E_ERROR)) {
         header('Location: ' . HIDE_PHP_FATAL_ERROR_URL . '?destination=' . $current_path);
 
         // We need to reuse the code from _drupal_error_handler_real() to
@@ -58,13 +65,14 @@ if(class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient'))
 
   }
 }
-else{
+else {
   class DrupalMicaClientResource {
   }
 }
 
-class DrupalMicaConfigResource   {
+class DrupalMicaConfigResource {
   public $micaClientConfigResource;
+
   function __construct($mica_url = NULL) {
     $this->micaClientConfigResource = new DrupalMicaClient\MicaClientConfigResource($mica_url);
     return $this->micaClientConfigResource;
