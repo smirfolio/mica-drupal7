@@ -140,7 +140,6 @@ function obiba_mica_dataset_page_detail($dataset_id) {
       $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($dataset_dto);
       $dataset_theme = theme('obiba_mica_dataset-detail', array(
-        'localize' => obiba_mica_commons_mica_server_localisation(),
         'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
         'dataset_dto' => $dataset_dto,
         'coverage' => !empty($coverage) ? $coverage['charts'] : NULL,
@@ -225,7 +224,6 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
       $modals['population'][] = theme('mica_population_content_detail_modal', array(
         'population' => $population,
         'population_content' => theme('mica_population_content_detail', array(
-          'localize' => obiba_mica_commons_mica_server_localisation(),
           'dce_uids' => $dce_uids,
           'population' => $population,
           'hide_title' => TRUE,
@@ -254,7 +252,6 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
         $dce_variables_nbr[obiba_mica_commons_get_localized_field($dce, 'name')] = $variables_dataset->total;
 
         $modals['dce'] .= theme('mica_dce_detail', array(
-          'localize' => obiba_mica_commons_mica_server_localisation(),
           'has_coverage' => $has_coverage,
           'dce_variables_nbr' => $dce_variables_nbr,
           'study_id' => $study_id,
