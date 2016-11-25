@@ -16,7 +16,8 @@
 
 $path_module_study = drupal_get_path('module', 'obiba_mica_study');
 include_once($path_module_study . '/obiba_mica_study-page-list.inc');
-
+$path_module_study = drupal_get_path('module', 'obiba_mica_commons');
+include_once($path_module_study . '/includes/obiba_mica_commons_resource_paths.inc');
 
 /**
  * Implements hook_init().
