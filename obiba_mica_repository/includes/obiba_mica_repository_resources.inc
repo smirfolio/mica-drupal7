@@ -49,7 +49,7 @@ class ObibaSearchResources extends DrupalMicaClientResource {
           return $array_response;
         }
       } catch (HttpClientException $e) {
-        if ($e->getCode() == 403) {
+          if ($e->getCode() == 403) {
           drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
         }
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -57,7 +57,10 @@ class ObibaSearchResources extends DrupalMicaClientResource {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage()
           ), WATCHDOG_WARNING);
-        return array();
+        $this->MicaClientAddHttpHeader('Status', $e->getCode());
+        return empty($client->lastResponse->body)
+          ? (empty($e->response->body) ? FALSE : json_decode($e->response->body))
+          : json_decode($client->lastResponse->body);
       }
     }
   }
