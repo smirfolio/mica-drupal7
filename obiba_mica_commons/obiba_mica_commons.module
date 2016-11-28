@@ -975,7 +975,7 @@ function obiba_mica_commons_has_coverage($entity, $entity_id) {
     }
     if (!empty($query)) {
       $search_resources = new ObibaSearchResources();
-      $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
+      $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage');
 
       if ($coverages) {
         $coverage['has_coverage'] = TRUE;

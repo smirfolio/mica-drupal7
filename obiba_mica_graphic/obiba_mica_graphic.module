@@ -462,7 +462,7 @@ function _obiba_mica_graphic_colors_options_array_sort($a, $b) {
 
 function obiba_mica_graphics_do_coverage_query($query) {
   $search_resources = new ObibaSearchResources();
-  $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
+  $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage');
   return $coverages;
 }
 
@@ -525,7 +525,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
  */
 function obiba_mica_graphic_search_query_charts($query, $default_dto_search = NULL, $chart_title = NULL, $entity_id = NULL) {
   $search_resources = new ObibaSearchResources();
-  $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage', FALSE);
+  $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage');
   $taxonomy_charts = array();
   $taxonomies_filter = obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures');
   $key_taxonomies = implode(',', $taxonomies_filter);
