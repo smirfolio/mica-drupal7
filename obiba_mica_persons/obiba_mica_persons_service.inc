@@ -34,7 +34,7 @@ function obiba_mica_persons_list($entities_id) {
   $persons = $persons_resources->search($query_person);
   drupal_json_output(array(
     "recordsTotal" => $persons->total,
-    "data" => $persons->persons
+    "data" => !empty($persons->persons) ? $persons->persons : array()
   ));
 }
 
