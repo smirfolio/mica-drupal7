@@ -68,7 +68,7 @@ function obiba_mica_repository_menu() {
 
 function obiba_mica_repository_menu_alter(&$items){
   unset($items['mica/search']);
-  unset($items['mica/coverage']);
+  unset($items['mica/ng/coverage']);
 }
 
 function obiba_mica_repository_menu_link_alter(&$item){

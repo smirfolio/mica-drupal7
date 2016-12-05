@@ -25,14 +25,9 @@ use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
  * Variable page detail.
  */
 function obiba_mica_variable_page_detail($variable_id) {
-  $library_chart = obiba_mica_dataset_variable_load_chart_libraries();
-  drupal_add_js(
-    drupal_get_path('module', 'charts') .
-    '/modules/charts_' . $library_chart .
-    '/charts_' . $library_chart . '.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_variable_harmo_algo_datatable_init.js', 'file');
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_get_ajax_variables.js', 'file');
-  drupal_add_js(array('obiba_mica_variable' => array('library' => $library_chart)), 'setting');
+  drupal_add_js(array('obiba_mica_variable' => array()), 'setting');
 
   obiba_mica_app_angular_load_js_resources('obiba_mica_graphic');
 
@@ -142,32 +137,6 @@ function obiba_mica_dataset_remove_harmonization_taxonomy($variable) {
     });
   }
 
-}
-
-/**
- * Load the chart libraries js.
- */
-function obiba_mica_dataset_variable_load_chart_libraries() {
-  if (module_exists('charts')) {
-    $chart_param = variable_get_value('charts_default_settings');
-    if (!empty($chart_param)) {
-      $charts_lib = libraries_load($chart_param['library']);
-      if (!empty($charts_lib)) {
-        foreach ($charts_lib as $folder) {
-          if (!empty($folder['js'])) {
-            foreach ($folder as $key_file => $param_files) {
-              if ($key_file == 'js') {
-                drupal_add_js($charts_lib['library path'] . '/' . key($param_files));
-              }
-            }
-          }
-        }
-        return $chart_param['library'];
-      }
-    }
-    return 'google';
-  }
-  return 'google';
 }
 
 /**
@@ -447,7 +416,6 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
       //TODO have to Not instantiate VariableStatistics from here have to use an intermediate class that extend them
       $statistics = new Datasets\VariableStatistics($variable, $variable_stat, new MicaConfig\MicaDrupalConfig());
       $stat_tab['table'] = $statistics->asTable();
-      $stat_tab['chart'] = $statistics->asChart();
       $statistics_variable = $stat_tab;
       obiba_mica_commons_set_cache('variable-statistics-' . $variable_id, $statistics_variable);
     }

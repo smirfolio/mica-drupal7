@@ -16,12 +16,10 @@
 
 function obiba_mica_graphic_install() {
   variable_set('graphics_blocks_networks', array('NaN' => 'NaN'));
-  variable_set('pie_slice_text_style_color', '#000000');
 }
 
 function obiba_mica_graphic_uninstall() {
   variable_del('graphics_blocks_networks');
   variable_del('graphics_blocks_aggregations');
   variable_del('mica_graphic_colors');
-  variable_del('pie_slice_text_style_color');
 }

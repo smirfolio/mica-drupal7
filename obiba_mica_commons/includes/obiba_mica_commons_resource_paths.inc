@@ -72,7 +72,7 @@ class MicaClientPathProvider {
   const HARMONIZATION_VARIABLE = 'mica/variable/{id}:{name}:Dataschema';
   const SEARCH = 'mica/search';
   const CROSSTAB = 'mica/variables';
-  const COVERAGE = 'mica/coverage';
+  const COVERAGE = 'mica/ng/coverage';
   const DATA_ACCESS = 'mica/data_access';
   const DATA_ACCESS_REQUEST = 'mica/data_access/request';
   const DATA_ACCESS_HOME = 'mica/data_access/home';

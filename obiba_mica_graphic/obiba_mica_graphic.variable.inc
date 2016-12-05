@@ -82,13 +82,6 @@ function obiba_mica_graphic_variable_info($options) {
     'default' => TRUE,
   );
 
-  $variable['pie_slice_text_style_color'] = array(
-    'title' => t('Pie slice text color'),
-    'description' => t('Pleas enter the hex colors code'),
-    'type' => 'string',
-    'default' => '',
-  );
-
   $variable['mica_graphic_colors'] = array(
     'title' => t('Used colors on the graphics'),
     'description' => t('Pleas select your desired colors'),

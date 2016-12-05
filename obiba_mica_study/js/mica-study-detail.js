@@ -15,24 +15,7 @@
         var qCoverage, qNetworks, qDatasets;
         var optionsStudyContent = settings.optionsStudyContent;
 
-
         if (optionsStudyContent) {
-
-          if (optionsStudyContent.showCoverage && optionsStudyContent.haveCoverage) {
-            qCoverage = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/coverage')
-              .done(function (data) {
-                if (! data) {
-                  $('#coverage').remove();
-                  return;
-                }
-              })
-              .fail(function () {
-                $('#coverage').remove();
-              });
-          }
-          else {
-            $('#coverage').remove();
-          }
           if (optionsStudyContent.showNetwork) {
             qNetworks = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/networks')
               .done(function (data) {
@@ -73,7 +56,6 @@
             $('#datasets').remove();
           }
         } else {
-          $('#coverage').remove();
           $('#networks').remove();
           $('#datasets').remove();
         }

@@ -112,12 +112,9 @@ function obiba_mica_network_page_detail($network_id) {
         }
       }
     }
-    obiba_mica_network_load_charts_libs();
-    $coverage = obiba_mica_commons_has_coverage('network', $network_dto->studyIds);
     drupal_add_js(drupal_get_path('module', 'obiba_mica_network') .
       '/js/mica-network-detail.js', 'file');
     drupal_add_js(array(
-      'displayCoverage' => !empty($coverage) ? TRUE : FALSE,
       'networkUrl' => rawurlencode($network_id),
       'study_ids' => $network_dto->studyIds
     ), 'setting');
@@ -193,26 +190,6 @@ function obiba_mica_network_statistics_angular_options($networks_id) {
       'entityIds' => implode(',', $networks_id)
     ));
   return theme('obiba_mica_network-charts');
-}
-
-function obiba_mica_network_page_detail_coverage($study_ids_string) {
-  $cached_coverage = obiba_mica_commons_get_cache(__FUNCTION__ . 'network-cache-' . $study_ids_string);
-  if (!empty($cached_coverage)) {
-    print $cached_coverage;
-  }
-  else {
-    $study_ids = json_decode($study_ids_string);
-
-    if (empty($study_ids)) {
-      exit;
-    }
-    $coverage = obiba_mica_network_coverage($study_ids);
-    if (!empty($coverage)) {
-      $themed_coverage = theme('obiba_mica_network_detail_coverage', array('coverage' => $coverage));
-      obiba_mica_commons_set_cache(__FUNCTION__ . 'network-cache-' . $study_ids_string, $themed_coverage);
-      print $themed_coverage;
-    }
-  }
 }
 
 /**

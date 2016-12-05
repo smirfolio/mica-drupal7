@@ -400,10 +400,6 @@ function obiba_mica_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path . '/angular-google-chart/ng-google-chart.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer',
-        ),
         $lib_path . '/sf-obiba-file-upload/dist/sf-obiba-file-upload.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',

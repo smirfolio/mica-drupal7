@@ -27,13 +27,6 @@ function obiba_mica_study_menu() {
     'type' => MENU_NORMAL_ITEM
   );
 
-  $items['mica/study/%/coverage'] = array(
-    'page callback' => 'obiba_mica_study_page_detail_coverage',
-    'file' => 'obiba_mica_study-page-detail.inc',
-    'access callback' => TRUE,
-    'page arguments' => array(2),
-  );
-
   $items['mica/study/%/networks'] = array(
     'page callback' => 'obiba_mica_study_page_detail_networks',
     'file' => 'obiba_mica_study-page-detail.inc',
@@ -219,17 +212,6 @@ function obiba_mica_study_load_libs() {
   $module_path_ = drupal_get_path('module', 'obiba_mica_commons');
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-affix.js');
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-got-top.js');
-
-  $charts_info = variable_get('charts_default_settings');
-  if ($charts_info['library'] == 'highcharts') {
-    $module_path_ = libraries_get_path('highcharts');
-    drupal_add_js($module_path_ . '/js/highcharts.js', 'file');
-    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_highcharts.js', 'file');
-  }
-  else {
-    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_google.js',
-      array('type' => 'file', 'scope' => 'footer'));
-  }
 }
 
 
