@@ -44,13 +44,6 @@ function obiba_mica_network_menu() {
     'page arguments' => array(2)
   );
 
-  $items['mica/coverage/network/%'] = array(
-    'page callback' => 'obiba_mica_network_page_detail_coverage',
-    'file' => 'obiba_mica_network-page-detail.inc',
-    'access callback' => TRUE,
-    'page arguments' => array(3),
-  );
-
   $items['mica/refresh_list_networks/%/%/%'] = array(
     //'title' => t('AutoComp Menu'),
     'page callback' => 'obiba_mica_network_retrieve_networks',
@@ -84,10 +77,6 @@ function obiba_mica_network_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_network-detail',
       'path' => $path_theme
     ),
-    'obiba_mica_network_detail_coverage' => array(
-      'template' => 'obiba_mica_network_detail_coverage',
-      'path' => $path_theme
-    ),
     'obiba_mica_network-list' => array(
       'template' => 'obiba_mica_network-list',
       'path' => $path_theme
@@ -112,18 +101,5 @@ function obiba_mica_network_networks_list($study_id = NULL) {
     $networks_table = obiba_mica_network_networks_table(obiba_mica_network_get_networks($study_id, NULL, NULL, NULL));
     obiba_mica_commons_set_cache('cached_' . __FUNCTION__ . $study_id, $networks_table);
     return $networks_table;
-  }
-}
-
-function obiba_mica_network_load_charts_libs() {
-  $charts_info = variable_get_value('charts_default_settings');
-  if ($charts_info['library'] == 'highcharts') {
-    $module_path_ = libraries_get_path('highcharts');
-    drupal_add_js($module_path_ . '/js/highcharts.js', 'file');
-    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_highcharts.js', 'file');
-  }
-  else {
-    drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/charts_google.js',
-      array('type' => 'file', 'scope' => 'footer'));
   }
 }

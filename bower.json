@@ -21,7 +21,6 @@
     "angular-schema-form-datetimepicker": "https://github.com/obiba/angular-schema-form-datetimepicker.git#master",
     "angular-utils-pagination": "0.11.1",
     "angular-recaptcha": "3.0.3",
-    "angular-google-chart": "0.1.0",
     "sf-obiba-file-upload": "https://github.com/obiba/sf-obiba-file-upload.git#master",
     "sf-checkboxgroup": "https://github.com/obiba/sf-checkboxgroup.git#1.0.0",
     "mica-study-timeline": "https://github.com/obiba/mica-study-timeline.git#1.0.2",

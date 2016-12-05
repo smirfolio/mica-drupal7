@@ -29,9 +29,6 @@
         var message_div_stat_tab = $('#toempty');
         var param_stat_tab = $('#param-statistics');
 
-        var message_div_stat_chart = $('#toemptychart');
-        var param_stat_chart = $('#param-statistics-chart');
-
         var var_id = param_stat_tab.attr('var-id');
         if (var_id) {
           $.ajax({
@@ -60,18 +57,6 @@
                   message_div_stat_tab.empty();
                   param_stat_tab.css({'padding-top': '0'});
                   $(data_decoded.table).appendTo(param_stat_tab);
-                }
-                if (data_decoded.chart) {
-                  message_div_stat_chart.empty();
-                  param_stat_chart.css({'padding-top': '0'});
-                  $(data_decoded.chart).appendTo(param_stat_chart);
-
-                  if (Drupal.settings.obiba_mica_variable.library == 'google') {
-                    Drupal.behaviors.chartsGoogle.attach();
-                  }
-                  if (Drupal.settings.obiba_mica_variable.library == 'highcharts') {
-                    Drupal.behaviors.chartsHighcharts.attach();
-                  }
                 }
                 else {
                   message_div_stat_chart.empty();

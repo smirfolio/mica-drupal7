@@ -66,20 +66,6 @@ function obiba_mica_dataset_page_detail($dataset_id) {
     if (!empty($dataset_type_dto->networkTables)) {
       obiba_mica_dataset_networks_datatable_init($dataset_type_dto);
     }
-
-    $dataset_cache_coverage = obiba_mica_commons_get_cache(__FUNCTION__ . 'dataset_coverage-' . $dataset_dto->id);
-    if (!empty($dataset_cache_coverage)) {
-      $coverage = $dataset_cache_coverage;
-    }
-    else {
-      $enabled_coverage = $enabled_coverage = obiba_mica_commons_enabled_coverage();
-      if (!empty($enabled_coverage)) {
-        $coverage = obiba_mica_dataset_coverage($dataset_dto->id);
-        if (!empty($coverage)) {
-          obiba_mica_commons_set_cache(__FUNCTION__ . 'dataset_coverage-' . $dataset_dto->id, $coverage);
-        }
-      }
-    }
   }
 
   obiba_mica_app_angular_load_js_resources('obiba_mica_graphic');
@@ -104,8 +90,6 @@ function obiba_mica_dataset_page_detail($dataset_id) {
       $flat_study_attachments = NULL;
       $variables_dataset = $dataset_resource->getVariables($dataset_type, $dataset_id, 0, 1);
       if ($dataset_type == 'study-dataset') {
-        $has_coverage = !empty($coverage['has_coverage']) ? $coverage['has_coverage'] : NULL;
-
         $study_id = $dataset_type_dto->studyTable->studyId;
         if (module_exists('obiba_mica_files')) {
           $flat_study_attachments =
@@ -115,7 +99,6 @@ function obiba_mica_dataset_page_detail($dataset_id) {
           $study_id,
           obiba_mica_dataset_get_population_dce($dataset_type_dto),
           $variables_dataset,
-          $has_coverage,
           $flat_study_attachments
         );
       }
@@ -142,7 +125,6 @@ function obiba_mica_dataset_page_detail($dataset_id) {
       $dataset_theme = theme('obiba_mica_dataset-detail', array(
         'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
         'dataset_dto' => $dataset_dto,
-        'coverage' => !empty($coverage) ? $coverage['charts'] : NULL,
         'dataset_type_dto' => $dataset_type_dto,
         'dataset_type' => $dataset_type,
         'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => TRUE)),
@@ -708,21 +690,6 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
 function obiba_mica_dataset_ng_coverage($dataset_id) {
   $query = DrupalMicaClient\RqlQueryBuilder::dataset_query_charts($dataset_id);
   return obiba_mica_graphics_nvd3_query_charts($query, $dataset_id);
-}
-
-/**
- * End harmonization variable ajax table.
- */
-function obiba_mica_dataset_coverage($dataset_id) {
-  $query = DrupalMicaClient\RqlQueryBuilder::dataset_query_charts($dataset_id);
-  $coverage['charts'] = obiba_mica_graphic_search_query_charts($query, array('with-facets' => 'false'), NULL, $dataset_id);
-  if (!empty($coverage['charts'])) {
-    $coverage['has_coverage'] = TRUE;
-    return $coverage;
-  }
-  else {
-    return FALSE;
-  }
 }
 
 /**

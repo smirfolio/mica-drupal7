@@ -31,34 +31,6 @@ function obiba_mica_study_ng_coverage($study_id) {
   return obiba_mica_graphics_nvd3_query_charts($query, $study_id);
 }
 
-function obiba_mica_study_page_detail_coverage($study_id) {
-
-  if (!variable_get_value('study_show_coverage_graphs')) {
-    exit;
-  }
-  $cached_study_coverage = obiba_mica_commons_get_cache(__FUNCTION__ . 'study-coverage-cache-' . $study_id);
-  if (!empty($cached_study_coverage)) {
-    $study_coverage = $cached_study_coverage;
-    if ($study_coverage['coverage'] === 'empty') {
-      exit;
-    }
-  }
-  else {
-    $coverage = obiba_mica_study_coverage($study_id);
-
-    if (empty($coverage['charts'])) {
-      $study_coverage['coverage'] = 'empty';
-      obiba_mica_commons_set_cache(__FUNCTION__ . 'study-coverage-cache-' . $study_id, $study_coverage);
-      exit;
-    }
-
-    $study_coverage = theme('obiba_mica_study_detail_coverage', array('coverage' => $coverage['charts']));
-    obiba_mica_commons_set_cache('study-coverage-cache-' . $study_id, $study_coverage);
-  }
-
-  print $study_coverage;
-}
-
 function obiba_mica_study_page_detail_networks($study_id) {
   if (!variable_get_value('study_show_networks')) {
     exit;
@@ -194,12 +166,10 @@ function obiba_mica_study_page_detail($study_id) {
       obiba_mica_study_get_timeline_detail($study_dto);
       $timeline_wrapper = '<div id="vis" style="width=100%"></div>';
     }
-    $has_coverage =  obiba_mica_commons_has_coverage('study', $study_id);
     $options_study_content = array(
       'showNetwork' => variable_get_value('study_show_networks'),
       'showDatasets' => variable_get_value('study_show_datasets'),
-      'showCoverage' => variable_get_value('study_show_coverage_graphs'),
-      'haveCoverage' => !empty($has_coverage) ? $has_coverage['has_coverage'] : NULL,
+      'showCoverage' => variable_get_value('study_show_coverage_graphs')
     );
     drupal_add_js(array(
       'study_url' => rawurlencode($study_id),
@@ -433,22 +403,4 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
     );
   }
   return $dce_rows;
-}
-
-function obiba_mica_study_coverage($study_id) {
-  $query = DrupalMicaClient\RqlQueryBuilder::study_query_charts($study_id);
-  $coverage['charts'] = obiba_mica_graphic_search_query_charts(
-    $query,
-    array('group-by' => 'dceIds', 'with-facets' => 'false'),
-    NULL,
-    $study_id
-  );
-
-  if (!empty($coverage['charts'])) {
-    $coverage['has_coverage'] = TRUE;
-    return $coverage;
-  }
-  else {
-    return FALSE;
-  }
 }
