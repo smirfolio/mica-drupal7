@@ -12,7 +12,7 @@
   Drupal.behaviors.obiba_mica_network_detail = {
     attach: function (context, settings) {
       if (context === document) {
-        if (settings.study_ids.length > 0) {
+        if (settings.study_ids && settings.study_ids.length > 0) {
           $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/network/' + settings.networkUrl + '/datasets')
             .done(function (data) {
               if (!data) {

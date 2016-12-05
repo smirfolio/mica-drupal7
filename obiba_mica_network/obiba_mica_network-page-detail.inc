@@ -116,7 +116,7 @@ function obiba_mica_network_page_detail($network_id) {
       '/js/mica-network-detail.js', 'file');
     drupal_add_js(array(
       'networkUrl' => rawurlencode($network_id),
-      'study_ids' => $network_dto->studyIds
+      'study_ids' => !empty($network_dto->studyIds)?$network_dto->studyIds:array()
     ), 'setting');
     $network_theme = $network_resource->drupalCache->MicaGetCache('network_theme_cache-' . $network_id);
     if (!empty($network_theme)) {
@@ -132,8 +132,8 @@ function obiba_mica_network_page_detail($network_id) {
         'contacts_modal' => !empty($contact_detail_modal) ?
           $contact_detail_modal : NULL,
         'network_dto' => $network_dto,
-        'has_variables' =>
-          _obiba_mica_network_has_variables($network_dto->studySummaries),
+        'has_variables' => !empty($network_dto->studySummaries)?
+          _obiba_mica_network_has_variables($network_dto->studySummaries):FALSE,
         'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
         'associated_people_button' => !empty($associated_people_button) ?
           $associated_people_button : NULL,
