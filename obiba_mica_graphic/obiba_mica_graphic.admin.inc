@@ -79,21 +79,6 @@ function obiba_mica_graphic_settings_form_general_display(&$form) {
 
   $wrapped_obiba_mica_graphic_colors_form = _obiba_mica_graphic_admin_get_draggable_colors_form($form_obiba_mica_graphic_colors, $color_fields, 'mica_graphic_colors');
   $form['obiba_mica_graphic']['graphic_display']['general_display']['mica_graphic_colors'] = array_merge($form_obiba_mica_graphic_colors, $wrapped_obiba_mica_graphic_colors_form);
-
-
-  $info = variable_get_info('pie_slice_text_style_color');
-  $form['obiba_mica_graphic']['graphic_display']['general_display']['pie_slice_text_style_color'] = array(
-    '#type' => 'textfield',
-    '#prefix' => '<div class="col-md-2">',
-    '#suffix' => '</div>',
-    '#attributes' => array('TYPE' => 'color'),
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('pie_slice_text_style_color'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
-
-
 }
 
 /**
