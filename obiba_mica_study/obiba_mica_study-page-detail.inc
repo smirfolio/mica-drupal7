@@ -285,11 +285,11 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
         $themed_attachment = $flat_study_attachments->themeFolders($filtered_tree_path, DrupalMicaFilesResource::DCE, $population->id);
       }
       $dce_uids = array();
+      $population_content_render['data'] = $population;
       if (!empty($population->dataCollectionEvents)) {
         $dce_rows = obiba_mica_study_get_dce_table($population->dataCollectionEvents, $study_detail->id, $population->id);
         uasort($dce_rows, 'obiba_mica_study_sort_dce');
         obiba_mica_commons_normalize_rows($dce_rows);
-        $population_content_render['data'] = $population;
         $population_content_render['dce-tab'] = theme(
           'table',
           array(
@@ -316,6 +316,11 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
         foreach ($population->dataCollectionEvents as $dce) {
           $dce_uids[] = $study_detail->id . ':' . $population->id . ':' . $dce->id;
         }
+      }
+      else{
+        $population_content_render['dce-tab'] ='';
+        $population_content_render['dce-modal']='';
+        $dce_uids[] =array();
       }
 
       $page_render_populations[$population->id] = array(
