@@ -102,8 +102,10 @@
                           <?php if (!empty($member->academicLevel)) {
                             print ', ' . $member->academicLevel;
                           } ?>
-                          (<?php print obiba_mica_commons_get_localized_field($member->institution, 'name'); ?>
-                          )
+                          <?php if (!empty($member->institution->name)): ?>
+                            (<?php print obiba_mica_commons_get_localized_field($member->institution, 'name'); ?>
+                            )
+                          <?php endif; ?>
                         </a>
                       </li>
                     <?php endforeach; ?>
@@ -127,18 +129,6 @@
               <td><p><?php print $study_dto->model->endYear; ?></p></td>
             </tr>
           <?php endif; ?>
-
-          <?php if (!empty($study_dto->networks)): ?>
-            <tr>
-              <th><?php print t('Networks') ?> :</th>
-              <td>
-                <p>
-                  <a href=""><?php //print $study_dto->networks; ?></a>
-                </p>
-              </td>
-            </tr>
-          <?php endif; ?>
-
           </tbody>
         </table>
 
