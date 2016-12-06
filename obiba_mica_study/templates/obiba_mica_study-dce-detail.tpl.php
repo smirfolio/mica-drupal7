@@ -26,7 +26,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
           <div>
             <?php if (!empty($dce->model->description)): ?>
               <p>
-                <?php print obiba_mica_commons_get_localized_field($dce->model, 'description'); ?>
+                <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($dce->model, 'description')); ?>
               </p>
             <?php endif; ?>
           </div>
