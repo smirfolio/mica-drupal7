@@ -88,9 +88,9 @@ function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NUL
   if (empty($lang)) {
     $lang = $language->language;
   }
-if(!empty($std->{$lang})){
-  return $std->{$lang};
-}
+  if (!empty($std->{$lang})) {
+    return $std->{$lang};
+  }
   if (!empty($field) && !empty($std->{$field})) {
     $localizedString = $std->{$field};
 
@@ -101,13 +101,17 @@ if(!empty($std->{$lang})){
         $obj->value = $localizedString->{$key};
         return $obj;
       };
-
-      $localizedString = array_map($asObject, array_keys(get_object_vars($localizedString)));
+      if (is_object($localizedString)) {
+        $localizedString = array_map($asObject, array_keys(get_object_vars($localizedString)));
+      }
+      elseif (is_string($localizedString)) {
+        return $localizedString;
+      }
     }
 
     foreach ($localizedString as $field_value) {
       $field_lang_std = !empty($field_value->lang) ? $field_value->lang : $field_value->locale;
-      $field_value_std = !empty($field_value->value) ? $field_value->value : (!empty($field_value->text)?$field_value->text:'');
+      $field_value_std = !empty($field_value->value) ? $field_value->value : (!empty($field_value->text) ? $field_value->text : '');
 
       if (!empty($lang) && $lang == $field_lang_std) {
         return $field_value_std;
@@ -974,7 +978,7 @@ function obiba_mica_commons_get_http_client_request_method($method) {
   return constant("HttpClientRequest::$method");
 }
 
-function obiba_mica_commons_get_current_user(){
+function obiba_mica_commons_get_current_user() {
   global $user;
   return $user;
 }
@@ -987,14 +991,15 @@ function obiba_mica_commons_get_current_user(){
  */
 
 use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
+
 function obiba_mica_commons_mica_server_localisation($theme) {
   $themes_to_translate = array(
     'obiba_mica_study_detail',
     'mica_population_content_detail',
     'mica_dce_detail'
   );
-  if(in_array($theme, $themes_to_translate)) {
+  if (in_array($theme, $themes_to_translate)) {
     return new MicaLocalisation\MicaDrupalLocalization();
   }
-return FALSE;
+  return FALSE;
 }
