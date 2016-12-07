@@ -1003,3 +1003,14 @@ function obiba_mica_commons_mica_server_localisation($theme) {
   }
   return FALSE;
 }
+
+function obiba_mica_commons_array_empty_test($array){
+  $empty =NULL;
+  foreach($array as $item){
+if(!empty($item)){
+  $empty = TRUE;
+}
+  }
+
+return $empty;
+}
