@@ -46,7 +46,7 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->recruitment->studies)): ?>
+      <?php if (!empty($population->model->recruitment->studies) && !empty(array_filter($population->model->recruitment->studies, 'obiba_mica_commons_array_empty_test'))): ?>
         <tr>
           <th><?php print t('Participants from Existing Studies') ?></th>
           <td>
@@ -151,7 +151,7 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->selectionCriteria->ethnicOrigin)): ?>
+      <?php if (!empty($population->model->selectionCriteria->ethnicOrigin) && !empty(array_filter($population->model->selectionCriteria->ethnicOrigin, 'obiba_mica_commons_array_empty_test'))): ?>
         <tr>
           <th><?php print t('Ethnic Origin') ?></th>
           <td>
@@ -176,7 +176,7 @@
         </t>
       <?php endif ?>
 
-      <?php if (!empty($population->model->selectionCriteria->healthStatus)): ?>
+      <?php if (!empty($population->model->selectionCriteria->healthStatus)  && !empty(array_filter($population->model->selectionCriteria->healthStatus, 'obiba_mica_commons_array_empty_test'))): ?>
         <tr>
           <th><?php print t('Health Status') ?></th>
           <td>

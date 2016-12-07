@@ -44,7 +44,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
     $resource_query = $this->generateRqlQuery($query, $from, $limit, $sort, $order, $language);
 
     $cached_studies = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    if(!empty($cached_studies)){
+    if (!empty($cached_studies)) {
       return $cached_studies;
     }
     else {
@@ -88,11 +88,14 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
     $resource_query = '/study/' . rawurlencode($study_id);
     global $language;
     if ($language)
-      $resource_query .= '?locale=' . $language->language;
-    $this->setLastResponse(NULL);
+      // Omit to query with lang parameters to receive study Dto that will be translated using internal drupal mechanism.
+      // $resource_query .= '?locale=' . $language->language;
+    {
+      $this->setLastResponse(NULL);
+    }
     $cached_study = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     $url = $this->micaUrl . $resource_query;
-    if(!empty($cached_study)){
+    if (!empty($cached_study)) {
       return $cached_study;
     }
     else {
@@ -157,7 +160,8 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
     $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
     if (empty($query)) {
       $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket)";
-    } else {
+    }
+    else {
       $params = "study(limit($from,$limit)$query$sort_rql_bucket)";
     }
     $params .= ",locale($language->language)";
