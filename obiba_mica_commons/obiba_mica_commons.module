@@ -271,8 +271,29 @@ function obiba_mica_commons_get_if_no_limit($limit) {
  */
 function obiba_mica_commons_countries($iso_countries) {
   ob_start();
-  obiba_mica_commons_iterate_field($iso_countries, 'countries_country_lookup', 'iso3', 'name');
+  obiba_mica_commons_iterate_field($iso_countries, 'obiba_mica_commons_get_country', 'iso3');
   return ob_get_clean();
+}
+
+/**
+ * Get the country name from a json translated country by iso 3 code.
+ */
+function obiba_mica_commons_get_country($iso3) {
+  global $language;
+  $countries = NULL;
+  $lang = !empty($language->langage) ? $language->langage : 'en';
+  $cached_countries = obiba_mica_commons_get_cache('obiba_mica_country' . $lang . '_json');
+  if (!empty($cached_countries)) {
+    $countries = $cached_countries;
+  }
+  else {
+    $countries = json_decode(file_get_contents(obiba_mica_get_country_code_path('.json')));
+  }
+
+  $country = array_filter($countries, function ($country) use ($iso3) {
+    return ($country->code == $iso3) ? $country->name : NULL;
+  });
+  return current($country)->name;
 }
 
 /**
@@ -290,6 +311,9 @@ function obiba_mica_commons_countries($iso_countries) {
 function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters = NULL, $method = NULL) {
   $i = 0;
   $total_item = count($fields);
+  if (!is_array($fields) && is_string($fields)) {
+    $fields = array(0 => $fields);
+  }
   foreach ($fields as $field) {
     if (!empty($callback)) {
       if (empty($parameters)) {
@@ -1004,13 +1028,13 @@ function obiba_mica_commons_mica_server_localisation($theme) {
   return FALSE;
 }
 
-function obiba_mica_commons_array_empty_test($array){
-  $empty =NULL;
-  foreach($array as $item){
-if(!empty($item)){
-  $empty = TRUE;
-}
+function obiba_mica_commons_array_empty_test($array) {
+  $empty = NULL;
+  foreach ($array as $item) {
+    if (!empty($item)) {
+      $empty = TRUE;
+    }
   }
 
-return $empty;
+  return $empty;
 }

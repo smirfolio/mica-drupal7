@@ -400,6 +400,26 @@ function obiba_mica_get_progressbar_path($extension) {
 }
 
 /**
+ * Helper assembling the resource files setup in the Makefile.
+ *
+ * @param string $extension
+ *   The extension of the file to get.
+ *
+ * @return null|string
+ *   The path.
+ */
+function obiba_mica_get_country_code_path($extension) {
+  global $language;
+  $obiba_contry_code_lib = libraries_get_path('obiba-country-codes');
+  $obiba_contry_code_file = $language->language;
+  return empty($extension)
+  || empty($obiba_contry_code_lib)
+  || empty($obiba_contry_code_file) ? NULL :
+    $obiba_contry_code_lib . '/dist/' . $obiba_contry_code_file . $extension;
+}
+
+
+/**
  * Implements hook_form_FORM_ID_alter().
  *
  * Increase the length of the slogan.
