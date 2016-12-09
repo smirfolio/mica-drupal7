@@ -214,12 +214,14 @@
     <table class="table table-striped">
       <tbody>
 
-      <?php if (!empty($population->model->numberOfParticipants->participant->number)): ?>
+      <?php if (!empty($population->model->numberOfParticipants->participant->number) || !empty($population->model->numberOfParticipants->participant->noLimit)): ?>
         <tr>
           <th><?php print t('Number of Participants') ?></th>
           <td>
             <p>
-              <?php print obiba_mica_commons_format_number($population->model->numberOfParticipants->participant->number) ?>
+              <?php if (!empty($population->model->numberOfParticipants->participant->number)): ?>
+                <?php print obiba_mica_commons_format_number($population->model->numberOfParticipants->participant->number) ?>
+              <?php endif; ?>
               <?php if (!empty($population->model->numberOfParticipants->participant->noLimit)): ?>
                 (<?php print t('No Limit'); ?>)
               <?php endif; ?>
@@ -228,13 +230,15 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->numberOfParticipants->sample->number)): ?>
+      <?php if (!empty($population->model->numberOfParticipants->sample->number) || $population->model->numberOfParticipants->sample->noLimit): ?>
         <tr>
           <th><?php print t('Number of Participants with Biological Samples')
             ?></th>
           <td>
             <p>
-              <?php print obiba_mica_commons_format_number($population->model->numberOfParticipants->sample->number) ?>
+              <?php if ($population->model->numberOfParticipants->sample->number): ?>
+                <?php print obiba_mica_commons_format_number($population->model->numberOfParticipants->sample->number) ?>
+              <?php endif; ?>
               <?php if (!empty($population->model->numberOfParticipants->sample->noLimit)): ?>
                 (<?php print t('No Limit'); ?>)
               <?php endif; ?>
