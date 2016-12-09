@@ -75,9 +75,13 @@
         var anchor = location.hash.substr(1)? location.hash.substr(1).replace(/^\//, '') :null;
         if(anchor) {
           $('#tab-pane a[href="#' + anchor + '"]').tab('show');
-          $('html, body').animate({
-            scrollTop: $('#'+ anchor).offset().top
-          }, 'slow');
+          var scrollSpot = $('#'+ anchor);
+
+          if (scrollSpot.length) {
+            $('html, body').animate({
+              scrollTop: scrollSpot.offset().top
+            }, 'slow');
+          }
         }
       }
     }
