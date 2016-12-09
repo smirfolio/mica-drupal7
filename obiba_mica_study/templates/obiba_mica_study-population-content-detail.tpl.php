@@ -46,18 +46,6 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->recruitment->studies) && !empty(array_filter($population->model->recruitment->studies, 'obiba_mica_commons_array_empty_test'))): ?>
-        <tr>
-          <th><?php print t('Participants from Existing Studies') ?></th>
-          <td>
-            <?php
-            $studies = obiba_mica_commons_get_localized_dtos_field($population->model->recruitment, 'studies');
-            ?>
-            <?php print implode(', ', $studies); ?>
-          </td>
-        </tr>
-      <?php endif; ?>
-
       <?php if (!empty($population->model->recruitment->specificPopulationSources)): ?>
         <tr>
           <th><?php print t('Specific Population') ?></th>
@@ -67,22 +55,28 @@
                 ,
               <?php endif; ?>
               <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . $specific_recruitment . '.title') ?>
+              <?php if (stristr($specific_recruitment, 'other') && !empty($population->model->recruitment->otherSpecificPopulationSource)): ?>
+                : <?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSpecificPopulationSource'); ?>
+              <?php endif; ?>
             <?php endforeach; ?>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->recruitment->otherSpecificPopulationSource)): ?>
+      <?php if (!empty($population->model->recruitment->otherSource)): ?>
         <tr>
-          <th><?php print t('Other Specific Population') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSpecificPopulationSource'); ?></td>
+          <th><?php print t('Other sources') ?></th>
+          <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSource'); ?></td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->recruitment->otherSource)): ?>
+      <?php if (!empty($population->model->recruitment->studies) && !empty(array_filter($population->model->recruitment->studies, 'obiba_mica_commons_array_empty_test'))): ?>
         <tr>
-          <th><?php print t('Supplementary Information') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSource'); ?></td>
+          <th><?php print t('Participants from Existing Studies') ?></th>
+          <td>
+            <?php  $studies = obiba_mica_commons_get_localized_dtos_field($population->model->recruitment, 'studies'); ?>
+            <?php print implode(', ', $studies); ?>
+          </td>
         </tr>
       <?php endif; ?>
 
