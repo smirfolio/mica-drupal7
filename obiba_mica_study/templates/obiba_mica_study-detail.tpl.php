@@ -352,7 +352,7 @@
       <h2 id="populations"><?php if (count($populations) > 1) {
           print t('Populations');
         }
-        else print t('Population') ?></h2>
+        else print '<span id="population-' . $key . '">' . t('Population') . '</span>' ?></h2>
       <?php if (count($populations) == 1): ?>
         <?php print array_pop($populations)['html']; ?>
       <?php else: ?>

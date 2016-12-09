@@ -217,7 +217,7 @@
 
       // type and id
       var absUrl = $location.absUrl();
-      var re = /\/mica\/(\S+)\/(\S+)$/;
+      var re = /\/mica\/([a-z_-]+)\/([a-z_-]+)(?:\/#)?/;
       var found = absUrl.match(re);
 
       if (found) {
