@@ -26,7 +26,8 @@
     "mica-study-timeline": "https://github.com/obiba/mica-study-timeline.git#1.0.2",
     "obiba-progressbar": "https://github.com/obiba/obiba-progressbar.git#1.0.1",
     "datatables": "http://datatables.net/releases/DataTables-1.10.4.zip",
-    "datatables-plugins": "https://github.com/DataTables/Plugins.git#1.10.10"
+    "datatables-plugins": "https://github.com/DataTables/Plugins.git#1.10.10",
+    "obiba-country-codes": "https://github.com/obiba/obiba-country-codes.git#master"
   },
   "resolutions": {
     "angular": "1.5.8",

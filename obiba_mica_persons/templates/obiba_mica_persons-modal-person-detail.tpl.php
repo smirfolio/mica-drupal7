@@ -102,7 +102,7 @@
                         <?php if (!empty($person->institution->address->state)): ?>
                           <?php print $person->institution->address->state . ', '; ?>
                         <?php endif; ?>
-                        <?php print $person->institution->address->country->iso; ?>
+                        <?php print obiba_mica_commons_countries($person->institution->address->country->iso); ?>
                       </p>
                     <?php endif; ?>
                   </td>
