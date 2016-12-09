@@ -46,7 +46,7 @@
             targets: 0,
             render: function (data, type, row) {
               var title = row.title ? row.title : '';
-              return title + ' ' + row.firstName + ' ' + row.lastName;
+              return title + ' ' + (row.firstName ? row.firstName : '') + ' ' + row.lastName;
             }
           },
           {
