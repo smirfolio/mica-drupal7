@@ -403,19 +403,18 @@ function obiba_mica_get_progressbar_path($extension) {
  * Helper assembling the resource files setup in the Makefile.
  *
  * @param string $extension
- *   The extension of the file to get.
+ *   The extension of the file to get
+ * @param string $lang
+ *   The language file.
  *
  * @return null|string
  *   The path.
  */
-function obiba_mica_get_country_code_path($extension) {
-  global $language;
-  $obiba_contry_code_lib = libraries_get_path('obiba-country-codes');
-  $obiba_contry_code_file = $language->language;
+function obiba_mica_get_country_code_path($extension = NULL, $lang = NULl) {
+  $obiba_country_code_lib = libraries_get_path('obiba-country-codes');
   return empty($extension)
-  || empty($obiba_contry_code_lib)
-  || empty($obiba_contry_code_file) ? NULL :
-    $obiba_contry_code_lib . '/dist/' . $obiba_contry_code_file . $extension;
+  || empty($obiba_country_code_lib) ? NULL :
+    $obiba_country_code_lib . '/dist/' . $lang . $extension;
 }
 
 
