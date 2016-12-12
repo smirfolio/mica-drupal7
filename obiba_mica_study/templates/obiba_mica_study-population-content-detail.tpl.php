@@ -130,8 +130,7 @@
         <tr>
           <th><?php print t('Country'); ?></th>
           <td>
-            <?php obiba_mica_commons_iterate_field($population->model->selectionCriteria->countriesIso,
-              'countries_country_lookup', 'iso3', 'name'); ?>
+            <?php print obiba_mica_commons_countries($population->model->selectionCriteria->countriesIso); ?>
           </td>
         </tr>
       <?php endif; ?>

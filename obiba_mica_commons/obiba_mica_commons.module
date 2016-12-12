@@ -276,24 +276,32 @@ function obiba_mica_commons_countries($iso_countries) {
 }
 
 /**
- * Get the country name from a json translated country by iso 3 code.
+ * Get the country name from a json translated country by iso code.
  */
-function obiba_mica_commons_get_country($iso3) {
+function obiba_mica_commons_get_country($iso) {
   global $language;
   $countries = NULL;
+  $iso_map = NULL;
   $lang = !empty($language->langage) ? $language->langage : 'en';
+
   $cached_countries = obiba_mica_commons_get_cache('obiba_mica_country' . $lang . '_json');
-  if (!empty($cached_countries)) {
-    $countries = $cached_countries;
-  }
-  else {
-    $countries = json_decode(file_get_contents(obiba_mica_get_country_code_path('.json'. $lang)));
-  }
+  $cached_iso_map = obiba_mica_commons_get_cache('obiba_mica_iso_map_json');
+
+  $countries = (!empty($cached_countries)) ?
+    $cached_countries :
+    json_decode(file_get_contents(obiba_mica_get_country_path('.json', $lang)));
+
+  $iso_map = !empty($cached_iso_map) ?
+    $cached_iso_map :
+    json_decode(file_get_contents(obiba_mica_get_country_path('.json', 'isoMap')));
+
+  $iso3 = (strlen($iso) == 2) ? $iso_map->{$iso} : $iso;
 
   $country = array_filter($countries, function ($country) use ($iso3) {
-    return ($country->code == $iso3) ? $country->name : NULL;
+    return $country->code == $iso3;
   });
-  return current($country)->name;
+
+  return !empty($country) ? current($country)->name : $iso;
 }
 
 /**

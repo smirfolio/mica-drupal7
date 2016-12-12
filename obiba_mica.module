@@ -404,17 +404,18 @@ function obiba_mica_get_progressbar_path($extension) {
  *
  * @param string $extension
  *   The extension of the file to get
- * @param string $lang
- *   The language file.
+ *
+ * @param string $custom
+ *   custom file name.
  *
  * @return null|string
  *   The path.
  */
-function obiba_mica_get_country_code_path($extension = NULL, $lang = NULl) {
+function obiba_mica_get_country_path($extension = NULL, $custom = NULL) {
   $obiba_country_code_lib = libraries_get_path('obiba-country-codes');
   return empty($extension)
   || empty($obiba_country_code_lib) ? NULL :
-    $obiba_country_code_lib . '/dist/' . $lang . $extension;
+    $obiba_country_code_lib . '/dist/' . $custom . $extension;
 }
 
 
