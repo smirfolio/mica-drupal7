@@ -186,17 +186,12 @@
     }])
     .controller('VariableCoverageChartController', ['$scope', '$location', 'CoverageResource', 'D3ChartConfig', function ($scope, $location, CoverageResource, D3ChartConfig) {
       function normalizeData(data) {
-
-        function sortFunction(a, b) {
-          return a.title.localeCompare(b.title);
-        }
-
         // template with zero value
         var zeroValues = data.reduce(function (prev, curr) {
           return prev.values.length > curr.values.length ? prev : curr;
         }).values.map(function (v) {
           return { key: v.key, title: v.title, value: 0 };
-        }).sort(sortFunction);
+        });
 
         // values normalization
         data.forEach(function (d) {
@@ -211,7 +206,7 @@
             });
           });
 
-          d.values = normalized.sort(sortFunction);
+          d.values = normalized;
         });
       }
 
