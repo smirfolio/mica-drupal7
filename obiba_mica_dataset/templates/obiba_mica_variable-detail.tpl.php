@@ -35,7 +35,7 @@
           <?php if (!empty($variable_dto->description)): ?>
             <tr>
               <th><?php print t('Description') ?></th>
-              <td><p><?php print $variable_dto->description; ?></p></td>
+              <td><p><?php print obiba_mica_commons_markdown($variable_dto->description); ?></p></td>
             </tr>
           <?php endif; ?>
 
