@@ -99,6 +99,7 @@ function obiba_mica_dataset_page_detail($dataset_id) {
           $study_id,
           obiba_mica_dataset_get_population_dce($dataset_type_dto),
           $variables_dataset,
+          NULL,
           $flat_study_attachments
         );
       }
