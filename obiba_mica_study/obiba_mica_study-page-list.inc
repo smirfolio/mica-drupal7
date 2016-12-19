@@ -118,8 +118,19 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
   $from = 0;
   $study_resource = new DrupalMicaStudyResource();
   $size_response = intval($study_limits) > 0 ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
+  $type = 'studies';
+
+  //Prepopulate $_SESSION to get wanted page.
+  //TODO refactor to remove this duplication code in network and study
+  if (empty(@$_SESSION[$type])) {
+    $studies = $study_resource->getStudies(NULL, 0, 1, NULL, NULL);
+    if (!empty($studies)) {
+      $_SESSION[$type]['aggregations']['total_hits'] = $studies->getTotalHits();
+    }
+  }
+
   if (!empty($_GET['page'])) {
-    $from = $study_resource->paginationListSearchParameters($_GET['page'], 'studies', $size_response);
+    $from = $study_resource->paginationListSearchParameters($_GET['page'], $type, $size_response);
   }
 
   if (empty($sort)) {
