@@ -86,3 +86,10 @@ function obiba_mica_update_7100() {
     ->condition('type', 'module')
     ->execute();
 }
+
+/**
+ * Hook to remove old unused modules.
+ */
+function obiba_mica_update_7500() {
+  variable_set('obiba-progressbar-lib', 'obiba-progressbar');
+}
