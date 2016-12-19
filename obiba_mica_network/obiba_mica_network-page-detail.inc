@@ -75,11 +75,13 @@ function obiba_mica_network_page_detail($network_id) {
         array('persons_table' => theme('obiba_mica_persons-table')));
     }
 
+    $investigator = array_filter($network_dto->memberships, function ($m) { return $m->role === 'investigator';});
+    $contact = array_filter($network_dto->memberships, function ($m) { return $m->role === 'contact';});
+
     $investigator_detail_modal =
-      obiba_mica_persons_get_person_detail('investigator', $network_dto->id,
-        !empty($network_dto->investigators) ? $network_dto->investigators : NULL);
+      obiba_mica_persons_get_person_detail('investigator', $network_dto->id, !empty($investigator) ? array_pop($investigator)->members : NULL);
     $contact_detail_modal = obiba_mica_persons_get_person_detail('contact',
-      $network_dto->id, !empty($network_dto->contacts) ? $network_dto->contacts : NULL);
+      $network_dto->id, !empty($contact) ? array_pop($contact)->members : NULL);
 
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
