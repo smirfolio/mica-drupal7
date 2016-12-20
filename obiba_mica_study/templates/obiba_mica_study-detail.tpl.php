@@ -178,12 +178,14 @@
               </td>
             </tr>
           <?php endif; ?>
-          <?php if (!empty($study_dto->model->numberOfParticipants->participant->number)): ?>
+          <?php if (!empty($study_dto->model->numberOfParticipants->participant->number) || !empty($study_dto->model->numberOfParticipants->participant->noLimit)): ?>
             <tr>
               <th><?php print variable_get_value('study_target_number_participant_label') ?></th>
               <td>
                 <p>
-                  <?php print obiba_mica_commons_format_number($study_dto->model->numberOfParticipants->participant->number); ?>
+                  <?php if (!empty($study_dto->model->numberOfParticipants->participant->number)) {
+                    print obiba_mica_commons_format_number($study_dto->model->numberOfParticipants->participant->number);
+                  } ?>
                   <?php if (!empty($study_dto->model->numberOfParticipants->participant->noLimit)): ?>
                     (<?php print t('No Limit'); ?>)
                   <?php endif; ?>
@@ -192,12 +194,14 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->model->numberOfParticipants->sample->number)): ?>
+          <?php if (!empty($study_dto->model->numberOfParticipants->sample->number) || !empty($study_dto->model->numberOfParticipants->sample->noLimit)): ?>
             <tr>
               <th><?php print variable_get_value('study_target_number_participant_with_sample_label') ?></th>
               <td>
                 <p>
-                  <?php print obiba_mica_commons_format_number($study_dto->model->numberOfParticipants->sample->number); ?>
+                  <?php if (!empty($study_dto->model->numberOfParticipants->sample->number)) {
+                    print obiba_mica_commons_format_number($study_dto->model->numberOfParticipants->sample->number);
+                  } ?>
                   <?php if (!empty($study_dto->model->numberOfParticipants->sample->noLimit)): ?>
                     (<?php print t('No Limit'); ?>)
                   <?php endif; ?>
