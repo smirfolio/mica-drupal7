@@ -13,6 +13,8 @@
  * @file
  * Mica studies file
  */
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
+
 
 if (module_exists('obiba_mica_dataset')) {
   $path_module_dataset = drupal_get_path('module', 'obiba_mica_dataset');
@@ -329,6 +331,9 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
           'population_content' => theme('mica_population_content_detail', array(
             'dce_uids' => $dce_uids,
             'population' => $population,
+            'general_population' => _obiba_mica_list_general_populations($population),
+            'specific_population' => _obiba_mica_list_specific_populations($population),
+            'selection_criteria' => _obiba_mica_list_selection_criteria($population),
             'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
           )),
           'population' => $population_content_render,
@@ -338,6 +343,59 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
   }
 
   return $page_render_populations;
+}
+
+function _obiba_mica_list_general_populations($population) {
+  $result = '';
+  if (!empty($population->model) &&
+    !empty($population->model->recruitment) &&
+    !empty($population->model->recruitment->generalPopulationSources)) {
+
+    $localize = new MicaLocalisation\MicaDrupalLocalization();
+    foreach ($population->model->recruitment->generalPopulationSources as $key_source => $source_recruitment) {
+      $result .= ($key_source !== 0 ? ', ' : '') .
+        $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-generalPopulationSources.term.' . $source_recruitment . '.title');
+    }
+  }
+
+  return $result;
+}
+
+function _obiba_mica_list_specific_populations($population) {
+  $result = '';
+  if (!empty($population->model) &&
+    !empty($population->model->recruitment) &&
+    !empty($population->model->recruitment->specificPopulationSources)) {
+
+    $result = '';
+    $localize = new MicaLocalisation\MicaDrupalLocalization();
+    foreach ($population->model->recruitment->specificPopulationSources as  $key_specific => $specific_recruitment) {
+      $result .= ($key_specific !== 0 ? ', ' : '') .
+        $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . $specific_recruitment . '.title');
+
+      if (stristr($specific_recruitment, 'other') && !empty($population->model->recruitment->otherSpecificPopulationSource)) {
+        $result .= ': ' . obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSpecificPopulationSource');
+      }
+    }
+  }
+
+  return $result;
+}
+
+function _obiba_mica_list_selection_criteria($population) {
+  $result = '';
+  if (!empty($population->model) &&
+    !empty($population->model->selectionCriteria) &&
+    !empty($population->model->selectionCriteria->criteria)) {
+
+    $localize = new MicaLocalisation\MicaDrupalLocalization();
+    foreach ($population->model->selectionCriteria->criteria as  $ky_criteria => $criteria) {
+      $result .= ($ky_criteria !== 0 ? ', ' : '') .
+        $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-criteria.term.' . $criteria . '.title');
+    }
+  }
+
+  return $result;
 }
 
 /**
