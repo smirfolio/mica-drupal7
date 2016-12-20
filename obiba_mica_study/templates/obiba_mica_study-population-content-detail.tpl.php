@@ -35,31 +35,14 @@
       <?php if (!empty($population->model->recruitment->generalPopulationSources)): ?>
         <tr>
           <th><?php print t('General Population') ?></th>
-          <td>
-            <?php foreach ($population->model->recruitment->generalPopulationSources as  $key_source => $source_recruitment): ?>
-              <?php if ($key_source !== 0 ): ?>
-                ,
-              <?php endif; ?>
-              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-generalPopulationSources.term.' . $source_recruitment . '.title') ?>
-            <?php endforeach; ?>
-          </td>
+          <td> <?php print $general_population; ?> </td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->model->recruitment->specificPopulationSources)): ?>
         <tr>
           <th><?php print t('Specific Population') ?></th>
-          <td>
-            <?php foreach ($population->model->recruitment->specificPopulationSources as  $key_specific => $specific_recruitment): ?>
-              <?php if ($key_specific !== 0 ): ?>
-                ,
-              <?php endif; ?>
-              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . $specific_recruitment . '.title') ?>
-              <?php if (stristr($specific_recruitment, 'other') && !empty($population->model->recruitment->otherSpecificPopulationSource)): ?>
-                : <?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSpecificPopulationSource'); ?>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          </td>
+          <td> <?php print $specific_population; ?> </td>
         </tr>
       <?php endif; ?>
 
@@ -158,14 +141,7 @@
       <?php if (!empty($population->model->selectionCriteria->criteria)): ?>
         <t>
           <th><?php print t('Criteria') ?></th>
-          <td>
-            <?php foreach ($population->model->selectionCriteria->criteria as  $ky_criteria => $criteria): ?>
-              <?php if ($ky_criteria !== 0 ): ?>
-                ,
-              <?php endif; ?>
-              <?php  print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-criteria.term.' . $criteria . '.title') ?>
-            <?php endforeach; ?>
-          </td>
+          <td><?php print $selection_criteria ?></td>
         </t>
       <?php endif ?>
 
