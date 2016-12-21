@@ -131,8 +131,15 @@ mica.provider('SessionProxy',
     };
   });
 
-mica.run(['amMoment' , function(amMoment){
+mica.run(['amMoment', '$injector', function(amMoment, $injector){
   amMoment.changeLocale(Drupal.settings.angularjsApp.locale);
+
+  // overriding LocalizedValues getLocal method
+  var LocalizedValues = $injector.get('LocalizedValues');
+  LocalizedValues.getLocal = function () {
+    return Drupal.settings.angularjsApp.locale;
+  };
+
 }]);
 
 mica.controller('MainController', [
@@ -295,46 +302,6 @@ mica.service('LocalizedStringService',
       }
     }
   })
-  .service('LocalizedValues',
-    function () {
-      this.for = function (values, lang, keyLang, keyValue) {
-        if (angular.isArray(values)) {
-          var result = values.filter(function (item) {
-            return item[keyLang] === lang;
-          });
-
-          if (result && result.length > 0) {
-            return result[0][keyValue];
-          }
-        }
-        return '';
-      };
-
-      this.forLocale = function (values, lang) {
-        var rval = this.for(values, lang, 'locale', 'text');
-        if (rval === '') {
-          rval = this.for(values, 'und', 'locale', 'text');
-        }
-        return rval;
-      };
-
-      this.forLang = function (values, lang) {
-        var rval = this.for(values, lang, 'lang', 'value');
-        if (rval === '') {
-          rval = this.for(values, 'und', 'lang', 'value');
-        }
-        return rval;
-      };
-
-      this.getLocal = function () {
-        return Drupal.settings.angularjsApp.locale;
-      };
-
-      this.formatNumber = function (number){
-        return number.toLocaleString(this.getLocal());
-      };
-
-    })
   .service('GraphicChartsConfigurations', ['GraphicChartsConfig', function (GraphicChartsConfig) {
     this.setClientConfig = function () {
       GraphicChartsConfig.setOptions(Drupal.settings.GraphicChartsOptions);
