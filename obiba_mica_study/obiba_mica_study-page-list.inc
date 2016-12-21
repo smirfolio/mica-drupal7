@@ -120,7 +120,7 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
   $size_response = intval($study_limits) > 0 ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
   $type = 'studies';
 
-  prepopulateSessionWithStudiesCountIfNeeded($type, $study_resource);
+  prepopulate_session_with_studies_count_if_needed($type, $study_resource);
 
   if (!empty($_GET['page'])) {
     $from = $study_resource->paginationListSearchParameters($_GET['page'], $type, $size_response);
@@ -139,20 +139,20 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
 
   $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order);
 
-  populateSessionWithStudiesCount($response, $type);
+  populate_session_with_studies_count($response, $type);
 
   return $response;
 }
 
-function prepopulateSessionWithStudiesCountIfNeeded($type, DrupalMicaStudyResource $study_resource) {
+function prepopulate_session_with_studies_count_if_needed($type, DrupalMicaStudyResource $study_resource) {
 
   if (empty(@$_SESSION[$type])) {
     $studies = $study_resource->getStudies(NULL, 0, 1, NULL, NULL);
-    populateSessionWithStudiesCount($studies, $type);
+    populate_session_with_studies_count($studies, $type);
   }
 }
 
-function populateSessionWithStudiesCount($response, $type) {
+function populate_session_with_studies_count($response, $type) {
   if (!empty($response)) {
     $_SESSION[$type]['aggregations']['total_hits'] = $response->getTotalHits();
   }

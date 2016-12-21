@@ -82,27 +82,27 @@ function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL,
   $size_response = !empty($network_limits) ? $network_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
   $type = 'networks';
 
-  prepopulateSessionWithNetworkCountIfNeeded($type, $network_resource);
+  prepopulate_session_with_network_count_if_needed($type, $network_resource);
 
   if (!empty($_GET['page'])) {
     $from = $network_resource->paginationListSearchParameters($_GET['page'], $type, $size_response);
   }
   $networks = $network_resource->getNetworks($study_id, $query, $from, $size_response, $sort, $sort_by);
 
-  populateSessionWithNetworkCount($networks, $type);
+  populate_session_with_network_count($networks, $type);
 
   return $networks;
 }
 
-function prepopulateSessionWithNetworkCountIfNeeded($type, DrupalMicaNetworkResource $network_resource) {
+function prepopulate_session_with_network_count_if_needed($type, DrupalMicaNetworkResource $network_resource) {
 
   if (empty(@$_SESSION[$type])) {
     $networks = $network_resource->getNetworks(NULL, NULL, 0, 1, NULL, NULL);
-    populateSessionWithNetworkCount($networks, $type);
+    populate_session_with_network_count($networks, $type);
   }
 }
 
-function populateSessionWithNetworkCount($networks, $type) {
+function populate_session_with_network_count($networks, $type) {
   if (!empty($networks)) {
     $_SESSION[$type]['aggregations']['total_hits'] = $networks->getTotalHits();
   }
