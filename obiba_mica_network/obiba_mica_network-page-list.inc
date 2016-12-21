@@ -82,25 +82,30 @@ function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL,
   $size_response = !empty($network_limits) ? $network_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
   $type = 'networks';
 
-  //Prepopulate $_SESSION to get wanted page.
-  //TODO refactor to remove this duplication code in network and study
-  if (empty(@$_SESSION[$type])) {
-    $networks = $network_resource->getNetworks(NULL, NULL, 0, 1, NULL, NULL);
-    if (!empty($networks)) {
-      $_SESSION[$type]['aggregations']['total_hits'] = $networks->getTotalHits();
-    }
-  }
+  prepopulateSessionWithNetworkCountIfNeeded($type, $network_resource);
 
   if (!empty($_GET['page'])) {
     $from = $network_resource->paginationListSearchParameters($_GET['page'], $type, $size_response);
   }
   $networks = $network_resource->getNetworks($study_id, $query, $from, $size_response, $sort, $sort_by);
 
-  if (!empty($networks)) {
-    $_SESSION['networks']['aggregations']['total_hits'] = $networks->getTotalHits();
-  }
+  populateSessionWithNetworkCount($networks, $type);
 
   return $networks;
+}
+
+function prepopulateSessionWithNetworkCountIfNeeded($type, DrupalMicaNetworkResource $network_resource) {
+
+  if (empty(@$_SESSION[$type])) {
+    $networks = $network_resource->getNetworks(NULL, NULL, 0, 1, NULL, NULL);
+    populateSessionWithNetworkCount($networks, $type);
+  }
+}
+
+function populateSessionWithNetworkCount($networks, $type) {
+  if (!empty($networks)) {
+    $_SESSION[$type]['aggregations']['total_hits'] = $networks->getTotalHits();
+  }
 }
 
 function obiba_mica_network_create_form() {
