@@ -210,7 +210,7 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->model->numberOfParticipants->info)): ?>
+          <?php if (!empty(obiba_mica_commons_get_localized_field($study_dto->model->numberOfParticipants, 'info'))): ?>
             <tr>
               <th><?php print variable_get_value('study_supplementary_information_about_target_number_participant') ?></th>
               <td>
