@@ -175,7 +175,7 @@
 
 <?php if (!empty($population->model->numberOfParticipants->participant->number) || !empty($population->model->numberOfParticipants->participant->noLimit)
   || !empty($population->model->numberOfParticipants->sample->number) || !empty($population->model->numberOfParticipants->sample->noLimit)
-  || !empty($population->model->info)
+  || !empty($population->model->info || !empty($population->model->numberOfParticipants->info))
 ): ?>
   <h4><?php print t('Sample Size') ?></h4>
 
@@ -216,16 +216,11 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->numberOfParticipants->info)): ?>
+      <?php if (!empty(obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'))): ?>
         <tr>
           <th><?php print t('Supplementary Information about the Number of Participants') ?></th>
           <td>
-
-            <?php if (!empty($population->model->numberOfParticipants->info)): ?>
-
               <p><?php print obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'); ?></p>
-            <?php endif; ?>
-
           </td>
         </tr>
       <?php endif; ?>
