@@ -479,23 +479,23 @@ function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
 
       $data = array();
       $variable_data = array();
-      foreach ($coverage->vocabularies as $vocabularies) {
+      foreach ($coverage->vocabularies as $vocabulary) {
 
-        if (!empty($vocabularies->buckets)) {
-          foreach ($vocabularies->buckets as $buckets) {
+        if (!empty($vocabulary->buckets)) {
+          foreach ($vocabulary->buckets as $bucket) {
             $item = new stdClass();
-            $item->key = $buckets->value;
-            $item->value = $buckets->hits;
-            $item->title = obiba_mica_commons_get_localized_field($vocabularies->vocabulary, 'titles');
-            $item->link = base_path() . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders(NULL, $buckets, $coverage->taxonomy->name, $vocabularies->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabularies->terms), $entity_id);
+            $item->key = $bucket->value;
+            $item->value = $bucket->hits;
+            $item->title = obiba_mica_commons_get_localized_field($vocabulary->vocabulary, 'titles');
+            $item->link = base_path() . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders(NULL, $bucket, $coverage->taxonomy->name, $vocabulary->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabulary->terms), $entity_id);
             array_push($data, $item);
           }
         } else {
           $item = new stdClass();
           $item->key = t('Variables');
-          $item->value = $vocabularies->count;
-          $item->title = obiba_mica_commons_get_localized_field($vocabularies->vocabulary, 'titles');
-          $item->link = base_path() . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders($query, NULL, $coverage->taxonomy->name, $vocabularies->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabularies->terms), $entity_id);
+          $item->value = $vocabulary->count;
+          $item->title = obiba_mica_commons_get_localized_field($vocabulary->vocabulary, 'titles');
+          $item->link = base_path() . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders($query, NULL, $coverage->taxonomy->name, $vocabulary->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabulary->terms), $entity_id);
           array_push($variable_data, $item);
         }
       }
