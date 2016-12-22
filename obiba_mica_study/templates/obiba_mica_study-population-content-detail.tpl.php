@@ -74,8 +74,8 @@
   </div>
 <?php endif; ?>
 
-<?php if ((isset($population->model->selectionCriteria->gender) && (
-            $population->model->selectionCriteria->gender === 0 || $population->model->selectionCriteria->gender === 1))
+<?php if (
+  (isset($population->model->selectionCriteria->gender) && (obiba_mica_study_get_gender($population->model->selectionCriteria->gender) !== NULL))
   || !empty($population->model->selectionCriteria->ageMin)
   || !empty($population->model->selectionCriteria->ageMax)
   || !empty($population->model->selectionCriteria->countriesIso)
@@ -89,7 +89,7 @@
   <div class="scroll-content-tab">
     <table class="table table-striped">
       <tbody>
-      <?php if (isset($population->model->selectionCriteria->gender)): ?>
+      <?php if (obiba_mica_study_get_gender($population->model->selectionCriteria->gender) !== NULL): ?>
         <tr>
           <th><?php print t('Gender') ?></th>
           <td><?php print  obiba_mica_study_get_gender($population->model->selectionCriteria->gender); ?></td>
