@@ -152,11 +152,14 @@ function obiba_mica_study_block_info() {
  * @return text value gender
  */
 function obiba_mica_study_get_gender($gender_val) {
+
   switch ($gender_val) {
-    case 0:
-      return t('Men only');
+    case 'women':
     case 1:
       return t('Women only');
+    case 'men':
+    case 0:
+      return t('Men only');
   }
 }
 
