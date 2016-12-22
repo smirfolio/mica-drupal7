@@ -175,7 +175,8 @@
 
 <?php if (!empty($population->model->numberOfParticipants->participant->number) || !empty($population->model->numberOfParticipants->participant->noLimit)
   || !empty($population->model->numberOfParticipants->sample->number) || !empty($population->model->numberOfParticipants->sample->noLimit)
-  || !empty($population->model->info || !empty($population->model->numberOfParticipants->info))
+  || !empty($population->model->info)
+  || !empty($population->model->numberOfParticipants->info)
 ): ?>
   <h4><?php print t('Sample Size') ?></h4>
 
