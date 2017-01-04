@@ -174,14 +174,19 @@ function obiba_mica_network_networks_table_rows($networks) {
 function obiba_mica_network_retrieve_networks($query, $sort = NULL, $sort_order = NULL) {
   $list_networks = obiba_mica_network_get_networks(NULL, $query, $sort, $sort_order);
   $list_networks_rendered = '';
-  foreach ($list_networks->getSummaries() as $network) {
-    $list_networks_rendered .= theme('obiba_mica_network-list-page-block', array(
-      'network' => $network
-    ));
+  if (!empty($list_networks)) {
+    foreach ($list_networks->getSummaries() as $network) {
+      $list_networks_rendered .= theme('obiba_mica_network-list-page-block', array(
+        'network' => $network
+      ));
+    }
+    $data['list'] = $list_networks_rendered;
+    $data['total'] = $list_networks->total;
+    drupal_json_output($data);
   }
-  $data['list'] = $list_networks_rendered;
-  $data['total'] = $list_networks->total;
-  drupal_json_output($data);
+  else{
+    return FALSE;
+  }
 }
 
 function obiba_mica_network_networks_table_headers() {

@@ -92,14 +92,19 @@ function obiba_mica_study_page_list() {
 function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = NULL, $size_response_param = NULL) {
   $list_studies = obiba_mica_study_get_studies($query, $sort, $sort_order, $size_response_param);
   $list_studies_rendered = '';
-  foreach ($list_studies->getSummaries() as $study) {
-    $list_studies_rendered .= theme('obiba_mica_study-list-page-block', array(
-      'study' => $study,
-    ));
+  if (!empty($list_studies)) {
+    foreach ($list_studies->getSummaries() as $study) {
+      $list_studies_rendered .= theme('obiba_mica_study-list-page-block', array(
+        'study' => $study,
+      ));
+    }
+    $data['list'] = $list_studies_rendered;
+    $data['total'] = $list_studies->getTotalHits();
+    drupal_json_output($data);
   }
-  $data['list'] = $list_studies_rendered;
-  $data['total'] = $list_studies->getTotalHits();
-  drupal_json_output($data);
+  else {
+    return FALSE;
+  }
 }
 
 function obiba_mica_study_create_form() {
@@ -131,8 +136,11 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
     if (!empty($study_list_sort_option)) {
       if ($study_list_sort_option == 1) {
         $sort = 'name';
-      } else if ($study_list_sort_option == 2) {
-        $sort = 'acronym';
+      }
+      else {
+        if ($study_list_sort_option == 2) {
+          $sort = 'acronym';
+        }
       }
     }
   }
@@ -168,7 +176,10 @@ function obiba_mica_study_studies_table($studies) {
   $headers = obiba_mica_study_study_summaries_table_headers();
   $per_page = 20;
 
-  $args = array('quantity' => $total, 'element' => DrupalMicaStudyResource::PAGINATE_STUDIES);
+  $args = array(
+    'quantity' => $total,
+    'element' => DrupalMicaStudyResource::PAGINATE_STUDIES
+  );
   $current_page = pager_default_initialize($total, $per_page, DrupalMicaStudyResource::PAGINATE_STUDIES);
   $chunks = array_chunk($rows, $per_page, TRUE);
   return theme(
