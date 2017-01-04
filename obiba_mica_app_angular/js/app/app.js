@@ -131,15 +131,8 @@ mica.provider('SessionProxy',
     };
   });
 
-mica.run(['amMoment', '$injector', function(amMoment, $injector){
+mica.run(['amMoment', function(amMoment){
   amMoment.changeLocale(Drupal.settings.angularjsApp.locale);
-
-  // overriding LocalizedValues getLocal method
-  var LocalizedValues = $injector.get('LocalizedValues');
-  LocalizedValues.getLocal = function () {
-    return Drupal.settings.angularjsApp.locale;
-  };
-
 }]);
 
 mica.controller('MainController', [
