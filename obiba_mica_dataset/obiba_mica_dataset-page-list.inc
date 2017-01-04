@@ -142,7 +142,12 @@ function obiba_mica_dataset_create_form() {
  */
 function obiba_mica_dataset_retrieve_datasets($query, $sort = NULL, $sort_order = NULL) {
   $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, NULL);
+  if(!empty($list_datasets)){
   drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
+  }
+  else{
+    return FALSE;
+  }
 }
 
 /**
@@ -150,7 +155,12 @@ function obiba_mica_dataset_retrieve_datasets($query, $sort = NULL, $sort_order 
  */
 function obiba_mica_dataset_retrieve_harmonizationDatasets($query, $sort = NULL, $sort_order = NULL) {
   $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'HarmonizationDataset');
-  drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
+  if(!empty($list_datasets)){
+    drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
+  }
+  else{
+    return FALSE;
+  }
 }
 
 /**
@@ -158,7 +168,12 @@ function obiba_mica_dataset_retrieve_harmonizationDatasets($query, $sort = NULL,
  */
 function obiba_mica_dataset_retrieve_studyDatasets($query, $sort = NULL, $sort_order = NULL) {
   $list_datasets = obiba_mica_dataset_get_datasets($query, $sort, $sort_order, 'StudyDataset');
-  drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
+  if(!empty($list_datasets)) {
+    drupal_json_output(obiba_mica_dataset_themed_list_dataset($list_datasets));
+  }
+  else{
+    return FALSE;
+  }
 }
 
 /**
@@ -166,14 +181,19 @@ function obiba_mica_dataset_retrieve_studyDatasets($query, $sort = NULL, $sort_o
  */
 Function obiba_mica_dataset_themed_list_dataset($list_datasets) {
   $list_datasets_rendered = '';
-  foreach ($list_datasets->getSummaries() as $dataset) {
-    $list_datasets_rendered .= theme('obiba_mica_dataset-list-page-block', array(
-      'dataset' => $dataset,
-    ));
+  if(!empty($list_datasets)){
+    foreach ($list_datasets->getSummaries() as $dataset) {
+      $list_datasets_rendered .= theme('obiba_mica_dataset-list-page-block', array(
+        'dataset' => $dataset,
+      ));
+    }
+    $data['list'] = $list_datasets_rendered;
+    $data['total'] = $list_datasets->getTotalHits();
+    return $data;
   }
-  $data['list'] = $list_datasets_rendered;
-  $data['total'] = $list_datasets->getTotalHits();
-  return $data;
+else{
+  return FALSE;
+}
 }
 
 /**
