@@ -73,13 +73,12 @@ function obiba_mica_network_page_detail($network_id) {
       $associated_people_button = theme('obiba_mica_persons-button');
       $associated_people_modal = theme('obiba_mica_persons-modal',
         array('persons_table' => theme('obiba_mica_persons-table')));
+      $contact_detail_modal='';
+      foreach ($network_dto->memberships as $membership) {
+        $contact_detail_modal .= obiba_mica_persons_get_person_detail($membership->role,
+          $network_dto->id, !empty($membership) ? $membership->members : NULL);
+      }
     }
-
-    $investigator_detail_modal =
-      obiba_mica_persons_get_person_detail('investigator', $network_dto->id,
-        !empty($network_dto->investigators) ? $network_dto->investigators : NULL);
-    $contact_detail_modal = obiba_mica_persons_get_person_detail('contact',
-      $network_dto->id, !empty($network_dto->contacts) ? $network_dto->contacts : NULL);
 
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
@@ -116,7 +115,7 @@ function obiba_mica_network_page_detail($network_id) {
       '/js/mica-network-detail.js', 'file');
     drupal_add_js(array(
       'networkUrl' => rawurlencode($network_id),
-      'study_ids' => !empty($network_dto->studyIds)?$network_dto->studyIds:array()
+      'study_ids' => !empty($network_dto->studyIds) ? $network_dto->studyIds : array()
     ), 'setting');
     $network_theme = $network_resource->drupalCache->MicaGetCache('network_theme_cache-' . $network_id);
     if (!empty($network_theme)) {
@@ -132,8 +131,8 @@ function obiba_mica_network_page_detail($network_id) {
         'contacts_modal' => !empty($contact_detail_modal) ?
           $contact_detail_modal : NULL,
         'network_dto' => $network_dto,
-        'has_variables' => !empty($network_dto->studySummaries)?
-          _obiba_mica_network_has_variables($network_dto->studySummaries):FALSE,
+        'has_variables' => !empty($network_dto->studySummaries) ?
+          _obiba_mica_network_has_variables($network_dto->studySummaries) : FALSE,
         'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : 'studyIds',
         'associated_people_button' => !empty($associated_people_button) ?
           $associated_people_button : NULL,
