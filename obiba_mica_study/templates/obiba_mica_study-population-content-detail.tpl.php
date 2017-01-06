@@ -89,7 +89,7 @@
   <div class="scroll-content-tab">
     <table class="table table-striped">
       <tbody>
-      <?php if (obiba_mica_study_get_gender($population->model->selectionCriteria->gender) !== NULL): ?>
+      <?php if (!empty($population->model->selectionCriteria->gender) && obiba_mica_study_get_gender($population->model->selectionCriteria->gender) !== NULL): ?>
         <tr>
           <th><?php print t('Gender') ?></th>
           <td><?php print  obiba_mica_study_get_gender($population->model->selectionCriteria->gender); ?></td>

@@ -83,16 +83,16 @@
 
     <div>
       <!-- table detail and stats options -->
-      <!--<div class="btn-group">
+      <div class="btn-group">
         <label class="btn" ng-class="{'btn-info': options.showDetails, 'btn-default': !options.showDetails}"
-               ng-model="options.showDetails" btn-checkbox>{{'detailed' | translate}}</label>
+               ng-model="options.showDetails" uib-btn-checkbox>{{'global.detailed' | translate}}</label>
         <div class="btn-group" ng-if="!isStatistical(crosstab.rhs.xVariable)">
           <label class="btn" ng-class="{'btn-info': options.statistics === StatType.CPERCENT, 'btn-default': options.statistics !== StatType.CPERCENT}"
-                 ng-model="options.statistics" btn-radio="StatType.CPERCENT">{{'percentage' | translate}} <i class="fa fa-long-arrow-down"></i></label>
+                 ng-model="options.statistics" uib-btn-radio="StatType.CPERCENT">{{'global.percentage' | translate}} <i class="fa fa-long-arrow-down"></i></label>
           <label class="btn" ng-class="{'btn-info': options.statistics === StatType.RPERCENT, 'btn-default': options.statistics !== StatType.RPERCENT}"
-                 ng-model="options.statistics" btn-radio="StatType.RPERCENT">{{'percentage' | translate}} <i class="fa fa-long-arrow-right"></i></label>
+                 ng-model="options.statistics" uib-btn-radio="StatType.RPERCENT">{{'global.percentage' | translate}} <i class="fa fa-long-arrow-right"></i></label>
         </div>
-      </div>-->
+      </div>
 
       <!-- download menu -->
       <div class="pull-right sm-bottom-margin">
@@ -120,7 +120,7 @@
       <thead>
       <tr>
         <th style="vertical-align: top" class="" ng-if="datasetHarmo" width="20%"
-            rowspan="{{crosstab.lhs.xVariable.categories.length}}">{{options.showDetailedStats ? ('study-table' | translate) : ''}}
+            rowspan="{{crosstab.lhs.xVariable.categories.length}}">{{options.showDetailedStats ? ('dataset.study-table' | translate) : ''}}
         </th>
         <th style="vertical-align: top" rowspan="{{crosstab.lhs.xVariable.categories.length}}" width="10%">
           <a href="<?php print base_path(); ?>mica/variable/{{crosstab.rhs.xVariable.id}}">{{crosstab.rhs.xVariable.name}}</a>
