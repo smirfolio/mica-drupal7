@@ -222,7 +222,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    * @param string $variable2
    *   The variable 2 id.
    *
-   * @return array
+   * @return stdClass
    *   The server response.
    */
   public function crossVariables($resource, $dataset_id, $variable1, $variable2) {
@@ -255,7 +255,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
         }
 
       } catch (HttpClientException $e) {
-        return array();
+        return new stdClass();
       }
     }
   }
