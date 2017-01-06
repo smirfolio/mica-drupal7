@@ -238,7 +238,7 @@
 
               var privacyThreshold = contingency.privacyThreshold;
               var grandTotal = contingency.all.total;
-              contingency.all.privacyCheck = contingency.all.frequencies.length > 0;
+              contingency.all.privacyCheck = contingency.all.frequencies && contingency.all.frequencies.length > 0;
               normalize(contingency.all, privacyThreshold);
               statistics(contingency.all, grandTotal, contingency.all);
 
