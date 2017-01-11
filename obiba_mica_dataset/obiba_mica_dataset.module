@@ -410,7 +410,7 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
     return $cached_networks_datasets_list;
   }
   else {
-    $localize = new MicaLocalisation\MicaDrupalLocalization();
+    $localize = obiba_mica_commons_mica_server_localisation();
     $dataset_rows = array();
     $summaries = $datasets->getSummaries();
     if (empty($summaries)) {
@@ -466,7 +466,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
   if (empty($datasets)) {
     return NULL;
   }
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   $dataset_rows = array();
   $summaries = $datasets->getSummaries();
   $dce_variables = array();
@@ -533,7 +533,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
  */
 function obiba_mica_dataset_attributes_tab($attributes = NULL, $namespace = NULL, $excluded_names = array()) {
   $rows = array();
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   if (!empty($attributes)) {
     foreach ($attributes as $attribute) {
       if (empty($namespace) || !empty($attribute->namespace) && $namespace == $attribute->namespace) {
@@ -702,7 +702,7 @@ function obiba_mica_dataset_get_js($weight_js) {
  * Implements hook_load_menus().
  */
 function obiba_mica_dataset_load_menus() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   $items = array();
 
   $items[MicaClientPathProvider::CROSSTAB] = array(

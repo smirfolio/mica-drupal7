@@ -42,7 +42,7 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   $themed_attachment = NULL;
   $modals = NULL;
   $dataset_resource = new DrupalMicaDatasetResource();
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
 
   $dataset_dto = $dataset_resource->getDataset($dataset_id);
 
@@ -368,7 +368,7 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
  * Studies dataset ajax variable table.
  */
 function obiba_mica_dataset_studies_Variables_table_ajax_header() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
     array(
       "sTitle" => '',
@@ -489,7 +489,7 @@ function obiba_mica_dataset_links_table_rows($network_details) {
 }
 
 function obiba_mica_datataset_network_table_headers() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
     array("title" => $localize->getTranslation('network.acronym'), 'width' => '15%'),
     array("title" => $localize->getTranslation('network.name'), 'width' => '40%'),
@@ -510,7 +510,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
   $opal_tables = _obiba_mica_dataset_harmonizations_get_all_opal_tables($dataset_type_dto);
 
   if (!empty($opal_tables)) {
-    $localize = new MicaLocalisation\MicaDrupalLocalization();
+    $localize = obiba_mica_commons_mica_server_localisation();
     $header[] = array(
       "sTitle" => '',
       "data" => "index",
@@ -732,7 +732,7 @@ function obiba_mica_dataset_studies_datatable_init($dataset_type_dto) {
  * Get studies table.
  */
 function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   $study_tables = array();
   if (!empty($dataset_type_dto->studyTables)) {
     foreach ($dataset_type_dto->studyTables as $study_table) {

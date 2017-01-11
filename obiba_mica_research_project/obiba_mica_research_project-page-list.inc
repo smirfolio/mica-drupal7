@@ -90,7 +90,7 @@ function obiba_mica_research_project_page_list() {
 }
 
 function obiba_mica_research_project_create_form() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   global $language;
   $context = array(
     'options' => array(
@@ -117,7 +117,7 @@ function obiba_mica_research_project_get_projects($query = NULL, $limit = NULL, 
 
 
 function obiba_mica_research_project_dar_research_projects_list_page() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   drupal_set_title(obiba_mica_research_project_list_page_title_callback());
   $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
   $header_applicant = array();

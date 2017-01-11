@@ -90,7 +90,7 @@ function obiba_mica_study_page_detail($study_id) {
   $themed_attachment = NULL;
   $flat_study_attachments = NULL;
 
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   $study_resource = new DrupalMicaStudyResource();
   $study_dto = $study_resource->getStudy($study_id);
   if (!empty($study_dto)) {
@@ -290,7 +290,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
       $dce_uids = array();
       $population_content_render['data'] = $population;
       if (!empty($population->dataCollectionEvents)) {
-        $localize = new MicaLocalisation\MicaDrupalLocalization();
+        $localize = obiba_mica_commons_mica_server_localisation();
         $dce_rows = obiba_mica_study_get_dce_table($population->dataCollectionEvents, $study_detail->id, $population->id);
         uasort($dce_rows, 'obiba_mica_study_sort_dce');
         obiba_mica_commons_normalize_rows($dce_rows);
@@ -353,7 +353,7 @@ function _obiba_mica_list_general_populations($population) {
     !empty($population->model->recruitment) &&
     !empty($population->model->recruitment->generalPopulationSources)) {
 
-    $localize = new MicaLocalisation\MicaDrupalLocalization();
+    $localize = obiba_mica_commons_mica_server_localisation();
     foreach ($population->model->recruitment->generalPopulationSources as $key_source => $source_recruitment) {
       $result .= ($key_source !== 0 ? ', ' : '') .
         $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-generalPopulationSources.term.' . $source_recruitment . '.title');
@@ -370,7 +370,7 @@ function _obiba_mica_list_specific_populations($population) {
     !empty($population->model->recruitment->specificPopulationSources)) {
 
     $result = '';
-    $localize = new MicaLocalisation\MicaDrupalLocalization();
+    $localize = obiba_mica_commons_mica_server_localisation();
     foreach ($population->model->recruitment->specificPopulationSources as  $key_specific => $specific_recruitment) {
       $result .= ($key_specific !== 0 ? ', ' : '') .
         $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . $specific_recruitment . '.title');
@@ -390,7 +390,7 @@ function _obiba_mica_list_selection_criteria($population) {
     !empty($population->model->selectionCriteria) &&
     !empty($population->model->selectionCriteria->criteria)) {
 
-    $localize = new MicaLocalisation\MicaDrupalLocalization();
+    $localize = obiba_mica_commons_mica_server_localisation();
     foreach ($population->model->selectionCriteria->criteria as  $ky_criteria => $criteria) {
       $result .= ($ky_criteria !== 0 ? ', ' : '') .
         $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-criteria.term.' . $criteria . '.title');

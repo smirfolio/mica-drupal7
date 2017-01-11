@@ -192,7 +192,7 @@ function obiba_mica_network_retrieve_networks($query, $sort = NULL, $sort_order 
 }
 
 function obiba_mica_network_networks_table_headers() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
     $localize->getTranslation('network.acronym'),
     $localize->getTranslation('name'),

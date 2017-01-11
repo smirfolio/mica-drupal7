@@ -30,7 +30,7 @@ function obiba_mica_network_page_detail($network_id) {
   $themed_attachment = NULL;
 
   $network_dto = $network_resource->getNetwork($network_id);
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
 
   $studies_statistics = '';
   if (!empty($network_dto)) {
@@ -345,7 +345,7 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
 }
 
 function obiba_mica_network_study_table_headers() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
     array("title" => $localize->getTranslation('study.acronym'), 'width' => '15%'),
     array("title" => $localize->getTranslation('study.name'), 'width' => '40%'),
@@ -357,7 +357,7 @@ function obiba_mica_network_study_table_headers() {
 }
 
 function obiba_mica_network_network_table_headers() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
     array("title" => $localize->getTranslation('network.acronym'), 'width' => '15%'),
     array("title" => $localize->getTranslation('network.name'), 'width' => '40%'),

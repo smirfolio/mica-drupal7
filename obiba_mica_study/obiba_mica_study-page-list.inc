@@ -34,7 +34,7 @@ function obiba_mica_study_page_list() {
   $study_sort_by = NULL;
   $study_limits = NULL;
 
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('study_list_page'));
   drupal_set_title($node_rendered['#node']->title);
 
@@ -111,7 +111,7 @@ function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = N
 }
 
 function obiba_mica_study_create_form() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
 
   $context =
     array(
@@ -172,7 +172,7 @@ function populate_session_with_studies_count($response, $type) {
 }
 
 function obiba_mica_study_studies_table($studies) {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   $rows = array();
   $total = 0;
   if (!empty($studies['total_hits']) && $studies['total_hits'] > 0) {
@@ -199,7 +199,7 @@ function obiba_mica_study_studies_table($studies) {
 }
 
 function obiba_mica_study_study_summaries_table_headers() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
     array("title" => $localize->getTranslation('study.acronym')),
     array("title" => $localize->getTranslation('study.name')),
@@ -220,7 +220,7 @@ function obiba_mica_study_study_summaries_table_rows($study_summaries) {
 }
 
 function obiba_mica_study_study_summaries_table_row($study_summary) {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
   return array(
     l(obiba_mica_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id),

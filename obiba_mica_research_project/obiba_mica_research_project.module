@@ -143,7 +143,7 @@ function obiba_mica_research_project_form_obiba_mica_content_pages_admin_setting
  * Data Access Request Research Project Title Callback
  */
 function obiba_mica_research_project_list_page_title_callback() {
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
   return $permissionResource->userHasRole('mica-data-access-officer') ?
     $localize->getTranslation('research-projects') :

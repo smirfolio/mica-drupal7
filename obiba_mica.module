@@ -100,10 +100,12 @@ function obiba_mica_menu() {
 /**
  * Implements hook_preprocess().
  */
-function obiba_mica_preprocess(&$variables, $hook){
-  $localize = obiba_mica_commons_mica_server_localisation($hook);
-  if($localize){
-    $variables['localize'] = $localize;
+function obiba_mica_preprocess(&$variables, $hook) {
+    if (empty($variables['localize'])) {
+      $localize = obiba_mica_commons_mica_server_localisation();
+      if ($localize) {
+      $variables['localize'] = $localize;
+    }
   }
 }
 

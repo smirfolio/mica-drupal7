@@ -19,7 +19,7 @@ use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
  */
 function obiba_mica_research_project_page_detail($project_id) {
   $research_project_resource = new DrupalMicaResearchProjectResource(NULL);
-  $localize = new MicaLocalisation\MicaDrupalLocalization();
+  $localize = obiba_mica_commons_mica_server_localisation();
   
   $response = $research_project_resource->getProject($project_id);
 
