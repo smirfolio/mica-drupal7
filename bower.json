@@ -1,6 +1,6 @@
 {
   "name": "obiba_mica",
-  "version": "1.1.2",
+  "version": "2.0.1",
   "dependencies": {
     "angular": "1.5.8",
     "angular-animate": "1.5.8",
@@ -23,7 +23,7 @@
     "angular-recaptcha": "3.0.3",
     "sf-obiba-file-upload": "https://github.com/obiba/sf-obiba-file-upload.git#1.1.0",
     "sf-checkboxgroup": "https://github.com/obiba/sf-checkboxgroup.git#1.0.0",
-    "mica-study-timeline": "https://github.com/obiba/mica-study-timeline.git#1.0.3",
+    "mica-study-timeline": "https://github.com/obiba/mica-study-timeline.git#1.0.4",
     "obiba-progressbar": "https://github.com/obiba/obiba-progressbar.git#1.0.1",
     "datatables": "http://datatables.net/releases/DataTables-1.10.4.zip",
     "datatables-plugins": "https://github.com/DataTables/Plugins.git#1.10.10",
