@@ -14,6 +14,8 @@
  * Code for obiba_mica_dataset module.
  */
 
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
+
 include_once('obiba_mica_dataset_admin_form.inc');
 
 /**
@@ -408,6 +410,7 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
     return $cached_networks_datasets_list;
   }
   else {
+    $localize = obiba_mica_commons_mica_server_localisation();
     $dataset_rows = array();
     $summaries = $datasets->getSummaries();
     if (empty($summaries)) {
@@ -426,7 +429,7 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
         }
         $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
         $dataset_type = $summary->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
-        $dataset_type_name = $summary->variableType == 'Study' ? t('Study dataset') : t('Harmonization dataset');
+        $dataset_type_name = $summary->variableType == 'Study' ? $localize->getTranslation('study-dataset') : $localize->getTranslation('harmonization-dataset');
 
         $dataset_rows[$key_dataset] = array(
           'data' => array(
@@ -441,9 +444,9 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
         'table',
         array(
           'header' => array(
-            t('Name'),
-            t('Type'),
-            t('Variables'),
+            $localize->getTranslation('name'),
+            $localize->getTranslation('type'),
+            $localize->getTranslation('variables'),
           ),
           'rows' => $dataset_rows,
           'empty' => variable_get_value('datasets_empty_label'),
@@ -463,6 +466,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
   if (empty($datasets)) {
     return NULL;
   }
+  $localize = obiba_mica_commons_mica_server_localisation();
   $dataset_rows = array();
   $summaries = $datasets->getSummaries();
   $dce_variables = array();
@@ -492,7 +496,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
 
       $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
       $dataset_type = $summary->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
-      $dataset_type_name = $summary->variableType == 'Study' ? t('Study dataset') : t('Harmonization dataset');
+      $dataset_type_name = $summary->variableType == 'Study' ? $localize->getTranslation('study-dataset') : $localize->getTranslation('harmonization-dataset');
       $dataset_rows[$key_dataset] = array(
         'data' => array(
           'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id),
@@ -511,10 +515,10 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
     'table',
     array(
       'header' => array(
-        t('Name'),
-        t('Type'),
-        t('Data Collection Events'),
-        t('Variables'),
+        $localize->getTranslation('name'),
+        $localize->getTranslation('type'),
+        $localize->getTranslation('study.data-collection-events'),
+        $localize->getTranslation('variables'),
       ),
       'rows' => $dataset_rows,
       'empty' => variable_get_value('datasets_empty_label'),
@@ -529,6 +533,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
  */
 function obiba_mica_dataset_attributes_tab($attributes = NULL, $namespace = NULL, $excluded_names = array()) {
   $rows = array();
+  $localize = obiba_mica_commons_mica_server_localisation();
   if (!empty($attributes)) {
     foreach ($attributes as $attribute) {
       if (empty($namespace) || !empty($attribute->namespace) && $namespace == $attribute->namespace) {
@@ -543,7 +548,7 @@ function obiba_mica_dataset_attributes_tab($attributes = NULL, $namespace = NULL
     return theme(
       'table',
       array(
-        'header' => array(t('Name'), t('Value')),
+        'header' => array($localize->getTranslation('name'), $localize->getTranslation('value')),
         'rows' => $rows,
         'empty' => t('No attribute found'),
         'sticky' => FALSE,
@@ -697,11 +702,12 @@ function obiba_mica_dataset_get_js($weight_js) {
  * Implements hook_load_menus().
  */
 function obiba_mica_dataset_load_menus() {
+  $localize = obiba_mica_commons_mica_server_localisation();
   $items = array();
 
   $items[MicaClientPathProvider::CROSSTAB] = array(
     'access callback' => TRUE,
-    'title' => t('Variable Crosstab'),
+    'title' => $localize->getTranslation('client.label.dataset.variable-crosstab'),
     'module_caller' => 'obiba_mica_dataset',
   );
   return $items;

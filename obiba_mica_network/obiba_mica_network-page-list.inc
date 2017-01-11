@@ -13,6 +13,8 @@
  * @file code for list networks page
  */
 
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
+
 function obiba_mica_network_page_list() {
   $context['url'] = 'refresh_list_networks';
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
@@ -190,10 +192,11 @@ function obiba_mica_network_retrieve_networks($query, $sort = NULL, $sort_order 
 }
 
 function obiba_mica_network_networks_table_headers() {
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
-    t('Acronym'),
-    t('Name'),
-    t('Studies'),
+    $localize->getTranslation('network.acronym'),
+    $localize->getTranslation('name'),
+    $localize->getTranslation('studies'),
   );
 }
 

@@ -11,12 +11,15 @@
 
 include_once('includes/obiba_mica_research_project_resource.inc');
 
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
+
 /**
  * @param $project_id
  * @return mixed
  */
 function obiba_mica_research_project_page_detail($project_id) {
   $research_project_resource = new DrupalMicaResearchProjectResource(NULL);
+  $localize = obiba_mica_commons_mica_server_localisation();
   
   $response = $research_project_resource->getProject($project_id);
 
@@ -39,7 +42,7 @@ function obiba_mica_research_project_page_detail($project_id) {
 
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
-    l(t('Research'), MicaClientPathProvider::RESEARCH_PROJECT),
+    l($localize->getTranslation('research'), MicaClientPathProvider::RESEARCH_PROJECT),
     l(t('Approved Projects'), MicaClientPathProvider::RESEARCH_PROJECT_APPROVED),
   ));
 

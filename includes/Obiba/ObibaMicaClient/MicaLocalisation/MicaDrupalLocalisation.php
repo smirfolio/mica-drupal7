@@ -14,32 +14,26 @@ namespace Obiba\ObibaMicaClient\MicaLocalisation;
 
 use Flow\JSONPath\JSONPath as JSONPath;
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClientConfigResource as MicaDrupalConfigResources;
+use Obiba\ObibaMicaClient\MicaCache as MicaCache;
 
 class MicaDrupalLocalization implements MicaLocalizationInterface {
 
   public $langJson;
-  private $jsonTranslation;
   private $jsonParser;
 
-  function __construct() {
-    $configResources = new MicaDrupalConfigResources();
-    $this->jsonTranslation = $configResources->getTranslations();
-    $this->jsonParser = new JSONPath(json_decode($this->jsonTranslation));
+   function __construct() {
+     $cache = new MicaCache\MicaDrupalClientCache();
+     $cachedJsonParser = $cache->MicaGetCache('cachedJsonParser');
+     if(!empty($cachedJsonParser)){
+       $this->jsonParser = $cachedJsonParser;
+     }
+     else{
+       $configResources = new MicaDrupalConfigResources();
+       $jsonTranslation = $configResources->getTranslations();
+       $this->jsonParser = new JSONPath(json_decode($jsonTranslation));
+     }
     return $this;
   }
-
-  function getTranslation($vocabulary) {
-    $sanitizedKey = $this->sanitizeStringKey($vocabulary);
-    try {
-      $local = $this->jsonParser->find($sanitizedKey);
-      if(!empty($local[0])) {
-        return $local[0];
-      }
-    } catch (\Exception $e) {
-    }
-    return $vocabulary;
-  }
-
 
   private function sanitizeStringKey($vocabulary) {
     $sanitizedString = '$';
@@ -56,6 +50,18 @@ class MicaDrupalLocalization implements MicaLocalizationInterface {
       }
     }
     return rtrim($sanitizedString, ".");
+  }
+
+  function getTranslation($vocabulary) {
+    $sanitizedKey = $this->sanitizeStringKey($vocabulary);
+    try {
+      $local = $this->jsonParser->find($sanitizedKey);
+      if (!empty($local[0])) {
+        return $local[0];
+      }
+    } catch (\Exception $e) {
+    }
+    return $vocabulary;
   }
 
 }
