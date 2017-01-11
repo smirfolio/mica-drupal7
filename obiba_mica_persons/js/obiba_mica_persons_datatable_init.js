@@ -63,12 +63,17 @@
               if (row) {
                 $.each(row, function (study, studyObj) {
                   if (studyObj) {
-                    $.each(studyObj.parentAcronym, function (index, acronym) {
-                      if (acronym.lang == Drupal.settings.current_lang) {
-                        acronymCurrentLang = acronym.value;
-                        return false;
-                      }
-                    });
+                    if(studyObj.parentAcronym){
+                      $.each(studyObj.parentAcronym, function (index, acronym) {
+                        if (acronym.lang == Drupal.settings.current_lang) {
+                          acronymCurrentLang = acronym.value;
+                          return false;
+                        }
+                      });
+                    }
+                    else{
+                      acronymCurrentLang = studyObj.parentId;
+                    }
                     studies += (studies != '' ? ', ' : '') + '<a href="' + Drupal.settings.basePath + 'mica/study/' + studyObj.parentId + '">' + acronymCurrentLang + '</a> (' + studyObj.role + ')';
                   }
                 });

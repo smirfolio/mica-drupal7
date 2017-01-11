@@ -18,7 +18,7 @@
  * Implements hook_install().
  */
 function obiba_mica_install() {
-  variable_set('mica-drupal-js-libraries-version', 'master');
+  variable_set('mica-drupal-js-libraries-version', '2.0.1');
   obiba_mica_block_configuration();
   obiba_mica_theme_configuration();
 }
@@ -68,7 +68,7 @@ function obiba_mica_theme_configuration() {
   variable_set('jquery_update_jquery_version', '1.8');
   variable_set('jquery_update_jquery_admin_version', '1.8');
 
-  variable_set('obiba-progressbar-lib-version', '1.0.0');
+  variable_set('obiba-progressbar-lib-version', '1.0.1');
   variable_set('obiba-progressbar-lib', 'obiba-progressbar');
   variable_set('obiba-progressbar-file', 'dist/obiba-progressbar');
 }
