@@ -19,7 +19,7 @@
       if (context === document) {
         if (Drupal.settings.obiba_mica_study.study_json) {
           new $.MicaTimeline(
-            new $.StudyDtoParser(),
+            new $.StudyDtoParser(Drupal.settings.angularjsApp.locale),
             timelinePopupIdFormatter,
             true
           ).create("#vis", JSON.parse(Drupal.settings.obiba_mica_study.study_json)).addLegend();
