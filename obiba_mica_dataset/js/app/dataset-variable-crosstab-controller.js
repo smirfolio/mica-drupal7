@@ -325,10 +325,15 @@
                     v2: $scope.crosstab.rhs.xVariable.name
                   },
                   function onSuccess(response) {
-                    $scope.crosstab.contingencies = normalizeData(response.contingencies ? response.contingencies : [response]);
+                    if (Object.keys(response).filter(function (k) {return k[0] !== '$';}).length === 0) {
+                      // response with all properties prefixed with '$' filtered out is empty
+                      onError('No data available.');
+                    } else {
+                      $scope.crosstab.contingencies = normalizeData(response.contingencies ? response.contingencies : [response]);
 
-                    if ($scope.datasetHarmo) {
-                      $scope.crosstab.all = normalizeData(response.all ? [response.all] : [])[0];
+                      if ($scope.datasetHarmo) {
+                        $scope.crosstab.all = normalizeData(response.all ? [response.all] : [])[0];
+                      }
                     }
 
                     endProgress();
