@@ -120,7 +120,7 @@
       <thead>
       <tr>
         <th style="vertical-align: top" class="" ng-if="datasetHarmo" width="20%"
-            rowspan="{{crosstab.lhs.xVariable.categories.length}}">{{options.showDetailedStats ? ('dataset.study-table' | translate) : ''}}
+            rowspan="{{crosstab.lhs.xVariable.categories.length}}">{{options.showDetailedStats ? ('dataset.study-table.title' | translate) : ''}}
         </th>
         <th style="vertical-align: top" rowspan="{{crosstab.lhs.xVariable.categories.length}}" width="10%">
           <a href="<?php print base_path(); ?>mica/variable/{{crosstab.rhs.xVariable.id}}">{{crosstab.rhs.xVariable.name}}</a>
