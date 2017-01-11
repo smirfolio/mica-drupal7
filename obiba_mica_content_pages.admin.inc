@@ -199,14 +199,6 @@ function obiba_mica_settings_network_content(&$form) {
     '#collapsible' => FALSE,
   );
 
-  $info = variable_get_info('networks_section_label');
-  $form['content_display_settings']['network_form']['network_details']['networks_section_label'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('networks_section_label'),
-    '#description' => $info['description'],
-  );
-
 }
 
 /**

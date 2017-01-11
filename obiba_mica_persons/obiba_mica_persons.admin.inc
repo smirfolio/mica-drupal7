@@ -36,14 +36,5 @@ function obiba_mica_persons_admin_settings() {
     '#collapsible' => FALSE,
   );
 
-  $info = variable_get_info('associated_people');
-  $form['persons']['persons_display']['labels']['associated_people'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('associated_people'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
-
   return system_settings_form($form);
 }

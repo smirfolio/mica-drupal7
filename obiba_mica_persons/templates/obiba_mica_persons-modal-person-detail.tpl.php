@@ -32,21 +32,21 @@
               <tbody>
               <?php if (!empty($person->email)): ?>
                 <tr>
-                  <th><?php print t('Email') ?></th>
+                  <th><?php print $localize->getTranslation('contact.email') ?></th>
                   <td><p><?php print $person->email; ?></p></td>
                 </tr>
               <?php endif; ?>
 
               <?php if (!empty($person->phone)): ?>
                 <tr>
-                  <th><?php print t('Phone') ?></th>
+                  <th><?php print $localize->getTranslation('contact.phone') ?></th>
                   <td><p><?php print $person->phone; ?></p></td>
                 </tr>
               <?php endif; ?>
 
               <?php if (!empty($person->dataAccessCommitteeMember)): ?>
                 <tr>
-                  <th><?php print t('Data Access Committee member') ?></th>
+                  <th><?php print $localize->getTranslation('contact.dataAccessCommitteeMember') ?></th>
                   <td>
                     <?php print !empty($person->dataAccessCommitteeMember) ? 'YES' : 'NO'; ?>
                   </td>
@@ -57,7 +57,7 @@
                 !empty($person->institution->department)
               ): ?>
                 <tr>
-                  <th><?php print t('Institution') ?></th>
+                  <th><?php print $localize->getTranslation('contact.institution') ?></th>
                   <td>
                     <?php if (!empty($person->institution->name)): ?>
                       <p>
@@ -80,7 +80,7 @@
                 !empty($person->institution->address->country)
               ): ?>
                 <tr>
-                  <th><?php print t('Address') ?></th>
+                  <th><?php print $localize->getTranslation('address.label') ?></th>
                   <td>
                     <?php if (!empty($person->institution->address->street)): ?>
                       <p>

@@ -90,6 +90,7 @@ function obiba_mica_study_page_detail($study_id) {
   $themed_attachment = NULL;
   $flat_study_attachments = NULL;
 
+  $localize = new MicaLocalisation\MicaDrupalLocalization();
   $study_resource = new DrupalMicaStudyResource();
   $study_dto = $study_resource->getStudy($study_id);
   if (!empty($study_dto)) {
@@ -120,7 +121,7 @@ function obiba_mica_study_page_detail($study_id) {
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
-      l(t('Studies'), 'mica/studies'),
+      l($localize->getTranslation('studies'), 'mica/studies'),
     ));
 
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;
@@ -209,7 +210,7 @@ function obiba_mica_study_page_detail($study_id) {
 
   }
   else {
-    drupal_set_title(t('Study not found'));
+    drupal_set_title($localize->getTranslation('study.none'));
     return '';
   }
 }
@@ -289,6 +290,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
       $dce_uids = array();
       $population_content_render['data'] = $population;
       if (!empty($population->dataCollectionEvents)) {
+        $localize = new MicaLocalisation\MicaDrupalLocalization();
         $dce_rows = obiba_mica_study_get_dce_table($population->dataCollectionEvents, $study_detail->id, $population->id);
         uasort($dce_rows, 'obiba_mica_study_sort_dce');
         obiba_mica_commons_normalize_rows($dce_rows);
@@ -296,10 +298,10 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
           'table',
           array(
             'header' => array(
-              t('Name'),
-              t('Description'),
-              t('Start'),
-              t('End')
+              $localize->getTranslation('population.name'),
+              $localize->getTranslation('population.description'),
+              $localize->getTranslation('study.start'),
+              $localize->getTranslation('study.end')
             ),
             'rows' => $dce_rows,
             'empty' => t('No data collection event found'),

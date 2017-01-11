@@ -28,15 +28,15 @@
             <?php if ($marker_paper && $pubmed_id): ?>
               <?php print t('Access / Marker Paper'); ?>
             <?php elseif ($marker_paper): ?>
-              <?php print t('Marker Paper'); ?>
+              <?php print $localize->getTranslation('study.marker-paper'); ?>
             <?php else: ?>
-              <?php print t('Access'); ?>
+              <?php print $localize->getTranslation('study.access.label'); ?>
             <?php endif; ?>
           </a>
         </li>
         <?php if ($info): ?>
           <li>
-            <a href="#info"><?php print t('Supplementary Information'); ?>
+            <a href="#info"><?php print $localize->getTranslation('suppl-info'); ?>
             </a>
           </li>
         <?php endif; ?>
@@ -49,39 +49,39 @@
         <?php endif; ?>
         <li>
           <a href="#timeline">
-            <?php print t('Timeline'); ?>
+            <?php print $localize->getTranslation('study.timeline'); ?>
           </a>
         </li>
         <li>
           <a href="#populations">
-            <?php print t('Populations'); ?>
+            <?php print $localize->getTranslation('study.populations'); ?>
           </a>
         </li>
         <?php if (!empty($networks)): ?>
           <li>
             <a href="#networks">
-              <?php print t('Networks'); ?>
+              <?php print $localize->getTranslation('networks'); ?>
             </a>
           </li>
         <?php endif; ?>
         <?php if (!empty($datasets)): ?>
           <li>
             <a href="#datasets">
-              <?php print t('Datasets'); ?>
+              <?php print $localize->getTranslation('datasets'); ?>
             </a>
           </li>
         <?php endif; ?>
         <?php if (!empty($datasets) && !empty($study_variables_aggs)): ?>
           <li>
             <a href="#variables">
-              <?php print t('Variables'); ?>
+              <?php print $localize->getTranslation('variables'); ?>
             </a>
           </li>
         <?php endif; ?>
         <?php if (!empty($coverage)): ?>
           <li>
             <a href="#coverage">
-              <?php print t('Variable Classification'); ?>
+              <?php print $localize->getTranslation('variable-classifications'); ?>
             </a>
           </li>
         <?php endif; ?>

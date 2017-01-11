@@ -1033,7 +1033,7 @@ function obiba_mica_commons_mica_server_localisation($theme) {
   if (in_array($theme, $themes_to_translate)) {
     return new MicaLocalisation\MicaDrupalLocalization();
   }
-  return FALSE;
+  return new MicaLocalisation\MicaDrupalLocalization();
 }
 
 function obiba_mica_commons_array_empty_test($array) {

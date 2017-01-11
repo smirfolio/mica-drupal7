@@ -22,7 +22,7 @@
   <section>
     <div class="row">
       <div class="col-lg-6 col-xs-12">
-        <h2><?php print t('Overview') ?></h2>
+        <h2><?php print $localize->getTranslation('client.label.overview') ?></h2>
 
         <?php if (!empty($model->startDate) && !empty($model->endDate)) { print render((obiba_mica_commons_progress_bar($model->startDate, $model->endDate))); } ?>
 
@@ -30,7 +30,7 @@
           <tbody>
           <?php if(!empty($model->startDate)) : ?>
             <tr>
-              <th><?php print t('Start Date') ?></th>
+              <th><?php print $localize->getTranslation('research-project.default.status.start') ?></th>
               <td>
                 <p><?php print obiba_mica_commons_convert_and_format_string_date($model->startDate, 'd-m-Y') ?></p>
               </td>
@@ -39,7 +39,7 @@
 
           <?php if(!empty($model->endDate)) : ?>
             <tr>
-              <th><?php print t('End Date') ?></th>
+              <th><?php print $localize->getTranslation('research-project.default.status.end') ?></th>
               <td>
                 <p><?php print obiba_mica_commons_convert_and_format_string_date($model->endDate, 'd-m-Y') ?></p>
               </td>
@@ -48,7 +48,7 @@
 
           <?php if (module_exists('obiba_mica_data_access_request') && (!empty($project->request) && $project->request->viewable)) : ?>
             <tr>
-              <th><?php print variable_get_value('dar_research_project_list_dar_label') ?></th>
+              <th><?php print $localize->getTranslation('research-project.data-access-request') ?></th>
               <td>
                 <p>
                   <?php print MicaClientPathProvider::data_access_request($project->request->id) ?>
@@ -61,12 +61,12 @@
       </div>
       <?php if(!empty($model->name) || !empty($model->institution)) : ?>
         <div class="col-lg-6 col-xs-12">
-          <h2><?php print t('Contact Details') ?></h2>
+          <h2><?php print $localize->getTranslation('research-project.default.contact.title') ?></h2>
           <table class="table table-striped">
             <tbody>
             <?php if(!empty($model->name)) : ?>
               <tr>
-                <th><?php print t('Name') ?></th>
+                <th><?php print $localize->getTranslation('research-project.default.contact.name') ?></th>
                 <td>
                   <p><?php print $model->name ?></p>
                 </td>
@@ -74,7 +74,7 @@
             <?php endif; ?>
             <?php if (!empty($model->institution)) : ?>
               <tr>
-                <th><?php print t('Institution') ?></th>
+                <th><?php print $localize->getTranslation('research-project.default.contact.institution') ?></th>
                 <td>
                   <p><?php print $model->institution ?></p>
                 </td>

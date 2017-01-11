@@ -43,15 +43,15 @@
       <?php
       $counts = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
       $variables = $counts->variables;
-      $vars_caption = $variables < 2 ? t('variable') : t('variables');
+      $vars_caption = $variables < 2 ? $localize->getTranslation('search.variable.facet-label') : $localize->getTranslation('variables');
       $study_vars = $counts->studyVariables;
-      $study_vars_caption = $study_vars < 2 ? t('study variable') : t('study variables');
+      $study_vars_caption = $study_vars < 2 ? $localize->getTranslation('client.label.study-variable') : $localize->getTranslation('client.label.study-variables');
       $dataschema_vars = $counts->dataschemaVariables;
-      $dataschema_vars_caption = $dataschema_vars < 2 ? t('dataschema variable') : t('dataschema variables');
+      $dataschema_vars_caption = $dataschema_vars < 2 ? $localize->getTranslation('client.label.dataschema-variable') : $localize->getTranslation('client.label.dataschema-variables');
       $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
-      $dataset_caption = $datasets < 2 ? t('dataset') : t('datasets');
+      $dataset_caption = $datasets < 2 ? $localize->getTranslation('dataset.details') : $localize->getTranslation('datasets');
       $studies = $counts->studies;
-      $caption = $studies < 2 ? t('study') : t('studies');
+      $caption = $studies < 2 ? $localize->getTranslation('study.label') : $localize->getTranslation('studies');
       ?>
       <?php if (!empty($studies) && variable_get_value('networks_column_studies')): ?>
           <?php print MicaClientAnchorHelper::networkStudies(t('@count ' . $caption, array('@count' => $studies)), $network->id, array('class' => 'btn-default btn-xxs')) ?>

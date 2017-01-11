@@ -74,16 +74,16 @@
           ?>
         <?php if (!empty($study->designs) || !empty($study->targetNumber)) : ?>
 
-            <?php if (!empty($study->designs)): print t('Study design') ?>:
+            <?php if (!empty($study->designs)): print $localize->getTranslation('search.study.design') ?>:
               <span><?php print implode(', ', obiba_mica_commons_clean_string($study->designs)) ?></span>
             <?php endif; ?>
             <?php
             if (!empty($study->targetNumber)):
-              print (empty($study->designs) ? '' : '; ') . variable_get_value('study_target_number_participant_label');
+              print (empty($study->designs) ? '' : '; ') . $localize->getTranslation('numberOfParticipants.participants');
               ?>:
               <span>
               <?php print $study->targetNumber->noLimit === TRUE
-                ? t('No limits')
+                ? $localize->getTranslation('numberOfParticipants.no-limit')
                 : (empty($study->targetNumber->number) ? t('n/a') : obiba_mica_commons_format_number($study->targetNumber->number))
               ?>
             </span>
@@ -94,15 +94,15 @@
         <?php
         $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
         $vars = $counts->variables;
-        $var_caption = $vars < 2 ? t('variable') : t('variables');
+        $var_caption = $vars < 2 ? $localize->getTranslation('search.variable.facet-label') : $localize->getTranslation('variables');
         $study_vars = !empty($counts->studyVariables)?$counts->studyVariables:NULL;
-        $study_var_caption = $study_vars < 2 ? t('study variable') : t('study variables');
+        $study_var_caption = $study_vars < 2 ? $localize->getTranslation('client.label.study-variable') : $localize->getTranslation('client.label.study-variables');
         $dataschema_vars = !empty($counts->dataschemaVariables)?$counts->dataschemaVariables:NULL;
-        $dataschema_var_caption = $dataschema_vars < 2 ? t('dataschema variable') : t('dataschema variables');
+        $dataschema_var_caption = $dataschema_vars < 2 ? $localize->getTranslation('client.label.dataschema-variable') : $localize->getTranslation('client.label.dataschema-variables');
         $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
-        $dataset_caption = $datasets < 2 ? t('dataset') : t('datasets');
+        $dataset_caption = $datasets < 2 ? $localize->getTranslation('dataset.details') : $localize->getTranslation('datasets');
         $networks = !empty($counts->networks)?$counts->networks:NULL;
-        $network_caption = $networks < 2 ? t('network') : t('networks');
+        $network_caption = $networks < 2 ? $localize->getTranslation('network.label') : $localize->getTranslation('networks');
         ?>
         <?php if (!empty($networks) && variable_get_value('studies_column_networks')): ?>
             <?php print MicaClientAnchorHelper::studyNetworks(t('@count ' . $network_caption, array('@count' => $networks)), $study->id, 'btn-default btn-xxs') ?>

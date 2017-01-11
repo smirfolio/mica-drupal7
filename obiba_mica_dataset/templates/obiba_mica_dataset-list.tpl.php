@@ -23,7 +23,7 @@
   <div class="row">
     <?php
     $count = empty($total_items) ? 0 : $total_items;
-    $caption = $count < 2 ? t('Dataset') : t('Datasets');
+    $caption = $count < 2 ? $localize->getTranslation('dataset.details') : $localize->getTranslation('datasets');
     ?>
     <div class="col-md-2 col-sm-2 col-xs-4 min-height-align search-count">
       <span id="refresh-count">

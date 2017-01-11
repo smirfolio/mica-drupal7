@@ -29,11 +29,11 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
   <div class="pull-right md-bottom-margin">
     <?php if ($can_edit_draf_document): ?>
-      <a title="<?php print t('Edit') ?>"
+      <a title="<?php print $localize->getTranslation('edit') ?>"
          target="_blank"
          href="<?php print MicaClientPathProvider::dataset_draft_url($dataset_dto) ?>"
          class="btn btn-default">
-        <i class="fa fa-pencil-square-o"></i> <?php print t('Edit')?></a>
+        <i class="fa fa-pencil-square-o"></i> <?php print $localize->getTranslation('edit')?></a>
     <?php endif; ?>
 
     <?php if (variable_get_value('dataset_detailed_crosstab')) : ?>
@@ -53,7 +53,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
   <!-- OVERVIEW -->
   <section>
-    <h2><?php print t('Overview') ?></h2>
+    <h2><?php print $localize->getTranslation('client.label.overview') ?></h2>
 
     <div class="row">
       <div class="col-lg-6 col-xs-12 lg-right-indent">
@@ -62,7 +62,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
           <?php if (!empty($dataset_dto->acronym)): ?>
             <tr>
-              <th><?php print t('Acronym') ?></th>
+              <th><?php print $localize->getTranslation('dataset.acronym') ?></th>
               <td>
                 <p><?php print obiba_mica_commons_get_localized_field($dataset_dto, 'acronym'); ?></p>
               </td>
@@ -71,7 +71,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
           <?php if (variable_get_value('dataset_description_overview_field') && !empty($description)): ?>
             <tr>
-              <th><?php print t('Description') ?></th>
+              <th><?php print $localize->getTranslation('dataset.description') ?></th>
               <td>
                 <p><?php print obiba_mica_commons_markdown($description); ?></p>
               </td>
@@ -84,9 +84,9 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               <p>
                 <?php
                 if (!empty($dataset_type_dto->project)):
-                  echo t('Harmonization Dataset');
+                  echo $localize->getTranslation('harmonization-dataset');
                 else:
-                  echo t('Study Dataset');
+                  echo $localize->getTranslation('study-dataset');
                 endif;
                 ?>
               </p>
@@ -106,7 +106,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
       </div>
       <div class="col-lg-6 col-xs-12">
         <?php if (!empty($dataset_dto->attributes)): ?>
-          <h4><?php print t('Attributes') ?></h4>
+          <h4><?php print $localize->getTranslation('attributes') ?></h4>
           <p><?php print obiba_mica_dataset_attributes_tab($dataset_dto->attributes, 'maelstrom'); ?></p>
         <?php endif; ?>
       </div>
@@ -126,7 +126,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     <!-- NETWORKS -->
     <?php if (!empty($dataset_type_dto->networkTables)): ?>
       <div>
-        <h2><?php print variable_get_value('networks_section_label') ?></h2>
+        <h2><?php print $localize->getTranslation('networks') ?></h2>
 
         <div id="networks-table">
           <div class="row">
@@ -143,9 +143,9 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
       <h2>
         <?php
         if (!empty($dataset_type_dto->project)):
-          echo t('Studies');
+          echo $localize->getTranslation('studies');
         else:
-          echo t('Study');
+          echo $localize->getTranslation('study.label');
         endif;
         ?>
       </h2>
@@ -163,7 +163,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
             <table class="table table-striped">
               <tbody>
               <tr>
-                <th><?php print t('Acronym') ?></th>
+                <th><?php print $localize->getTranslation('study.acronym') ?></th>
                 <td>
                   <p>
                     <?php print MicaClientAnchorHelper::study($dataset_type_dto->studyTable->studySummary); ?>
@@ -171,7 +171,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 </td>
               </tr>
               <tr>
-                <th><?php print t('Name') ?></th>
+                <th><?php print $localize->getTranslation('study.name') ?></th>
                 <td>
                   <p>
                     <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'); ?>
@@ -179,7 +179,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 </td>
               </tr>
               <tr>
-                <th><?php print t('Population') ?></th>
+                <th><?php print $localize->getTranslation('study.population') ?></th>
                 <td>
                   <?php $population_summary = NULL; ?>
                   <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary):
@@ -192,7 +192,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 </td>
               </tr>
               <tr>
-                <th><?php print t('Data Collection Event') ?></th>
+                <th><?php print $localize->getTranslation('study.data-collection-event') ?></th>
                 <td>
                   <?php $dce_anchor = NULL; ?>
                   <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary):
@@ -208,22 +208,22 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 </td>
               </tr>
               <tr>
-                <th><?php print t('Study Design') ?></th>
+                <th><?php print $localize->getTranslation('search.study.design') ?></th>
                 <td>
                   <?php print implode(', ', obiba_mica_commons_clean_string($dataset_type_dto->studyTable->studySummary->designs)); ?>
                 </td>
               </tr>
               <tr>
-                <th><?php print variable_get_value('study_target_number_participant_label') ?></th>
+                <th><?php print $localize->getTranslation('numberOfParticipants.participants') ?></th>
                 <td>
-                  <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? t('No Limit') :
+                  <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
                     isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ?
                       obiba_mica_commons_format_number($dataset_type_dto->studyTable->studySummary->targetNumber->number) : NULL; ?>
                 </td>
               </tr>
               <?php if (!empty($dataset_type_dto->studyTable->studySummary->countries)) : ?>
               <tr>
-                <th><?php print t('Countries') ?></th>
+                <th><?php print $localize->getTranslation('client.label.countries') ?></th>
                 <td>
                   <?php print obiba_mica_commons_countries($dataset_type_dto->studyTable->studySummary->countries); ?>
                 </td>
@@ -240,7 +240,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   <!-- COVERAGE -->
   <div ng-controller="VariableCoverageChartController">
     <section id="coverage" ng-if="d3Configs && d3Configs.length">
-      <h2><?php print t('Variables Classification') ?></h2>
+      <h2><?php print $localize->getTranslation('variable-classifications') ?></h2>
 
       <div ng-repeat="d3Config in d3Configs">
         <obiba-nv-chart chart-config="d3Config"></obiba-nv-chart>
@@ -255,7 +255,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
       <?php print render($harmonization_table_legend); ?>
       <div id="download-btn">
         <a href="" class="btn btn-success pull-right"><i
-            class='glyphicon glyphicon-download'></i> <?php print t('Download') ?>
+            class='glyphicon glyphicon-download'></i> <?php print $localize->getTranslation('download') ?>
         </a>
       </div>
       <div class="clearfix">

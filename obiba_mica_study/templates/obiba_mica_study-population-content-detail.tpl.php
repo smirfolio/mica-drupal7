@@ -27,35 +27,35 @@
   || !empty($population->model->recruitment->otherSource)
   || !empty($population->model->recruitment->info)
 ): ?>
-  <h4><?php print t('Sources of Recruitment') ?></h4>
+  <h4><?php print $localize->getTranslation('study.recruitment-sources.label') ?></h4>
 
   <div class="scroll-content-tab">
     <table class="table table-striped">
       <tbody>
       <?php if (!empty($population->model->recruitment->generalPopulationSources)): ?>
         <tr>
-          <th><?php print t('General Population') ?></th>
+          <th><?php print $localize->getTranslation('study.recruitment-sources.general-population') ?></th>
           <td> <?php print $general_population; ?> </td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->model->recruitment->specificPopulationSources)): ?>
         <tr>
-          <th><?php print t('Specific Population') ?></th>
+          <th><?php print $localize->getTranslation('study.recruitment-sources.specific-population') ?></th>
           <td> <?php print $specific_population; ?> </td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->model->recruitment->otherSource)): ?>
         <tr>
-          <th><?php print t('Other sources') ?></th>
+          <th><?php print $localize->getTranslation('study.recruitment-sources.other') ?></th>
           <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSource'); ?></td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->model->recruitment->studies) && !empty(array_filter($population->model->recruitment->studies, 'obiba_mica_commons_array_empty_test'))): ?>
         <tr>
-          <th><?php print t('Participants from Existing Studies') ?></th>
+          <th><?php print $localize->getTranslation('study.recruitment-sources.studies') ?></th>
           <td>
             <?php  $studies = obiba_mica_commons_get_localized_dtos_field($population->model->recruitment, 'studies'); ?>
             <?php print implode(', ', $studies); ?>
@@ -65,7 +65,7 @@
 
       <?php if (!empty($population->model->recruitment->info)): ?>
         <tr>
-          <th><?php print t('Supplementary Information') ?></th>
+          <th><?php print $localize->getTranslation('study.recruitment-sources.info') ?></th>
           <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'info'); ?></td>
         </tr>
       <?php endif; ?>
@@ -85,25 +85,25 @@
   || !empty($population->model->selectionCriteria->otherCriteria)
   || !empty($population->model->selectionCriteria->info)
 ): ?>
-  <h4><?php print t('Selection Criteria') ?></h4>
+  <h4><?php print $localize->getTranslation('study.selection-criteria.label') ?></h4>
   <div class="scroll-content-tab">
     <table class="table table-striped">
       <tbody>
       <?php if (!empty($population->model->selectionCriteria->gender) && obiba_mica_study_get_gender($population->model->selectionCriteria->gender) !== NULL): ?>
         <tr>
-          <th><?php print t('Gender') ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.gender.label') ?></th>
           <td><?php print  obiba_mica_study_get_gender($population->model->selectionCriteria->gender); ?></td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->model->selectionCriteria->ageMin) || !empty($population->model->selectionCriteria->ageMax)): ?>
         <tr>
-          <th><?php print t('Age') ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.age') ?></th>
           <td>
-            <?php !empty($population->model->selectionCriteria->ageMin) ? print t('Minimum') . ' '
+            <?php !empty($population->model->selectionCriteria->ageMin) ? print $localize->getTranslation('population.ageMin') . ' '
               .$population->model->selectionCriteria->ageMin
               . ((!empty($population->model->selectionCriteria->ageMax))? ', ':'' ): NULL;?>
-            <?php !empty($population->model->selectionCriteria->ageMax) ? print t('Maximum') . ' '
+            <?php !empty($population->model->selectionCriteria->ageMax) ? print $localize->getTranslation('population.ageMax') . ' '
               . $population->model->selectionCriteria->ageMax : NULL; ?>
           </td>
         </tr>
@@ -111,7 +111,7 @@
 
       <?php if (!empty($population->model->selectionCriteria->countriesIso)): ?>
         <tr>
-          <th><?php print t('Country'); ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.country'); ?></th>
           <td>
             <?php print obiba_mica_commons_countries($population->model->selectionCriteria->countriesIso); ?>
           </td>
@@ -120,7 +120,7 @@
 
       <?php if (!empty($population->model->selectionCriteria->territory)): ?>
         <tr>
-          <th><?php print t('Territory') ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.territory') ?></th>
           <td>
             <?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'territory'); ?>
           </td>
@@ -129,7 +129,7 @@
 
       <?php if (!empty($population->model->selectionCriteria->ethnicOrigin) && !empty(array_filter($population->model->selectionCriteria->ethnicOrigin, 'obiba_mica_commons_array_empty_test'))): ?>
         <tr>
-          <th><?php print t('Ethnic Origin') ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.ethnic-origin') ?></th>
           <td>
             <?php $ethnic_origins = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'ethnicOrigin'); ?>
             <?php print implode(', ', $ethnic_origins); ?>
@@ -140,14 +140,14 @@
 
       <?php if (!empty($population->model->selectionCriteria->criteria)): ?>
         <t>
-          <th><?php print t('Criteria') ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.criteria') ?></th>
           <td><?php print $selection_criteria ?></td>
         </t>
       <?php endif ?>
 
       <?php if (!empty($population->model->selectionCriteria->healthStatus)  && !empty(array_filter($population->model->selectionCriteria->healthStatus, 'obiba_mica_commons_array_empty_test'))): ?>
         <tr>
-          <th><?php print t('Health Status') ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.health-status') ?></th>
           <td>
             <?php $health_status = obiba_mica_commons_get_localized_dtos_field($population->model->selectionCriteria, 'healthStatus'); ?>
             <?php print implode(', ', $health_status); ?>
@@ -157,14 +157,14 @@
 
       <?php if (!empty($population->model->selectionCriteria->otherCriteria)): ?>
         <tr>
-          <th><?php print t('Other') ?></th>
+          <th><?php print $localize->getTranslation('other') ?></th>
           <td><?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'otherCriteria'); ?></td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->model->selectionCriteria->info)): ?>
         <tr>
-          <th><?php print t('Supplementary Information') ?></th>
+          <th><?php print $localize->getTranslation('suppl-info') ?></th>
           <td><?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'info'); ?></td>
         </tr>
       <?php endif; ?>
@@ -178,7 +178,7 @@
   || !empty($population->model->info)
   || !empty($population->model->numberOfParticipants->info)
 ): ?>
-  <h4><?php print t('Sample Size') ?></h4>
+  <h4><?php print $localize->getTraanslation('client.label.study.sample-size') ?></h4>
 
   <div class="scroll-content-tab">
     <table class="table table-striped">
@@ -186,14 +186,14 @@
 
       <?php if (!empty($population->model->numberOfParticipants->participant->number) || !empty($population->model->numberOfParticipants->participant->noLimit)): ?>
         <tr>
-          <th><?php print t('Number of Participants') ?></th>
+          <th><?php print $localize->getTranslation('numberOfParticipants.label') ?></th>
           <td>
             <p>
               <?php if (!empty($population->model->numberOfParticipants->participant->number)): ?>
                 <?php print obiba_mica_commons_format_number($population->model->numberOfParticipants->participant->number) ?>
               <?php endif; ?>
               <?php if (!empty($population->model->numberOfParticipants->participant->noLimit)): ?>
-                (<?php print t('No Limit'); ?>)
+                (<?php print $localize->getTranslation('numberOfParticipants.no-limit'); ?>)
               <?php endif; ?>
             </p>
           </td>
@@ -202,7 +202,7 @@
 
       <?php if (!empty($population->model->numberOfParticipants->sample->number) || $population->model->numberOfParticipants->sample->noLimit): ?>
         <tr>
-          <th><?php print t('Number of Participants with Biological Samples')
+          <th><?php print $localize->getTranslation('numberOfParticipants.sample')
             ?></th>
           <td>
             <p>
@@ -210,7 +210,7 @@
                 <?php print obiba_mica_commons_format_number($population->model->numberOfParticipants->sample->number) ?>
               <?php endif; ?>
               <?php if (!empty($population->model->numberOfParticipants->sample->noLimit)): ?>
-                (<?php print t('No Limit'); ?>)
+                (<?php print $localize->getTranslation('numberOfParticipants.no-limit'); ?>)
               <?php endif; ?>
             </p>
           </td>
@@ -219,7 +219,7 @@
 
       <?php if (!empty(obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'))): ?>
         <tr>
-          <th><?php print t('Supplementary Information about the Number of Participants') ?></th>
+          <th><?php print $localize->getTranslation('numberOfParticipants.suppl-info') ?></th>
           <td>
               <p><?php print obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'); ?></p>
           </td>
@@ -228,7 +228,7 @@
 
       <?php if (!empty($population->model->info)): ?>
         <tr>
-          <th><?php print t('Supplementary Information') ?></th>
+          <th><?php print $localize->getTranslation('suppl-info') ?></th>
           <td><p> <?php print obiba_mica_commons_get_localized_field($population->model, 'info'); ?></p></td>
         </tr>
       <?php endif; ?>

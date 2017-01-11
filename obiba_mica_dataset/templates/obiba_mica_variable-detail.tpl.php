@@ -20,21 +20,21 @@
   <section>
     <div class="row">
       <div class="col-lg-6 col-xs-12 ">
-        <h2><?php print t('Overview') ?></h2>
+        <h2><?php print $localize->getTranslation('client.label.overview') ?></h2>
 
         <table class="table table-striped">
           <tbody>
 
           <?php if (!empty($variable_dto->label)): ?>
             <tr>
-              <th><?php print t('Label') ?></th>
+              <th><?php print $localize->getTranslation('search.variable.label') ?></th>
               <td><?php print $variable_dto->label; ?></td>
             </tr>
           <?php endif; ?>
 
           <?php if (!empty($variable_dto->description)): ?>
             <tr>
-              <th><?php print t('Description') ?></th>
+              <th><?php print $localize->getTranslation('description') ?></th>
               <td><p><?php print obiba_mica_commons_markdown($variable_dto->description); ?></p></td>
             </tr>
           <?php endif; ?>
@@ -42,7 +42,7 @@
           <?php if ($variable_dto->variableType == 'Dataschema' && variable_get_value('variable_show_networks') && !empty($variable_dto->networkSummaries)): ?>
             <tr>
               <th>
-                <?php print t('Networks'); ?>
+                <?php print $localize->getTranslation('networks'); ?>
               </th>
               <td>
                 <ul class="list-unstyled">
@@ -58,11 +58,11 @@
             <tr>
               <th>
                 <?php if ($variable_dto->variableType == 'Dataschema') :
-                  print t('Studies');
+                  print $localize->getTranslation('studies');
                 elseif (!empty($variable_dto->studySummaries)) :
-                  print t('Study');
+                  print $localize->getTranslation('study.label');
                 else:
-                  print t('Network');
+                  print $localize->getTranslation('dataset.network.title');
                 endif;
                 ?>
               </th>
@@ -84,7 +84,7 @@
 
           <?php if (!empty($variable_dto->datasetId)): ?>
             <tr>
-              <th><?php print t('Dataset'); ?></th>
+              <th><?php print $localize->getTranslation('dataset.details'); ?></th>
               <td>
                 <p>
                   <?php print MicaClientAnchorHelper::variableDataset($variable_dto); ?>
@@ -94,7 +94,7 @@
           <?php endif; ?>
 
           <tr>
-            <th><?php print t('Value Type'); ?></th>
+            <th><?php print $localize->getTranslation('client.label.variable.value-type'); ?></th>
             <td>
               <p><?php print t('@valueType', array('@valueType' => $variable_dto->valueType)); ?></p>
             </td>
@@ -102,7 +102,7 @@
 
           <?php if (!empty($variable_dto->unit)): ?>
             <tr>
-              <th><?php print t('Unit'); ?></th>
+              <th><?php print $localize->getTranslation('client.label.variable.unit'); ?></th>
               <td>
                 <p><?php print t('@varUnit', array('@varUnit' => $variable_dto->unit)); ?></p>
               </td>
@@ -110,12 +110,12 @@
           <?php endif; ?>
 
           <tr>
-            <th><?php print t('Variable Type'); ?></th>
+            <th><?php print $localize->getTranslation('client.label.variable.variable-type'); ?></th>
             <td>
               <p>
                 <?php $variable_type = $variable_dto->variableType?>
                 <?php if (variable_get_value('mica_all_variables_dataschema')): ?>
-                  <?php $variable_type = t('Dataschema'); ?>
+                  <?php $variable_type = $localize->getTranslation('search.variable.dataschema'); ?>
                 <?php endif; ?>
                 <?php print t('@type Variable', array('@type' =>
                   $variable_type)); ?>
@@ -132,7 +132,7 @@
       <div class="col-lg-6 col-xs-12">
         <!-- Taxonomy terms -->
         <?php if (!empty($variable_dto->termAttributes)): ?>
-          <h2><?php print t('Classification') ?></h2>
+          <h2><?php print $localize->getTranslation('classifications.title') ?></h2>
           <table class="table table-striped">
             <tbody>
             <?php foreach ($variable_dto->termAttributes as $term_attributes) : ?>
@@ -184,7 +184,7 @@
   <!-- CATEGORIES -->
   <?php if (!empty($variable_dto->categories)): ?>
     <section>
-      <h2><?php print t('Categories') ?></h2>
+      <h2><?php print $localize->getTranslation('client.label.variable.categories') ?></h2>
 
       <div class="row">
         <div class="col-md-6 col-sm-12">
@@ -198,7 +198,7 @@
   <?php if (variable_get_value('mica_statistics')): ?>
     <section id="section-statistics">
       <h2>
-        <?php print t('Statistics') ?>
+        <?php print $localize->getTranslation('client.label.variable.statistics') ?>
         <?php if (strcasecmp($variable_dto->nature, 'CATEGORICAL') === 0 && $variable_dto->variableType !== 'Harmonized'): ?>
           <span class="pull-right">
         <?php if (variable_get_value('mica_statistics')) :
@@ -258,7 +258,7 @@
 
   <?php if ($variable_dto->variableType != 'Study'): ?>
     <section>
-      <h2><?php print t('Harmonization') ?></h2>
+      <h2><?php print $localize->getTranslation('client.label.variable.harmonization') ?></h2>
       <?php print render($harmonization_table_legend); ?>
       <?php if ($variable_dto->variableType == 'Dataschema'): ?>
 
@@ -277,7 +277,7 @@
         <?php if (!empty($variable_harmonization_algorithms)): ?>
           <?php if (!empty(variable_get_value('variable_algorithm'))): ?>
           <button id="harmo-algo"
-            data-loading-text="<?php print t('Loading...') ?>"
+            data-loading-text="<?php print $localize->getTranslation('loading') ?>"
             type="button"
             class="btn btn-success md-bottom-margin margin-top-20"
             data-toggle="collapse"
@@ -285,10 +285,10 @@
             aria-expanded="true"
             aria-controls="harmo-algo"
             var-id="<?php print $variable_dto->id; ?>"
-            title-button-var="<?php print t('Harmonization Algorithms'); ?>"
+            title-button-var="<?php print $localize->getTranslation('client.label.variable.harmonization-algo'); ?>"
             >
 
-              <?php print t('Show Harmonization Algorithms') ?>
+              <?php print $localize->getTranslation('client.label.variable.show-harmo-algo') ?>
             </button>
             <div id="harmo-algo" class="collapse">
 
@@ -303,7 +303,7 @@
             <table class="table table-striped">
               <tbody>
               <tr>
-                <th><?php print t('Status'); ?></th>
+                <th><?php print $localize->getTranslation('status'); ?></th>
                 <td>
                   <?php if (empty($variable_harmonization['status'])): ?>
                     <span
@@ -330,7 +330,7 @@
               </tr>
               <?php endif ?>
               <tr>
-                <th><?php print t('Comment'); ?></th>
+                <th><?php print $localize->getTranslation('comment-label'); ?></th>
                 <td>
                   <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : obiba_mica_commons_markdown($variable_harmonization['comment']); ?></p>
                 </td>
@@ -350,7 +350,7 @@
                 </div>
               </div>
             <?php else: ?>
-              <h4><?php print t('Script'); ?></h4>
+              <h4><?php print $localize->getTranslation('client.label.variable.script'); ?></h4>
               <pre class="prettyprint lang-js">
             <?php print $variable_harmonization['script']; ?>
           </pre>

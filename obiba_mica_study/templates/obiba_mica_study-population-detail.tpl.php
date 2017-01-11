@@ -14,7 +14,7 @@
 print render($population_content); ?>
 
 <?php if (!empty($population['dce-tab'])): ?>
-  <h4><?php print t('Data Collection Events') ?></h4>
+  <h4><?php print $localize->getTranslation('study.data-collection-events') ?></h4>
   <div class="scroll-content-tab">
     <?php print $population['dce-tab']; ?>
   </div>

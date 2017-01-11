@@ -40,11 +40,11 @@
         <?php
         $counts = $dataset->{'obiba.mica.CountStatsDto.datasetCountStats'};
         $variables = $counts->variables;
-        $vars_caption = $variables < 2 ? t('variable') : t('variables');
+        $vars_caption = $variables < 2 ? $localize->getTranslation('search.variable.facet-label') : $localize->getTranslation('variables');
         $studies = $counts->studies;
-        $studies_caption = $studies < 2 ? t('study') : t('studies');
+        $studies_caption = $studies < 2 ? $localize->getTranslation('study.label') : $localize->getTranslation('studies');
         $networks = $counts->networks;
-        $network_caption = $networks < 2 ? t('network') : t('networks');
+        $network_caption = $networks < 2 ? $localize->getTranslation('network.label') : $localize->getTranslation('networks');
         ?>
         <?php if (!empty($networks) && variable_get_value('datasets_column_networks')): ?>
             <?php print MicaClientAnchorHelper::datasetNetworks(t('@count @networkCaption',

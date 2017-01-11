@@ -15,6 +15,7 @@
  */
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 
 include_once "obiba_mica_research_project_service.inc";
 
@@ -89,10 +90,11 @@ function obiba_mica_research_project_page_list() {
 }
 
 function obiba_mica_research_project_create_form() {
+  $localize = new MicaLocalisation\MicaDrupalLocalization();
   global $language;
   $context = array(
     'options' => array(
-      'title.' . $language->language => t('Title'),
+      'title.' . $language->language => $localize->getTranslation('research-project.title'),
     )
   );
 
@@ -115,6 +117,7 @@ function obiba_mica_research_project_get_projects($query = NULL, $limit = NULL, 
 
 
 function obiba_mica_research_project_dar_research_projects_list_page() {
+  $localize = new MicaLocalisation\MicaDrupalLocalization();
   drupal_set_title(obiba_mica_research_project_list_page_title_callback());
   $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
   $header_applicant = array();
@@ -123,19 +126,19 @@ function obiba_mica_research_project_dar_research_projects_list_page() {
   $response = obiba_mica_research_project_get_dar_projects();
   $user_has_role = $permissionResource->userHasRole('mica-data-access-officer');
   if ($user_has_role) {
-    $header_applicant = array(variable_get_value('dar_research_project_list_applicant'));
+    $header_applicant = array($localize->getTranslation('data-access-request.applicant'));
   }
 
   $header_tab_static = array(
-    variable_get_value('dar_research_project_list_title'),
-    variable_get_value('dar_research_project_list_dar_label'),
+    $localize->getTranslation('research-project.title'),
+    $localize->getTranslation('research-project.data-access-request'),
   );
   $field_start_date_exist = obiba_mica_research_project_has_field('startDate');
   $field_end_date_exist = obiba_mica_research_project_has_field('endDate');
   if ($field_start_date_exist && $field_end_date_exist) {
     $header_tab_dynamic = array(
-      variable_get_value('dar_research_project_list_start_date'),
-      variable_get_value('dar_research_project_list_end_date'),
+      $localize->getTranslation('research-project.default.status.start'),
+      $localize->getTranslation('research-project.default.status.end'),
     );
   }
   $header_tab = !empty($header_tab_dynamic) ? array_merge($header_tab_static, $header_tab_dynamic) : $header_tab_static;
@@ -168,6 +171,6 @@ function obiba_mica_research_project_dar_research_projects_list_page() {
   return theme('table', array(
     'header' => $header,
     'rows' => $rows,
-    'empty' => variable_get_value('project_empty_label'),
+    'empty' => $localize->getTranslation('research-project.none'),
   ));
 }
