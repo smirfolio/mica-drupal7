@@ -24,7 +24,7 @@
         <button type="button" class="close" data-dismiss="modal"
           aria-hidden="true">&times;</button>
         <h3
-          class="modal-title"><?php print variable_get_value('associated_people'); ?></h3>
+          class="modal-title"><?php print $localize->getTranslation('network.associated-people'); ?></h3>
       </div>
       <div class="modal-body">
         <?php if (!empty($persons_table)): ?>
@@ -34,7 +34,7 @@
       <div class="clearfix"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default"
-          data-dismiss="modal"><?php print t('Close'); ?></button>
+          data-dismiss="modal"><?php print $localize->getTranslation('close'); ?></button>
       </div>
     </div>
   </div>

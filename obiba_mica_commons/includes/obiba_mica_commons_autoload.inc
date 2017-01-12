@@ -1,6 +1,7 @@
 <?php
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 use Obiba\ObibaMicaClient\MicaWatchDog as MicaWatchDog;
@@ -67,6 +68,52 @@ if (class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')
 }
 else {
   class DrupalMicaClientResource {
+  }
+}
+
+if (class_exists('Obiba\ObibaMicaClient\MicaLocalisation\MicaDrupalLocalization')) {
+  class drupalLocalization extends MicaLocalisation\MicaDrupalLocalization{
+    private static $instance;
+
+    function __construct(){
+      parent::__construct();
+      return $this;
+    }
+
+    // Singelton Pattern to load the class once on evry context
+    public static function singleton() {
+      if (!isset(self::$instance)) {
+        $c = __CLASS__;
+        self::$instance = new $c;
+      }
+
+      return self::$instance;
+    }
+
+  }
+}
+else{
+  /*
+   * Need de fake this class on cli drupal actions (installation , drush command etc...)
+   * */
+  class drupalLocalization{
+    private static $instance;
+
+    function __construct(){
+    }
+
+    public static function singleton() {
+      if (!isset(self::$instance)) {
+        $c = __CLASS__;
+        self::$instance = new $c;
+      }
+
+      return self::$instance;
+    }
+
+    public function getTranslation($vocabulary){
+      return $vocabulary;
+    }
   }
 }
 

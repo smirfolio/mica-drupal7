@@ -522,14 +522,6 @@ function _obiba_mica_settings_search_studies_form(&$form) {
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
-  $info = variable_get_info('studies_empty_label');
-  $form['search_display_settings']['studies_form']['studies_empty_label'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('studies_empty_label'),
-    '#maxlength' => 255,
-    '#description' => $info['description'],
-  );
   $info = variable_get_info('search_studies_dce_autocomplete');
   $form['search_display_settings']['studies_form']['search_studies_dce_autocomplete'] = array(
     '#type' => 'checkbox',

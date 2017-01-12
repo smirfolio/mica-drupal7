@@ -33,7 +33,7 @@
       <blockquote-small class="help-block">
         <?php
           if (!empty($content->startDate)) :
-            print(t('Start Date') . ': ' . obiba_mica_commons_convert_and_format_string_date($content->startDate, 'd-m-Y'));
+            print($localize->getTranslation('research-project.default.status.start') . ': ' . obiba_mica_commons_convert_and_format_string_date($content->startDate, 'd-m-Y'));
           endif;
         ?>
         <?php
@@ -43,7 +43,7 @@
         ?>
         <?php
           if (!empty($content->endDate)) :
-            print(t('End Date') . ': ' . obiba_mica_commons_convert_and_format_string_date($content->endDate, 'd-m-Y'));
+            print($localize->getTranslation('research-project.default.status.end') . ': ' . obiba_mica_commons_convert_and_format_string_date($content->endDate, 'd-m-Y'));
           endif;
         ?>
       </blockquote-small>

@@ -15,7 +15,7 @@ print render($node_page); ?>
   <div class="row">
     <?php
       $count = empty($total_items) ? 0 : $total_items;
-      $caption = $count < 2 ? t('Project') : t('Projects');
+      $caption = $count < 2 ? $localize->getTranslation('research-project.label') : $localize->getTranslation('research-projects');
     ?>
     <div class="col-xs-4 col-sm-2 min-height-align search-count">
       <?php if (variable_get_value('project_approved_list_show_count_caption')): ?>

@@ -37,21 +37,21 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
             <tbody>
             <?php if (!empty($dce->startYear)): ?>
               <tr>
-                <th><?php print t('Start Year') ?></th>
+                <th><?php print $localize->getTranslation('data-collection-event.start-year') ?></th>
                 <td><p><?php print obiba_mica_commons_format_year($dce->startYear, !empty($dce->startMonth) ? $dce->startMonth : NULL); ?></p></td>
               </tr>
             <?php endif; ?>
 
             <?php if (!empty($dce->endYear)): ?>
               <tr>
-                <th><?php print t('End Year') ?></th>
+                <th><?php print $localize->getTranslation('data-collection-event.end-year') ?></th>
                 <td><p><?php print obiba_mica_commons_format_year($dce->endYear, !empty($dce->endMonth) ? $dce->endMonth : NULL); ?></p></td>
               </tr>
             <?php endif; ?>
 
             <?php if (!empty($dce->model->dataSources)): ?>
               <tr>
-                <th><?php print t('Data Sources') ?></th>
+                <th><?php print $localize->getTranslation('data-collection-event.data-sources') ?></th>
                 <td>
                   <ul>
                     <?php foreach ($dce->model->dataSources as $dataSource): ?>
@@ -69,7 +69,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
 
             <?php if (!empty($dce->model->administrativeDatabases)): ?>
               <tr>
-                <th><?php print t('Administrative Databases') ?></th>
+                <th><?php print $localize->getTranslation('data-collection-event.admin-databases') ?></th>
                 <td>
                   <ul>
                     <?php foreach ($dce->model->administrativeDatabases as $database): ?>
@@ -89,7 +89,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
             <?php endif; ?>
             <?php if (!empty($dce->model->bioSamples)): ?>
               <tr>
-                <th><?php print t('Biological Samples') ?></th>
+                <th><?php print $localize->getTranslation('data-collection-event.bio-samples') ?></th>
                 <td>
                   <ul>
                     <?php foreach ($dce->model->bioSamples as $samples): ?>

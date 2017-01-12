@@ -25,12 +25,12 @@
   <?php endif ?>
   <div>
     <i class="glyphicon glyphicon-question-sign alert-warning"></i>
-    <h6><?php print t('Undetermined') ?></h6>
+    <h6><?php print $localize->getTranslation('client.label.dataset.undetermined') ?></h6>
     <?php print ' - ' . variable_get_value('dataset_harmonization_undetermined_description') ?>
   </div>
   <div>
     <i class="glyphicon glyphicon-ok alert-success"></i>
-    <h6><?php print t('Complete') ?></h6>
+    <h6><?php print $localize->getTranslation('client.label.dataset.complete') ?></h6>
     <?php print ' - ' . variable_get_value('dataset_harmonization_complete_description') ?>
   </div>
   <div>

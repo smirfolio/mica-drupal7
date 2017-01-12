@@ -55,14 +55,6 @@ function _obiba_mica_research_project_list_page_settings(&$form){
     '#description' => $info['description']
   );
 
-  $info = variable_get_info('data_access_request_research_projects_title');
-  $form['content_display_settings']['research_project_form']['research_project_list_page']['data_access_request_research_projects_title'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('data_access_request_research_projects_title'),
-    '#description' => $info['description']
-  );
-
   $info = variable_get_info('project_empty_label');
   $form['content_display_settings']['research_project_form']['research_project_list_page']['project_empty_label'] = array(
     '#type' => 'textfield',
@@ -71,27 +63,6 @@ function _obiba_mica_research_project_list_page_settings(&$form){
     '#description' => $info['description']
   );
 
-  $info = variable_get_info('dar_research_project_list_applicant');
-  $form['content_display_settings']['research_project_form']['research_project_list_page']['dar_research_project_list_applicant'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('dar_research_project_list_applicant'),
-    '#description' => $info['description']
-  );
-  $info = variable_get_info('dar_research_project_list_title');
-  $form['content_display_settings']['research_project_form']['research_project_list_page']['dar_research_project_list_title'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('dar_research_project_list_title'),
-    '#description' => $info['description']
-  );
-  $info = variable_get_info('dar_research_project_list_dar_label');
-  $form['content_display_settings']['research_project_form']['research_project_list_page']['dar_research_project_list_dar_label'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('dar_research_project_list_dar_label'),
-    '#description' => $info['description']
-  );
   $info = variable_get_info('dar_research_project_list_start_date');
   $form['content_display_settings']['research_project_form']['research_project_list_page']['dar_research_project_list_start_date'] = array(
     '#type' => 'textfield',

@@ -24,10 +24,10 @@
       <table class="table table-striped table-condensed table-bordered">
         <thead>
         <tr>
-          <th width="45%"><?php print t('Name'); ?></th>
-          <th><?php print t('Type'); ?></th>
-          <th width="30%"><?php print t('Description'); ?></th>
-          <th><?php print t('Last Modification'); ?></th>
+          <th width="45%"><?php print $localize->getTranslation('name'); ?></th>
+          <th><?php print $localize->getTranslation('type'); ?></th>
+          <th width="30%"><?php print $localize->getTranslation('description'); ?></th>
+          <th><?php print $localize->getTranslation('last-modified'); ?></th>
         </tr>
         </thead>
         <tbody>

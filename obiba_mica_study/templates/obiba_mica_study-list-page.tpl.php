@@ -18,7 +18,7 @@ print render($node_page) ?>
   <div class="row">
     <?php
     $count = empty($total_items) ? 0 : $total_items;
-    $caption = $count < 2 ? t('Study') : t('Studies');
+    $caption = $count < 2 ? $localize->getTranslation('study.label') : $localize->getTranslation('studies');
     ?>
     <div class="col-md-2 col-sm-2 col-xs-4 min-height-align search-count">
       <?php if (variable_get_value('studies_list_show_studies_count_caption')): ?>

@@ -38,12 +38,6 @@ function obiba_mica_research_project_variable_info($options) {
     'type' => 'string',
     'default' => 'My Research Projects'
   );
-  $variable['data_access_request_research_projects_title'] = array(
-    'title' => t('Research Projects'),
-    'description' => t('A list of research projects linked to the corresponding data access request (if any) for DAO.'),
-    'type' => 'string',
-    'default' => 'Research Projects'
-  );
   $variable['project_approved_list_show_count_caption'] = array(
     'title' => t('Show the Approved Projects count caption in the Research Approved Projects list page'),
     'description' => t('If selected the Projects count caption will be displayed in the Research Approved Projects list page'),
@@ -55,24 +49,6 @@ function obiba_mica_research_project_variable_info($options) {
     'description' => t('If selected the rapid search/sort form will be displayed in the Research Approved Projects list page'),
     'type' => 'boolean',
     'default' => TRUE,
-  );
-  $variable['dar_research_project_list_applicant'] = array(
-    'title' => t('The Applicant column label in DAR Research Projects list page'),
-    'description' => t('The text to be displayed as a Applicant label in DAR Research Projects list page'),
-    'type' => 'string',
-    'default' => 'Applicant',
-  );
-  $variable['dar_research_project_list_title'] = array(
-    'title' => t('The title column label in DAR Research Projects list page'),
-    'description' => t('The text to be displayed as a title label in DAR Research Projects list page'),
-    'type' => 'string',
-    'default' => 'Title',
-  );
-  $variable['dar_research_project_list_dar_label'] = array(
-    'title' => t('The Data Access Request label in DAR Research Projects list page'),
-    'description' => t('The text to be displayed as a Data Access Request label in DAR Research Projects list page'),
-    'type' => 'string',
-    'default' => 'Data Access Request',
   );
   $variable['dar_research_project_list_start_date'] = array(
     'title' => t('The start date label in DAR Research Projects list page'),

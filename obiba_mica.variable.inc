@@ -473,12 +473,6 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'type' => 'string',
     'default' => 'Search Studies',
   );
-  $variable['studies_empty_label'] = array(
-    'title' => t('No study label'),
-    'description' => t('Text to be displayed when no study is found.'),
-    'type' => 'string',
-    'default' => t('No study found'),
-  );
   $variable['search_studies_dce_autocomplete'] = array(
     'title' => t('Show Data Collection Event auto-complete search filter'),
     'description' => t('If selected, the auto-complete search filter will be displayed in the search page.'),
@@ -497,12 +491,6 @@ function _obiba_mica_variable_search_studies(&$variable) {
  * Setting Variable content page network.
  */
 function _obiba_mica_variable_network_content(&$variable) {
-  $variable['networks_section_label'] = array(
-    'title' => t('Label for Networks section'),
-    'description' => t('Displayed label For Networks section'),
-    'type' => 'string',
-    'default' => 'Networks',
-  );
 
   $variable['network_list_show_search_button'] = array(
     'title' => t('Show the search networks button in the network list page'),

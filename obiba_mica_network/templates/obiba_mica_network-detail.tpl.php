@@ -32,11 +32,11 @@
 
   <div class="pull-right md-bottom-margin">
   <?php if ($can_edit_draf_document): ?>
-    <a title="<?php print t('Edit') ?>"
+    <a title="<?php print $localize->getTranslation('edit') ?>"
        target="_blank"
        href="<?php print MicaClientPathProvider::network_draft_url($network_dto->id) ?>"
        class="btn btn-default">
-      <i class="fa fa-pencil-square-o"></i> <?php print t('Edit')?></a>
+      <i class="fa fa-pencil-square-o"></i> <?php $localize->getTranslation('edit') ?></a>
   <?php endif; ?>
   <?php if (!empty($network_dto->studyIds)): ?>
       <?php if (variable_get_value('network_detail_show_search_button')): ?>
@@ -51,7 +51,7 @@
 <article class="bordered-article">
 
   <section>
-    <h2><?php print t('Overview') ?></h2>
+    <h2><?php print $localize->getTranslation('client.label.overview') ?></h2>
 
     <div class="row">
       <div class="col-lg-6 col-xs-12">
@@ -60,7 +60,7 @@
           <tbody>
           <?php if (!empty($network_dto->acronym)): ?>
             <tr>
-              <th><?php print t('Acronym') ?></th>
+              <th><?php print $localize->getTranslation('network.acronym') ?></th>
               <td>
                 <p><?php print obiba_mica_commons_get_localized_field($network_dto, 'acronym'); ?></p>
               </td>
@@ -69,7 +69,7 @@
 
           <?php if (!empty($network_dto->model->website)): ?>
             <tr>
-              <th><?php print t('Website') ?></th>
+              <th><?php print $localize->getTranslation('website') ?></th>
               <td>
                 <p><?php
                   print l(obiba_mica_commons_get_localized_field($network_dto, 'acronym') . ' ' . t('website'),
@@ -121,7 +121,7 @@
 
       <?php if (!empty($network_dto->attributes)): ?>
         <div class="col-lg-6 col-xs-12">
-          <h4><?php print t('Attributes') ?></h4>
+          <h4><?php print $localize->getTranslation('attributes') ?></h4>
 
           <p><?php print obiba_mica_dataset_attributes_tab($network_dto->attributes, 'maelstrom'); ?></p>
         </div>
@@ -131,7 +131,7 @@
   </section>
   <?php if (!empty($statistics)): ?>
     <section>
-      <h2><?php print t('Summary Statistics'); ?></h2>
+      <h2><?php print $localize->getTranslation('client.label.network.summary-stats'); ?></h2>
       <?php print render($statistics); ?>
     </section>
   <?php endif; ?>
@@ -149,7 +149,7 @@
 
       <?php if (!empty($network_dto->networkSummaries)): ?>
         <div>
-          <h2><?php print variable_get_value('networks_section_label') ?></h2>
+          <h2><?php print $localize->getTranslation('networks') ?></h2>
 
           <div id="networks-table">
             <div class="row">
@@ -163,7 +163,7 @@
 
       <?php if (!empty($network_dto->studySummaries)): ?>
         <div>
-          <h2><?php print t('Studies') ?></h2>
+          <h2><?php print $localize->getTranslation('studies') ?></h2>
 
           <div id="studies-table">
             <div class="row">
@@ -180,13 +180,13 @@
 
   <!-- DATASETS placeholder -->
   <section id="datasets">
-    <div><?php print t('Loading ...') ?></div>
+    <div><?php print $localize->getTranslation('loading') ?></div>
   </section>
 
   <!-- COVERAGE placeholder -->
   <div ng-controller="VariableCoverageChartController">
     <section id="coverage" ng-if="d3Configs && d3Configs.length">
-      <h2><?php print t('Variables Classification') ?></h2>
+      <h2><?php print $localize->getTranslation('variable-classifications') ?></h2>
 
       <div ng-repeat="d3Config in d3Configs">
         <obiba-nv-chart chart-config="d3Config"></obiba-nv-chart>

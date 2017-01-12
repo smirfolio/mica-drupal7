@@ -17,6 +17,7 @@
 include_once 'includes/obiba_mica_dataset_resource.inc';
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 
 /**
  * The dataset Detail page.
@@ -41,6 +42,7 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   $themed_attachment = NULL;
   $modals = NULL;
   $dataset_resource = new DrupalMicaDatasetResource();
+  $localize = obiba_mica_commons_mica_server_localisation();
 
   $dataset_dto = $dataset_resource->getDataset($dataset_id);
 
@@ -77,8 +79,8 @@ function obiba_mica_dataset_page_detail($dataset_id) {
 
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
-    l(t('Datasets'), 'mica/datasets'),
-    l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
+    l($localize->getTranslation('datasets'), 'mica/datasets'),
+    l(($dataset_type == 'study-dataset' ? $localize->getTranslation('study-datasets') : $localize->getTranslation('harmonization-datasets')), 'mica/datasets/' . $dataset_type . 's'),
   ));
 
   $dataset_theme = obiba_mica_commons_get_cache(__FUNCTION__ . 'dataset_theme-' . $dataset_id);
@@ -366,6 +368,7 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
  * Studies dataset ajax variable table.
  */
 function obiba_mica_dataset_studies_Variables_table_ajax_header() {
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
     array(
       "sTitle" => '',
@@ -375,21 +378,21 @@ function obiba_mica_dataset_studies_Variables_table_ajax_header() {
       "visible" => FALSE,
     ),
     array(
-      "sTitle" => t('Variable'),
+      "sTitle" => $localize->getTranslation('search.variable.facet-label'),
       "data" => "name",
       "mDataProp" => "name",
       "name" => "name",
       "width" => "25%",
     ),
     array(
-      "sTitle" => t('Label'),
+      "sTitle" => $localize->getTranslation('search.variable.label'),
       "data" => "label",
       "mDataProp" => "label",
       "name" => "label",
       "orderable" => FALSE,
     ),
     array(
-      "sTitle" => t('Classifications'),
+      "sTitle" => $localize->getTranslation('classifications.title'),
       "data" => "classifications",
       "mDataProp" => "classifications",
       "name" => "classifications",
@@ -486,14 +489,15 @@ function obiba_mica_dataset_links_table_rows($network_details) {
 }
 
 function obiba_mica_datataset_network_table_headers() {
+  $localize = obiba_mica_commons_mica_server_localisation();
   return array(
-    array("title" => t('Acronym'), 'width' => '15%'),
-    array("title" => t('Name'), 'width' => '40%'),
-    array("title" => t('Studies'), 'width' => '5%'),
-    array("title" => t('Participants'), 'width' => '10%'),
-    array("title" => t('Countries'), 'width' => '20%'),
-    array("title" => t('Study Variables'), 'width' => '5%'),
-    array("title" => t('DataSchema Variables'), 'width' => '5%')
+    array("title" => $localize->getTranslation('network.acronym'), 'width' => '15%'),
+    array("title" => $localize->getTranslation('network.name'), 'width' => '40%'),
+    array("title" => $localize->getTranslation('studies'), 'width' => '5%'),
+    array("title" => $localize->getTranslation('client.label.dataset.participants'), 'width' => '10%'),
+    array("title" => $localize->getTranslation('client.label.countries'), 'width' => '20%'),
+    array("title" => $localize->getTranslation('client.label.study-variables'), 'width' => '5%'),
+    array("title" => $localize->getTranslation('client.label.dataschema-variables'), 'width' => '5%')
   );
 }
 
@@ -506,6 +510,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
   $opal_tables = _obiba_mica_dataset_harmonizations_get_all_opal_tables($dataset_type_dto);
 
   if (!empty($opal_tables)) {
+    $localize = obiba_mica_commons_mica_server_localisation();
     $header[] = array(
       "sTitle" => '',
       "data" => "index",
@@ -515,7 +520,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
     );
 
     $header[] = array(
-      "sTitle" => t('Variable'),
+      "sTitle" => $localize->getTranslation('search.variable.facet-label'),
       "data" => "variable",
       "name" => "name",
       "mDataProp" => "name",
@@ -727,6 +732,7 @@ function obiba_mica_dataset_studies_datatable_init($dataset_type_dto) {
  * Get studies table.
  */
 function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
+  $localize = obiba_mica_commons_mica_server_localisation();
   $study_tables = array();
   if (!empty($dataset_type_dto->studyTables)) {
     foreach ($dataset_type_dto->studyTables as $study_table) {
@@ -746,7 +752,7 @@ function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
     array(
       'header' => $headers,
       'rows' => $rows,
-      'empty' => variable_get_value('studies_empty_label'),
+      'empty' => $localize->getTranslation('study.none'),
       'sticky' => FALSE,
     )
   );
