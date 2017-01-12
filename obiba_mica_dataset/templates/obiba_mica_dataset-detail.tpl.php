@@ -79,7 +79,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
           <?php endif; ?>
 
           <tr>
-            <th><?php print t('Dataset Type'); ?></th>
+            <th><?php print $localize->getTranslation('client.label.dataset.dataset-type'); ?></th>
             <td>
               <p>
                 <?php
@@ -93,7 +93,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
             </td>
           </tr>
           <tr>
-            <th><?php print t('Number of Variables') ?></th>
+            <th><?php print $localize->getTranslation('client.label.dataset.number-of-variables') ?></th>
             <td>
               <p>
                 <?php print MicaClientAnchorHelper::datasetVariables(empty($variables_dataset->total) ? 0 :
@@ -251,7 +251,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   <!-- VARIABLES -->
   <?php if ($dataset_type != "study-dataset"): ?>
     <section class="table-variables">
-      <h2><?php print t('Harmonization') ?></h2>
+      <h2><?php print $localize->getTranslation('client.label.variable.harmonization') ?></h2>
       <?php print render($harmonization_table_legend); ?>
       <div id="download-btn">
         <a href="" class="btn btn-success pull-right"><i

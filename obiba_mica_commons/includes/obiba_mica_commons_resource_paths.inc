@@ -870,19 +870,20 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function coverageDatasets($is_button = FALSE, $bucket = 'dataset') {
-      $label = t('Harmonization Dataset');
-      if ($bucket == 'dataset') {
-        $label = t('Study Dataset');
-      }
-      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
-        variable_get_value('variable_coverage_label') . ' ' . t('by') . ' ' . $label,
-        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
-        array(
-          'type' => 'datasets',
-          'query' => 'dataset(exists(Mica_dataset.id))',
-          'display' => 'coverage',
-          'bucket' => $bucket
-        ));
+    $localize = obiba_mica_commons_mica_server_localisation();
+    $label = $localize->getTranslation('harmonization-dataset');
+    if ($bucket == 'dataset') {
+      $label = $localize->getTranslation('study-dataset');
+    }
+    return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+      variable_get_value('variable_coverage_label') . ' ' . t('by') . ' ' . $label,
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+      array(
+        'type' => 'datasets',
+        'query' => 'dataset(exists(Mica_dataset.id))',
+        'display' => 'coverage',
+        'bucket' => $bucket
+      ));
   }
 
   /**
