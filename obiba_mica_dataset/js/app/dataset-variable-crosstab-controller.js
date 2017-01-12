@@ -70,8 +70,7 @@
 
             var onError = function (response) {
               $scope.serverError = true;
-              ServerErrorAlertService.alert('DataAccessRequestEditController', response);
-              ForbiddenDrupalRedirect.redirectDrupalMessage(response);
+              ServerErrorAlertService.alert('MainController', response);
               endProgress();
             };
 
@@ -327,7 +326,7 @@
                   function onSuccess(response) {
                     if (Object.keys(response).filter(function (k) {return k[0] !== '$';}).length === 0) {
                       // response with all properties prefixed with '$' filtered out is empty
-                      onError('No data available.');
+                      onError({status: 'crosstab.no-data'});
                     } else {
                       $scope.crosstab.contingencies = normalizeData(response.contingencies ? response.contingencies : [response]);
 
