@@ -80,7 +80,7 @@ function obiba_mica_variable_page_detail($variable_id) {
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
     l($localize->getTranslation('datasets'), 'mica/datasets'),
-    l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
+    l(($dataset_type == 'study-dataset' ? $localize->getTranslation('study-datasets') : $localize->getTranslation('harmonization-datasets')), 'mica/datasets/' . $dataset_type . 's'),
     l(obiba_mica_commons_get_localized_field($variable, 'datasetName'), 'mica/' . obiba_mica_variable_dataset_type($variable)
       . '/' . $variable->datasetId),
   ));
@@ -188,11 +188,11 @@ function obiba_mica_dataset_variable_get_harmonizations($variable) {
 function obiba_mica_dataset_variable_get_harmonization_table_headers($variable, $has_status_detail = NULL) {
   $localize = new MicaLocalisation\MicaDrupalLocalization();
   $header =  array(
-    array("title" => t('Harmonized Variable'), 'width' => '20%'),
+    array("title" => $localize->getTranslation('client.label.variable.harmonized-variable'), 'width' => '20%'),
     array("title" => $localize->getTranslation('study.label')),
     array("title" => $localize->getTranslation('study.data-collection-event'), 'width' => '40%'),
     array("title" => $localize->getTranslation('status'), 'width' => '5%'),
-    array($has_status_detail?"title":"" => $has_status_detail?t('Status Detail'):"", $has_status_detail?'width':'' => $has_status_detail?'10%':''),
+    array($has_status_detail?"title":"" => $has_status_detail?$localize->getTranslation('client.label.variable.status-detail'):"", $has_status_detail?'width':'' => $has_status_detail?'10%':''),
     array("title" => $localize->getTranslation('comment-label')),
   );
   return array_filter($header);
