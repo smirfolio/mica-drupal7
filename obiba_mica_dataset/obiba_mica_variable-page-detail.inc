@@ -20,6 +20,7 @@ include_once 'includes/obiba_mica_dataset_resource.inc';
 use Obiba\ObibaMicaClient\Datasets as Datasets;
 //TODO have to remove from here must be in obiba\ObibaMicaClient Module only
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
+use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 
 /**
  * Variable page detail.
@@ -39,6 +40,7 @@ function obiba_mica_variable_page_detail($variable_id) {
 
   $variable_resource = new DrupalMicaDatasetResource();
   $variable = $variable_resource->getVariable($variable_id);
+  $localize = new MicaLocalisation\MicaDrupalLocalization();
 
   if (empty($variable)) {
     drupal_set_title(t('Variable not found'));
@@ -77,8 +79,8 @@ function obiba_mica_variable_page_detail($variable_id) {
 
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
-    l(t('Datasets'), 'mica/datasets'),
-    l(($dataset_type == 'study-dataset' ? t('Study Datasets') : t('Harmonization Datasets')), 'mica/datasets/' . $dataset_type . 's'),
+    l($localize->getTranslation('datasets'), 'mica/datasets'),
+    l(($dataset_type == 'study-dataset' ? $localize->getTranslation('study-datasets') : $localize->getTranslation('harmonization-datasets')), 'mica/datasets/' . $dataset_type . 's'),
     l(obiba_mica_commons_get_localized_field($variable, 'datasetName'), 'mica/' . obiba_mica_variable_dataset_type($variable)
       . '/' . $variable->datasetId),
   ));
@@ -184,13 +186,14 @@ function obiba_mica_dataset_variable_get_harmonizations($variable) {
  * GEt harmonized variable header table.
  */
 function obiba_mica_dataset_variable_get_harmonization_table_headers($variable, $has_status_detail = NULL) {
+  $localize = new MicaLocalisation\MicaDrupalLocalization();
   $header =  array(
-    array("title" => t('Harmonized Variable'), 'width' => '20%'),
-    array("title" => t('Study')),
-    array("title" => t('Data Collection Event'), 'width' => '40%'),
-    array("title" => t('Status'), 'width' => '5%'),
-    array($has_status_detail?"title":"" => $has_status_detail?t('Status Detail'):"", $has_status_detail?'width':'' => $has_status_detail?'10%':''),
-    array("title" => t('Comment')),
+    array("title" => $localize->getTranslation('client.label.variable.harmonized-variable'), 'width' => '20%'),
+    array("title" => $localize->getTranslation('study.label')),
+    array("title" => $localize->getTranslation('study.data-collection-event'), 'width' => '40%'),
+    array("title" => $localize->getTranslation('status'), 'width' => '5%'),
+    array($has_status_detail?"title":"" => $has_status_detail?$localize->getTranslation('client.label.variable.status-detail'):"", $has_status_detail?'width':'' => $has_status_detail?'10%':''),
+    array("title" => $localize->getTranslation('comment-label')),
   );
   return array_filter($header);
 }
@@ -332,6 +335,7 @@ function obiba_mica_dataset_variable_html_truncated($text, $label, $size = 200) 
  * Get variable categories table.
  */
 function obiba_mica_dataset_variable_get_categories($categories = NULL) {
+  $localize = new MicaLocalisation\MicaDrupalLocalization();
   $rows = array();
   if (!empty($categories)) {
     foreach ($categories as $category) {
@@ -344,7 +348,7 @@ function obiba_mica_dataset_variable_get_categories($categories = NULL) {
     return theme(
       'table',
       array(
-        'header' => array(t('Name'), t('Label'), t('Missing')),
+        'header' => array($localize->getTranslation('name'), $localize->getTranslation('search.variable.label'), $localize->getTranslation('client.label.missing')),
         'rows' => $rows,
         'empty' => t('No category found'),
         'sticky' => FALSE,

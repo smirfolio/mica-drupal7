@@ -323,7 +323,7 @@
               </tr>
               <?php if (!empty($variable_harmonization['status_detail'])): ?>
               <tr>
-                <th><?php print t('Status Detail'); ?></th>
+                <th><?php print $localize->getTranslation('client.label.variable.status-detail'); ?></th>
                 <td>
                   <span><?php print t(ucfirst($variable_harmonization['status_detail'])) ?></span>
                 </td>
@@ -343,7 +343,7 @@
         <?php if (!empty(variable_get_value('variable_algorithm'))): ?>
           <?php if ($variable_harmonization['status'] == 'complete'): ?>
             <?php if (!empty($variable_harmonization['algorithm'])): ?>
-              <h2><?php print t('Algorithm') ?></h2>
+              <h2><?php print $localize->getTranslation('config.key.algo') ?></h2>
               <div class="row">
                 <div class="col-md-6 col-sm-12">
                   <?php print $variable_harmonization['algorithm']; ?>
