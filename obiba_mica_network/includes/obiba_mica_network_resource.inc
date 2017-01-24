@@ -52,12 +52,6 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
     $params .= ",locale($language->language)";
     $resource_query = '/networks/_rql?query=' . $params;
 
-    $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-
-    if ($cache_stored_data !== FALSE) {
-      return $cache_stored_data;
-    }
-
     $url_networks = $this->micaUrl . $resource_query;
     $request = new HttpClientRequest($url_networks, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -73,9 +67,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $result_data = json_decode($data);
-      $network_join_response_wrapper = new DrupalMicaClient\NetworkJoinResponseWrapper($result_data);
-      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_join_response_wrapper);
-      return $network_join_response_wrapper;
+      return new DrupalMicaClient\NetworkJoinResponseWrapper($result_data);
 
     } catch (HttpClientException $e) {
       watchdog('Mica Client', 'Connection to mica fail,  Error serve code : @code, message: @message',
