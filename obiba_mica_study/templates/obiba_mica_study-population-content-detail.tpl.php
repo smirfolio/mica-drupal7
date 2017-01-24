@@ -178,7 +178,7 @@
   || !empty($population->model->info)
   || !empty($population->model->numberOfParticipants->info)
 ): ?>
-  <h4><?php print $localize->getTraanslation('client.label.study.sample-size') ?></h4>
+  <h4><?php print $localize->getTranslation('client.label.study.sample-size') ?></h4>
 
   <div class="scroll-content-tab">
     <table class="table table-striped">
