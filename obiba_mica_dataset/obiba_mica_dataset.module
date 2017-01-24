@@ -702,15 +702,19 @@ function obiba_mica_dataset_get_js($weight_js) {
  * Implements hook_load_menus().
  */
 function obiba_mica_dataset_load_menus() {
-  $localize = obiba_mica_commons_mica_server_localisation();
   $items = array();
 
   $items[MicaClientPathProvider::CROSSTAB] = array(
     'access callback' => TRUE,
-    'title' => $localize->getTranslation('client.label.dataset.variable-crosstab'),
+    'title callback' => 'obiba_mica_dataset_crosstab_title',
     'module_caller' => 'obiba_mica_dataset',
   );
   return $items;
+}
+
+function obiba_mica_dataset_crosstab_title() {
+  $localize = obiba_mica_commons_mica_server_localisation();
+  return $localize->getTranslation('client.label.dataset.variable-crosstab');
 }
 
 /**
