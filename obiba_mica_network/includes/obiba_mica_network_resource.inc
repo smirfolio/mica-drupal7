@@ -52,51 +52,47 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
     $params .= ",locale($language->language)";
     $resource_query = '/networks/_rql?query=' . $params;
 
-    $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    if (!empty($cache_stored_data)) {
-      return $cache_stored_data;
-    }
-    else {
-      $url_networks = $this->micaUrl . $resource_query;
-      $request = new HttpClientRequest($url_networks, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON),
-          )
+    $url_networks = $this->micaUrl . $resource_query;
+    $request = new HttpClientRequest($url_networks, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
         )
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $result_data = json_decode($data);
-        $result_resource_query = new DrupalMicaClient\NetworkJoinResponseWrapper($result_data);
-        $has_summary = $result_resource_query->hasSummaries();
-        if (!empty($has_summary)) {
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
-          return $result_resource_query;
-        }
-      } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
-        $message_parameters['placeholders'] = array(
+      )
+    ));
+
+    $client = $this->client();
+
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      $result_data = json_decode($data);
+      return new DrupalMicaClient\NetworkJoinResponseWrapper($result_data);
+
+    } catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Connection to mica fail,  Error serve code : @code, message: @message',
+        array(
           '@code' => $e->getCode(),
           '@message' => $e->getMessage()
-        );
-        $message_parameters['severity'] = 'error';
-        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
-          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
-        }
-        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
+        ), WATCHDOG_WARNING);
+      $message_parameters['message'] = 'Error contacting Mica, please try again later. Error serve code : @code, message: @message';
+      $message_parameters['placeholders'] = array(
+        '@code' => $e->getCode(),
+        '@message' => $e->getMessage()
+      );
+      $message_parameters['severity'] = 'error';
+      if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
+        DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
       }
-    }
-    return FALSE;
-  }
+      drupal_set_message(t($message_parameters['message'], $message_parameters['placeholders']), $message_parameters['severity']);
 
+      throw $e;
+    } catch (Exception $e) {
+      drupal_set_message('Error contacting Mica, please try again later.', 'error');
+      watchdog('Mica Client', 'Unexpected error, exception @exception', array('@exception' => $e), WATCHDOG_ERROR);
+      throw $e;
+    }
+  }
 
   /**
    * Get the list of network details.

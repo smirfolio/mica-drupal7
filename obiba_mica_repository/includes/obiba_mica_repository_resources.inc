@@ -69,7 +69,6 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     } catch (Exception $e) {
 
       drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Error contacting Mica, please try again later.', 'error');
-
       watchdog('Mica Client', 'Unexpected error, exception @exception', array('@exception' => $e), WATCHDOG_ERROR);
       throw $e;
     }
