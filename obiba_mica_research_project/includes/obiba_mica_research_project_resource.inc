@@ -124,8 +124,11 @@ class DrupalMicaResearchProjectResource extends DrupalMicaClientResource {
    * @param $project_id
    * @return array|null
    */
-  public function getProject($project_id) {
+  public function getProject($project_id, $token_key = NULL) {
     $resource_query = '/project/' . rawurlencode($project_id);
+    if(!empty($token_key)){
+      $resource_query = '/draft/project/' . rawurlencode($project_id) . '?key=' . $token_key;
+    }
     $this->setLastResponse(NULL);
     $cached_project = $this->drupalCache->MicaGetCache($resource_query);
     $url = $this->micaUrl . $resource_query;
@@ -150,7 +153,22 @@ class DrupalMicaResearchProjectResource extends DrupalMicaClientResource {
           return $result_project;
         }
       } catch (HttpClientException $e) {
-        return array();
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
+        $message_parameters['placeholders'] = array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        );
+        $message_parameters['severity'] = 'error';
+        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
+          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
+          throw $e;
+        }
+        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
       }
     }
   }

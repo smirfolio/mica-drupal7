@@ -17,42 +17,58 @@ use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
  * @param $project_id
  * @return mixed
  */
-function obiba_mica_research_project_page_detail($project_id) {
+function obiba_mica_research_project_page_detail($project_id, $token_key = NULL) {
   $research_project_resource = new DrupalMicaResearchProjectResource(NULL);
   $localize = obiba_mica_commons_mica_server_localisation();
-  
-  $response = $research_project_resource->getProject($project_id);
-
-  $model = new stdClass();
-  if (!empty($response->content)) {
-    $model = json_decode($response->content);
+  if (!empty($token_key)) {
+    obiba_mica_commons_is_published(FALSE);
+    $response = $research_project_resource->getProject($project_id, $token_key);
+  }
+  else{
+    $response = $research_project_resource->getProject($project_id);
   }
 
-  if (module_exists('obiba_mica_files')) {
-    drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
-    $flat_project_attachments = obiba_mica_files_get_flat_attachments('project', $project_id);
-    $filtered_tree_path = $flat_project_attachments->findNodeFullPath('/project/' . $project_id);
-    if (!empty($filtered_tree_path)) {
-      $themed_attachment = $flat_project_attachments->themeFolders($filtered_tree_path, NULL, $project_id);
+  if(!empty($response)){
+    $model = new stdClass();
+    if (!empty($response->content)) {
+      $model = json_decode($response->content);
     }
-    obiba_mica_app_angular_load_js_resources('obiba_mica_files');
+
+    if (module_exists('obiba_mica_files')) {
+      drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
+      $flat_project_attachments = obiba_mica_files_get_flat_attachments('project', $project_id);
+      $filtered_tree_path = $flat_project_attachments->findNodeFullPath('/project/' . $project_id);
+      if (!empty($filtered_tree_path)) {
+        $themed_attachment = $flat_project_attachments->themeFolders($filtered_tree_path, NULL, $project_id);
+      }
+      obiba_mica_app_angular_load_js_resources('obiba_mica_files');
+    }
+
+    drupal_set_title(obiba_mica_commons_get_localized_field($response, 'title'));
+
+    drupal_set_breadcrumb(array(
+      l(t('Home'), '<front>'),
+      l($localize->getTranslation('research'), MicaClientPathProvider::RESEARCH_PROJECT),
+      l(t('Approved Projects'), MicaClientPathProvider::RESEARCH_PROJECT_APPROVED),
+    ));
+
+    $project_theme ='';
+    if (!empty($token_key)) {
+      $project_link = obiba_mica_commons_get_draft_link('research/project', $project_id);
+      $project_theme .=  $project_link;
+    }
+    return $project_theme . theme('obiba_mica_research_project-detail-page', array(
+      'project' => $response,
+      'model' => $model,
+      'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
+      'file_browser' => theme('obiba_mica_files_browser', array(
+        'doc_path' => '/project',
+        'doc_id' => $project_id
+      )),
+    ));
   }
-
-  drupal_set_title(obiba_mica_commons_get_localized_field($response, 'title'));
-
-  drupal_set_breadcrumb(array(
-    l(t('Home'), '<front>'),
-    l($localize->getTranslation('research'), MicaClientPathProvider::RESEARCH_PROJECT),
-    l(t('Approved Projects'), MicaClientPathProvider::RESEARCH_PROJECT_APPROVED),
-  ));
-
-  return theme('obiba_mica_research_project-detail-page', array(
-    'project' => $response,
-    'model' => $model,
-    'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
-    'file_browser' => theme('obiba_mica_files_browser', array(
-      'doc_path' => '/project',
-      'doc_id' => $project_id
-    )),
-  ));
+  else{
+    drupal_set_title('No Project Found');
+    return '';
+  }
 }

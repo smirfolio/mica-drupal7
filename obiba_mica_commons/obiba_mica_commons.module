@@ -19,6 +19,16 @@ const HEADER_JSON = 'application/json';
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 /**
+ * Implements hook_theme().
+ */
+function obiba_mica_commons_theme($existing, $type, $theme, $path) {
+  $path_theme = $path . '/templates';
+  return array('obiba_mica_common_draft_link'=>array(
+    'template' => 'obiba_mica_common_draft_link',
+    'path' => $path_theme
+  ));
+}
+/**
  * Implements hook_user_logout().
  */
 function obiba_mica_commons_user_logout() {
@@ -627,7 +637,7 @@ function obiba_mica_commons_create_size_select_form($context) {
  * @return string
  *   The url of image.
  */
-function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type, $link_to = FALSE) {
+function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type, $link_to = FALSE, $token_key = FALSE) {
 
   if ($link_to) {
     if (!strstr(drupal_get_js(), 'fancybox')) {
@@ -645,8 +655,14 @@ function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $
       if (!empty($file_resource)) {
         //TODO have to Not instantiate MicaCLient from here have to use an intermediate class that extend them
         $mica_client = new DrupalMicaClientResource(NULL);
-        $raw_data = $mica_client->downloadFile($entity_type, $entity_id,
-          $file_resource->id);
+        if (!empty($token_key)) {
+          $raw_data = $mica_client->downloadFile($entity_type, $entity_id,
+            $file_resource->id, $token_key);
+        }
+        else {
+          $raw_data = $mica_client->downloadFile($entity_type, $entity_id,
+            $file_resource->id);
+        }
         if (!empty($raw_data) && empty($raw_data['code'])) {
           $extension_file = $raw_data['extension'];
           $file = file_unmanaged_save_data($raw_data['data'], 'public://tmp' .
@@ -837,10 +853,37 @@ function obiba_mica_commons_get_images_cache($key) {
 }
 
 /**
+ * Helper to decide if document is published so it's ready to cache.
+ * utility to omit caching draft document by obiba_mica_commons_is_published(FALSE).
+ */
+function obiba_mica_commons_is_published($is_punlished = NULL) {
+  $is_punlished_static = &drupal_static(__FUNCTION__, TRUE);
+  if (isset($is_punlished)) {
+    $is_punlished_static = $is_punlished;
+  }
+  return $is_punlished_static;
+}
+
+/**
+ * Get the link to published document in Draft view mode.
+ * @param $document_type
+ * @param $document_id
+ * @return string
+ * @throws \Exception
+ */
+function obiba_mica_commons_get_draft_link($document_type, $document_id) {
+  return theme('obiba_mica_common_draft_link', array(
+    'document_type' => $document_type,
+    'document_id' => $document_id
+  ));
+}
+
+/**
  * Helper to set cache for current user
  */
 function _obiba_mica_commons_set_cache($key, $bin, $value) {
-  if (variable_get_value('cache') == 1 && !empty($value)) {
+  $is_punlished = &drupal_static('obiba_mica_commons_is_published', TRUE);
+  if (!empty($is_punlished) && variable_get_value('cache') == 1 && !empty($value)) {
     cache_set($key, $value, $bin, CACHE_TEMPORARY);
   }
 }
@@ -850,7 +893,8 @@ function _obiba_mica_commons_set_cache($key, $bin, $value) {
  */
 function _obiba_mica_commons_get_cache($key, $bin) {
   $cache_object = NULL;
-  if (variable_get_value('cache') == 1 && !empty($key)) {
+  $is_punlished = &drupal_static('obiba_mica_commons_is_published', TRUE);
+  if (!empty($is_punlished) && variable_get_value('cache') == 1 && !empty($key)) {
     $cache_object = cache_get($key, $bin);
   }
   return empty($cache_object) ? FALSE : $cache_object->data;
@@ -1024,7 +1068,7 @@ function obiba_mica_commons_get_current_user() {
 
 function obiba_mica_commons_mica_server_localisation() {
   $localize = drupalLocalization::singleton();
-    return $localize;
+  return $localize;
 }
 
 function obiba_mica_commons_array_empty_test($array) {

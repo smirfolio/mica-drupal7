@@ -552,8 +552,11 @@ class MicaClient extends DrupalMicaHttpClient{
    *    code : the error code
    *    message : the error message
    */
-  public function downloadFile($entity_type, $entity_id, $file_id) {
+  public function downloadFile($entity_type, $entity_id, $file_id, $token_key = NULL) {
     $url = $this->micaUrl . "/" . $entity_type . "/" . $entity_id . "/file/" . $file_id . "/_download";
+    if(!empty($token_key)){
+      $url = $this->micaUrl . "/draft/" . $entity_type . "/" . $entity_id . "/file/" . $file_id . "/_download?key=" . $token_key;
+    }
     $request = $this->getMicaHttpClientRequest($url, array(
       'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
       'headers' => self::authorizationHeader(array(

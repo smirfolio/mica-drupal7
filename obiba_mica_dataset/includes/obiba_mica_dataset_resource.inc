@@ -117,8 +117,11 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    * @return array
    *   The server response.
    */
-  public function getDataset($dataset_id, $resource = 'dataset') {
+  public function getDataset($dataset_id, $resource = 'dataset', $token_key = NULL) {
     $resource_query = (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
+    if(!empty($token_key)){
+      $resource_query = 'draft/' . (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id . '?key=' . $token_key;
+    }
     $this->setLastResponse(NULL);
     $cached_dataset = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     $url = $this->micaUrl . '/' . $resource_query;
@@ -145,7 +148,22 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
         }
 
       } catch (HttpClientException $e) {
-        return array();
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
+        $message_parameters['placeholders'] = array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        );
+        $message_parameters['severity'] = 'error';
+        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
+          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
+          throw $e;
+        }
+        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
       }
     }
   }

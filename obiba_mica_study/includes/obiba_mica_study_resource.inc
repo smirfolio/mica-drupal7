@@ -84,21 +84,24 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    *
    * @return array
    */
-  public function getStudy($study_id) {
+  public function getStudy($study_id, $token_key = NULL) {
+    $cached_study = NULL;
     $resource_query = '/study/' . rawurlencode($study_id);
+    if(!empty($token_key)){
+      $resource_query = '/draft/study/' . rawurlencode($study_id) . '?key=' . $token_key;
+    }
     global $language;
-    if ($language)
+    if ($language){
       // Omit to query with lang parameters to receive study Dto that will be translated using internal drupal mechanism.
       // $resource_query .= '?locale=' . $language->language;
-    {
-      $this->setLastResponse(NULL);
     }
+    $this->setLastResponse(NULL);
     $cached_study = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
-    $url = $this->micaUrl . $resource_query;
     if (!empty($cached_study)) {
       return $cached_study;
     }
     else {
+      $url = $this->micaUrl . $resource_query;
       $request = new HttpClientRequest($url, array(
         'method' => HttpClientRequest::METHOD_GET,
         'headers' => $this->authorizationHeader(array(
@@ -129,7 +132,22 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
           return $result_study;
         }
       } catch (HttpClientException $e) {
-        return array();
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+          array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          ), WATCHDOG_WARNING);
+        $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
+        $message_parameters['placeholders'] = array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        );
+        $message_parameters['severity'] = 'error';
+        if ($e->getCode() == 500 || $e->getCode() == 503 || $e->getCode() == 0) {
+          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
+          throw $e;
+        }
+        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
       }
     }
   }
