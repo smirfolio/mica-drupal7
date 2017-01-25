@@ -24,6 +24,10 @@ class ObibaSearchResources extends DrupalMicaClientResource {
 
   private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
 
+    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
+    if ($stored_data !== FALSE)
+      return $stored_data;
+
     $url = $this->micaUrl . $resources;
 
     $request = new HttpClientRequest($url, array(
@@ -39,7 +43,9 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      return json_decode($data);
+      $response = json_decode($data);
+      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $response);
+      return $response;
 
     } catch (HttpClientException $e) {
 
