@@ -165,7 +165,7 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
     $url_requests = sprintf("%s/data-access-request/%s/form/attachments/%s/%s/_download",
       $this->micaUrl,
       $parts[1],
-      $file_name,
+      urlencode($file_name),
       $file_id
     );
 
