@@ -200,7 +200,7 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     } catch (Exception $e) {
       watchdog('Mica Client', 'Connection to Mica fail,  Error serve code : @exception',
         array(
-          '@exception' => $e,
+          '@code' => $e,
         ), WATCHDOG_ERROR);
 
       throw $e;
