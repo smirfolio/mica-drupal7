@@ -1,0 +1,10 @@
+name = Obiba Mica Graphic
+description = Api to get Geo/Pies graphics via ajax call
+package = Obiba
+core = 7.x
+
+dependencies[] = obiba_mica_commons
+dependencies[] = obiba_mica_repository
+
+files[] = includes/obiba_mica_dashboard_helper.inc
+files[] = includes/obiba_mica_dashboard_resources.inc
