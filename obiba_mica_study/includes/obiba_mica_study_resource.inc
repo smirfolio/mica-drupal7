@@ -50,7 +50,14 @@ class DrupalMicaStudyResource{
    */
   public function getStudy($study_id, $token_key = NULL) {
     $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
-    return $obiba->buildResourceQuery('getStudy', $study_id)
+    $parameters =array(
+      'id' => $study_id,
+      'token_key' => !empty($token_key) ? $token_key : NULL
+    );
+    if(!empty($token_key)){
+      obiba_mica_commons_is_published(FALSE);
+    }
+    return $obiba->buildResourceQuery('getStudy', $parameters)
       ->getDocument('getStudy');
   }
 }

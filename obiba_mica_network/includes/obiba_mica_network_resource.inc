@@ -59,7 +59,14 @@ class DrupalMicaNetworkResource  {
    */
   public function getNetwork($network_id, $token_key = NULL) {
     $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
-    return  $obiba->buildResourceQuery('getNetwork', $network_id, $token_key = NULL)
+    $resource_param = array(
+      'id' => $network_id,
+      'token_key' => !empty($token_key)?$token_key:NULL
+    );
+    if(!empty($token_key)){
+      obiba_mica_commons_is_published(FALSE);
+    }
+    return  $obiba->buildResourceQuery('getNetwork', $resource_param)
       ->getDocument('getNetwork');
   }
 }
