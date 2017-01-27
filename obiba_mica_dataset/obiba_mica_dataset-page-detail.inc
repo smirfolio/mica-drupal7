@@ -627,7 +627,7 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
           $key_row = str_replace(' ', '_', $key_row);
           if ($found) {
           foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
-            if (($variable_summary->resolver->studyId == $opal_table->studyId && $variable_summary->resolver->networkTableId == $opal_table->networkId)
+            if (($variable_summary->resolver->studyId == $opal_table->studyId && @$variable_summary->resolver->networkTableId == @$opal_table->networkId)
               && $variable_summary->resolver->project == $opal_table->project
               && $variable_summary->resolver->table == $opal_table->table) {
               $status = obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
