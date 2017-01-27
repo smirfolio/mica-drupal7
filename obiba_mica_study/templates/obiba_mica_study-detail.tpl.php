@@ -20,13 +20,9 @@
   <div class="row md-bottom-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
       <div class="col-xs-12 col-md-6">
-        <a
-          href="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study', TRUE) ?>"
-          class="fancybox-button">
-          <img
-            src="<?php print obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study') ?>"
-            class="imageThumb img-responsive">
-        </a>
+        <?php if (!empty($logo_study)): ?>
+          <?php print render($logo_study); ?>
+        <?php endif; ?>
       </div>
     <?php endif; ?>
     <div class="md-top-margin col-xs-12">

@@ -69,6 +69,13 @@ function obiba_mica_dataset_menu() {
     'access callback' => TRUE,
     'page arguments' => array(2),
   );
+  $items['mica/study-dataset/%/draft/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_page_detail',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2, 4),
+  );
 
   $items['mica/harmonization-dataset/%'] = array(
     'title' => 'Dataset',
@@ -76,6 +83,14 @@ function obiba_mica_dataset_menu() {
     'file' => 'obiba_mica_dataset-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2),
+  );
+
+  $items['mica/harmonization-dataset/%/draft/%'] = array(
+    'title' => 'Dataset',
+    'page callback' => 'obiba_mica_dataset_page_detail',
+    'file' => 'obiba_mica_dataset-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2, 4),
   );
   // C R O S S T A B     A N G U L A R     R E L A T E D.
   $items['mica/%/%/variables/%/%/ws'] = array(

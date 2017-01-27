@@ -22,7 +22,7 @@ use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 /**
  * The dataset Detail page.
  */
-function obiba_mica_dataset_page_detail($dataset_id) {
+function obiba_mica_dataset_page_detail($dataset_id , $token_key = NULL) {
 
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
@@ -43,8 +43,14 @@ function obiba_mica_dataset_page_detail($dataset_id) {
   $modals = NULL;
   $dataset_resource = new DrupalMicaDatasetResource();
   $localize = obiba_mica_commons_mica_server_localisation();
-
-  $dataset_dto = $dataset_resource->getDataset($dataset_id);
+$dataset_type = arg(1);
+  if (!empty($token_key)) {
+    obiba_mica_commons_is_published(FALSE);
+    $dataset_dto = $dataset_resource->getDataset($dataset_id, $dataset_type ,$token_key);
+  }
+  else{
+    $dataset_dto = $dataset_resource->getDataset($dataset_id);
+  }
 
   if (!empty($dataset_dto)) {
     switch ($dataset_dto->variableType) {
@@ -125,7 +131,11 @@ function obiba_mica_dataset_page_detail($dataset_id) {
       }
       $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($dataset_dto);
-      $dataset_theme = theme('obiba_mica_dataset-detail', array(
+      $dataset_theme = '';
+      if (!empty($token_key)) {
+        $dataset_theme = obiba_mica_commons_get_draft_link( $dataset_type, $dataset_id);
+      }
+      $dataset_theme .= theme('obiba_mica_dataset-detail', array(
         'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
         'dataset_dto' => $dataset_dto,
         'dataset_type_dto' => $dataset_type_dto,

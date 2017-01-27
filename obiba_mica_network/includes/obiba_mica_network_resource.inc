@@ -100,6 +100,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
       watchdog('Mica Client', 'Unexpected error, exception @exception', array('@exception' => $e), WATCHDOG_ERROR);
       throw $e;
     }
+    return FALSE;
   }
 
   /**
@@ -163,8 +164,11 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
    * @param $network_id
    * @return array
    */
-  public function getNetwork($network_id) {
+  public function getNetwork($network_id, $token_key = NULL) {
     $resource_query = '/network/' . rawurlencode($network_id);
+    if (!empty($token_key)) {
+      $resource_query = '/draft/network/' . rawurlencode($network_id) . '?key=' . $token_key;
+    }
     $this->setLastResponse(NULL);
     $cached_network = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cached_network)) {

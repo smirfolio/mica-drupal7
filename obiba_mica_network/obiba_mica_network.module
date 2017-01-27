@@ -37,6 +37,14 @@ function obiba_mica_network_menu() {
     'page arguments' => array(2),
   );
 
+  $items['mica/network/%/draft/%'] = array(
+    'title' => 'Mica network detail',
+    'page callback' => 'obiba_mica_network_page_detail',
+    'file' => 'obiba_mica_network-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2, 4),
+  );
+
   $items['mica/network/%/datasets'] = array(
     'page callback' => 'obiba_mica_network_page_detail_datasets',
     'file' => 'obiba_mica_network-page-detail.inc',

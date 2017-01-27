@@ -21,7 +21,7 @@ include_once('includes/obiba_mica_network_resource.inc');
 $path_module_study = drupal_get_path('module', 'obiba_mica_study');
 include_once($path_module_study . '/obiba_mica_study-page-detail.inc');
 
-function obiba_mica_network_page_detail($network_id) {
+function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
   $url_param = explode('?', request_uri());
   $network_resource = new DrupalMicaNetworkResource();
   if (!empty($url_param[1])) {
@@ -29,7 +29,13 @@ function obiba_mica_network_page_detail($network_id) {
   }
   $themed_attachment = NULL;
 
-  $network_dto = $network_resource->getNetwork($network_id);
+  if (!empty($token_key)) {
+    obiba_mica_commons_is_published(FALSE);
+    $network_dto = $network_resource->getNetwork($network_id, $token_key);
+  }
+  else{
+    $network_dto = $network_resource->getNetwork($network_id);
+  }
   $localize = obiba_mica_commons_mica_server_localisation();
 
   $studies_statistics = '';
@@ -124,9 +130,14 @@ function obiba_mica_network_page_detail($network_id) {
       return $network_theme;
     }
     else {
+      $network_theme = '';
+      if (!empty($token_key)) {
+        $publiched_link = obiba_mica_commons_get_draft_link('network', $network_id);
+        $network_theme = $network_theme . $publiched_link;
+      }
       $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($network_dto);
-      $network_theme = theme('obiba_mica_network-detail', array(
+      $network_theme .= theme('obiba_mica_network-detail', array(
         'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
         'investigators_modal' => !empty($investigator_detail_modal) ?
           $investigator_detail_modal : NULL,
@@ -152,7 +163,7 @@ function obiba_mica_network_page_detail($network_id) {
     }
   }
   else {
-    drupal_set_title('Something wrong with this network');
+    drupal_set_title('Network Not Found');
     return '';
   }
 }
