@@ -70,12 +70,16 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    * @return array
    *   The server response.
    */
-  public function getDataset($dataset_id, $resource = 'dataset', $token_key = NULL)) {
+  public function getDataset($dataset_id, $resource = 'dataset', $token_key = NULL) {
     $obiba = new \ObibaMicaClient\ObibaMicaDocuments();
     $resource_param = array(
       'id' => $dataset_id,
-      'resource' => $resource
+      'resource' => $resource,
+      'token_key' => !empty($token_key)?$token_key:NULL
     );
+    if(!empty($token_key)){
+      obiba_mica_commons_is_published(FALSE);
+    }
     return $obiba->buildResourceQuery('getDataset', $resource_param)
       ->getDocument('getDataset');
   }
