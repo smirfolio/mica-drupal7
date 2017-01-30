@@ -23,45 +23,54 @@ class ObibaSearchResources extends DrupalMicaClientResource {
   }
 
   private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
-    $stored_data = NULL;
-    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
-    if(!empty($stored_data)){
-      return $stored_data;
-    }
-    else {
-      $url = $this->micaUrl . $resources;
 
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array($header_accept),
-            'Content-Type' => array($header_accept)
-          )
+    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
+    if ($stored_data !== FALSE)
+      return $stored_data;
+
+    $url = $this->micaUrl . $resources;
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array($header_accept),
+          'Content-Type' => array($header_accept)
         )
-      ));
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        $array_response = json_decode($data);
-        if (!empty($array_response)) {
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $array_response);
-          return $array_response;
-        }
-      } catch (HttpClientException $e) {
-          if ($e->getCode() == 403) {
-          drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
-        }
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        $this->MicaClientAddHttpHeader('Status', $e->getCode());
-        return empty($client->lastResponse->body)
-          ? (empty($e->response->body) ? FALSE : json_decode($e->response->body))
-          : json_decode($client->lastResponse->body);
+      )
+    ));
+    $client = $this->client();
+
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      $response = json_decode($data);
+      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $response);
+      return $response;
+
+    } catch (HttpClientException $e) {
+
+      if ($e->getCode() == 403) {
+        $error_level = WATCHDOG_WARNING;
+        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
+      } else {
+        $error_level = WATCHDOG_ERROR;
+        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Error contacting Mica, please try again later.', 'error');
       }
+
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), $error_level);
+
+      $this->MicaClientAddHttpHeader('Status', $e->getCode());
+      throw $e;
+
+    } catch (Exception $e) {
+
+      drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Error contacting Mica, please try again later.', 'error');
+      watchdog('Mica Client', 'Unexpected error, exception @exception', array('@exception' => $e), WATCHDOG_ERROR);
+      throw $e;
     }
   }
 
@@ -147,49 +156,55 @@ class ObibaSearchResources extends DrupalMicaClientResource {
   }
 
   public function taxonomiesCoverageRql($query, $type, $aggregation_type) {
+
     $request_parameters = array(
       'query' => $query,
       'strict' => 'false'
     );
     $resources = $query . $type . $aggregation_type;
     $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
-    if(!empty($stored_data)){
+    if ($stored_data !== FALSE) {
       return $stored_data;
     }
-    else{
-      $url = "$this->micaUrl/variables/legacy/_coverage";
-      $request = new HttpClientRequest($url, array(
-        'method' => HttpClientRequest::METHOD_GET,
-        'headers' => $this->authorizationHeader(array(
-            'Accept' => array(parent::HEADER_JSON)
-          )
-        ),
-        'parameters' => $request_parameters,
-      ));
 
-      $client = $this->client();
-      try {
-        $data = $client->execute($request);
-        $this->setLastResponse($client->lastResponse);
-        if(!empty($data)){
-          $result_data = json_decode($data);
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $result_data);
-          return $result_data;
-        }
+    $url = "$this->micaUrl/variables/legacy/_coverage";
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON)
+        )
+      ),
+      'parameters' => $request_parameters,
+    ));
 
-      } catch (HttpClientException $e) {
-        if ($e->getCode() == 403) {
-          drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
-        }
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
-          array(
-            '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
-          ), WATCHDOG_WARNING);
-        return array();
+    $client = $this->client();
+    try {
+      $data = $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+
+      $result_data = json_decode((!empty($data) ? $data : '{"charts":[]}'));
+      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $result_data);
+      return $result_data;
+
+    } catch (HttpClientException $e) {
+      if ($e->getCode() == 403) {
+        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
       }
+      watchdog('Mica Client', 'Connection to Mica fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
+
+      throw $e;
+    } catch (Exception $e) {
+      watchdog('Mica Client', 'Connection to Mica fail,  Error serve code : @exception',
+        array(
+          '@code' => $e,
+        ), WATCHDOG_ERROR);
+
+      throw $e;
     }
-    return array();
   }
 
   /**
