@@ -442,7 +442,9 @@ function obiba_mica_app_angular_load_libraries_resources($module_name) {
     drupal_add_library($module_name, 'angular-app');
   }
   else {
-    watchdog($module_name, 'The library angular-app not loaded', array(),
+    watchdog('Mica Client' , 'The library of %module_name module angular-app not loaded', array(
+      '%module_name' => $module_name
+    ),
       WATCHDOG_WARNING);
   }
 }

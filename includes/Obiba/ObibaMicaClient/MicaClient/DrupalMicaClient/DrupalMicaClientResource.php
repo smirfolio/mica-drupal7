@@ -170,7 +170,7 @@ class MicaClient extends DrupalMicaHttpClient{
       $this->setLastResponseCookies();
       unset($_SESSION[self::MICA_COOKIE]);
     } catch (\HttpClientException $e) {
-      $this->drupalWatchDog->MicaWatchDog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
+      $this->drupalWatchDog->MicaWatchDog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),
@@ -583,7 +583,7 @@ class MicaClient extends DrupalMicaHttpClient{
       return $raw_data;
     } catch (\HttpClientException $e) {
       $this->drupalWatchDog->MicaWatchDog(
-        'MicaClient',
+        'Mica Client',
         'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
