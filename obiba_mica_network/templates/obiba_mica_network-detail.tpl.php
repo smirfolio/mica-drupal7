@@ -11,24 +11,21 @@
 ?>
 
 <div>
-  <?php if (!empty($network_dto->description)): ?>
     <div class="row md-bottom-margin">
-      <?php if (!empty($network_dto->logo->id)): ?>
-        <div class="col-xs-12 col-md-6">
-          <a
-              href="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
-              class="fancybox-button">
-            <img
-                src="<?php print obiba_mica_commons_safe_expose_server_url($network_dto->id, $network_dto->logo, 'network') ?>"
-                class="imageThumb img-responsive">
-          </a>
-        </div>
-      <?php endif; ?>
-      <div class="md-top-margin col-xs-12">
-        <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?>
-      </div>
+        <?php if (!empty($network_dto->logo->id)): ?>
+              <?php if (!empty($logo_network)): ?>
+                <div class="col-xs-12 col-md-6">
+                    <?php print render($logo_network); ?>
+                </div>
+              <?php endif; ?>
+        <?php endif; ?>
+        <?php if (!empty($network_dto->description)): ?>
+          <div class="md-top-margin col-xs-12">
+            <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?>
+          </div>
+        <?php endif; ?>
     </div>
-  <?php endif; ?>
+
 
   <div class="pull-right md-bottom-margin">
   <?php if ($can_edit_draf_document): ?>
@@ -82,11 +79,11 @@
 
           <?php if (!empty($network_dto->memberships)): ?>
             <?php foreach ($network_dto->memberships as $membership): ?>
+              <?php if (!empty($membership->members)) : ?>
               <tr>
                 <th><?php print ucfirst(t($membership->role)) ?></th>
                 <td>
                   <ul class="list-unstyled">
-                    <?php if (!empty($membership->members)) : ?>
                       <?php foreach ($membership->members as  $key_member => $member) : ?>
                         <li>
                           <a href="#" data-toggle="modal"
@@ -102,10 +99,10 @@
                           </a>
                         </li>
                       <?php endforeach; ?>
-                    <?php endif; ?>
                   </ul>
                 </td>
               </tr>
+              <?php endif; ?>
             <?php endforeach; ?>
           <?php endif; ?>
 

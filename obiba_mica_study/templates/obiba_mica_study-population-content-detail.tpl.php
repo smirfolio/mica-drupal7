@@ -35,14 +35,33 @@
       <?php if (!empty($population->model->recruitment->generalPopulationSources)): ?>
         <tr>
           <th><?php print $localize->getTranslation('study.recruitment-sources.general-population') ?></th>
-          <td> <?php print $general_population; ?> </td>
+          <td>
+            <ul class="list-unstyled">
+              <?php  foreach ($population->model->recruitment->generalPopulationSources as $term): ?>
+                <li>
+                  <?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-generalPopulationSources.term.' . $term . '.title'); ?>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </td>
         </tr>
       <?php endif; ?>
 
       <?php if (!empty($population->model->recruitment->specificPopulationSources)): ?>
         <tr>
           <th><?php print $localize->getTranslation('study.recruitment-sources.specific-population') ?></th>
-          <td> <?php print $specific_population; ?> </td>
+          <td>
+            <ul class="list-unstyled">
+              <?php  foreach ($population->model->recruitment->specificPopulationSources as $term): ?>
+                <li>
+                  <?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . $term . '.title'); ?>
+                  <?php if (stristr($term, 'other') && !empty($population->model->recruitment->otherSpecificPopulationSource)): ?>
+                    : <?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSpecificPopulationSource'); ?>
+                  <?php endif; ?>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </td>
         </tr>
       <?php endif; ?>
 
@@ -141,7 +160,15 @@
       <?php if (!empty($population->model->selectionCriteria->criteria)): ?>
         <t>
           <th><?php print $localize->getTranslation('study.selection-criteria.criteria') ?></th>
-          <td><?php print $selection_criteria ?></td>
+          <td>
+            <ul class="list-unstyled">
+              <?php  foreach ($population->model->selectionCriteria->criteria as $term): ?>
+                <li>
+                  <?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-criteria.term.' . $term . '.title'); ?>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </td>
         </t>
       <?php endif ?>
 

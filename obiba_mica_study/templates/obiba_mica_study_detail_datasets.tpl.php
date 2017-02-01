@@ -12,7 +12,7 @@
 ?>
 
 <h2><?php print $localize->getTranslation('datasets'); ?></h2>
-<div id="datasetsDisplay" class="scroll-content-tab" data-dce-variables='<?php print json_encode($datasets['dce_variables']) ?>'
-  data-total-variables='<?php print json_encode($datasets['total_variable_nbr']) ?>'>
+<div id="datasetsDisplay" class="scroll-content-tab" data-dce-variables='<?php print !empty($datasets['dce_variables'])?json_encode($datasets['dce_variables']):''; ?>'
+  data-total-variables='<?php print !empty($datasets['total_variable_nbr'])?json_encode($datasets['total_variable_nbr']):''; ?>'>
   <?php print render($datasets['dataset-tab']); ?>
 </div>
