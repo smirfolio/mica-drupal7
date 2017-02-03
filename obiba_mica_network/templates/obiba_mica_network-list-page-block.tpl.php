@@ -52,11 +52,18 @@
       $dataset_caption = $datasets < 2 ? $localize->getTranslation('dataset.details') : $localize->getTranslation('datasets');
       $studies = $counts->studies;
       $caption = $studies < 2 ? $localize->getTranslation('study.label') : $localize->getTranslation('studies');
+      $studies_with_vars = isset($counts->studiesWithVariables) ? $counts->studiesWithVariables : 0;
+      $studies_with_vars_caption = $studies_with_vars < 2 ? $localize->getTranslation('metrics.mica.study-with-variables') : $localize->getTranslation('metrics.mica.studies-with-variables');
       ?>
       <?php if (!empty($studies) && variable_get_value('networks_column_studies')): ?>
           <?php print MicaClientAnchorHelper::networkStudies(t('@count ' . $caption, array('@count' => $studies)), $network->id, array('class' => 'btn-default btn-xxs')) ?>
 
       <?php endif ?>
+
+      <?php if ($studies_with_vars > 0): ?>
+        <?php print MicaClientAnchorHelper::networkStudies(t('@count ' . $studies_with_vars_caption, array('@count' => $studies_with_vars)), $network->id, array('class' => 'btn-default btn-xxs')) ?>
+      <?php endif; ?>
+
       <?php if (!empty($datasets) && (variable_get_value('networks_column_study_datasets') || variable_get_value('networks_column_harmonization_datasets'))): ?>
             <?php print MicaClientAnchorHelper::networkDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $network->id, array('class' => 'btn-default btn-xxs')) ?>
       <?php endif ?>
