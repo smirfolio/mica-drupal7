@@ -10,4 +10,7 @@
 
 mica.fileBrowser = angular.module('mica.fileBrowser', [
     'obiba.mica.fileBrowser'
-  ]);
+  ]).config(['ngObibaMicaFileBrowserOptionsProvider',
+  function(ngObibaMicaFileBrowserOptionsProvider){
+    ngObibaMicaFileBrowserOptionsProvider.addExcludeFolder('data-collection-event');
+  }]);

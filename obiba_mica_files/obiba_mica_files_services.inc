@@ -29,8 +29,10 @@ function obiba_mica_files_download_attachment($entity_id, $entity_type, $file_na
 }
 
 function obiba_mica_files_get_file() {
-  $mica_file = new DrupalMicaFilesResource();
-  drupal_json_output(json_decode($mica_file->getFile(drupal_get_query_parameters()['path'])));
+  $parameters = drupal_get_query_parameters();
+  $files_resources = new DrupalMicaFilesResource();
+  $files = $files_resources->getFile($parameters['path'], !empty($parameters['keyToken']) ? $parameters['keyToken']:NULL);
+  drupal_json_output(json_decode($files));
 }
 
 function obiba_mica_files_search_files() {
@@ -42,13 +44,13 @@ function obiba_mica_files_search_files() {
 }
 
 function  obiba_mica_file_download() {
-  $path = drupal_get_query_parameters()['path'];
-  $inline = drupal_get_query_parameters()['inline'];
+  $query_parameters = drupal_get_query_parameters();
 
-
-  $file_path = dirname($path);
-  $file_name = basename($path);
-  _obiba_mica_files_download_attachment(NULL, NULL, $file_path, $file_name, empty($inline) ? 'false' : $inline);
+  $file_path = dirname($query_parameters['path']);
+  $file_name = basename($query_parameters['path']);
+  _obiba_mica_files_download_attachment(NULL, NULL, $file_path, $file_name,
+   empty($query_parameters['inline']) ? 'false' : $query_parameters['inline'],
+   !empty($query_parameters['keyToken']) ? $query_parameters['keyToken']: NULL);
 }
 
 /**
@@ -61,9 +63,9 @@ function  obiba_mica_file_download() {
  * @param string $file_resource_id
  *   The file resource id.
  */
-function _obiba_mica_files_download_attachment($entity_id, $entity_type, $file_path, $file_name, $inline) {
+function _obiba_mica_files_download_attachment($entity_id, $entity_type, $file_path, $file_name, $inline, $key_token = NULL) {
   $mica_file = new DrupalMicaFilesResource();
-  $raw_data = $mica_file->downloadAttachmentFile($file_path, $file_name, $inline);
+  $raw_data = $mica_file->downloadAttachmentFile($file_path, $file_name, $inline, $key_token);
   if (!empty($raw_data) && empty($raw_data['code'])) {
     drupal_add_http_header('Content-Type',
       $raw_data['raw_header_array']['Content-Type']);

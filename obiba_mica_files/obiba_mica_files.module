@@ -71,21 +71,8 @@ function obiba_mica_files_menu() {
  * clear the theme registry.
  */
 function obiba_mica_files_theme($existing, $type, $theme, $path) {
-  $path_theme = $path . '/templates';
   $path_views_theme = $path . '/js/app/views';
   return array(
-    'obiba_mica_files_themed_files_list' => array(
-      'template' => 'obiba_mica_files_themed_files_list',
-      'path' => $path_theme
-    ),
-    'obiba_mica_files_themed_folders_list' => array(
-      'template' => 'obiba_mica_files_themed_folders_list',
-      'path' => $path_theme
-    ),
-    'obiba_mica_files_documents_section' => array(
-      'template' => 'obiba_mica_files_documents_section',
-      'path' => $path_theme
-    ),
     'obiba_mica_files_browser' => array(
       'template' => 'obiba_mica_files_browser',
       'path' => $path_views_theme
@@ -120,15 +107,13 @@ function obiba_mica_files_get_ng_module_to_load() {
 /**
  * Get flat list attachments.
  *
- * @param $entity_type
- *  study/network/population/data-collection-event/dataset.
- * @param  $entity_id
- *  The entity Id.
- *
+ * @param $path
+ *  study/network/population/data-collection-event/dataset. + id
  * @return array
  */
-function obiba_mica_files_get_flat_attachments($entity_type, $entity_id) {
+function obiba_mica_files_get_flat_attachments($path, $token_key = NULL) {
   $files_resources = new DrupalMicaFilesResource();
-  $flat_attachments = $files_resources->getAttachment($entity_type, $entity_id);
-  return $flat_attachments;
+  $flat_attachments = json_decode($files_resources->getFile($path, $token_key));
+  $has_files = $files_resources->hasFiles($flat_attachments);
+  return $has_files;
 }

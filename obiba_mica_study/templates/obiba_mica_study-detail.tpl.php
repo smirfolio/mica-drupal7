@@ -40,7 +40,7 @@
         <i class="fa fa-pencil-square-o"></i> <?php print $localize->getTranslation('edit')?></a>
     <?php endif; ?>
 
-    <?php if (variable_get_value('study_detail_show_search_button')): ?>
+    <?php if (variable_get_value('study_detail_show_search_button') && $draft_view === FALSE): ?>
         <?php print MicaClientAnchorHelper::studyVariables(NULL, $study_dto->id, TRUE) ?>
     <?php endif; ?>
   </div>
@@ -324,10 +324,10 @@
   <!-- DOCUMENTS -->
 
   <!-- TODO find a way not to show browser if there are no files -->
-  <?php if (!empty($attachments)): ?>
+  <?php if (!empty($file_browser)): ?>
     <section>
       <h2><?php print variable_get_value('files_documents_label'); ?></h2>
-      <?php print (!empty($file_browser) ? $file_browser : $attachments); ?>
+      <?php print $file_browser ; ?>
     </section>
   <?php endif; ?>
 

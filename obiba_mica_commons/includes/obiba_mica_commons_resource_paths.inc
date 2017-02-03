@@ -79,7 +79,7 @@ class MicaClientPathProvider {
   const DATA_ACCESS_LIST = 'mica/data_access/requests';
   const DATA_ACCESS_USERS_LIST = 'mica/data_access/users';
   const DATA_ACCESS_PROJECTS = 'mica/data_access/projects';
-  const PROJECT = 'mica/research/project/{id}';
+  const PROJECT = 'mica/project/{id}';
   const RESEARCH_PROJECT = 'mica/research';
   const RESEARCH_PROJECT_APPROVED = 'mica/research/projects';
   const AGATE_REGISTER = 'agate/register';

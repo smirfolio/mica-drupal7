@@ -112,17 +112,14 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
         '/js/obiba_mica_files_attachment_download.js');
-      $flat_network_attachments =
-        obiba_mica_files_get_flat_attachments('network', $network_id);
-      if (!empty($flat_network_attachments)) {
-        $filtered_tree_path =
-          $flat_network_attachments->findNodeFullPath('/network/' . $network_id);
-      }
-      if (!empty($filtered_tree_path)) {
-        $themed_attachment =
-          $flat_network_attachments->themeFolders($filtered_tree_path,
-            NULL, $network_id);
-      }
+      $has_files = obiba_mica_files_get_flat_attachments('/network/'. $network_id, !empty($token_key)?$token_key:NULL);
+        if(!empty($has_files)){
+              $file_browser = theme('obiba_mica_files_browser', array(
+                'doc_path' => '/network',
+                'doc_id' => $network_id,
+                'token_key' =>!empty($token_key)?$token_key:''
+              ));
+        }
       obiba_mica_app_angular_load_js_resources('obiba_mica_files');
     }
 
@@ -153,12 +150,13 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
     else {
       $network_theme = '';
       if (!empty($token_key)) {
-        $publiched_link = obiba_mica_commons_get_draft_link('network', $network_id);
+        $publiched_link = obiba_mica_commons_get_draft_link('network', $network_id, $network_dto->published);
         $network_theme = $network_theme . $publiched_link;
       }
       $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($network_dto);
       $network_theme .= theme('obiba_mica_network-detail', array(
+        'draft_view' => !empty($token_key) ? TRUE : FALSE,
         'logo_network' => !empty($logo) ? $logo : NULL,
         'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
         'investigators_modal' => !empty($investigator_detail_modal) ?
@@ -173,11 +171,8 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
           $associated_people_button : NULL,
         'associated_people_modal' => !empty($associated_people_modal) ?
           $associated_people_modal : NULL,
-        'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
-        'file_browser' => theme('obiba_mica_files_browser', array(
-          'doc_path' => '/network',
-          'doc_id' => $network_id
-        )),
+        'file_browser' => !empty($file_browser) ? $file_browser : NULL,
+
         'statistics' => $studies_statistics,
       ));
       $network_resource->drupalCache->MicaSetCache('network_theme_cache-' . $network_id, $network_theme);
