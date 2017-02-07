@@ -254,7 +254,7 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
       );
       return $raw_data;
     } catch (HttpClientException $e) {
-      watchdog('MicaClient', 'Connection to server fail,  Error serve code : @code, message: @message',
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
         array(
           '@code' => $e->getCode(),
           '@message' => $e->getMessage(),

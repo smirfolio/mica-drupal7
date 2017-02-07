@@ -23,6 +23,7 @@ function obiba_mica_research_project_page_detail($project_id) {
   
   $response = $research_project_resource->getProject($project_id);
 
+  if(!empty($response)){
   $model = new stdClass();
   if (!empty($response->content)) {
     $model = json_decode($response->content);
@@ -55,4 +56,9 @@ function obiba_mica_research_project_page_detail($project_id) {
       'doc_id' => $project_id
     )),
   ));
+}
+  else{
+    drupal_set_title('No Project Found');
+    return '';
+  }
 }

@@ -11,7 +11,6 @@
 ?>
 
 <div>
-  <?php if (!empty($network_dto->description)): ?>
     <div class="row md-bottom-margin">
       <?php if (!empty($network_dto->logo->id)): ?>
         <div class="col-xs-12 col-md-6">
@@ -24,11 +23,12 @@
           </a>
         </div>
       <?php endif; ?>
+        <?php if (!empty($network_dto->description)): ?>
       <div class="md-top-margin col-xs-12">
         <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($network_dto, 'description')); ?>
       </div>
+        <?php endif; ?>
     </div>
-  <?php endif; ?>
 
   <div class="pull-right md-bottom-margin">
   <?php if ($can_edit_draf_document): ?>
@@ -82,11 +82,11 @@
 
           <?php if (!empty($network_dto->memberships)): ?>
             <?php foreach ($network_dto->memberships as $membership): ?>
+              <?php if (!empty($membership->members)) : ?>
               <tr>
                 <th><?php print ucfirst(t($membership->role)) ?></th>
                 <td>
                   <ul class="list-unstyled">
-                    <?php if (!empty($membership->members)) : ?>
                       <?php foreach ($membership->members as  $key_member => $member) : ?>
                         <li>
                           <a href="#" data-toggle="modal"
@@ -102,10 +102,10 @@
                           </a>
                         </li>
                       <?php endforeach; ?>
-                    <?php endif; ?>
                   </ul>
                 </td>
               </tr>
+              <?php endif; ?>
             <?php endforeach; ?>
           <?php endif; ?>
 

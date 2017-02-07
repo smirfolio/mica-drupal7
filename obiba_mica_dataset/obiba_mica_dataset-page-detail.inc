@@ -573,7 +573,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
  * @return array
  */
 function _obiba_mica_dataset_harmonizations_get_all_opal_tables($dataset_type_dto) {
-  $opal_tables = array_merge($dataset_type_dto->studyTables ?: array(), @$dataset_type_dto->networkTables ?: array());
+  $opal_tables = array_merge(@$dataset_type_dto->studyTables ?: array(), @$dataset_type_dto->networkTables ?: array());
 
   usort($opal_tables, function ($a, $b) {
     return $a->weight - $b->weight;

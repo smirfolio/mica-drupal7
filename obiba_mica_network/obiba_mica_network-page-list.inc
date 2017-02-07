@@ -13,7 +13,6 @@
  * @file code for list networks page
  */
 
-use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 
 function obiba_mica_network_page_list() {
   $context['url'] = 'refresh_list_networks';

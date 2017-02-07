@@ -424,7 +424,8 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
       obiba_mica_commons_set_cache('variable-statistics-' . $variable_id, $statistics_variable);
     }
     else {
-      cache_clear_all('variable-statistics-' . $variable_id);
+      $key_to_clear =  obiba_mica_commons_Key_cache_generation('variable-statistics-' . $variable_id);
+      cache_clear_all($key_to_clear,'cache');
       return FALSE;
     }
   }
