@@ -48,7 +48,6 @@
               }
               if (! data_decoded) {
                 param_stat_tab.empty();
-                param_stat_chart.empty();
 
                 $(alertMEssage).appendTo(param_stat_tab);
               }
@@ -67,7 +66,6 @@
             },
             'error': function (data) {
               param_stat_tab.empty();
-              param_stat_chart.empty();
               var $errorMessage = Drupal.t('Error!');
               console.log($errorMessage);
               $($errorMessage).appendTo(param_stat_tab);

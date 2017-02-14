@@ -229,6 +229,7 @@
         var result = CoverageResource.get({type: type, id: id});
         $scope.d3Configs = [];
         result.$promise.then(function (res) {
+          if(res.charts){
           res.charts.forEach(function (chart) {
             var data = [];
 
@@ -263,6 +264,7 @@
             config.options.chart.height = 500;
             $scope.d3Configs.push(config);
           });
+        }
         });
       }
     }]);

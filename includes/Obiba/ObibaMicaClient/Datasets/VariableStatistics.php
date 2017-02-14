@@ -141,34 +141,35 @@ class VariableStatistics {
    * Combined pie chart.
    */
   private function asPieChart() {
-    $aggregation = $this->variableStat;
-    $raw_options = array(
-      'chartArea' => array(
-        'left' => "0",
-        'width' => "100%",
-      ),
-    );
-    if (empty($aggregation->frequencies)) {
-      return FALSE;
-    }
-    if (empty($aggregation->n)) {
-      return FALSE;
-    }
-    $labels = array();
-    $data = array();
-    foreach ($aggregation->frequencies as $frequency) {
-      // Do not include missing and observed (non-categorical) values.
-      if (!$frequency->missing && $this->isCategory($frequency->value)) {
-        $labels[] = $this->getLabelFromCategoryName($frequency->value, FALSE);
-        $data[] = $frequency->count;
+    $response = new \stdClass();
+    $response->charts = array();
+    if (!empty($this->variableStat)) {
+      if (!empty($this->variableStat->frequencies) && !empty($this->variable->categories)) {
+        $category_names = array_reduce($this->variable->categories, function ($result, $category) {
+            $result[$category->name] = obiba_mica_dataset_variable_attributes_detail($category, 'label');
+          return $result;
+        });
+
+        $filtered = array_filter($this->variableStat->frequencies, function ($f) { return !$f->missing; });
+        $data = array();
+
+        foreach ($filtered as $f) {
+          if (array_key_exists($f->value, $category_names)) {
+            $item = new \stdClass();
+            $item->key = $f->value;
+            $item->title = $category_names[$f->value] . ' (' . $f->value . ')' ;
+            $item->value = $f->count;
+            array_push($data, $item);
+          }
+        }
+
+        array_push($response->charts, array(
+          'title' => t('Valid values frequencies'),
+          'data' => $data,
+          'color' => obiba_mica_graphic_charts_colors_options_settings()
+        ));
       }
-    }
-    if (!empty($data) && count($data) > 1) {
-      if (!empty($this->datasetDetailedVarStats) && $this->variable->variableType == 'Dataschema') {
-        $raw_options = array();
-      }
-      $to_render = obiba_mica_graphic_pie_chart($labels, $data, t('Valid values frequencies'), NULL, 400, 'right', $raw_options);
-      return render($to_render);
+      return $response;
     }
     else {
       return FALSE;
@@ -575,14 +576,14 @@ class VariableStatistics {
     if (!empty($aggregation->statistics)) {
       $statistics = $aggregation->statistics;
       $pct = empty($aggregation->total) ? 0 : round(($aggregation->n / $aggregation->total) * 100, 1);
-      $n = $aggregation->n . '<p class="help-inline" title="Percentage over total count">' . $pct . '%</p>';
+      $n = obiba_mica_commons_format_number($aggregation->n) . '<p class="help-inline" title="Percentage over total count">' . obiba_mica_commons_format_number($pct) . '%</p>';
       return array(
         property_exists($statistics, 'min') ? obiba_mica_commons_format_number(round($statistics->min, 1), 1) : '-',
         property_exists($statistics, 'max') ? obiba_mica_commons_format_number(round($statistics->max, 1), 1) : '-',
         property_exists($statistics, 'mean') && property_exists($statistics, 'stdDeviation') ?
           obiba_mica_commons_format_number(round($statistics->mean, 1), 1) : '-',
         property_exists($statistics, 'stdDeviation') ? obiba_mica_commons_format_number(round($statistics->stdDeviation, 1), 1) : '-',
-        obiba_mica_commons_format_number($n),
+        $n,
       );
     }
     else {
