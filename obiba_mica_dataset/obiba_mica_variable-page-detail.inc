@@ -359,60 +359,12 @@ function obiba_mica_dataset_variable_get_categories($categories = NULL) {
   return FALSE;
 }
 
-function obiba_mica_dataset_variable_ng_coverage($variable_id = NULL) {
-  $coverages = json_encode(new stdClass());
-  if (!variable_get_value('mica_statistics')) {
-    return $coverages;
-  }
-
-  $variable_resource = new DrupalMicaDatasetResource();
-  $variable = $variable_resource->getVariable($variable_id);
-  $variable_stat = $variable_resource->getVariableAggregation($variable_id);
-
-  $response = new stdClass();
-  $response->charts = array();
-  if (!empty($variable_stat)) {
-    if (!empty($variable_stat->frequencies) && !empty($variable->categories)) {
-      $category_names = array_map(function ($c) { return $c->name; }, $variable->categories);
-
-      $filtered = array_filter($variable_stat->frequencies, function ($f) { return !$f->missing; });
-
-      $data = array();
-      foreach ($filtered as $f) {
-        if (in_array($f->value, $category_names)) {
-          $item = new stdClass();
-          $item->key = $f->value;
-          $item->title = $f->value;
-          $item->value = $f->count;
-
-          array_push($data, $item);
-        }
-      }
-      
-      array_push($response->charts, array(
-        'title' => t('Valid values frequencies'),
-        'data' => $data,
-        'color' => obiba_mica_graphic_charts_colors_options_settings()
-      ));
-    }
-    
-    return drupal_json_output($response);
-  }
-}
-
-/**
- * Callback to get variable statistics charts/table.
- */
-function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
-  if (!variable_get_value('mica_statistics')) {
-    return;
-  }
-  $cached_variable_statistics = obiba_mica_commons_get_cache('variable-statistics-' . $variable_id);
+function obiba_mica_dataset_get_statistics($variable_id = NULL){
+  $cached_variable_statistics = obiba_mica_commons_get_cache(__FUNCTION__ . 'variable-statistics-' . $variable_id);
   if (!empty($cached_variable_statistics)) {
-    $statistics_variable = $cached_variable_statistics;
+    return $cached_variable_statistics;
   }
   else {
-    $stat_tab = FALSE;
     $variable_resource = new DrupalMicaDatasetResource();
     $variable = $variable_resource->getVariable($variable_id);
     $variable_stat = $variable_resource->getVariableAggregation($variable_id);
@@ -420,16 +372,37 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
       //TODO have to Not instantiate VariableStatistics from here have to use an intermediate class that extend them
       $statistics = new Datasets\VariableStatistics($variable, $variable_stat, new MicaConfig\MicaDrupalConfig());
       $stat_tab['table'] = $statistics->asTable();
-      $statistics_variable = $stat_tab;
-      obiba_mica_commons_set_cache('variable-statistics-' . $variable_id, $statistics_variable);
-    }
-    else {
-      $key_to_clear =  obiba_mica_commons_Key_cache_generation('variable-statistics-' . $variable_id);
-      cache_clear_all($key_to_clear,'cache');
-      return FALSE;
+      $stat_tab['chart'] = $statistics->asChart();
+      obiba_mica_commons_set_cache(__FUNCTION__ . 'variable-statistics-' . $variable_id, $stat_tab);
+      return $stat_tab;
     }
   }
-  return drupal_json_output($statistics_variable);
+}
+
+function obiba_mica_dataset_variable_ng_coverage($variable_id = NULL) {
+  $coverages = json_encode(new stdClass());
+  if (!variable_get_value('mica_statistics')) {
+    return $coverages;
+  }
+  $stat_tab = obiba_mica_dataset_get_statistics($variable_id);
+  if (!empty($stat_tab['chart'])) {
+    return drupal_json_output($stat_tab['chart']);
+  }
+  return $coverages;
+}
+
+/**
+ * Callback to get variable statistics charts/table.
+ */
+function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
+  if (!variable_get_value('mica_statistics')) {
+    return FALSE;
+  }
+    $stat_tab = obiba_mica_dataset_get_statistics($variable_id);
+    if (!empty($stat_tab['table'])) {
+      return drupal_json_output($stat_tab);
+    }
+  return FALSE;
 }
 
 /**

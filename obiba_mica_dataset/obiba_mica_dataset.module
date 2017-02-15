@@ -586,6 +586,11 @@ function obiba_mica_dataset_variable_attributes_detail($variable, $name, $namesp
           return obiba_mica_commons_get_localized_field($attribute, 'values');
         }
       }
+      elseif(empty($namespaces)){
+        if (!empty($attribute->name) && $attribute->name == $name) {
+          return obiba_mica_commons_get_localized_field($attribute, 'values');
+        }
+      }
     }
   }
   return NULL;
