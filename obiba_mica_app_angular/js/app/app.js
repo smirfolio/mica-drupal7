@@ -99,7 +99,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('BaseUrl', Drupal.settings.basePath + Drupal.settings.pathPrefix);
     ngObibaMicaUrlProvider.setUrl('FileBrowserFileResource', Drupal.settings.basePath + 'mica/file');
     ngObibaMicaUrlProvider.setUrl('FileBrowserSearchResource', Drupal.settings.basePath + 'mica/files/search');
-    ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', Drupal.settings.basePath + 'mica/file/download?path=:path&inline=:inline');
+    ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', Drupal.settings.basePath + 'mica/file/download?path=:path&inline=:inline&keyToken=:key');
     ngObibaMicaUrlProvider.setUrl('GraphicsSearchRootUrl', 'mica/repository#/search');
 
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);

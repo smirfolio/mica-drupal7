@@ -871,10 +871,11 @@ function obiba_mica_commons_is_published($is_punlished = NULL) {
  * @return string
  * @throws \Exception
  */
-function obiba_mica_commons_get_draft_link($document_type, $document_id) {
+function obiba_mica_commons_get_draft_link($document_path, $document_id, $published = TRUE) {
   return theme('obiba_mica_common_draft_link', array(
-    'document_type' => $document_type,
-    'document_id' => $document_id
+    'document_path' => $document_path,
+    'document_id' => $document_id,
+    'published' => $published,
   ));
 }
 

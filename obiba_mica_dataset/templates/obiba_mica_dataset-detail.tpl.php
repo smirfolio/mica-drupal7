@@ -36,11 +36,11 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
         <i class="fa fa-pencil-square-o"></i> <?php print $localize->getTranslation('edit')?></a>
     <?php endif; ?>
 
-    <?php if (variable_get_value('dataset_detailed_crosstab')) : ?>
+    <?php if (variable_get_value('dataset_detailed_crosstab') && $draft_view === FALSE) : ?>
       <?php print MicaClientAnchorHelper::datasetCrosstab($dataset_dto, TRUE); ?>
     <?php endif; ?>
 
-    <?php if (variable_get_value('dataset_detail_show_search_button')): ?>
+    <?php if (variable_get_value('dataset_detail_show_search_button')  && $draft_view === FALSE): ?>
       <?php print MicaClientAnchorHelper::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary')) ?>
     <?php endif; ?>
   </div>
@@ -114,10 +114,10 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
   </section>
 
-  <?php if (!empty($attachments)): ?>
+  <?php if (!empty($file_browser)): ?>
     <section>
       <h2><?php print variable_get_value('files_documents_label'); ?></h2>
-      <?php print (!empty($file_browser) ? $file_browser : $attachments); ?>
+      <?php print $file_browser; ?>
     </section>
   <?php endif; ?>
 
@@ -142,11 +142,12 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
       <h2>
         <?php
-        if (!empty($dataset_type_dto->project)):
+        if (!empty($dataset_type_dto->project)){
           echo $localize->getTranslation('studies');
-        else:
+        }
+        elseif(!empty($dataset_type_dto->studyTable)){
           echo $localize->getTranslation('study.label');
-        endif;
+        }
         ?>
       </h2>
       <?php if (!empty($dataset_type_dto->project)): ?>
@@ -158,18 +159,19 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
           </div>
         </div>
       <?php else: ?>
+        <?php if (!empty($dataset_type_dto->studyTable)): ?>
         <div class="row">
           <div class="col-lg-6 col-xs-12">
             <table class="table table-striped">
               <tbody>
-              <tr>
-                <th><?php print $localize->getTranslation('study.acronym') ?></th>
-                <td>
-                  <p>
-                    <?php print MicaClientAnchorHelper::study($dataset_type_dto->studyTable->studySummary); ?>
-                  </p>
-                </td>
-              </tr>
+                <tr>
+                  <th><?php print $localize->getTranslation('study.acronym') ?></th>
+                  <td>
+                    <p>
+                      <?php print MicaClientAnchorHelper::study($dataset_type_dto->studyTable->studySummary); ?>
+                    </p>
+                  </td>
+                </tr>
               <tr>
                 <th><?php print $localize->getTranslation('study.name') ?></th>
                 <td>
@@ -233,6 +235,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
             </table>
           </div>
         </div>
+        <?php endif ?>
       <?php endif ?>
     <?php endif ?>
   </section>

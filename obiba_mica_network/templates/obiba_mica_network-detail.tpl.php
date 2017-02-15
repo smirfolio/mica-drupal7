@@ -36,7 +36,7 @@
       <i class="fa fa-pencil-square-o"></i> <?php $localize->getTranslation('edit') ?></a>
   <?php endif; ?>
   <?php if (!empty($network_dto->studyIds)): ?>
-      <?php if (variable_get_value('network_detail_show_search_button')): ?>
+      <?php if (variable_get_value('network_detail_show_search_button') && $draft_view === FALSE): ?>
         <?php  print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary')); ?>
       <?php endif; ?>
     </div>
@@ -133,10 +133,10 @@
     </section>
   <?php endif; ?>
 
-  <?php if (!empty($attachments)): ?>
+  <?php if (!empty($file_browser)): ?>
     <section>
       <h2><?php print variable_get_value('files_documents_label'); ?></h2>
-      <?php print (!empty($file_browser) ? $file_browser : $attachments); ?>
+      <?php print $file_browser; ?>
     </section>
   <?php endif; ?>
 

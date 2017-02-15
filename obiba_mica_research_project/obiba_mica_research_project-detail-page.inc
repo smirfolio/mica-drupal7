@@ -36,11 +36,14 @@ function obiba_mica_research_project_page_detail($project_id, $token_key = NULL)
 
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
-      $flat_project_attachments = obiba_mica_files_get_flat_attachments('project', $project_id);
-      $filtered_tree_path = $flat_project_attachments->findNodeFullPath('/project/' . $project_id);
-      if (!empty($filtered_tree_path)) {
-        $themed_attachment = $flat_project_attachments->themeFolders($filtered_tree_path, NULL, $project_id);
-      }
+      $has_files = obiba_mica_files_get_flat_attachments('/project/'. $project_id, !empty($token_key)?$token_key:'');
+if(!empty($has_files)){
+  $file_browser = theme('obiba_mica_files_browser', array(
+    'doc_path' => '/project',
+    'doc_id' => $project_id,
+    'token_key' =>!empty($token_key)?$token_key:''
+  ));
+}
       obiba_mica_app_angular_load_js_resources('obiba_mica_files');
     }
 
@@ -54,17 +57,15 @@ function obiba_mica_research_project_page_detail($project_id, $token_key = NULL)
 
     $project_theme ='';
     if (!empty($token_key)) {
-      $project_link = obiba_mica_commons_get_draft_link('research/project', $project_id);
+      $project_link = obiba_mica_commons_get_draft_link('project', $project_id, $response->published);
       $project_theme .=  $project_link;
     }
     return $project_theme . theme('obiba_mica_research_project-detail-page', array(
+      'draft_view' => !empty($token_key) ? TRUE : FALSE,
       'project' => $response,
       'model' => $model,
       'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
-      'file_browser' => theme('obiba_mica_files_browser', array(
-        'doc_path' => '/project',
-        'doc_id' => $project_id
-      )),
+      'file_browser' => !empty($file_browser)?$file_browser:NULL,
     ));
   }
   else{

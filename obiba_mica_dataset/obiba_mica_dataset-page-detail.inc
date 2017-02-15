@@ -22,7 +22,7 @@ use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 /**
  * The dataset Detail page.
  */
-function obiba_mica_dataset_page_detail($dataset_id , $token_key = NULL) {
+function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
 
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
@@ -43,12 +43,12 @@ function obiba_mica_dataset_page_detail($dataset_id , $token_key = NULL) {
   $modals = NULL;
   $dataset_resource = new DrupalMicaDatasetResource();
   $localize = obiba_mica_commons_mica_server_localisation();
-$dataset_type = arg(1);
+  $dataset_type = arg(1);
   if (!empty($token_key)) {
     obiba_mica_commons_is_published(FALSE);
-    $dataset_dto = $dataset_resource->getDataset($dataset_id, $dataset_type ,$token_key);
+    $dataset_dto = $dataset_resource->getDataset($dataset_id, $dataset_type, $token_key);
   }
-  else{
+  else {
     $dataset_dto = $dataset_resource->getDataset($dataset_id);
   }
 
@@ -60,10 +60,10 @@ $dataset_type = arg(1);
       default:
         $dataset_type = 'harmonization-dataset';
     }
-    if ($dataset_type == 'study-dataset') {
+    if ($dataset_type == 'study-dataset' && !empty($dataset_dto->{'obiba.mica.StudyDatasetDto.type'})) {
       $dataset_type_dto = $dataset_dto->{'obiba.mica.StudyDatasetDto.type'};
     }
-    else {
+    elseif(!empty($dataset_dto->{'obiba.mica.HarmonizationDatasetDto.type'})) {
       $dataset_type_dto = $dataset_dto->{'obiba.mica.HarmonizationDatasetDto.type'};
     }
 
@@ -95,47 +95,39 @@ $dataset_type = arg(1);
   }
   else {
     if (!empty($dataset_dto)) {
-      $flat_study_attachments = NULL;
       $variables_dataset = $dataset_resource->getVariables($dataset_type, $dataset_id, 0, 1);
       if ($dataset_type == 'study-dataset') {
-        $study_id = $dataset_type_dto->studyTable->studyId;
-        if (module_exists('obiba_mica_files')) {
-          $flat_study_attachments =
-            obiba_mica_files_get_flat_attachments('study', $study_id);
-        }
+        $study_id = !empty($dataset_type_dto)?$dataset_type_dto->studyTable->studyId:NULL;
         $modals = obiba_mica_dataset_get_population_dce_modals(
           $study_id,
           obiba_mica_dataset_get_population_dce($dataset_type_dto),
           $variables_dataset,
-          NULL,
-          $flat_study_attachments
+          NULL
         );
       }
 
       if (module_exists('obiba_mica_files')) {
         drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
           '/js/obiba_mica_files_attachment_download.js');
-        $flat_dataset_attachments =
-          obiba_mica_files_get_flat_attachments($dataset_type, $dataset_id);
         $path_attachment = '/' . $dataset_type . '/' . $dataset_id;
-        if (!empty($flat_dataset_attachments)) {
-          $filtered_tree_path =
-            $flat_dataset_attachments->findNodeFullPath($path_attachment);
-        }
-        if (!empty($filtered_tree_path)) {
-          $themed_attachment =
-            $flat_dataset_attachments->themeFolders($filtered_tree_path, NULL,
-              $dataset_id);
-        }
+        $has_files  = obiba_mica_files_get_flat_attachments($path_attachment, !empty($token_key)?$token_key:NULL);
+          if(!empty($has_files)){
+            $file_browser = theme('obiba_mica_files_browser', array(
+              'doc_path' => '/' . $dataset_type,
+              'doc_id' => $dataset_id,
+              'token_key' => !empty($token_key) ? $token_key : NULL
+            ));
+          }
         obiba_mica_app_angular_load_js_resources('obiba_mica_files');
       }
       $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($dataset_dto);
       $dataset_theme = '';
       if (!empty($token_key)) {
-        $dataset_theme = obiba_mica_commons_get_draft_link( $dataset_type, $dataset_id);
+        $dataset_theme = obiba_mica_commons_get_draft_link($dataset_type, $dataset_id, $dataset_dto->published);
       }
       $dataset_theme .= theme('obiba_mica_dataset-detail', array(
+        'draft_view' => !empty($token_key) ? TRUE : FALSE,
         'can_edit_draf_document' => $can_edit_draf_document ? $can_edit_draf_document : FALSE,
         'dataset_dto' => $dataset_dto,
         'dataset_type_dto' => $dataset_type_dto,
@@ -143,11 +135,7 @@ $dataset_type = arg(1);
         'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => TRUE)),
         'variables_dataset' => $variables_dataset,
         'modals' => $modals,
-        'attachments' => !empty($themed_attachment) ? $themed_attachment : NULL,
-        'file_browser' => theme('obiba_mica_files_browser', array(
-          'doc_path' => '/' . $dataset_type,
-          'doc_id' => $dataset_id
-        ))
+        'file_browser' => !empty($file_browser) ? $file_browser : NULL,
       ));
       obiba_mica_commons_set_cache(__FUNCTION__ . 'dataset_theme-' . $dataset_id, $dataset_theme);
       return $dataset_theme;
@@ -163,11 +151,14 @@ $dataset_type = arg(1);
 /**
  * Get population DCE.
  */
-function obiba_mica_dataset_get_population_dce($dataset_type_dto) {
+function obiba_mica_dataset_get_population_dce($dataset_type_dto = NULL) {
   $data = array('study' => NULL, 'population' => NULL, 'dce' => NULL);
-  $study_table = $dataset_type_dto->studyTable;
-  $study_resource = new DrupalMicaStudyResource();
-  $study_dto = $study_resource->getStudy($study_table->studyId);
+  $study_table = !empty($dataset_type_dto->studyTable)?$dataset_type_dto->studyTable:NULl;
+  if(!empty($study_table)){
+    $study_resource = new DrupalMicaStudyResource();
+    $study_dto = $study_resource->getStudy($study_table->studyId);
+  }
+
   if (!empty($study_dto)) {
     $data['study'] = $study_dto;
     $population = array_filter($study_dto->populations, function ($population) use ($study_table) {
@@ -191,7 +182,7 @@ function obiba_mica_dataset_get_population_dce($dataset_type_dto) {
 /**
  * Get a dce population modal.
  */
-function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variables_dataset = NULL, $has_coverage = NULL, $flat_study_attachments = NULL) {
+function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variables_dataset = NULL, $has_coverage = NULL) {
   $modals = array();
   $themed_population_attachment = NULL;
   $populations = $data['population'];
@@ -201,16 +192,13 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
         drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
           '/js/obiba_mica_files_attachment_download.js');
         $path_population_attachment = "/study/$study_id/population/$population->id";
-        if (!empty($flat_study_attachments)) {
-          $filtered_tree_path =
-            $flat_study_attachments->findNodeFullPath($path_population_attachment);
+        $has_files  = obiba_mica_files_get_flat_attachments($path_population_attachment);
+        if(!empty($has_files)){
+            $file_browser = theme('obiba_mica_files_browser', array(
+              'doc_path' => "/study/$study_id/population",
+              'doc_id' => $population->id));
+          }
         }
-        if (!empty($filtered_tree_path)) {
-          $themed_population_attachment =
-            $flat_study_attachments->themeFolders($filtered_tree_path,
-              DrupalMicaFilesResource::DCE, $population->id);
-        }
-      }
 
       foreach ($population->dataCollectionEvents as $dce) {
         $dce_uids[] = $study_id . ':' . $population->id . ':' . $dce->id;
@@ -222,7 +210,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
           'dce_uids' => $dce_uids,
           'population' => $population,
           'hide_title' => TRUE,
-          'attachments' => !empty($themed_population_attachment) ? $themed_population_attachment : NULL
+          'file_browser' => !empty($file_browser) ? $file_browser : NULL
         )),
       ));
 
@@ -232,16 +220,15 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
       $dce_variables_nbr = array();
       $modals['dce'] = '';
       foreach ($dces as $dce) {
-        if (!empty($flat_study_attachments) && module_exists('obiba_mica_files')) {
+        if (module_exists('obiba_mica_files')) {
           drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
             '/js/obiba_mica_files_attachment_download.js');
           $path_dce_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
-          $filtered_dce_tree_path =
-            $flat_study_attachments->findNodeFullPath($path_dce_attachment);
-          if (!empty($filtered_dce_tree_path)) {
-            $themed_dce_attachment =
-              $flat_study_attachments->themeFolders($filtered_dce_tree_path,
-                NULL, $dce->id);
+          $has_files  = obiba_mica_files_get_flat_attachments($path_dce_attachment);
+          if(!empty($has_files)){
+            $file_browser = theme('obiba_mica_files_browser', array(
+              'doc_path' => "/study/$study_id/population/$population_id" . '/data-collection-event',
+              'doc_id' => $dce->id));
           }
         }
         $dce_variables_nbr[obiba_mica_commons_get_localized_field($dce, 'name')] = $variables_dataset->total;
@@ -254,11 +241,7 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
           'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
           'dce_id_target' => MicaClientPathHelpers::normalizeModalTarget($study_id . '-' . $population_id . '-' . $dce->id),
           'dce' => $dce,
-          'attachments' => !empty($themed_dce_attachment) ? $themed_dce_attachment : NULL,
-          'file_browser' => theme('obiba_mica_files_browser', array(
-            'doc_path' => '/study',
-            'doc_id' => $study_id
-          )),
+          'file_browser' => !empty($file_browser) ? $file_browser : NULL,
         ));
       }
       if (!empty($modals['dce'])) {
@@ -442,7 +425,8 @@ function obiba_mica_dataset_networks_datatable_init($dataset_type_dto) {
 
   if (drupal_get_library('obiba_mica_dataset', 'datatables')) {
     drupal_add_library('obiba_mica_dataset', 'datatables');
-  } else {
+  }
+  else {
     obiba_mica_commons_datatables_external_source();
   }
 
@@ -501,13 +485,31 @@ function obiba_mica_dataset_links_table_rows($network_details) {
 function obiba_mica_datataset_network_table_headers() {
   $localize = obiba_mica_commons_mica_server_localisation();
   return array(
-    array("title" => $localize->getTranslation('network.acronym'), 'width' => '15%'),
-    array("title" => $localize->getTranslation('network.name'), 'width' => '40%'),
+    array(
+      "title" => $localize->getTranslation('network.acronym'),
+      'width' => '15%'
+    ),
+    array(
+      "title" => $localize->getTranslation('network.name'),
+      'width' => '40%'
+    ),
     array("title" => $localize->getTranslation('studies'), 'width' => '5%'),
-    array("title" => $localize->getTranslation('client.label.dataset.participants'), 'width' => '10%'),
-    array("title" => $localize->getTranslation('client.label.countries'), 'width' => '20%'),
-    array("title" => $localize->getTranslation('client.label.study-variables'), 'width' => '5%'),
-    array("title" => $localize->getTranslation('client.label.dataschema-variables'), 'width' => '5%')
+    array(
+      "title" => $localize->getTranslation('client.label.dataset.participants'),
+      'width' => '10%'
+    ),
+    array(
+      "title" => $localize->getTranslation('client.label.countries'),
+      'width' => '20%'
+    ),
+    array(
+      "title" => $localize->getTranslation('client.label.study-variables'),
+      'width' => '5%'
+    ),
+    array(
+      "title" => $localize->getTranslation('client.label.dataschema-variables'),
+      'width' => '5%'
+    )
   );
 }
 
@@ -626,72 +628,73 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
 
           $key_row = str_replace(' ', '_', $key_row);
           if ($found) {
-          foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
-            if (($variable_summary->resolver->studyId == $opal_table->studyId && @$variable_summary->resolver->networkTableId == @$opal_table->networkId)
-              && $variable_summary->resolver->project == $opal_table->project
-              && $variable_summary->resolver->table == $opal_table->table) {
-              $status = obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
-                'Mlstr_harmo',
-              ));
-              if($status == "impossible"){
-                $overridden_status = variable_get_value('dataset_harmonization_impossible_label');
-              }
-              else{
-                $overridden_status = trim(strtolower($status));
-              }
-              $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
-                'Mlstr_harmo',
-              ))));
-              $status_detail = empty($status_detail) ? ucfirst(preg_replace('/[-_]+/', ' ', $overridden_status)) : ucfirst(preg_replace('/[-_]+/', ' ', $status_detail));
-              $harmonized_variable_id = $variable_summary->resolver->id;
-              $variable_title = $variable_summary->resolver->name . ' -- ' . $acronym;
+            foreach ($variable_harmonization->datasetVariableSummaries as $variable_summary) {
+              if (($variable_summary->resolver->studyId == $opal_table->studyId && @$variable_summary->resolver->networkTableId == @$opal_table->networkId)
+                && $variable_summary->resolver->project == $opal_table->project
+                && $variable_summary->resolver->table == $opal_table->table
+              ) {
+                $status = obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status', array(
+                  'Mlstr_harmo',
+                ));
+                if ($status == "impossible") {
+                  $overridden_status = variable_get_value('dataset_harmonization_impossible_label');
+                }
+                else {
+                  $overridden_status = trim(strtolower($status));
+                }
+                $status_detail = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_summary, 'status_detail', array(
+                  'Mlstr_harmo',
+                ))));
+                $status_detail = empty($status_detail) ? ucfirst(preg_replace('/[-_]+/', ' ', $overridden_status)) : ucfirst(preg_replace('/[-_]+/', ' ', $status_detail));
+                $harmonized_variable_id = $variable_summary->resolver->id;
+                $variable_title = $variable_summary->resolver->name . ' -- ' . $acronym;
 
-              if (!empty($opal_table->name)) {
-                $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
-              }
+                if (!empty($opal_table->name)) {
+                  $variable_title = $variable_title . ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
+                }
 
-              switch($status){
-                case 'complete':
-                  $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" title="' . $status_detail . '"></span>';
-                  $row[$key_row] = l($icon_success_complete, 'mica/variable/' . $harmonized_variable_id,
-                    array(
-                      'html' => TRUE,
-                      'query' => array(
-                        'title' => $variable_title,
-                      ),
-                    ));
-                  break;
-                case 'impossible':
-                  $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
-                    ObibaDatasetConstants::getIcon()
-                    . '" title="' . $status_detail . '"></span>';
-                  $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
-                    array(
-                      'html' => TRUE,
-                      'query' => array(
-                        'title' => $variable_title,
-                      ),
-                    ));
-                  break;
-                case 'undetermined':
-                  $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" title="' . $status_detail . '"></span>';
-                  $row[$key_row] = l($icon_warning_undetermined, 'mica/variable/' . $harmonized_variable_id,
-                    array(
-                      'html' => TRUE,
-                      'query' => array(
-                        'title' => $variable_title,
-                      ),
-                    ));
-                  break;
-                default:
-                  $row[$key_row] ='-';
-                  break;
+                switch ($status) {
+                  case 'complete':
+                    $icon_success_complete = '<span data-toggle="tooltip" class="glyphicon glyphicon-ok alert-success" title="' . $status_detail . '"></span>';
+                    $row[$key_row] = l($icon_success_complete, 'mica/variable/' . $harmonized_variable_id,
+                      array(
+                        'html' => TRUE,
+                        'query' => array(
+                          'title' => $variable_title,
+                        ),
+                      ));
+                    break;
+                  case 'impossible':
+                    $icon_danger_impossible = '<span data-toggle="tooltip" class="glyphicon ' .
+                      ObibaDatasetConstants::getIcon()
+                      . '" title="' . $status_detail . '"></span>';
+                    $row[$key_row] = l($icon_danger_impossible, 'mica/variable/' . $harmonized_variable_id,
+                      array(
+                        'html' => TRUE,
+                        'query' => array(
+                          'title' => $variable_title,
+                        ),
+                      ));
+                    break;
+                  case 'undetermined':
+                    $icon_warning_undetermined = '<span data-toggle="tooltip" class="glyphicon glyphicon-question-sign alert-warning" title="' . $status_detail . '"></span>';
+                    $row[$key_row] = l($icon_warning_undetermined, 'mica/variable/' . $harmonized_variable_id,
+                      array(
+                        'html' => TRUE,
+                        'query' => array(
+                          'title' => $variable_title,
+                        ),
+                      ));
+                    break;
+                  default:
+                    $row[$key_row] = '-';
+                    break;
+                }
               }
             }
           }
-        }
-          else{
-            $row[$key_row] ='-';
+          else {
+            $row[$key_row] = '-';
           }
         }
 

@@ -110,9 +110,9 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
             </tbody>
           </table>
         </section>
-        <?php if (!empty($attachments)): ?>
+        <?php if (!empty($file_browser)): ?>
               <h4><?php print variable_get_value('files_documents_label'); ?></h4>
-          <?php print $attachments; ?>
+          <?php print $file_browser; ?>
         <?php endif; ?>
       </div>
     </div>
