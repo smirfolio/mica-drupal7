@@ -353,7 +353,7 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
     obiba_mica_commons_set_cache(__FUNCTION__ . 'Variable-dataset-' . $dataset_type . '-' . $id_dataset . '-' . $from . '-' . $size, $data);
   }
   // Must be update in each request (DataTable requirement in ajx call context)
-  $data['sEcho'] = $_GET["sEcho"] ? $_GET["sEcho"] : 1;
+  $data['sEcho'] = !empty($_GET["sEcho"]) ? $_GET["sEcho"] : 1;
   return drupal_json_output($data);
 }
 
@@ -567,7 +567,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
       }
       else {
         $header[] = array(
-          "data" => $acronym,
+          "data" => str_replace(' ', '_', $acronym),
           "sTitle" => $title_header,
           "name" => $acronym,
           "orderable" => FALSE,
