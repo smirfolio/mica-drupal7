@@ -377,15 +377,19 @@ class MicaClientAnchorHelper {
    *   Th study id.
    * @param string $css_class
    *   the affected css class.
+   * @param null $test_ref
+   *   reference used by UI tester
    *
-   * @return string
-   *   The anchor link.
+   * @return string The anchor link.
+   * The anchor link.
    */
-  public static function studyDatasets($text, $study_id, $css_class = NULL) {
+  public static function studyDatasets($text, $study_id, $css_class = NULL, $test_ref = NULL) {
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         $text,
-        array('class' => ($css_class ? $css_class : '')),
+        array(
+          'class' => ($css_class ? $css_class : ''),
+          'test-ref' => $test_ref),
         array(
           'type' => 'datasets',
           'query' => 'study(in(Mica_study.id,' . $study_id . '))',
@@ -405,10 +409,13 @@ class MicaClientAnchorHelper {
    * @param string $supplementary_query
    * @param string $css_class
    *   the affected css class.
+   * @param null $test_ref
+   *   reference used by UI tester
+   *
    * @return string The anchor link.
    * The anchor link.
    */
-  public static function studyVariables($text, $study_id, $is_button = FALSE, $supplementary_query = NULL, $css_class = NULL) {
+  public static function studyVariables($text, $study_id, $is_button = FALSE, $supplementary_query = NULL, $css_class = NULL, $test_ref = NULL) {
       $query = 'study(in(Mica_study.id,' . $study_id . '))';
       if (!empty($supplementary_query)) {
         $query .= ',' . $supplementary_query;
@@ -416,7 +423,9 @@ class MicaClientAnchorHelper {
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         empty($text) ? variable_get_value('variables_search_label') : $text,
-        array('class' => $is_button ? ($css_class ? $css_class : self::DEFAULT_PRIMARY_BUTTON_CLASSES) : ''),
+        array(
+          'class' => $is_button ? ($css_class ? $css_class : self::DEFAULT_PRIMARY_BUTTON_CLASSES) : '',
+          'test-ref' => $test_ref),
         array(
           'type' => 'variables',
           'query' => $query,
@@ -508,15 +517,18 @@ class MicaClientAnchorHelper {
    *   The study id.
    * @param string $css_class
    *   the affected css class.
-   *
-   * @return string
-   *   The anchor link.
+   * @param null $test_ref
+   *   reference used by UI tester
+   * @return string The anchor link.
+   * The anchor link.
    */
-  public static function studyNetworks($text, $study_id, $css_class) {
+  public static function studyNetworks($text, $study_id, $css_class, $test_ref = NULL) {
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         $text,
-        array('class' => ($css_class ? $css_class : '')),
+        array(
+          'class' => ($css_class ? $css_class : ''),
+          'test-ref' => $test_ref),
         array(
           'type' => 'networks',
           'query' => 'network(in(Mica_network.studyIds,' . $study_id . '))',
