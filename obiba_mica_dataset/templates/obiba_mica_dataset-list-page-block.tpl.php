@@ -17,7 +17,7 @@
 ?>
 
 <?php if (!empty($dataset)): ?>
-  <div class="row sm-bottom-margin document-item-list flex-row">
+  <div class="row sm-bottom-margin document-item-list flex-row" test-ref="dataset">
     <div class="col-md-12  col-sm-12 col-xs-12">
       <h4>
         <?php
@@ -48,15 +48,15 @@
         ?>
         <?php if (!empty($networks) && variable_get_value('datasets_column_networks')): ?>
             <?php print MicaClientAnchorHelper::datasetNetworks(t('@count @networkCaption',
-              array('@count' => $networks, '@networkCaption' => $network_caption)), $dataset->id, array('class' => 'btn-default btn-xxs')) ?>
+              array('@count' => $networks, '@networkCaption' => $network_caption)), $dataset->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'networkCount')) ?>
         <?php endif ?>
         <?php if (!empty($studies) && variable_get_value('datasets_column_studies')): ?>
             <?php print MicaClientAnchorHelper::datasetStudies(t('@count @studiesCaption',
-              array('@count' => $studies, '@studiesCaption' => $studies_caption)), $dataset->id, array('class' => 'btn-default btn-xxs')) ?>
+              array('@count' => $studies, '@studiesCaption' => $studies_caption)), $dataset->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'studyCount')) ?>
         <?php endif ?>
         <?php if (!empty($variables) && variable_get_value('datasets_column_variables')): ?>
             <?php print MicaClientAnchorHelper::datasetVariables(t('@count @vars',
-              array('@count' => obiba_mica_commons_format_number($variables), '@vars' => $vars_caption)), $dataset->id, array('class' => 'btn-default btn-xxs')) ?>
+              array('@count' => obiba_mica_commons_format_number($variables), '@vars' => $vars_caption)), $dataset->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'variableCount')) ?>
         <?php endif ?>
       </div>
     </div>
