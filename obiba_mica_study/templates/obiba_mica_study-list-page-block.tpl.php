@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="row sm-bottom-margin document-item-list flex-row">
+<div class="row sm-bottom-margin document-item-list flex-row" test-ref="study">
   <div class="col-md-2 hidden-xs hidden-sm text-center">
     <?php if (!empty($logo_url)): ?>
       <img src="<?php print $logo_url ?>"
@@ -105,19 +105,19 @@
         $network_caption = $networks < 2 ? $localize->getTranslation('network.label') : $localize->getTranslation('networks');
         ?>
         <?php if (!empty($networks) && variable_get_value('studies_column_networks')): ?>
-            <?php print MicaClientAnchorHelper::studyNetworks(t('@count ' . $network_caption, array('@count' => $networks)), $study->id, 'btn-default btn-xxs') ?>
+            <?php print MicaClientAnchorHelper::studyNetworks(t('@count ' . $network_caption, array('@count' => $networks)), $study->id, 'btn-default btn-xxs', 'networkCount') ?>
         <?php endif ?>
         <?php if (!empty($datasets) && (variable_get_value('studies_column_study_datasets') || variable_get_value('studies_column_harmonization_datasets'))): ?>
-            <?php print MicaClientAnchorHelper::studyDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id, 'btn-default btn-xxs') ?>
+            <?php print MicaClientAnchorHelper::studyDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id, 'btn-default btn-xxs', 'datasetCount') ?>
         <?php endif ?>
         <?php if (!empty($vars) && variable_get_value('studies_column_variables')): ?>
-            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $var_caption, array('@count' => obiba_mica_commons_format_number($vars))), $study->id, TRUE, NULL, 'btn-default btn-xxs') ?>
+            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $var_caption, array('@count' => obiba_mica_commons_format_number($vars))), $study->id, TRUE, NULL, 'btn-default btn-xxs', 'variableCount') ?>
         <?php endif ?>
         <?php if (!empty($study_vars) && variable_get_value('studies_column_study_variables')): ?>
-          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $study_var_caption, array('@count' => obiba_mica_commons_format_number($study_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Study))', 'btn-default btn-xxs') ?>
+          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $study_var_caption, array('@count' => obiba_mica_commons_format_number($study_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Study))', 'btn-default btn-xxs', 'studyVariableCount') ?>
         <?php endif ?>
         <?php if (!empty($dataschema_vars) && variable_get_value('studies_column_dataschema_variables')): ?>
-          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $dataschema_var_caption, array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Dataschema))', 'btn-default btn-xxs') ?>
+          <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $dataschema_var_caption, array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Dataschema))', 'btn-default btn-xxs', 'dataSchemaVariableCount') ?>
         <?php endif ?>
       </div>
     <?php endif; ?>

@@ -51,8 +51,6 @@ print render($node_page) ?>
     <?php endif; ?>
   </div>
   <div class="clearfix"></div>
-  <div><?php print $pager_wrap; ?></div>
+  <div test-ref="pager"><?php print $pager_wrap; ?></div>
 
 </div>
-
-
