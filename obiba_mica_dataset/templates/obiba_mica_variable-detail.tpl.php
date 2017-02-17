@@ -343,7 +343,7 @@
         <?php if (!empty(variable_get_value('variable_algorithm'))): ?>
           <?php if ($variable_harmonization['status'] == 'complete'): ?>
             <?php if (!empty($variable_harmonization['algorithm'])): ?>
-              <h2><?php print $localize->getTranslation('config.key.algo') ?></h2>
+              <h2><?php print $localize->getTranslation('config.keys.algo') ?></h2>
               <div class="row">
                 <div class="col-md-6 col-sm-12">
                   <?php print $variable_harmonization['algorithm']; ?>
