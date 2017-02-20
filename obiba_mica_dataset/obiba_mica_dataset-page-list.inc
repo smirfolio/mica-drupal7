@@ -133,6 +133,8 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resou
 function obiba_mica_dataset_create_form() {
   $context = array(
     'options' => array(),
+    'default_sort' => 'name',
+    'default_sort_order' => 'asc'
   );
   return obiba_mica_commons_create_search_form($context);
 }

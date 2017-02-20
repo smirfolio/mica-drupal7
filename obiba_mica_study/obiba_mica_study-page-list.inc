@@ -115,10 +115,12 @@ function obiba_mica_study_create_form() {
 
   $context =
     array(
-      'options' => //
-        array( //
+      'options' =>
+        array(
           'numberOfParticipants.participant.number' => $localize->getTranslation('client.label.study.target-number'), //
-        ) //
+        ),
+      'default_sort' => 'name',
+      'default_sort_order' => 'asc'
     );
 
   return obiba_mica_commons_create_search_form($context);

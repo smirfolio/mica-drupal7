@@ -95,7 +95,9 @@ function obiba_mica_research_project_create_form() {
   $context = array(
     'options' => array(
       'title.' . $language->language => $localize->getTranslation('research-project.title'),
-    )
+    ),
+    'default_sort' => 'title.' . $language->language,
+    'default_sort_order' => 'asc'
   );
 
   return obiba_mica_commons_create_search_form($context, FALSE, FALSE);
