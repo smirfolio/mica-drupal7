@@ -113,9 +113,11 @@ function populate_session_with_network_count($networks, $type) {
 function obiba_mica_network_create_form() {
   $context =
     array(
-      'options' => array(),
-      'default_sort' => 'acronym',
-      'default_sort_order' => 'desc'
+      'options' => array(
+        '' =>''
+      ),
+      'default_sort' => '',
+      'default_sort_order' => ''
     );
 
   return obiba_mica_commons_create_search_form($context);

@@ -39,11 +39,12 @@ class DrupalMicaResearchProjectResource extends DrupalMicaClientResource {
    * @return array|mixed
    */
   public function getProjects($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
+    global $language;
     $this->setLastResponse(NULL);
     $params = empty($from) ? 'from=0' : 'from=' . $from;
     $params .= empty($limit) ? '&limit=5' : '&limit=' . $limit;
-    $params .= empty($sort) ? '' : '&sort=' . $sort;
-    $params .= empty($order) ? '' : '&order=' . $order;
+    $params .= empty($sort) ? '&sort=title.' .  $language->language : '&sort=' . $sort;
+    $params .= empty($order) ? '&order=asc' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
     $resource_query = '/projects?' . $params;
 

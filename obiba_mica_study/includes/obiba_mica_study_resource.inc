@@ -174,7 +174,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
     $from = empty($from) ? '0' : $from;
     $limit = empty($limit) ? '5' : $limit;
     $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
-    $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
+    $sort_rql_bucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
     $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
     if (empty($query)) {
       $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket)";
