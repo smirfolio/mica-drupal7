@@ -32,6 +32,17 @@ function obiba_mica_persons_list($entities_id) {
   }
   $persons_resources = new DrupalMicaPersonsResource();
   $persons = $persons_resources->search($query_person);
+
+  if (!empty($persons->persons)) {
+    $localize = obiba_mica_commons_mica_server_localisation();
+
+    foreach ($persons->persons as &$person) {
+      foreach ($person->studyMemberships as &$membership) {
+        $membership->role = $localize->getTranslation('membership-role.' . $membership->role);
+      }
+    }
+  }
+
   drupal_json_output(array(
     "recordsTotal" => $persons->total,
     "data" => !empty($persons->persons) ? $persons->persons : array()
