@@ -27,7 +27,7 @@
 
 <tr>
   <td ng-if="datasetHarmo" rowspan="{{crosstab.rhs.xVariable.categories.length + 1}}">
-    <span ng-include="'<?php print base_path(); ?>obiba_mica_app_angular_view_template/obiba_mica_dataset_study_table'"></span>
+    <span ng-include="'<?php print $base_path; ?>obiba_mica_app_angular_view_template/obiba_mica_dataset_study_table'"></span>
   </td>
   <td colspan="{{crosstab.lhs.xVariable.categories.length + 2}}"><em>{{'no-results' | translate}}</em></td>
 </tr>

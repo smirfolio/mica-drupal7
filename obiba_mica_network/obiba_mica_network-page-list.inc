@@ -16,10 +16,7 @@
 use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 
 function obiba_mica_network_page_list() {
-  $context['url'] = 'refresh_list_networks';
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
-  drupal_add_js(array('context' => $context), 'setting');
-
+  obiba_mica_commons_list_document_js('refresh_list_networks');
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('networks_page'));
 
   drupal_set_title($node_rendered['#node']->title);

@@ -27,7 +27,7 @@
 
 <tr ng-if="options.showDetails" ng-repeat="frequency in contingency.aggregations[0].frequencies track by $index">
   <td ng-if="datasetHarmo && $index === 0" rowspan="{{crosstab.rhs.xVariable.categories.length + 2}}">
-    <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_mica_app_angular_view_template/obiba_mica_dataset_study_table'"></span>
+    <span ng-if="!grandTotal" ng-include="'<?php print $base_path; ?>obiba_mica_app_angular_view_template/obiba_mica_dataset_study_table'"></span>
     <span ng-if="grandTotal"><strong>{{'total' | translate}}</strong></span>
   </td>
 
@@ -64,7 +64,7 @@
 </tr>
 <tr>
   <td ng-if="options.showDetailedStats &&  datasetHarmo && !options.showDetails" rowspan="{{crosstab.rhs.xVariable.categories.length}}">
-    <span ng-if="!grandTotal" ng-include="'<?php print base_path(); ?>obiba_mica_app_angular_view_template/obiba_mica_dataset_study_table'"></span>
+    <span ng-if="!grandTotal" ng-include="'<?php print $base_path; ?>obiba_mica_app_angular_view_template/obiba_mica_dataset_study_table'"></span>
     <span ng-if="grandTotal"><strong>{{'total' | translate}}</strong></span>
   </td>
   <td><em>N</em></td>

@@ -69,20 +69,20 @@ var mica = angular.module('mica', modules);
 mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
   function (ngObibaMicaSearchProvider, ngObibaMicaUrlProvider) {
     ngObibaMicaUrlProvider.setUrl('DataAccessClientDetailPath', 'mica/data_access/request');
-    ngObibaMicaUrlProvider.setUrl('DataAccessClientListPath', 'mica/data_access/requests');
-    ngObibaMicaUrlProvider.setUrl('DataAccessFormConfigResource', 'data-access-form/ws');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestsExportCsvResource', 'requests/csv/ws?lang=:lang');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestsResource', 'requests/ws');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestResource', 'request/:id/ws');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestAttachmentsUpdateResource', 'request/:id/_attachments/ws');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestAttachmentDownloadResource', 'request/:id/attachments/:attachmentId/_download/ws');
-    ngObibaMicaUrlProvider.setUrl('SchemaFormAttachmentDownloadResource', 'request/form/attachments/:attachmentName/:attachmentId/_download/ws?path=:path');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestDownloadPdfResource', 'request/:id/_pdf/ws');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestCommentsResource', 'request/:id/comments/ws');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestCommentResource', 'request/:id/comment/:commentId/ws');
-    ngObibaMicaUrlProvider.setUrl('DataAccessRequestStatusResource', 'request/:id/_status/:status/ws');
-    ngObibaMicaUrlProvider.setUrl('TempFileUploadResource', 'request/upload-file');
-    ngObibaMicaUrlProvider.setUrl('TempFileResource', 'request/file/:id');
+    ngObibaMicaUrlProvider.setUrl('DataAccessClientListPath',  'mica/data_access/requests');
+    ngObibaMicaUrlProvider.setUrl('DataAccessFormConfigResource', Drupal.settings.basePath + 'mica/data_access/data-access-form/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestsExportCsvResource', Drupal.settings.basePath + 'mica/data_access/requests/csv/ws' + ((Drupal.settings.basePath.indexOf('?q=')!==-1)?'&':'?') + 'lang=:lang');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestsResource', Drupal.settings.basePath + 'mica/data_access/requests/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestResource', Drupal.settings.basePath + 'mica/data_access/request/:id/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestAttachmentsUpdateResource', Drupal.settings.basePath + 'mica/data_access/request/:id/_attachments/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestAttachmentDownloadResource', Drupal.settings.basePath + 'mica/data_access/request/:id/attachments/:attachmentId/_download/ws');
+    ngObibaMicaUrlProvider.setUrl('SchemaFormAttachmentDownloadResource',Drupal.settings.basePath + 'mica/data_access/request/form/attachments/:attachmentName/:attachmentId/_download/ws' + ((Drupal.settings.basePath.indexOf('?q=')!==-1)?'&':'?') + 'path=:path');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestDownloadPdfResource', Drupal.settings.basePath + 'mica/data_access/request/:id/_pdf/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestCommentsResource', Drupal.settings.basePath + 'mica/data_access/request/:id/comments/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestCommentResource', Drupal.settings.basePath + 'mica/data_access/request/:id/comment/:commentId/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestStatusResource', Drupal.settings.basePath + 'mica/data_access/request/:id/_status/:status/ws');
+    ngObibaMicaUrlProvider.setUrl('TempFileUploadResource', Drupal.settings.basePath + 'mica/data_access/request/upload-file');
+    ngObibaMicaUrlProvider.setUrl('TempFileResource', Drupal.settings.basePath + 'mica/data_access/request/file/:id');
     ngObibaMicaUrlProvider.setUrl('TaxonomiesSearchResource', Drupal.settings.basePath + 'mica/repository/taxonomies/_search/ws');
     ngObibaMicaUrlProvider.setUrl('TaxonomiesResource', Drupal.settings.basePath + 'mica/repository/taxonomies/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('TaxonomyResource', Drupal.settings.basePath + 'mica/repository/taxonomy/:taxonomy/_filter/ws');
@@ -99,7 +99,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('BaseUrl', Drupal.settings.basePath + Drupal.settings.pathPrefix);
     ngObibaMicaUrlProvider.setUrl('FileBrowserFileResource', Drupal.settings.basePath + 'mica/file');
     ngObibaMicaUrlProvider.setUrl('FileBrowserSearchResource', Drupal.settings.basePath + 'mica/files/search');
-    ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', Drupal.settings.basePath + 'mica/file/download?path=:path&inline=:inline&keyToken=:key');
+    ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', Drupal.settings.basePath + 'mica/file/download' + ((Drupal.settings.basePath.indexOf('?q=')!==-1)?'&':'?') + 'path=:path&inline=:inline&keyToken=:key');
     ngObibaMicaUrlProvider.setUrl('GraphicsSearchRootUrl', 'mica/repository#/search');
 
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);

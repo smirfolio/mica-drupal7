@@ -21,11 +21,11 @@ var datatables_add_head_TimeoutId = null;
 
       /*******************/
       if (Drupal.settings.context) {
-        $("#edit-search-query").on("keyup", function () {
+        $("#edit-search-query").on("keyup", function (e) {
           var that = this;
           function doSearch(){
             $.ajax({
-              url: Drupal.settings.context.url + '/' + $(that).val() + '/' +
+              url: Drupal.settings.basePath + 'mica/' + Drupal.settings.context.url + '/' + $(that).val() + '/' +
               $("#edit-search-sort").val() + '/' + $("#edit-search-sort-order").val() + '/0',
               success: function (data) {
                 if (data) {
@@ -39,29 +39,33 @@ var datatables_add_head_TimeoutId = null;
           if (datatables_add_head_TimeoutId) {
             clearTimeout(datatables_add_head_TimeoutId);
           }
-
+          if (e.keyCode == 13) {
+            e.preventDefault();
+            var data_url = $('#obiba-mica-search-form').serialize();
+            window.location = window.location.origin + Drupal.settings.context.currentCleanPath + data_url;
+          }
           datatables_add_head_TimeoutId = setTimeout(doSearch, 250);
         });
       }
 
       $("#edit-search-query").on("blur", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
-        window.location = '?' + data_url;
+        window.location = window.location.origin + Drupal.settings.context.currentCleanPath + data_url;
       });
 
       $("#edit-search-sort-order").on("change", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
-        window.location = '?' + data_url;
+        window.location =  window.location.origin + Drupal.settings.context.currentCleanPath + data_url;
       });
 
       $("#edit-search-sort").on("change", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
-        window.location = '?' + data_url;
+        window.location =  window.location.origin + Drupal.settings.context.currentCleanPath + data_url;
       });
 
       $("#refresh-button").on("click", function () {
         event.preventDefault();
-        window.location = window.location.pathname;
+        window.location = window.location.origin + Drupal.settings.context.currentCleanPath;
       });
       /*******************/
     }

@@ -670,31 +670,49 @@ function obiba_mica_dataset_library_alter(&$javascript, $module) {
  */
 function obiba_mica_dataset_variable_crosstab_theme($existing, $type, $theme, $path) {
   $path_views_theme = $path . '/js/app/views';
-
+  $base_path = !empty($GLOBALS['conf']['clean_url']) ? base_path() : base_path().'?q=';
   return array(
     'obiba_mica_dataset_variable_crosstab' => array(
       'template' => 'obiba_mica_dataset_variable_crosstab',
       'path' => $path_views_theme,
+      'variables' => array(
+        'base_path' => $base_path,
+      ),
     ),
     'obiba_mica_dataset_study_table' => array(
       'template' => 'obiba_mica_dataset_study_table',
       'path' => $path_views_theme,
+      'variables' => array(
+        'base_path' => $base_path,
+      ),
     ),
     'obiba_mica_dataset_variable_crosstab_frequencies' => array(
       'template' => 'obiba_mica_dataset_variable_crosstab_frequencies',
       'path' => $path_views_theme,
+      'variables' => array(
+        'base_path' => $base_path,
+      ),
     ),
     'obiba_mica_dataset_variable_crosstab_statistics' => array(
       'template' => 'obiba_mica_dataset_variable_crosstab_statistics',
       'path' => $path_views_theme,
+      'variables' => array(
+        'base_path' => $base_path,
+      ),
     ),
     'obiba_mica_dataset_variable_crosstab_frequencies_empty' => array(
       'template' => 'obiba_mica_dataset_variable_crosstab_frequencies_empty',
       'path' => $path_views_theme,
+      'variables' => array(
+        'base_path' => $base_path,
+      ),
     ),
     'obiba_mica_dataset_variable_crosstab_statistics_empty' => array(
       'template' => 'obiba_mica_dataset_variable_crosstab_statistics_empty',
       'path' => $path_views_theme,
+      'variables' => array(
+        'base_path' => $base_path,
+      ),
     ),
   );
 }

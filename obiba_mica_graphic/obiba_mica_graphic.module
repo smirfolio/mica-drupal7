@@ -467,7 +467,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
   $response->charts = array();
 
   $coverages = obiba_mica_graphics_do_coverage_query($query);
-
+ $base_path = !empty($GLOBALS['conf']['clean_url']) ? base_path() : base_path().'?q=';
   if (isset($coverages->taxonomies)) {
     $shown = array_filter($coverages->taxonomies, function ($coverage) {
       return in_array($coverage->taxonomy->name, obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures'));
@@ -487,7 +487,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
             $item->key = $bucket->value;
             $item->value = $bucket->hits;
             $item->title = obiba_mica_commons_get_localized_field($vocabulary->vocabulary, 'titles');
-            $item->link = base_path() . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders(NULL, $bucket, $coverage->taxonomy->name, $vocabulary->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabulary->terms), $entity_id);
+            $item->link = $base_path . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders(NULL, $bucket, $coverage->taxonomy->name, $vocabulary->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabulary->terms), $entity_id);
             array_push($data, $item);
           }
         } else {
@@ -495,7 +495,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
           $item->key = t('Variables');
           $item->value = $vocabulary->count;
           $item->title = obiba_mica_commons_get_localized_field($vocabulary->vocabulary, 'titles');
-          $item->link = base_path() . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders($query, NULL, $coverage->taxonomy->name, $vocabulary->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabulary->terms), $entity_id);
+          $item->link = $base_path . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders($query, NULL, $coverage->taxonomy->name, $vocabulary->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabulary->terms), $entity_id);
           array_push($variable_data, $item);
         }
       }
