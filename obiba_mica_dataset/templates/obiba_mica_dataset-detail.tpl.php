@@ -92,15 +92,17 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               </p>
             </td>
           </tr>
-          <tr>
-            <th><?php print $localize->getTranslation('client.label.dataset.number-of-variables') ?></th>
-            <td>
-              <p>
-                <?php print MicaClientAnchorHelper::datasetVariables(empty($variables_dataset->total) ? 0 :
-                  obiba_mica_commons_format_number($variables_dataset->total), $dataset_dto->id); ?>
-              </p>
-            </td>
-          </tr>
+          <?php if ((!empty($dataset_dto->published) && $dataset_dto->published === TRUE ) || $draft_view === FALSE): ?>
+            <tr>
+              <th><?php print $localize->getTranslation('client.label.dataset.number-of-variables') ?></th>
+              <td>
+                <p>
+                  <?php print MicaClientAnchorHelper::datasetVariables(empty($variables_dataset->total) ? 0 :
+                    obiba_mica_commons_format_number($variables_dataset->total), $dataset_dto->id); ?>
+                </p>
+              </td>
+            </tr>
+          <?php endif; ?>
           </tbody>
         </table>
       </div>
