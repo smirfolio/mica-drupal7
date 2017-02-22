@@ -27,7 +27,7 @@
 
 <tr>
   <td ng-if="datasetHarmo">
-    <span ng-include="'<?php print base_path(); ?>obiba_mica_app_angular_view_template/obiba_mica_dataset_study_table'"></span>
+    <span ng-include="'<?php print $base_path; ?>obiba_mica_app_angular_view_template/obiba_mica_dataset_study_table'"></span>
   </td>
   <td colspan="4" class="danger"><em>{{'no-results' | translate}}</em></td>
 </tr>

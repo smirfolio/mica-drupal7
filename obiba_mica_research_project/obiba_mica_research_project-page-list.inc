@@ -20,10 +20,7 @@ use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 include_once "obiba_mica_research_project_service.inc";
 
 function obiba_mica_research_project_page_list() {
-  $context['url'] = 'refresh_list_projects';
-
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
-  drupal_add_js(array('context' => $context), 'setting');
+  obiba_mica_commons_list_document_js('refresh_list_projects');
 
   $project_query = NULL;
   $project_sort = NULL;

@@ -12,39 +12,39 @@
 (function ($) {
   Drupal.behaviors.obiba_mica_dataset_variable_crosstab_service = {
     attach: function (context, settings) {
-
+    var basePath = Drupal.settings.basePath + 'mica/';
       mica.DatasetVariableCrosstab
         .factory('DatasetCategoricalVariablesResource', ['$resource',
           function ($resource) {
-            return $resource(':dsType/:dsId/variables/:query/categorical/ws', {}, {
+            return $resource(basePath + ':dsType/:dsId/variables/:query/categorical/ws', {}, {
               'get': {method: 'GET', errorHandler: true}
             });
           }])
 
         .factory('DatasetVariablesResource', ['$resource',
           function ($resource) {
-            return $resource(':dsType/:dsId/variables/:query/ws', {}, {
+            return $resource(basePath + ':dsType/:dsId/variables/:query/ws', {}, {
               'get': {method: 'GET', errorHandler: true}
             });
           }])
 
         .factory('DatasetVariableResource', ['$resource',
           function ($resource) {
-            return $resource('variable/:varId/ws', {}, {
+            return $resource(basePath + 'variable/:varId/ws', {}, {
               'get': {method: 'GET', errorHandler: true}
             });
           }])
 
         .factory('DatasetVariablesCrosstabResource', ['$resource',
           function ($resource) {
-            return $resource(':dsType/:dsId/variables/cross/:v1/by/:v2/ws', {}, {
+            return $resource(basePath + ':dsType/:dsId/variables/cross/:v1/by/:v2/ws', {}, {
               'get': {method: 'GET', errorHandler: true}
             });
           }])
 
         .factory('DatasetResource', ['$resource',
           function ($resource) {
-            return $resource('dataset/:dsType/:dsId/ws', {}, {
+            return $resource(basePath + 'dataset/:dsType/:dsId/ws', {}, {
               'get': {method: 'GET', errorHandler: true}
             });
           }])

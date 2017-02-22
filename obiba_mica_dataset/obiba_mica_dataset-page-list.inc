@@ -47,9 +47,7 @@ function obiba_mica_dataset_get_study_datasets_list() {
  * Render the dataset list on a page template.
  */
 function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
-  $context['url'] = '/drupal/mica/refresh_list_datasets_' . $dataset_resource;
-  drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
-  drupal_add_js(array('context' => $context), 'setting');
+  obiba_mica_commons_list_document_js('refresh_list_datasets_' . $dataset_resource);
   $list_datasets = '';
 
   $page_number = !empty($_GET['page']) ? $_GET['page'] : NULL;

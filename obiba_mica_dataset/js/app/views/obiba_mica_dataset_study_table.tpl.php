@@ -27,11 +27,11 @@
 
 <span ng-init="info = extractSummaryInfo(contingency.studyTable || contingency.networkTable)" title="{{info.population ? info.population + ':' + info.dce : ''}}">
   <span ng-if="contingency.studyTable">
-    <a href="<?php print base_path(); ?>mica/study/{{contingency.studyTable.studyId}}">{{contingency.studyTable.studySummary.acronym | localizedValue}}</a>
+    <a href="<?php print $base_path; ?>mica/study/{{contingency.studyTable.studyId}}">{{contingency.studyTable.studySummary.acronym | localizedValue}}</a>
     <span>{{contingency.studyTable.name | localizedValue}}</span>
   </span>
   <span ng-if="contingency.networkTable">
-    <a ng-if="contingency.networkTable" href="<?php print base_path(); ?>mica/network/{{contingency.networkTable.networkId}}">{{contingency.networkTable.networkSummary.acronym | localizedValue}}</a>
+    <a ng-if="contingency.networkTable" href="<?php print $base_path; ?>mica/network/{{contingency.networkTable.networkId}}">{{contingency.networkTable.networkSummary.acronym | localizedValue}}</a>
     <span>{{contingency.networkTable.name | localizedValue}}</span>
   </span>
 </span>

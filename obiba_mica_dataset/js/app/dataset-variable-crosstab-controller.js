@@ -414,15 +414,14 @@
             /**
              * Returns the proper template based on total.n
              * @param contingency
-             * @param basePath
              * @returns {string}
              */
-            var getTemplatePath = function (contingency, basePath) {
+            var getTemplatePath = function (contingency) {
               if (! $scope.crosstab.rhs.xVariable) {
                 $log.error('RHS variable is not initialized!');
                 return;
               }
-
+              var basePath = Drupal.settings.basePath;
               var folder = basePath + "obiba_mica_app_angular_view_template/";
               var template = isStatistical($scope.crosstab.rhs.xVariable)
                 ? (! contingency.totalPrivacyCheck || contingency.all.n > 0 ? "obiba_mica_dataset_variable_crosstab_statistics" : "obiba_mica_dataset_variable_crosstab_statistics_empty")
