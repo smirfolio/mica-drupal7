@@ -133,7 +133,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
           }
           obiba_mica_app_angular_load_js_resources('obiba_mica_graphic');
 
-          $studies_statistics = obiba_mica_network_statistics_angular_options($networks_id);
+          $studies_statistics = $network_dto->published ? obiba_mica_network_statistics_angular_options($networks_id) : '';
         }
       }
     }
