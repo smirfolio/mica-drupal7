@@ -96,7 +96,7 @@
           <tr>
             <th><?php print $localize->getTranslation('client.label.variable.value-type'); ?></th>
             <td>
-              <p><?php print t('@valueType', array('@valueType' => $variable_dto->valueType)); ?></p>
+              <p><?php print $localize->getTranslation('variable_taxonomy.vocabulary.valueType.term.' . $variable_dto->valueType . '.title'); ?></p>
             </td>
           </tr>
 
@@ -332,7 +332,7 @@
               <tr>
                 <th><?php print $localize->getTranslation('comment-label'); ?></th>
                 <td>
-                  <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : obiba_mica_commons_markdown($variable_harmonization['comment']); ?></p>
+                  <p><?php print empty($variable_harmonization['comment']) ? '<i>None</i>' : obiba_mica_commons_markdown(filter_xss($variable_harmonization['comment'], obiba_mica_commons_allowed_filter_xss_tags())); ?></p>
                 </td>
               </tr>
               </tbody>

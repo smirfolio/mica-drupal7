@@ -17,11 +17,11 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h3
           class="modal-title">
-          <?php print !empty($person->title)?$person->title:''; ?>
-          <?php print !empty($person->firstName)?$person->firstName:''; ?>
-          <?php print !empty($person->lastName)?$person->lastName:''; ?>
+          <?php print !empty($person->title)?filter_xss($person->title, obiba_mica_commons_allowed_filter_xss_tags()):''; ?>
+          <?php print !empty($person->firstName)?filter_xss($person->firstName, obiba_mica_commons_allowed_filter_xss_tags()):''; ?>
+          <?php print !empty($person->lastName)?filter_xss($person->lastName, obiba_mica_commons_allowed_filter_xss_tags()):''; ?>
           <?php if (!empty($person->academicLevel)) {
-            print ', ' . $person->academicLevel;
+            print ', ' . filter_xss($person->academicLevel, obiba_mica_commons_allowed_filter_xss_tags());
           } ?></h3>
       </div>
       <div class="modal-body">
@@ -94,13 +94,13 @@
                     <?php endif; ?>
                     <?php if (!empty($person->institution->address->zip)): ?>
                       <p>
-                        <?php print $person->institution->address->zip; ?>
+                        <?php print filter_xss($person->institution->address->zip, obiba_mica_commons_allowed_filter_xss_tags()); ?>
                       </p>
                     <?php endif; ?>
                     <?php if (!empty($person->institution->address->country)): ?>
                       <p>
                         <?php if (!empty($person->institution->address->state)): ?>
-                          <?php print $person->institution->address->state . ', '; ?>
+                          <?php print filter_xss($person->institution->address->state, obiba_mica_commons_allowed_filter_xss_tags()) . ', '; ?>
                         <?php endif; ?>
                         <?php print obiba_mica_commons_countries($person->institution->address->country->iso); ?>
                       </p>
