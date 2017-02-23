@@ -92,11 +92,11 @@
                       <li>
                         <a href="#" data-toggle="modal"
                            data-target="#<?php print obiba_mica_person_generate_target_id($membership->role, $study_dto->id, $key_member); ?>">
-                          <?php print !empty($member->title)?$member->title:''; ?>
-                          <?php print !empty($member->firstName)?$member->firstName:''; ?>
-                          <?php print !empty($member->lastName)?$member->lastName:''; ?>
+                          <?php print !empty($member->title)?filter_xss($member->title, obiba_mica_commons_allowed_filter_xss_tags()):''; ?>
+                          <?php print !empty($member->firstName)?filter_xss($member->firstName, obiba_mica_commons_allowed_filter_xss_tags()):''; ?>
+                          <?php print !empty($member->lastName)?filter_xss($member->lastName, obiba_mica_commons_allowed_filter_xss_tags()):''; ?>
                           <?php if (!empty($member->academicLevel)) {
-                            print ', ' . $member->academicLevel;
+                            print ', ' . filter_xss($member->academicLevel, obiba_mica_commons_allowed_filter_xss_tags());
                           } ?>
                           <?php if (!empty($member->institution->name)): ?>
                             (<?php print obiba_mica_commons_get_localized_field($member->institution, 'name'); ?>
@@ -295,14 +295,14 @@
         <?php if (!empty($study_dto->model->markerPaper) || !empty($study_dto->model->pubmedId)): ?>
           <h2 id="marker"><?php print $localize->getTranslation('study.marker-paper') ?></h2>
           <?php if (!empty($study_dto->model->markerPaper)): ?>
-            <p><?php print $study_dto->model->markerPaper; ?></p>
+            <p><?php print filter_xss($study_dto->model->markerPaper, obiba_mica_commons_allowed_filter_xss_tags()); ?></p>
           <?php endif; ?>
           <?php if (!empty($study_dto->model->pubmedId)): ?>
             <p>
               <a
                 href="http://www.ncbi.nlm.nih.gov/pubmed/<?php print $study_dto->model->pubmedId; ?>"
                 target="_blank">
-                PUBMED <?php print $study_dto->model->pubmedId; ?>
+                PUBMED <?php print filter_xss($study_dto->model->pubmedId, obiba_mica_commons_allowed_filter_xss_tags()); ?>
               </a>
             </p>
           <?php endif; ?>

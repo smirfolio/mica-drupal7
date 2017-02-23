@@ -69,7 +69,7 @@
               <tr>
                 <th><?php print $localize->getTranslation('research-project.default.contact.name') ?></th>
                 <td>
-                  <p><?php print $model->name ?></p>
+                  <p><?php print filter_xss($model->name, obiba_mica_commons_allowed_filter_xss_tags()); ?></p>
                 </td>
               </tr>
             <?php endif; ?>
@@ -77,7 +77,7 @@
               <tr>
                 <th><?php print $localize->getTranslation('research-project.default.contact.institution') ?></th>
                 <td>
-                  <p><?php print $model->institution ?></p>
+                  <p><?php print filter_xss($model->institution, obiba_mica_commons_allowed_filter_xss_tags()); ?></p>
                 </td>
               </tr>
             <?php endif; ?>
