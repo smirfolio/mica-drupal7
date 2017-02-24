@@ -61,7 +61,7 @@
       <?php endif ?>
 
       <?php if ($studies_with_vars > 0): ?>
-        <?php print MicaClientAnchorHelper::networkStudies(t('@count ' . $studies_with_vars_caption, array('@count' => $studies_with_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'studyWithVariablesCount')) ?>
+        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $studies_with_vars_caption, array('@count' => $studies_with_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'studyWithVariablesCount'), 'variable(in(Mica_variable.variableType,Study))', "studies") ?>
       <?php endif; ?>
 
       <?php if (!empty($datasets) && (variable_get_value('networks_column_study_datasets') || variable_get_value('networks_column_harmonization_datasets'))): ?>

@@ -595,10 +595,11 @@ class MicaClientAnchorHelper {
    * @param array $attributes
    *   A set of link attributes.
    * @param string $supplementary_query
+   * @param string $type
    * @return string The anchor link.
    * The anchor link.
    */
-  public static function networkVariables($text, $network_id, array $attributes = array(), $supplementary_query = NULL) {
+  public static function networkVariables($text, $network_id, array $attributes = array(), $supplementary_query = NULL, $type = 'variables') {
       $query = 'network(in(Mica_network.id,' . $network_id . '))';
       if (!empty($supplementary_query)) {
         $query .= ',' . $supplementary_query;
@@ -608,7 +609,7 @@ class MicaClientAnchorHelper {
         empty($text) ? variable_get_value('variables_search_label') : $text,
         $attributes,
         array(
-          'type' => 'variables',
+          'type' => $type,
           'query' => $query,
           'display' => 'list'
         ));
