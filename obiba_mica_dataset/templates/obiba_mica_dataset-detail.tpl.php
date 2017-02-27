@@ -254,7 +254,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   </div>
 
   <!-- VARIABLES -->
-  <?php if ($dataset_type != "study-dataset" && $draft_view !== TRUE): ?>
+  <?php if ($dataset_type != "study-dataset" && (!isset($draft_view) || $draft_view !== TRUE)): ?>
     <section class="table-variables">
       <h2><?php print $localize->getTranslation('client.label.variable.harmonization') ?></h2>
       <?php print render($harmonization_table_legend); ?>
