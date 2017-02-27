@@ -23,7 +23,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
       </div>
       <div class="modal-body">
         <section>
-          <div>
+          <div test-ref="modal-dce-description">
             <?php if (!empty($dce->description)): ?>
               <p>
                 <?php print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($dce, 'description')); ?>
@@ -38,14 +38,14 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
             <?php if (!empty($dce->startYear)): ?>
               <tr>
                 <th><?php print $localize->getTranslation('data-collection-event.start-year') ?></th>
-                <td><p><?php print obiba_mica_commons_format_year($dce->startYear, !empty($dce->startMonth) ? $dce->startMonth : NULL); ?></p></td>
+                <td test-ref="modal-dce-startYear"><p><?php print obiba_mica_commons_format_year($dce->startYear, !empty($dce->startMonth) ? $dce->startMonth : NULL); ?></p></td>
               </tr>
             <?php endif; ?>
 
             <?php if (!empty($dce->endYear)): ?>
               <tr>
                 <th><?php print $localize->getTranslation('data-collection-event.end-year') ?></th>
-                <td><p><?php print obiba_mica_commons_format_year($dce->endYear, !empty($dce->endMonth) ? $dce->endMonth : NULL); ?></p></td>
+                <td test-ref="modal-dce-endYear"><p><?php print obiba_mica_commons_format_year($dce->endYear, !empty($dce->endMonth) ? $dce->endMonth : NULL); ?></p></td>
               </tr>
             <?php endif; ?>
 
@@ -55,7 +55,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                 <td>
                   <ul>
                     <?php foreach ($dce->model->dataSources as $dataSource): ?>
-                      <li>
+                      <li test-ref="modal-dce-dataSource">
                         <?php print  $localize->getTranslation('study_taxonomy.vocabulary.populations-dataCollectionEvents-dataSources.term.' . $dataSource . '.title'); ?>
                         <?php if ($dataSource == 'others'): ?>
                           : <?php print obiba_mica_commons_get_localized_field($dce->model, 'otherDataSources'); ?>
@@ -93,7 +93,7 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                 <td>
                   <ul>
                     <?php foreach ($dce->model->bioSamples as $samples): ?>
-                      <li>
+                      <li test-ref="modal-dce-biosample">
                         <?php print  $localize->getTranslation('study_taxonomy.vocabulary.populations-dataCollectionEvents-bioSamples.term.' . $samples . '.title'); ?>
                           <?php if ($samples == "tissues" && !empty($tissue_types)): ?>
                             :<?php print  $tissue_types; ?>

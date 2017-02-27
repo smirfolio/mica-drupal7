@@ -24,7 +24,7 @@
             print ', ' . filter_xss($person->academicLevel, obiba_mica_commons_allowed_filter_xss_tags());
           } ?></h3>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" test-ref="modal-body">
 
         <section>
           <div>
@@ -33,21 +33,21 @@
               <?php if (!empty($person->email)): ?>
                 <tr>
                   <th><?php print $localize->getTranslation('contact.email') ?></th>
-                  <td><p><?php print $person->email; ?></p></td>
+                  <td test-ref="email"><p><?php print $person->email; ?></p></td>
                 </tr>
               <?php endif; ?>
 
               <?php if (!empty($person->phone)): ?>
                 <tr>
                   <th><?php print $localize->getTranslation('contact.phone') ?></th>
-                  <td><p><?php print $person->phone; ?></p></td>
+                  <td test-ref="phone"><p><?php print $person->phone; ?></p></td>
                 </tr>
               <?php endif; ?>
 
               <?php if (!empty($person->dataAccessCommitteeMember)): ?>
                 <tr>
                   <th><?php print $localize->getTranslation('contact.dataAccessCommitteeMember') ?></th>
-                  <td>
+                  <td test-ref="dataAccessCommitteeMember">
                     <?php print !empty($person->dataAccessCommitteeMember) ? 'YES' : 'NO'; ?>
                   </td>
                 </tr>
@@ -58,7 +58,7 @@
               ): ?>
                 <tr>
                   <th><?php print $localize->getTranslation('contact.institution') ?></th>
-                  <td>
+                  <td test-ref="institutionIdentifier">
                     <?php if (!empty($person->institution->name)): ?>
                       <p>
                         <?php print obiba_mica_commons_get_localized_field($person->institution, 'name'); ?>
@@ -81,7 +81,7 @@
               ): ?>
                 <tr>
                   <th><?php print $localize->getTranslation('address.label') ?></th>
-                  <td>
+                  <td test-ref="institutionAddress">
                     <?php if (!empty($person->institution->address->street)): ?>
                       <p>
                         <?php print obiba_mica_commons_get_localized_field($person->institution->address, 'street'); ?>
