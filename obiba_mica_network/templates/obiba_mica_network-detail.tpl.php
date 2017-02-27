@@ -86,7 +86,7 @@
                   <ul class="list-unstyled">
                       <?php foreach ($membership->members as  $key_member => $member) : ?>
                         <li>
-                          <a href="#" data-toggle="modal"
+                          <a href="#" data-toggle="modal" test-ref="membership"
                              data-target="#<?php print obiba_mica_person_generate_target_id($membership->role, $network_dto->id, $key_member); ?>">
                             <?php print !empty($member->title)?filter_xss($member->title, obiba_mica_commons_allowed_filter_xss_tags()):''; ?>
                             <?php print !empty($member->firstName)?filter_xss($member->firstName, obiba_mica_commons_allowed_filter_xss_tags()):''; ?>
