@@ -52,6 +52,24 @@ public $method;
    *   The data server response.
    */
   public function uploadFile(array $file) {
+    if(empty($file)){
+      $this->MicaClientAddHttpHeader('Status', 500 . ' ' . trim('global.server-error'), TRUE);
+      watchdog('Mica Client','Error uploading the files Code : @code, Message:"@message"', array(
+        '@code' => '0',
+        '@message' => "UNKNOWN_UPLOAD_ERROR",
+      ), WATCHDOG_ERROR);
+      return array('data' => array('code' => 500, 'messageTemplate' => trim('server.error.file.upload'), 'status' => 500));
+    }
+
+    if(!empty($file['file']['error']) && $file['file']['error'] !== UPLOAD_ERR_OK){
+      $this->MicaClientAddHttpHeader('Status', 500 . ' ' . trim('global.server-error'), TRUE);
+      watchdog('Mica Client','Error uploading the files Code : @code, Message:"@message"', array(
+        '@code' => $file['file']['error'],
+        '@message' => $this->fileErrorMessage($file['file']['error']),
+      ), WATCHDOG_ERROR);
+      return array('data' => array('code' => 500, 'messageTemplate' => trim('server.error.file.upload'), 'status' => 500, 'arguments' => array($file['file']['name'])));
+    }
+
     $curl_handle = $this->initializeCurl($file);
     $result = curl_exec($curl_handle);
     $http_code = curl_getinfo($curl_handle, CURLINFO_HTTP_CODE);
@@ -76,6 +94,38 @@ public $method;
     $this->MicaClientAddHttpHeader('Status', $http_code);
 
     return array('code' => $http_code, 'message' => trim($match));
+  }
+
+  /**
+   * Upload Files errors map on $_FILES
+   *
+   * @param $error_code
+   *
+   * @return $error_detail
+   *
+   */
+  public function fileErrorMessage($error_code = 0){
+    if($error_code === UPLOAD_ERR_OK){
+      return FALSE;
+    }
+    switch ($error_code){
+      case 1:
+        return "The uploaded file exceeds the upload_max_filesize directive in php.ini.";
+      case 2:
+        return "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.";
+      case 3:
+        return "The uploaded file was only partially uploaded.";
+      case 4:
+        return "No file was uploaded.";
+      case 6:
+        return "Missing a temporary folder. Introduced in PHP 5.0.3.";
+      case 7:
+        return "Failed to write file to disk. Introduced in PHP 5.1.0.";
+      case 8:
+        return "A PHP extension stopped the file upload.";
+      default :
+        return "UNKNOWN_UPLOAD_ERROR";
+    }
   }
 
   /**
