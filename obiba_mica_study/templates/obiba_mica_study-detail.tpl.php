@@ -125,6 +125,12 @@
               <td><p><?php print $study_dto->model->endYear; ?></p></td>
             </tr>
           <?php endif; ?>
+          <?php if (!empty($study_dto->model->funding)): ?>
+            <tr>
+              <th><?php print $localize->getTranslation('study.funding') ?></th>
+              <td><p><?php print obiba_mica_commons_get_localized_field($study_dto->model, 'funding'); ?></p></td>
+            </tr>
+          <?php endif; ?>
           </tbody>
         </table>
 

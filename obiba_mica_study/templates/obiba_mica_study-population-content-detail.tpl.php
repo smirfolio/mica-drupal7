@@ -98,6 +98,9 @@
   || !empty($population->model->selectionCriteria->ageMin)
   || !empty($population->model->selectionCriteria->ageMax)
   || !empty($population->model->selectionCriteria->countriesIso)
+  || !empty($population->model->selectionCriteria->pregnantWomen)
+  || !empty($population->model->selectionCriteria->newborn)
+  || !empty($population->model->selectionCriteria->twins)
   || !empty($population->model->selectionCriteria->territory)
   || !empty($population->model->selectionCriteria->ethnicOrigin)
   || !empty($population->model->selectionCriteria->healthStatus)
@@ -128,6 +131,39 @@
         </tr>
       <?php endif; ?>
 
+      <?php if (!empty($population->model->selectionCriteria->pregnantWomen)): ?>
+        <t>
+          <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-pregnantWomen.title') ?></th>
+          <td>
+            <ul class="list-unstyled">
+              <?php  foreach ($population->model->selectionCriteria->pregnantWomen as $term): ?>
+                <li>
+                  <?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-pregnantWomen.term.' . $term . '.title'); ?>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </td>
+        </t>
+      <?php endif ?>
+
+      <?php if (!empty($population->model->selectionCriteria->newborn)): ?>
+        <tr>
+          <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-newborn.title') ?></th>
+          <td>
+              <span class="glyphicon glyphicon-ok"></span>
+          </td>
+        </tr>
+      <?php endif ?>
+
+      <?php if (!empty($population->model->selectionCriteria->twins)): ?>
+        <tr>
+          <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-twins.title') ?></th>
+          <td>
+            <span class="glyphicon glyphicon-ok"></span>
+          </td>
+        </tr>
+      <?php endif ?>
+
       <?php if (!empty($population->model->selectionCriteria->countriesIso)): ?>
         <tr>
           <th><?php print $localize->getTranslation('study.selection-criteria.country'); ?></th>
@@ -156,21 +192,6 @@
 
         </tr>
       <?php endif; ?>
-
-      <?php if (!empty($population->model->selectionCriteria->criteria)): ?>
-        <t>
-          <th><?php print $localize->getTranslation('study.selection-criteria.criteria') ?></th>
-          <td>
-            <ul class="list-unstyled">
-              <?php  foreach ($population->model->selectionCriteria->criteria as $term): ?>
-                <li>
-                  <?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-criteria.term.' . $term . '.title'); ?>
-                </li>
-              <?php endforeach; ?>
-            </ul>
-          </td>
-        </t>
-      <?php endif ?>
 
       <?php if (!empty($population->model->selectionCriteria->healthStatus)  && !empty(array_filter($population->model->selectionCriteria->healthStatus, 'obiba_mica_commons_array_empty_test'))): ?>
         <tr>
