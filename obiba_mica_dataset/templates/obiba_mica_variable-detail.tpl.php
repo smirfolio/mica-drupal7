@@ -114,7 +114,7 @@
             <td>
               <p>
                 <?php $variable_type = $variable_dto->variableType?>
-                <?php if (variable_get_value('mica_all_variables_dataschema')): ?>
+                <?php if (variable_get_value('mica_all_variables_dataschema')  && stristr($variable_type,'study') === FALSE): ?>
                   <?php $variable_type = $localize->getTranslation('search.variable.dataschema'); ?>
                 <?php endif; ?>
                 <?php print t('@type Variable', array('@type' =>

@@ -124,8 +124,8 @@ function _obiba_mica_dataset_variable_variable_content(&$variable) {
     'default' => TRUE,
   );
   $variable['mica_all_variables_dataschema'] = array(
-    'title' => t('Make all Variables type Dataschema'),
-    'description' => t('If selected, all variables will display their type as Dataschema. '),
+    'title' => t('Rename to Dataschema all Dataschema and Harmonized Variables'),
+    'description' => t('If selected, all Dataschema variables and Harmonized variables will display their type as Dataschema.'),
     'type' => 'boolean',
     'default' => FALSE,
   );
