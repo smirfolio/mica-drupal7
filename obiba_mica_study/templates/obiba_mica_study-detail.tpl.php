@@ -251,13 +251,13 @@
 
           <p><?php print $localize->getTranslation('study.access.for'); ?></p>
         <?php else : ?>
-          <p><?php print t('Access to external researchers or third parties neither provided nor foreseen.'); ?></p>
+          <p><?php print $localize->getTranslation('study.access.none'); ?></p>
         <?php endif; ?>
         <div class="table-responsive">
           <table class="table table-striped valign-table-column">
             <tbody>
             <tr>
-              <th><?php print t('Data (questionnaire-derived, measured...)'); ?></th>
+              <th><?php print $localize->getTranslation('study.access.data'); ?></th>
               <td>
                 <p>
                   <?php if (!empty($study_dto->model->access) && in_array('data', $study_dto->model->access)): ?>
@@ -270,7 +270,7 @@
             </tr>
 
             <tr>
-              <th><?php print $localize->getTranslation('data-collection-event.bio-samples'); ?></th>
+              <th><?php print $localize->getTranslation('study.access.biosamples'); ?></th>
               <td>
                 <p>
                   <?php if (!empty($study_dto->model->access) && in_array('biosamples', $study_dto->model->access)): ?>
