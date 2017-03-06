@@ -110,6 +110,7 @@ function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = N
 
 function obiba_mica_study_create_form() {
   $localize = obiba_mica_commons_mica_server_localisation();
+
   $context =
     array(
       'options' =>
