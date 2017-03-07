@@ -265,7 +265,14 @@ function obiba_mica_app_angular_load_angular_library() {
       'website' => 'https://angularjs.org',
       'version' => 'Last Version',
       'js' => array(
-
+        $lib_path . '/es6-shim/es6-shim.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
+        $lib_path . '/obiba-shims/dist/obiba-shims.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
         $lib_path . '/jquery-ui/jquery-ui.min.js' => array(
           'type' => 'file',
           'group' => JS_LIBRARY,
