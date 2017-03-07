@@ -27,7 +27,8 @@
     "obiba-progressbar": "https://github.com/obiba/obiba-progressbar.git#master",
     "datatables": "http://datatables.net/releases/DataTables-1.10.4.zip",
     "datatables-plugins": "https://github.com/DataTables/Plugins.git#1.10.10",
-    "obiba-country-codes": "https://github.com/obiba/obiba-country-codes.git#master"
+    "obiba-country-codes": "https://github.com/obiba/obiba-country-codes.git#master",
+    "obiba-shims": "https://github.com/obiba/obiba-shims.git#master"
   },
   "resolutions": {
     "angular": "1.5.8",
