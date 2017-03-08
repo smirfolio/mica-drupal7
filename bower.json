@@ -22,7 +22,7 @@
     "angular-utils-pagination": "0.11.1",
     "angular-recaptcha": "3.0.3",
     "sf-obiba-file-upload": "https://github.com/obiba/sf-obiba-file-upload.git#master",
-    "sf-checkboxgroup": "https://github.com/obiba/sf-checkboxgroup.git#1.0.0",
+    "sf-checkboxgroup": "https://github.com/obiba/sf-checkboxgroup.git#master",
     "mica-study-timeline": "https://github.com/obiba/mica-study-timeline.git#master",
     "obiba-progressbar": "https://github.com/obiba/obiba-progressbar.git#master",
     "datatables": "http://datatables.net/releases/DataTables-1.10.4.zip",
