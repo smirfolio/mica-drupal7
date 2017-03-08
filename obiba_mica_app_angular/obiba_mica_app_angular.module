@@ -269,10 +269,6 @@ function obiba_mica_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path . '/obiba-shims/dist/obiba-shims.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer',
-        ),
         $lib_path . '/jquery-ui/jquery-ui.min.js' => array(
           'type' => 'file',
           'group' => JS_LIBRARY,
@@ -280,6 +276,10 @@ function obiba_mica_app_angular_load_angular_library() {
 
         ),
         $lib_path . '/angular/angular.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
+        $lib_path . '/obiba-shims/dist/obiba-shims.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),
