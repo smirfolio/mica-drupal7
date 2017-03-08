@@ -71,8 +71,9 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
             '@code' => $e->getCode(),
             '@message' => $e->getMessage(),
           ), WATCHDOG_WARNING);
-
-        drupal_add_http_header('Status', $e->getCode());
+        if(obiba_mica_commons_is_ajax()){
+          drupal_add_http_header('Status', $e->getCode());
+        }
         return json_encode(array(
           'code' => $e->getCode(),
           'message' => $e->getMessage(),
