@@ -1100,19 +1100,6 @@ function obiba_mica_commons_list_document_js($list_url) {
 /**
  * Aloowed tags for filter_xss
  */
- function obiba_mica_commons_allowed_filter_xss_tags(){
-   return array(
-     'a',
-     'em',
-     'strong',
-     'cite',
-     'blockquote',
-     'code',
-     'ul',
-     'ol',
-     'li',
-     'dl',
-     'dt',
-     'dd',
-   );
- }
+function obiba_mica_commons_allowed_filter_xss_tags(){
+  return explode(',',variable_get_value('mica_allowed_xss_filtered_tag'));
+}
