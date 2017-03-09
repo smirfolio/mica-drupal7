@@ -113,6 +113,14 @@ function _obiba_mica_settings_server(&$form) {
     '#default_value' => variable_get_value('mica_enable_to_mica_server_link'),
     '#description' => $info['description'],
   );
+  $info = variable_get_info('mica_allowed_xss_filtered_tag');
+  $form['server']['mica_allowed_xss_filtered_tag'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#maxlength' => 500,
+    '#default_value' => variable_get_value('mica_allowed_xss_filtered_tag'),
+    '#description' => $info['description'],
+    );
 }
 
 /**
