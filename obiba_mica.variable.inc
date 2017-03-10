@@ -226,6 +226,12 @@ function _obiba_mica_variable_info_mica_server(&$variable) {
     'type' => 'boolean',
     'default' => 1,
   );
+  $variable['mica_allowed_xss_filtered_tag'] = array(
+    'title' => t('The allowed tags filtered by drupal xss filter'),
+    'description' => t('Tags separated by comma \',\''),
+    'type' => 'string',
+    'default' => 'a,em,strong,cite,blockquote,code,ul,ol,li,dl,dt,dd,a,abbr,acronym,address,b,bdo,big,blockquote,br,caption,cite,code,col,colgroup,del,dfn,div,h1,h2,h3,h4,h5,h6,hr,i,ins,kbd,li,ol,p,pre,q,samp,small,span,strong,sub,sup,table,tbody,td,tfoot,th,thead,tr,tt,ul,var',
+  );
 }
 
 /**
