@@ -355,7 +355,7 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
         $rows[] = array(
           $study_summary->published ? MicaClientAnchorHelper::study($study_summary) : $acronym,
           $name,
-          implode(', ', isset($study_summary->designs) ? obiba_mica_commons_clean_string($study_summary->designs) : array()),
+          implode(', ', isset($study_summary->designs) ? obiba_mica_study_traslate_study_design_summary($study_summary->designs) : array()),
           !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? t('No Limit') :
             (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
           isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
