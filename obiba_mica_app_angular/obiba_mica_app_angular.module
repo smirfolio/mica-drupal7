@@ -432,6 +432,7 @@ function obiba_mica_app_angular_load_angular_library() {
         $lib_path . '/ng-obiba/dist/css/ng-obiba.css' => array(),
         $lib_path . '/ng-obiba-mica/dist/css/ng-obiba-mica.css' => array(),
         $lib_path . '/angular-ui-select/dist/select.css' => array(),
+        $lib_path . '/nvd3/build/nv.d3.css' => array(),
       ),
     );
   }
