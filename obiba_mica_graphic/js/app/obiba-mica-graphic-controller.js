@@ -250,18 +250,39 @@
 
             if (type === 'variable') {
               config.withType('pieChart');
+              config.options.chart.legendPosition = 'right';
+              config.options.chart.legend = {margin : {
+                top: 0,
+                right:0,
+                bottom: 0,
+                left: 0
+              }};
+              config.options.chart.multibar = false;
+              config.options.chart.groupSpacing = false;
+              config.options.chart.stacked = false;
+              config.options.chart.showLabels = true;
+              config.options.chart.labelThreshold = 0.1;
+              config.options.chart.labelType =  function(d){
+                var percent = (d.endAngle - d.startAngle) / (2 * Math.PI);
+                return d3.format('.2%')(percent);
+              };
             } else {
               if (data[0].values.length > 5) {
                 config.options.chart.rotateLabels = -15;
-                config.options.chart.margin = {left: 225, bottom: 100};
               } else {
                 config.options.chart.staggerLabels = true;
               }
               config.options.chart.showLegend = false;
             }
-
             config.options.chart.color = chart.color.colors;
             config.options.chart.height = 500;
+            config.options.chart.autoMargins = false;
+            config.options.chart.margin = {
+              left: 50,
+              top:50,
+              right:50,
+              bottom:100
+            };
             $scope.d3Configs.push(config);
           });
         }
