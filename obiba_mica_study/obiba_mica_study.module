@@ -232,7 +232,7 @@ function obiba_mica_study_load_libs() {
  * @return string
  *   A Translated design term.
  */
-function obiba_mica_study_traslate_study_design_summary($study_designs) {
+function obiba_mica_study_translate_study_design_summary($study_designs) {
   $localize = obiba_mica_commons_mica_server_localisation();
   if (empty($study_designs)) {
     return $study_designs;
@@ -240,7 +240,7 @@ function obiba_mica_study_traslate_study_design_summary($study_designs) {
   if (is_array($study_designs)) {
     $nstr = array();
     foreach ($study_designs as $k => $v) {
-      $nstr[$k] = obiba_mica_study_traslate_study_design_summary($v);
+      $nstr[$k] = obiba_mica_study_translate_study_design_summary($v);
     }
     return $nstr;
   }
