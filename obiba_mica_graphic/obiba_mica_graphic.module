@@ -168,7 +168,8 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('geoChartOptions',
                     array('graphics.country', 'graphics.nbr-studies'),
-                    'graphics.geo-chart-title', array('colorAxis' => $colors_options))
+                    'graphics.geo-chart-title',
+                    array('colorAxis' => $colors_options))
                 ),
             ),
               'setting');
@@ -377,7 +378,7 @@ function obiba_mica_graphic_study_design_options($colors_options = NULL) {
       'axes' => array(
         'x' => array(
           'nbrStudies' => array(
-            'side' => 'top',
+            'side' => 'bottom',
             'label' => t('Number of Studies')
           ),
           'nbrParticipants' => array('label' => t('Number of Participants'))
@@ -396,10 +397,9 @@ function obiba_mica_graphic_study_design_options($colors_options = NULL) {
 function obiba_mica_graphic_number_participants_options($colors_options = NULL) {
   return !empty($colors_options) ?
     array_merge(array(
-      'legend' => array('position' => 'right')
+      'legendPosition' => 'right'
     ), $colors_options) :
     array(
-      'legend' => array('position' => 'right')
     );
 }
 
@@ -415,7 +415,8 @@ function obiba_mica_graphic_bio_samples_options($colors_options = NULL) {
       'legend' => array('position' => 'none')
     ), $colors_options) :
     array(
-      'legend' => array('position' => 'none')
+      'legend' => array('position' => 'none'),
+      'xAxis' => array('ticks' => 0)
     );
 }
 
@@ -505,7 +506,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
         'subtitle' => obiba_mica_commons_get_localized_field($coverage->taxonomy, 'descriptions'),
         'data' => $data,
         'variableData' => $variable_data,
-        'color' => obiba_mica_graphic_charts_colors_options_settings()
+        'color' => obiba_mica_graphic_charts_colors_options_settings(),
       );
 
       array_push($response->charts, $chart);

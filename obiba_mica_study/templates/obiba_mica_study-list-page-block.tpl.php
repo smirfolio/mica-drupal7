@@ -75,7 +75,7 @@
         <?php if (!empty($study->designs) || !empty($study->targetNumber)) : ?>
 
             <?php if (!empty($study->designs)): print $localize->getTranslation('search.study.design') ?>:
-              <span><?php print implode(', ', obiba_mica_commons_clean_string($study->designs)) ?></span>
+              <span><?php print implode(', ', obiba_mica_study_translate_study_design_summary($study->designs)) ?></span>
             <?php endif; ?>
             <?php
             if (!empty($study->targetNumber)):

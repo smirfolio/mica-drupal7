@@ -292,7 +292,7 @@ function obiba_mica_commons_get_country($iso) {
   global $language;
   $countries = NULL;
   $iso_map = NULL;
-  $lang = !empty($language->langage) ? $language->langage : 'en';
+  $lang = !empty($language->language) ? $language->language : 'en';
 
   $cached_countries = obiba_mica_commons_get_cache('obiba_mica_country' . $lang . '_json');
   $cached_iso_map = obiba_mica_commons_get_cache('obiba_mica_iso_map_json');

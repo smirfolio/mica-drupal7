@@ -96,10 +96,10 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                       <li test-ref="modal-dce-biosample">
                         <?php print  $localize->getTranslation('study_taxonomy.vocabulary.populations-dataCollectionEvents-bioSamples.term.' . $samples . '.title'); ?>
                           <?php if ($samples == "tissues" && !empty($tissue_types)): ?>
-                            :<?php print  $tissue_types; ?>
+                            : <?php print  $tissue_types; ?>
                           <?php endif; ?>
                         <?php if ($samples == "others" && !empty($other_bio_samples)): ?>
-                          :<?php print  $other_bio_samples; ?>
+                          : <?php print  $other_bio_samples; ?>
                         <?php endif; ?>
                       </li>
                     <?php endforeach; ?>
