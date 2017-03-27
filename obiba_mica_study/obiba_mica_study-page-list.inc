@@ -203,9 +203,9 @@ function obiba_mica_study_study_summaries_table_headers() {
   return array(
     array("title" => $localize->getTranslation('study.acronym')),
     array("title" => $localize->getTranslation('study.name')),
-    array("title" => $localize->getTranslation('search.study.design')),
-    array("title" => $localize->getTranslation('client.label.study.target-number')),
-    array("title" => $localize->getTranslation('numberOfParticipants.no-limit')),
+    array("title" => $localize->getTranslation('study.design')),
+    array("title" => $localize->getTranslation('client.label.dataset.participants')),
+    array("title" => $localize->getTranslation('client.label.countries')),
   );
 }
 
