@@ -85,7 +85,7 @@
             <?php foreach ($ordered_membership as $membership): ?>
               <?php if (!empty($membership->members)): ?>
               <tr>
-                <th><?php print ucfirst(t($membership->role)) ?></th>
+                <th><?php print $localize->getTranslation('membership-role.' . $membership->role); ?></th>
                 <td>
                   <ul class="list-unstyled">
                     <?php foreach ($membership->members as  $key_member => $member) : ?>
