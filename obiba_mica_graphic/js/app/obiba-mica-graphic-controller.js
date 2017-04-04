@@ -278,7 +278,7 @@
             config.options.chart.height = 500;
             config.options.chart.autoMargins = false;
             config.options.chart.margin = {
-              left: 50,
+              left: 200,
               top:50,
               right:50,
               bottom:100
