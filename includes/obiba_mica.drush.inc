@@ -39,7 +39,7 @@ function obiba_mica_drush_command() {
 function obiba_mica_drush_download_js_dependencies(){
 
   $path = drush_get_option('path', drush_get_context('DRUSH_DRUPAL_ROOT')) . '/sites/all/libraries';
-  $repository = drush_get_option('repo', variable_get('mica-drupal-js-libraries-version', '2.1.1'));
+  $repository = drush_get_option('repo', variable_get('mica-drupal-js-libraries-version', '2.1.2'));
 
   drush_log(dt(">> Download root path: $path"), 'success');
   drush_log(dt(">> Repository name: $repository"), 'success');
