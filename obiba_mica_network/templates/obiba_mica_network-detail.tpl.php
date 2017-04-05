@@ -94,8 +94,7 @@
                             <?php if (!empty($member->academicLevel)) {
                               print ', ' . filter_xss($member->academicLevel, obiba_mica_commons_allowed_filter_xss_tags());
                             } ?>
-                            (<?php print obiba_mica_commons_get_localized_field($member->institution, 'name'); ?>
-                            )
+                            (<?php print obiba_mica_commons_get_localized_field($member->institution, 'name'); ?>)
                           </a>
                         </li>
                       <?php endforeach; ?>
