@@ -81,7 +81,7 @@
             <?php foreach ($network_dto->memberships as $membership): ?>
               <?php if (!empty($membership->members)) : ?>
               <tr>
-                <th><?php print  $localize->getTranslation('membership-role.' . $membership->role) ?></th>
+                <th><?php print $localize->getTranslation('contact.label-plurial.' . $membership->role); ?></th>
                 <td>
                   <ul class="list-unstyled">
                       <?php foreach ($membership->members as  $key_member => $member) : ?>

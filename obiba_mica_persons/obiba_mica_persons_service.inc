@@ -38,10 +38,10 @@ function obiba_mica_persons_list($entities_id) {
 
     foreach ($persons->persons as &$person) {
       foreach ($person->studyMemberships as &$membership) {
-        $membership->role = $localize->getTranslation('membership-role.' . $membership->role);
+        $membership->role = $localize->getTranslation('contact.label-plurial.' . $membership->role);
       }
       foreach ($person->networkMemberships as &$membership) {
-        $membership->role = $localize->getTranslation('membership-role.' . $membership->role);
+        $membership->role = $localize->getTranslation('contact.label-plurial.' . $membership->role);
       }
     }
   }
