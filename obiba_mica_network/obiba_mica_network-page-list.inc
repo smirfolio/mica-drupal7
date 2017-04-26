@@ -113,8 +113,8 @@ function obiba_mica_network_create_form() {
       'options' => array(
         '' =>''
       ),
-      'default_sort' => '',
-      'default_sort_order' => ''
+      'default_sort' => 'numberOfStudies',
+      'default_sort_order' => 'desc'
     );
 
   return obiba_mica_commons_create_search_form($context);
