@@ -132,8 +132,8 @@
       <?php endif; ?>
 
       <?php if (!empty($population->model->selectionCriteria->pregnantWomen)): ?>
-        <t>
-          <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-pregnantWomen.title') ?></th>
+        <tr>
+          <th><?php print $localize->getTranslation('study.selection-criteria.pregnant-women') ?></th>
           <td>
             <ul class="list-unstyled">
               <?php  foreach ($population->model->selectionCriteria->pregnantWomen as $term): ?>
@@ -143,12 +143,12 @@
               <?php endforeach; ?>
             </ul>
           </td>
-        </t>
+        </tr>
       <?php endif ?>
 
       <?php if (!empty($population->model->selectionCriteria->newborn)): ?>
         <tr>
-          <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-newborn.title') ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.newborn') ?></th>
           <td>
               <span class="glyphicon glyphicon-ok"></span>
           </td>
@@ -157,7 +157,7 @@
 
       <?php if (!empty($population->model->selectionCriteria->twins)): ?>
         <tr>
-          <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-selectionCriteria-twins.title') ?></th>
+          <th><?php print $localize->getTranslation('study.selection-criteria.twins') ?></th>
           <td>
             <span class="glyphicon glyphicon-ok"></span>
           </td>
