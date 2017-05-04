@@ -62,6 +62,12 @@ if (class_exists('Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClient')
         watchdog('php', '%type: !message (line %line of %file).', $error, $error['severity_level']);
         exit;
       }
+      else{
+        if(obiba_mica_commons_is_ajax()){
+          header('HTTP/1.0 '. $message_parameters['placeholders']['@code'] . ' ' . $message_parameters['placeholders']['@message']);
+          exit;
+        }
+      }
     }
 
   }

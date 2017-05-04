@@ -38,7 +38,7 @@
     var headerTable = null;
     if (typeDataset) {
       $.ajax({
-        'async': false,
+        'async': true,
         'url': Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variables-tab-header/' + typeDataset + '/' + idDataset,
         'type': 'GET',
         'success': function (data) {
@@ -46,6 +46,8 @@
         },
         "dataType": "json",
         'error': function (data) {
+          $("#download-btn").hide();
+          $("#variables-table").empty().append('<center><p class="text-danger danger">' + data.statusText + '</p></center>');
         }
       });
     }
@@ -77,6 +79,10 @@
           "bServerSide": true,
           "iDisplayLength": 25,
           "sAjaxSource": Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variables-tab-data/' + typeDataset + '/' + idDataset,
+          "error": function (xhr, error, thrown) {
+            $("#download-btn").hide();
+            $("#variables-table").empty().append('<center><p class="text-danger danger">' + error + '</p></center>');
+          },
           "aoColumns": headerTable,
           "searching": true,
           "ordering": true,

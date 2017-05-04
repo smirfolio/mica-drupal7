@@ -163,7 +163,12 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
           DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
           throw $e;
         }
-        drupal_set_message(t($message_parameters['message'],$message_parameters['placeholders']),  $message_parameters['severity']);
+        if (obiba_mica_commons_is_ajax()) {
+          DrupalMicaClientResource::DrupalMicaErrorHandler(NULL, $message_parameters);
+        }
+        else {
+          drupal_set_message(t($message_parameters['message'], $message_parameters['placeholders']), $message_parameters['severity']);
+        }
       }
     }
   }
@@ -372,7 +377,18 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
           return $variable_result;
         }
       } catch (HttpClientException $e) {
-        return array();
+        if (obiba_mica_commons_is_ajax()) {
+          $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
+          $message_parameters['placeholders'] = array(
+            '@code' => $e->getCode(),
+            '@message' => $e->getMessage()
+          );
+          $message_parameters['severity'] = 'error';
+          DrupalMicaClientResource::DrupalMicaErrorHandler(NULL, $message_parameters);
+        }
+        else{
+          return array();
+        }
       }
     }
   }
