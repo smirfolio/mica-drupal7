@@ -132,10 +132,11 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
           return $result_study;
         }
       } catch (HttpClientException $e) {
-        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message, called function : @function',
           array(
             '@code' => $e->getCode(),
-            '@message' => $e->getMessage()
+            '@message' => $e->getMessage(),
+            '@function' => __FUNCTION__
           ), WATCHDOG_WARNING);
         $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
         $message_parameters['placeholders'] = array(
