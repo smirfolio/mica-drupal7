@@ -189,7 +189,8 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                   <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary):
                     if ($pop_summary->id == $dataset_type_dto->studyTable->populationId):
                       $population_summary = $pop_summary;
-                      print MicaClientAnchorHelper::studyPopulationModal($pop_summary);
+                      print !empty($dataset_type_dto->studyTable->studySummary->published)?MicaClientAnchorHelper::studyPopulationModal($pop_summary):
+                        obiba_mica_commons_get_localized_field($pop_summary, 'name');
                       break;
                     endif;
                   endforeach; ?>
@@ -201,11 +202,11 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                   <?php $dce_anchor = NULL; ?>
                   <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary):
                     if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId):
-                      print MicaClientAnchorHelper::studyPopulationDceModal(
+                      print !empty($dataset_type_dto->studyTable->studySummary->published)?MicaClientAnchorHelper::studyPopulationDceModal(
                         $dataset_type_dto->studyTable->studyId,
                         $dataset_type_dto->studyTable->populationId,
                         $dce_summary
-                      );
+                      ):obiba_mica_commons_get_localized_field($dce_summary, 'name');
                       break;
                     endif;
                   endforeach; ?>

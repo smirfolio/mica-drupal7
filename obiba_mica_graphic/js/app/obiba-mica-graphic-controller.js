@@ -184,7 +184,7 @@
         }
 
     }])
-    .controller('VariableCoverageChartController', ['$scope', '$location', 'CoverageResource', 'D3ChartConfig', function ($scope, $location, CoverageResource, D3ChartConfig) {
+    .controller('VariableCoverageChartController', ['$scope', '$location', 'CoverageResource', 'D3ChartConfig', '$translate', function ($scope, $location, CoverageResource, D3ChartConfig, $translate) {
       function normalizeData(data) {
         // template with zero value
         var zeroValues = data.reduce(function (prev, curr) {
@@ -227,8 +227,14 @@
 
         // resource query
         var result = CoverageResource.get({type: type, id: id});
+       
         $scope.d3Configs = [];
         result.$promise.then(function (res) {
+          if(res.code && res.code!=200){
+              $translate(['data-coverage-error']).then(function(translate){
+              $scope.message = translate['data-coverage-error'] + ' ' + res.code + ' ' + res.message;
+            });
+          }
           if(res.charts){
           res.charts.forEach(function (chart) {
             var data = [];

@@ -24,5 +24,11 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
       $scope.activeTab = ChartType.GEO_CHARTS;
     }])
     .factory('CoverageResource', ['$resource', function ($resource) {
-      return $resource(Drupal.settings.basePath + 'mica/ng/coverage/:type/:id', {}, {'get': {method: 'GET'}});
+      function resourceErrorHandler(response) {
+        return {
+          code: response.status,
+          message: response.statusText
+        };
+      }
+      return $resource(Drupal.settings.basePath + 'mica/ng/coverage/:type/:id', {}, {'get': {method: 'GET', interceptor : {responseError : resourceErrorHandler}}});
     }]);

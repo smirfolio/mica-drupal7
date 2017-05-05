@@ -218,14 +218,14 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
         $entity_summary = _obiba_mica_variable_study_summary($variable, $entity_id);
         $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
         $dce_dataset_title = obiba_mica_dataset_get_dce_name_from_dataset($opal_table, $entity_summary);
-        $entity_link = l($entity_acronym, 'mica/study/' . $entity_id);
+        $entity_link = MicaClientAnchorHelper::study($entity_summary);
       } else if (property_exists($variable_harmonization, 'networkTable')) {
         $opal_table = $variable_harmonization->networkTable;
         $entity_id = $variable_resolver->networkTableId;
         $entity_summary = _obiba_mica_variable_network_summary($variable, $entity_id);
         $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
         $dce_dataset_title = '';
-        $entity_link = l($entity_acronym, 'mica/network/' . $entity_id);
+        $entity_link = MicaClientAnchorHelper::network($entity_summary);
       }
 
       $variable_title = $variable->name . ' -- ' . $entity_acronym;
@@ -435,24 +435,6 @@ function _obiba_mica_variable_network_summary($variable, $network_table_id) {
   // Not found in the dto, then fetch it.
   $network_resource = new DrupalMicaNetworkResource();
   return $network_resource->getNetwork($network_table_id);
-}
-
-/**
- * Get the study acronym from the study summary found in the variable.
- *
- * If not found, fetch the study summary directly.
- */
-function _obiba_mica_variable_study_acronym($variable, $study_id) {
-  return obiba_mica_commons_get_localized_field(_obiba_mica_variable_study_summary($variable, $study_id), 'acronym');
-}
-
-/**
- * Get the study acronym from the network summary found in the variable.
- *
- * If not found, fetch the study summary directly.
- */
-function _obiba_mica_variable_network_acronym($variable, $study_id) {
-  return obiba_mica_commons_get_localized_field(_obiba_mica_variable_network_summary($variable, $study_id), 'acronym');
 }
 
 /**

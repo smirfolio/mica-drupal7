@@ -223,7 +223,7 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
   $localize = obiba_mica_commons_mica_server_localisation();
   $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
   return array(
-    l(obiba_mica_commons_get_localized_field($study_summary, 'acronym'), 'mica/study/' . $study_summary->id),
+    MicaClientAnchorHelper::study($study_summary),
     $name,
     implode(', ', obiba_mica_study_translate_study_design_summary($study_summary->designs)),
     isset($study_summary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :

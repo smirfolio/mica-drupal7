@@ -213,7 +213,7 @@ class VariableStatistics {
    */
   private function getStudyTableLabel($aggregation) {
     $study_id = $aggregation->studyTable->studyId;
-    $header = _obiba_mica_variable_study_acronym($this->variable, $study_id);
+    $header = obiba_mica_commons_get_localized_field(_obiba_mica_variable_study_summary($this->variable, $study_id), 'acronym');
     if (!empty($aggregation->studyTable->name)) {
       $header = $header . '(' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name') . ')';
     }
@@ -307,12 +307,7 @@ class VariableStatistics {
     foreach ($aggregations as $aggregation) {
       $row = array();
       if ($this->datasetDetailedVarStats && $this->variable->variableType == 'Dataschema') {
-        $study_id = $aggregation->studyTable->studyId;
-        $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
-        if (!empty($aggregation->studyTable->name)) {
-          $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
-        }
-        $row[] = $header;
+        $row[] = $this->getTableHeader($aggregation);
       }
       $row = array_merge($row, $this->statisticsToRow($aggregation));
       foreach ($missings as $missing) {
@@ -378,19 +373,23 @@ class VariableStatistics {
     ));
   }
 
-  private function getFrequenciesTableHeader($aggregation) {
-    if ($aggregation->studyTable) {
+  private function getTableHeader($aggregation) {
+    if (!empty($aggregation->studyTable)) {
       $study_id = $aggregation->studyTable->studyId;
-      $header = l(_obiba_mica_variable_study_acronym($this->variable, $study_id), 'mica/study/' . $study_id);
+      $study_summary = _obiba_mica_variable_study_summary($this->variable, $study_id);
+      $study_acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
+      $header = !empty($study_summary->published)?l($study_acronym, 'mica/study/' . $study_id):$study_acronym;
       if (!empty($aggregation->studyTable->name)) {
         $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
       }
       return $header;
     }
     else {
-      if ($aggregation->networkTable) {
+      if (!empty($aggregation->networkTable)) {
         $network_id = $aggregation->networkTable->networkId;
-        $header = l(_obiba_mica_variable_network_acronym($this->variable, $network_id), 'mica/network/' . $network_id);
+        $network_summary = _obiba_mica_variable_network_summary($this->variable, $network_id);
+        $network_acronym = obiba_mica_commons_get_localized_field($network_summary, 'acronym');
+        $header = !empty($network_summary->published)?l($network_acronym, 'mica/network/' . $network_id):$network_acronym;
         if (!empty($aggregation->networkTable->name)) {
           $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->networkTable, 'name');
         }
@@ -413,7 +412,7 @@ class VariableStatistics {
       if (!empty($this->variableStat->aggregations)) {
         $aggregations = $this->variableStat->aggregations;
         foreach ($aggregations as $aggregation) {
-          $headers[] = $this->getFrequenciesTableHeader($aggregation);
+          $headers[] = $this->getTableHeader($aggregation);
         }
         if (count($aggregations) > 1) {
           $headers[] = t('All');

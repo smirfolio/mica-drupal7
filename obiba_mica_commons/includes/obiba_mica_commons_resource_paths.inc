@@ -323,7 +323,7 @@ class MicaClientAnchorHelper {
    */
   public static function study($study) {
     $name = obiba_mica_commons_get_localized_field($study, 'acronym');
-    return l($name, MicaClientPathProvider::study($study->id), array());
+    return !empty($study->published)?l($name, MicaClientPathProvider::study($study->id), array()):$name;
   }
 
   /**
@@ -505,7 +505,7 @@ class MicaClientAnchorHelper {
    */
   public static function network($network) {
     $name = obiba_mica_commons_get_localized_field($network, 'acronym');
-    return l($name, MicaClientPathProvider::network($network->id), array());
+    return !empty($network->published)?l($name, MicaClientPathProvider::network($network->id), array()):$name;
   }
 
   /**
