@@ -640,8 +640,14 @@ function obiba_mica_commons_create_size_select_form($context) {
  * @return string
  *   The url of image.
  */
-function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource, $entity_type, $link_to = FALSE, $token_key = FALSE) {
-
+function obiba_mica_commons_safe_expose_server_url($entity_id, $file_resource_id, $entity_type, $link_to = FALSE, $token_key = FALSE) {
+if(!is_object($file_resource_id)){
+  $file_resource = new stdClass();
+  $file_resource->id = $file_resource_id;
+}
+else{
+  $file_resource = $file_resource_id;
+}
   if ($link_to) {
     if (!strstr(drupal_get_js(), 'fancybox')) {
       return '#';
