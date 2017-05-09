@@ -26,8 +26,8 @@ function obiba_mica_network_page_list() {
 
   $page_number = !empty($_GET['page']) ? $_GET['page'] : NULL;
   $query = !empty($_GET['search-query']) ? $_GET['search-query'] : NULL;
-  $sort = !empty($_GET['search-sort']) ? $_GET['search-sort'] : 'numberOfStudies';
-  $sort_by = !empty($_GET['search-sort-order']) ? $_GET['search-sort-order'] : 'desc';
+  $sort = !empty($_GET['search-sort']) ? $_GET['search-sort'] : NULL;
+  $sort_by = !empty($_GET['search-sort-order']) ? $_GET['search-sort-order'] : NULL;
   $network_limits = !empty($_GET['search-nbr-result']) ? $_GET['search-nbr-result'] : NULL;
 
   $resource_key = $page_number . $query . $sort . $sort_by . $network_limits;
@@ -108,10 +108,11 @@ function populate_session_with_network_count($networks, $type) {
 }
 
 function obiba_mica_network_create_form() {
+  $localize = obiba_mica_commons_mica_server_localisation();
   $context =
     array(
       'options' => array(
-        '' =>''
+        'numberOfStudies' => $localize->getTranslation('studies')
       ),
       'default_sort' => '',
       'default_sort_order' => ''

@@ -129,8 +129,11 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resou
  * Search form creation on the dataset list page.
  */
 function obiba_mica_dataset_create_form() {
+  $localize = obiba_mica_commons_mica_server_localisation();
   $context = array(
-    'options' => array(),
+    'options' => array(
+      'studyTable.studyId,studyTable.populationId,start' => $localize->getTranslation('global.chronological')
+    ),
     'default_sort' => 'name',
     'default_sort_order' => 'asc'
   );
