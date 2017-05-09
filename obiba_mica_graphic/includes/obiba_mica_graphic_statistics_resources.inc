@@ -33,7 +33,7 @@ class NetworkStatistics extends ObibaSearchResources {
     return array(
       NetworkStatistics::GEO_NBR_STAT =>'populations-selectionCriteria-countriesIso',
       NetworkStatistics::METHODS_DESIGNS => 'methods-designs',
-      NetworkStatistics::NUMBER_PARTICIPANTS => 'numberOfParticipants-participant-range',
+      NetworkStatistics::NUMBER_PARTICIPANTS => 'numberOfParticipants-participant-number-range',
       NetworkStatistics::BIO_SAMPLES => 'populations-dataCollectionEvents-bioSamples',
       );
   }

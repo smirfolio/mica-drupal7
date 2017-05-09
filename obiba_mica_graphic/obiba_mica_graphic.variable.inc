@@ -61,7 +61,7 @@ function obiba_mica_graphic_variable_info($options) {
         'enable' => 1,
       ),
       NetworkStatistics::NUMBER_PARTICIPANTS => array(
-        'value' => 'numberOfParticipants-participant-range',
+        'value' => 'numberOfParticipants-participant-number-range',
         'value_name' => 'col-md-6',
         'weight' => '-8',
         'enable' => 1,
