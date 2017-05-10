@@ -325,7 +325,7 @@ function obiba_mica_dataset_theme($existing, $type, $theme, $path) {
 function obiba_mica_dataset_get_datasets_studies($study_id, $resource = NULL) {
   $output = NULL;
   $dataset_resource = new DrupalMicaDatasetResource();
-  $datasets = $dataset_resource->getDatasets($resource, $study_id, NULL, 0, 50, 'studyTable.populationId', 'asc');
+  $datasets = $dataset_resource->getDatasets($resource, $study_id, NULL, 0, 50, 'studyTable.studyId,studyTable.populationId,start', NULL);
 
   if (!empty($datasets)) {
     $output = obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id);
@@ -337,7 +337,7 @@ function obiba_mica_dataset_get_datasets_studies($study_id, $resource = NULL) {
 function obiba_mica_dataset_get_datasets_network($study_id, $resource = NULL, $network_id = NULL) {
   $output = NULL;
   $dataset_resource = new DrupalMicaDatasetResource();
-  $datasets = $dataset_resource->getDatasets($resource, $study_id, NULL, 0, 50, 'studyTable.populationId', 'asc', $network_id);
+  $datasets = $dataset_resource->getDatasets($resource, $study_id, NULL, 0, 50, 'studyTable.studyId,studyTable.populationId,start', NULL, $network_id);
 
   if (!empty($datasets)) {
     $output = obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $network_id);
