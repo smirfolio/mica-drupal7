@@ -115,7 +115,7 @@ function obiba_mica_study_create_form() {
     array(
       'options' =>
         array(
-          'numberOfParticipants.participant.number' => $localize->getTranslation('client.label.study.target-number'), //
+          'model.numberOfParticipants.participant.number' => $localize->getTranslation('client.label.study.target-number'), //
         ),
       'default_sort' => 'name',
       'default_sort_order' => 'asc'

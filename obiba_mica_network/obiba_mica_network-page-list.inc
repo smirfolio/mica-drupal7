@@ -112,7 +112,8 @@ function obiba_mica_network_create_form() {
   $context =
     array(
       'options' => array(
-        'numberOfStudies' => $localize->getTranslation('studies')
+        'numberOfStudies' => $localize->getTranslation('studies'),
+        '' => ''
       ),
       'default_sort' => '',
       'default_sort_order' => ''
