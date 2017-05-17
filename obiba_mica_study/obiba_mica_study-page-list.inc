@@ -110,14 +110,13 @@ function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = N
 
 function obiba_mica_study_create_form() {
   $localize = obiba_mica_commons_mica_server_localisation();
-
   $context =
     array(
       'options' =>
         array(
-          'model.numberOfParticipants.participant.number' => $localize->getTranslation('client.label.study.target-number'), //
+          'model.numberOfParticipants.participant.number' => $localize->getTranslation('client.label.study.target-number')
         ),
-      'default_sort' => 'name',
+      'default_sort' => variable_get_value('study_list_name_acronym_sort'),
       'default_sort_order' => 'asc'
     );
 
@@ -139,14 +138,7 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
   if (empty($sort)) {
     $study_list_sort_option = variable_get_value('study_list_name_acronym_sort');
     if (!empty($study_list_sort_option)) {
-      if ($study_list_sort_option == 1) {
-        $sort = 'name';
-      }
-      else {
-        if ($study_list_sort_option == 2) {
-          $sort = 'acronym';
-        }
-      }
+        $sort = $study_list_sort_option;
     }
   }
 

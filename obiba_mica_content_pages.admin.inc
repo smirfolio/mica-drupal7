@@ -327,9 +327,8 @@ function obiba_mica_settings_study_content(&$form) {
     '#title' => $info['title'],
     '#default_value' => variable_get_value('study_list_name_acronym_sort'),
     '#options' => array(
-      0 => t('None'),
-      1 => t('Name'),
-      2 => t('Acronym'),
+      'name' => t('Name'),
+      'acronym' => t('Acronym')
     ),
     '#description' => $info['description'],
   );
