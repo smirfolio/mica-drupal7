@@ -100,10 +100,11 @@
               <td><p><?php print $study_dto->model->endYear; ?></p></td>
             </tr>
           <?php endif; ?>
-          <?php if (!empty($study_dto->model->funding)): ?>
+          <?php $funding = obiba_mica_commons_get_localized_field($study_dto->model, 'funding'); ?>
+          <?php if ($funding): ?>
             <tr>
               <th><?php print $localize->getTranslation('funding') ?></th>
-              <td><p><?php print obiba_mica_commons_get_localized_field($study_dto->model, 'funding'); ?></p></td>
+              <td><p><?php print $funding; ?></p></td>
             </tr>
           <?php endif; ?>
           </tbody>
@@ -122,18 +123,20 @@
               <th><?php print $localize->getTranslation('search.study.design') ?></th>
               <td>
                 <?php print $localize->getTranslation("study_taxonomy.vocabulary.methods-design.term." . $study_dto->model->methods->design . ".title"); ?>
-                  <?php if (!empty($study_dto->model->methods->otherDesign)): ?>
-                    : <?php print obiba_mica_commons_get_localized_field($study_dto->model->methods->otherDesign); ?>
+                <?php $other_design =obiba_mica_commons_get_localized_field($study_dto->model->methods->otherDesign); ?>
+                <?php if (!empty($other_design)): ?>
+                    : <?php print $other_design; ?>
                   <?php endif; ?>
               </td>
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->model->methods->followUpInfo)): ?>
+          <?php $follow_up_info = obiba_mica_commons_get_localized_field($study_dto->model->methods, 'followUpInfo'); ?>
+          <?php if (!empty($follow_up_infoo)): ?>
             <tr>
               <th><?php print $localize->getTranslation('study.follow-up-help') ?></th>
               <td>
-                <p><?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'followUpInfo'); ?></p>
+                <p><?php print $follow_up_info; ?></p>
               </td>
             </tr>
           <?php endif; ?>
@@ -146,8 +149,9 @@
                   <?php foreach ($study_dto->model->methods->recruitments as $recruitment): ?>
                     <li>
                       <?php print $localize->getTranslation('study_taxonomy.vocabulary.methods-recruitments.term.' . $recruitment . '.title') ; ?>
-                      <?php if (stristr($recruitment, 'other') && !empty($study_dto->model->methods->otherRecruitment)): ?>
-                         : <?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherRecruitment'); ?>
+                      <?php $other_recruitement = obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherRecruitment');?>
+                      <?php if (stristr($recruitment, 'other') && !empty($other_recruitement)): ?>
+                         : <?php print $other_recruitement; ?>
                       <?php endif; ?>
                     </li>
                   <?php endforeach; ?>
@@ -195,12 +199,12 @@
               </td>
             </tr>
           <?php endif; ?>
-
-          <?php if (!empty($study_dto->model->methods->info)): ?>
+          <?php $methods_supp_info = obiba_mica_commons_get_localized_field($study_dto->model->methods, 'info');?>
+          <?php if (!empty($methods_supp_info)): ?>
             <tr>
               <th><?php print $localize->getTranslation('suppl-info') ?></th>
               <td>
-                <p><?php print obiba_mica_commons_get_localized_field($study_dto->model->methods, 'info'); ?></p>
+                <p><?php print $methods_supp_info; ?></p>
               </td>
             </tr>
           <?php endif; ?>
@@ -256,13 +260,13 @@
                 </p>
               </td>
             </tr>
-
-            <?php if (!empty($study_dto->model->access) && !empty($study_dto->model->otherAccess)): ?>
+            <?php $other_access = obiba_mica_commons_get_localized_field($study_dto->model, 'otherAccess'); ?>
+            <?php if (!empty($study_dto->model->access) && !empty($other_access)): ?>
               <tr>
                 <th><?php print $localize->getTranslation('study.access.other'); ?></th>
                 <td>
-                  <?php if (!empty($study_dto->model->otherAccess)): ?>
-                     <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'otherAccess'); ?>
+                  <?php if (!empty($other_access)): ?>
+                     <?php print $other_access; ?>
                   <?php endif; ?>
                 </td>
               </tr>
@@ -294,11 +298,12 @@
   </section>
 
   <!-- SUPPLEMENTARY INFORMATION -->
-  <?php if (!empty($study_dto->model->info)): ?>
+  <?php $sup_info = obiba_mica_commons_get_localized_field($study_dto->model, 'info'); ?>
+  <?php if (!empty($sup_info)): ?>
     <section>
       <h2 id="info"><?php print $localize->getTranslation('suppl-info'); ?></h2>
 
-      <p><?php print obiba_mica_commons_get_localized_field($study_dto->model, 'info'); ?></p>
+      <p><?php print $sup_info; ?></p>
     </section>
   <?php endif; ?>
 

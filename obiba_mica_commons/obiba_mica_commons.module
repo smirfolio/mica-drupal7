@@ -94,7 +94,9 @@ function obiba_mica_commons_fixed_sidebar($template) {
 function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NULL) {
   global $language;
   $value = NULL;
-
+  if (!isset($std)) {
+    return NULL;
+  }
   if (empty($lang)) {
     $lang = $language->language;
   }

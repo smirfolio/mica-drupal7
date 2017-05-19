@@ -58,7 +58,10 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
                       <li test-ref="modal-dce-dataSource">
                         <?php print  $localize->getTranslation('study_taxonomy.vocabulary.populations-dataCollectionEvents-dataSources.term.' . $dataSource . '.title'); ?>
                         <?php if ($dataSource == 'others'): ?>
-                          : <?php print obiba_mica_commons_get_localized_field($dce->model, 'otherDataSources'); ?>
+                          <?php $other_data_sources = obiba_mica_commons_get_localized_field($dce->model, 'otherDataSources')?>
+                          <?php if (!empty($other_data_sources)): ?>
+                                : <?php print $other_data_sources; ?>
+                          <?php endif; ?>
                         <?php endif; ?>
                       </li>
                     <?php endforeach; ?>
