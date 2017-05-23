@@ -56,7 +56,10 @@
                 <li>
                   <?php print $localize->getTranslation('study_taxonomy.vocabulary.populations-recruitment-specificPopulationSources.term.' . $term . '.title'); ?>
                   <?php if (stristr($term, 'other') && !empty($population->model->recruitment->otherSpecificPopulationSource)): ?>
-                    : <?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSpecificPopulationSource'); ?>
+                    <?php $other_spec_population_source = obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSpecificPopulationSource')?>
+                    <?php if (!empty($other_spec_population_source)): ?>
+                          : <?php print $other_spec_population_source; ?>
+                    <?php endif; ?>
                   <?php endif; ?>
                 </li>
               <?php endforeach; ?>
@@ -64,11 +67,11 @@
           </td>
         </tr>
       <?php endif; ?>
-
-      <?php if (!empty($population->model->recruitment->otherSource)): ?>
+      <?php $recruitment_other_source = obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSource'); ?>
+      <?php if (!empty($recruitment_other_source)): ?>
         <tr>
           <th><?php print $localize->getTranslation('study.recruitment-sources.other') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'otherSource'); ?></td>
+          <td><?php print $recruitment_other_source; ?></td>
         </tr>
       <?php endif; ?>
 
@@ -82,10 +85,11 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->recruitment->info)): ?>
+      <?php $recuitement_sources_info = obiba_mica_commons_get_localized_field($population->model->recruitment, 'info'); ?>
+      <?php if (!empty($recuitement_sources_info)): ?>
         <tr>
           <th><?php print $localize->getTranslation('study.recruitment-sources.info') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->model->recruitment, 'info'); ?></td>
+          <td><?php print $recuitement_sources_info; ?></td>
         </tr>
       <?php endif; ?>
       </tbody>
@@ -173,11 +177,12 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->selectionCriteria->territory)): ?>
+      <?php $selection_criteria_territory = obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'territory'); ?>
+      <?php if (!empty($selection_criteria_territory)): ?>
         <tr>
           <th><?php print $localize->getTranslation('study.selection-criteria.territory') ?></th>
           <td>
-            <?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'territory'); ?>
+            <?php print $selection_criteria_territory; ?>
           </td>
         </tr>
       <?php endif; ?>
@@ -203,17 +208,19 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->selectionCriteria->otherCriteria)): ?>
+      <?php $selection_other_criteria = obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'otherCriteria'); ?>
+      <?php if (!empty($selection_other_criteria)): ?>
         <tr>
           <th><?php print $localize->getTranslation('other') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'otherCriteria'); ?></td>
+          <td><?php print $selection_other_criteria ; ?></td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->selectionCriteria->info)): ?>
+      <?php $selection_criteria_info = obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'info'); ?>
+      <?php if (!empty($selection_criteria_info)): ?>
         <tr>
           <th><?php print $localize->getTranslation('suppl-info') ?></th>
-          <td><?php print obiba_mica_commons_get_localized_field($population->model->selectionCriteria, 'info'); ?></td>
+          <td><?php print $selection_criteria_info; ?></td>
         </tr>
       <?php endif; ?>
       </tbody>
@@ -265,19 +272,21 @@
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty(obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'))): ?>
+      <?php $number_of_participant_info = obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info');?>
+      <?php if (!empty($number_of_participant_info)): ?>
         <tr>
           <th><?php print $localize->getTranslation('numberOfParticipants.suppl-info') ?></th>
           <td>
-              <p><?php print obiba_mica_commons_get_localized_field($population->model->numberOfParticipants, 'info'); ?></p>
+              <p><?php print $number_of_participant_info; ?></p>
           </td>
         </tr>
       <?php endif; ?>
 
-      <?php if (!empty($population->model->info)): ?>
+      <?php $population_sup_info = obiba_mica_commons_get_localized_field($population->model, 'info')?>
+      <?php if (!empty($population_sup_info)): ?>
         <tr>
           <th><?php print $localize->getTranslation('suppl-info') ?></th>
-          <td><p> <?php print obiba_mica_commons_get_localized_field($population->model, 'info'); ?></p></td>
+          <td><p> <?php print $population_sup_info; ?></p></td>
         </tr>
       <?php endif; ?>
 
