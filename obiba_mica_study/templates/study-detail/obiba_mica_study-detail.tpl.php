@@ -248,7 +248,7 @@
               <th><?php print $localize->getTranslation('study.access.biosamples'); ?></th>
               <td>
                 <p>
-                  <?php if (!empty($study_dto->model->access) && in_array('biosamples', $study_dto->model->access)): ?>
+                  <?php if (!empty($study_dto->model->access) && in_array('bio_samples', $study_dto->model->access)): ?>
                     <span class="glyphicon glyphicon-ok"></span>
                   <?php else : ?>
                     <span class="glyphicon glyphicon-remove"></span>
