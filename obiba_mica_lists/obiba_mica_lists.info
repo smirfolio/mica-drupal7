@@ -1,0 +1,6 @@
+name = "Obiba Mica lists"
+description = "Mica Client -- Lists"
+package = Obiba
+core = 7.x
+
+dependencies[] = obiba_mica_commons

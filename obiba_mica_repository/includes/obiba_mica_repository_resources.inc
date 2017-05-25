@@ -43,7 +43,7 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      $response = json_decode($data);
+      $response = $this->getLogo(json_decode($data));
       $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $response);
       return $response;
 
@@ -73,6 +73,17 @@ class ObibaSearchResources extends DrupalMicaClientResource {
       throw $e;
     }
   }
+
+  private function getLogo($result_search){
+    if(!empty($result_search->studyResultDto->{'obiba.mica.StudyResultDto.result'}->summaries)){
+      foreach ($result_search->studyResultDto->{'obiba.mica.StudyResultDto.result'}->summaries as $key => $summary){
+        if(!empty($summary->logo->id)){
+          $result_search->studyResultDto->{'obiba.mica.StudyResultDto.result'}->summaries[$key]->logoUrl = obiba_mica_commons_safe_expose_server_url($summary->id, $summary->logo, 'study');
+        }
+      }
+    }
+    return $result_search;
+}
 
   public function searchQuery($type, $query) {
     $resource = '/' . $type . '/_rql?query=' . $query;
