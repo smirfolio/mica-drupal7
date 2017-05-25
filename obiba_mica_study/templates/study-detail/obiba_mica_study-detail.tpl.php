@@ -354,16 +354,16 @@
             </ul>
           </div>
           <div class="col-lg-10 col-xs-12  ">
-            <div class="tab-content indent" test-ref="population-tab-content">
-              <?php foreach ($populations as $key => $population): ?>
-                <?php $active_population_tab = $key == array_keys($populations)[0]; ?>
-                <div
-                  class="tab-pane  <?= $active_population_tab ? 'active' : '' ?>"
-                  id="population-<?= $key ?>"
-                  <?= $population['html']; ?>
-                </div>
-              <?php endforeach ?>
-            </div>
+              <div class="tab-content indent" test-ref="population-tab-content">
+                <?php foreach ($populations as $key => $population): ?>
+                  <?php $active_population_tab = $key == array_keys($populations)[0]; ?>
+                    <div
+                            class="tab-pane  <?php print $active_population_tab ? 'active' : '' ?>"
+                            id="population-<?php print $key ?>">
+                      <?php print $population['html']; ?>
+                    </div>
+                <?php endforeach ?>
+              </div>
           </div>
         </div>
 
