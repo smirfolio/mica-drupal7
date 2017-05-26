@@ -511,6 +511,14 @@ function _obiba_mica_variable_network_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+
+  $variable['network_list_default_field_sort'] = array(
+    'title' => t('Set the Network result sort order'),
+    'description' => t('Select the sort type for the network list'),
+    'type' => 'string',
+    'default' => 'name'
+  );
+
 }
 
 /**
