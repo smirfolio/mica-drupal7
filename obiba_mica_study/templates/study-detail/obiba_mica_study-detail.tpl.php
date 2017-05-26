@@ -132,7 +132,7 @@
           <?php endif; ?>
 
           <?php $follow_up_info = obiba_mica_commons_get_localized_field($study_dto->model->methods, 'followUpInfo'); ?>
-          <?php if (!empty($follow_up_infoo)): ?>
+          <?php if (!empty($follow_up_info)): ?>
             <tr>
               <th><?php print $localize->getTranslation('study.follow-up-help') ?></th>
               <td>
