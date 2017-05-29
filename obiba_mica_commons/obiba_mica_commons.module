@@ -101,7 +101,7 @@ function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NUL
     $lang = $language->language;
   }
   if (!empty($std->{$lang})) {
-    return filter_xss($std->{$lang}, obiba_mica_commons_allowed_filter_xss_tags());
+    return htmlspecialchars_decode(filter_xss($std->{$lang}, obiba_mica_commons_allowed_filter_xss_tags()));
   }
   if (!empty($field) && !empty($std->{$field})) {
     $localizedString = $std->{$field};
@@ -117,7 +117,7 @@ function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NUL
         $localizedString = array_map($asObject, array_keys(get_object_vars($localizedString)));
       }
       elseif (is_string($localizedString)) {
-        return filter_xss($localizedString, obiba_mica_commons_allowed_filter_xss_tags());
+        return htmlspecialchars_decode(filter_xss($localizedString, obiba_mica_commons_allowed_filter_xss_tags()));
       }
     }
 
@@ -126,7 +126,7 @@ function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NUL
       $field_value_std = !empty($field_value->value) ? $field_value->value : (!empty($field_value->text) ? $field_value->text : '');
 
       if (!empty($lang) && $lang == $field_lang_std) {
-        return filter_xss($field_value_std, obiba_mica_commons_allowed_filter_xss_tags());
+        return htmlspecialchars_decode(filter_xss($field_value_std, obiba_mica_commons_allowed_filter_xss_tags()));
       }
       elseif ($field_lang_std == 'en') {
         $value = $field_value_std;
@@ -139,7 +139,7 @@ function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NUL
   elseif (is_array($std) && !empty($std[$field])) {
     foreach ($std[$field] as $field_value) {
       if (!empty($lang) && $lang == $field_value['lang']) {
-        return filter_xss($field_value['value'], obiba_mica_commons_allowed_filter_xss_tags());
+        return htmlspecialchars_decode(filter_xss($field_value['value'], obiba_mica_commons_allowed_filter_xss_tags()));
       }
       elseif ($field_value['lang'] == 'en') {
         $value = $field_value['value'];
@@ -150,7 +150,7 @@ function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NUL
     }
   }
 
-  return filter_xss($value, obiba_mica_commons_allowed_filter_xss_tags());
+  return htmlspecialchars_decode(filter_xss($value, obiba_mica_commons_allowed_filter_xss_tags()));
 }
 
 /**
