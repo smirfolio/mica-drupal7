@@ -123,7 +123,7 @@
               <th><?php print $localize->getTranslation('search.study.design') ?></th>
               <td>
                 <?php print $localize->getTranslation("study_taxonomy.vocabulary.methods-design.term." . $study_dto->model->methods->design . ".title"); ?>
-                <?php $other_design =obiba_mica_commons_get_localized_field($study_dto->model->methods->otherDesign); ?>
+                <?php $other_design =obiba_mica_commons_get_localized_field($study_dto->model->methods, 'otherDesign'); ?>
                 <?php if (!empty($other_design)): ?>
                     : <?php print $other_design; ?>
                   <?php endif; ?>
