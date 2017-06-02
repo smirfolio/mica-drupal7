@@ -28,7 +28,7 @@ function obiba_mica_network_page_list() {
   $query = !empty($_GET['search-query']) ? $_GET['search-query'] : NULL;
   $sort = !empty($_GET['search-sort']) ? $_GET['search-sort'] : NULL;
   $sort_by = !empty($_GET['search-sort-order']) ? $_GET['search-sort-order'] : NULL;
-  $network_limits = !empty($_GET['search-nbr-result']) ? $_GET['search-nbr-result'] : NULL;
+  $network_limits = !empty($_GET['search-nbr-result']) ? $_GET['search-nbr-result'] : \ObibaMicaClient\ObibaMicaDocuments::getResponsePageSizeSmall();
 
   $resource_key = $page_number . $query . $sort . $sort_by . $network_limits;
   $cached_themed_list_network = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $resource_key);
@@ -38,7 +38,6 @@ function obiba_mica_network_page_list() {
   else {
     $response = obiba_mica_network_get_networks(NULL, $query, $sort, $sort_by, $network_limits);
     $total_networks = empty($response) ? 0 : $response->getTotalHits();
-    $network_limits = !empty($network_limits) ? $network_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
     pager_default_initialize($total_networks, $network_limits);
     $pager_output = theme('pager', array('quantity' => $network_limits));
     $summaries = empty($response) ? array() : $response->getSummaries();
@@ -78,7 +77,7 @@ function obiba_mica_network_page_list() {
 function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL, $sort_by = NULL, $network_limits = NULL) {
   $from = 0;
   $network_resource = new DrupalMicaNetworkResource();
-  $size_response = !empty($network_limits) ? $network_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
+  $size_response = !empty($network_limits) ? $network_limits : \ObibaMicaClient\ObibaMicaDocuments::getResponsePageSizeSmall();
   $type = 'networks';
 
   prepopulate_session_with_network_count_if_needed($type, $network_resource);
