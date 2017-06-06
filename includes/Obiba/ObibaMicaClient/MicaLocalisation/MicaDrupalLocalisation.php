@@ -30,7 +30,11 @@ class MicaDrupalLocalization implements MicaLocalizationInterface {
      else{
        $configResources = new MicaDrupalConfigResources();
        $jsonTranslation = $configResources->getTranslations();
-       $this->jsonParser = new JSONPath(json_decode($jsonTranslation));
+       $translation = !empty($jsonTranslation) ? json_decode($jsonTranslation) : NULL;
+       if (!empty($translation)) {
+         $this->jsonParser = new JSONPath($translation);
+         $cache->MicaSetCache('cachedJsonParser', $this->jsonParser);
+       }
      }
     return $this;
   }

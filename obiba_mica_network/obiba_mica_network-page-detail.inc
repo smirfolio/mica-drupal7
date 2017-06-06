@@ -188,7 +188,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
 function obiba_mica_network_ng_coverage($network_id) {
   $network_resource = new DrupalMicaNetworkResource();
   $network_dto = $network_resource->getNetwork($network_id);
-  if (!empty($network_dto)) {
+  if (!empty($network_dto) && !empty($network_dto->studyIds)) {
     $study_ids = $network_dto->studyIds;
     $query = DrupalMicaClient\RqlQueryBuilder::network_query_charts($study_ids);
     return obiba_mica_graphics_nvd3_query_charts($query, $study_ids);
