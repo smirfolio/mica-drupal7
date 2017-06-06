@@ -147,10 +147,8 @@ class MicaClientConfigResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        if(!empty($data)){
           $this->drupalCache->MicaSetCache($lang_resource, $data);
           return $data;
-        }
       } catch (\HttpClientException$e) {
         $this->drupalWatchDog->MicaWatchDog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(

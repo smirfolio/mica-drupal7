@@ -72,8 +72,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      $result_data = json_decode($data);
-      $network_join_response_wrapper = new DrupalMicaClient\NetworkJoinResponseWrapper($result_data);
+      $network_join_response_wrapper = !empty($data) ? new DrupalMicaClient\NetworkJoinResponseWrapper(json_decode($data)) : NULL;
       $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_join_response_wrapper);
       return $network_join_response_wrapper;
 
@@ -127,16 +126,15 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
       ));
       $client = $this->client();
       try {
+        $result_resource_query = NULL;
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $response = json_decode($data);
-        if (!empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
+        $response = !empty($data) ? json_decode($data) : NULL;;
+        if (!empty($response) && !empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
           $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
         }
-        if (!empty($result_resource_query)) {
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_resource_query);
           return $result_resource_query;
-        }
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
@@ -188,13 +186,10 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $network_response = json_decode($data);
-
-        if (!empty($network_response)) {
-          $this->updateModel($network_response);
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_response);
-          return $network_response;
-        }
+        $network_response = !empty($data) ? json_decode($data) : NULL;
+        $this->updateModel($network_response);
+        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_response);
+        return $network_response;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(

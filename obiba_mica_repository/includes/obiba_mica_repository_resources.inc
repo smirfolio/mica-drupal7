@@ -43,10 +43,12 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      $response = $this->getLogo(json_decode($data));
+      $response = !empty($data) ? json_decode($data) : NULL;
+      if (!empty($response)) {
+        $this->getLogo($response);
+      }
       $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $response);
       return $response;
-
     } catch (HttpClientException $e) {
 
       if ($e->getCode() == 403) {
