@@ -129,7 +129,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
         $result_resource_query = NULL;
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $response = !empty($data) ? json_decode($data) : NULL;;
+        $response = !empty($data) ? json_decode($data) : NULL;
         if (!empty($response) && !empty($response->networkResultDto) && !empty($response->networkResultDto->{'obiba.mica.NetworkResultDto.result'})) {
           $result_resource_query = $response->networkResultDto->{'obiba.mica.NetworkResultDto.result'};
         }

@@ -65,9 +65,9 @@ class DrupalMicaResearchProjectResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $result_projects = !empty($data) ? json_decode($data): NULL;
-          $this->drupalCache->MicaSetCache($resource_query, $result_projects);
-          return $result_projects;
+        $result_projects = !empty($data) ? json_decode($data) : NULL;
+        $this->drupalCache->MicaSetCache($resource_query, $result_projects);
+        return $result_projects;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
@@ -103,8 +103,8 @@ class DrupalMicaResearchProjectResource extends DrupalMicaClientResource {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $result_dar_projects = !empty($data) ? json_decode($data) : NULL;
-          $this->drupalCache->MicaSetCache($resource_query, $result_dar_projects);
-          return $result_dar_projects;
+        $this->drupalCache->MicaSetCache($resource_query, $result_dar_projects);
+        return $result_dar_projects;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
@@ -144,8 +144,8 @@ class DrupalMicaResearchProjectResource extends DrupalMicaClientResource {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $result_project = !empty($data) ? json_decode($data) : NULL;
-          $this->drupalCache->MicaSetCache($resource_query, $result_project);
-          return $result_project;
+        $this->drupalCache->MicaSetCache($resource_query, $result_project);
+        return $result_project;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(

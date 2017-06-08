@@ -100,7 +100,7 @@ class MicaClientConfigResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $config_client = json_decode($data);
+        $config_client = !empty($data) ? json_decode($data) : NULL;
         if (!empty($config_client)) {
           $this->drupalCache->MicaSetCache($config_resource, $config_client);
           return $config_client;
@@ -147,9 +147,11 @@ class MicaClientConfigResource extends MicaClient {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
+        if(!empty($data)){
           $this->drupalCache->MicaSetCache($lang_resource, $data);
           return $data;
-      } catch (\HttpClientException$e) {
+        }
+      } catch (\HttpClientException $e) {
         $this->drupalWatchDog->MicaWatchDog('MicaConfigResource', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
             '@code' => $e->getCode(),

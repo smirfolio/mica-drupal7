@@ -60,9 +60,9 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-          $return_studies = !empty($data) ? new DrupalMicaClient\StudyJoinResponseWrapper(json_decode($data)): NULL;
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $return_studies);
-          return $return_studies;
+        $return_studies = !empty($data) ? new DrupalMicaClient\StudyJoinResponseWrapper(json_decode($data)) : NULL;
+        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $return_studies);
+        return $return_studies;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
