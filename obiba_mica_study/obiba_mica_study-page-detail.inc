@@ -37,7 +37,8 @@ function obiba_mica_study_page_detail_networks($study_id) {
   if (!variable_get_value('study_show_networks')) {
     exit;
   }
-  $cached_networks = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $study_id);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_networks = $cache_resource->clientGetCache('cached_' . __FUNCTION__ . $study_id);
   if (!empty($cached_networks)) {
     print $cached_networks;
   }
@@ -47,7 +48,7 @@ function obiba_mica_study_page_detail_networks($study_id) {
 
     if (!empty($network_output)) {
       $themed_study_networks = theme('obiba_mica_study_detail_networks', array('networks' => $network_output));
-      obiba_mica_commons_set_cache('cached_' . __FUNCTION__ . $study_id, $themed_study_networks);
+      $cache_resource->clientSetCache('cached_' . __FUNCTION__ . $study_id, $themed_study_networks);
       print $themed_study_networks;
     }
   }
@@ -57,7 +58,8 @@ function obiba_mica_study_page_detail_datasets($study_id, $dataset_name = NULL, 
   if (!variable_get_value('study_show_datasets') && empty($network_id)) {
     exit;
   }
-  $cached_datasets = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $study_id);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_datasets = $cache_resource->clientGetCache('cached_' . __FUNCTION__ . $study_id);
   if (!empty($cached_datasets)) {
     print $cached_datasets;
   }
@@ -71,7 +73,7 @@ function obiba_mica_study_page_detail_datasets($study_id, $dataset_name = NULL, 
 
     if (!empty($dataset_output)) {
       $themed_datasets = theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
-      obiba_mica_commons_set_cache('cached_' . __FUNCTION__ . $study_id, $themed_datasets);
+      $cache_resource->clientSetCache('cached_' . __FUNCTION__ . $study_id, $themed_datasets);
       print $themed_datasets;
     }
   }
@@ -187,13 +189,14 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
       }
       obiba_mica_app_angular_load_js_resources('obiba_mica_files');
     }
-    $cached_populations = obiba_mica_commons_get_cache('populations_detail_cache-' . $study_id);
+    $cache_resource = new \ObibaMicaClient\MicaCache();
+    $cached_populations = $cache_resource->clientGetCache('populations_detail_cache-' . $study_id);
     if (!empty($cached_populations)) {
       $populations = $cached_populations;
     }
     else {
       $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $token_key);
-      obiba_mica_commons_set_cache('populations_detail_cache-' . $study_id, $populations);
+      $cache_resource->clientSetCache('populations_detail_cache-' . $study_id, $populations);
     }
 
     if (obiba_mica_study_have_timeline($study_dto)) {
@@ -209,7 +212,7 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
       'study_url' => rawurlencode($study_id),
       'optionsStudyContent' => $options_study_content
     ), 'setting');
-    $study_theme_cache = obiba_mica_commons_get_cache('study_theme_cache-' . $study_id);
+    $study_theme_cache = $cache_resource->clientGetCache('study_theme_cache-' . $study_id);
     if (!empty($study_theme_cache)) {
       return $study_theme_cache;
     }
@@ -237,7 +240,7 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
           'opal' => $opal_output,
           'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
         ));
-      obiba_mica_commons_set_cache('study_theme_cache-' . $study_id, $study_theme);
+      $cache_resource->clientSetCache('study_theme_cache-' . $study_id, $study_theme);
       return $study_theme;
     }
 

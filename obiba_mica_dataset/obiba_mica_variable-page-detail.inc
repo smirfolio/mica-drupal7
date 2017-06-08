@@ -360,7 +360,8 @@ function obiba_mica_dataset_variable_get_categories($categories = NULL) {
 }
 
 function obiba_mica_dataset_get_statistics($variable_id = NULL){
-  $cached_variable_statistics = obiba_mica_commons_get_cache(__FUNCTION__ . 'variable-statistics-' . $variable_id);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_variable_statistics = $cache_resource->clientGetCache(__FUNCTION__ . 'variable-statistics-' . $variable_id);
   if (!empty($cached_variable_statistics)) {
     return $cached_variable_statistics;
   }
@@ -373,7 +374,7 @@ function obiba_mica_dataset_get_statistics($variable_id = NULL){
       $statistics = new Datasets\VariableStatistics($variable, $variable_stat, new MicaConfig\MicaDrupalConfig());
       $stat_tab['table'] = $statistics->asTable();
       $stat_tab['chart'] = $statistics->asChart();
-      obiba_mica_commons_set_cache(__FUNCTION__ . 'variable-statistics-' . $variable_id, $stat_tab);
+      $cache_resource->clientSetCache(__FUNCTION__ . 'variable-statistics-' . $variable_id, $stat_tab);
       return $stat_tab;
     }
   }

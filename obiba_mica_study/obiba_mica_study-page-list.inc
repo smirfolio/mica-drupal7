@@ -133,7 +133,7 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
   prepopulate_session_with_studies_count_if_needed($type, $study_resource);
 
   if (!empty($_GET['page'])) {
-    $from = $study_resource->paginationListSearchParameters($_GET['page'], $type, $size_response);
+    $from = \ObibaMicaClient\ObibaMicaDocuments::paginationListSearchParameters($_GET['page'], $type, $size_response);
   }
 
   if (empty($sort)) {

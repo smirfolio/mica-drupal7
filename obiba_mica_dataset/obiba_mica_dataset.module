@@ -419,8 +419,8 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
   if (empty($datasets)) {
     return NULL;
   }
-
-  $cached_networks_datasets_list = obiba_mica_commons_get_cache(__FUNCTION__ . $network_id);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_networks_datasets_list = $cache_resource->clientGetCache(__FUNCTION__ . $network_id);
   if (!empty($cached_networks_datasets_list)) {
     return $cached_networks_datasets_list;
   }
@@ -468,7 +468,7 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
           'sticky' => FALSE,
         )
       );
-      obiba_mica_commons_set_cache(__FUNCTION__ . $network_id, $dataset);
+      $cache_resource->clientSetCache(__FUNCTION__ . $network_id, $dataset);
       return $dataset;
     }
   }

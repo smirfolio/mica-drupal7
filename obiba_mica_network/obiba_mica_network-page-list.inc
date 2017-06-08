@@ -31,7 +31,8 @@ function obiba_mica_network_page_list() {
   $network_limits = !empty($_GET['search-nbr-result']) ? $_GET['search-nbr-result'] : \ObibaMicaClient\ObibaMicaDocuments::getResponsePageSizeSmall();
 
   $resource_key = $page_number . $query . $sort . $sort_by . $network_limits;
-  $cached_themed_list_network = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $resource_key);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_themed_list_network = $cache_resource->clientGetCache('cached_' . __FUNCTION__ . $resource_key);
   if (!empty($cached_themed_list_network)) {
     return $cached_themed_list_network;
   }
@@ -68,7 +69,7 @@ function obiba_mica_network_page_list() {
       'pager_wrap' => $pager_output
     ));
     if ($total_networks !== 0) {
-      obiba_mica_commons_set_cache('cached_' . __FUNCTION__ . $resource_key, $themed_list_networks_page);
+      $cache_resource->clientSetCache('cached_' . __FUNCTION__ . $resource_key, $themed_list_networks_page);
     }
     return $themed_list_networks_page;
   }
@@ -83,7 +84,7 @@ function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL,
   prepopulate_session_with_network_count_if_needed($type, $network_resource);
 
   if (!empty($_GET['page'])) {
-    $from = $network_resource->paginationListSearchParameters($_GET['page'], $type, $size_response);
+    $from = \ObibaMicaClient\ObibaMicaDocuments::paginationListSearchParameters($_GET['page'], $type, $size_response);
   }
 
   if (empty($sort)) {

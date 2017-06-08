@@ -105,7 +105,7 @@ function obiba_mica_research_project_get_projects($query = NULL, $limit = NULL, 
   $research_project_resource = new DrupalMicaResearchProjectResource(NULL);
   $size_response = intval($limit) > 0 ? $limit : \ObibaMicaClient\ObibaMicaDocuments::getResponsePageSizeSmall();
   if (!empty($_GET['page'])) {
-    $from = $research_project_resource->paginationListSearchParameters($_GET['page'], 'projects', $size_response);
+    $from = \ObibaMicaClient\ObibaMicaDocuments::paginationListSearchParameters($_GET['page'], 'projects', $size_response);
   }
   $response = $research_project_resource->getProjects($query, $from, $size_response, $sort, $order);
   if (!empty($response->total)) {

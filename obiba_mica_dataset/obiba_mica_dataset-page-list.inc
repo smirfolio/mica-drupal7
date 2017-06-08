@@ -58,7 +58,8 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
 
   $node_view['#node']->title = '';
   $resource_key = $page_number . $dataset_resource . $query . $sort . $sort_by . $dataset_limits;
-  $cached_themed_list_datasets = obiba_mica_commons_get_cache('cached_'. __FUNCTION__ . $resource_key);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_themed_list_datasets = $cache_resource->clientGetCache('cached_'. __FUNCTION__ . $resource_key);
   if (!empty($cached_themed_list_datasets)) {
     return $cached_themed_list_datasets;
   }
@@ -89,7 +90,7 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
       'dataset_type' => $dataset_resource,
     ));
     if ($total_hits !== 0) {
-      obiba_mica_commons_set_cache('cached_'. __FUNCTION__ . $resource_key, $themed_datasets_list);
+      $cache_resource->clientSetCache('cached_'. __FUNCTION__ . $resource_key, $themed_datasets_list);
     }
     return $themed_datasets_list;
   }
@@ -115,7 +116,7 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resou
   $resource = new DrupalMicaDatasetResource();
   $size_response = !empty($dataset_limits) ? $dataset_limits : variable_get_value('mica_response_page_size_small');
   if (!empty($_GET['page'])) {
-    $from = $resource->paginationListSearchParameters($_GET['page'], 'datasets', $size_response);
+    $from = \ObibaMicaClient\ObibaMicaDocuments::paginationListSearchParameters($_GET['page'], 'datasets', $size_response);
   }
   $response = $resource->getDatasets($dataset_resource, NULL, $query, $from, $size_response, $sort, $sort_by);
   if (!empty($response)) {

@@ -101,13 +101,14 @@ function obiba_mica_network_theme($existing, $type, $theme, $path) {
 }
 
 function obiba_mica_network_networks_list($study_id = NULL) {
-  $cached_network_list_table = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $study_id);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_network_list_table = $cache_resource->clientGetCache('cached_' . __FUNCTION__ . $study_id);
   if (!empty($cached_network_list_table)) {
     return $cached_network_list_table;
   }
   else {
     $networks_table = obiba_mica_network_networks_table(obiba_mica_network_get_networks($study_id, NULL, '-numberOfStudies', NULL));
-    obiba_mica_commons_set_cache('cached_' . __FUNCTION__ . $study_id, $networks_table);
+    $cache_resource->clientSetCache('cached_' . __FUNCTION__ . $study_id, $networks_table);
     return $networks_table;
   }
 }

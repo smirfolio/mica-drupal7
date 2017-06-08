@@ -143,7 +143,8 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
       'networkUrl' => rawurlencode($network_id),
       'study_ids' => !empty($network_dto->studyIds) ? $network_dto->studyIds : array()
     ), 'setting');
-    $network_theme = obiba_mica_commons_get_cache('network_theme_cache-' . $network_id);
+    $cache_resource = new \ObibaMicaClient\MicaCache();
+    $network_theme = $cache_resource->clientGetCache('network_theme_cache-' . $network_id);
     if (!empty($network_theme)) {
       return $network_theme;
     }
@@ -175,7 +176,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
 
         'statistics' => $studies_statistics,
       ));
-      obiba_mica_commons_set_cache('network_theme_cache-' . $network_id, $network_theme);
+      $cache_resource->clientSetCache('network_theme_cache-' . $network_id, $network_theme);
       return $network_theme;
     }
   }
@@ -199,17 +200,16 @@ function obiba_mica_network_page_detail_datasets($network_id) {
   if (!variable_get_value('study_show_datasets')) {
     exit;
   }
-  $cached_datasets = obiba_mica_commons_get_cache(__FUNCTION__ . 'network-datasets-cache-' . $network_id);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_datasets = $cache_resource->clientGetCache(__FUNCTION__ . 'network-datasets-cache-' . $network_id);
   if (!empty($cached_datasets)) {
     print $cached_datasets;
   }
   else {
     $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_network(NULL, 'HarmonizationDataset', $network_id) : NULL;
-    if (!empty($dataset_output)) {
       $themed_datasets = theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
-      obiba_mica_commons_set_cache(__FUNCTION__ . 'network-datasets-cache-' . $network_id, $themed_datasets);
+      $cache_resource->clientSetCache(__FUNCTION__ . 'network-datasets-cache-' . $network_id, $themed_datasets);
       print $themed_datasets;
-    }
   }
 }
 
@@ -249,7 +249,8 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
     }, $network_details->networks);
 
     $networks_cache_key = implode(',', $networks_ids);
-    $cached_network_table_rows = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $networks_cache_key);
+    $cache_resource = new \ObibaMicaClient\MicaCache();
+    $cached_network_table_rows = $cache_resource->clientGetCache('cached_' . __FUNCTION__ . $networks_cache_key);
   }
   if (!empty($cached_network_table_rows)) {
     return $cached_network_table_rows;
@@ -318,7 +319,7 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
       }
     }
     if (!empty($networks_cache_key)) {
-      obiba_mica_commons_set_cache('cached_' . __FUNCTION__ . $networks_cache_key, $rows);
+      $cache_resource->clientSetCache('cached_' . __FUNCTION__ . $networks_cache_key, $rows);
     }
     return $rows;
   }
@@ -345,7 +346,8 @@ function obiba_mica_network_studies_datatable_init($study_summaries, $id_network
 function obiba_mica_network_study_table_rows($study_summaries, $id_network = NULL) {
   $rows = array();
   $query = NULL;
-  $cached_studies_rows = obiba_mica_commons_get_cache('cached' . __FUNCTION__ . $id_network);
+  $cache_resource = new \ObibaMicaClient\MicaCache();
+  $cached_studies_rows = $cache_resource->clientGetCache('cached' . __FUNCTION__ . $id_network);
   if (!empty($cached_studies_rows)) {
     return $cached_studies_rows;
   }
@@ -368,7 +370,7 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
         );
       }
     }
-    obiba_mica_commons_set_cache('cached' . __FUNCTION__ . $id_network, $rows);
+    $cache_resource->clientSetCache('cached' . __FUNCTION__ . $id_network, $rows);
     return $rows;
   }
 }
