@@ -391,7 +391,7 @@ function obiba_mica_network_network_table_headers() {
     array("title" => $localize->getTranslation('network.acronym'), 'width' => '15%'),
     array("title" => $localize->getTranslation('network.name'), 'width' => '40%'),
     array("title" => $localize->getTranslation('studies'), 'width' => '5%'),
-    array("title" => $localize->getTranslation('search.studies.participants'), 'width' => '10%'),
+    array("title" => $localize->getTranslation('search.study.participants'), 'width' => '10%'),
     array("title" => $localize->getTranslation('client.label.countries'), 'width' => '20%'),
     array("title" => $localize->getTranslation('client.label.study-variables'), 'width' => '5%'),
     array("title" => $localize->getTranslation('client.label.dataschema-variables'), 'width' => '5%')
