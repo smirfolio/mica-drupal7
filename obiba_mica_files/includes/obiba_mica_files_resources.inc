@@ -60,10 +60,9 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $this->drupalCache->MicaSetCache($resource_query, $data);
-          return $data;
-        }
+        $data = !empty($data) ? $data : NULL;
+        $this->drupalCache->MicaSetCache($resource_query, $data);
+        return $data;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',
@@ -103,10 +102,9 @@ class DrupalMicaFilesResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $this->drupalCache->MicaSetCache($resource_query, $data);
-          return $data;
-        }
+        $data = !empty($data) ? $data : NULL;
+        $this->drupalCache->MicaSetCache($resource_query, $data);
+        return $data;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Parsing attachments, Connection to server fail,
       Error serve code : @code, message: @message',

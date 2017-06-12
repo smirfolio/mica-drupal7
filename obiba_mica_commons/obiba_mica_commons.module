@@ -892,7 +892,7 @@ function obiba_mica_commons_get_draft_link($document_path, $document_id, $publis
  */
 function _obiba_mica_commons_set_cache($key, $bin, $value) {
   $is_published = &drupal_static('obiba_mica_commons_is_published', TRUE);
-  if (!empty($is_published) && variable_get_value('cache') == 1 && !empty($value)) {
+  if (!empty($is_published) && variable_get_value('cache') == 1) {
     cache_set($key, $value, $bin, CACHE_TEMPORARY);
   }
 }

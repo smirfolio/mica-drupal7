@@ -227,17 +227,17 @@ function obiba_mica_app_angular_main_page($module_caller = NULL) {
  * @return string
  *   The template of the AngularJs app.
  */
-function obiba_mica_app_angular_get_angular_template($angular_template) {
+function obiba_mica_app_angular_get_angular_template($angular_template_key) {
   global $language;
-  $cached_template = obiba_mica_commons_get_cache('angular-template-cache-' . $angular_template);
+  $cached_template = obiba_mica_commons_get_cache('angular-template-cache-' . $angular_template_key);
   if (!empty($cached_template)) {
-    $angular_template = $cached_template;
+    print  $cached_template;
   }
   else {
-    $angular_template = theme($angular_template, array('locale_language' => $language->language));
-    obiba_mica_commons_set_cache('angular-template-cache-' . $angular_template, $angular_template);
+    $angular_template = theme($angular_template_key, array('locale_language' => $language->language));
+    obiba_mica_commons_set_cache('angular-template-cache-' . $angular_template_key, $angular_template);
+    print $angular_template;
   }
-  print $angular_template;
 }
 
 /**
