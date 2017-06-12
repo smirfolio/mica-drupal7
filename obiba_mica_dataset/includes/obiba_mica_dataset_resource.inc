@@ -89,12 +89,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $datasets = json_decode($data);
-        if ($datasets->datasetResultDto->totalCount !== 0) {
-          $datasets_result = new DrupalMicaClient\DatasetJoinResponseWrapper($datasets);
+          $datasets_result = !empty($data) ? new DrupalMicaClient\DatasetJoinResponseWrapper(json_decode($data)) : NULL;
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $datasets_result);
           return $datasets_result;
-        }
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
@@ -141,12 +138,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $result_dataset = $data ? json_decode($data) : NULL;
-        if (!empty($result_dataset)) {
+        $result_dataset = !empty($data) ? json_decode($data) : NULL;
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_dataset);
           return $result_dataset;
-        }
-
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
           array(
@@ -222,11 +216,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $variables_result = json_decode($data);
+          $variables_result = !empty($data) ? json_decode($data) : NULL;
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $variables_result);
           return $variables_result;
-        }
       } catch (HttpClientException $e) {
         return array();
       }
@@ -271,11 +263,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $result_data = json_decode($data);
+          $result_data = !empty($data) ? json_decode($data) : NULL;
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $cross_variables_resource, $result_data);
           return $result_data;
-        }
 
       } catch (HttpClientException $e) {
         return new stdClass();
@@ -371,11 +361,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $variable_result = json_decode($data);
+          $variable_result = !empty($data) ? json_decode($data) : NULL;
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $query_resources, $variable_result);
           return $variable_result;
-        }
       } catch (HttpClientException $e) {
         if (obiba_mica_commons_is_ajax()) {
           $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
@@ -458,11 +446,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        $result_variable = $data ? json_decode($data) : NULL;
-        if (!empty($result_variable)) {
+        $result_variable = !empty($data) ? json_decode($data) : NULL;
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_variable);
           return $result_variable;
-        }
       } catch (HttpClientException $e) {
         return array();
       }
@@ -499,11 +485,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
       try {
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
-        if (!empty($data)) {
-          $variable_aggregation_response = json_decode($data);
+          $variable_aggregation_response = !empty($data) ? json_decode($data) : NULL;
           $this->drupalCache->MicaSetCache(__FUNCTION__ . $variable_aggregation_resource, $variable_aggregation_response);
           return $variable_aggregation_response;
-        }
       } catch (HttpClientException $e) {
         return array();
       }
@@ -538,11 +522,9 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
     try {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
-      if (!empty($data)) {
-        $response_data = $data ? json_decode($data) : NULL;
+        $response_data = !empty($data) ? json_decode($data) : NULL;
         $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_request, $response_data);
         return $response_data;
-      }
     } catch (HttpClientException $e) {
       return array();
     }
