@@ -94,18 +94,18 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
   $study_resource = new DrupalMicaStudyResource();
   if (!empty($token_key)) {
     obiba_mica_commons_is_published(FALSE);
-    $study_dto = $study_resource->getStudy($study_id, $token_key);
+    $study_dto = $study_resource->getStudy($study_id, $token_key, DrupalMicaStudyResource::COLLECTION_STUDY);
     if(!empty($study_dto)){
      if(!empty($study_dto->logo)){
-        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study', FALSE, $token_key);
+        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, DrupalMicaStudyResource::COLLECTION_STUDY, FALSE, $token_key);
      }
     }
   }
   else {
-    $study_dto = $study_resource->getStudy($study_id);
+    $study_dto = $study_resource->getStudy($study_id, NULL, DrupalMicaStudyResource::COLLECTION_STUDY);
     if(!empty($study_dto)){
       if(!empty($study_dto->logo)) {
-        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, 'study', FALSE);
+        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, DrupalMicaStudyResource::COLLECTION_STUDY, FALSE);
       }
     }
   }
@@ -151,7 +151,7 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
-      l($localize->getTranslation('studies'), 'mica/studies'),
+      l($localize->getTranslation('studies'), MicaClientPathProvider::STUDIES),
     ));
 
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;

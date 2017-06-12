@@ -60,8 +60,13 @@ class MicaClientPathHelpers {
 }
 
 class MicaClientPathProvider {
+  const COLLECTION_STUDY = 'mica/study';
+  const HARMONIZATION_STUDY = 'mica/harmonization-study';
   const STUDIES = 'mica/studies';
-  const STUDY = 'mica/study/{id}';
+  const COLLECTION_STUDIES = 'collection-studies';
+  const HARMONIZATION_STUDIES = 'harmonization-studies';
+  const COLLECTION_STUDY_LINK = 'mica/study/{id}';
+  const HARMONIZATION_STUDY_LINK = 'mica/harmonization-study/{id}';
   const NETWORKS = 'mica/networks';
   const NETWORK = 'mica/network/{id}';
   const DATASETS = 'mica/datasets';
@@ -98,7 +103,20 @@ class MicaClientPathProvider {
    *   The url of the study detail.
    */
   public static function study($id) {
-    return preg_replace('/\\{id\\}/', $id, self::STUDY, 1);
+    return preg_replace('/\\{id\\}/', $id, self::COLLECTION_STUDY_LINK, 1);
+  }
+
+  /**
+   * The study detail url.
+   *
+   * @param string $id
+   *   Study id.
+   *
+   * @return string
+   *   The url of the study detail.
+   */
+  public static function harmoStudy($id) {
+    return preg_replace('/\\{id\\}/', $id, self::HARMONIZATION_STUDY_LINK, 1);
   }
 
   /**
@@ -312,6 +330,18 @@ class MicaClientAnchorHelper {
    */
   public static function studyListItem($study) {
     return self::listItem($study, MicaClientPathProvider::study($study->id));
+  }
+  /**
+   * Study list item.
+   *
+   * @param object $study
+   *   The study wrapper.
+   *
+   * @return string
+   *   Formatted list.
+   */
+  public static function harmoStudyListItem($study) {
+    return self::listItem($study, MicaClientPathProvider::harmoStudy($study->id));
   }
 
   /**

@@ -15,12 +15,16 @@
  */
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
-use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\DrupalMicaClientResourcePathHelper as ResourcesWsPath;
 
 /**
  * Class MicaStudyResource
  */
 class DrupalMicaStudyResource extends DrupalMicaClientResource {
+  const COLLECTION_STUDIES = 'collection-studies';
+  const HARMONIZATION_STUDIES = 'harmonization-studies';
+  const COLLECTION_STUDY = 'collection-study';
+  const HARMONIZATION_STUDY = 'harmonization-study';
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
@@ -34,14 +38,16 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    * @param $limit .
    * @param null $sort field name to sort by.
    * @param null $order "asc" or "desc".
-   * @param null $study_rql_query rql query "in(Mica_study.id,(epoa,ici-vph)".
+   * @param null $studies_type  "harmonization_studies".
    *
    * @return array|mixed
    */
-  public function getStudies($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
+  public function getStudies($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL, $studies_type = NULL) {
     global $language;
+
+    $studies_type = (!empty($studies_type)) ? $studies_type : 'studies';
     $this->setLastResponse(NULL);
-    $resource_query = $this->generateRqlQuery($query, $from, $limit, $sort, $order, $language);
+    $resource_query = $this->generateRqlQuery($query, $from, $limit, $sort, $order, $language, $studies_type);
 
     $cached_studies = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cached_studies)) {
@@ -62,6 +68,8 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
         $this->setLastResponse($client->lastResponse);
         $return_studies = !empty($data) ? new DrupalMicaClient\StudyJoinResponseWrapper(json_decode($data)) : NULL;
         $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $return_studies);
+
+        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, json_decode($data));
         return $return_studies;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -81,11 +89,19 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    *
    * @return array
    */
-  public function getStudy($study_id, $token_key = NULL) {
+  public function getStudy($study_id, $token_key = NULL, $study_type = NULL) {
     $cached_study = NULL;
-    $resource_query = '/study/' . rawurlencode($study_id);
+    if($study_type == DrupalMicaStudyResource::HARMONIZATION_STUDY){
+      $resource_path['pub'] = ResourcesWsPath::WS_HARMONIZATION_STUDY;
+      $resource_path['draft'] = ResourcesWsPath::WS_HARMONIZATION_DRAFT_STUDY;
+    }
+    else{
+      $resource_path['pub'] = ResourcesWsPath::WS_COLLECTION_STUDY;
+      $resource_path['draft'] = ResourcesWsPath::WS_COLLECTION_DRAFT_STUDY;
+    }
+    $resource_query = ResourcesWsPath::getResourcePath($resource_path['pub'], array(rawurlencode($study_id)));
     if(!empty($token_key)){
-      $resource_query = '/draft/study/' . rawurlencode($study_id) . '?key=' . $token_key;
+      $resource_query = ResourcesWsPath::getResourcePath($resource_path['draft'], array(rawurlencode($study_id),  $token_key));
     }
     global $language;
     if ($language){
@@ -168,20 +184,31 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    * @param $language
    * @return string
    */
-  private function generateRqlQuery($query, $from, $limit, $sort, $order, $language) {
+  private function generateRqlQuery($query, $from, $limit, $sort, $order, $language, $studies_type = NULL) {
+    switch ($studies_type){
+      case 'harmonization-studies' :
+        $class_name = 'HarmonizationStudy';
+        break;
+      case 'collection-studies' :
+        $class_name = 'Study';
+        break;
+      default:
+        $class_name = '(Study,HarmonizationStudy)';
+        break;
+    }
     $from = empty($from) ? '0' : $from;
     $limit = empty($limit) ? '5' : $limit;
     $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
     $sort_rql_bucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
-    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
+    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives),in(Mica_study.className,$class_name))";
     if (empty($query)) {
-      $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket)";
+      $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket,in(Mica_study.className,$class_name))";
     }
     else {
-      $params = "study(limit($from,$limit)$query$sort_rql_bucket)";
+      $params = "study(limit($from,$limit)$query$sort_rql_bucket,in(Mica_study.className,$class_name))";
     }
     $params .= ",locale($language->language)";
-    $resource_query = '/studies/_rql?query=' . $params;
+    $resource_query = ResourcesWsPath::getResourcePath(ResourcesWsPath::WS_STUDIES_SEARCH, array($params));
     return $resource_query;
   }
 }

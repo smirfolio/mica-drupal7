@@ -26,3 +26,9 @@ function obiba_mica_study_create_node() {
   variable_set('study_list_page', $study_node_page->nid);
 
 }
+
+function obiba_mica_study_unset_variables(){
+  variable_del('study_target_number_participant_label');
+  variable_del('study_target_number_participant_with_sample_label');
+  variable_del('study_supplementary_information_about_target_number_participant');
+}

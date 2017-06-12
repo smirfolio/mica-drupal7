@@ -16,8 +16,22 @@
 
 use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 
-function obiba_mica_study_page_list() {
-  if (!variable_get_value('studies_list_show_trimmed_description_study')) {
+
+function obiba_mica_study_harmonization_page_list(){
+ return  obiba_mica_study_list(DrupalMicaStudyResource::HARMONIZATION_STUDIES);
+}
+
+function obiba_mica_study_collection_page_list(){
+  return obiba_mica_study_list(DrupalMicaStudyResource::COLLECTION_STUDIES);
+}
+
+function obiba_mica_study_page_list(){
+  return obiba_mica_study_list();
+}
+function obiba_mica_study_list($studies_type = NULL) {
+  $template_study = 'obiba_mica_study_list-page';
+  $trimed_description =  variable_get_value('studies_list_show_trimmed_description_study');
+  if (!$trimed_description) {
     drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/obiba-mica-commons-list-shorten-text.js', 'file');
     drupal_add_js(array(
       'linkRead' => array(
@@ -34,7 +48,7 @@ function obiba_mica_study_page_list() {
 
   $localize = obiba_mica_commons_mica_server_localisation();
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('study_list_page'));
-  drupal_set_title($node_rendered['#node']->title);
+  //drupal_set_title($node_rendered['#node']->title);
 
   $themed_studies = '';
   $node_rendered['#node']->title = '';
@@ -53,7 +67,7 @@ function obiba_mica_study_page_list() {
     $study_limits = $_GET['search-nbr-result'];
   }
 
-  $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_order, $study_limits);
+  $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_order, $study_limits, $studies_type);
   $total_studies = empty($response) ? 0 : $response->getTotalHits();
   $study_limits = !empty($study_limits) ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
 
@@ -62,14 +76,23 @@ function obiba_mica_study_page_list() {
   $summaries = empty($response) ? array() : $response->getSummaries();
   if (!empty($summaries)) {
     $i = 0;
+
     foreach ($summaries as $study) {
+      $study_entity_type = DrupalMicaStudyResource::COLLECTION_STUDY;
+      $template_study_block = 'obiba_mica_study-list-page-block';
+      //@TODO this condition have to be dealt with type of the study (collection/harmonization)
+      if(!isset($study->populationSummaries)){
+        $study_entity_type = DrupalMicaStudyResource::HARMONIZATION_STUDY;
+        $template_study_block = 'obiba_mica_study-list-harmo-study-page-block';
+      }
       if (!empty($study->logo->id)) {
-        $logo_url = obiba_mica_commons_safe_expose_server_url($study->id, $study->logo, 'study');
+        $logo_url = obiba_mica_commons_safe_expose_server_url($study->id, $study->logo, $study_entity_type);
       }
       else {
         $logo_url = NULL;
       }
-      $themed_studies .= theme('obiba_mica_study-list-page-block', array(
+
+      $themed_studies .= theme($template_study_block, array(
         'study' => $study,
         'logo_url' => $logo_url,
         'network_digests' => $response->getNetworkDigests($study->id)
@@ -81,7 +104,7 @@ function obiba_mica_study_page_list() {
     $themed_studies = $localize->getTranslation('study.none');
   }
   $show_rapid_search_form = variable_get_value('studies_list_show_search_form');
-  return theme('obiba_mica_study_list-page', array(
+  return theme($template_study, array(
     "form_search" => !empty($show_rapid_search_form) ? drupal_get_form('obiba_mica_study_create_form') : '',
     "node_page" => $node_rendered,
     "total_items" => $total_studies,
@@ -123,7 +146,7 @@ function obiba_mica_study_create_form() {
   return obiba_mica_commons_create_search_form($context);
 }
 
-function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL, $study_limits = NULL) {
+function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL, $study_limits = NULL, $studies_type = NULL) {
   $from = 0;
   $study_resource = new DrupalMicaStudyResource();
   $size_response = intval($study_limits) > 0 ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
@@ -147,7 +170,7 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
     }
   }
 
-  $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order);
+  $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order, $studies_type);
 
   populate_session_with_studies_count($response, $type);
 

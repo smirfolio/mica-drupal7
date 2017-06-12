@@ -554,7 +554,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
       }
       else {
         $entity_summary = $opal_table->studySummary;
-        $entity_url = 'mica/study/' . $entity_summary->id;
+        $entity_url = MicaClientPathProvider::COLLECTION_STUDY . '/' . $entity_summary->id;
       }
 
       $acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
