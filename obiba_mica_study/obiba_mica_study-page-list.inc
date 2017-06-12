@@ -29,7 +29,7 @@ function obiba_mica_study_page_list() {
   obiba_mica_commons_list_document_js('refresh_list_studies');
   $study_query = NULL;
   $study_sort = NULL;
-  $study_sort_by = NULL;
+  $study_sort_order = NULL;
   $study_limits = NULL;
 
   $localize = obiba_mica_commons_mica_server_localisation();
@@ -46,14 +46,14 @@ function obiba_mica_study_page_list() {
     $study_sort = $_GET['search-sort'];
   }
   if (!empty($_GET['search-sort-order'])) {
-    $study_sort_by = $_GET['search-sort-order'];
+    $study_sort_order = $_GET['search-sort-order'];
   }
 
   if (!empty($_GET['search-nbr-result'])) {
     $study_limits = $_GET['search-nbr-result'];
   }
 
-  $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_by, $study_limits);
+  $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_order, $study_limits);
   $total_studies = empty($response) ? 0 : $response->getTotalHits();
   $study_limits = !empty($study_limits) ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
 
@@ -117,7 +117,7 @@ function obiba_mica_study_create_form() {
           'model.numberOfParticipants.participant.number' => $localize->getTranslation('client.label.study.target-number')
         ),
       'default_sort' => variable_get_value('study_list_name_acronym_sort'),
-      'default_sort_order' => 'asc'
+      'default_sort_order' => variable_get_value('study_list_default_order_sort'),
     );
 
   return obiba_mica_commons_create_search_form($context);
@@ -133,6 +133,11 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
 
   if (!empty($_GET['page'])) {
     $from = $study_resource->paginationListSearchParameters($_GET['page'], $type, $size_response);
+  }
+
+  if(empty($order)){
+    $study_order = variable_get_value('study_list_default_order_sort');
+    $order = !empty($study_order) ? $study_order : '';
   }
 
   if (empty($sort)) {
