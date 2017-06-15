@@ -14,7 +14,7 @@
     "jquery-ui": "1.11.4",
     "ng-file-upload": "12.2.13",
     "ng-obiba": "https://github.com/obiba/ng-obiba.git#1.4.8",
-    "ng-obiba-mica": "https://github.com/obiba/ng-obiba-mica.git#2.2.0",
+    "ng-obiba-mica": "https://github.com/obiba/ng-obiba-mica.git#2.2.1",
     "filesize": "3.3.0",
     "angular-schema-form": "0.8.13",
     "angular-schema-form-bootstrap": "https://github.com/obiba/angular-schema-form-bootstrap.git#1.1.2",
