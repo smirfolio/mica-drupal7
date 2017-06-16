@@ -103,7 +103,7 @@
                            class="btn btn-primary btn-xs sm-top-margin">Read
                             More</a>
                     </td>
-                    <td>
+                    <td ng-if="summary.targetNumber.number">
                         <localized-number
                                 value="summary.targetNumber.number"></localized-number>
                     </td>
