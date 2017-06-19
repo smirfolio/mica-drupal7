@@ -212,6 +212,18 @@ function obiba_mica_settings_network_content(&$form) {
     ),
     '#description' => $info['description'],
   );
+
+  $info = variable_get_info('network_list_default_order_sort');
+  $form['content_display_settings']['network_form']['network_details']['network_list_default_order_sort'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('network_list_default_order_sort'),
+    '#options' => array(
+      '' => t('Asc'),
+      'desc' => t('Desc'),
+    ),
+    '#description' => $info['description'],
+  );
 }
 
 /**
@@ -345,5 +357,18 @@ function obiba_mica_settings_study_content(&$form) {
     ),
     '#description' => $info['description'],
   );
+
+  $info = variable_get_info('study_list_default_order_sort');
+  $form['content_display_settings']['study_form']['studies_list']['study_list_default_order_sort'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_list_default_order_sort'),
+    '#options' => array(
+      '' => t('Asc'),
+      'desc' => t('Desc'),
+    ),
+    '#description' => $info['description'],
+  );
+
 
 }

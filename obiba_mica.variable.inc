@@ -512,6 +512,13 @@ function _obiba_mica_variable_network_content(&$variable) {
     'default' => TRUE,
   );
 
+  $variable['network_list_default_order_sort'] = array(
+    'title' => t('Set the Network result order'),
+    'description' => t('Select the sorted order for the Network list'),
+    'type' => 'string',
+    'default' => ''
+  );
+
   $variable['network_list_default_field_sort'] = array(
     'title' => t('Set the Network result sort order'),
     'description' => t('Select the sort type for the network list'),
@@ -537,6 +544,14 @@ function _obiba_mica_variable_study_content(&$variable) {
     'type' => 'string',
     'default' => 'name'
   );
+
+  $variable['study_list_default_order_sort'] = array(
+    'title' => t('Set the Study result order'),
+    'description' => t('Select the sorted order for the Study list'),
+    'type' => 'string',
+    'default' => ''
+  );
+
   $variable['study_show_networks'] = array(
     'title' => t('Show networks'),
     'description' => t('If selected the Networks section will be displayed'),
