@@ -14,34 +14,46 @@
  * Mica studies file
  */
 
+include_once('obiba_mica_study_admin_form.inc');
+
 function obiba_mica_study_menu() {
   $items = array();
 
-  $items['mica/studies'] = array(
+  $items[MicaClientPathProvider::STUDIES] = array(
     'title' => 'Studies',
     'description' => 'Published studies',
     'page callback' => 'obiba_mica_study_page_list',
     'file' => 'obiba_mica_study-page-list.inc',
     'access callback' => 'obiba_mica_study_access_page',
     'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'expanded' => TRUE,
+  );
+  $items[MicaClientPathProvider::STUDIES . '/' . MicaClientPathProvider::COLLECTION_STUDIES] = array(
+    'title' => 'Collection Studies',
+    'description' => 'Published studies',
+    'page callback' => 'obiba_mica_study_collection_page_list',
+    'file' => 'obiba_mica_study-page-list.inc',
+    'access callback' => 'obiba_mica_study_access_page',
+    'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM
   );
 
-  $items['mica/study/%/networks'] = array(
+  $items[MicaClientPathProvider::COLLECTION_STUDY . '/%/networks'] = array(
     'page callback' => 'obiba_mica_study_page_detail_networks',
     'file' => 'obiba_mica_study-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2),
   );
 
-  $items['mica/study/%/datasets'] = array(
+  $items[MicaClientPathProvider::COLLECTION_STUDY . '/%/datasets'] = array(
     'page callback' => 'obiba_mica_study_page_detail_datasets',
     'file' => 'obiba_mica_study-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2),
   );
 
-  $items['mica/study/%'] = array(
+  $items[MicaClientPathProvider::COLLECTION_STUDY . '/%'] = array(
     'title' => 'Mica study detail',
     'page callback' => 'obiba_mica_study_page_detail',
     'file' => 'obiba_mica_study-page-detail.inc',
@@ -50,7 +62,7 @@ function obiba_mica_study_menu() {
     'page arguments' => array(2),
   );
 
-  $items['mica/study/%/draft/%'] = array(
+  $items[MicaClientPathProvider::COLLECTION_STUDY . '/%/draft/%'] = array(
     'title' => 'Mica study detail',
     'page callback' => 'obiba_mica_study_page_detail',
     'file' => 'obiba_mica_study-page-detail.inc',
@@ -58,6 +70,36 @@ function obiba_mica_study_menu() {
     'access arguments' => array('1'),
     'page arguments' => array(2, 4),
   );
+
+  /***********Harmonization Studies*********************/
+  $items[MicaClientPathProvider::STUDIES . '/' .MicaClientPathProvider::HARMONIZATION_STUDIES] = array(
+    'title' => 'Harmonization  Studies',
+    'description' => 'Published Harmonixation studies',
+    'page callback' => 'obiba_mica_study_harmonization_page_list',
+    'file' => 'obiba_mica_study-page-list.inc',
+    'access callback' => 'obiba_mica_study_access_page',
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM
+  );
+
+  $items[MicaClientPathProvider::HARMONIZATION_STUDY . '/%'] = array(
+    'title' => 'Mica Harmomization study detail',
+    'page callback' => 'obiba_mica_study_harmonization_page_detail',
+    'file' => 'obiba_mica_study_hamonization_study-detail.inc',
+    'access callback' => 'obiba_mica_study_access_page',
+    'access arguments' => array('1'),
+    'page arguments' => array(2),
+  );
+
+  $items[MicaClientPathProvider::HARMONIZATION_STUDY . '/%/draft/%'] = array(
+    'title' => 'Mica Harmomization study detail',
+    'page callback' => 'obiba_mica_study_harmonization_page_detail',
+    'file' => 'obiba_mica_study_hamonization_study-detail.inc',
+    'access callback' => 'obiba_mica_study_access_page',
+    'access arguments' => array('1'),
+    'page arguments' => array(2, 4),
+  );
+  /*****************************************************/
 
   $items['mica/refresh_list_studies/%/%/%/%'] = array(
     //'title' => t('AutoComp Menu'),
@@ -105,9 +147,15 @@ function obiba_mica_study_access_page() {
 function obiba_mica_study_theme($existing, $type, $theme, $path) {
   $path_theme = $path . '/templates';
   return array(
-    'obiba_mica_study_list-page' => array('template' => 'obiba_mica_study-list-page', 'path' => $path_theme),
+    'obiba_mica_study_list-page' => array(
+      'template' => 'obiba_mica_study-list-page',
+      'path' => $path_theme),
     'obiba_mica_study-list-page-block' => array(
       'template' => 'obiba_mica_study-list-page-block',
+      'path' => $path_theme
+    ),
+    'obiba_mica_study-list-harmo-study-page-block' => array(
+      'template' => 'obiba_mica_study-list-harmo-study-page-block',
       'path' => $path_theme
     ),
     'obiba_mica_study_detail' => array(
@@ -116,6 +164,14 @@ function obiba_mica_study_theme($existing, $type, $theme, $path) {
     ),
     'obiba_mica_study-detail-members' => array(
       'template' => 'obiba_mica_study-detail-members',
+      'path' => $path_theme . '/study-detail'
+    ),
+    'obiba_mica_study_harmonization_study-detail' => array(
+      'template' => 'obiba_mica_study_harmonization_study-detail',
+      'path' => $path_theme . '/study-detail'
+    ),
+    'obiba_mica_study_harmonization_study-detail-members' => array(
+      'template' => 'obiba_mica_study_harmonization_study-detail-members',
       'path' => $path_theme . '/study-detail'
     ),
     'obiba_mica_study_detail_coverage' => array(
@@ -155,7 +211,7 @@ function obiba_mica_study_block_info() {
     'status' => 1,
     'region' => 'content',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*mica/studies',
+    'pages' => '*' . MicaClientPathProvider::STUDIES,
     'weight' => 3,
     'custom' => 1,
   );
@@ -252,4 +308,11 @@ function obiba_mica_study_translate_study_design_summary($study_designs) {
     return $nstr;
   }
   return $localize->getTranslation("study_taxonomy.vocabulary.methods-design.term." . $study_designs . ".title");
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function obiba_mica_study_form_obiba_mica_content_pages_admin_settings_alter(&$form, &$form_state, $form_id) {
+  obiba_mica_study_settings_admin_content($form);
 }

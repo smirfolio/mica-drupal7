@@ -27,7 +27,7 @@
 
 <span ng-init="info = extractSummaryInfo(contingency.studyTable || contingency.networkTable)" title="{{info.population ? info.population + ':' + info.dce : ''}}">
   <span ng-if="contingency.studyTable">
-    <a href="<?php print $base_path; ?>mica/study/{{contingency.studyTable.studyId}}">{{contingency.studyTable.studySummary.acronym | localizedValue}}</a>
+    <a href="<?php print $base_path . MicaClientPathProvider::COLLECTION_STUDY; ?>/{{contingency.studyTable.studyId}}">{{contingency.studyTable.studySummary.acronym | localizedValue}}</a>
     <span>{{contingency.studyTable.name | localizedValue}}</span>
   </span>
   <span ng-if="contingency.networkTable">

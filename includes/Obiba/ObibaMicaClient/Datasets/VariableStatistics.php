@@ -378,7 +378,7 @@ class VariableStatistics {
       $study_id = $aggregation->studyTable->studyId;
       $study_summary = _obiba_mica_variable_study_summary($this->variable, $study_id);
       $study_acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
-      $header = !empty($study_summary->published)?l($study_acronym, 'mica/study/' . $study_id):$study_acronym;
+      $header = !empty($study_summary->published)?l($study_acronym, MicaClientPathProvider::COLLECTION_STUDY . '/' . $study_id):$study_acronym;
       if (!empty($aggregation->studyTable->name)) {
         $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
       }
