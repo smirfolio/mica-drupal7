@@ -203,5 +203,5 @@ else{
  * Check the dataset type.
  */
 function obiba_mica_dataset_type($dataset) {
-  return $dataset->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
+  return $dataset->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
 }

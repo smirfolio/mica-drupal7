@@ -75,12 +75,12 @@ function obiba_mica_variable_page_detail($variable_id) {
 
   drupal_set_title($title);
 
-  $dataset_type = $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
+  $dataset_type = $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
 
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
     l($localize->getTranslation('datasets'), 'mica/datasets'),
-    l(($dataset_type == 'study-dataset' ? $localize->getTranslation('study-datasets') : $localize->getTranslation('harmonization-datasets')), 'mica/datasets/' . $dataset_type . 's'),
+    l(($dataset_type == 'study-dataset' ? $localize->getTranslation('collection-datasets') : $localize->getTranslation('harmonization-datasets')), 'mica/datasets/' . $dataset_type . 's'),
     l(obiba_mica_commons_get_localized_field($variable, 'datasetName'), 'mica/' . obiba_mica_variable_dataset_type($variable)
       . '/' . $variable->datasetId),
   ));
@@ -441,5 +441,5 @@ function _obiba_mica_variable_network_summary($variable, $network_table_id) {
  * Return the dataset type.
  */
 function obiba_mica_variable_dataset_type($variable) {
-  return $variable->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
+  return $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
 }

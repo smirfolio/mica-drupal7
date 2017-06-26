@@ -7,8 +7,8 @@
     </span>
   </h1>
   <h1>
-    <span class="label label-warning"><?php print $metrics['Study']->title ?>
-      <span class="badge"><?php print $metrics['Study']->published ?></span>
+    <span class="label label-warning"><?php print $metrics[DrupalMicaStudyResource::TYPE_COLLECTION_STUDY]->title ?>
+      <span class="badge"><?php print $metrics[DrupalMicaStudyResource::TYPE_COLLECTION_STUDY]->published ?></span>
     </span>
   </h1>
   <h1>

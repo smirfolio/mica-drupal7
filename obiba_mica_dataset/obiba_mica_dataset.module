@@ -395,8 +395,8 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
     $dce_list .= '</ul>';
   }
 
-  if (!empty($dataset_summary->{'obiba.mica.StudyDatasetDto.type'})) {
-    $study_table = $dataset_summary->{'obiba.mica.StudyDatasetDto.type'}->studyTable;
+  if (!empty($dataset_summary->{'obiba.mica.CollectionDatasetDto.type'})) {
+    $study_table = $dataset_summary->{'obiba.mica.CollectionDatasetDto.type'}->studyTable;
     $dce_name = obiba_mica_dataset_get_dce_name_from_dataset($study_table);
     $dce_list = l($dce_name, '#', array(
       'external' => TRUE,
@@ -443,8 +443,8 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
           );
         }
         $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
-        $dataset_type = $summary->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
-        $dataset_type_name = $summary->variableType == 'Study' ? $localize->getTranslation('study-dataset') : $localize->getTranslation('harmonization-dataset');
+        $dataset_type = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
+        $dataset_type_name = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? $localize->getTranslation('collection-dataset') : $localize->getTranslation('harmonization-dataset');
 
         $dataset_rows[$key_dataset] = array(
           'data' => array(
@@ -510,8 +510,8 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
       }
 
       $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
-      $dataset_type = $summary->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset';
-      $dataset_type_name = $summary->variableType == 'Study' ? $localize->getTranslation('study-dataset') : $localize->getTranslation('harmonization-dataset');
+      $dataset_type = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
+      $dataset_type_name = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? $localize->getTranslation('collection-dataset') : $localize->getTranslation('harmonization-dataset');
       $dataset_rows[$key_dataset] = array(
         'data' => array(
           'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id),

@@ -29,10 +29,10 @@ class MicaMetricsHelper {
     switch ($type) {
       case 'Network':
         return 'networks';
-      case 'Study':
+      case DrupalMicaStudyResource::TYPE_COLLECTION_STUDY :
         return 'studies';
-      case 'StudyDataset':
-        return 'study-datasets';
+      case 'CollectionDataset':
+        return 'collection-datasets';
       case 'HarmonizationDataset':
         return 'harmonization-datasets';
       case 'DatasetVariable':

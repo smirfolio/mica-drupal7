@@ -120,10 +120,10 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
     }
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
-      $has_files  = obiba_mica_files_get_flat_attachments('/study/' . $study_id, !empty($token_key)?$token_key:NULL);
+      $has_files  = obiba_mica_files_get_flat_attachments('/' . DrupalMicaStudyResource::HARMONIZATION_STUDY . '/' . $study_id, !empty($token_key)?$token_key:NULL);
       if(!empty($has_files)){
         $file_browser = theme('obiba_mica_files_browser', array(
-          'doc_path' => '/study',
+          'doc_path' => '/' . DrupalMicaStudyResource::HARMONIZATION_STUDY,
           'doc_id' => $study_id,
           'token_key' => $token_key,
         ));

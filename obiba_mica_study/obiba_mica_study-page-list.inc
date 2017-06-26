@@ -81,7 +81,7 @@ function obiba_mica_study_list($studies_type = NULL) {
       $study_entity_type = DrupalMicaStudyResource::COLLECTION_STUDY;
       $template_study_block = 'obiba_mica_study-list-page-block';
       //@TODO this condition have to be dealt with type of the study (collection/harmonization)
-      if(!isset($study->populationSummaries)){
+      if($study->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY){
         $study_entity_type = DrupalMicaStudyResource::HARMONIZATION_STUDY;
         $template_study_block = 'obiba_mica_study-list-harmo-study-page-block';
       }
@@ -118,9 +118,17 @@ function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = N
   $list_studies_rendered = '';
   if (!empty($list_studies)) {
     foreach ($list_studies->getSummaries() as $study) {
-      $list_studies_rendered .= theme('obiba_mica_study-list-page-block', array(
-        'study' => $study,
-      ));
+      if($study->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY)
+      {
+        $list_studies_rendered .= theme('obiba_mica_study-list-harmo-study-page-block', array(
+          'study' => $study,
+        ));
+      }
+    else{
+        $list_studies_rendered .= theme('obiba_mica_study-list-page-block', array(
+          'study' => $study,
+        ));
+      }
     }
     $data['list'] = $list_studies_rendered;
     $data['total'] = $list_studies->getTotalHits();
