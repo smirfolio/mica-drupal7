@@ -289,25 +289,18 @@ function obiba_mica_study_load_libs() {
 /**
  * Translate the study design in studies summary.
  *
- * @param string $study_designs
+ * @param string $study_design
  *   A given design key to translate.
  *
  * @return string
  *   A Translated design term.
  */
-function obiba_mica_study_translate_study_design_summary($study_designs) {
+function obiba_mica_study_translate_study_design_summary($study_design) {
   $localize = obiba_mica_commons_mica_server_localisation();
-  if (empty($study_designs)) {
-    return $study_designs;
+  if (empty($study_design)) {
+    return $study_design;
   }
-  if (is_array($study_designs)) {
-    $nstr = array();
-    foreach ($study_designs as $k => $v) {
-      $nstr[$k] = obiba_mica_study_translate_study_design_summary($v);
-    }
-    return $nstr;
-  }
-  return $localize->getTranslation("study_taxonomy.vocabulary.methods-design.term." . $study_designs . ".title");
+  return $localize->getTranslation("study_taxonomy.vocabulary.methods-design.term." . $study_design . ".title");
 }
 
 /**

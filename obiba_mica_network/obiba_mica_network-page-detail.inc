@@ -343,6 +343,7 @@ function obiba_mica_network_studies_datatable_init($study_summaries, $id_network
 }
 
 function obiba_mica_network_study_table_rows($study_summaries, $id_network = NULL) {
+  $localize = obiba_mica_commons_mica_server_localisation();
   $rows = array();
   $query = NULL;
   $cached_studies_rows = obiba_mica_commons_get_cache('cached' . __FUNCTION__ . $id_network);
@@ -359,7 +360,8 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
         $rows[] = array(
           MicaClientAnchorHelper::study($study_summary),
           $name,
-          implode(', ', isset($study_summary->designs) ? obiba_mica_study_translate_study_design_summary($study_summary->designs) : array()),
+          $localize->getTranslation('global.' . $study_summary->studyResourcePath),
+          isset($study_summary->design) ? obiba_mica_study_translate_study_design_summary($study_summary->design) : '',
           !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? t('No Limit') :
             (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
           isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
@@ -378,9 +380,10 @@ function obiba_mica_network_study_table_headers() {
   return array(
     array("title" => $localize->getTranslation('study.acronym'), 'width' => '15%'),
     array("title" => $localize->getTranslation('study.name'), 'width' => '40%'),
-    array("title" => $localize->getTranslation('search.study.design'), 'width' => '15%'),
+    array("title" => $localize->getTranslation('type'), 'width' => '10%'),
+    array("title" => $localize->getTranslation('search.study.design'), 'width' => '10%'),
     array("title" => $localize->getTranslation('search.study.participants'), 'width' => '10%'),
-    array("title" => $localize->getTranslation('address.country'), 'width' => '15%'),
+    array("title" => $localize->getTranslation('address.country'), 'width' => '10%'),
     array("title" => $localize->getTranslation('variables'), 'width' => '5%')
   );
 }
