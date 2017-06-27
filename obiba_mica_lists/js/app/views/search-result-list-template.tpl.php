@@ -30,6 +30,9 @@
     </ul>
     <ul class="nav nav-pills pull-right voffset2">
         <li>
+            <list-search-widget></list-search-widget>
+        </li>
+        <li>
             <list-sort-widget></list-sort-widget>
         </li>
     </ul>
