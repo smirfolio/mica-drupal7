@@ -86,7 +86,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 if (!empty($dataset_type_dto->project)):
                   echo $localize->getTranslation('harmonization-dataset');
                 else:
-                  echo $localize->getTranslation('study-dataset');
+                  echo $localize->getTranslation('collection-dataset');
                 endif;
                 ?>
               </p>
@@ -141,7 +141,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     <?php endif; ?>
 
     <!-- STUDIES -->
-    <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "study-dataset" || !empty($dataset_type_dto->studyTables))): ?>
+    <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "collection-dataset" || !empty($dataset_type_dto->studyTables))): ?>
       <h2>
         <?php
         if (!empty($dataset_type_dto->project)){
@@ -255,7 +255,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   </div>
 
   <!-- VARIABLES -->
-  <?php if ($dataset_type != "study-dataset" && (!isset($draft_view) || $draft_view !== TRUE)): ?>
+  <?php if ($dataset_type != "collection-dataset" && (!isset($draft_view) || $draft_view !== TRUE)): ?>
     <section class="table-variables">
       <h2><?php print $localize->getTranslation('client.label.variable.harmonization') ?></h2>
       <?php print render($harmonization_table_legend); ?>

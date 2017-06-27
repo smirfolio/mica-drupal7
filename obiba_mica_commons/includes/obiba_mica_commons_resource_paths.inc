@@ -191,10 +191,10 @@ class MicaClientPathProvider {
    */
   public static function dataset($dataset) {
     if (!empty($dataset->variableType)) {
-      return $dataset->variableType == 'Study' ? self::studyDataset($dataset->id) : self::harmonizationDataset($dataset->id);
+      return $dataset->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? self::studyDataset($dataset->id) : self::harmonizationDataset($dataset->id);
     }
     if (!empty($dataset->_extensions)) {
-      if ($dataset->hasExtension('obiba.mica.StudyDatasetDto.type')) {
+      if ($dataset->hasExtension('obiba.mica.CollectionDatasetDto.type')) {
         return self::studyDataset($dataset->id);
       }
       if ($dataset->hasExtension('obiba.mica.HarmonizationDatasetDto.type')) {
@@ -215,7 +215,7 @@ class MicaClientPathProvider {
   public static function dataset_draft_url($dataset) {
       return sprintf("%s/#/%s/%s",
           self::get_mica_url(),
-          $dataset->variableType == 'Study' ? 'study-dataset' : 'harmonization-dataset',
+          $dataset->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'study-dataset' : 'harmonization-dataset',
           $dataset->id);
   }
 
@@ -255,7 +255,7 @@ class MicaClientPathProvider {
    *   Study/Harmonization variable dataset.
    */
   public static function variableDataset($variable) {
-    return $variable->variableType == 'Study' ? self::studyDataset($variable->datasetId) : self::harmonizationDataset($variable->datasetId);
+    return $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? self::studyDataset($variable->datasetId) : self::harmonizationDataset($variable->datasetId);
   }
 
   /**
@@ -918,7 +918,7 @@ class MicaClientAnchorHelper {
     $localize = obiba_mica_commons_mica_server_localisation();
     $label = $localize->getTranslation('harmonization-dataset');
     if ($bucket == 'dataset') {
-      $label = $localize->getTranslation('study-dataset');
+      $label = $localize->getTranslation('collection-dataset');
     }
     return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
       variable_get_value('variable_coverage_label') . ' ' . t('by') . ' ' . $label,
@@ -979,7 +979,7 @@ class MicaClientAnchorHelper {
    *   The anchor link.
    */
   public static function variableCrosstab($variable) {
-    $dataset = $variable->variableType === 'Study' ? MicaClientPathProvider::studyDataset($variable->datasetId) : MicaClientPathProvider::harmonizationDataset($variable->datasetId);
+    $dataset = $variable->variableType === DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? MicaClientPathProvider::studyDataset($variable->datasetId) : MicaClientPathProvider::harmonizationDataset($variable->datasetId);
 
     $res = l(
       t('Crosstabs'),

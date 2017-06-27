@@ -25,7 +25,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
   const HARMONIZATION_STUDIES = 'harmonization-studies';
   const COLLECTION_STUDY = 'collection-study';
   const HARMONIZATION_STUDY = 'harmonization-study';
-
+  const TYPE_COLLECTION_STUDY = 'Collection';
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
   }
@@ -68,8 +68,6 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
         $this->setLastResponse($client->lastResponse);
         $return_studies = !empty($data) ? new DrupalMicaClient\StudyJoinResponseWrapper(json_decode($data)) : NULL;
         $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $return_studies);
-
-        $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, json_decode($data));
         return $return_studies;
       } catch (HttpClientException $e) {
         watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',

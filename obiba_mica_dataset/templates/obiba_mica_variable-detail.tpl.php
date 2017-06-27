@@ -256,7 +256,7 @@
     </section>
   <?php endif; ?>
 
-  <?php if ($variable_dto->variableType != 'Study'): ?>
+  <?php if ($variable_dto->variableType != DrupalMicaStudyResource::TYPE_COLLECTION_STUDY): ?>
     <section>
       <h2><?php print $localize->getTranslation('client.label.variable.harmonization') ?></h2>
       <?php print render($harmonization_table_legend); ?>
