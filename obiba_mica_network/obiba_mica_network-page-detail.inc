@@ -32,17 +32,17 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
   if (!empty($token_key)) {
     obiba_mica_commons_is_published(FALSE);
     $network_dto = $network_resource->getNetwork($network_id, $token_key);
-    if(!empty($network_dto->logo)){
+    if (!empty($network_dto->logo)) {
       $logo_path = obiba_mica_commons_safe_expose_server_url($network_id, $network_dto->logo, 'network', FALSE, $token_key);
     }
   }
-  else{
+  else {
     $network_dto = $network_resource->getNetwork($network_id);
-    if(!empty($network_dto->logo)){
+    if (!empty($network_dto->logo)) {
       $logo_path = obiba_mica_commons_safe_expose_server_url($network_id, $network_dto->logo, 'network', FALSE);
     }
   }
-  if(!empty($logo_path)){
+  if (!empty($logo_path)) {
     $logo_image_tag = theme_image(array(
       'path' => $logo_path,
       'attributes' => array(
@@ -102,7 +102,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
       $associated_people_button = theme('obiba_mica_persons-button');
       $associated_people_modal = theme('obiba_mica_persons-modal',
         array('persons_table' => theme('obiba_mica_persons-table')));
-      $contact_detail_modal='';
+      $contact_detail_modal = '';
       foreach ($network_dto->memberships as $membership) {
         $contact_detail_modal .= obiba_mica_persons_get_person_detail($membership->role,
           $network_dto->id, !empty($membership->members) ? $membership->members : NULL);
@@ -112,14 +112,14 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
         '/js/obiba_mica_files_attachment_download.js');
-      $has_files = obiba_mica_files_get_flat_attachments('/network/'. $network_id, !empty($token_key)?$token_key:NULL);
-        if(!empty($has_files)){
-              $file_browser = theme('obiba_mica_files_browser', array(
-                'doc_path' => '/network',
-                'doc_id' => $network_id,
-                'token_key' =>!empty($token_key)?$token_key:''
-              ));
-        }
+      $has_files = obiba_mica_files_get_flat_attachments('/network/' . $network_id, !empty($token_key) ? $token_key : NULL);
+      if (!empty($has_files)) {
+        $file_browser = theme('obiba_mica_files_browser', array(
+          'doc_path' => '/network',
+          'doc_id' => $network_id,
+          'token_key' => !empty($token_key) ? $token_key : ''
+        ));
+      }
       obiba_mica_app_angular_load_js_resources('obiba_mica_files');
     }
 
@@ -337,14 +337,15 @@ function obiba_mica_network_studies_datatable_init($study_summaries, $id_network
 
   drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/obiba_mica_network_studies_datatable_init.js', 'file');
   drupal_add_js(array(
-    'table_headers' => obiba_mica_network_study_table_headers(),
-    'table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network)
+    'collection_study_table_headers' => obiba_mica_network_study_table_headers(DrupalMicaStudyResource::COLLECTION_STUDY),
+    'harmonization_study_table_headers' => obiba_mica_network_study_table_headers(DrupalMicaStudyResource::HARMONIZATION_STUDY),
+    'collection_study_table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network, DrupalMicaStudyResource::COLLECTION_STUDY),
+    'harmonization_study_table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network, DrupalMicaStudyResource::HARMONIZATION_STUDY)
   ), 'setting');
 }
 
-function obiba_mica_network_study_table_rows($study_summaries, $id_network = NULL) {
-  $localize = obiba_mica_commons_mica_server_localisation();
-  $rows = array();
+function obiba_mica_network_study_table_rows($study_summaries, $id_network = NULL, $study_type = DrupalMicaStudyResource::COLLECTION_STUDY) {
+  $rows = NULL;
   $query = NULL;
   $cached_studies_rows = obiba_mica_commons_get_cache('cached' . __FUNCTION__ . $id_network);
   if (!empty($cached_studies_rows)) {
@@ -356,18 +357,20 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
         $query = 'network(in(Mica_network.id,' . $id_network . '))';
       }
       foreach ($study_summaries as $study_summary) {
-        $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
-        $rows[] = array(
-          MicaClientAnchorHelper::study($study_summary),
-          $name,
-          $localize->getTranslation('global.' . $study_summary->studyResourcePath),
-          isset($study_summary->design) ? obiba_mica_study_translate_study_design_summary($study_summary->design) : '',
-          !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? t('No Limit') :
-            (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
-          isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
-          empty($study_summary->variables)
-            ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, FALSE, $query)
-        );
+        if ($study_summary->studyResourcePath == $study_type) {
+          $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
+          $row = array(
+            MicaClientAnchorHelper::study($study_summary),
+            $name,
+            isset($study_summary->design) ? obiba_mica_study_translate_study_design_summary($study_summary->design) : '',
+            !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? t('No Limit') :
+              (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
+            isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
+            empty($study_summary->variables)
+              ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, FALSE, $query)
+          );
+          $rows[] = obiba_mica_network_study_table_column($row, $study_type);
+        }
       }
     }
     obiba_mica_commons_set_cache('cached' . __FUNCTION__ . $id_network, $rows);
@@ -375,29 +378,74 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
   }
 }
 
-function obiba_mica_network_study_table_headers() {
+function obiba_mica_network_study_table_headers($study_type = DrupalMicaStudyResource::COLLECTION_STUDY) {
   $localize = obiba_mica_commons_mica_server_localisation();
-  return array(
-    array("title" => $localize->getTranslation('study.acronym'), 'width' => '15%'),
+  $header = array(
+    array(
+      "title" => $localize->getTranslation('study.acronym'),
+      'width' => '15%'
+    ),
     array("title" => $localize->getTranslation('study.name'), 'width' => '40%'),
-    array("title" => $localize->getTranslation('type'), 'width' => '10%'),
-    array("title" => $localize->getTranslation('search.study.design'), 'width' => '10%'),
-    array("title" => $localize->getTranslation('search.study.participants'), 'width' => '10%'),
-    array("title" => $localize->getTranslation('address.country'), 'width' => '10%'),
+    array(
+      "title" => $localize->getTranslation('search.study.design'),
+      'width' => '10%'
+    ),
+    array(
+      "title" => $localize->getTranslation('search.study.participants'),
+      'width' => '10%'
+    ),
+    array(
+      "title" => $localize->getTranslation('address.country'),
+      'width' => '10%'
+    ),
     array("title" => $localize->getTranslation('variables'), 'width' => '5%')
   );
+  return obiba_mica_network_study_table_column($header, $study_type);
+}
+
+/**
+ * Format column study table depending in studies type
+ */
+function obiba_mica_network_study_table_column($row, $type) {
+  switch ($type) {
+    case DrupalMicaStudyResource::HARMONIZATION_STUDY:
+      array_splice($row, 2, -1);
+      return $row;
+      break;
+    default:
+      return $row;
+  }
+
 }
 
 function obiba_mica_network_network_table_headers() {
   $localize = obiba_mica_commons_mica_server_localisation();
   return array(
-    array("title" => $localize->getTranslation('network.acronym'), 'width' => '15%'),
-    array("title" => $localize->getTranslation('network.name'), 'width' => '40%'),
+    array(
+      "title" => $localize->getTranslation('network.acronym'),
+      'width' => '15%'
+    ),
+    array(
+      "title" => $localize->getTranslation('network.name'),
+      'width' => '40%'
+    ),
     array("title" => $localize->getTranslation('studies'), 'width' => '5%'),
-    array("title" => $localize->getTranslation('search.study.participants'), 'width' => '10%'),
-    array("title" => $localize->getTranslation('client.label.countries'), 'width' => '20%'),
-    array("title" => $localize->getTranslation('client.label.study-variables'), 'width' => '5%'),
-    array("title" => $localize->getTranslation('client.label.dataschema-variables'), 'width' => '5%')
+    array(
+      "title" => $localize->getTranslation('search.study.participants'),
+      'width' => '10%'
+    ),
+    array(
+      "title" => $localize->getTranslation('client.label.countries'),
+      'width' => '20%'
+    ),
+    array(
+      "title" => $localize->getTranslation('client.label.study-variables'),
+      'width' => '5%'
+    ),
+    array(
+      "title" => $localize->getTranslation('client.label.dataschema-variables'),
+      'width' => '5%'
+    )
   );
 }
 
