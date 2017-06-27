@@ -215,7 +215,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               <tr>
                 <th><?php print $localize->getTranslation('search.study.design') ?></th>
                 <td>
-                  <?php print implode(', ',obiba_mica_study_translate_study_design_summary($dataset_type_dto->studyTable->studySummary->designs)); ?>
+                  <?php print obiba_mica_study_translate_study_design_summary($dataset_type_dto->studyTable->studySummary->design); ?>
                 </td>
               </tr>
               <tr>

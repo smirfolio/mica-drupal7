@@ -72,14 +72,14 @@
             print t('Member of ') . implode(', and', $names);
           }
           ?>
-        <?php if (!empty($study->designs) || !empty($study->targetNumber)) : ?>
+        <?php if (!empty($study->design) || !empty($study->targetNumber)) : ?>
 
-            <?php if (!empty($study->designs)): print $localize->getTranslation('search.study.design') ?>:
-              <span><?php print implode(', ', obiba_mica_study_translate_study_design_summary($study->designs)) ?></span>
+            <?php if (!empty($study->design)): print $localize->getTranslation('search.study.design') ?>:
+              <span><?php print obiba_mica_study_translate_study_design_summary($study->design) ?></span>
             <?php endif; ?>
             <?php
             if (!empty($study->targetNumber)):
-              print (empty($study->designs) ? '' : '; ') . $localize->getTranslation('numberOfParticipants.participants');
+              print (empty($study->design) ? '' : '; ') . $localize->getTranslation('numberOfParticipants.participants');
               ?>:
               <span>
               <?php print $study->targetNumber->noLimit === TRUE

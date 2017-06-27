@@ -231,6 +231,7 @@ function obiba_mica_study_study_summaries_table_headers() {
   return array(
     array("title" => $localize->getTranslation('study.acronym')),
     array("title" => $localize->getTranslation('study.name')),
+    array("title" => $localize->getTranslation('type')),
     array("title" => $localize->getTranslation('study.design')),
     array("title" => $localize->getTranslation('client.label.dataset.participants')),
     array("title" => $localize->getTranslation('client.label.countries')),
@@ -253,7 +254,8 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
   return array(
     MicaClientAnchorHelper::study($study_summary),
     $name,
-    implode(', ', obiba_mica_study_translate_study_design_summary($study_summary->designs)),
+    $localize->getTranslation('global.' . $study_summary->studyResourcePath),
+    isset($study_summary->design) ? obiba_mica_study_translate_study_design_summary($study_summary->design) : '',
     isset($study_summary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
       isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL,
     isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
