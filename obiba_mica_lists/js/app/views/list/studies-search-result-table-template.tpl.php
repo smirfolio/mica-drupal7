@@ -15,7 +15,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="summary in summaries"
-                    ng-init="lang = $parent.$parent.lang">
+                    ng-init="lang = $parent.$parent.lang; studyPath= summary.studyResourcePath=='collection-study'?'study':summary.studyResourcePath" >
                     <td><img ng-if="summary.logo" src="" alt="">
 
                         <img src="{{summary.logoUrl}}"
@@ -26,16 +26,16 @@
                             <span class="t_badge color_light i-obiba-S"></span>
                         </h1></td>
                     <td>
-                        <h4><a href="{{'study/' + summary.id | getBaseUrl}}">
+                        <h4><a href="{{studyPath + '/' + summary.id | getBaseUrl}}">
                                 <localized value="summary.name"
                                            lang="lang"></localized>
                             </a></h4>
                         <p ng-if="options.studiesListOptions.studiesTrimedDescrition">
                             <localized value="summary.objectives" lang="lang"
-                                       ellipsis-size="250"></localized>
+                                       ellipsis-size="250" markdown-it="true"></localized>
                         </p>
                         <p ng-if="!options.studiesListOptions.studiesTrimedDescrition">
-                            <localized value="summary.objectives" lang="lang"></localized>
+                            <localized value="summary.objectives" lang="lang" markdown-it="true"></localized>
                         </p>
                         <div ng-if="options.studiesListOptions.studiesSupplInfoDetails">
                             <blockquote-small
@@ -103,7 +103,7 @@
                            class="btn btn-primary btn-xs sm-top-margin">Read
                             More</a>
                     </td>
-                    <td>
+                    <td ng-if="summary.targetNumber.number">
                         <localized-number
                                 value="summary.targetNumber.number"></localized-number>
                     </td>
