@@ -90,17 +90,17 @@
         </table>
 
       </div>
-      <div class="col-lg-6  col-xs-12">
-        <!-- GENERAL DESIGN -->
-        <h2 id="design"><?php print $localize->getTranslation('design') ?></h2>
-
-        <table class="table table-striped">
-          <tbody>
-
-          </tbody>
-        </table>
-
-      </div>
+<!--      <div class="col-lg-6  col-xs-12">-->
+<!--        <!-- GENERAL DESIGN -->-->
+<!--        <h2 id="design">--><?php //print $localize->getTranslation('design') ?><!--</h2>-->
+<!---->
+<!--        <table class="table table-striped">-->
+<!--          <tbody>-->
+<!---->
+<!--          </tbody>-->
+<!--        </table>-->
+<!---->
+<!--      </div>-->
     </div>
 
   </section>

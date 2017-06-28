@@ -157,19 +157,29 @@
         </div>
       <?php endif; ?>
 
-      <?php if (!empty($network_dto->studySummaries)): ?>
-        <div>
-          <h2><?php print $localize->getTranslation('studies') ?></h2>
+        <div id="collection-studies-table">
+          <h2><?php print $localize->getTranslation('collection-studies') ?></h2>
 
-          <div id="studies-table">
+          <div>
             <div class="row">
               <div class="col-lg-12 col-xs-12">
-                <table class="table table-striped" id="table-studies"></table>
+                <table class="table table-striped" id="table-collection-studies"></table>
               </div>
             </div>
           </div>
         </div>
-      <?php endif; ?>
+          <div id="harmonization-studies-table">
+              <h2><?php print $localize->getTranslation('harmonization-studies') ?></h2>
+
+              <div>
+                  <div class="row">
+                      <div class="col-lg-12 col-xs-12">
+                          <table class="table table-striped" id="table-harmo-studies"></table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
 
     </section>
   <?php endif; ?>
