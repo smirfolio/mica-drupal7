@@ -32,10 +32,10 @@
                             </a></h4>
                         <p ng-if="options.studiesListOptions.studiesTrimedDescrition">
                             <localized value="summary.objectives" lang="lang"
-                                       ellipsis-size="250"></localized>
+                                       ellipsis-size="250" markdown-it="true"></localized>
                         </p>
                         <p ng-if="!options.studiesListOptions.studiesTrimedDescrition">
-                            <localized value="summary.objectives" lang="lang"></localized>
+                            <localized value="summary.objectives" lang="lang" markdown-it="true"></localized>
                         </p>
                         <div ng-if="options.studiesListOptions.studiesSupplInfoDetails">
                             <blockquote-small
