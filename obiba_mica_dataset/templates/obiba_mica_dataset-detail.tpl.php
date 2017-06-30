@@ -83,7 +83,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
             <td>
               <p>
                 <?php
-                if (!empty($dataset_type_dto->project)):
+                if (!empty($dataset_type) && $dataset_type == 'harmonization-dataset'):
                   echo $localize->getTranslation('harmonization-dataset');
                 else:
                   echo $localize->getTranslation('collection-dataset');
@@ -141,18 +141,44 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     <?php endif; ?>
 
     <!-- STUDIES -->
+      <!-- Harmo reference study table -->
+    <?php if (!empty($dataset_type_dto->harmonizationLink)): ?>
+      <h2><?php print $localize->getTranslation('harmonization-study') ?></h2>
+        <div class="row">
+            <div class="col-lg-6 col-xs-12">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <th><?php print $localize->getTranslation('study.acronym') ?></th>
+                        <td>
+                            <p>
+                              <?php print MicaClientAnchorHelper::study($dataset_type_dto->harmonizationLink->studySummary); ?>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><?php print $localize->getTranslation('study.name') ?></th>
+                        <td>
+                            <p>
+                              <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->harmonizationLink->studySummary, 'name'); ?>
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <?php endif ?>
+      <!-- ###Harmo reference study table## -->
     <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == "collection-dataset" || !empty($dataset_type_dto->studyTables))): ?>
       <h2>
         <?php
-        if (!empty($dataset_type_dto->project)){
-          echo $localize->getTranslation('studies');
-        }
-        elseif(!empty($dataset_type_dto->studyTable)){
-          echo $localize->getTranslation('study.label');
+        if (!empty($dataset_type_dto->studyTables)){
+          print $localize->getTranslation('collection-studies');
         }
         ?>
       </h2>
-      <?php if (!empty($dataset_type_dto->project)): ?>
+      <?php if (!empty($dataset_type_dto->studyTables)): ?>
         <div id="studies-table">
           <div class="row">
             <div class="col-lg-12 col-xs-12">
@@ -162,6 +188,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
         </div>
       <?php else: ?>
         <?php if (!empty($dataset_type_dto->studyTable)): ?>
+          <h2><?php print $localize->getTranslation('collection-study'); ?></h2>
         <div class="row">
           <div class="col-lg-6 col-xs-12">
             <table class="table table-striped">
@@ -241,6 +268,22 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
         <?php endif ?>
       <?php endif ?>
     <?php endif ?>
+
+    <?php if (variable_get_value('dataset_show_studies') && (!empty($dataset_type_dto->harmonizationTables))): ?>
+        <h2>
+          <?php
+          print $localize->getTranslation('harmonization-studies');
+          ?>
+        </h2>
+            <div id="studies-table">
+                <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                        <table class="table table-striped" id="table-harmonization-studies"></table>
+                    </div>
+                </div>
+            </div>
+    <?php endif; ?>
+
   </section>
 
   <!-- COVERAGE -->

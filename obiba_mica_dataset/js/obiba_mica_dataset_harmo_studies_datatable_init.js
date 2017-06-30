@@ -12,31 +12,43 @@
   Drupal.behaviors.micaDataset_studies_datatable_init = {
 
     attach: function (context, settings) {
-
-      var divStudies = $('#table-studies');
-      divStudies.dataTable(
-        {
-          "bAutoWidth": false,
-          "responsive": true,
-          "data": settings.table_data,
-          "columns": settings.table_headers,
-          "iDisplayLength": 25,
-          "scrollCollapse": true,
-          "sDom": '<"table-var-wrapper" <<"md-top-margin pull-left" i><"pull-right" f>><"clear-fix" ><"no-float-tab" r<"scroll-content-tab" t>><"clear-fix" ><"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
-          "language": {
-            "url": Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/datatable-international'
-          },
-          "fnDrawCallback": function(oSettings) {
-            if (oSettings._iDisplayLength > oSettings.aoData.length) {
-              $('#table-studies_paginate').hide();
-              $('#table-studies_length').hide();
-            } else {
-              $('#table-studies_paginate').show();
-              $('#table-studies_length').show();
+      if (settings.collection_studies_table_data && settings.collection_studies_table_headers) {
+        renderTable('table-studies', settings.collection_studies_table_data, settings.collection_studies_table_headers);
+      }
+      if (settings.harmonization_studies_table_data && settings.harmonization_studies_table_headers) {
+        renderTable('table-harmonization-studies', settings.harmonization_studies_table_data, settings.harmonization_studies_table_headers);
+      }
+      function hidePaginationLength(element){
+        $('#' + element + '_paginate').hide();
+        $('#' + element + '_length').hide();
+      }
+      function showPaginationLength(element){
+        $('#' + element + '_paginate').show();
+        $('#' + element + '_length').show();
+      }
+      function renderTable(divTable, data, header) {
+        $('#' + divTable).dataTable(
+          {
+            "bAutoWidth": false,
+            "responsive": true,
+            "data": data,
+            "columns": header,
+            "iDisplayLength": 25,
+            "scrollCollapse": true,
+            "sDom": '<"table-var-wrapper" <<"md-top-margin pull-left" i><"pull-right" f>><"clear-fix" ><"no-float-tab" r<"scroll-content-tab" t>><"clear-fix" ><"pull-left md-top-margin" l><"pull-right md-top-margin" p>>',
+            "language": {
+              "url": Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/datatable-international'
+            },
+            "fnDrawCallback": function (oSettings) {
+              if (oSettings._iDisplayLength > oSettings.aoData.length) {
+                hidePaginationLength(divTable);
+              } else {
+                showPaginationLength(divTable);
+              }
             }
           }
-        }
-      );
+        );
+      }
     }
   }
 

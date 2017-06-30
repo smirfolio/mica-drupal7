@@ -99,6 +99,14 @@ function obiba_mica_study_menu() {
     'access arguments' => array('1'),
     'page arguments' => array(2, 4),
   );
+
+  $items[MicaClientPathProvider::HARMONIZATION_STUDY . '/%/networks'] = array(
+    'page callback' => 'obiba_mica_study_page_detail_networks',
+    'file' => 'obiba_mica_study-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
   /*****************************************************/
 
   $items['mica/refresh_list_studies/%/%/%/%'] = array(
