@@ -730,6 +730,7 @@ function obiba_mica_dataset_studies_datatable_init($dataset_type_dto) {
   }
 
   $study_tables = array();
+  $harmo_study_tables = array();
   if (!empty($dataset_type_dto->studyTables)) {
     foreach ($dataset_type_dto->studyTables as $study_table) {
       array_push($study_tables, $study_table);
@@ -740,10 +741,22 @@ function obiba_mica_dataset_studies_datatable_init($dataset_type_dto) {
     array_push($study_tables, $dataset_type_dto->studyTable);
   }
 
+  if (!empty($dataset_type_dto->harmonizationTables)) {
+    foreach ($dataset_type_dto->harmonizationTables as $harmo_study_table) {
+      array_push($harmo_study_tables, $harmo_study_table);
+    }
+  }
+
+  if (!empty($dataset_type_dto->harmonizationLink)) {
+    array_push($harmo_study_tables, $dataset_type_dto->harmonizationLink);
+  }
+
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_harmo_studies_datatable_init.js', 'file');
   $data = array(
-    'table_headers' => obiba_mica_study_study_summaries_table_headers(),
-    'table_data' => obiba_mica_dataset_study_tables_rows($study_tables),
+    'collection_studies_table_headers' => obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::COLLECTION_STUDY),
+    'collection_studies_table_data' => obiba_mica_dataset_study_tables_rows($study_tables, DrupalMicaStudyResource::COLLECTION_STUDY),
+    'harmonization_studies_table_headers' => obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::HARMONIZATION_STUDY),
+    'harmonization_studies_table_data' => obiba_mica_dataset_study_tables_rows($harmo_study_tables, DrupalMicaStudyResource::HARMONIZATION_STUDY),
   );
   drupal_add_js($data, 'setting');
 }
@@ -781,7 +794,7 @@ function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
 /**
  * Parse study rows.
  */
-function obiba_mica_dataset_study_tables_rows($study_tables) {
+function obiba_mica_dataset_study_tables_rows($study_tables, $study_type = DrupalMicaStudyResource::COLLECTION_STUDY) {
   $rows = array();
   if (!empty($study_tables)) {
     $study_ids = array();
@@ -789,7 +802,7 @@ function obiba_mica_dataset_study_tables_rows($study_tables) {
       if (!in_array($study_table->studyId, $study_ids)) {
         $study_ids[] = $study_table->studyId;
         $row = obiba_mica_study_study_summaries_table_row($study_table->studySummary);
-        $rows[] = $row;
+        $rows[] =  obiba_mica_study_study_table_column($row, $study_type);;
       }
     }
   }
