@@ -747,8 +747,8 @@ function obiba_mica_dataset_studies_datatable_init($dataset_type_dto) {
     }
   }
 
-  if (!empty($dataset_type_dto->harmonizationLink)) {
-    array_push($harmo_study_tables, $dataset_type_dto->harmonizationLink);
+  if (!empty($dataset_type_dto->harmonizationTable)) {
+    array_push($harmo_study_tables, $dataset_type_dto->harmonizationTable);
   }
 
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_harmo_studies_datatable_init.js', 'file');

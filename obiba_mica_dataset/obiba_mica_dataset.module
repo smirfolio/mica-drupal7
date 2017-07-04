@@ -353,18 +353,20 @@ function obiba_mica_dataset_get_dce_name_from_dataset($study_table, $study_summa
   if (empty($study_summary)) {
     $study_summary = $study_table->studySummary;
   }
-  if (!empty($study_summary)) {
+  if (!empty($study_summary) && !empty($study_summary->populationSummaries)) {
     foreach ($study_summary->populationSummaries as $population) {
       if ($study_table->populationId == $population->id) {
-        foreach ($population->dataCollectionEventSummaries as $dce) {
-          if ($dce->id == $study_table->dataCollectionEventId) {
-            return obiba_mica_commons_get_localized_field($population, 'name') . ' -- ' . obiba_mica_commons_get_localized_field($dce, 'name');
+        if (!empty($population->dataCollectionEventSummaries)) {
+          foreach ($population->dataCollectionEventSummaries as $dce) {
+            if ($dce->id == $study_table->dataCollectionEventId) {
+              return obiba_mica_commons_get_localized_field($population, 'name') . ' -- ' . obiba_mica_commons_get_localized_field($dce, 'name');
+            }
           }
         }
       }
     }
-  }
-  return $study_table->populationId . ':' . $study_table->dataCollectionEventId;
+}
+return $study_table->populationId . ':' . $study_table->dataCollectionEventId;
 }
 
 /**
