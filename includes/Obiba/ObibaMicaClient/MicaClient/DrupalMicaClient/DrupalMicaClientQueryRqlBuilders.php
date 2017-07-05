@@ -20,14 +20,14 @@ class RqlQueryBuilder {
 
   public static function network_query_charts($studyIds) {
     return self::createChartsQuery(
-      "variable(in(studyIds,(%s)),sort(name),aggregate(%s,bucket(studyIds))),locale(%s)",
+      "variable(in(studyId,(%s)),sort(name),aggregate(%s,bucket(studyId))),locale(%s)",
       $studyIds
     );
   }
 
   public static function study_query_charts($studyId) {
     return self::createChartsQuery(
-      "variable(eq(studyIds,%s),sort(name),aggregate(%s,bucket(dceIds))),locale(%s)",
+      "variable(eq(studyId,%s),sort(name),aggregate(%s,bucket(dceId))),locale(%s)",
       $studyId
     );
   }
