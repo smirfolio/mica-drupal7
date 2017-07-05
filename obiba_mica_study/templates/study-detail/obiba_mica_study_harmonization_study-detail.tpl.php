@@ -90,17 +90,17 @@
         </table>
 
       </div>
-<!--      <div class="col-lg-6  col-xs-12">-->
-<!--        <!-- GENERAL DESIGN -->-->
-<!--        <h2 id="design">--><?php //print $localize->getTranslation('design') ?><!--</h2>-->
-<!---->
-<!--        <table class="table table-striped">-->
-<!--          <tbody>-->
-<!---->
-<!--          </tbody>-->
-<!--        </table>-->
-<!---->
-<!--      </div>-->
+      <?php if (!empty($study_dto->model->harmonizationDesign)): ?>
+          <div class="col-lg-6  col-xs-12">
+              <!-- harmonization  DESIGN -->
+              <h2 id="design"><?php print $localize->getTranslation('study_taxonomy.vocabulary.harmonizationDesign.title') ?></h2>
+              <table class="table table-striped">
+                  <tbody>
+                  <td><?php  print obiba_mica_commons_markdown(obiba_mica_commons_get_localized_field($study_dto->model, 'harmonizationDesign')) ?> </td>
+                  </tbody>
+              </table>
+          </div>
+      <?php endif; ?>
     </div>
 
   </section>
