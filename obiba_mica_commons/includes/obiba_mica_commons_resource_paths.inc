@@ -355,8 +355,9 @@ class MicaClientAnchorHelper {
    */
   public static function study($study) {
     $name = obiba_mica_commons_get_localized_field($study, 'acronym');
-    $Link_study = ($study->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY) ?
-      MicaClientPathProvider::harmoStudy($study->id) : MicaClientPathProvider::study($study->id);
+    $study_id = !empty($study->studyId) ? $study->studyId : $study->id;
+    $Link_study = (!empty($study->studyResourcePath) && $study->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY) ?
+      MicaClientPathProvider::harmoStudy($study_id) : MicaClientPathProvider::study($study_id);
     return !empty($study->published) ? l($name, $Link_study, array()) : $name;
   }
 

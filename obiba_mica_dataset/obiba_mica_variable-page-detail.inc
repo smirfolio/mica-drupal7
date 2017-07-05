@@ -215,7 +215,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
       if (property_exists($variable_harmonization, 'studyTable')) {
         $opal_table = $variable_harmonization->studyTable;
         $entity_id = $variable_resolver->studyId;
-        $entity_summary = _obiba_mica_variable_study_summary($variable, $entity_id);
+        $entity_summary = $variable_harmonization->studyTable;
         $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
         $dce_dataset_title = obiba_mica_dataset_get_dce_name_from_dataset($opal_table, $entity_summary);
         $entity_link = MicaClientAnchorHelper::study($entity_summary);
@@ -411,14 +411,19 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
  * If not found, fetch the study summary directly.
  */
 function _obiba_mica_variable_study_summary($variable, $study_id) {
-  foreach ($variable->studySummaries as $study) {
-    if ($study->id == $study_id) {
-      return $study;
-    }
+  if(!empty($variable->studySummary)){
+    return $variable->studySummary;
   }
-  // Not found in the dto, then fetch it.
-  $study_resource = new DrupalMicaStudyResource();
-  return $study_resource->getStudy($study_id);
+  else{
+    foreach ($variable->studySummaries as $study) {
+      if ($study->id == $study_id) {
+        return $study;
+      }
+    }
+    // Not found in the dto, then fetch it. Not sure if it make even a sense
+    $study_resource = new DrupalMicaStudyResource();
+    return $study_resource->getStudy($study_id);
+  }
 }
 
 /**

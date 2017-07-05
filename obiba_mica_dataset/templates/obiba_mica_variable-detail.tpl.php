@@ -54,32 +54,49 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (variable_get_value('variable_show_studies') && (!empty($variable_dto->studySummaries) || !empty($variable_dto->networkSummaries))): ?>
-            <tr>
-              <th>
-                <?php if ($variable_dto->variableType == 'Dataschema') :
-                  print $localize->getTranslation('studies');
-                elseif (!empty($variable_dto->studySummaries)) :
-                  print $localize->getTranslation('study.label');
-                else:
-                  print $localize->getTranslation('dataset.network.title');
-                endif;
-                ?>
-              </th>
-              <td>
-                <?php if ($variable_dto->variableType == 'Dataschema'): ?>
-                  <ul class="list-unstyled">
-                    <?php foreach ($variable_dto->studySummaries as $study_summary): ?>
-                      <li><?php print MicaClientAnchorHelper::study($study_summary); ?></li>
-                    <?php endforeach ?>
-                  </ul>
-                <?php elseif (!empty($variable_dto->studySummaries)):
-                  print MicaClientAnchorHelper::study($variable_dto->studySummaries[0]);
-                elseif (!empty($variable_dto->networkSummaries)):
-                  print MicaClientAnchorHelper::network($variable_dto->networkSummaries[0]);
-                endif ?>
-              </td>
-            </tr>
+          <?php if (variable_get_value('variable_show_studies')): ?>
+            <?php if ((!empty($variable_dto->studySummaries) || !empty($variable_dto->networkSummaries))): ?>
+                  <tr>
+                      <th>
+                        <?php if ($variable_dto->variableType == 'Dataschema') :
+                          print $localize->getTranslation('studies');
+                        elseif (!empty($variable_dto->studySummaries)) :
+                          print $localize->getTranslation('study.label');
+                        else:
+                          print $localize->getTranslation('dataset.network.title');
+                        endif;
+                        ?>
+                      </th>
+                      <td>
+                        <?php if ($variable_dto->variableType == 'Dataschema'): ?>
+                            <ul class="list-unstyled">
+                              <?php foreach ($variable_dto->studySummaries as $study_summary): ?>
+                                  <li><?php print MicaClientAnchorHelper::study($study_summary); ?></li>
+                              <?php endforeach ?>
+                            </ul>
+                        <?php elseif (!empty($variable_dto->studySummaries)):
+                          print MicaClientAnchorHelper::study($variable_dto->studySummaries[0]);
+                        elseif (!empty($variable_dto->networkSummaries)):
+                          print MicaClientAnchorHelper::network($variable_dto->networkSummaries[0]);
+                        endif ?>
+                      </td>
+                  </tr>
+            <?php elseif (!empty($variable_dto->studySummary)): ?>
+                  <tr>
+                      <th>
+                        <?php if ($variable_dto->studySummary->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY): ?>
+                          <?php print $localize->getTranslation('harmonization-study'); ;?>
+                          <?php else: ?>
+                          <?php print $localize->getTranslation('study.label'); ;?>
+                        <?php endif; ?>
+                      </th>
+                      <td>
+                        <?php
+                          print MicaClientAnchorHelper::study($variable_dto->studySummary);
+                       ?>
+                      </td>
+                  </tr>
+            <?php endif; ?>
           <?php endif; ?>
 
           <?php if (!empty($variable_dto->datasetId)): ?>

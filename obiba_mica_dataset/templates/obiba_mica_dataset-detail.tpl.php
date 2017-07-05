@@ -142,7 +142,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
 
     <!-- STUDIES -->
       <!-- Harmo reference study table -->
-    <?php if (!empty($dataset_type_dto->harmonizationLink)): ?>
+    <?php if (!empty($dataset_type_dto->harmonizationTable)): ?>
       <h2><?php print $localize->getTranslation('harmonization-study') ?></h2>
         <div class="row">
             <div class="col-lg-6 col-xs-12">
@@ -152,7 +152,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                         <th><?php print $localize->getTranslation('study.acronym') ?></th>
                         <td>
                             <p>
-                              <?php print MicaClientAnchorHelper::study($dataset_type_dto->harmonizationLink->studySummary); ?>
+                              <?php print MicaClientAnchorHelper::study($dataset_type_dto->harmonizationTable->studySummary); ?>
                             </p>
                         </td>
                     </tr>
@@ -160,7 +160,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                         <th><?php print $localize->getTranslation('study.name') ?></th>
                         <td>
                             <p>
-                              <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->harmonizationLink->studySummary, 'name'); ?>
+                              <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->harmonizationTable->studySummary, 'name'); ?>
                             </p>
                         </td>
                     </tr>
