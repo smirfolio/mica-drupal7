@@ -198,12 +198,11 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
     $limit = empty($limit) ? '5' : $limit;
     $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
     $sort_rql_bucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
-    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives),in(Mica_study.className,$class_name))";
+    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
     if (empty($query)) {
-      $params = "study(exists(Mica_study.id),limit($from,$limit)$sort_rql_bucket,in(Mica_study.className,$class_name))";
-    }
-    else {
-      $params = "study(limit($from,$limit)$query$sort_rql_bucket,in(Mica_study.className,$class_name))";
+      $params = "study(exists(Mica_study.id),limit($from,$limit),in(Mica_study.className,$class_name)$sort_rql_bucket)";
+    } else {
+      $params = "study(limit($from,$limit),in(Mica_study.className,$class_name)$query$sort_rql_bucket)";
     }
     $params .= ",locale($language->language)";
     $resource_query = ResourcesWsPath::getResourcePath(ResourcesWsPath::WS_STUDIES_SEARCH, array($params));

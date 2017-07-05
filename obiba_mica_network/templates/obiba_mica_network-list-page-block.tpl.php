@@ -77,7 +77,7 @@
       <?php endif ?>
       <?php if (!empty($dataschema_vars) && variable_get_value('networks_column_dataschema_variables')): ?>
         <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $dataschema_vars_caption,
-            array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $network->id, array('class' => 'btn-default btn-xxs'), 'variable(in(Mica_variable.variableType,Dataschema))') ?>
+            array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'dataschemaVariableCount'), 'variable(in(Mica_variable.variableType,Dataschema))') ?>
       <?php endif ?>
     </div>
   </div>
