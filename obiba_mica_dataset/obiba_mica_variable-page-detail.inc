@@ -211,21 +211,20 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
     foreach ($variable_harmonizations->datasetVariableSummaries as $variable_harmonization) {
       $variable_resolver = $variable_harmonization->resolver;
       $harmonized_variable_id = $variable_resolver->id;
+      $entity_id = $variable_resolver->studyId;
 
       if (property_exists($variable_harmonization, 'studyTable')) {
         $opal_table = $variable_harmonization->studyTable;
-        $entity_id = $variable_resolver->studyId;
-        $entity_summary = $variable_harmonization->studyTable;
+        $entity_summary = $opal_table->studySummary;
         $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
-        $dce_dataset_title = obiba_mica_dataset_get_dce_name_from_dataset($opal_table, $entity_summary);
         $entity_link = MicaClientAnchorHelper::study($entity_summary);
-      } else if (property_exists($variable_harmonization, 'networkTable')) {
-        $opal_table = $variable_harmonization->networkTable;
-        $entity_id = $variable_resolver->networkTableId;
-        $entity_summary = _obiba_mica_variable_network_summary($variable, $entity_id);
+        $dce_dataset_title = obiba_mica_dataset_get_dce_name_from_dataset($opal_table, $entity_summary);
+      } else if (property_exists($variable_harmonization, 'harmonizationStudyTable')) {
+        $opal_table = $variable_harmonization->harmonizationStudyTable;
+        $entity_summary = $opal_table->studySummary;
         $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
+        $entity_link = MicaClientAnchorHelper::study($entity_summary);
         $dce_dataset_title = '';
-        $entity_link = MicaClientAnchorHelper::network($entity_summary);
       }
 
       $variable_title = $variable->name . ' -- ' . $entity_acronym;
