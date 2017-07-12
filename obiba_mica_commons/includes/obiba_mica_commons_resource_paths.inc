@@ -926,7 +926,7 @@ class MicaClientAnchorHelper {
     $localize = obiba_mica_commons_mica_server_localisation();
     $label = $localize->getTranslation('harmonization-dataset');
     if ($bucket == 'dataset') {
-      $label = $localize->getTranslation('collection-dataset');
+      $label = $localize->getTranslation('Collected-dataset');
     }
     return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
       variable_get_value('variable_coverage_label') . ' ' . t('by') . ' ' . $label,

@@ -157,7 +157,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($study_dto);
       $study_theme ='';
       if (!empty($token_key)) {
-        $publiched_link = obiba_mica_commons_get_draft_link('study', $study_id, $study_dto->published);
+        $publiched_link = obiba_mica_commons_get_draft_link('harmonization-study', $study_id, $study_dto->published);
         $study_theme =  $publiched_link;
       }
       $study_theme .= theme('obiba_mica_study_harmonization_study-detail',

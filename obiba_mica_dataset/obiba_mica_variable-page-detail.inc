@@ -75,7 +75,7 @@ function obiba_mica_variable_page_detail($variable_id) {
 
   drupal_set_title($title);
 
-  $dataset_type = $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
+  $dataset_type = $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? DrupalMicaDatasetResource::TYPE_STUDY_DATASET : 'harmonized-dataset';
 
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
@@ -445,5 +445,5 @@ function _obiba_mica_variable_network_summary($variable, $network_table_id) {
  * Return the dataset type.
  */
 function obiba_mica_variable_dataset_type($variable) {
-  return $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
+  return $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? DrupalMicaDatasetResource::TYPE_STUDY_DATASET : 'harmonized-dataset';
 }

@@ -19,7 +19,8 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
  * Class MicaStudyResource
  */
 class DrupalMicaDatasetResource extends DrupalMicaClientResource {
-
+  const TYPE_STUDY_DATASET = 'study-dataset';
+  const TYPE_HARMONIZATION_DATASET = 'harmonization-dataset';
   /**
    * Instance initialisation.
    *
@@ -341,7 +342,14 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
     $params .= empty($order) ? '' : '&order=' . $order;
     $params .= empty($query) ? '' : '&query=' . $query;
 
-    $query_resources = (empty($resource) ? 'dataset' : $resource)
+$get_tresource_by_type = function($resource){
+  $convert_resource = array(
+    self::TYPE_HARMONIZATION_DATASET => DrupalMicaClient\DrupalMicaClientResourcePathHelper::WS_HARMONIZED_DATASET
+  );
+  return $convert_resource[$resource];
+};
+//    $query_resources = (empty($resource) ? 'dataset' : $resource)
+    $query_resources = (empty($resource) ? 'dataset' : $get_tresource_by_type($resource))
       . '/' . rawurlencode($dataset_id) .
       '/variables/harmonizations?' . $params;
     $Cached_variables_harmonized = $this->drupalCache->MicaGetCache(__FUNCTION__ . $query_resources);

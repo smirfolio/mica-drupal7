@@ -445,8 +445,8 @@ function obiba_mica_dataset_get_datasets_list_tab_for_network($datasets, $networ
           );
         }
         $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
-        $dataset_type = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
-        $dataset_type_name = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? $localize->getTranslation('collection-dataset') : $localize->getTranslation('harmonization-dataset');
+        $dataset_type = obiba_mica_dataset_type($summary);
+        $dataset_type_name = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? $localize->getTranslation('collected-study') : $localize->getTranslation('harmonized-dataset');
 
         $dataset_rows[$key_dataset] = array(
           'data' => array(
@@ -512,8 +512,8 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
       }
 
       $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
-      $dataset_type = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
-      $dataset_type_name = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? $localize->getTranslation('collection-dataset') : $localize->getTranslation('harmonization-dataset');
+      $dataset_type = obiba_mica_dataset_type($summary);
+      $dataset_type_name = $summary->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? $localize->getTranslation('collected-study') : $localize->getTranslation('harmonized-dataset');
       $dataset_rows[$key_dataset] = array(
         'data' => array(
           'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id),
@@ -773,4 +773,11 @@ function obiba_mica_dataset_harmonization_csv_alter($csv) {
     return preg_replace('/\bimpossible\b/', strtolower($impossible_label), $csv);
   }
   return $csv;
+}
+
+/**
+ * Check the dataset type.
+ */
+function obiba_mica_dataset_type($dataset) {
+  return $dataset->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collected-dataset' : 'harmonized-dataset';
 }
