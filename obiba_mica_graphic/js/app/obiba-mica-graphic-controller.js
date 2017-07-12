@@ -210,6 +210,64 @@
         });
       }
 
+      function doNormalizationByType(chartData, type) {
+        var data = [];
+
+        if (type !== 'variable') {
+          chartData.map(function (d) { return d.key; }).filter(function (f, i, arr) {
+            return arr.indexOf(f) === i;
+          }).forEach(function (k) {
+            data.push({key: k, values: chartData.filter(function (f) { return f.key === k; })});
+          });
+
+          normalizeData(data);
+        } else {
+          data = chartData;
+        }
+
+        return data;
+      }
+
+      function processConfig(config, type, data, colors) {
+        if (type === 'variable') {
+          config.withType('pieChart');
+          config.options.chart.legendPosition = 'right';
+          config.options.chart.legend = {
+            margin : {
+              top: 0,
+              right:0,
+              bottom: 0,
+              left: 0
+            }
+          };
+          config.options.chart.multibar = false;
+          config.options.chart.groupSpacing = false;
+          config.options.chart.stacked = false;
+          config.options.chart.showLabels = true;
+          config.options.chart.labelThreshold = 0.1;
+          config.options.chart.labelType =  function (d) {
+            var percent = (d.endAngle - d.startAngle) / (2 * Math.PI);
+            return d3.format('.2%')(percent);
+          };
+        } else {
+          if (data.length > 5) {
+            config.options.chart.rotateLabels = -15;
+          } else {
+            config.options.chart.staggerLabels = true;
+          }
+          config.options.chart.showLegend = false;
+        }
+        config.options.chart.color = colors;
+        config.options.chart.height = 500;
+        config.options.chart.autoMargins = false;
+        config.options.chart.margin = {
+          left: 200,
+          top:50,
+          right:50,
+          bottom:100
+        };
+      }
+
       // type and id
       var absUrl = $location.absUrl();
       var re = /mica\/([a-z_-]+)\/([A-z_\-%0-9]+)(?:\/#)?/;
@@ -230,68 +288,24 @@
        
         $scope.d3Configs = [];
         result.$promise.then(function (res) {
-          if(res.code && res.code!=200){
+          if(res.code && res.code !== 200){
               $translate(['data-coverage-error']).then(function(translate){
               $scope.message = translate['data-coverage-error'] + ' ' + res.code + ' ' + res.message;
             });
           }
+
           if(res.charts){
-          res.charts.forEach(function (chart) {
-            var data = [];
+            res.charts.forEach(function (chart) {
+              var chartData = (chart.data.length ? chart.data : chart.variableData);
 
-            var chartData = (chart.data.length ? chart.data : chart.variableData);
-            if (type !== 'variable') {
-              chartData.map(function (d) { return d.key; }).filter(function (f, i, arr) {
-                return arr.indexOf(f) === i;
-              }).forEach(function (k) {
-                data.push({key: k, values: chartData.filter(function (f) { return f.key === k; })});
-              });
-
-              normalizeData(data);
-            } else {
-              data = chartData;
-            }
-
-            var config = new D3ChartConfig().withData(data, true).withTitle(chart.title).withSubtitle(chart.subtitle);
-
-            if (type === 'variable') {
-              config.withType('pieChart');
-              config.options.chart.legendPosition = 'right';
-              config.options.chart.legend = {margin : {
-                top: 0,
-                right:0,
-                bottom: 0,
-                left: 0
-              }};
-              config.options.chart.multibar = false;
-              config.options.chart.groupSpacing = false;
-              config.options.chart.stacked = false;
-              config.options.chart.showLabels = true;
-              config.options.chart.labelThreshold = 0.1;
-              config.options.chart.labelType =  function(d){
-                var percent = (d.endAngle - d.startAngle) / (2 * Math.PI);
-                return d3.format('.2%')(percent);
-              };
-            } else {
-              if (data[0].values.length > 5) {
-                config.options.chart.rotateLabels = -15;
-              } else {
-                config.options.chart.staggerLabels = true;
+              if (chartData && chartData.length) {
+                var data = doNormalizationByType(chartData, type);
+                var config = new D3ChartConfig().withData(data, true).withTitle(chart.title).withSubtitle(chart.subtitle);
+                processConfig(config, type, chartData, chart.color.colors);
+                $scope.d3Configs.push(config);
               }
-              config.options.chart.showLegend = false;
-            }
-            config.options.chart.color = chart.color.colors;
-            config.options.chart.height = 500;
-            config.options.chart.autoMargins = false;
-            config.options.chart.margin = {
-              left: 200,
-              top:50,
-              right:50,
-              bottom:100
-            };
-            $scope.d3Configs.push(config);
-          });
-        }
+            });
+          }
         });
       }
     }]);
