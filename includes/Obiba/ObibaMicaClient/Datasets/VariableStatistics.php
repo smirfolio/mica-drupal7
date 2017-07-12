@@ -150,7 +150,7 @@ class VariableStatistics {
           return $result;
         });
 
-        $filtered = array_filter($this->variableStat->frequencies, function ($f) { return !$f->missing; });
+        $filtered = array_filter($this->variableStat->frequencies, function ($f) { return !$f->missing && $f->count > 0; });
         $data = array();
 
         foreach ($filtered as $f) {

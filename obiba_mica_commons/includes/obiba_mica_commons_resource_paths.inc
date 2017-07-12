@@ -585,16 +585,21 @@ class MicaClientAnchorHelper {
    * @return string
    *   The anchor link.
    */
-  public static function networkStudies($text, $network_id, array $attributes = array()) {
-      return ObibaSearchResources::repositoryAnchor(
-        MicaClientPathProvider::REPOSITORY_SEARCH,
-        empty($text) ? variable_get_value('variables_search_label') : $text,
-        $attributes,
-        array(
-          'type' => 'studies',
-          'query' => 'network(in(Mica_network.id,' . $network_id . '))',
-          'display' => 'list'
-        ));
+  public static function networkStudies($text, $network_id, array $attributes = array(), $supplementary_query = NULL) {
+    $query = 'network(in(Mica_network.id,' . $network_id . '))';
+    if (!empty($supplementary_query)) {
+      $query .= ',' . $supplementary_query;
+    }
+
+    return ObibaSearchResources::repositoryAnchor(
+      MicaClientPathProvider::REPOSITORY_SEARCH,
+      empty($text) ? variable_get_value('variables_search_label') : $text,
+      $attributes,
+      array(
+        'type' => 'studies',
+        'query' => $query,
+        'display' => 'list'
+      ));
   }
 
   /**

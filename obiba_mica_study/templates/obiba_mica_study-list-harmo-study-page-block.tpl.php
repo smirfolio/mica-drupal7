@@ -98,28 +98,26 @@
           $counts = $study->{'obiba.mica.CountStatsDto.studyCountStats'};
           $vars = $counts->variables;
           $var_caption = $vars < 2 ? $localize->getTranslation('search.variable.facet-label') : $localize->getTranslation('variables');
-          $study_vars = !empty($counts->studyVariables) ? $counts->studyVariables : NULL;
-          $study_var_caption = $study_vars < 2 ? $localize->getTranslation('client.label.harmonization-study-variable') : $localize->getTranslation('client.label.study-variables');
           $dataschema_vars = !empty($counts->dataschemaVariables) ? $counts->dataschemaVariables : NULL;
-          $dataschema_var_caption = $dataschema_vars < 2 ? $localize->getTranslation('client.label.dataschema-variable') : $localize->getTranslation('client.label.dataschema-variables');
+          $dataschema_var_caption = $dataschema_vars < 2 ? $localize->getTranslation('metrics.mica.harmonization-study-variable') : $localize->getTranslation('metrics.mica.harmonization-study-variables');
           $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
           $dataset_caption = $datasets < 2 ? $localize->getTranslation('dataset.details') : $localize->getTranslation('datasets');
           $networks = !empty($counts->networks) ? $counts->networks : NULL;
           $network_caption = $networks < 2 ? $localize->getTranslation('network.label') : $localize->getTranslation('networks');
           ?>
-          <?php if (!empty($networks) && variable_get_value('harmo_studies_column_networks')): ?>
+          <?php if (!empty($networks) && variable_get_value('studies_column_networks')): ?>
             <?php print MicaClientAnchorHelper::studyNetworks(t('@count ' . $network_caption, array('@count' => $networks)), $study->id, 'btn-default btn-xxs', 'networkCount') ?>
           <?php endif ?>
-          <?php if (!empty($datasets) && (variable_get_value('harmo_studies_column_study_datasets') || variable_get_value('harmo_studies_column_harmonization_datasets'))): ?>
+
+          <?php if (!empty($datasets) && (variable_get_value('studies_column_study_datasets') || variable_get_value('studies_column_harmonization_datasets'))): ?>
             <?php print MicaClientAnchorHelper::studyDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id, 'btn-default btn-xxs', 'datasetCount') ?>
           <?php endif ?>
-          <?php if (!empty($vars) && variable_get_value('harmo_studies_column_variables')): ?>
+
+          <?php if (!empty($vars) && variable_get_value('studies_column_variables')): ?>
             <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $var_caption, array('@count' => obiba_mica_commons_format_number($vars))), $study->id, TRUE, NULL, 'btn-default btn-xxs', 'variableCount') ?>
           <?php endif ?>
-          <?php if (!empty($study_vars) && variable_get_value('harmo_studies_column_study_variables')): ?>
-            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $study_var_caption, array('@count' => obiba_mica_commons_format_number($study_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Study))', 'btn-default btn-xxs', 'studyVariableCount') ?>
-          <?php endif ?>
-          <?php if (!empty($dataschema_vars) && variable_get_value('harmo_studies_column_dataschema_variables')): ?>
+
+          <?php if (!empty($dataschema_vars) && variable_get_value('studies_column_dataschema_variables')): ?>
             <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $dataschema_var_caption, array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Dataschema))', 'btn-default btn-xxs', 'dataSchemaVariableCount') ?>
           <?php endif ?>
         </div>
