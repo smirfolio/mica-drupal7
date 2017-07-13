@@ -184,7 +184,7 @@ function obiba_mica_dataset_retrieve_studyDatasets($query, $sort = NULL, $sort_o
  */
 Function obiba_mica_dataset_themed_list_dataset($list_datasets) {
   $list_datasets_rendered = '';
-  if(!empty($list_datasets)){
+  if (!empty($list_datasets)) {
     foreach ($list_datasets->getSummaries() as $dataset) {
       $list_datasets_rendered .= theme('obiba_mica_dataset-list-page-block', array(
         'dataset' => $dataset,
@@ -194,14 +194,7 @@ Function obiba_mica_dataset_themed_list_dataset($list_datasets) {
     $data['total'] = $list_datasets->getTotalHits();
     return $data;
   }
-else{
-  return FALSE;
-}
-}
-
-/**
- * Check the dataset type.
- */
-function obiba_mica_dataset_type($dataset) {
-  return $dataset->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? 'collection-dataset' : 'harmonization-dataset';
+  else {
+    return FALSE;
+  }
 }

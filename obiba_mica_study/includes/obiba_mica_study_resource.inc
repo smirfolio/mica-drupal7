@@ -23,9 +23,9 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\DrupalMicaClientResourcePa
 class DrupalMicaStudyResource extends DrupalMicaClientResource {
   const COLLECTION_STUDIES = 'collection-studies';
   const HARMONIZATION_STUDIES = 'harmonization-studies';
-  const COLLECTION_STUDY = 'collection-study';
+  const COLLECTION_STUDY = 'individual-study';
   const HARMONIZATION_STUDY = 'harmonization-study';
-  const TYPE_COLLECTION_STUDY = 'Collection';
+  const TYPE_COLLECTION_STUDY = 'Collected';
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
   }

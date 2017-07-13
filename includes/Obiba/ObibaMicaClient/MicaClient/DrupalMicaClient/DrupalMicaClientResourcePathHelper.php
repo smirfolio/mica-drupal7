@@ -14,10 +14,11 @@ namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
 
 class DrupalMicaClientResourcePathHelper {
   const WS_STUDIES_SEARCH = '/studies/_rql?query=%';
-  const WS_COLLECTION_STUDY = '/collection-study/%';
-  const WS_COLLECTION_DRAFT_STUDY = '/draft/collection-study/%?key=%';
+  const WS_COLLECTION_STUDY = '/individual-study/%';
+  const WS_COLLECTION_DRAFT_STUDY = '/draft/individual-study/%?key=%';
   const WS_HARMONIZATION_STUDY = '/harmonization-study/%';
   const WS_HARMONIZATION_DRAFT_STUDY = '/draft/harmonization-study/%?key=%';
+  const WS_HARMONIZED_DATASET = 'harmonized-dataset';
 
   static public function getResourcePath($path, $args){
     $path = strtr($path, array('%' => '%s'));
