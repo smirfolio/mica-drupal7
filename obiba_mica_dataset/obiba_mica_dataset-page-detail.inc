@@ -48,7 +48,7 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
 
   if (!empty($token_key)) {
     obiba_mica_commons_is_published(FALSE);
-    $dataset_dto = $dataset_resource->getDataset($dataset_id, NULL,  $token_key);
+    $dataset_dto = $dataset_resource->getDataset($dataset_id, $dataset_type,  $token_key);
   }
   else {
     $dataset_dto = $dataset_resource->getDataset($dataset_id);

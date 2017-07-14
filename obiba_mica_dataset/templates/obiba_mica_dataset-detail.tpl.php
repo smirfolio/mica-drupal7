@@ -188,7 +188,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
         </div>
       <?php else: ?>
         <?php if (!empty($dataset_type_dto->studyTable)): ?>
-          <h2><?php print $localize->getTranslation('global.collection-study'); ?></h2>
+          <h2><?php print $localize->getTranslation('global.individual-study'); ?></h2>
         <div class="row">
           <div class="col-lg-6 col-xs-12">
             <table class="table table-striped">
