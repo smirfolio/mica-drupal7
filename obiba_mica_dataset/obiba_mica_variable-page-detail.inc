@@ -75,13 +75,13 @@ function obiba_mica_variable_page_detail($variable_id) {
 
   drupal_set_title($title);
 
-  $dataset_type = $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? DrupalMicaDatasetResource::TYPE_STUDY_DATASET : 'harmonized-dataset';
+  $dataset_type = $variable->variableType == DrupalMicaDatasetResource::COLLECTED_VARIABLE ? DrupalMicaDatasetResource::COLLECTED_DATASET : DrupalMicaDatasetResource::HARMONIZED_DATASET;
 
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
     l($localize->getTranslation('datasets'), 'mica/datasets'),
-    l(($dataset_type == 'study-dataset' ? $localize->getTranslation('collection-datasets') : $localize->getTranslation('harmonization-datasets')), 'mica/datasets/' . $dataset_type . 's'),
-    l(obiba_mica_commons_get_localized_field($variable, 'datasetName'), 'mica/' . obiba_mica_variable_dataset_type($variable)
+    l(($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET ? $localize->getTranslation('collection-datasets') : $localize->getTranslation('harmonization-datasets')), 'mica/datasets/' . $dataset_type),
+    l(obiba_mica_commons_get_localized_field($variable, 'datasetName'), 'mica/' . obiba_mica_dataset_varibale_type($variable)
       . '/' . $variable->datasetId),
   ));
   return $themed_variable;
@@ -217,13 +217,13 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
         $opal_table = $variable_harmonization->studyTable;
         $entity_summary = $opal_table->studySummary;
         $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
-        $entity_link = MicaClientAnchorHelper::study($entity_summary);
+        $entity_link = DrupalMicaStudyResource::anchorStudy($entity_summary);
         $dce_dataset_title = obiba_mica_dataset_get_dce_name_from_dataset($opal_table, $entity_summary);
       } else if (property_exists($variable_harmonization, 'harmonizationStudyTable')) {
         $opal_table = $variable_harmonization->harmonizationStudyTable;
         $entity_summary = $opal_table->studySummary;
         $entity_acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
-        $entity_link = MicaClientAnchorHelper::study($entity_summary);
+        $entity_link = DrupalMicaStudyResource::anchorStudy($entity_summary);
         $dce_dataset_title = '';
       }
 
@@ -439,11 +439,4 @@ function _obiba_mica_variable_network_summary($variable, $network_table_id) {
   // Not found in the dto, then fetch it.
   $network_resource = new DrupalMicaNetworkResource();
   return $network_resource->getNetwork($network_table_id);
-}
-
-/**
- * Return the dataset type.
- */
-function obiba_mica_variable_dataset_type($variable) {
-  return $variable->variableType == DrupalMicaStudyResource::TYPE_COLLECTION_STUDY ? DrupalMicaDatasetResource::TYPE_STUDY_DATASET : 'harmonized-dataset';
 }

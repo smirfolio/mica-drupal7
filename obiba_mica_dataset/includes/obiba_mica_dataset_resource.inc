@@ -19,8 +19,15 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
  * Class MicaStudyResource
  */
 class DrupalMicaDatasetResource extends DrupalMicaClientResource {
-  const TYPE_STUDY_DATASET = 'study-dataset';
-  const TYPE_HARMONIZATION_DATASET = 'harmonization-dataset';
+  const DEFAULT_PRIMARY_BUTTON_CLASSES = 'btn highlight btn btn-primary';
+  const CROSSTAB = 'mica/variables';
+  const DATASETS = 'mica/datasets';
+  const COLLECTED_VARIABLE = 'Collected';
+  const COLLECTED_DATASET = 'collected-dataset';
+  const COLLECTED_DATASET_LINK = 'mica/collected-dataset/{id}';
+  const HARMONIZED_DATASET = 'harmonized-dataset';
+  const HARMONIZED_DATASET_LINK = 'mica/harmonized-dataset/{id}';
+  const HARMONIZATION_VARIABLE = 'mica/variable/{id}:{name}:Dataschema';
   /**
    * Instance initialisation.
    *
@@ -52,7 +59,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    * @return array
    *   Server response.
    */
-  public function getDatasets($resource = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $network_id = NULL) {
+  public function getDatasets($class_name = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $network_id = NULL) {
     global $language;
     $this->setLastResponse(NULL);
     $from = empty($from) ? '0' : $from;
@@ -60,7 +67,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
     $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
     $sort_rql_bucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
     $query = empty($query) ? '' : ",match($query,(Mica_dataset.name,Mica_dataset.acronym,Mica_dataset.description))";
-    $resource_params = empty($resource) ? '' : ",in(Mica_dataset.className,$resource)";
+    $resource_params = empty($class_name) ? '' : ",in(Mica_dataset.className,$class_name)";
     $network_params = empty($network_id) ? '' : ",in(Mica_dataset.networkId,$network_id)";
     $studies_param = empty($study_id) ? '' : ",study(in(Mica_study.id,(" . rawurlencode($study_id) . ")))";
 
@@ -344,7 +351,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
 
 $get_tresource_by_type = function($resource){
   $convert_resource = array(
-    self::TYPE_HARMONIZATION_DATASET => DrupalMicaClient\DrupalMicaClientResourcePathHelper::WS_HARMONIZED_DATASET
+    self::HARMONIZED_DATASET => DrupalMicaClient\DrupalMicaClientResourcePathHelper::WS_HARMONIZED_DATASET
   );
   return $convert_resource[$resource];
 };
@@ -402,7 +409,7 @@ $get_tresource_by_type = function($resource){
    */
   public function downloadVariablesHarmonizations($dataset_id, $locale) {
     $this->setLastResponse(NULL);
-    $url = $this->micaUrl . '/harmonization-dataset/' . rawurlencode($dataset_id) . '/variables/harmonizations/_export';
+    $url = $this->micaUrl . '/' .  DrupalMicaDatasetResource::HARMONIZED_DATASET . '/' . rawurlencode($dataset_id) . '/variables/harmonizations/_export';
     if (!empty($locale)) {
       $url .= '?locale=' . $locale;
     }
@@ -538,4 +545,298 @@ $get_tresource_by_type = function($resource){
     }
   }
 
+  ##### RESOURCES PATH #######
+  /**
+   * GEt the dataset dto.
+   *
+   * @param object $dataset
+   *   The dataset dto'
+   *
+   * @return object
+   *   Study/Harmonization dataset.
+   */
+  public static function dataset($dataset) {
+    if (!empty($dataset->variableType)) {
+      return $dataset->variableType == self::COLLECTED_VARIABLE ? self::studyDataset($dataset->id) : self::harmonizationDataset($dataset->id);
+    }
+    if (!empty($dataset->_extensions)) {
+      if ($dataset->hasExtension('obiba.mica.CollectionDatasetDto.type')) {
+        return self::studyDataset($dataset->id);
+      }
+      if ($dataset->hasExtension('obiba.mica.HarmonizationDatasetDto.type')) {
+        return self::harmonizationDataset($dataset->id);
+      }
+    }
+
+    return self::studyDataset($dataset->id);
+  }
+
+  /**
+   * Returns the url to the draft study/harmonization dataset document
+   *
+   * @param string
+   *  Study $id
+   * @return string
+   */
+  public static function dataset_draft_url($dataset) {
+    return sprintf("%s/#/%s/%s",
+      MicaClientPathProvider::get_mica_url(),
+      $dataset->variableType == self::COLLECTED_VARIABLE ? self::COLLECTED_DATASET : self::HARMONIZED_DATASET,
+      $dataset->id);
+  }
+
+  /**
+   * Study dataset anchor link.
+   *
+   * @param string $text
+   *   The text anchor.
+   * @param string $study_id
+   *   Th study id.
+   * @param string $css_class
+   *   the affected css class.
+   * @param null $test_ref
+   *   reference used by UI tester
+   *
+   * @return string The anchor link.
+   * The anchor link.
+   */
+  public static function studyDatasets($text, $study_id, $css_class = NULL, $test_ref = NULL) {
+    return ObibaSearchResources::repositoryAnchor(
+      MicaClientPathProvider::REPOSITORY_SEARCH,
+      $text,
+      array(
+        'class' => ($css_class ? $css_class : ''),
+        'test-ref' => $test_ref),
+      array(
+        'type' => 'datasets',
+        'query' => 'study(in(Mica_study.id,' . $study_id . '))',
+        'display' => 'list'
+      ));
+  }
+
+  /**
+   * The study dataset detail url.
+   *
+   * @param string $id
+   *   Study dataset id.
+   *
+   * @return string
+   *   The url of the study dataset detail.
+   */
+  public static function studyDataset($id) {
+    return preg_replace('/\\{id\\}/', $id, self::COLLECTED_DATASET_LINK, 1);
+  }
+
+  /**
+   * GEt the variable dataset.
+   *
+   * @param object $variable
+   *   The variable dto.
+   *
+   * @return object
+   *   Study/Harmonization variable dataset.
+   */
+  public static function variableDataset($variable) {
+    return $variable->variableType == self::COLLECTED_VARIABLE ? self::studyDataset($variable->datasetId) : self::harmonizationDataset($variable->datasetId);
+  }
+  /**
+   * The harmonization dataset detail url.
+   *
+   * @param string $id
+   *   Harmonization dataset id.
+   *
+   * @return string
+   *   The url of the harmonization dataset detail.
+   */
+  public static function harmonizationDataset($id) {
+    return preg_replace('/\\{id\\}/', $id, self::HARMONIZED_DATASET_LINK, 1);
+  }
+
+  /**
+   * Dataset list item.
+   *
+   * @param object $dataset
+   *   The study wrapper.
+   *
+   * @return string
+   *   Formatted list.
+   */
+  public static function datasetListItem($dataset) {
+    return MicaClientAnchorHelper::listItem($dataset, self::dataset($dataset));
+  }
+
+
+  /**
+   * The datasets coverage anchor link.
+   *
+   * @param bool $is_button
+   *   As link or button rendering.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function coverageDatasets($is_button = FALSE, $bucket = 'dataset') {
+    $localize = obiba_mica_commons_mica_server_localisation();
+    $label = $localize->getTranslation('harmonized-dataset');
+    if ($bucket == 'dataset') {
+      $label = $localize->getTranslation('Collected-dataset');
+    }
+    return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+      variable_get_value('variable_coverage_label') . ' ' . t('by') . ' ' . $label,
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+      array(
+        'type' => 'datasets',
+        'query' => 'dataset(exists(Mica_dataset.id))',
+        'display' => 'coverage',
+        'bucket' => $bucket
+      ));
+  }
+
+  /**
+   * A search button datasets.
+   *
+   * @param bool $is_button
+   *   As link or button rendering.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function searchDatasets($is_button = FALSE) {
+    return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+      variable_get_value('datasets_search_label'),
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+      array(
+        'type' => 'datasets',
+        'query' => 'dataset(exists(Mica_dataset.id))',
+        'display' => 'list'
+      ));
+  }
+
+
+  /**
+   * Cross tab variable link.
+   *
+   * @param object $variable
+   *   Dataset wrapper.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function variableCrosstab($variable) {
+    $dataset = $variable->variableType === DrupalMicaDatasetResource::COLLECTED_VARIABLE ? DrupalMicaDatasetResource::studyDataset($variable->datasetId) : DrupalMicaDatasetResource::harmonizationDataset($variable->datasetId);
+
+    $res = l(
+      t('Crosstabs'),
+      self::CROSSTAB,
+      array(
+        'attributes' => array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES),
+        'fragment' => preg_replace('/mica\\//', '/crosstab/', $dataset) . '/variable/' . $variable->id,
+      )
+    );
+
+    return $res;
+  }
+
+  /**
+   * Get an harmonized variable link.
+   *
+   * @param object $variable
+   *   The variable wrapper.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function variableHarmonized($variable) {
+    return l(
+      $variable->name,
+      self::variableHarmonizedLink($variable)
+    );
+  }
+
+  /**
+   * Cross tab dataset link.
+   *
+   * @param object $dataset
+   *   Dataset wrapper.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function datasetCrosstab($dataset) {
+    $res = l(
+      t('Crosstabs'),
+      self::CROSSTAB,
+      array(
+        'attributes' => array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES),
+        'fragment' => preg_replace('/mica\\//', '/crosstab/', DrupalMicaDatasetResource::dataset($dataset)),
+      )
+    );
+
+    return $res;
+  }
+
+  /**
+   * Get link to list of variables by dataset id.
+   *
+   * @param string $text
+   *   Text link.
+   * @param string $dataset_id
+   *   The dataset id.
+   * @param array $attributes
+   *   A set of link attributes.
+   * @param string $supplementary_query
+   *   A supplementary query.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function datasetVariables($text, $dataset_id, array $attributes = array(), $supplementary_query = NULL) {
+    $query = '';
+    if (!empty($supplementary_query)) {
+      $query .= ',' . $supplementary_query;
+    }
+    return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+      empty($text) ? variable_get_value('variables_search_label') : $text,
+      $attributes,
+      array(
+        'type' => 'variables',
+        'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))' . $query,
+        'display' => 'list'
+      ));
+  }
+
+  /**
+   * The harmonized variable detail url.
+   *
+   * @param object $variable
+   *   Harmonized variable entity wrapper.
+   *
+   * @return string
+   *   The url of the harmonized variable detail.
+   */
+  public static function variableHarmonizedLink($variable) {
+    return preg_replace(
+      '/(\\{id\\}):(\\{name\\})/',
+      "$variable->datasetId:$variable->name",
+      self::HARMONIZATION_VARIABLE,
+      1
+    );
+  }
+
+  /**
+   * Get dataset list link by variable.
+   *
+   * @param object $variable
+   *   The variable wrapper.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function variableDatasetLink($variable) {
+    $dataset_name = obiba_mica_commons_get_localized_field($variable, 'datasetName');
+    return l(
+      $dataset_name,
+      self::variableDataset($variable)
+    );
+  }
 }

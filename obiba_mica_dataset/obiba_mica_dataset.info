@@ -5,3 +5,5 @@ core = 7.x
 
 dependencies[] = obiba_mica_commons
 dependencies[] = obiba_mica_study
+
+files[] = includes/obiba_mica_dataset_resource.inc

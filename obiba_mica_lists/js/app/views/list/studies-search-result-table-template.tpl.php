@@ -15,7 +15,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="summary in summaries"
-                    ng-init="lang = $parent.$parent.lang; studyPath= summary.studyResourcePath=='collection-study'?'study':summary.studyResourcePath" >
+                    ng-init="lang = $parent.$parent.lang; studyPath= summary.studyResourcePath=='collected-study'?'collected-study':'harmonized-study'" >
                     <td><img ng-if="summary.logo" src="" alt="">
 
                         <img src="{{summary.logoUrl}}"

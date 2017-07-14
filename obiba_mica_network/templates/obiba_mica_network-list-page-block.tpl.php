@@ -53,7 +53,7 @@
       $individual_studies = $counts->individualStudies;
       $individual_studies_caption = $individual_studies > 2 ? $localize->getTranslation('individual-studies') : $localize->getTranslation('global.individual-study');
       $harmonization_studies = $counts->harmonizationStudies;
-      $harmonization_studies_caption = $harmonization_studies > 2 ? $localize->getTranslation('harmonization-studies') : $localize->getTranslation('global.harmonization-study');
+      $harmonization_studies_caption = $harmonization_studies > 2 ? $localize->getTranslation('global.harmonized-studies') : $localize->getTranslation('harmonized-study');
       $studies_with_vars = isset($counts->studiesWithVariables) ? $counts->studiesWithVariables : 0;
       $studies_with_vars_caption = $studies_with_vars < 2 ? $localize->getTranslation('metrics.mica.study-with-variables') : $localize->getTranslation('metrics.mica.studies-with-variables');
       $harmonization_studies_with_vars = isset($counts->harmonizationStudiesWithVariables) ? $counts->harmonizationStudiesWithVariables : 0;

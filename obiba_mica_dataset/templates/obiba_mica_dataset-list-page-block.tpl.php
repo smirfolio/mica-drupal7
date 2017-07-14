@@ -21,7 +21,7 @@
     <div class="col-md-12  col-sm-12 col-xs-12">
       <h4>
         <?php
-        print MicaClientAnchorHelper::datasetListItem($dataset);
+        print DrupalMicaDatasetResource::datasetListItem($dataset);
         ?>
       </h4>
       <hr class="no-margin">
@@ -31,7 +31,7 @@
           print MicaClientAnchorHelper::ellipses(
             t('Read more'),
             obiba_mica_commons_get_localized_field($dataset, 'description'),
-            'mica/' . obiba_mica_dataset_type($dataset) . '/' . $dataset->id
+            'mica/' . obiba_mica_dataset_varibale_type($dataset) . '/' . $dataset->id
           );
           ?>
         </small>
@@ -55,7 +55,7 @@
               array('@count' => $studies, '@studiesCaption' => $studies_caption)), $dataset->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'studyCount')) ?>
         <?php endif ?>
         <?php if (!empty($variables) && variable_get_value('datasets_column_variables')): ?>
-            <?php print MicaClientAnchorHelper::datasetVariables(t('@count @vars',
+            <?php print DrupalMicaDatasetResource::datasetVariables(t('@count @vars',
               array('@count' => obiba_mica_commons_format_number($variables), '@vars' => $vars_caption)), $dataset->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'variableCount')) ?>
         <?php endif ?>
       </div>

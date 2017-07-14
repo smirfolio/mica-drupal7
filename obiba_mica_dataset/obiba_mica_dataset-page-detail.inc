@@ -43,15 +43,8 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
   $modals = NULL;
   $dataset_resource = new DrupalMicaDatasetResource();
   $localize = obiba_mica_commons_mica_server_localisation();
-  $dataset_type_converter = function($url_dataset_path){
-    $dataset_type = array(
-      DrupalMicaDatasetResource::TYPE_STUDY_DATASET => 'collected-dataset',
-      DrupalMicaDatasetResource::TYPE_HARMONIZATION_DATASET => 'harmonization-dataset'
-    );
-    return $dataset_type[$url_dataset_path];
-  };
 
-  $dataset_type = $dataset_type_converter(arg(1));
+  $dataset_type = arg(1);
 
   if (!empty($token_key)) {
     obiba_mica_commons_is_published(FALSE);
@@ -62,21 +55,14 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
   }
 
   if (!empty($dataset_dto)) {
-    switch ($dataset_dto->variableType) {
-      case ('Collected') :
-        $dataset_type = 'collected-dataset';
-        break;
-      default:
-        $dataset_type = 'harmonization-dataset';
-    }
-    if ($dataset_type == 'collected-dataset' && !empty($dataset_dto->{'obiba.mica.CollectedDatasetDto.type'})) {
+    if ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET && !empty($dataset_dto->{'obiba.mica.CollectedDatasetDto.type'})) {
       $dataset_type_dto = $dataset_dto->{'obiba.mica.CollectedDatasetDto.type'};
     }
     elseif(!empty($dataset_dto->{'obiba.mica.HarmonizationDatasetDto.type'})) {
       $dataset_type_dto = $dataset_dto->{'obiba.mica.HarmonizationDatasetDto.type'};
     }
 
-    if ($dataset_type != DrupalMicaDatasetResource::TYPE_STUDY_DATASET && variable_get_value('dataset_show_studies')) {
+    if ($dataset_type != DrupalMicaDatasetResource::COLLECTED_DATASET && variable_get_value('dataset_show_studies')) {
       obiba_mica_dataset_studies_datatable_init($dataset_type_dto);
     }
 
@@ -95,7 +81,7 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
     l($localize->getTranslation('datasets'), 'mica/datasets'),
-    l(($dataset_type == DrupalMicaDatasetResource::TYPE_STUDY_DATASET ? $localize->getTranslation('collected-datasets') : $localize->getTranslation('harmonization-datasets')), 'mica/datasets/' . $dataset_type . 's'),
+    l(($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET ? $localize->getTranslation('collected-datasets') : $localize->getTranslation('harmonized-datasets')), 'mica/datasets/' . $dataset_type ),
   ));
 
   $dataset_theme = obiba_mica_commons_get_cache(__FUNCTION__ . 'dataset_theme-' . $dataset_id);
@@ -105,7 +91,7 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
   else {
     if (!empty($dataset_dto)) {
       $variables_dataset = $dataset_resource->getVariables($dataset_type, $dataset_id, 0, 1);
-      if ($dataset_type == DrupalMicaDatasetResource::TYPE_STUDY_DATASET && !empty($dataset_type_dto->studyTable->studySummary->published)) {
+      if ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET && !empty($dataset_type_dto->studyTable->studySummary->published)) {
         $study_id = !empty($dataset_type_dto) ? $dataset_type_dto->studyTable->studyId : NULL;
         $modals = obiba_mica_dataset_get_population_dce_modals(
           $study_id,
@@ -274,7 +260,7 @@ function obiba_mica_dataset_Variables_table_ajax_header($dataset_type, $dataset_
   else {
     $dataset_resource = new DrupalMicaDatasetResource();
     $dataset_dto = $dataset_resource->getDataset($dataset_id);
-    if ($dataset_type == DrupalMicaDatasetResource::TYPE_STUDY_DATASET) {
+    if ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET) {
       $header = obiba_mica_dataset_studies_Variables_table_ajax_header();
     }
     else {
@@ -333,7 +319,7 @@ function obiba_mica_dataset_Variables_table_ajax_data($dataset_type, $id_dataset
 
     $dataset_dto = $dataset_resource->getDataset($id_dataset);
 
-    if ($dataset_type == DrupalMicaDatasetResource::TYPE_STUDY_DATASET) {
+    if ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET) {
       $variables_dataset = $dataset_resource->getVariables($dataset_type,
         $id_dataset,
         $from,
@@ -563,7 +549,7 @@ function obiba_mica_dataset_harmonizations_Variables_table_ajax_header($dataset_
       }
       else {
         $entity_summary = $opal_table->studySummary;
-        $entity_url = MicaClientPathProvider::COLLECTION_STUDY . '/' . $entity_summary->id;
+        $entity_url = DrupalMicaStudyResource::INDIVIDUAL_STUDY . '/' . $entity_summary->id;
       }
 
       $acronym = obiba_mica_commons_get_localized_field($entity_summary, 'acronym');
@@ -762,8 +748,8 @@ function obiba_mica_dataset_studies_datatable_init($dataset_type_dto) {
 
   drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_harmo_studies_datatable_init.js', 'file');
   $data = array(
-    'collection_studies_table_headers' => obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::COLLECTION_STUDY),
-    'collection_studies_table_data' => obiba_mica_dataset_study_tables_rows($study_tables, DrupalMicaStudyResource::COLLECTION_STUDY),
+    'collection_studies_table_headers' => obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::INDIVIDUAL_STUDY),
+    'collection_studies_table_data' => obiba_mica_dataset_study_tables_rows($study_tables, DrupalMicaStudyResource::INDIVIDUAL_STUDY),
     'harmonization_studies_table_headers' => obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::HARMONIZATION_STUDY),
     'harmonization_studies_table_data' => obiba_mica_dataset_study_tables_rows($harmo_study_tables, DrupalMicaStudyResource::HARMONIZATION_STUDY),
   );
@@ -803,7 +789,7 @@ function obiba_mica_dataset_study_tables_table($dataset_type_dto) {
 /**
  * Parse study rows.
  */
-function obiba_mica_dataset_study_tables_rows($study_tables, $study_type = DrupalMicaStudyResource::COLLECTION_STUDY) {
+function obiba_mica_dataset_study_tables_rows($study_tables, $study_type = DrupalMicaStudyResource::INDIVIDUAL_STUDY) {
   $rows = array();
   if (!empty($study_tables)) {
     $study_ids = array();

@@ -13,7 +13,6 @@
  * @file
  * Mica studies file
  */
-use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 
 
 if (module_exists('obiba_mica_dataset')) {
@@ -23,7 +22,7 @@ if (module_exists('obiba_mica_dataset')) {
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
-function obiba_mica_study_ng_coverage($study_id) {
+function obiba_mica_study_ng_coverage($type_study, $study_id) {
   $coverages = json_encode(new stdClass());
   if (!variable_get_value('study_show_coverage_graphs')) {
     return $coverages;
@@ -94,18 +93,18 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
   $study_resource = new DrupalMicaStudyResource();
   if (!empty($token_key)) {
     obiba_mica_commons_is_published(FALSE);
-    $study_dto = $study_resource->getStudy($study_id, $token_key, DrupalMicaStudyResource::COLLECTION_STUDY);
+    $study_dto = $study_resource->getStudy($study_id, $token_key, DrupalMicaStudyResource::INDIVIDUAL_STUDY);
     if(!empty($study_dto)){
      if(!empty($study_dto->logo)){
-        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, DrupalMicaStudyResource::COLLECTION_STUDY, FALSE, $token_key);
+        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, $study_dto->studyResourcePath, FALSE, $token_key);
      }
     }
   }
   else {
-    $study_dto = $study_resource->getStudy($study_id, NULL, DrupalMicaStudyResource::COLLECTION_STUDY);
+    $study_dto = $study_resource->getStudy($study_id, NULL, DrupalMicaStudyResource::INDIVIDUAL_STUDY);
     if(!empty($study_dto)){
       if(!empty($study_dto->logo)) {
-        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, DrupalMicaStudyResource::COLLECTION_STUDY, FALSE);
+        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, $study_dto->studyResourcePath, FALSE);
       }
     }
   }
@@ -151,7 +150,8 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
-      l($localize->getTranslation('studies'), MicaClientPathProvider::STUDIES),
+      l($localize->getTranslation('studies'), DrupalMicaStudyResource::STUDY),
+      l($localize->getTranslation('individual-studies'), DrupalMicaStudyResource::STUDY . '/' .  DrupalMicaStudyResource::INDIVIDUAL_STUDY),
     ));
 
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;
@@ -177,10 +177,10 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
     }
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
-        $has_files  = obiba_mica_files_get_flat_attachments('/' . DrupalMicaStudyResource::COLLECTION_STUDY . '/' .  $study_id, !empty($token_key)?$token_key:NULL);
+        $has_files  = obiba_mica_files_get_flat_attachments('/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY . '/' .  $study_id, !empty($token_key)?$token_key:NULL);
       if(!empty($has_files)){
         $file_browser = theme('obiba_mica_files_browser', array(
-          'doc_path' => '/' . DrupalMicaStudyResource::COLLECTION_STUDY,
+          'doc_path' => '/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY,
           'doc_id' => $study_id,
           'token_key' => $token_key,
         ));
@@ -497,7 +497,7 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
           'external' => TRUE,
           'attributes' => array(
             'data-toggle' => 'modal',
-            'data-target' => MicaClientPathHelpers::studyPopulationDceModalTarget($study_id, $population_id, $dce_wrapper)
+            'data-target' => DrupalMicaStudyResource::studyPopulationDceModalTarget($study_id, $population_id, $dce_wrapper)
           )
         )),
         'desc' => $dce_description,

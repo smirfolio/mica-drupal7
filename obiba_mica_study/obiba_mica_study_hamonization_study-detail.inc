@@ -39,7 +39,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
     $study_dto = $study_resource->getStudy($study_id, $token_key, DrupalMicaStudyResource::HARMONIZATION_STUDY);
     if(!empty($study_dto)){
       if(!empty($study_dto->logo)){
-        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, DrupalMicaStudyResource::HARMONIZATION_STUDY, FALSE, $token_key);
+        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, $study_dto->studyResourcePath, FALSE, $token_key);
       }
     }
   }
@@ -47,7 +47,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
     $study_dto = $study_resource->getStudy($study_id, NULL, DrupalMicaStudyResource::HARMONIZATION_STUDY);
     if(!empty($study_dto)){
       if(!empty($study_dto->logo)) {
-        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, DrupalMicaStudyResource::HARMONIZATION_STUDY, FALSE);
+        $logo_path = obiba_mica_commons_safe_expose_server_url($study_dto->id, $study_dto->logo, $study_dto->studyResourcePath, FALSE);
       }
     }
   }
@@ -93,8 +93,8 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
-      l($localize->getTranslation('studies'), MicaClientPathProvider::STUDIES),
-      l($localize->getTranslation('harmonization-studies'), MicaClientPathProvider::STUDIES . '/' . MicaClientPathProvider::HARMONIZATION_STUDIES),
+      l($localize->getTranslation('studies'), DrupalMicaStudyResource::STUDY),
+      l($localize->getTranslation('harmonization-studies'), DrupalMicaStudyResource::STUDY . '/' .  DrupalMicaStudyResource::HARMONIZATION_STUDY),
     ));
 
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;
@@ -120,10 +120,10 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
     }
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
-      $has_files  = obiba_mica_files_get_flat_attachments('/' . DrupalMicaStudyResource::HARMONIZATION_STUDY . '/' . $study_id, !empty($token_key)?$token_key:NULL);
+      $has_files  = obiba_mica_files_get_flat_attachments('/' . $study_dto->studyResourcePath . '/' . $study_id, !empty($token_key)?$token_key:NULL);
       if(!empty($has_files)){
         $file_browser = theme('obiba_mica_files_browser', array(
-          'doc_path' => '/' . DrupalMicaStudyResource::HARMONIZATION_STUDY,
+          'doc_path' => '/' . $study_dto->studyResourcePath,
           'doc_id' => $study_id,
           'token_key' => $token_key,
         ));
@@ -157,7 +157,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($study_dto);
       $study_theme ='';
       if (!empty($token_key)) {
-        $publiched_link = obiba_mica_commons_get_draft_link('harmonization-study', $study_id, $study_dto->published);
+        $publiched_link = obiba_mica_commons_get_draft_link(DrupalMicaStudyResource::HARMONIZATION_STUDY, $study_id, $study_dto->published);
         $study_theme =  $publiched_link;
       }
       $study_theme .= theme('obiba_mica_study_harmonization_study-detail',
