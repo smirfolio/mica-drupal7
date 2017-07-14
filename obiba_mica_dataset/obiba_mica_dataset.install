@@ -31,10 +31,15 @@ function obiba_mica_dataset_create_node() {
   $dataset_page = obiba_mica_commons_add_page(st('Datasets'), st($my_body_content));
   variable_set('dataset_page', $dataset_page->nid);
 
-  $harmo_dataset_page = obiba_mica_commons_add_page(st('Harmonized Datasets'),
+  $harmonized_dataset_page = obiba_mica_commons_add_page(st('Harmonization Datasets'),
     st('<p>A Harmonization Dataset documents and annotates a set of core variables which provides a concise but effective list of information to be harmonized in a specific scientific context. Variables found in a Harmonization Dataset therefore represent the reference format into which study-specific data needs to be processed to arrive at harmonized data. When a study can generate a variable defined in a Harmonization Dataset, a processing algorithm is developed to map study-specific data to the variable format defined in the Harmonization Dataset.</p><hr/>'));
-  variable_set('harmo_dataset_page', $harmo_dataset_page->nid);
+  variable_set('harmo_dataset_page', $harmonized_dataset_page->nid);
 
-  $study_dataset_page = obiba_mica_commons_add_page(st('Collected Datasets'), st('<p>A Study Dataset holds and describes variables collected by studies participating in a consortium. Study Datasets make use of standardized data dictionary which gives information on variable definitions and characteristics (e.g. type, unit, categories, and area of information covered). Using the variable search tool, researchers are able to query data collected across studies participating in the consortium.</p><hr/>'));
-  variable_set('study_dataset_page', $study_dataset_page->nid);
+  $collected_dataset_page = obiba_mica_commons_add_page(st('Study Datasets'), st('<p>A Study Dataset holds and describes variables collected by studies participating in a consortium. Study Datasets make use of standardized data dictionary which gives information on variable definitions and characteristics (e.g. type, unit, categories, and area of information covered). Using the variable search tool, researchers are able to query data collected across studies participating in the consortium.</p><hr/>'));
+  variable_set('study_dataset_page', $collected_dataset_page->nid);
+}
+
+function obiba_mica_dataset_update_7500(){
+  obiba_mica_commons_update_page_title( variable_get('harmo_dataset_page'), 'Harmonized Datasets');
+  obiba_mica_commons_update_page_title( variable_get('study_dataset_page'), 'Collected Datasets');
 }

@@ -150,8 +150,8 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
-      l($localize->getTranslation('studies'), DrupalMicaStudyResource::STUDY),
-      l($localize->getTranslation('individual-studies'), DrupalMicaStudyResource::STUDY . '/' .  DrupalMicaStudyResource::INDIVIDUAL_STUDY),
+      l($localize->getTranslation('studies'), DrupalMicaStudyResource::STUDIES),
+      l($localize->getTranslation('individual-studies'), DrupalMicaStudyResource::STUDIES . '/' .  DrupalMicaStudyResource::INDIVIDUAL_STUDY),
     ));
 
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;
@@ -218,7 +218,7 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($study_dto);
       $study_theme ='';
       if (!empty($token_key)) {
-        $publiched_link = obiba_mica_commons_get_draft_link('study', $study_id, $study_dto->published);
+        $publiched_link = obiba_mica_commons_get_draft_link(DrupalMicaStudyResource::INDIVIDUAL_STUDY, $study_id, $study_dto->published);
         $study_theme =  $publiched_link;
       }
       $study_theme .= theme('obiba_mica_study_detail',

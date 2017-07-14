@@ -19,7 +19,7 @@ include_once('obiba_mica_study_admin_form.inc');
 function obiba_mica_study_menu() {
   $items = array();
 
-  $items[DrupalMicaStudyResource::STUDY] = array(
+  $items[DrupalMicaStudyResource::STUDIES] = array(
     'title' => 'Studies',
     'description' => 'Published studies',
     'page callback' => 'obiba_mica_study_page_list',
@@ -29,7 +29,7 @@ function obiba_mica_study_menu() {
     'type' => MENU_NORMAL_ITEM,
     'expanded' => TRUE,
   );
-  $items[DrupalMicaStudyResource::STUDY . '/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY] = array(
+  $items[DrupalMicaStudyResource::STUDIES . '/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY] = array(
     'title' => 'Individual Studies',
     'description' => 'Published studies',
     'page callback' => 'obiba_mica_study_collection_page_list',
@@ -72,7 +72,7 @@ function obiba_mica_study_menu() {
   );
 
   /***********Harmonization Studies*********************/
-  $items[DrupalMicaStudyResource::STUDY . '/' . DrupalMicaStudyResource::HARMONIZATION_STUDY] = array(
+  $items[DrupalMicaStudyResource::STUDIES . '/' . DrupalMicaStudyResource::HARMONIZATION_STUDY] = array(
     'title' => 'Harmonization  Studies',
     'description' => 'Published Harmonixation studies',
     'page callback' => 'obiba_mica_study_harmonization_page_list',
@@ -219,7 +219,7 @@ function obiba_mica_study_block_info() {
     'status' => 1,
     'region' => 'content',
     'visibility' => BLOCK_VISIBILITY_LISTED,
-    'pages' => '*' . DrupalMicaStudyResource::STUDY,
+    'pages' => '*' . DrupalMicaStudyResource::STUDIES,
     'weight' => 3,
     'custom' => 1,
   );

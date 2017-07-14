@@ -33,12 +33,53 @@ function obiba_mica_init() {
     ));
     define('HIDE_PHP_FATAL_ERROR_URL', url(variable_get('custom_fatal_error_page', 'site-error')));
   }
-  $current_alias = drupal_get_path_alias();
-
-  if(strstr($current_alias, '/mica/study/')){
-    $redirect = str_replace('/mica/individual-study/', '/mica/study/', $current_alias);
- //   drupal_goto($redirct_alias, array(), '301');
+  $redirect = obiba_mica_get_redirect_path();
+  if (!empty($redirect)) {
+   drupal_goto($redirect, array('query' => drupal_get_query_parameters()), '301');
   }
+}
+
+function obiba_mica_get_redirect_path() {
+  $current_path = drupal_get_path_alias();
+  $redirection_patterns = array(
+    DrupalMicaStudyResource::STUDIES => array(
+      "search_pattern" => "/^mica\/studies$|^mica\/studies[\/]$|^mica\/studies\?$/",
+      "replace_pattern" => "/^mica\/studies/"
+    ),
+    'mica/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY => array(
+      "search_pattern" => "/^mica\/study\/(?!" . DrupalMicaStudyResource::INDIVIDUAL_STUDY . "|" . DrupalMicaStudyResource::HARMONIZATION_STUDY. ")[a-zA-Z\D\d]+$/",
+      "replace_pattern" => "/^mica\/study/"
+    ),
+    DrupalMicaDatasetResource::DATASETS => array(
+      "search_pattern" => "/^mica\/datasets$|^mica\/datasets[\/]$|^mica\/datasets\?$/",
+      "replace_pattern" => "/^mica\/datasets/"
+    ),
+    DrupalMicaDatasetResource::DATASETS . '/' . DrupalMicaDatasetResource::COLLECTED_DATASET => array(
+      "search_pattern" => "/^mica\/datasets\/study-datasets$|^mica\/datasets\/study-datasets[\/]$|^mica\/datasets\/study-datasets\?$/",
+      "replace_pattern" => "/^mica\/datasets\/study-datasets/"
+    ),
+    DrupalMicaDatasetResource::DATASETS . '/' . DrupalMicaDatasetResource::HARMONIZED_DATASET => array(
+      "search_pattern" => "/^mica\/datasets\/harmonization-datasets$|^mica\/datasets\/harmonization-datasets[\/]$|^mica\/datasets\/harmonization-datasets\?$/",
+      "replace_pattern" => "/^mica\/datasets\/harmonization-datasets/"
+    ),
+    'mica/' . DrupalMicaDatasetResource::COLLECTED_DATASET => array(
+      "search_pattern" => "/^mica\/study-dataset\/[a-zA-Z\D\d]+$/",
+      "replace_pattern" => "/^mica\/study-dataset/"
+    ),
+    'mica/' . DrupalMicaDatasetResource::HARMONIZED_DATASET => array(
+      "search_pattern" => "/^mica\/harmonization-dataset\/[a-zA-Z\D\d]+$/",
+      "replace_pattern" => "/^mica\/harmonization-dataset/"
+    )
+  );
+  foreach ($redirection_patterns as $redirect_to => $pattern) {
+    $output_array = NULL;
+    $exclude_pattern = NULL;
+      preg_match($pattern["search_pattern"], $current_path, $output_array);
+      if ($output_array) {
+        return preg_replace($pattern['replace_pattern'], $redirect_to, $current_path);
+    }
+  }
+  return FALSE;
 }
 
 /**
@@ -376,7 +417,7 @@ function obiba_mica_js_alter(&$javascript) {
     }
   }
   $current_clean_url = !empty($GLOBALS['conf']['clean_url']) ? '' : '?q=';
-  drupal_add_js(array('basePath' => base_path().$current_clean_url), 'setting');
+  drupal_add_js(array('basePath' => base_path() . $current_clean_url), 'setting');
 }
 
 /**

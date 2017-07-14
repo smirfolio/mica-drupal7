@@ -479,6 +479,22 @@ function obiba_mica_commons_add_page($title, $body_html, $alias = NULL, $format 
 }
 
 /**
+ * Update Title pages
+ *
+ * @param $id_node.
+ * @param $title.
+ *
+ */
+function obiba_mica_commons_update_page_title($id_node, $title){
+  if(!empty($title)){
+    $node = node_load($id_node);
+    if (!empty($node)) {
+      $node->title = st($title);
+      node_save($node);
+    }
+  }
+}
+/**
  * Get the current theme name.
  *
  * @return string

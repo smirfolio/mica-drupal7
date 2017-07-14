@@ -21,7 +21,7 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\DrupalMicaClientResourcePa
  * Class MicaStudyResource
  */
 class DrupalMicaStudyResource extends DrupalMicaClientResource {
-  const STUDY = 'mica/study';
+  const STUDIES = 'mica/study';
   const HARMONIZATION_STUDY = 'harmonization-study';
   const HARMONIZATION_STUDY_LINK = 'mica/harmonization-study/{id}';
 

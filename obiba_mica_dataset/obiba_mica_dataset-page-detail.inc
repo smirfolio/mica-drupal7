@@ -80,8 +80,8 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
 
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
-    l($localize->getTranslation('datasets'), 'mica/datasets'),
-    l(($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET ? $localize->getTranslation('collected-datasets') : $localize->getTranslation('harmonized-datasets')), 'mica/datasets/' . $dataset_type ),
+    l($localize->getTranslation('datasets'), DrupalMicaDatasetResource::DATASETS),
+    l(($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET ? $localize->getTranslation('collected-datasets') : $localize->getTranslation('harmonized-datasets')), DrupalMicaDatasetResource::DATASETS . '/' .  $dataset_type ),
   ));
 
   $dataset_theme = obiba_mica_commons_get_cache(__FUNCTION__ . 'dataset_theme-' . $dataset_id);

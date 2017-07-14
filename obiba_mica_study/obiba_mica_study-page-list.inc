@@ -76,7 +76,7 @@ function obiba_mica_study_list($studies_type = NULL) {
 
     foreach ($summaries as $study) {
       $template_study_block = 'obiba_mica_study-list-page-block';
-      if($studies_type == DrupalMicaStudyResource::HARMONIZATION_STUDY){
+      if($study->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY){
         $template_study_block = 'obiba_mica_study-list-harmo-study-page-block';
       }
       if (!empty($study->logo->id)) {
@@ -99,7 +99,7 @@ function obiba_mica_study_list($studies_type = NULL) {
   }
   $show_rapid_search_form = variable_get_value('studies_list_show_search_form');
   return theme($template_study, array(
-    "form_search" => !empty($show_rapid_search_form) ? drupal_get_form('obiba_mica_study_create_form') : '',
+    "form_search" => !empty($show_rapid_search_form) ? drupal_get_form('obiba_mica_study_create_form', $studies_type) : '',
     "node_page" => $node_rendered,
     "total_items" => $total_studies,
     "list_studies" => $themed_studies,
@@ -133,7 +133,7 @@ function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = N
   }
 }
 
-function obiba_mica_study_create_form() {
+function obiba_mica_study_create_form($form, &$form_state, $studies_type) {
   $localize = obiba_mica_commons_mica_server_localisation();
   $context =
     array(
@@ -144,7 +144,9 @@ function obiba_mica_study_create_form() {
       'default_sort' => variable_get_value('study_list_name_acronym_sort'),
       'default_sort_order' => variable_get_value('study_list_default_order_sort'),
     );
-
+  if ($studies_type == DrupalMicaStudyResource::HARMONIZATION_STUDY) {
+    unset($context['options']['model.numberOfParticipants.participant.number']);
+  }
   return obiba_mica_commons_create_search_form($context);
 }
 

@@ -21,7 +21,7 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 class DrupalMicaDatasetResource extends DrupalMicaClientResource {
   const DEFAULT_PRIMARY_BUTTON_CLASSES = 'btn highlight btn btn-primary';
   const CROSSTAB = 'mica/variables';
-  const DATASETS = 'mica/datasets';
+  const DATASETS = 'mica/dataset';
   const COLLECTED_VARIABLE = 'Collected';
   const COLLECTED_DATASET = 'collected-dataset';
   const COLLECTED_DATASET_LINK = 'mica/collected-dataset/{id}';
