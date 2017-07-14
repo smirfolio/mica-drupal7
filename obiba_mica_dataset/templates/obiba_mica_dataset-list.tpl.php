@@ -40,7 +40,7 @@
       </div>
       <div class="btn-group pull-right">
         <?php if (variable_get_value('dataset_list_show_search_button')): ?>
-          <?php print MicaClientAnchorHelper::searchDatasets(TRUE); ?>
+          <?php print DrupalMicaDatasetResource::searchDatasets(TRUE); ?>
         <?php endif; ?>
       </div>
     </div>

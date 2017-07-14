@@ -39,7 +39,7 @@ function hook_load_menus() {
  * Load angular application javascript within the module.
  */
 function hook_get_js($weight_js) {
-  if (current_path() == MicaClientPathProvider::CROSSTAB) {
+  if (current_path() == DrupalMicaDatasetResource::CROSSTAB) {
     $module_path = drupal_get_path('module', 'obiba_mica_dataset');
     $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
     ksort($js);
@@ -61,7 +61,7 @@ function hook_get_js($weight_js) {
  *   The module angular name.
  */
 function hook_get_ng_module_to_load() {
-  if (current_path() == MicaClientPathProvider::CROSSTAB) {
+  if (current_path() == DrupalMicaDatasetResource::CROSSTAB) {
     return 'mica.DatasetVariableCrosstab';
   }
   return FALSE;

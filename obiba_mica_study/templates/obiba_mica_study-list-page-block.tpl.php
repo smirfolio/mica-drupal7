@@ -24,7 +24,7 @@
   <div class="col-md-10  col-sm-12 col-xs-12">
     <div>
       <h4>
-        <?php print MicaClientAnchorHelper::studyListItem($study); ?>
+        <?php print DrupalMicaStudyResource::studyListItem($study); ?>
       </h4>
       <hr class="no-margin">
       <p class="md-top-margin">
@@ -33,7 +33,7 @@
             <?php  print MicaClientAnchorHelper::ellipses(
               t('Read more'),
               obiba_mica_commons_get_localized_field($study, 'objectives'),
-              MicaClientPathProvider::study($study->id)
+              DrupalMicaStudyResource::study($study->id)
             ); ?>
           <?php else: ?>
             <div class="objectives-studies">
@@ -107,7 +107,7 @@
           <?php endif ?>
 
           <?php if (!empty($datasets) && (variable_get_value('studies_column_study_datasets') || variable_get_value('studies_column_harmonization_datasets'))): ?>
-            <?php print MicaClientAnchorHelper::studyDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id, 'btn-default btn-xxs', 'datasetCount') ?>
+            <?php print DrupalMicaDatasetResource::studyDatasets(t('@count ' . $dataset_caption, array('@count' => $datasets)), $study->id, 'btn-default btn-xxs', 'datasetCount') ?>
           <?php endif ?>
 
           <?php if (!empty($vars) && variable_get_value('studies_column_variables')): ?>

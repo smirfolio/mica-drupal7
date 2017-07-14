@@ -17,7 +17,7 @@
 
         if (optionsStudyContent) {
           if (optionsStudyContent.showNetwork) {
-            qNetworks = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/networks')
+            qNetworks = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/individual-study/' + settings.study_url + '/networks')
               .done(function (data) {
                 if (! data) {
                   $('#networks').remove();
@@ -34,7 +34,7 @@
             $('#networks').remove();
           }
           if (optionsStudyContent.showDatasets) {
-            qDatasets = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/study/' + settings.study_url + '/datasets')
+            qDatasets = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/individual-study/' + settings.study_url + '/datasets')
               .done(function (data) {
                 if (! data) {
                   $('#datasets').remove();

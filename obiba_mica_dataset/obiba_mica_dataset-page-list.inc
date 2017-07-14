@@ -31,7 +31,7 @@ function obiba_mica_dataset_get_datasets_list() {
 function obiba_mica_dataset_get_harmonization_datasets_list() {
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('harmo_dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
-  return obiba_mica_dataset_get_datasets_page($node_rendered, 'harmonization_datasets');
+  return obiba_mica_dataset_get_datasets_page($node_rendered,  DrupalMicaDatasetResource::HARMONIZED_DATASET);
 }
 
 /**
@@ -40,7 +40,7 @@ function obiba_mica_dataset_get_harmonization_datasets_list() {
 function obiba_mica_dataset_get_study_datasets_list() {
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('study_dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
-  return obiba_mica_dataset_get_datasets_page($node_rendered, 'study_datasets');
+  return obiba_mica_dataset_get_datasets_page($node_rendered, DrupalMicaDatasetResource::COLLECTED_DATASET);
 }
 
 /**
@@ -63,8 +63,8 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
     return $cached_themed_list_datasets;
   }
   else {
-    $resource_dataset = obiba_mica_dataset_correct_resource_server($dataset_resource);
-    $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $resource_dataset, $dataset_limits);
+    $dataset_class_name = obiba_mica_dataset_correct_resource_server($dataset_resource);
+    $response = obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_class_name, $dataset_limits);
     $total_hits = empty($response) ? 0 : $response->getTotalHits();
     $dataset_limits = !empty($dataset_limits) ? $dataset_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
     pager_default_initialize($total_hits, $dataset_limits);
@@ -101,8 +101,8 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
 function obiba_mica_dataset_correct_resource_server($dataset_resource) {
   $resource = array(
     'datasets' => NULL,
-    'harmonization_datasets' => 'HarmonizationDataset',
-    'study_datasets' => 'StudyDataset',
+    DrupalMicaDatasetResource::HARMONIZED_DATASET => 'HarmonizationDataset',
+    DrupalMicaDatasetResource::COLLECTED_DATASET => 'StudyDataset',
   );
   return $resource[$dataset_resource];
 }
@@ -110,14 +110,14 @@ function obiba_mica_dataset_correct_resource_server($dataset_resource) {
 /**
  * Get the datasets from server.
  */
-function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_resource, $dataset_limits = NULL) {
+function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_class_name, $dataset_limits = NULL) {
   $from = 0;
   $resource = new DrupalMicaDatasetResource();
   $size_response = !empty($dataset_limits) ? $dataset_limits : variable_get_value('mica_response_page_size_small');
   if (!empty($_GET['page'])) {
     $from = $resource->paginationListSearchParameters($_GET['page'], 'datasets', $size_response);
   }
-  $response = $resource->getDatasets($dataset_resource, NULL, $query, $from, $size_response, $sort, $sort_by);
+  $response = $resource->getDatasets($dataset_class_name, NULL, $query, $from, $size_response, $sort, $sort_by);
   if (!empty($response)) {
     $_SESSION['datasets']['aggregations']['total_hits'] = $response->getTotalHits();
   }

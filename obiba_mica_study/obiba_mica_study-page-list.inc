@@ -14,15 +14,12 @@
  * Mica client studies retrieve Studies lists
  */
 
-use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
-
-
 function obiba_mica_study_harmonization_page_list(){
- return  obiba_mica_study_list(DrupalMicaStudyResource::HARMONIZATION_STUDIES);
+ return  obiba_mica_study_list(DrupalMicaStudyResource::HARMONIZATION_STUDY);
 }
 
 function obiba_mica_study_collection_page_list(){
-  return obiba_mica_study_list(DrupalMicaStudyResource::COLLECTION_STUDIES);
+  return obiba_mica_study_list(DrupalMicaStudyResource::INDIVIDUAL_STUDY);
 }
 
 function obiba_mica_study_page_list(){
@@ -78,15 +75,12 @@ function obiba_mica_study_list($studies_type = NULL) {
     $i = 0;
 
     foreach ($summaries as $study) {
-      $study_entity_type = DrupalMicaStudyResource::COLLECTION_STUDY;
       $template_study_block = 'obiba_mica_study-list-page-block';
-      //@TODO this condition have to be dealt with type of the study (collection/harmonization)
-      if($study->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY){
-        $study_entity_type = DrupalMicaStudyResource::HARMONIZATION_STUDY;
+      if($studies_type == DrupalMicaStudyResource::HARMONIZATION_STUDY){
         $template_study_block = 'obiba_mica_study-list-harmo-study-page-block';
       }
       if (!empty($study->logo->id)) {
-        $logo_url = obiba_mica_commons_safe_expose_server_url($study->id, $study->logo, $study_entity_type);
+        $logo_url = obiba_mica_commons_safe_expose_server_url($study->id, $study->logo, $study->studyResourcePath);
       }
       else {
         $logo_url = NULL;
@@ -241,7 +235,7 @@ function obiba_mica_study_study_table_column($row, $type) {
 }
 
 
-function obiba_mica_study_study_summaries_table_headers($study_type = DrupalMicaStudyResource::COLLECTION_STUDY) {
+function obiba_mica_study_study_summaries_table_headers($study_type = DrupalMicaStudyResource::INDIVIDUAL_STUDY) {
   $localize = obiba_mica_commons_mica_server_localisation();
   $header = array(
     array("title" => $localize->getTranslation('study.acronym')),
@@ -268,7 +262,7 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
   $localize = obiba_mica_commons_mica_server_localisation();
   $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
   return array(
-    MicaClientAnchorHelper::study($study_summary),
+    DrupalMicaStudyResource::anchorStudy($study_summary),
     $name,
     isset($study_summary->design) ? obiba_mica_study_translate_study_design_summary($study_summary->design) : '',
     isset($study_summary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :

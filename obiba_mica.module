@@ -33,6 +33,12 @@ function obiba_mica_init() {
     ));
     define('HIDE_PHP_FATAL_ERROR_URL', url(variable_get('custom_fatal_error_page', 'site-error')));
   }
+  $current_alias = drupal_get_path_alias();
+
+  if(strstr($current_alias, '/mica/study/')){
+    $redirect = str_replace('/mica/individual-study/', '/mica/study/', $current_alias);
+ //   drupal_goto($redirct_alias, array(), '301');
+  }
 }
 
 /**

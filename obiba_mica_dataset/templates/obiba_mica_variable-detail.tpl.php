@@ -71,11 +71,11 @@
                         <?php if ($variable_dto->variableType == 'Dataschema'): ?>
                             <ul class="list-unstyled">
                               <?php foreach ($variable_dto->studySummaries as $study_summary): ?>
-                                  <li><?php print MicaClientAnchorHelper::study($study_summary); ?></li>
+                                  <li><?php print DrupalMicaStudyResource::anchorStudy($study_summary); ?></li>
                               <?php endforeach ?>
                             </ul>
                         <?php elseif (!empty($variable_dto->studySummaries)):
-                          print MicaClientAnchorHelper::study($variable_dto->studySummaries[0]);
+                          print DrupalMicaStudyResource::anchorStudy($variable_dto->studySummaries[0]);
                         elseif (!empty($variable_dto->networkSummaries)):
                           print MicaClientAnchorHelper::network($variable_dto->networkSummaries[0]);
                         endif ?>
@@ -87,12 +87,12 @@
                         <?php if ($variable_dto->studySummary->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY): ?>
                           <?php print $localize->getTranslation('global.harmonization-study'); ;?>
                           <?php else: ?>
-                          <?php print $localize->getTranslation('study.label'); ;?>
+                          <?php print $localize->getTranslation('global.individual-study'); ;?>
                         <?php endif; ?>
                       </th>
                       <td>
                         <?php
-                          print MicaClientAnchorHelper::study($variable_dto->studySummary);
+                          print DrupalMicaStudyResource::anchorStudy($variable_dto->studySummary);
                        ?>
                       </td>
                   </tr>
@@ -104,7 +104,7 @@
               <th><?php print $localize->getTranslation('dataset.details'); ?></th>
               <td>
                 <p>
-                  <?php print MicaClientAnchorHelper::variableDataset($variable_dto); ?>
+                  <?php print DrupalMicaDatasetResource::variableDatasetLink($variable_dto); ?>
                 </p>
               </td>
             </tr>
@@ -137,7 +137,7 @@
                 <?php print t('@type Variable', array('@type' =>
                   $variable_type)); ?>
                 <?php if ($variable_dto->variableType == 'Harmonized'): ?>
-                  <?php print '(' . MicaClientAnchorHelper::variableHarmonized($variable_dto) . ')'; ?>
+                  <?php print '(' . DrupalMicaDatasetResource::variableHarmonized($variable_dto) . ')'; ?>
                 <?php endif; ?>
               </p>
             </td>
@@ -219,7 +219,7 @@
         <?php if (strcasecmp($variable_dto->nature, 'CATEGORICAL') === 0 && $variable_dto->variableType !== 'Harmonized'): ?>
           <span class="pull-right">
         <?php if (variable_get_value('mica_statistics')) :
-          print MicaClientAnchorHelper::variableCrosstab($variable_dto, TRUE);
+          print DrupalMicaDatasetResource::variableCrosstab($variable_dto, TRUE);
         endif;
         ?>
       </span>
@@ -273,7 +273,7 @@
     </section>
   <?php endif; ?>
 
-  <?php if ($variable_dto->variableType != DrupalMicaStudyResource::TYPE_COLLECTION_STUDY): ?>
+  <?php if ($variable_dto->variableType != DrupalMicaDatasetResource::COLLECTED_VARIABLE): ?>
     <section>
       <h2><?php print $localize->getTranslation('client.label.variable.harmonization') ?></h2>
       <?php print render($harmonization_table_legend); ?>

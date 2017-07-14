@@ -31,17 +31,17 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     <?php if ($can_edit_draf_document): ?>
       <a title="<?php print $localize->getTranslation('edit') ?>"
          target="_blank"
-         href="<?php print MicaClientPathProvider::dataset_draft_url($dataset_dto) ?>"
+         href="<?php print DrupalMicaDatasetResource::dataset_draft_url($dataset_dto) ?>"
          class="btn btn-default">
         <i class="fa fa-pencil-square-o"></i> <?php print $localize->getTranslation('edit')?></a>
     <?php endif; ?>
 
     <?php if (variable_get_value('dataset_detailed_crosstab') && $draft_view === FALSE) : ?>
-      <?php print MicaClientAnchorHelper::datasetCrosstab($dataset_dto, TRUE); ?>
+      <?php print DrupalMicaDatasetResource::datasetCrosstab($dataset_dto, TRUE); ?>
     <?php endif; ?>
 
     <?php if (variable_get_value('dataset_detail_show_search_button')  && $draft_view === FALSE): ?>
-      <?php print MicaClientAnchorHelper::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary')) ?>
+      <?php print DrupalMicaDatasetResource::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary')) ?>
     <?php endif; ?>
   </div>
 
@@ -83,7 +83,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
             <td>
               <p>
                 <?php
-                if (!empty($dataset_type) && $dataset_type == 'harmonization-dataset'):
+                if (!empty($dataset_type) && $dataset_type ==  DrupalMicaDatasetResource::HARMONIZED_DATASET):
                   echo $localize->getTranslation('harmonized-dataset');
                 else:
                   echo $localize->getTranslation('collected-dataset');
@@ -97,7 +97,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               <th><?php print $localize->getTranslation('client.label.dataset.number-of-variables') ?></th>
               <td>
                 <p>
-                  <?php print MicaClientAnchorHelper::datasetVariables(empty($variables_dataset->total) ? 0 :
+                  <?php print DrupalMicaDatasetResource::datasetVariables(empty($variables_dataset->total) ? 0 :
                     obiba_mica_commons_format_number($variables_dataset->total), $dataset_dto->id); ?>
                 </p>
               </td>
@@ -152,7 +152,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                         <th><?php print $localize->getTranslation('study.acronym') ?></th>
                         <td>
                             <p>
-                              <?php print MicaClientAnchorHelper::study($dataset_type_dto->harmonizationTable->studySummary); ?>
+                              <?php print DrupalMicaStudyResource::anchorStudy($dataset_type_dto->harmonizationTable->studySummary); ?>
                             </p>
                         </td>
                     </tr>
@@ -170,11 +170,11 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
         </div>
     <?php endif ?>
       <!-- ###Harmo reference study table## -->
-    <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == 'collected-dataset' || !empty($dataset_type_dto->studyTables))): ?>
+    <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET || !empty($dataset_type_dto->studyTables))): ?>
       <h2>
         <?php
         if (!empty($dataset_type_dto->studyTables)){
-          print $localize->getTranslation('collection-studies');
+          print $localize->getTranslation('individual-studies');
         }
         ?>
       </h2>
@@ -197,7 +197,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                   <th><?php print $localize->getTranslation('study.acronym') ?></th>
                   <td>
                     <p>
-                      <?php print MicaClientAnchorHelper::study($dataset_type_dto->studyTable->studySummary); ?>
+                      <?php print DrupalMicaStudyResource::anchorStudy($dataset_type_dto->studyTable->studySummary); ?>
                     </p>
                   </td>
                 </tr>
@@ -216,7 +216,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                   <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary):
                     if ($pop_summary->id == $dataset_type_dto->studyTable->populationId):
                       $population_summary = $pop_summary;
-                      print !empty($dataset_type_dto->studyTable->studySummary->published)?MicaClientAnchorHelper::studyPopulationModal($pop_summary):
+                      print !empty($dataset_type_dto->studyTable->studySummary->published) ? DrupalMicaStudyResource::studyPopulationModal($pop_summary):
                         obiba_mica_commons_get_localized_field($pop_summary, 'name');
                       break;
                     endif;
@@ -229,7 +229,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                   <?php $dce_anchor = NULL; ?>
                   <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary):
                     if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId):
-                      print !empty($dataset_type_dto->studyTable->studySummary->published)?MicaClientAnchorHelper::studyPopulationDceModal(
+                      print !empty($dataset_type_dto->studyTable->studySummary->published) ? DrupalMicaStudyResource::studyPopulationDceModal(
                         $dataset_type_dto->studyTable->studyId,
                         $dataset_type_dto->studyTable->populationId,
                         $dce_summary

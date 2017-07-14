@@ -21,11 +21,13 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\DrupalMicaClientResourcePa
  * Class MicaStudyResource
  */
 class DrupalMicaStudyResource extends DrupalMicaClientResource {
-  const COLLECTION_STUDIES = 'collection-studies';
-  const HARMONIZATION_STUDIES = 'harmonization-studies';
-  const COLLECTION_STUDY = 'individual-study';
+  const STUDY = 'mica/study';
   const HARMONIZATION_STUDY = 'harmonization-study';
-  const TYPE_COLLECTION_STUDY = 'Collected';
+  const HARMONIZATION_STUDY_LINK = 'mica/harmonization-study/{id}';
+
+  const INDIVIDUAL_STUDY = 'individual-study';
+  const INDIVIDUAL_STUDY_LINK = 'mica/individual-study/{id}';
+
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
   }
@@ -180,14 +182,15 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    * @param $sort
    * @param $order
    * @param $language
+   * @param $studies_type
    * @return string
    */
   private function generateRqlQuery($query, $from, $limit, $sort, $order, $language, $studies_type = NULL) {
     switch ($studies_type){
-      case 'harmonization-studies' :
+      case self::HARMONIZATION_STUDY :
         $class_name = 'HarmonizationStudy';
         break;
-      case 'collection-studies' :
+      case self::INDIVIDUAL_STUDY :
         $class_name = 'Study';
         break;
       default:
@@ -208,4 +211,141 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
     $resource_query = ResourcesWsPath::getResourcePath(ResourcesWsPath::WS_STUDIES_SEARCH, array($params));
     return $resource_query;
   }
+
+  /**
+   * The study detail url.
+   *
+   * @param string $id
+   *   Study id.
+   *
+   * @return string
+   *   The url of the study detail.
+   */
+  public static function study($id) {
+    return preg_replace('/\\{id\\}/', $id, self::INDIVIDUAL_STUDY_LINK, 1);
+  }
+
+  /**
+   * Study list item.
+   *
+   * @param object $study
+   *   The study wrapper.
+   *
+   * @return string
+   *   Formatted list.
+   */
+  public static function studyListItem($study) {
+    return MicaClientAnchorHelper::listItem($study, self::study($study->id));
+  }
+
+  /**
+   * Returns the url to the draft study document
+   *
+   * @param string
+   *  Study $id
+   * @return string
+   */
+  public static function study_draft_url($id) {
+    return sprintf("%s/#/study/%s", self::get_mica_url(), $id);
+  }
+
+  /**
+   * The study detail url.
+   *
+   * @param object $study
+   *   Study wrapper.
+   *
+   * @return string
+   *   The url of the study detail.
+   */
+  public static function anchorStudy($study) {
+    $name = obiba_mica_commons_get_localized_field($study, 'acronym');
+    $study_id = !empty($study->studyId) ? $study->studyId : $study->id;
+    $Link_study = (!empty($study->studyResourcePath) && $study->studyResourcePath == self::HARMONIZATION_STUDY) ?
+      DrupalMicaStudyResource::harmoStudy($study_id) : self::study($study_id);
+    return !empty($study->published) ? l($name, $Link_study, array()) : $name;
+  }
+
+  /**
+   * The target of a population dce modal.
+   *
+   * @param $study_id
+   * @param $population_id
+   * @param $dce
+   * @return mixed
+   */
+  public static function studyPopulationDceModalTarget($study_id, $population_id, $dce) {
+    return MicaClientPathHelpers::normalizeModalTarget('#dce-' . $study_id . '-' . $population_id . '-' .
+      (is_string($dce) ? $dce : $dce->id));
+  }
+
+  /**
+   * The DCE anchor for a study.
+   *
+   * @param string $study_id
+   *   The study id.
+   * @param string $population_id
+   *   The population id.
+   * @param object $dce
+   *   The dce wrapper.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function studyPopulationDceModal($study_id, $population_id, $dce) {
+    return l(obiba_mica_commons_get_localized_field($dce, 'name'), '#', array(
+      'external' => TRUE,
+      'attributes' => array(
+        'data-toggle' => 'modal',
+        'data-target' => self::studyPopulationDceModalTarget($study_id, $population_id, $dce),
+      ),
+    ));
+  }
+
+  /**
+   * The population detail url.
+   *
+   * @param object $population
+   *   Population wrapper.
+   *
+   * @return string
+   *   The url of the population detail.
+   */
+  public static function studyPopulationModal($population) {
+    $link = l(obiba_mica_commons_get_localized_field($population, 'name'), '#', array(
+      'external' => TRUE,
+      'attributes' => array(
+        'data-toggle' => 'modal',
+        'data-target' => MicaClientPathHelpers::normalizeModalTarget('#population-' . $population->id),
+      ),
+    ));
+    return $link;
+  }
+
+  /**
+   * The study detail url.
+   *
+   * @param string $id
+   *   Study id.
+   *
+   * @return string
+   *   The url of the study detail.
+   */
+  public static function harmoStudy($id) {
+    return preg_replace('/\\{id\\}/', $id, self::HARMONIZATION_STUDY_LINK, 1);
+  }
+
+  /**
+   * Study list item.
+   *
+   * @param object $study
+   *   The study wrapper.
+   *
+   * @return string
+   *   Formatted list.
+   */
+  public static function harmoStudyListItem($study) {
+    return MicaClientAnchorHelper::listItem($study, self::harmoStudy($study->id));
+  }
+
 }
