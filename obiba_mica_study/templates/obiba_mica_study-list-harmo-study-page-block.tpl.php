@@ -33,7 +33,7 @@
             <?php  print MicaClientAnchorHelper::ellipses(
               t('Read more'),
               obiba_mica_commons_get_localized_field($study, 'objectives'),
-              DrupalMicaStudyResource::study($study->id)
+              DrupalMicaStudyResource::harmoStudy($study->id)
             ); ?>
           <?php else: ?>
             <div class="objectives-studies">

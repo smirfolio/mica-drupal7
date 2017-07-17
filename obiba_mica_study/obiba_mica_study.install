@@ -32,3 +32,7 @@ function obiba_mica_study_unset_variables(){
   variable_del('study_target_number_participant_with_sample_label');
   variable_del('study_supplementary_information_about_target_number_participant');
 }
+
+function obiba_mica_study_update_7500(){
+  obiba_mica_commons_update_page_title( variable_get('study_list_page'), 'Individual Studies');
+}
