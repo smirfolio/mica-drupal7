@@ -120,10 +120,10 @@ function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variabl
     }
   }
 
-  $themed_algo['algo'] = theme(
-    'obiba_mica_variable_harmonization_algorithm',
-    array('variable_harmonization_algorithms' => $sorted_variables)
-  );
+  $themed_algo['algo'] = empty($sorted_variables)
+    ? NULL
+    : theme( 'obiba_mica_variable_harmonization_algorithm',
+      array('variable_harmonization_algorithms' => $sorted_variables));
 
   drupal_json_output($themed_algo);
 }

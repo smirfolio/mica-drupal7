@@ -34,11 +34,16 @@
             'success': function (data) {
               try {
                 var data_decoded = jQuery.parseJSON(data);
-                sectionContainer.append(data_decoded['algo']);
+                if (!data_decoded.algo) {
+                  $('#harmo-algo-empty').removeClass('hidden');
+                } else {
+                  $('#harmo-algo-empty').addClass('hidden');
+
+                  sectionContainer.append(data_decoded['algo']);
+                }
               } catch (e) {
-
+                console.error('micaDataset_variable_harmo_algo_datable_init', e);
               }
-
             },
             'error': function (data) {
               console.log('Some errors....');
