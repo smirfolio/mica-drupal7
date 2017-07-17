@@ -171,10 +171,10 @@ function _obiba_mica_variable_search_page(&$variable) {
     'type' => 'options',
     'default' => array(
       'study' => 'study',
+      'harmonizationStudy' => 'harmonizationStudy',
       'dce' => 'dce',
       'dataset' => 'dataset',
-      'dataschema' => 'dataschema',
-      'network' => 'network',
+      'dataschema' => 'dataschema'
     ),
   );
 }
