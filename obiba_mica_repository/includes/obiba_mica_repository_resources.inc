@@ -249,11 +249,11 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     }
     else {
       switch ($bucket->field) {
-        case 'studyIds' :
-          $query_search .= 'studyIds,' . $bucket->value;
+        case 'studyId' :
+          $query_search .= 'studyId,' . $bucket->value;
           break;
-        case 'dceIds' :
-          $query_search .= 'dceIds,' . urlencode(urlencode($bucket->value));
+        case 'dceId' :
+          $query_search .= 'dceId,' . urlencode(urlencode($bucket->value));
       }
     }
     $query_search .= ')))&display=list&type=variables';
