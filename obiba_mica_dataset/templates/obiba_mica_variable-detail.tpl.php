@@ -308,7 +308,7 @@
               <?php print $localize->getTranslation('client.label.variable.show-harmo-algo') ?>
             </button>
             <div id="harmo-algo" class="collapse">
-
+              <div id="harmo-algo-empty" class="alert alert-info hidden"><?php print $localize->getTranslation('client.message.variable.no-harmonization-algo'); ?></div>
             </div>
           <?php endif; ?>
 
@@ -366,7 +366,7 @@
                   <?php print $variable_harmonization['algorithm']; ?>
                 </div>
               </div>
-            <?php else: ?>
+            <?php elseif (!empty($variable_harmonization['script'])) : ?>
               <h4><?php print $localize->getTranslation('client.label.variable.script'); ?></h4>
               <pre class="prettyprint lang-js">
             <?php print $variable_harmonization['script']; ?>
