@@ -81,7 +81,7 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
       $list_datasets = variable_get_value('datasets_empty_label');
     }
     $themed_datasets_list = theme('obiba_mica_dataset-list', array(
-      "form_search" => drupal_get_form('obiba_mica_dataset_create_form'),
+      "form_search" => drupal_get_form('obiba_mica_dataset_create_form', $dataset_resource),
       'node_page' => $node_view,
       "total_items" => $total_hits,
       'list_datasets' => $list_datasets,
@@ -128,7 +128,7 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_class
 /**
  * Search form creation on the dataset list page.
  */
-function obiba_mica_dataset_create_form() {
+function obiba_mica_dataset_create_form($form, &$form_state, $dataset_resource) {
   $localize = obiba_mica_commons_mica_server_localisation();
   $context = array(
     'options' => array(
@@ -137,6 +137,9 @@ function obiba_mica_dataset_create_form() {
     'default_sort' => 'name',
     'default_sort_order' => 'asc'
   );
+  if (!empty($dataset_resource) && $dataset_resource === DrupalMicaDatasetResource::HARMONIZED_DATASET) {
+    unset($context['options']['studyTable.studyId,studyTable.populationId,start']);
+  }
   return obiba_mica_commons_create_search_form($context);
 }
 
