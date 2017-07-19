@@ -470,9 +470,16 @@ function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
   $coverages = obiba_mica_graphics_do_coverage_query($query);
   $base_path = !empty($GLOBALS['conf']['clean_url']) ? base_path() : base_path().'?q=';
   if (isset($coverages->taxonomies)) {
-    $shown = array_filter($coverages->taxonomies, function ($coverage) {
-      return in_array($coverage->taxonomy->name, obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures'));
-    });
+    $taxonomises_config = obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures');
+    $shown = array();
+
+    foreach($taxonomises_config as $taxonomy_config) {
+      foreach ($coverages->taxonomies as $covarage){
+        if($taxonomy_config === $covarage->taxonomy->name){
+          $shown[]= $covarage;
+        }
+      }
+    };
 
     $filtered = array_filter($shown, function ($coverage) { return isset($coverage->hits) && $coverage->hits > 0; });
 
