@@ -15,6 +15,7 @@
  */
 
 include_once('obiba_mica_study_admin_form.inc');
+include_once('includes/obiba_mica_study_resource.inc');
 
 function obiba_mica_study_menu() {
   $items = array();
