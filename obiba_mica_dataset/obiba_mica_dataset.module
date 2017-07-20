@@ -15,6 +15,7 @@
  */
 
 include_once('obiba_mica_dataset_admin_form.inc');
+include_once('includes/obiba_mica_dataset_resource.inc');
 
 /**
  * Implements hook_menu().
