@@ -13,11 +13,11 @@
 
     attach: function (context, settings) {
       if (context === document) {
-        if(settings.collection_study_table_data){
-          buildTable('#table-collection-studies', settings.collection_study_table_data, settings.collection_study_table_headers);
+        if(settings.individual_study_table_data){
+          buildTable('#table-individual-studies', settings.individual_study_table_data, settings.individual_study_table_headers);
         }
         else{
-        $("#collection-studies-table").remove();
+        $("#individual-studies-table").remove();
         }
         if(settings.harmonization_study_table_data) {
           buildTable('#table-harmo-studies', settings.harmonization_study_table_data, settings.harmonization_study_table_headers);
