@@ -337,9 +337,9 @@ function obiba_mica_network_studies_datatable_init($study_summaries, $id_network
 
   drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/obiba_mica_network_studies_datatable_init.js', 'file');
   drupal_add_js(array(
-    'collection_study_table_headers' => obiba_mica_network_study_table_headers(DrupalMicaStudyResource::INDIVIDUAL_STUDY),
+    'individual_study_table_headers' => obiba_mica_network_study_table_headers(DrupalMicaStudyResource::INDIVIDUAL_STUDY),
     'harmonization_study_table_headers' => obiba_mica_network_study_table_headers(DrupalMicaStudyResource::HARMONIZATION_STUDY),
-    'collection_study_table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network, DrupalMicaStudyResource::INDIVIDUAL_STUDY),
+    'individual_study_table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network, DrupalMicaStudyResource::INDIVIDUAL_STUDY),
     'harmonization_study_table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network, DrupalMicaStudyResource::HARMONIZATION_STUDY)
   ), 'setting');
 }
