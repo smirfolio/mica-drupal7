@@ -791,9 +791,7 @@ function _obiba_mica_array_sort($a, $b) {
 function obiba_mica_coverage_group_by_options() {
   return array(
     'study' => t('Study'),
-    'harmonizationStudy' => t('Harmonization Study'),
     'dce' => t('Data Collection Event'),
-    'dataset' => t('Study Dataset'),
-    'dataschema' => t('Harmonization Dataset')
+    'dataset' => t('Dataset')
   );
 }
