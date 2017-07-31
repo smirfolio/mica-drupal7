@@ -167,14 +167,12 @@ function _obiba_mica_variable_search_page(&$variable) {
 
   $variable['coverage_group_by'] = array(
     'title' => t('Coverage group-by'),
-    'description' => t('Please select the group-by criteria for the coverage.'),
+    'description' => t('Please select the group-by criteria for the coverage. Be advised that for Data Collection Event, Study must be checked in order to be shown.'),
     'type' => 'options',
     'default' => array(
       'study' => 'study',
-      'harmonizationStudy' => 'harmonizationStudy',
       'dce' => 'dce',
-      'dataset' => 'dataset',
-      'dataschema' => 'dataschema'
+      'dataset' => 'dataset'
     ),
   );
 }
