@@ -560,10 +560,10 @@ $get_tresource_by_type = function($resource){
       return $dataset->variableType == self::COLLECTED_VARIABLE ? self::studyDataset($dataset->id) : self::harmonizationDataset($dataset->id);
     }
     if (!empty($dataset->_extensions)) {
-      if ($dataset->hasExtension('obiba.mica.CollectionDatasetDto.type')) {
+      if ($dataset->hasExtension('obiba.mica.CollectedDatasetDto.type')) {
         return self::studyDataset($dataset->id);
       }
-      if ($dataset->hasExtension('obiba.mica.HarmonizationDatasetDto.type')) {
+      if ($dataset->hasExtension('obiba.mica.HarmonizedDatasetDto.type')) {
         return self::harmonizationDataset($dataset->id);
       }
     }
