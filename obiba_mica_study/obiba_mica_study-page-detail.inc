@@ -52,8 +52,8 @@ function obiba_mica_study_page_detail_networks($study_id) {
   }
 }
 
-function obiba_mica_study_page_detail_datasets($study_id, $dataset_name = NULL, $network_id = NULL) {
-  if (!variable_get_value('study_show_datasets') && empty($network_id)) {
+function obiba_mica_study_page_detail_datasets($study_id) {
+  if (!variable_get_value('study_show_datasets')) {
     exit;
   }
   $cached_datasets = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $study_id);
@@ -61,12 +61,7 @@ function obiba_mica_study_page_detail_datasets($study_id, $dataset_name = NULL, 
     print $cached_datasets;
   }
   else {
-    if (!is_null($network_id)) {
-      $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_network($study_id, $dataset_name, $network_id) : NULL;
-    }
-    else {
-      $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_studies($study_id, $dataset_name) : NULL;
-    }
+    $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_studies($study_id) : NULL;
 
     if (!empty($dataset_output)) {
       $themed_datasets = theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
@@ -206,7 +201,7 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
       'showCoverage' => variable_get_value('study_show_coverage_graphs')
     );
     drupal_add_js(array(
-      'study_url' => rawurlencode($study_id),
+      'study_url' => 'mica/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY . '/' .  rawurlencode($study_id),
       'optionsStudyContent' => $options_study_content
     ), 'setting');
     $study_theme_cache = obiba_mica_commons_get_cache('study_theme_cache-' . $study_id);

@@ -184,11 +184,6 @@
     </section>
   <?php endif; ?>
 
-  <!-- DATASETS placeholder -->
-  <section id="datasets">
-    <div><?php print $localize->getTranslation('loading') ?></div>
-  </section>
-
   <!-- COVERAGE placeholder -->
   <div ng-controller="VariableCoverageChartController">
     <section id="coverage" ng-if="d3Configs && d3Configs.length">

@@ -38,32 +38,27 @@
               <td><p><?php print obiba_mica_commons_markdown($variable_dto->description); ?></p></td>
             </tr>
           <?php endif; ?>
-
-          <?php if ($variable_dto->variableType == 'Dataschema' && variable_get_value('variable_show_networks') && !empty($variable_dto->networkSummaries)): ?>
-            <tr>
+          <?php //ToDo May be removed if we decide to not show the main Harmonization stusyon a specific variable detail page ?>
+          <?php if (!empty($dataset_harmonization_study)): ?><tr>
               <th>
-                <?php print $localize->getTranslation('networks'); ?>
+                <?php print $localize->getTranslation('global.dataset-harmonization-study'); ?>
               </th>
               <td>
-                <ul class="list-unstyled">
-                  <?php foreach ($variable_dto->networkSummaries as $network_summary): ?>
-                    <li><?php print MicaClientAnchorHelper::network($network_summary); ?></li>
-                  <?php endforeach ?>
-                </ul>
+                  <?php
+                    print DrupalMicaStudyResource::anchorStudy($dataset_harmonization_study);
+                  ?>
               </td>
             </tr>
           <?php endif; ?>
 
           <?php if (variable_get_value('variable_show_studies')): ?>
-            <?php if ((!empty($variable_dto->studySummaries) || !empty($variable_dto->networkSummaries))): ?>
+            <?php if ((!empty($variable_dto->studySummaries))): ?>
                   <tr>
                       <th>
                         <?php if ($variable_dto->variableType == 'Dataschema') :
                           print $localize->getTranslation('studies');
                         elseif (!empty($variable_dto->studySummaries)) :
                           print $localize->getTranslation('study.label');
-                        else:
-                          print $localize->getTranslation('dataset.network.title');
                         endif;
                         ?>
                       </th>
@@ -76,18 +71,17 @@
                             </ul>
                         <?php elseif (!empty($variable_dto->studySummaries)):
                           print DrupalMicaStudyResource::anchorStudy($variable_dto->studySummaries[0]);
-                        elseif (!empty($variable_dto->networkSummaries)):
-                          print MicaClientAnchorHelper::network($variable_dto->networkSummaries[0]);
                         endif ?>
                       </td>
                   </tr>
-            <?php elseif (!empty($variable_dto->studySummary)): ?>
+            <?php endif; ?>
+                      <?php if (($variable_dto->variableType !== 'Dataschema') ): ?>
                   <tr>
                       <th>
-                        <?php if ($variable_dto->studySummary->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY): ?>
-                          <?php print $localize->getTranslation('global.harmonization-study'); ;?>
+                        <?php if (($variable_dto->studySummary->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY)): ?>
+                          <?php print $localize->getTranslation('global.harmonization-study'); ?>
                           <?php else: ?>
-                          <?php print $localize->getTranslation('global.individual-study'); ;?>
+                          <?php print $localize->getTranslation('global.individual-study'); ?>
                         <?php endif; ?>
                       </th>
                       <td>
