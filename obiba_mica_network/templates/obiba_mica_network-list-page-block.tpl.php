@@ -43,7 +43,7 @@
       <?php
       $counts = $network->{'obiba.mica.CountStatsDto.networkCountStats'};
       $study_vars = $counts->studyVariables;
-      $study_vars_caption = $study_vars < 2 ? $localize->getTranslation('global.individual-study-variable') : $localize->getTranslation('global.individual-study-variables');
+      $study_vars_caption = $study_vars < 2 ? $localize->getTranslation('metrics.mica.study-variable') : $localize->getTranslation('metrics.mica.study-variables');
       $individual_studies = $counts->individualStudies;
       $individual_studies_caption = $individual_studies < 2 ? $localize->getTranslation('global.individual-study') : $localize->getTranslation('global.individual-studies');
       $harmonization_studies = $counts->harmonizationStudies;
