@@ -145,7 +145,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
       'showCoverage' => variable_get_value('harmo_study_show_coverage_graphs')
     );
     drupal_add_js(array(
-      'study_url' => rawurlencode($study_id),
+      'study_url' => 'mica/' . DrupalMicaStudyResource::HARMONIZATION_STUDY . '/' . rawurlencode($study_id),
       'optionsStudyContent' => $options_study_content
     ), 'setting');
     $study_theme_cache = obiba_mica_commons_get_cache('harmonization_study_theme_cache-' . $study_id);

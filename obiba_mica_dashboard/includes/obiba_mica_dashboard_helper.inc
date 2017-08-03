@@ -33,8 +33,8 @@ class MicaMetricsHelper {
         return 'studies';
       case 'CollectionDataset':
         return 'collection-datasets';
-      case 'HarmonizationDataset':
-        return 'harmonization-datasets';
+      case 'HarmonizedDataset':
+        return 'harmonized-datasets';
       case 'DatasetVariable':
         return 'variables';
       case 'StudyWithVariable':

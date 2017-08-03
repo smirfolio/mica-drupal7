@@ -137,12 +137,6 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
         }
       }
     }
-    drupal_add_js(drupal_get_path('module', 'obiba_mica_network') .
-      '/js/mica-network-detail.js', 'file');
-    drupal_add_js(array(
-      'networkUrl' => rawurlencode($network_id),
-      'study_ids' => !empty($network_dto->studyIds) ? $network_dto->studyIds : array()
-    ), 'setting');
     $network_theme = $network_resource->drupalCache->MicaGetCache('network_theme_cache-' . $network_id);
     if (!empty($network_theme)) {
       return $network_theme;
@@ -192,24 +186,6 @@ function obiba_mica_network_ng_coverage($network_id) {
     $study_ids = $network_dto->studyIds;
     $query = DrupalMicaClient\RqlQueryBuilder::network_query_charts($study_ids);
     return obiba_mica_graphics_nvd3_query_charts($query, $study_ids);
-  }
-}
-
-function obiba_mica_network_page_detail_datasets($network_id) {
-  if (!variable_get_value('study_show_datasets')) {
-    exit;
-  }
-  $cached_datasets = obiba_mica_commons_get_cache(__FUNCTION__ . 'network-datasets-cache-' . $network_id);
-  if (!empty($cached_datasets)) {
-    print $cached_datasets;
-  }
-  else {
-    $dataset_output = (module_exists('obiba_mica_dataset')) ? obiba_mica_dataset_get_datasets_network(NULL, 'HarmonizationDataset', $network_id) : NULL;
-    if (!empty($dataset_output)) {
-      $themed_datasets = theme('obiba_mica_study_detail_datasets', array('datasets' => $dataset_output));
-      obiba_mica_commons_set_cache(__FUNCTION__ . 'network-datasets-cache-' . $network_id, $themed_datasets);
-      print $themed_datasets;
-    }
   }
 }
 
@@ -287,7 +263,7 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
             $network->id, array(), 'dataset(in(Mica_dataset.className,StudyDataset))');
         $dataschema_variables = empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->dataschemaVariables) ? '-' :
           MicaClientAnchorHelper::networkVariables(obiba_mica_commons_format_number($network->{'obiba.mica.CountStatsDto.networkCountStats'}->dataschemaVariables),
-            $network->id, array(), 'dataset(in(Mica_dataset.className,HarmonizationDataset))');
+            $network->id, array(), 'dataset(in(Mica_dataset.className,HarmonizedDataset))');
         $rows[] = array(
           MicaClientAnchorHelper::network($network),
           obiba_mica_commons_get_localized_field($network, 'name'),

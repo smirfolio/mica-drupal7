@@ -54,9 +54,11 @@ function obiba_mica_variable_page_detail($variable_id) {
   $variable->comment = obiba_mica_dataset_variable_category_detail($variable, 'comment');
 
   obiba_mica_dataset_remove_harmonization_taxonomy($variable);
-
+  //ToDo May be removed if we decide to not show the main Harmonization stusyon a specific variable detail page
+  $dataset = $variable_resource->getDataset($variable->datasetId);
   $themed_variable = theme('obiba_mica_variable-detail', array(
     'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => $variable->variableType != 'Harmonized')),
+    'dataset_harmonization_study' => !empty($dataset->{'obiba.mica.HarmonizedDatasetDto.type'}->harmonizationTable) ? $dataset->{'obiba.mica.HarmonizedDatasetDto.type'}->harmonizationTable->studySummary : null,
     'variable_dto' => $variable,
     'variable_harmonization_algorithms' => !empty($algos) ? $algos : NULL,
     'variable_harmonization' => obiba_mica_dataset_variable_get_harmonization($variable),

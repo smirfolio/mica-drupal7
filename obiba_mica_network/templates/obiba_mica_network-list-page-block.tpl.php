@@ -45,13 +45,13 @@
       $study_vars = $counts->studyVariables;
       $study_vars_caption = $study_vars < 2 ? $localize->getTranslation('global.individual-study-variable') : $localize->getTranslation('global.individual-study-variables');
       $individual_studies = $counts->individualStudies;
-      $individual_studies_caption = $individual_studies < 2 ? $localize->getTranslation('global.individual-study') : $localize->getTranslation('individual-studies');
+      $individual_studies_caption = $individual_studies < 2 ? $localize->getTranslation('global.individual-study') : $localize->getTranslation('global.individual-studies');
       $harmonization_studies = $counts->harmonizationStudies;
       $harmonization_studies_caption = $harmonization_studies < 2 ? $localize->getTranslation('global.harmonization-study') : $localize->getTranslation('harmonization-studies');
       $studies_with_vars = isset($counts->studiesWithVariables) ? $counts->studiesWithVariables : 0;
       $studies_with_vars_caption = $studies_with_vars < 2 ? $localize->getTranslation('metrics.mica.study-with-variables') : $localize->getTranslation('metrics.mica.studies-with-variables');
-      $harmonization_studies_with_vars = isset($counts->harmonizationStudiesWithVariables) ? $counts->harmonizationStudiesWithVariables : 0;
-      $harmonization_studies_with_vars_caption = $harmonization_studies_with_vars < 2 ? $localize->getTranslation('metrics.mica.harmonization-study-with-variables') : $localize->getTranslation('metrics.mica.harmonization-studies-with-variables');
+      $harmonization_studies_vars = isset($counts->dataschemaVariables) ? $counts->dataschemaVariables : 0;
+      $harmonization_studies_vars_caption = $counts->dataschemaVariables < 2 ? $localize->getTranslation('metrics.mica.harmonization-study-variable') : $localize->getTranslation('metrics.mica.harmonization-study-variables');
       $datasets = $counts->studyDatasets + $counts->harmonizationDatasets;
       $dataset_caption = $datasets < 2 ? $localize->getTranslation('dataset.details') : $localize->getTranslation('datasets');
       ?>
@@ -72,8 +72,8 @@
         <?php print MicaClientAnchorHelper::networkStudies(t('@count ' . $harmonization_studies_caption, array('@count' => $harmonization_studies)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'harmonizationStudyCount'), 'study(in(Mica_study.className,HarmonizationStudy))') ?>
       <?php endif ?>
 
-      <?php if ($harmonization_studies_with_vars > 0): ?>
-        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $harmonization_studies_with_vars_caption, array('@count' => $harmonization_studies_with_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'harmonizationStudyWithVariablesCount'), 'variable(in(Mica_variable.variableType,Dataschema))', "studies") ?>
+      <?php if ($harmonization_studies_vars > 0): ?>
+        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $harmonization_studies_vars_caption, array('@count' => $harmonization_studies_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'harmonizationStudyWithVariablesCount'), 'variable(in(Mica_variable.variableType,Dataschema))', "studies") ?>
       <?php endif; ?>
 
       <?php if (!empty($datasets) && (variable_get_value('networks_column_study_datasets') || variable_get_value('networks_column_harmonization_datasets'))): ?>
