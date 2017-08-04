@@ -73,7 +73,7 @@
       <?php endif ?>
 
       <?php if ($harmonization_studies_vars > 0): ?>
-        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $harmonization_studies_vars_caption, array('@count' => $harmonization_studies_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'harmonizationStudyWithVariablesCount'), 'variable(in(Mica_variable.variableType,Dataschema))', "studies") ?>
+        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $harmonization_studies_vars_caption, array('@count' => $harmonization_studies_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'harmonizationStudyWithVariablesCount'), 'variable(in(Mica_variable.variableType,Dataschema))', "variables") ?>
       <?php endif; ?>
 
       <?php if (!empty($datasets) && (variable_get_value('networks_column_study_datasets') || variable_get_value('networks_column_harmonization_datasets'))): ?>
