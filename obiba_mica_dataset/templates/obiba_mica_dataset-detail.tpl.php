@@ -174,7 +174,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
       <h2>
         <?php
         if (!empty($dataset_type_dto->studyTables)){
-          print $localize->getTranslation('individual-studies');
+          print $localize->getTranslation('global.individual-studies');
         }
         ?>
       </h2>
@@ -272,7 +272,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     <?php if (variable_get_value('dataset_show_studies') && (!empty($dataset_type_dto->harmonizationTables))): ?>
         <h2>
           <?php
-          print $localize->getTranslation('harmonization-studies');
+          print $localize->getTranslation('global.harmonization-studies');
           ?>
         </h2>
             <div id="studies-table">

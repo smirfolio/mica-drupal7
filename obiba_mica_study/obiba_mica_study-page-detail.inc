@@ -146,7 +146,7 @@ function obiba_mica_study_page_detail($study_id, $token_key = NULL) {
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
       l($localize->getTranslation('studies'), DrupalMicaStudyResource::STUDIES),
-      l($localize->getTranslation('individual-studies'), DrupalMicaStudyResource::STUDIES . '/' .  DrupalMicaStudyResource::INDIVIDUAL_STUDY),
+      l($localize->getTranslation('global.individual-studies'), DrupalMicaStudyResource::STUDIES . '/' .  DrupalMicaStudyResource::INDIVIDUAL_STUDY),
     ));
 
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;

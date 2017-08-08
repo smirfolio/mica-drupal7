@@ -94,7 +94,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
       l($localize->getTranslation('studies'), DrupalMicaStudyResource::STUDIES),
-      l($localize->getTranslation('harmonization-studies'), DrupalMicaStudyResource::STUDIES . '/' .  DrupalMicaStudyResource::HARMONIZATION_STUDY),
+      l($localize->getTranslation('global.harmonization-studies'), DrupalMicaStudyResource::STUDIES . '/' .  DrupalMicaStudyResource::HARMONIZATION_STUDY),
     ));
 
     $opal_output = !empty($study_dto->opal) ? obiba_mica_study_get_opal_url($study_dto->opal) : NULL;
