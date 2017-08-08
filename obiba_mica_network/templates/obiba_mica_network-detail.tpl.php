@@ -158,7 +158,7 @@
       <?php endif; ?>
 
         <div id="individual-studies-table">
-          <h2><?php print $localize->getTranslation('individual-studies') ?></h2>
+          <h2><?php print $localize->getTranslation('global.individual-studies') ?></h2>
 
           <div>
             <div class="row">
@@ -169,7 +169,7 @@
           </div>
         </div>
           <div id="harmonization-studies-table">
-              <h2><?php print $localize->getTranslation('harmonization-studies') ?></h2>
+              <h2><?php print $localize->getTranslation('global.harmonization-studies') ?></h2>
 
               <div>
                   <div class="row">
