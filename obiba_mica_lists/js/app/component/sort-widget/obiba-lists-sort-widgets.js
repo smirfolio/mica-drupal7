@@ -14,10 +14,6 @@ function SortWidgetOptionsFactory() {
     sortField: null,
     orderField: null
   };
-
-  function SortWidgetOptionsProvider() {
-
-  };
   this.$get = function () {
     return {
       getOptions: function () {
@@ -43,35 +39,28 @@ mica.ObibaLists
       var emitter = $rootScope.$new();
       $scope.selectSort = sortWidgetService.getSortOptions();
       $scope.selectOrder = sortWidgetService.getOrderOptions();
-      $scope.selectedSort =  $scope.selectSort.options[0];
-      $scope.selectedOrder = $scope.selectOrder.options[0];
+      $scope.selectedSort =  $scope.selectSort.options[0].value;
+      $scope.selectedOrder = $scope.selectOrder.options[0].value;
 
       var selectedOptions = sortWidgetService.getSortArg();
       if (selectedOptions) {
-        $scope.selectedSort = selectedOptions.selectedSort ? selectedOptions.selectedSort : $scope.selectSort.options[0];
-        $scope.selectedOrder = selectedOptions.slectedOrder ? selectedOptions.slectedOrder : $scope.selectOrder.options[0];
+        $scope.selectedSort = selectedOptions.selectedSort ? selectedOptions.selectedSort.value : $scope.selectSort.options[0].value;
+        $scope.selectedOrder = selectedOptions.slectedOrder ? selectedOptions.slectedOrder.value : $scope.selectOrder.options[0].value;
       }
-
-      $scope.onChanged = function () {
+      $scope.radioCheked = function(){
         var sortParam = {
-          sort: $scope.selectedSort.value,
-          order: $scope.selectedOrder.value
+          sort: $scope.selectedSort,
+          order: $scope.selectedOrder
         };
         emitter.$emit('ngObibaMicaSearch.sortChange', sortParam);
       };
-
     }])
   .directive('listSortWidget', [function () {
     return {
       restrict: 'EA',
-      scope: {
-        sortItm: '='
-      },
       controller: 'listSortWidgetController',
       templateUrl: Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/list-sort-widget-template'
     };
-
-    // <div list-sort-widget sort-item="
   }])
   .service('sortWidgetService', ['$filter', '$location', 'RqlQueryService', 'sortWidgetOptions', function ($filter, $location, RqlQueryService, sortWidgetOptions) {
     var newOptions = sortWidgetOptions.getOptions();

@@ -13,7 +13,13 @@ mica.ObibaLists = angular.module('mica.ObibaSearch', [
 ])
   .run()
   .config(['ngObibaMicaSearchProvider', 'markedProvider', 'sortWidgetOptionsProvider', function (ngObibaMicaSearchProvider, markedProvider, sortWidgetOptionsProvider) {
-    sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.studies.studiesListOptions);
+    if(Drupal.settings.obibaListOptions.studies.studiesListOptions){
+      sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.studies.studiesListOptions);
+    }
+    if(Drupal.settings.obibaListOptions.networks.optionsCols){
+      sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.networks.optionsCols);
+    }
+
     markedProvider.setOptions({
       gfm: true,
       tables: true,
@@ -28,6 +34,7 @@ mica.ObibaLists = angular.module('mica.ObibaSearch', [
   .config(['ngObibaMicaSearchTemplateUrlProvider',
     function (ngObibaMicaSearchTemplateUrlProvider) {
       ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl('searchStudiesResultTable', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/studies-search-result-table-template');
+      ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl('searchNetworksResultTable', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/networks-search-result-table-template');
       ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl('searchResultList', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/search-result-list-template');
     }])
   .filter('getBaseUrl', function () {
@@ -37,5 +44,16 @@ mica.ObibaLists = angular.module('mica.ObibaSearch', [
   }).filter('doSearchQuery', function () {
     return function (type, query) {
       return Drupal.settings.basePath + 'mica/repository#/search?type=' + type + '&query=' + query + '&display=list'
+    }
+  })
+  .filter('getLabel', function () {
+    return function (SelectSort, valueSort) {
+      var result = null;
+      angular.forEach(SelectSort.options, function (value, key) {
+        if (value.value.indexOf(valueSort) !== -1) {
+          result = value.label;
+        }
+      });
+      return result;
     }
   });

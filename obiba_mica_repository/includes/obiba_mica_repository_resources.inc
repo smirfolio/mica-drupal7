@@ -84,6 +84,13 @@ class ObibaSearchResources extends DrupalMicaClientResource {
         }
       }
     }
+    if(!empty($result_search->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks)){
+      foreach ($result_search->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks as $key => $summary){
+        if(!empty($summary->logo->id)){
+          $result_search->networkResultDto->{'obiba.mica.NetworkResultDto.result'}->networks[$key]->logoUrl = obiba_mica_commons_safe_expose_server_url($summary->id, $summary->logo, 'network');
+        }
+      }
+    }
     return $result_search;
 }
 

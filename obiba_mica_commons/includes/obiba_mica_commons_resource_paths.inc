@@ -63,7 +63,7 @@ class MicaClientPathProvider {
   const AGATE_REGISTER = 'agate/register';
   const AGATE_PROFILE = 'agate/user/profile';
   const REPOSITORY_SEARCH = 'mica/repository';
-  const PAGE_STUDIES_LIST = 'mica/studies/list';
+  const PAGE_STUDIES_LIST = 'mica/study';
   const PAGE_NETWORKS_LIST = 'mica/networks/list';
 
   /**

@@ -47,7 +47,7 @@ function obiba_mica_get_redirect_path() {
       "replace_pattern" => "/^mica\/studies/"
     ),
     'mica/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY => array(
-      "search_pattern" => "/^mica\/study\/(?!" . DrupalMicaStudyResource::INDIVIDUAL_STUDY . "|" . DrupalMicaStudyResource::HARMONIZATION_STUDY. ")[a-zA-Z\D\d]+$/",
+      "search_pattern" => "/^mica\/study\/(?!" . DrupalMicaStudyResource::INDIVIDUAL_STUDY . "|" . DrupalMicaStudyResource::HARMONIZATION_STUDY. "|list)[a-zA-Z\D\d]+$/",
       "replace_pattern" => "/^mica\/study/"
     ),
     DrupalMicaDatasetResource::DATASETS => array(
