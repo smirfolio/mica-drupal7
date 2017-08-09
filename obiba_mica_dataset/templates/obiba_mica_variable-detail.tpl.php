@@ -41,7 +41,7 @@
           <?php //ToDo May be removed if we decide to not show the main Harmonization stusyon a specific variable detail page ?>
           <?php if (!empty($dataset_harmonization_study)): ?><tr>
               <th>
-                <?php print $localize->getTranslation('global.dataset-harmonization-study'); ?>
+                <?php print $localize->getTranslation('global.harmonization-study'); ?>
               </th>
               <td>
                   <?php
