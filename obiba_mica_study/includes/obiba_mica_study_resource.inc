@@ -100,8 +100,14 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
       $resource_path['draft'] = ResourcesWsPath::WS_COLLECTION_DRAFT_STUDY;
     }
     $resource_query = ResourcesWsPath::getResourcePath($resource_path['pub'], array(rawurlencode($study_id)));
-    if(!empty($token_key)){
-      $resource_query = ResourcesWsPath::getResourcePath($resource_path['draft'], array(rawurlencode($study_id),  $token_key));
+    if(empty($token_key)) {
+      $resource_query .= '?participatingStudies=true';
+    } else {
+      $resource_query =
+        ResourcesWsPath::getResourcePath(
+          $resource_path['draft'],
+          array(rawurlencode($study_id),  $token_key)
+        ) . '&participatingStudies=true';
     }
     global $language;
     if ($language){

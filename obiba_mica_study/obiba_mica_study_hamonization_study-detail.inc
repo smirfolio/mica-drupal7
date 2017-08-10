@@ -15,8 +15,11 @@
  */
 
 
-  $path_module_dataset = drupal_get_path('module', 'obiba_mica_study');
-  include_once($path_module_dataset . '/obiba_mica_study-page-detail.inc');
+$path_module_study = drupal_get_path('module', 'obiba_mica_study');
+include_once($path_module_study . '/obiba_mica_study-page-detail.inc');
+
+$path_module_dataset = drupal_get_path('module', 'obiba_mica_dataset');
+include_once($path_module_dataset . '/obiba_mica_dataset-page-detail.inc');
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
@@ -174,6 +177,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
           'populations' => $populations,
           'opal' => $opal_output,
           'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
+          'study_tables' => obiba_mica_dataset_study_tables($study_dto->{'obiba.mica.HarmonizationStudyDto.type'})
         ));
       obiba_mica_commons_set_cache('harmonization_study_theme_cache-' . $study_id, $study_theme);
       return $study_theme;
