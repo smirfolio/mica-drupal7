@@ -41,7 +41,7 @@ function obiba_mica_dataset_menu() {
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 2,
+    'weight' => 3,
   );
 
   $items[DrupalMicaDatasetResource::DATASETS . '/' .  DrupalMicaDatasetResource::COLLECTED_DATASET] = array(
@@ -50,7 +50,7 @@ function obiba_mica_dataset_menu() {
     'file' => 'obiba_mica_dataset-page-list.inc',
     'access callback' => TRUE,
     'type' => MENU_NORMAL_ITEM,
-    'weight' => 3,
+    'weight' => 2,
   );
 
   $items['variable-detail-statistics/%'] = array(
