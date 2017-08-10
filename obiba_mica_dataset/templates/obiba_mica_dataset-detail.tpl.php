@@ -169,30 +169,16 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
             </div>
         </div>
     <?php endif ?>
-      <!-- ###Harmo reference study table## -->
-    <?php if (variable_get_value('dataset_show_studies') && ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET || !empty($dataset_type_dto->studyTables))): ?>
-      <h2>
-        <?php
-        if (!empty($dataset_type_dto->studyTables)){
-          print $localize->getTranslation('global.individual-studies');
-        }
-        ?>
-      </h2>
-      <?php if (!empty($dataset_type_dto->studyTables)): ?>
-        <div id="studies-table">
-          <div class="row">
-            <div class="col-lg-12 col-xs-12">
-              <table class="table table-striped" id="table-studies"></table>
-            </div>
-          </div>
-        </div>
-      <?php else: ?>
+    <!-- ###Harmo reference study table## -->
+
+    <?php if (!empty(variable_get_value('dataset_show_studies'))): ?>
+      <?php if ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET): ?>
         <?php if (!empty($dataset_type_dto->studyTable)): ?>
           <h2><?php print $localize->getTranslation('global.individual-study'); ?></h2>
-        <div class="row">
-          <div class="col-lg-6 col-xs-12">
-            <table class="table table-striped">
-              <tbody>
+          <div class="row">
+            <div class="col-lg-6 col-xs-12">
+              <table class="table table-striped">
+                <tbody>
                 <tr>
                   <th><?php print $localize->getTranslation('study.acronym') ?></th>
                   <td>
@@ -201,87 +187,75 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                     </p>
                   </td>
                 </tr>
-              <tr>
-                <th><?php print $localize->getTranslation('study.name') ?></th>
-                <td>
-                  <p>
-                    <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'); ?>
-                  </p>
-                </td>
-              </tr>
-              <tr>
-                <th><?php print $localize->getTranslation('study.population') ?></th>
-                <td>
-                  <?php $population_summary = NULL; ?>
-                  <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary):
-                    if ($pop_summary->id == $dataset_type_dto->studyTable->populationId):
-                      $population_summary = $pop_summary;
-                      print !empty($dataset_type_dto->studyTable->studySummary->published) ? DrupalMicaStudyResource::studyPopulationModal($pop_summary):
-                        obiba_mica_commons_get_localized_field($pop_summary, 'name');
-                      break;
-                    endif;
-                  endforeach; ?>
-                </td>
-              </tr>
-              <tr>
-                <th><?php print $localize->getTranslation('study.data-collection-event') ?></th>
-                <td>
-                  <?php $dce_anchor = NULL; ?>
-                  <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary):
-                    if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId):
-                      print !empty($dataset_type_dto->studyTable->studySummary->published) ? DrupalMicaStudyResource::studyPopulationDceModal(
-                        $dataset_type_dto->studyTable->studyId,
-                        $dataset_type_dto->studyTable->populationId,
-                        $dce_summary
-                      ):obiba_mica_commons_get_localized_field($dce_summary, 'name');
-                      break;
-                    endif;
-                  endforeach; ?>
-                </td>
-              </tr>
-              <tr>
-                <th><?php print $localize->getTranslation('search.study.design') ?></th>
-                <td>
-                  <?php print obiba_mica_study_translate_study_design_summary($dataset_type_dto->studyTable->studySummary->design); ?>
-                </td>
-              </tr>
-              <tr>
-                <th><?php print $localize->getTranslation('numberOfParticipants.participants') ?></th>
-                <td>
-                  <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
-                    isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ?
-                      obiba_mica_commons_format_number($dataset_type_dto->studyTable->studySummary->targetNumber->number) : NULL; ?>
-                </td>
-              </tr>
-              <?php if (!empty($dataset_type_dto->studyTable->studySummary->countries)) : ?>
-              <tr>
-                <th><?php print $localize->getTranslation('client.label.countries') ?></th>
-                <td>
-                  <?php print obiba_mica_commons_countries($dataset_type_dto->studyTable->studySummary->countries); ?>
-                </td>
-              </tr>
-              <?php endif; ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <?php endif ?>
-      <?php endif ?>
-    <?php endif ?>
-
-    <?php if (variable_get_value('dataset_show_studies') && (!empty($dataset_type_dto->harmonizationTables))): ?>
-        <h2>
-          <?php
-          print $localize->getTranslation('global.harmonization-studies');
-          ?>
-        </h2>
-            <div id="studies-table">
-                <div class="row">
-                    <div class="col-lg-12 col-xs-12">
-                        <table class="table table-striped" id="table-harmonization-studies"></table>
-                    </div>
-                </div>
+                <tr>
+                  <th><?php print $localize->getTranslation('study.name') ?></th>
+                  <td>
+                    <p>
+                      <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->studyTable->studySummary, 'name'); ?>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <th><?php print $localize->getTranslation('study.population') ?></th>
+                  <td>
+                    <?php $population_summary = NULL; ?>
+                    <?php foreach ($dataset_type_dto->studyTable->studySummary->populationSummaries as $pop_summary):
+                      if ($pop_summary->id == $dataset_type_dto->studyTable->populationId):
+                        $population_summary = $pop_summary;
+                        print !empty($dataset_type_dto->studyTable->studySummary->published) ? DrupalMicaStudyResource::studyPopulationModal($pop_summary) :
+                          obiba_mica_commons_get_localized_field($pop_summary, 'name');
+                        break;
+                      endif;
+                    endforeach; ?>
+                  </td>
+                </tr>
+                <tr>
+                  <th><?php print $localize->getTranslation('study.data-collection-event') ?></th>
+                  <td>
+                    <?php $dce_anchor = NULL; ?>
+                    <?php foreach ($population_summary->dataCollectionEventSummaries as $dce_summary):
+                      if ($dce_summary->id == $dataset_type_dto->studyTable->dataCollectionEventId):
+                        print !empty($dataset_type_dto->studyTable->studySummary->published) ? DrupalMicaStudyResource::studyPopulationDceModal(
+                          $dataset_type_dto->studyTable->studyId,
+                          $dataset_type_dto->studyTable->populationId,
+                          $dce_summary
+                        ) : obiba_mica_commons_get_localized_field($dce_summary, 'name');
+                        break;
+                      endif;
+                    endforeach; ?>
+                  </td>
+                </tr>
+                <tr>
+                  <th><?php print $localize->getTranslation('search.study.design') ?></th>
+                  <td>
+                    <?php print obiba_mica_study_translate_study_design_summary($dataset_type_dto->studyTable->studySummary->design); ?>
+                  </td>
+                </tr>
+                <tr>
+                  <th><?php print $localize->getTranslation('numberOfParticipants.participants') ?></th>
+                  <td>
+                    <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
+                      isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ?
+                        obiba_mica_commons_format_number($dataset_type_dto->studyTable->studySummary->targetNumber->number) : NULL; ?>
+                  </td>
+                </tr>
+                <?php if (!empty($dataset_type_dto->studyTable->studySummary->countries)) : ?>
+                  <tr>
+                    <th><?php print $localize->getTranslation('client.label.countries') ?></th>
+                    <td>
+                      <?php print obiba_mica_commons_countries($dataset_type_dto->studyTable->studySummary->countries); ?>
+                    </td>
+                  </tr>
+                <?php endif; ?>
+                </tbody>
+              </table>
             </div>
+          </div>
+        <?php endif ?>
+      <?php endif; ?>
+      <?php if (!empty($study_tables)): ?>
+        <?php print render($study_tables); ?>
+      <?php endif; ?>
     <?php endif; ?>
 
   </section>

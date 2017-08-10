@@ -309,6 +309,10 @@ function obiba_mica_dataset_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_variable_harmonization_algorithm',
       'path' => $path_theme,
     ),
+    'obiba_mica_dataset-study-tables' => array(
+      'template' => 'obiba_mica_dataset-study-tables',
+      'path' => $path_theme,
+    ),
   ), obiba_mica_dataset_variable_crosstab_theme($existing, $type, $theme, $path));
 
   return $res;
