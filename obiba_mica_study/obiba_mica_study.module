@@ -37,6 +37,7 @@ function obiba_mica_study_menu() {
     'file' => 'obiba_mica_study-page-list.inc',
     'access callback' => 'obiba_mica_study_access_page',
     'menu_name' => 'main-menu',
+    'weight' => 0,
     'type' => MENU_NORMAL_ITEM
   );
 
@@ -80,6 +81,7 @@ function obiba_mica_study_menu() {
     'file' => 'obiba_mica_study-page-list.inc',
     'access callback' => 'obiba_mica_study_access_page',
     'menu_name' => 'main-menu',
+    'weight' => 1,
     'type' => MENU_NORMAL_ITEM
   );
 
