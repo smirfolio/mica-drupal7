@@ -17,7 +17,7 @@
 <?php if (!empty($dataset_type_dto->harmonizationTables)): ?>
   <h2>
     <?php
-    print $localize->getTranslation('global.harmonization-studies');
+    print $localize->getTranslation('global.participant-harmonization-studies');
     ?>
   </h2>
   <div id="studies-table">

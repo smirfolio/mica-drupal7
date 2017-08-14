@@ -79,7 +79,7 @@
                   <tr>
                       <th>
                         <?php if (($variable_dto->studySummary->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY)): ?>
-                          <?php print $localize->getTranslation('global.harmonization-study'); ?>
+                          <?php print $localize->getTranslation('global.participant-harmonization-study'); ?>
                           <?php else: ?>
                           <?php print $localize->getTranslation('global.individual-study'); ?>
                         <?php endif; ?>
