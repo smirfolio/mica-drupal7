@@ -524,15 +524,22 @@ class MicaClientAnchorHelper {
    * @return string
    *   The anchor link.
    */
-  public static function searchStudies($is_button = FALSE) {
-      return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
-        variable_get_value('studies_search_label'),
-        array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
-        array(
-          'type' => 'studies',
-          'query' => 'study(exists(Mica_study.id))',
-          'display' => 'list'
-        ));
+  public static function searchStudies($is_button = FALSE, $className) {
+    $query = DrupalMicaClient\RqlQueryBuilder::exists_query('Mica_study', 'id');
+    if (!empty($className) && DrupalMicaStudyResource::ALL_STUDIES != $className) {
+      $query = sprintf(DrupalMicaClient\RqlQueryBuilder::and_query(
+        $query, DrupalMicaClient\RqlQueryBuilder::className_query('Mica_study', $className))
+      );
+    }
+
+    return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+      variable_get_value('studies_search_label'),
+      array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
+      array(
+        'type' => 'studies',
+        'query' => DrupalMicaClient\RqlQueryBuilder::study_query($query),
+        'display' => 'list'
+      ));
   }
 
   /**

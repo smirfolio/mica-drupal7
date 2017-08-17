@@ -25,7 +25,7 @@ function obiba_mica_study_collection_page_list(){
 function obiba_mica_study_page_list(){
   return obiba_mica_study_list();
 }
-function obiba_mica_study_list($studies_type = NULL) {
+function obiba_mica_study_list($study_type = NULL) {
   $template_study = 'obiba_mica_study_list-page';
   $trimed_description =  variable_get_value('studies_list_show_trimmed_description_study');
   if (!$trimed_description) {
@@ -64,7 +64,7 @@ function obiba_mica_study_list($studies_type = NULL) {
     $study_limits = $_GET['search-nbr-result'];
   }
 
-  $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_order, $study_limits, $studies_type);
+  $response = obiba_mica_study_get_studies($study_query, $study_sort, $study_sort_order, $study_limits, $study_type);
   $total_studies = empty($response) ? 0 : $response->getTotalHits();
   $study_limits = !empty($study_limits) ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
 
@@ -99,7 +99,8 @@ function obiba_mica_study_list($studies_type = NULL) {
   }
   $show_rapid_search_form = variable_get_value('studies_list_show_search_form');
   return theme($template_study, array(
-    "form_search" => !empty($show_rapid_search_form) ? drupal_get_form('obiba_mica_study_create_form', $studies_type) : '',
+    'study_type' => $study_type,
+    "form_search" => !empty($show_rapid_search_form) ? drupal_get_form('obiba_mica_study_create_form', $study_type) : '',
     "node_page" => $node_rendered,
     "total_items" => $total_studies,
     "list_studies" => $themed_studies,

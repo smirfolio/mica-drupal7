@@ -46,6 +46,26 @@ class RqlQueryBuilder {
     );
   }
 
+  public static function study_queries($queries) {
+    return sprintf("study(%s)", join(',', $queries));
+  }
+
+  public static function study_query($query) {
+    return sprintf("study(%s)", $query);
+  }
+
+  public static function and_query($lhsQuery, $rhsQuery) {
+    return sprintf("and(%s,%s)", $lhsQuery, $rhsQuery);
+  }
+
+  public static function exists_query($taxonomy, $field) {
+    return sprintf("exists(%s.%s)", $taxonomy, $field);
+  }
+
+  public static function className_query($taxonomy, $className) {
+    return sprintf("in(%s.className,%s)", $taxonomy, $className);
+  }
+
   private static function createQuery($format, $args) {
     global $language;
 

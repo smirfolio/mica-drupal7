@@ -87,6 +87,7 @@ function obiba_mica_dataset_get_datasets_page($node_view, $dataset_resource) {
       'list_datasets' => $list_datasets,
       'pager_wrap' => $pager_output,
       'dataset_type' => $dataset_resource,
+      'study_type' => obiba_mica_dataset_get_study_type($dataset_resource)
     ));
     if ($total_hits !== 0) {
       obiba_mica_commons_set_cache('cached_'. __FUNCTION__ . $resource_key, $themed_datasets_list);
@@ -105,6 +106,20 @@ function obiba_mica_dataset_correct_resource_server($dataset_resource) {
     DrupalMicaDatasetResource::COLLECTED_DATASET => 'StudyDataset',
   );
   return $resource[$dataset_resource];
+}
+
+function obiba_mica_dataset_get_study_type($dataset_type) {
+  switch ($dataset_type) {
+    case DrupalMicaDatasetResource::COLLECTED_DATASET:
+      return DrupalMicaStudyResource::INDIVIDUAL_STUDY;
+    case DrupalMicaDatasetResource::HARMONIZED_DATASET:
+      return DrupalMicaStudyResource::HARMONIZATION_STUDY;
+    case DrupalMicaDatasetResource::ALL_DATASETS:
+      return DrupalMicaStudyResource::ALL_STUDIES;
+  }
+
+  watchdog('Mica Client', 'Invalid dataset type ' . $dataset_type, WATCHDOG_WARNING);
+  return DrupalMicaStudyResource::ALL_STUDIES;
 }
 
 /**
