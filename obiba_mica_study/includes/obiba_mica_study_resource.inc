@@ -25,11 +25,26 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
   const HARMONIZATION_STUDY = 'harmonization-study';
   const HARMONIZATION_STUDY_LINK = 'mica/harmonization-study/{id}';
 
+  const ALL_STUDIES = 'studies';
   const INDIVIDUAL_STUDY = 'individual-study';
   const INDIVIDUAL_STUDY_LINK = 'mica/individual-study/{id}';
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);
+  }
+
+  public static function mapTypeToClassName($type) {
+    switch ($type) {
+      case self::INDIVIDUAL_STUDY:
+        return 'Study';
+      case self::HARMONIZATION_STUDY:
+        return 'HarmonizationStudy';
+      case self::ALL_STUDIES:
+        return self::ALL_STUDIES;
+    }
+
+    watchdog('Mica Client', 'Invalid study type ' . $type, WATCHDOG_WARNING);
+    return $type;
   }
 
   /**

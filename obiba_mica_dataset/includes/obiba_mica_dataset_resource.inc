@@ -25,6 +25,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
   const COLLECTED_VARIABLE = 'Collected';
   const COLLECTED_DATASET = 'collected-dataset';
   const COLLECTED_DATASET_LINK = 'mica/collected-dataset/{id}';
+  const ALL_DATASETS = 'datasets';
   const HARMONIZED_DATASET = 'harmonized-dataset';
   const HARMONIZED_DATASET_LINK = 'mica/harmonized-dataset/{id}';
   const HARMONIZATION_VARIABLE = 'mica/variable/{id}:{name}:Dataschema';
@@ -701,13 +702,22 @@ $get_tresource_by_type = function($resource){
    * @return string
    *   The anchor link.
    */
-  public static function searchDatasets($is_button = FALSE) {
+  public static function searchDatasets($is_button = FALSE, $study_class_name) {
+    $query = 'dataset(exists(Mica_dataset.id))';
+    if (!empty($study_class_name) && DrupalMicaStudyResource::ALL_STUDIES != $study_class_name) {
+      $query = sprintf("%s,%s",
+        $query,
+        DrupalMicaClient\RqlQueryBuilder::study_query(
+          DrupalMicaClient\RqlQueryBuilder::className_query('Mica_study', $study_class_name)
+        )
+      );
+    }
     return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
       variable_get_value('datasets_search_label'),
       array('class' => $is_button ? self::DEFAULT_PRIMARY_BUTTON_CLASSES : ''),
       array(
         'type' => 'datasets',
-        'query' => 'dataset(exists(Mica_dataset.id))',
+        'query' => $query,
         'display' => 'list'
       ));
   }
@@ -723,7 +733,9 @@ $get_tresource_by_type = function($resource){
    *   The anchor link.
    */
   public static function variableCrosstab($variable) {
-    $dataset = $variable->variableType === DrupalMicaDatasetResource::COLLECTED_VARIABLE ? DrupalMicaDatasetResource::studyDataset($variable->datasetId) : DrupalMicaDatasetResource::harmonizationDataset($variable->datasetId);
+    $dataset = $variable->variableType === DrupalMicaDatasetResource::COLLECTED_VARIABLE
+      ? DrupalMicaDatasetResource::studyDataset($variable->datasetId)
+      : DrupalMicaDatasetResource::harmonizationDataset($variable->datasetId);
 
     $res = l(
       t('Crosstabs'),

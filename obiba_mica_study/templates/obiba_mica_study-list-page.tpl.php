@@ -37,7 +37,10 @@ print render($node_page) ?>
       </div>
       <div class="btn-group pull-right">
         <?php if (variable_get_value('study_list_show_search_button')): ?>
-          <?php print MicaClientAnchorHelper::searchStudies(TRUE); ?>
+          <?php
+            print MicaClientAnchorHelper::searchStudies(TRUE,
+              DrupalMicaStudyResource::mapTypeToClassName($study_type));
+          ?>
         <?php endif; ?>
       </div>
     </div>

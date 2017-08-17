@@ -40,7 +40,8 @@
       </div>
       <div class="btn-group pull-right">
         <?php if (variable_get_value('dataset_list_show_search_button')): ?>
-          <?php print DrupalMicaDatasetResource::searchDatasets(TRUE); ?>
+          <?php print DrupalMicaDatasetResource::searchDatasets(TRUE,
+            DrupalMicaStudyResource::mapTypeToClassName($study_type)); ?>
         <?php endif; ?>
       </div>
     </div>

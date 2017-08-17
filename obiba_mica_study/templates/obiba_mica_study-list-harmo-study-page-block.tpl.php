@@ -118,7 +118,7 @@
           <?php endif ?>
 
           <?php if (!empty($dataschema_vars) && variable_get_value('studies_column_dataschema_variables')): ?>
-            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $dataschema_var_caption, array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Dataschema))', 'btn-default btn-xxs', 'dataSchemaVariableCount') ?>
+            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $dataschema_var_caption, array('@count' => obiba_mica_commons_format_number($dataschema_vars))), $study->id, TRUE, NULL, 'btn-default btn-xxs', 'dataSchemaVariableCount') ?>
           <?php endif ?>
         </div>
     <?php endif; ?>

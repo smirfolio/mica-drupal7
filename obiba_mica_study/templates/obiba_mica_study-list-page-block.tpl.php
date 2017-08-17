@@ -115,7 +115,7 @@
           <?php endif ?>
 
           <?php if (!empty($study_vars) && variable_get_value('studies_column_study_variables')): ?>
-            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $study_var_caption, array('@count' => obiba_mica_commons_format_number($study_vars))), $study->id, TRUE, 'variable(in(Mica_variable.variableType,Collected))', 'btn-default btn-xxs', 'studyVariableCount') ?>
+            <?php print MicaClientAnchorHelper::studyVariables(t('@count ' . $study_var_caption, array('@count' => obiba_mica_commons_format_number($study_vars))), $study->id, TRUE, NULL, 'btn-default btn-xxs', 'studyVariableCount') ?>
           <?php endif ?>
         </div>
     <?php endif; ?>
