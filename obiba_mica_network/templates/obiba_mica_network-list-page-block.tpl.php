@@ -60,12 +60,12 @@
       <?php endif ?>
 
       <?php if ($studies_with_vars > 0): ?>
-        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $studies_with_vars_caption, array('@count' => $studies_with_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'studyWithVariablesCount'), 'variable(in(Mica_variable.variableType,Collected))', "studies") ?>
+        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $studies_with_vars_caption, array('@count' => $studies_with_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'studyWithVariablesCount'), 'study(in(Mica_study.className,Study))', "studies") ?>
       <?php endif; ?>
 
       <?php if (!empty($study_vars) && variable_get_value('networks_column_study_variables')): ?>
         <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $study_vars_caption,
-            array('@count' => obiba_mica_commons_format_number($study_vars))), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'studyVariableCount'), 'variable(in(Mica_variable.variableType,Collected))') ?>
+            array('@count' => obiba_mica_commons_format_number($study_vars))), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'studyVariableCount'), 'study(in(Mica_study.className,Study))') ?>
       <?php endif ?>
 
       <?php if (!empty($harmonization_studies) && variable_get_value('networks_column_studies')): ?>
@@ -73,7 +73,7 @@
       <?php endif ?>
 
       <?php if ($harmonization_studies_vars > 0): ?>
-        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $harmonization_studies_vars_caption, array('@count' => $harmonization_studies_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'harmonizationStudyWithVariablesCount'), 'variable(in(Mica_variable.variableType,Dataschema))', "variables") ?>
+        <?php print MicaClientAnchorHelper::networkVariables(t('@count ' . $harmonization_studies_vars_caption, array('@count' => $harmonization_studies_vars)), $network->id, array('class' => 'btn-default btn-xxs', 'test-ref' => 'harmonizationStudyWithVariablesCount'), 'study(in(Mica_study.className,HarmonizationStudy))', "variables") ?>
       <?php endif; ?>
 
       <?php if (!empty($datasets) && (variable_get_value('networks_column_study_datasets') || variable_get_value('networks_column_harmonization_datasets'))): ?>
