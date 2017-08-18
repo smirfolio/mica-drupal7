@@ -1,4 +1,3 @@
-<!-- ### Individual study table## -->
 <?php if (!empty($dataset_type_dto->studyTables)): ?>
   <h2>
     <?php  print $localize->getTranslation('global.individual-studies');    ?>
@@ -13,7 +12,6 @@
     </div>
 
 <?php endif ?>
-<!-- ### Harmonization study table## -->
 <?php if (!empty($dataset_type_dto->harmonizationTables)): ?>
   <h2>
     <?php

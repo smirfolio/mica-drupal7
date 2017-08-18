@@ -159,12 +159,11 @@
     </section>
   <?php endif; ?>
 
-  <section id="study-tables">
-    <?php if (!empty($study_tables)): ?>
+  <?php if (!empty($study_tables)): ?>
+    <section id="study-tables">
       <?php print render($study_tables); ?>
-    <?php endif; ?>
     </section>
-
+  <?php endif; ?>
 
   <!-- NETWORKS placeholder -->
   <section id="networks">

@@ -113,7 +113,7 @@ class MicaClientPathProvider {
    * @return string
    */
   public static function network_draft_url($id) {
-    return sprintf("%s/#/network/%s", self::get_mica_url(), $id);
+    return sprintf("%s/#/network/%s", MicaClientPathProvider::get_mica_url(), $id);
   }
 
   /**
