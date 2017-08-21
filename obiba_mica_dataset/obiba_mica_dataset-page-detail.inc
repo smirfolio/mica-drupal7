@@ -121,6 +121,8 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
         'dataset_type_dto' => $dataset_type_dto,
         'dataset_type' => $dataset_type,
         'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => TRUE)),
+        'show_harmonization_variables_table' =>
+          _obiba_mica_dataset_show_harmonization_variables_table($dataset_type_dto, $dataset_type),
         'variables_dataset' => $variables_dataset,
         'modals' => $modals,
         'file_browser' => !empty($file_browser) ? $file_browser : NULL,
@@ -135,6 +137,13 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
     }
 
   }
+}
+
+function _obiba_mica_dataset_show_harmonization_variables_table($dataset_type_dto, $dataset_type) {
+  return NULL != $dataset_type_dto
+    && (!empty($dataset_type_dto->studyTables) || !empty($dataset_type_dto->harmonizationTables))
+    && $dataset_type != 'collected-dataset'
+    && (!isset($draft_view) || $draft_view !== TRUE);
 }
 
 /**
@@ -486,7 +495,7 @@ function _obiba_mica_dataset_harmonizations_get_all_opal_tables($dataset_type_dt
 function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $dataset_harmonizations_dto) {
   $rows = array();
 
-  if (!empty($dataset_type_dto->studyTables)) {
+  if (!empty($dataset_type_dto->studyTables) || !empty($dataset_type_dto->harmonizationTables)) {
 
     if (!empty($dataset_harmonizations_dto->variableHarmonizations)) {
 
