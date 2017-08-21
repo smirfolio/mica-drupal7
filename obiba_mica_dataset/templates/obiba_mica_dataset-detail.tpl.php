@@ -123,7 +123,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     </section>
   <?php endif; ?>
 
-
+  <?php if (!empty($dataset_type_dto->networkTables) || (!empty(variable_get_value('dataset_show_studies')) && (!empty($dataset_type_dto->harmonizationTable) || !empty($dataset_type_dto->studyTable)))): ?>
   <section>
     <!-- NETWORKS -->
     <?php if (!empty($dataset_type_dto->networkTables)): ?>
@@ -259,6 +259,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     <?php endif; ?>
 
   </section>
+  <?php endif; ?>
 
   <!-- COVERAGE -->
   <div ng-controller="VariableCoverageChartController">
@@ -272,7 +273,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
   </div>
 
   <!-- VARIABLES -->
-  <?php if ($dataset_type != 'collected-dataset' && (!isset($draft_view) || $draft_view !== TRUE)): ?>
+  <?php if (TRUE === $show_harmonization_variables_table): ?>
     <section class="table-variables">
       <h2><?php print $localize->getTranslation('client.label.variable.harmonization') ?></h2>
       <?php print render($harmonization_table_legend); ?>
