@@ -60,6 +60,7 @@ function obiba_mica_variable_page_detail($variable_id) {
     'harmonization_table_legend' => theme('obiba_mica_dataset-harmonization-table-legend', array('clickable' => $variable->variableType != 'Harmonized')),
     'dataset_harmonization_study' => !empty($dataset->{'obiba.mica.HarmonizedDatasetDto.type'}->harmonizationTable) ? $dataset->{'obiba.mica.HarmonizedDatasetDto.type'}->harmonizationTable->studySummary : null,
     'variable_dto' => $variable,
+    'show_variable_type_as_dataschema' => variable_get_value('mica_all_variables_dataschema') && $variable->variableType != 'Collected',
     'variable_harmonization_algorithms' => !empty($algos) ? $algos : NULL,
     'variable_harmonization' => obiba_mica_dataset_variable_get_harmonization($variable),
   ));
