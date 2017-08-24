@@ -78,11 +78,15 @@
                       <?php if (($variable_dto->variableType !== 'Dataschema') ): ?>
                   <tr>
                       <th>
-                        <?php if (($variable_dto->studySummary->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY)): ?>
-                          <?php print $localize->getTranslation('global.participant-harmonization-study'); ?>
-                          <?php else: ?>
-                          <?php print $localize->getTranslation('global.individual-study'); ?>
-                        <?php endif; ?>
+                          <?php
+                          if ($variable_dto->studySummary->studyResourcePath == DrupalMicaStudyResource::HARMONIZATION_STUDY) {
+                              print $localize->getTranslation('global.participant-harmonization-study');
+                          } elseif ($variable_dto->variableType == 'Collected') {
+                              print $localize->getTranslation('global.individual-study');
+                          } else {
+                              print $localize->getTranslation('global.included-individual-study');
+                          }
+                          ?>
                       </th>
                       <td>
                         <?php
@@ -126,8 +130,9 @@
               <p>
                 <?php $variable_type = $variable_dto->variableType?>
                 <?php if ($show_variable_type_as_dataschema): ?>
-                  <?php $variable_type = $localize->getTranslation('search.variable.dataschema'); ?>
+                  <?php $variable_type = 'DataSchema'; ?>
                 <?php endif; ?>
+                <?php $variable_type = $localize->getTranslation('client.variable.type.'.$variable_type); ?>
                 <?php print t('@type Variable', array('@type' =>
                   $variable_type)); ?>
                 <?php if ($variable_dto->variableType == 'Harmonized'): ?>

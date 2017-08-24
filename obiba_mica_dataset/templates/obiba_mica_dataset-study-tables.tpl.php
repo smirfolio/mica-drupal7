@@ -1,6 +1,6 @@
 <?php if (!empty($dataset_type_dto->studyTables)): ?>
   <h2>
-    <?php  print $localize->getTranslation('global.individual-studies');    ?>
+    <?php  print $localize->getTranslation('global.included-individual-studies');    ?>
   </h2>
 
     <div id="studies-table">
