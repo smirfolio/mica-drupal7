@@ -15,6 +15,8 @@
  */
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\DrupalMicaClientResourcePathHelper as ResourcesWsPath;
+
 /**
  * Class MicaStudyResource
  */
@@ -42,8 +44,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
   /**
    * Get the list of datasets.
    *
-   * @param string $resource
-   *   The resource to query.
+   * @param null $class_name
    * @param int $study_id
    *   The study id.
    * @param string $query
@@ -56,31 +57,46 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    *   Field name to sort by.
    * @param string $order
    *   the sort "asc" or "desc".
-   *
-   * @return array
-   *   Server response.
+   * @return array Server response.
+   * Server response.
+   * @internal param string $resource The resource to query.*   The resource to query.
    */
-  public function getDatasets($class_name = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $network_id = NULL) {
+  public function getDatasets($class_name = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL) {
     global $language;
     $this->setLastResponse(NULL);
+
+    $dataset_rql_queries = array();
+
     $from = empty($from) ? '0' : $from;
     $limit = empty($limit) ? '5' : $limit;
-    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
-    $sort_rql_bucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
-    $query = empty($query) ? '' : ",match($query,(Mica_dataset.name,Mica_dataset.acronym,Mica_dataset.description))";
-    $resource_params = empty($class_name) ? '' : ",in(Mica_dataset.className,$class_name)";
-    $network_params = empty($network_id) ? '' : ",in(Mica_dataset.networkId,$network_id)";
-    $studies_param = empty($study_id) ? '' : ",study(in(Mica_study.id,(" . rawurlencode($study_id) . ")))";
+    array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::limit_query($from, $limit));
 
-    if (!empty($query) || !empty($resource_params) || !empty($studies_param)) {
-      $params = "dataset(limit($from,$limit)$resource_params$network_params$query$sort_rql_bucket)$studies_param";
+    if (!empty($query) && !empty($class_name)) {
+      array_push($dataset_rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::and_query(
+          DrupalMicaClient\RqlQueryBuilder::match_query($query, array("Mica_dataset.name", "Mica_dataset.acronym", "Mica_dataset.description")),
+          DrupalMicaClient\RqlQueryBuilder::className_query("Mica_dataset", $class_name)
+        )
+      );
+    } elseif (!empty($query) && empty($class_name)) {
+      array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::match_query($query, array("Mica_dataset.name", "Mica_dataset.acronym", "Mica_dataset.description")));
+    } elseif (empty($query) && !empty($class_name)) {
+      array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::className_query("Mica_dataset", $class_name));
+    } else {
+      array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::exists_query("Mica_dataset", "id"));
     }
-    else {
-      $params = "dataset(exists(Mica_dataset.id),limit($from,$limit)$sort_rql_bucket)";
+
+    array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::sort_query(empty($order) ? '' : ($order == 'desc' ? '-' : ''), empty($sort) ? "name" : $sort));
+
+    $params = DrupalMicaClient\RqlQueryBuilder::dataset_queries($dataset_rql_queries);
+
+    if (!empty($study_id)) {
+      DrupalMicaClient\RqlQueryBuilder::study_query(sprintf("in(Mica_study.id,(%s))", rawurlencode($study_id)));
     }
 
     $params .= ",locale($language->language)";
-    $resource_query = '/datasets/_rql?query=' . $params;
+
+    $resource_query = ResourcesWsPath::getResourcePath(ResourcesWsPath::WS_DATASETS_SEARCH, array($params));
     $cached_datasets = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cached_datasets)) {
       return $cached_datasets;
@@ -120,8 +136,10 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    * @param string $resource
    *   The resource to query.
    *
-   * @return array
-   *   The server response.
+   * @param null $token_key
+   * @return array The server response.
+   * The server response.
+   * @throws Exception
    */
   public function getDataset($dataset_id, $resource = 'dataset', $token_key = NULL) {
     $resource_query = (empty($resource) ? 'dataset' : $resource) . '/' . $dataset_id;
