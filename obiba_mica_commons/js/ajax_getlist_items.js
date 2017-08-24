@@ -24,9 +24,16 @@ var datatables_add_head_TimeoutId = null;
         $("#edit-search-query").on("keyup", function (e) {
           var that = this;
           function doSearch(){
+            var url = Drupal.settings.basePath + 'mica/' + Drupal.settings.context.url + '/' + $(that).val() + '/' +
+                $("#edit-search-sort").val() + '/' + $("#edit-search-sort-order").val() + '/0';
+
+            if (Drupal.settings.document_type) {
+              url += '?document_type=' + Drupal.settings.document_type;
+            }
+
             $.ajax({
-              url: Drupal.settings.basePath + 'mica/' + Drupal.settings.context.url + '/' + $(that).val() + '/' +
-              $("#edit-search-sort").val() + '/' + $("#edit-search-sort-order").val() + '/0',
+
+              url: url,
               success: function (data) {
                 if (data) {
                   $('#refresh-list').empty().append(data.list);

@@ -19,6 +19,7 @@ class DrupalMicaClientResourcePathHelper {
   const WS_HARMONIZATION_STUDY = '/harmonization-study/%';
   const WS_HARMONIZATION_DRAFT_STUDY = '/draft/harmonization-study/%?key=%';
   const WS_HARMONIZED_DATASET = 'harmonized-dataset';
+  const WS_DATASETS_SEARCH = '/datasets/_rql?query=%';
 
   static public function getResourcePath($path, $args){
     $path = strtr($path, array('%' => '%s'));

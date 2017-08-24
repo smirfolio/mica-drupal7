@@ -1113,11 +1113,11 @@ function obiba_mica_commons_array_empty_test($array) {
  * @param $list_url
  *
  */
-function obiba_mica_commons_list_document_js($list_url) {
+function obiba_mica_commons_list_document_js($list_url, $document_type = NULL) {
   $context['url'] = $list_url;
   $context['currentCleanPath'] = !empty($GLOBALS['conf']['clean_url']) ? base_path().'/'.current_path(). '?' : base_path().'?q=' . current_path() . '&';
   drupal_add_js(drupal_get_path('module', 'obiba_mica_commons') . '/js/ajax_getlist_items.js', 'file');
-  drupal_add_js(array('context' => $context), 'setting');
+  drupal_add_js(array('context' => $context, 'document_type' => $document_type), 'setting');
 }
 
 /**

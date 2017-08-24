@@ -23,8 +23,9 @@ function obiba_mica_study_collection_page_list(){
 }
 
 function obiba_mica_study_page_list(){
-  return obiba_mica_study_list();
+  return obiba_mica_study_list(DrupalMicaStudyResource::ALL_STUDIES);
 }
+
 function obiba_mica_study_list($study_type = NULL) {
   $template_study = 'obiba_mica_study_list-page';
   $trimed_description =  variable_get_value('studies_list_show_trimmed_description_study');
@@ -37,7 +38,7 @@ function obiba_mica_study_list($study_type = NULL) {
       )
     ), 'setting');
   }
-  obiba_mica_commons_list_document_js('refresh_list_studies');
+  obiba_mica_commons_list_document_js('refresh_list_studies', $study_type);
   $study_query = NULL;
   $study_sort = NULL;
   $study_sort_order = NULL;
@@ -109,7 +110,8 @@ function obiba_mica_study_list($study_type = NULL) {
 }
 
 function obiba_mica_study_retrieve_studies($query, $sort = NULL, $sort_order = NULL, $size_response_param = NULL) {
-  $list_studies = obiba_mica_study_get_studies($query, $sort, $sort_order, $size_response_param);
+  $study_type = drupal_get_query_parameters()['document_type'];
+  $list_studies = obiba_mica_study_get_studies($query, $sort, $sort_order, $size_response_param, $study_type);
   $list_studies_rendered = '';
   if (!empty($list_studies)) {
     foreach ($list_studies->getSummaries() as $study) {
@@ -151,16 +153,14 @@ function obiba_mica_study_create_form($form, &$form_state, $studies_type) {
   return obiba_mica_commons_create_search_form($context);
 }
 
-function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL, $study_limits = NULL, $studies_type = NULL) {
+function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL, $study_limits = NULL, $study_type = NULL) {
   $from = 0;
   $study_resource = new DrupalMicaStudyResource();
   $size_response = intval($study_limits) > 0 ? $study_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
-  $type = 'studies';
-
-  prepopulate_session_with_studies_count_if_needed($type, $study_resource);
+  prepopulate_session_with_studies_count_if_needed($study_type, $study_resource);
 
   if (!empty($_GET['page'])) {
-    $from = $study_resource->paginationListSearchParameters($_GET['page'], $type, $size_response);
+    $from = $study_resource->paginationListSearchParameters($_GET['page'], $study_type, $size_response);
   }
 
   if(empty($order)){
@@ -175,9 +175,9 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
     }
   }
 
-  $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order, $studies_type);
+  $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order, $study_type);
 
-  populate_session_with_studies_count($response, $type);
+  populate_session_with_studies_count($response, $study_type);
 
   return $response;
 }
