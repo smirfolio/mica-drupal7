@@ -47,11 +47,37 @@ class RqlQueryBuilder {
   }
 
   public static function study_queries($queries) {
+    if (!is_array($queries)) {
+      return self::study_query($queries);
+    }
     return sprintf("study(%s)", join(',', $queries));
   }
 
   public static function study_query($query) {
     return sprintf("study(%s)", $query);
+  }
+
+  public static function dataset_queries($queries) {
+    if (!is_array($queries)) {
+      return self::dataset_query($queries);
+    }
+    return sprintf("dataset(%s)", join(',', $queries));
+  }
+
+  public static function dataset_query($query) {
+    return sprintf("dataset(%s)", $query);
+  }
+
+  public static function match_query($query, $vocabularies) {
+    return sprintf("match(%s,(%s))", $query, is_array($vocabularies) ? join(',', $vocabularies) : $vocabularies);
+  }
+
+  public static function limit_query($from, $to) {
+    return sprintf("limit(%s,%s)", $from, $to);
+  }
+
+  public static function sort_query($order, $sort) {
+    return sprintf("sort(%s%s)", $order, $sort);
   }
 
   public static function and_query($lhsQuery, $rhsQuery) {

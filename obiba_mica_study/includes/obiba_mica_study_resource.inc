@@ -218,16 +218,33 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
         $class_name = '(Study,HarmonizationStudy)';
         break;
     }
+
+    $study_rql_queries = array();
+
     $from = empty($from) ? '0' : $from;
     $limit = empty($limit) ? '5' : $limit;
-    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
-    $sort_rql_bucket = empty($sort) ? ",sort(name)" : ",sort($order$sort)";
-    $query = empty($query) ? NULL : ",match($query,(Mica_study.name,Mica_study.acronym,Mica_study.objectives))";
-    if (empty($query)) {
-      $params = "study(exists(Mica_study.id),limit($from,$limit),in(Mica_study.className,$class_name)$sort_rql_bucket)";
+
+    array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::limit_query($from, $limit));
+
+    if (!empty($query) && !empty($class_name)) {
+      array_push($study_rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::and_query(
+          DrupalMicaClient\RqlQueryBuilder::match_query($query, array("Mica_study.name", "Mica_study.acronym", "Mica_study.objectives")),
+          DrupalMicaClient\RqlQueryBuilder::className_query("Mica_study", $class_name)
+        )
+      );
+    } elseif (!empty($query) && empty($class_name)) {
+      array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::match_query($query, array("Mica_study.name", "Mica_study.acronym", "Mica_study.objectives")));
+    } elseif (empty($query) && !empty($class_name)) {
+      array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::className_query("Mica_study", $class_name));
     } else {
-      $params = "study(limit($from,$limit),in(Mica_study.className,$class_name)$query$sort_rql_bucket)";
+      array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::exists_query("Mica_study", "id"));
     }
+
+    array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::sort_query(empty($order) ? '' : ($order == 'desc' ? '-' : ''), empty($sort) ? "name" : $sort));
+
+    $params = DrupalMicaClient\RqlQueryBuilder::study_queries($study_rql_queries);
+
     $params .= ",locale($language->language)";
     $resource_query = ResourcesWsPath::getResourcePath(ResourcesWsPath::WS_STUDIES_SEARCH, array($params));
     return $resource_query;

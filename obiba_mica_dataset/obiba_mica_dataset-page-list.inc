@@ -22,7 +22,7 @@ include_once 'includes/obiba_mica_dataset_resource.inc';
 function obiba_mica_dataset_get_datasets_list() {
   $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('dataset_page'));
   drupal_set_title($node_rendered['#node']->title);
-  return obiba_mica_dataset_get_datasets_page($node_rendered, 'datasets');
+  return obiba_mica_dataset_get_datasets_page($node_rendered, DrupalMicaDatasetResource::ALL_DATASETS);
 }
 
 /**
