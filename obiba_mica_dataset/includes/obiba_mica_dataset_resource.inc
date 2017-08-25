@@ -91,7 +91,7 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
     $params = DrupalMicaClient\RqlQueryBuilder::dataset_queries($dataset_rql_queries);
 
     if (!empty($study_id)) {
-      DrupalMicaClient\RqlQueryBuilder::study_query(sprintf("in(Mica_study.id,(%s))", rawurlencode($study_id)));
+      $params .= DrupalMicaClient\RqlQueryBuilder::study_query(sprintf(",in(Mica_study.id,(%s))", rawurlencode($study_id)));
     }
 
     $params .= ",locale($language->language)";
