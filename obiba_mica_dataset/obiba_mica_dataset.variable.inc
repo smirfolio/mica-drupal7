@@ -143,7 +143,7 @@ function _obiba_mica_dataset_variable_variable_content(&$variable) {
   );
   $variable['variable_algorithm'] = array(
     'title' => t('Show harmonization algorithms'),
-    'description' => t('If selected, the harmonization algorithms will be displayed in the harmonization dataset and in the harmonized variable pages.'),
+    'description' => t('If selected, the harmonization algorithms will be displayed in the harmonized dataset and in the harmonized variable pages.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
