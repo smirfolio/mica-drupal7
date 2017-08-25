@@ -345,8 +345,8 @@ function _obiba_mica_variable_search_networks(&$variable) {
     'default' => TRUE,
   );
   $variable['networks_column_harmonization_datasets'] = array(
-    'title' => t('Show harmonization dataset'),
-    'description' => t('Show harmonization dataset column in the networks table.'),
+    'title' => t('Show harmonized dataset'),
+    'description' => t('Show harmonized dataset column in the networks table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -441,14 +441,14 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'default' => TRUE,
   );
   $variable['studies_column_study_datasets'] = array(
-    'title' => t('Show study datasets'),
-    'description' => t('Show study datasets column in the studies table.'),
+    'title' => t('Show collected datasets'),
+    'description' => t('Show collected datasets column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
   $variable['studies_column_harmonization_datasets'] = array(
-    'title' => t('Show harmonization datasets'),
-    'description' => t('Show harmonization dataset column in the studies table.'),
+    'title' => t('Show harmonized datasets'),
+    'description' => t('Show harmonized dataset column in the studies table.'),
     'type' => 'boolean',
     'default' => TRUE,
   );
