@@ -147,13 +147,13 @@ function obiba_mica_dataset_create_form($form, &$form_state, $dataset_resource) 
   $localize = obiba_mica_commons_mica_server_localisation();
   $context = array(
     'options' => array(
-      'studyTable.studyId,studyTable.populationId,start' => $localize->getTranslation('global.chronological')
+      'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym' => $localize->getTranslation('global.chronological')
     ),
     'default_sort' => 'name',
     'default_sort_order' => 'asc'
   );
   if (!empty($dataset_resource) && $dataset_resource === DrupalMicaDatasetResource::HARMONIZED_DATASET) {
-    unset($context['options']['studyTable.studyId,studyTable.populationId,start']);
+    unset($context['options']['studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym']);
   }
   return obiba_mica_commons_create_search_form($context);
 }

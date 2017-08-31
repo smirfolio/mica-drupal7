@@ -313,6 +313,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
   $population_content_render = array();
   $themed_attachment = NULL;
   if (!empty($study_detail->populations)) {
+    usort($study_detail->populations, function ($a, $b) {return $a->weight - $b->weight;});
     foreach ($study_detail->populations as $population) {
       if (module_exists('obiba_mica_files')) {
             $has_files  = obiba_mica_files_get_flat_attachments( '/' . $study_detail->studyResourcePath . '/' . $study_detail->id . '/' . 'population/' . $population->id, !empty($token_key)?$token_key:NULL);
@@ -328,7 +329,7 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
       if (!empty($population->dataCollectionEvents)) {
         $localize = obiba_mica_commons_mica_server_localisation();
         $dce_rows = obiba_mica_study_get_dce_table($population->dataCollectionEvents, $study_detail->id, $population->id);
-        uasort($dce_rows, 'obiba_mica_study_sort_dce');
+        ksort($dce_rows);
         obiba_mica_commons_normalize_rows($dce_rows);
         $population_content_render['dce-tab'] = theme(
           'table',
@@ -486,7 +487,7 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
     }
     // Hide DCE that are not published on study published page
 
-    $dce_rows[$key_dce] = array(
+    $dce_rows[$dce_wrapper->weight] = array(
       'data' => array(
         'label' => l(obiba_mica_commons_get_localized_field($dce_wrapper, 'name'), '#', array(
           'external' => TRUE,
