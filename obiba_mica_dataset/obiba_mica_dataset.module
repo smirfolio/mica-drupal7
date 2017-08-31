@@ -328,7 +328,7 @@ function obiba_mica_dataset_theme($existing, $type, $theme, $path) {
 function obiba_mica_dataset_get_datasets_studies($study_id) {
   $output = NULL;
   $dataset_resource = new DrupalMicaDatasetResource();
-  $datasets = $dataset_resource->getDatasets(NULL, $study_id, NULL, 0, 50, 'studyTable.studyId,studyTable.populationId,start', NULL);
+  $datasets = $dataset_resource->getDatasets(NULL, $study_id, NULL, 0, 50, 'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym', NULL);
 
   if (!empty($datasets)) {
     $output = obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id);
