@@ -14,6 +14,8 @@
  * MicaNetworkResource class
  */
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\DrupalMicaClientResourcePathHelper as ResourcesWsPath;
+
 /**
  * Class MicaNetworkResource
  */
@@ -29,37 +31,24 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
    * @param null $study_id
    * @param null $query
    * @param int $from
-   * @param $limit
+   * @param int $limit
    * @param null $sort field name to sort by
    * @param null $order "asc" or "desc"
+   * @param null $fields
    * @return array|mixed
+   * @throws Exception
    */
-  public function getNetworks($study_id = NULL, $query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL) {
-    global $language;
+  public function getNetworks($study_id = NULL, $query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL, $fields = NULL) {
     $this->setLastResponse(NULL);
-    $from = empty($from) ? '0' : $from;
-    $limit = empty($limit) ? '5' : $limit;
-    $order = empty($order) ? '' : ($order == 'desc' ? '-' : '');
-    $sort_rql_bucket = empty($sort) ? "" : ",sort($order$sort)";
-    $query = empty($query) ? NULL : ",match($query,(Mica_network.name,Mica_network.acronym,Mica_network.description))";
-    $studies_query = empty($study_id) ? '' : ",in(Mica_network.studyIds," . rawurlencode($study_id) . ")";
-    if (!empty($query || $studies_query)) {
-      $params = "network(limit($from,$limit)$query$studies_query$sort_rql_bucket)";
-    }
-    else {
-      $params = "network(exists(Mica_network.id),limit($from,$limit)$sort_rql_bucket)";
-    }
-    $params .= ",locale($language->language)";
-    $resource_query = '/networks/_rql?query=' . $params;
 
-    $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
+    $url_networks = $this->generateRqlQuery($study_id, $query, $from, $limit, $sort, $order, $fields);
+    $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $url_networks);
 
     if ($cache_stored_data !== FALSE) {
       return $cache_stored_data;
     }
 
-    $url_networks = $this->micaUrl . $resource_query;
-    $request = new HttpClientRequest($url_networks, array(
+    $request = new HttpClientRequest($this->micaUrl . $url_networks, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_JSON),
@@ -73,7 +62,7 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
       $data = $client->execute($request);
       $this->setLastResponse($client->lastResponse);
       $network_join_response_wrapper = !empty($data) ? new DrupalMicaClient\NetworkJoinResponseWrapper(json_decode($data)) : NULL;
-      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $network_join_response_wrapper);
+      $this->drupalCache->MicaSetCache(__FUNCTION__ . $url_networks, $network_join_response_wrapper);
       return $network_join_response_wrapper;
 
     } catch (HttpClientException $e) {
@@ -222,7 +211,6 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
     }
   }
 
-
   private function updateModel($obj) {
     if (!empty($obj->content)) {
       $obj->model = json_decode($obj->content);
@@ -230,5 +218,45 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
     else {
       $obj->model = new stdClass();
     }
+  }
+
+  private function generateRqlQuery($study_id, $query, $from, $limit, $sort, $order, $fields = NULL) {
+    global $language;
+    $rql_queries = array();
+    $from = empty($from) ? '0' : $from;
+    $limit = empty($limit) ? '5' : $limit;
+
+    array_push($rql_queries, DrupalMicaClient\RqlQueryBuilder::limit_query($from, $limit));
+
+    $query_rql = empty($query)
+      ? DrupalMicaClient\RqlQueryBuilder::exists_query("Mica_network", "id")
+      : DrupalMicaClient\RqlQueryBuilder::match_query($query, "Mica_network", array("name", "acronym", "description"));
+
+    if (!empty($study_id)) {
+      array_push($rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::and_query(
+          $query_rql,
+          DrupalMicaClient\RqlQueryBuilder::in_query("Mica_network", "studyIds", $study_id)
+        ));
+    } else {
+      array_push($rql_queries, $query_rql);
+    }
+
+    array_push(
+      $rql_queries,
+      DrupalMicaClient\RqlQueryBuilder::sort_query(
+        empty($order) ? '' : ($order == 'desc' ? '-' : ''),
+        empty($sort) ? "name" : $sort)
+    );
+
+    if (NULL !== $fields) {
+      array_push(
+        $rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::fields_query($fields)
+      );
+    }
+
+    $params = DrupalMicaClient\RqlQueryBuilder::network_queries($rql_queries). ",locale($language->language)";
+    return ResourcesWsPath::getResourcePath(ResourcesWsPath::WS_NETWORKS_SEARCH, array($params));
   }
 }

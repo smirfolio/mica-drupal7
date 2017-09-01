@@ -99,7 +99,8 @@ function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL,
     }
   }
 
-  $networks = $network_resource->getNetworks($study_id, $query, $from, $size_response, $sort, $order);
+  $fields = array("studyIds", "acronym.*", "name.*", "description.*", "logo");
+  $networks = $network_resource->getNetworks($study_id, $query, $from, $size_response, $sort, $order, $fields);
 
   populate_session_with_network_count($networks, $type);
 
@@ -109,7 +110,7 @@ function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL,
 function prepopulate_session_with_network_count_if_needed($type, DrupalMicaNetworkResource $network_resource) {
 
   if (empty(@$_SESSION[$type])) {
-    $networks = $network_resource->getNetworks(NULL, NULL, 0, 1, NULL, NULL);
+    $networks = $network_resource->getNetworks(NULL, NULL, 0, 1);
     populate_session_with_network_count($networks, $type);
   }
 }

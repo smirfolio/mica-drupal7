@@ -17,7 +17,6 @@
 include_once 'includes/obiba_mica_dataset_resource.inc';
 
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
-use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
 
 /**
  * The dataset Detail page.

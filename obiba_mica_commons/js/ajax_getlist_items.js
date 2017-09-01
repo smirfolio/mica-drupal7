@@ -13,16 +13,17 @@
  * JsScript ajax helper for Search widget : in dataset, network, study list
  */
 
-var datatables_add_head_TimeoutId = null;
-
 (function ($) {
   Drupal.behaviors.datatables_add_head = {
     attach: function (context, settings) {
+      // To prevent Drupal from defaulting form button type to 'submit'
+      $("#refresh-button").prop('type', 'button');
 
-      /*******************/
       if (Drupal.settings.context) {
         $("#edit-search-query").on("keyup", function (e) {
+          e.preventDefault();
           var that = this;
+
           function doSearch(){
             var url = Drupal.settings.basePath + 'mica/' + Drupal.settings.context.url + '/' + $(that).val() + '/' +
                 $("#edit-search-sort").val() + '/' + $("#edit-search-sort-order").val() + '/0';
@@ -32,33 +33,24 @@ var datatables_add_head_TimeoutId = null;
             }
 
             $.ajax({
-
               url: url,
-              success: function (data) {
+              done: function (data) {
                 if (data) {
                   $('#refresh-list').empty().append(data.list);
                   $('#refresh-count').empty().append(data.total === null ? 0 : data.total);
+                  var data_url = $('#obiba-mica-search-form').serialize();
+                  window.location = window.location.origin + Drupal.settings.context.currentCleanPath + data_url;
                 }
               }
             });
           }
 
-          if (datatables_add_head_TimeoutId) {
-            clearTimeout(datatables_add_head_TimeoutId);
-          }
           if (e.keyCode == 13) {
             e.preventDefault();
-            var data_url = $('#obiba-mica-search-form').serialize();
-            window.location = window.location.origin + Drupal.settings.context.currentCleanPath + data_url;
+            doSearch();
           }
-          datatables_add_head_TimeoutId = setTimeout(doSearch, 250);
         });
       }
-
-      $("#edit-search-query").on("blur", function () {
-        var data_url = $('#obiba-mica-search-form').serialize();
-        window.location = window.location.origin + Drupal.settings.context.currentCleanPath + data_url;
-      });
 
       $("#edit-search-sort-order").on("change", function () {
         var data_url = $('#obiba-mica-search-form').serialize();
@@ -74,7 +66,6 @@ var datatables_add_head_TimeoutId = null;
         event.preventDefault();
         window.location = window.location.origin + Drupal.settings.context.currentCleanPath;
       });
-      /*******************/
     }
   }
 })(jQuery);

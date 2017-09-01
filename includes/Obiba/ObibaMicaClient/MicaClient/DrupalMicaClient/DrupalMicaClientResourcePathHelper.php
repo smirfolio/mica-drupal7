@@ -14,6 +14,7 @@ namespace Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient;
 
 class DrupalMicaClientResourcePathHelper {
   const WS_STUDIES_SEARCH = '/studies/_rql?query=%';
+  const WS_NETWORKS_SEARCH = '/networks/_rql?query=%';
   const WS_COLLECTION_STUDY = '/individual-study/%';
   const WS_COLLECTION_DRAFT_STUDY = '/draft/individual-study/%?key=%';
   const WS_HARMONIZATION_STUDY = '/harmonization-study/%';

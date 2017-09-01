@@ -175,7 +175,8 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
     }
   }
 
-  $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order, $study_type);
+  $fields = array("logo", "objectives.*", "acronym.*", "name.*", "model.methods.design", "model.numberOfParticipants.participant");
+  $response = $study_resource->getStudies($query, $from, $size_response, $sort, $order, $study_type, $fields);
 
   populate_session_with_studies_count($response, $study_type);
 
@@ -185,7 +186,7 @@ function obiba_mica_study_get_studies($query = NULL, $sort = NULL, $order = NULL
 function prepopulate_session_with_studies_count_if_needed($type, DrupalMicaStudyResource $study_resource) {
 
   if (empty(@$_SESSION[$type])) {
-    $studies = $study_resource->getStudies(NULL, 0, 1, NULL, NULL);
+    $studies = $study_resource->getStudies(NULL, 0, 1, NULL, NULL, array());
     populate_session_with_studies_count($studies, $type);
   }
 }
