@@ -132,7 +132,47 @@ function obiba_mica_dataset_get_datasets($query, $sort, $sort_by, $dataset_class
   if (!empty($_GET['page'])) {
     $from = $resource->paginationListSearchParameters($_GET['page'], 'datasets', $size_response);
   }
-  $response = $resource->getDatasets($dataset_class_name, NULL, $query, $from, $size_response, $sort, $sort_by);
+
+  $fields = array(
+  'acronym.*',
+  'name.*',
+  'description.*'
+  );
+
+  switch ($dataset_class_name) {
+    case DrupalMicaDatasetResource::COLLECTED_DATASET:
+      $fields = array_merge($fields, array(
+        'studyTable.studyId',
+        'studyTable.project',
+        'studyTable.table',
+        'studyTable.populationId',
+        'studyTable.dataCollectionEventId'
+      ));
+      break;
+    case DrupalMicaDatasetResource::HARMONIZED_DATASET:
+      $fields = array_merge($fields, array(
+        'harmonizationTable.studyId',
+        'harmonizationTable.project',
+        'harmonizationTable.table',
+        'harmonizationTable.populationId'
+      ));
+      break;
+    default:
+      $fields = array_merge($fields, array(
+        'studyTable.studyId',
+        'studyTable.project',
+        'studyTable.table',
+        'studyTable.populationId',
+        'studyTable.dataCollectionEventId',
+        'harmonizationTable.studyId',
+        'harmonizationTable.project',
+        'harmonizationTable.table',
+        'harmonizationTable.populationId'
+      ));
+      break;
+  }
+
+  $response = $resource->getDatasets($dataset_class_name, NULL, $query, $from, $size_response, $sort, $sort_by, $fields);
   if (!empty($response)) {
     $_SESSION['datasets']['aggregations']['total_hits'] = $response->getTotalHits();
   }

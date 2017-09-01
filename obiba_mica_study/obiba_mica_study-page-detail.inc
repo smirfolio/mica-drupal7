@@ -328,8 +328,10 @@ function obiba_mica_study_get_populations_detail($study_detail, $dce_variables_n
       $population_content_render['data'] = $population;
       if (!empty($population->dataCollectionEvents)) {
         $localize = obiba_mica_commons_mica_server_localisation();
+        usort($population->dataCollectionEvents, function($a, $b) {
+          return $a->weight - $b->weight;
+        });
         $dce_rows = obiba_mica_study_get_dce_table($population->dataCollectionEvents, $study_detail->id, $population->id);
-        ksort($dce_rows);
         obiba_mica_commons_normalize_rows($dce_rows);
         $population_content_render['dce-tab'] = theme(
           'table',
@@ -487,7 +489,7 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
     }
     // Hide DCE that are not published on study published page
 
-    $dce_rows[$dce_wrapper->weight] = array(
+    $dce_rows[$key_dce] = array(
       'data' => array(
         'label' => l(obiba_mica_commons_get_localized_field($dce_wrapper, 'name'), '#', array(
           'external' => TRUE,

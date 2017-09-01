@@ -52,19 +52,20 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    *
    * @param null $query .
    * @param int $from .
-   * @param $limit .
+   * @param int $limit .
    * @param null $sort field name to sort by.
    * @param null $order "asc" or "desc".
-   * @param null $studies_type  "harmonization_studies".
+   * @param null $studies_type "harmonization_studies".
    *
+   * @param null $fields
    * @return array|mixed
    */
-  public function getStudies($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL, $studies_type = NULL) {
+  public function getStudies($query = NULL, $from = 0, $limit = 5, $sort = NULL, $order = NULL, $studies_type = NULL, $fields = NULL) {
     global $language;
 
     $studies_type = (!empty($studies_type)) ? $studies_type : 'studies';
     $this->setLastResponse(NULL);
-    $resource_query = $this->generateRqlQuery($query, $from, $limit, $sort, $order, $language, $studies_type);
+    $resource_query = $this->generateRqlQuery($query, $from, $limit, $sort, $order, $language, $studies_type, $fields);
 
     $cached_studies = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cached_studies)) {
@@ -206,7 +207,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    * @param $studies_type
    * @return string
    */
-  private function generateRqlQuery($query, $from, $limit, $sort, $order, $language, $studies_type = NULL) {
+  private function generateRqlQuery($query, $from, $limit, $sort, $order, $language, $studies_type = NULL, $fields = NULL) {
     switch ($studies_type){
       case self::HARMONIZATION_STUDY :
         $class_name = 'HarmonizationStudy';
@@ -229,19 +230,38 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
     if (!empty($query) && !empty($class_name)) {
       array_push($study_rql_queries,
         DrupalMicaClient\RqlQueryBuilder::and_query(
-          DrupalMicaClient\RqlQueryBuilder::match_query($query, array("Mica_study.name", "Mica_study.acronym", "Mica_study.objectives")),
+          DrupalMicaClient\RqlQueryBuilder::match_query($query, "Mica_study",array("name", "acronym", "objectives")),
           DrupalMicaClient\RqlQueryBuilder::className_query("Mica_study", $class_name)
         )
       );
     } elseif (!empty($query) && empty($class_name)) {
-      array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::match_query($query, array("Mica_study.name", "Mica_study.acronym", "Mica_study.objectives")));
+      array_push(
+        $study_rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::match_query(
+          $query,
+          "Mica_study",
+          array("name", "acronym", "objectives")
+        )
+      );
     } elseif (empty($query) && !empty($class_name)) {
       array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::className_query("Mica_study", $class_name));
     } else {
       array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::exists_query("Mica_study", "id"));
     }
 
-    array_push($study_rql_queries, DrupalMicaClient\RqlQueryBuilder::sort_query(empty($order) ? '' : ($order == 'desc' ? '-' : ''), empty($sort) ? "name" : $sort));
+    array_push(
+      $study_rql_queries,
+      DrupalMicaClient\RqlQueryBuilder::sort_query(
+        empty($order) ? '' : ($order == 'desc' ? '-' : ''),
+        empty($sort) ? "name" : $sort)
+    );
+
+    if (NULL != $fields) {
+      array_push(
+        $study_rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::fields_query($fields)
+      );
+    }
 
     $params = DrupalMicaClient\RqlQueryBuilder::study_queries($study_rql_queries);
 

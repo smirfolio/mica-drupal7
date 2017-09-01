@@ -57,6 +57,17 @@ class RqlQueryBuilder {
     return sprintf("study(%s)", $query);
   }
 
+  public static function network_queries($queries) {
+    if (!is_array($queries)) {
+      return self::network_query($queries);
+    }
+    return sprintf("network(%s)", join(',', $queries));
+  }
+
+  public static function network_query($query) {
+    return sprintf("network(%s)", $query);
+  }
+
   public static function dataset_queries($queries) {
     if (!is_array($queries)) {
       return self::dataset_query($queries);
@@ -68,8 +79,20 @@ class RqlQueryBuilder {
     return sprintf("dataset(%s)", $query);
   }
 
-  public static function match_query($query, $vocabularies) {
-    return sprintf("match(%s,(%s))", $query, is_array($vocabularies) ? join(',', $vocabularies) : $vocabularies);
+  public static function match_query($query, $taxonomy, $vocabularies) {
+    if (is_array($vocabularies)) {
+      $fields = join(',', array_map(function($vocabulary) use($taxonomy) {
+        return $taxonomy . '.' . $vocabulary;
+      }, $vocabularies));
+    } else {
+      $fields = $taxonomy . '.' . $vocabularies;
+    }
+    return sprintf("match(%s,(%s))", $query, $fields);
+  }
+
+  public static function fields_query($fields) {
+    $fields =  is_array($fields) ? $fields : array($fields);
+    return sprintf("fields((%s))", join(',', $fields));
   }
 
   public static function limit_query($from, $to) {
@@ -77,7 +100,11 @@ class RqlQueryBuilder {
   }
 
   public static function sort_query($order, $sort) {
-    return sprintf("sort(%s%s)", $order, $sort);
+    $sort_array = array_map(function($element) use($order) {
+      return $order . $element;
+    }, explode(',', $sort));
+
+    return sprintf("sort(%s)", join(',', $sort_array));
   }
 
   public static function and_query($lhsQuery, $rhsQuery) {
@@ -88,8 +115,13 @@ class RqlQueryBuilder {
     return sprintf("exists(%s.%s)", $taxonomy, $field);
   }
 
+  public static function in_query($taxonomy, $vocabulary, $terms) {
+    $terms = is_array($terms) ? $terms : array($terms);
+    return sprintf("in(%s.%s,(%s))", $taxonomy, $vocabulary, join(',',$terms));
+  }
+
   public static function className_query($taxonomy, $className) {
-    return sprintf("in(%s.className,%s)", $taxonomy, $className);
+    return self::in_query($taxonomy, "className", $className);
   }
 
   private static function createQuery($format, $args) {

@@ -61,43 +61,11 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
    * Server response.
    * @internal param string $resource The resource to query.*   The resource to query.
    */
-  public function getDatasets($class_name = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL) {
-    global $language;
+  public function getDatasets($class_name = NULL, $study_id = NULL, $query = NULL, $from = 0, $limit = 50, $sort = NULL, $order = NULL, $fields = NULL) {
     $this->setLastResponse(NULL);
-
-    $dataset_rql_queries = array();
-
-    $from = empty($from) ? '0' : $from;
-    $limit = empty($limit) ? '5' : $limit;
-    array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::limit_query($from, $limit));
-
-    if (!empty($query) && !empty($class_name)) {
-      array_push($dataset_rql_queries,
-        DrupalMicaClient\RqlQueryBuilder::and_query(
-          DrupalMicaClient\RqlQueryBuilder::match_query($query, array("Mica_dataset.name", "Mica_dataset.acronym", "Mica_dataset.description")),
-          DrupalMicaClient\RqlQueryBuilder::className_query("Mica_dataset", $class_name)
-        )
-      );
-    } elseif (!empty($query) && empty($class_name)) {
-      array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::match_query($query, array("Mica_dataset.name", "Mica_dataset.acronym", "Mica_dataset.description")));
-    } elseif (empty($query) && !empty($class_name)) {
-      array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::className_query("Mica_dataset", $class_name));
-    } else {
-      array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::exists_query("Mica_dataset", "id"));
-    }
-
-    array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::sort_query(empty($order) ? '' : ($order == 'desc' ? '-' : ''), empty($sort) ? "name" : $sort));
-
-    $params = DrupalMicaClient\RqlQueryBuilder::dataset_queries($dataset_rql_queries);
-
-    if (!empty($study_id)) {
-      $params .= DrupalMicaClient\RqlQueryBuilder::study_query(sprintf(",in(Mica_study.id,(%s))", rawurlencode($study_id)));
-    }
-
-    $params .= ",locale($language->language)";
-
-    $resource_query = ResourcesWsPath::getResourcePath(ResourcesWsPath::WS_DATASETS_SEARCH, array($params));
+    $resource_query = $this->generateRqlQuery($class_name, $study_id, $query, $from, $limit, $sort, $order, $fields);
     $cached_datasets = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
+
     if (!empty($cached_datasets)) {
       return $cached_datasets;
     }
@@ -126,6 +94,76 @@ class DrupalMicaDatasetResource extends DrupalMicaClientResource {
         return array();
       }
     }
+  }
+
+  /**
+   * @param $class_name
+   * @param $study_id
+   * @param $query
+   * @param $from
+   * @param $limit
+   * @param $sort
+   * @param $order
+   * @param null $fields
+   * @return string
+   * @internal param $language
+   * @internal param $studies_type
+   */
+  private function generateRqlQuery($class_name, $study_id, $query, $from, $limit, $sort, $order, $fields = NULL) {
+    global $language;
+    $dataset_rql_queries = array();
+    $from = empty($from) ? '0' : $from;
+    $limit = empty($limit) ? '5' : $limit;
+
+    array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::limit_query($from, $limit));
+
+    if (!empty($query) && !empty($class_name)) {
+      array_push($dataset_rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::and_query(
+          DrupalMicaClient\RqlQueryBuilder::match_query($query, "Mica_dataset", array("name", "acronym", "description")),
+          DrupalMicaClient\RqlQueryBuilder::className_query("Mica_dataset", $class_name)
+        )
+      );
+    } elseif (!empty($query) && empty($class_name)) {
+      array_push(
+        $dataset_rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::match_query(
+          $query,
+          "Mica_dataset",
+          array("name", "acronym", "description")
+        )
+      );
+    } elseif (empty($query) && !empty($class_name)) {
+      array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::className_query("Mica_dataset", $class_name));
+    } else {
+      array_push($dataset_rql_queries, DrupalMicaClient\RqlQueryBuilder::exists_query("Mica_dataset", "id"));
+    }
+
+    array_push(
+      $dataset_rql_queries,
+      DrupalMicaClient\RqlQueryBuilder::sort_query(
+        empty($order) ? '' : ($order == 'desc' ? '-' : ''),
+        empty($sort) ? "name" : $sort)
+    );
+
+    if (NULL !== $fields) {
+      array_push(
+        $dataset_rql_queries,
+        DrupalMicaClient\RqlQueryBuilder::fields_query($fields)
+      );
+    }
+
+    $rql_query = DrupalMicaClient\RqlQueryBuilder::dataset_queries($dataset_rql_queries). ",locale($language->language)";
+
+    if (!empty($study_id)) {
+      $rql_query = sprintf("%s,%s",
+        $rql_query,
+        DrupalMicaClient\RqlQueryBuilder::study_query(
+          DrupalMicaClient\RqlQueryBuilder::in_query("Mica_study", "id",  rawurlencode($study_id))
+        )
+      );
+    }
+    return ResourcesWsPath::getResourcePath(ResourcesWsPath::WS_DATASETS_SEARCH, array($rql_query));
   }
 
   /**
