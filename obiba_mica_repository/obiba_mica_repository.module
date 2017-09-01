@@ -41,6 +41,20 @@ function obiba_mica_repository_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/studies/_report/%/ws'] = array(
+    'page callback' => 'obiba_mica_repository_query_as_csv_report',
+      'file' => 'obiba_mica_repository_services.inc',
+      'page arguments' => array(4, 4),
+      'access callback' => TRUE,
+      'type' => MENU_CALLBACK,
+  );
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/studies/_report_by_network/%/%/ws'] = array(
+    'page callback' => 'obiba_mica_repository_query_as_csv_report_by_network',
+    'file' => 'obiba_mica_repository_services.inc',
+    'page arguments' => array(4, 5),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   $items[ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage/%/ws'] = array(
     'page callback' => 'obiba_mica_repository_variable_coverage',
     'file' => 'obiba_mica_repository_services.inc',

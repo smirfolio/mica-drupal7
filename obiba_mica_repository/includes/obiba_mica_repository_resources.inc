@@ -97,6 +97,16 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     return $this->downloadCsvExport($resource);
   }
 
+  public function searchStudyQueryAsCsvReport($query) {
+    $resource = $this->micaUrl . '/studies/_report?query=' . $query;
+    return $this->downloadCsvExport($resource);
+  }
+
+  public function searchStudyQueryAsCsvReportByNetwork($networkId, $locale) {
+    $resource = $this->micaUrl . '/studies/_report_by_network?networkId=' . $networkId.'&locale='.$locale;
+    return $this->downloadCsvExport($resource);
+  }
+
   public function downloadCsvExport($resource) {
 
     $request = new HttpClientRequest($resource, array(

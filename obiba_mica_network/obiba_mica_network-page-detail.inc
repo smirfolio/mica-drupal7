@@ -149,6 +149,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
       }
       $permissionResource = new DrupalMicaClient\DrupalMicaClientPermission();
       $can_edit_draf_document = $permissionResource->canEditDraftDocument($network_dto);
+      global $language;
       $network_theme .= theme('obiba_mica_network-detail', array(
         'draft_view' => !empty($token_key) ? TRUE : FALSE,
         'logo_network' => !empty($logo) ? $logo : NULL,
@@ -168,6 +169,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
         'file_browser' => !empty($file_browser) ? $file_browser : NULL,
 
         'statistics' => $studies_statistics,
+        'current_lang' => $language->language,
       ));
       $network_resource->drupalCache->MicaSetCache('network_theme_cache-' . $network_id, $network_theme);
       return $network_theme;

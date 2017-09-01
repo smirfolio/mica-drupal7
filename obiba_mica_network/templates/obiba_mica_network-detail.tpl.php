@@ -157,6 +157,10 @@
         </div>
       <?php endif; ?>
 
+        <div id="individual-studies-report" class="pull-right md-bottom-margin">
+            <a href="/drupal/mica/repository/studies/_report_by_network/<?= $network_dto->id ?>/<?= $current_lang; ?>/ws" class="btn btn-primary"><?= $localize->getTranslation('report') ?></a>
+        </div>
+
         <div id="individual-studies-table">
           <h2><?php print $localize->getTranslation('global.individual-studies') ?></h2>
 

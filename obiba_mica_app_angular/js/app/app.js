@@ -89,6 +89,8 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('VocabularyResource', Drupal.settings.basePath + 'mica/repository/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', Drupal.settings.basePath + 'mica/repository/:type/_rql/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvResource', Drupal.settings.basePath + 'mica/repository/:type/_rql_csv/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvReportResource', Drupal.settings.basePath + 'mica/repository/:type/_report/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvReportByNetworkResource', Drupal.settings.basePath + 'mica/repository/:type/_report_by_network/:networkId/:locale/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageResource', Drupal.settings.basePath + 'mica/repository/variables/_coverage/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageDownloadResource',  Drupal.settings.basePath + 'mica/repository/variables/_coverage_download/:query/ws');
     ngObibaMicaUrlProvider.setUrl('VariablePage', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/variable/:variable');
