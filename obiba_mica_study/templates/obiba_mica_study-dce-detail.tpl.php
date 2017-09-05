@@ -42,12 +42,16 @@ $dce_name = obiba_mica_commons_get_localized_field($dce, 'name');
               </tr>
             <?php endif; ?>
 
-            <?php if (!empty($dce->endYear)): ?>
-              <tr>
-                <th><?php print $localize->getTranslation('data-collection-event.end-year') ?></th>
+
+            <tr>
+              <th><?php print $localize->getTranslation('data-collection-event.end-year') ?></th>
+              <?php if (!empty($dce->endYear)): ?>
                 <td test-ref="modal-dce-endYear"><p><?php print obiba_mica_commons_format_year($dce->endYear, !empty($dce->endMonth) ? $dce->endMonth : NULL); ?></p></td>
-              </tr>
-            <?php endif; ?>
+              <?php endif; ?>
+              <?php if (empty($dce->endYear)): ?>
+                <td><?php print $localize->getTranslation('search.coverage-end-date-ongoing') ?></td>
+              <?php endif; ?>
+            </tr>
 
             <?php if (!empty($dce->model->dataSources)): ?>
               <tr>
