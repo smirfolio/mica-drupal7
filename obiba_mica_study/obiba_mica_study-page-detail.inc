@@ -481,6 +481,7 @@ $has_filse = obiba_mica_files_get_flat_attachments("/$study_resource_path/$study
  * retrieve Data Collection event
  * */
 function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $population_id) {
+  $localize = obiba_mica_commons_mica_server_localisation();
   $dce_rows = array();
   foreach ($data_collection_events as $key_dce => $dce_wrapper) {
     $dce_description = NULL;
@@ -501,7 +502,7 @@ function obiba_mica_study_get_dce_table($data_collection_events, $study_id, $pop
         'desc' => $dce_description,
         'start_year' => $dce_wrapper->startYear,
         'start_month' => !empty($dce_wrapper->startMonth) ? $dce_wrapper->startMonth : NULL,
-        'end_year' => !empty($dce_wrapper->endYear) ? $dce_wrapper->endYear : NULL,
+        'end_year' => !empty($dce_wrapper->endYear) ? $dce_wrapper->endYear : $localize->getTranslation('search.coverage-end-date-ongoing'),
         'end_month' => !empty($dce_wrapper->endMonth) ? $dce_wrapper->endMonth : NULL,
       )
     );
