@@ -78,6 +78,36 @@ function obiba_mica_repository_query_as_csv($type, $query) {
   }
 }
 
+function obiba_mica_repository_query_as_csv_report($query) {
+
+    $search_resource = new ObibaSearchResources();
+    $response = $search_resource->searchStudyQueryAsCsvReport($query);
+
+    if (!empty($response)) {
+        $headers = $search_resource->getLastResponseHeaders();
+        drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+        ob_clean();
+        $csv_response = $response->body;
+        print $csv_response;
+        exit;
+    }
+}
+
+function obiba_mica_repository_query_as_csv_report_by_network($networkId, $locale) {
+
+    $search_resource = new ObibaSearchResources();
+    $response = $search_resource->searchStudyQueryAsCsvReportByNetwork($networkId, $locale);
+
+    if (!empty($response)) {
+        $headers = $search_resource->getLastResponseHeaders();
+        drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+        ob_clean();
+        $csv_response = $response->body;
+        print $csv_response;
+        exit;
+    }
+}
+
 /**
  * Get Vocabulary detail by $taxonomy
  */
