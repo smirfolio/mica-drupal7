@@ -158,7 +158,11 @@
       <?php endif; ?>
 
         <div id="individual-studies-report" class="pull-right md-bottom-margin">
-            <a href="/drupal/mica/repository/studies/_report_by_network/<?= $network_dto->id ?>/<?= $current_lang; ?>/ws" class="btn btn-primary"><i class="fa fa-download"></i> <?= $localize->getTranslation('report-group.study.button-name') ?></a>
+            <a href="<?= url('mica/repository/studies/_report_by_network/' . $network_dto->id . '/' . $current_lang . '/ws'); ?>"
+               class="btn btn-primary">
+                <i class="fa fa-download"></i>
+                <?= $localize->getTranslation('report-group.study.button-name') ?>
+            </a>
         </div>
 
         <div id="individual-studies-table">
