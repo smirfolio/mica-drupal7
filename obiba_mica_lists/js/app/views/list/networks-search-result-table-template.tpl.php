@@ -1,17 +1,10 @@
 <div>
     <div ng-if="loading" class="loading"></div>
     <div ng-show="!loading">
-<!--        <div study-filter-shortcut></div>-->
-
-        <p class="help-block" ng-if="!summaries || !summaries.length" translate>search.network.noResults</p>
+        <p class="help-block" ng-if="!summaries || !summaries.length" translate>
+            search.network.noResults</p>
         <div class="table-responsive" ng-if="summaries && summaries.length">
             <table class="table  " ng-init="lang = $parent.$parent.lang">
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <th width="15%"></th>-->
-<!--                    <th rowspan="2" translate>name-description</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
                 <tbody test-ref="search-results">
                 <tr ng-if="!summaries || !summaries.length">
                     <td colspan="2" translate>search.network.noResults</td>
@@ -35,7 +28,7 @@
                                 <localized value="summary.name"
                                            lang="lang"></localized>
                             </a></h4>
-                        <p >
+                        <p>
                             <localized value="summary.description" lang="lang"
                                        ellipsis-size="250"
                                        markdown-it="true"></localized>
@@ -45,14 +38,15 @@
                            class="btn btn-primary btn-xs sm-top-margin">Read
                             More</a>
                         <div class="sm-top-margin countDetail">
-                        {{counts=summary['obiba.mica.CountStatsDto.networkCountStats'];""}}
+                            {{counts=summary['obiba.mica.CountStatsDto.networkCountStats'];""}}
                             <a ng-if="counts.individualStudies"
                                href="{{'studies' | doSearchQuery:'network(in(Mica_network.id,' + summary.id +  ')),study(in(Mica_study.className,Study))' }}"
                                class="btn btn-default btn-xxs"
                                test-ref="individualStudyCount">
                                 <localized-number
                                         value="counts.individualStudies"></localized-number>
-                                {{counts.individualStudies > 1 ? "global.individual-studies":"global.individual-study"
+                                {{counts.individualStudies > 1 ?
+                                "global.individual-studies":"global.individual-study"
                                 | translate}}
                             </a>
 
@@ -62,7 +56,9 @@
                                test-ref="studyWithVariablesCount">
                                 <localized-number
                                         value="counts.studiesWithVariables"></localized-number>
-                                {{counts.studiesWithVariables > 1 ? "metrics.mica.studies-with-variables" : "metrics.mica.study-with-variables"
+                                {{counts.studiesWithVariables > 1 ?
+                                "metrics.mica.studies-with-variables" :
+                                "metrics.mica.study-with-variables"
                                 | translate}}
                             </a>
 
@@ -72,7 +68,9 @@
                                test-ref="studyVariableCount">
                                 <localized-number
                                         value="counts.studyVariables"></localized-number>
-                                {{counts.studyVariables > 1 ? "metrics.mica.study-variables" : "metrics.mica.study-variable"
+                                {{counts.studyVariables > 1 ?
+                                "metrics.mica.study-variables" :
+                                "metrics.mica.study-variable"
                                 | translate}}
                             </a>
 
@@ -82,7 +80,9 @@
                                test-ref="harmonizationStudyCount">
                                 <localized-number
                                         value="counts.harmonizationStudies"></localized-number>
-                                {{counts.harmonizationStudies > 1 ? "global.harmonization-studies" : "global.harmonization-study"
+                                {{counts.harmonizationStudies > 1 ?
+                                "global.harmonization-studies" :
+                                "global.harmonization-study"
                                 | translate}}
                             </a>
 
@@ -92,20 +92,23 @@
                                test-ref="harmonizationStudyWithVariablesCount">
                                 <localized-number
                                         value="counts.dataschemaVariables"></localized-number>
-                                {{counts.dataschemaVariables > 1 ? "metrics.mica.harmonization-study-variables" : "metrics.mica.harmonization-study-variable"
+                                {{counts.dataschemaVariables > 1 ?
+                                "metrics.mica.harmonization-study-variables" :
+                                "metrics.mica.harmonization-study-variable"
                                 | translate}}
                             </a>
-{{datasetsCount = counts.studyDatasets + counts.harmonizationDatasets; ""}}
+                            {{datasetsCount = counts.studyDatasets +
+                            counts.harmonizationDatasets; ""}}
                             <a ng-if="datasetsCount"
                                href="{{'datasets' | doSearchQuery : 'network(in(Mica_network.id,' + summary.id +  '))' }}"
                                class="btn btn-default btn-xxs"
                                test-ref="datasetCount">
                                 <localized-number
                                         value="datasetsCount"></localized-number>
-                                {{datasetsCount > 1 ? "datasets" : "dataset.details"
+                                {{datasetsCount > 1 ? "datasets" :
+                                "dataset.details"
                                 | translate}}
                             </a>
-
                         </div>
                     </td>
                 </tr>

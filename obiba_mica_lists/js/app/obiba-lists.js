@@ -13,11 +13,11 @@ mica.ObibaLists = angular.module('mica.ObibaSearch', [
 ])
   .run()
   .config(['ngObibaMicaSearchProvider', 'markedProvider', 'sortWidgetOptionsProvider', function (ngObibaMicaSearchProvider, markedProvider, sortWidgetOptionsProvider) {
-    if(Drupal.settings.obibaListOptions.studies.studiesListOptions){
-      sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.studies.studiesListOptions);
+    if(Drupal.settings.obibaListOptions.studies){
+      sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.studies);
     }
-    if(Drupal.settings.obibaListOptions.networks.optionsCols){
-      sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.networks.optionsCols);
+    if(Drupal.settings.obibaListOptions.networks){
+      sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.networks);
     }
 
     markedProvider.setOptions({
@@ -28,7 +28,7 @@ mica.ObibaLists = angular.module('mica.ObibaSearch', [
 
     Drupal.settings.angularjsApp.obibaSearchOptions = angular.extend({},
       Drupal.settings.angularjsApp.obibaSearchOptions,
-      Drupal.settings.obibaListOptions);
+      Drupal.settings.obibaListSearchOptions);
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);
   }])
   .config(['ngObibaMicaSearchTemplateUrlProvider',
