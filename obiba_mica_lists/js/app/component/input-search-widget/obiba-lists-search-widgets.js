@@ -18,6 +18,9 @@ mica.ObibaLists
           emitter.$emit('ngObibaMicaSearch.searchChange', $scope.searchFilter);
         }
       };
+      $scope.search = function(){
+        emitter.$emit('ngObibaMicaSearch.searchChange', $scope.searchFilter);
+      };
     }])
   .directive('listSearchWidget', [function () {
     return {
