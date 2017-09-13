@@ -18,8 +18,11 @@ class MicaMetricsHelper {
     if (empty($metrics->documents)) throw new Exception("No document Metrics was found");
     $map = array();
     foreach ($metrics->documents as &$document) {
-      $document->title = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type));
-      $map[$document->type] = $document;
+      $key = self::getKeyFromType($document->type);
+      if (!empty($key)) {
+        $document->title = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type));
+        $map[$document->type] = $document;
+      }
     }
 
     return $map;
@@ -31,9 +34,9 @@ class MicaMetricsHelper {
         return 'networks';
       case 'Study' :
         return 'studies';
-      case 'CollectionDataset':
+      case 'StudyDataset':
         return 'collection-datasets';
-      case 'HarmonizedDataset':
+      case 'HarmonizationDataset':
         return 'harmonized-datasets';
       case 'DatasetVariable':
         return 'variables';
@@ -41,6 +44,6 @@ class MicaMetricsHelper {
         return 'studies-with-variables';
     }
 
-    throw new Exception("Invalid metric type");
+    return NULL;
   }
 }
