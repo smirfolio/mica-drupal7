@@ -25,6 +25,7 @@ function obiba_mica_lists_admin_settings() {
   );
   _obiba_mica_lists_studies_admin($form);
   _obiba_mica_lists_networks_admin($form);
+  _obiba_mica_lists_datasets_admin($form);
   return system_settings_form($form);
 }
 
@@ -65,6 +66,26 @@ function _obiba_mica_lists_networks_admin(&$form){
     '#type' => 'checkbox',
     '#title' => $facets['title'],
     '#default_value' => variable_get_value('obiba_mica_lists_display_network_facets'),
+    '#description' => $facets['description'],
+  );
+}
+
+function _obiba_mica_lists_datasets_admin(&$form){
+  $form['obiba_mica_lists']['obiba_mica_lists_datasets'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Datasets list Page'),
+    '#collapsible' => FALSE,
+  );
+  $form['obiba_mica_lists']['obiba_mica_lists_datasets']['obiba_mica_lists_datasets_criteria'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Datasets list Page criteria'),
+    '#collapsible' => FALSE,
+  );
+  $facets = variable_get_info('obiba_mica_lists_display_datset_facets');
+  $form['obiba_mica_lists']['obiba_mica_lists_datasets']['obiba_mica_lists_datasets_criteria']['obiba_mica_lists_display_datset_facets'] = array(
+    '#type' => 'checkbox',
+    '#title' => $facets['title'],
+    '#default_value' => variable_get_value('obiba_mica_lists_display_datset_facets'),
     '#description' => $facets['description'],
   );
 }
