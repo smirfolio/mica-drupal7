@@ -19,6 +19,9 @@ mica.ObibaLists = angular.module('mica.ObibaSearch', [
     if(Drupal.settings.obibaListOptions.networks){
       sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.networks);
     }
+    if(Drupal.settings.obibaListOptions.datasets){
+      sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions.datasets);
+    }
 
     markedProvider.setOptions({
       gfm: true,
@@ -29,12 +32,14 @@ mica.ObibaLists = angular.module('mica.ObibaSearch', [
     Drupal.settings.angularjsApp.obibaSearchOptions = angular.extend({},
       Drupal.settings.angularjsApp.obibaSearchOptions,
       Drupal.settings.obibaListSearchOptions);
+      Drupal.settings.angularjsApp.obibaSearchOptions.obibaListOptions = Drupal.settings.obibaListOptions;
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);
   }])
   .config(['ngObibaMicaSearchTemplateUrlProvider',
     function (ngObibaMicaSearchTemplateUrlProvider) {
       ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl('searchStudiesResultTable', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/studies-search-result-table-template');
       ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl('searchNetworksResultTable', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/networks-search-result-table-template');
+      ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl('searchDatasetsResultTable', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/datasets-search-result-table-template');
       ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl('searchResultList', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/search-result-list-template');
     }])
   .filter('getBaseUrl', function () {

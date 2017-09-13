@@ -39,5 +39,11 @@ function _obiba_mica_lists_study_config(&$variable) {
     'type' => 'boolean',
     'default' => 0,
   );
+  $variable['obiba_mica_lists_display_datset_facets'] = array(
+    'title' => t('Display the Dataset facets properties'),
+    'description' => t('If selected the Dataset facets properties will be displayed on the Datasets list page'),
+    'type' => 'boolean',
+    'default' => 0,
+  );
 }
 

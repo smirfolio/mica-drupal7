@@ -33,12 +33,12 @@
                                 <localized value="summary.name"
                                            lang="lang"></localized>
                             </a></h4>
-                        <p ng-if="options.studiesListOptions.studiesTrimedDescrition">
+                        <p ng-if="options.obibaListOptions.studiesTrimedDescrition">
                             <localized value="summary.objectives" lang="lang"
                                        ellipsis-size="250"
                                        markdown-it="true"></localized>
                         </p>
-                        <p ng-if="!options.studiesListOptions.studiesTrimedDescrition">
+                        <p ng-if="!options.obibaListOptions.studiesTrimedDescrition">
                             <localized value="summary.objectives" lang="lang"
                                        markdown-it="true"></localized>
                         </p>
@@ -46,7 +46,7 @@
                         <a href="{{'study/' + summary.id | getBaseUrl}}"
                            class="btn btn-primary btn-xs sm-top-margin">Read
                             More</a>
-                        <div ng-if="options.studiesListOptions.studiesSupplInfoDetails">
+                        <div ng-if="options.obibaListOptions.studiesSupplInfoDetails">
                             <blockquote-small
                                     ng-if="summary.design || summary.targetNumber.noLimit"
                                     class="help-block">
