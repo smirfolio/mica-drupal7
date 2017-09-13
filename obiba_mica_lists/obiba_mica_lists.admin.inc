@@ -47,21 +47,6 @@ function _obiba_mica_lists_studies_admin(&$form){
     '#default_value' => variable_get_value('obiba_mica_lists_display_study_facets'),
     '#description' => $facets['description'],
   );
-
-//  $form['obiba_mica_lists_studies']['obiba_mica_lists_studies_display'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => t('Studies list Page criteria'),
-//    '#collapsible' => FALSE,
-//  );
-//
-//  $facets = variable_get_info('display_study_list_block_display');
-//  $form['obiba_mica_lists_studies']['obiba_mica_lists_studies_display']['display_study_list_block_display'] = array(
-//    '#type' => 'checkbox',
-//    '#title' => $facets['title'],
-//    '#default_value' => variable_get_value('display_study_list_block_display'),
-//    '#description' => $facets['description'],
-//  );
-
 }
 
 function _obiba_mica_lists_networks_admin(&$form){
