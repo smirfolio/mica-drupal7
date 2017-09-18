@@ -111,6 +111,17 @@
         </table>
 
       </div>
+      <?php
+      $show_participant_design = !empty($study_dto->model->numberOfParticipants->participant->number) || !empty($study_dto->model->numberOfParticipants->participant->noLimit);
+      $show_sample_design = !empty($study_dto->model->numberOfParticipants->sample->number) || !empty($study_dto->model->numberOfParticipants->sample->noLimit);
+
+      $show_number_of_participant_part = !empty($study_dto->model->numberOfParticipants) && ($show_participant_design || $show_sample_design);
+
+      if (
+          (!empty($study_dto->model->methods) && !empty($show_number_of_participant_part)) ||
+          (!empty($study_dto->model->methods) && empty($show_number_of_participant_part)) ||
+          (empty($study_dto->model->methods) && !empty($show_number_of_participant_part))
+      ) : ?>
       <div class="col-lg-6  col-xs-12">
         <!-- GENERAL DESIGN -->
         <h2 id="design"><?php print $localize->getTranslation('study.design') ?></h2>
@@ -131,7 +142,12 @@
             </tr>
           <?php endif; ?>
 
-          <?php $follow_up_info = obiba_mica_commons_get_localized_field($study_dto->model->methods, 'followUpInfo'); ?>
+          <?php
+            $follow_up_info = false;
+            if (!empty($study_dto->model->methods)) :
+              $follow_up_info = obiba_mica_commons_get_localized_field($study_dto->model->methods, 'followUpInfo');
+            endif;
+          ?>
           <?php if (!empty($follow_up_info)): ?>
             <tr>
               <th><?php print $localize->getTranslation('study.follow-up-help') ?></th>
@@ -159,7 +175,7 @@
               </td>
             </tr>
           <?php endif; ?>
-          <?php if (!empty($study_dto->model->numberOfParticipants->participant->number) || !empty($study_dto->model->numberOfParticipants->participant->noLimit)): ?>
+          <?php if (!empty($show_participant_design)): ?>
             <tr>
               <th><?php print $localize->getTranslation('numberOfParticipants.participants') ?></th>
               <td>
@@ -175,7 +191,7 @@
             </tr>
           <?php endif; ?>
 
-          <?php if (!empty($study_dto->model->numberOfParticipants->sample->number) || !empty($study_dto->model->numberOfParticipants->sample->noLimit)): ?>
+          <?php if (!empty($show_sample_design)): ?>
             <tr>
               <th><?php print $localize->getTranslation('numberOfParticipants.sample') ?></th>
               <td>
@@ -199,7 +215,12 @@
               </td>
             </tr>
           <?php endif; ?>
-          <?php $methods_supp_info = obiba_mica_commons_get_localized_field($study_dto->model->methods, 'info');?>
+          <?php
+            $methods_supp_info = false;
+            if (!empty($study_dto->model->methods)) :
+              $methods_supp_info = obiba_mica_commons_get_localized_field($study_dto->model->methods, 'info');
+            endif;
+          ?>
           <?php if (!empty($methods_supp_info)): ?>
             <tr>
               <th><?php print $localize->getTranslation('suppl-info') ?></th>
@@ -212,6 +233,7 @@
         </table>
 
       </div>
+      <?php endif; ?>
     </div>
 
   </section>
