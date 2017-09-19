@@ -39,11 +39,12 @@ function obiba_mica_lists_menu() {
 function obiba_mica_lists_paths(){
   $study_order = !empty(variable_get_value('study_list_default_order_sort') && variable_get_value('study_list_default_order_sort') == 'desc') ? '-' : '';
   $network_order = !empty(variable_get_value('network_list_default_order_sort') && variable_get_value('network_list_default_order_sort') == 'desc') ? '-' : '';
-  return array(
+  $menu =  array(
     ANGULAR_LIST_STUDIES => array(
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Studies List',
       'module_caller' => 'obiba_mica_lists',
+      'node_page' => !empty(variable_get_value('obiba_mica_lists_studies_page')) ? variable_get_value('obiba_mica_lists_studies_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
       'options' => array('fragment' => 'search?query=study(exists(Mica_study.id),sort(' . $study_order . variable_get_value('study_list_name_acronym_sort') . '))'),
@@ -52,6 +53,7 @@ function obiba_mica_lists_paths(){
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Individual Studies',
       'module_caller' => 'obiba_mica_lists',
+      'node_page' => !empty(variable_get_value('obiba_mica_lists_individual_studies_page')) ? variable_get_value('obiba_mica_lists_individual_studies_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
       'options' => array('fragment' => 'search?query=study(in(Mica_study.className,Study),sort(' . $study_order . variable_get_value('study_list_name_acronym_sort') . '))'),
@@ -60,6 +62,7 @@ function obiba_mica_lists_paths(){
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Harmonization Studies',
       'module_caller' => 'obiba_mica_lists',
+      'node_page' => !empty(variable_get_value('obiba_mica_lists_harmonization_studies_page')) ? variable_get_value('obiba_mica_lists_harmonization_studies_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
       'options' => array('fragment' => 'search?query=study(in(Mica_study.className,HarmonizationStudy),sort(' . $study_order . variable_get_value('study_list_name_acronym_sort') . '))'),
@@ -68,6 +71,7 @@ function obiba_mica_lists_paths(){
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Networks',
       'module_caller' => 'obiba_mica_lists',
+      'node_page' => !empty(variable_get_value('obiba_mica_lists_networks_page')) ? variable_get_value('obiba_mica_lists_networks_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
       'options' => array('fragment' => 'search?query=network(exists(Mica_network.id),sort(' . $network_order . variable_get_value('network_list_default_field_sort') . '))'),
@@ -76,6 +80,7 @@ function obiba_mica_lists_paths(){
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Datasets',
       'module_caller' => 'obiba_mica_lists',
+      'node_page' => !empty(variable_get_value('obiba_mica_lists_datasets_page')) ? variable_get_value('obiba_mica_lists_datasets_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
       'options' => array('fragment' => 'search?query=dataset(exists(Mica_dataset.id),sort(name))'),
@@ -84,6 +89,7 @@ function obiba_mica_lists_paths(){
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Collected Datasets',
       'module_caller' => 'obiba_mica_lists',
+      'node_page' => !empty(variable_get_value('obiba_mica_lists_collected_datasets_page')) ? variable_get_value('obiba_mica_lists_collected_datasets_page') : variable_get_value('study_dataset_page'),
       'menu_name' => 'main-menu',
       'weight' => 10,
       'options' => array('fragment' => 'search?query=dataset(in(Mica_dataset.className,StudyDataset),sort(name))'),
@@ -92,11 +98,13 @@ function obiba_mica_lists_paths(){
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Harmonized Datasets',
       'module_caller' => 'obiba_mica_lists',
+      'node_page' => !empty(variable_get_value('obiba_mica_lists_harmonized_datasets_page')) ? variable_get_value('obiba_mica_lists_harmonized_datasets_page') : variable_get_value('harmo_dataset_page'),
       'menu_name' => 'main-menu',
       'weight' => 10,
       'options' => array('fragment' => 'search?query=dataset(in(Mica_dataset.className,HarmonizationDataset),sort(name))'),
     ),
   );
+  return $menu;
 }
 /**
  * Implements hook_load_menus().
@@ -400,4 +408,37 @@ function obiba_mica_lists_theme($existing, $type, $theme, $path) {
     )
   );
 
+}
+
+function obiba_mica_lists_content_to_create() {
+  return array(
+    'obiba_mica_lists_studies_page' => array(
+      'content' => '<div> <p>This page displays the list of the consortium\'s studies. Each study is described in a same standard way that can be easily customized to reflect consortium specificities. However, Mica suggests by default a list of important study characteristics that should be considered if there is an aim for the consortium to participate in data harmonization projects with other consortia or studies.</p> </div> <hr/>',
+      'title' => 'Studies',
+    ),
+    'obiba_mica_lists_individual_studies_page' => array(
+      'content' => '<div> <p>This page displays the list of the consortium\'s studies. Each study is described in a same standard way that can be easily customized to reflect consortium specificities. However, Mica suggests by default a list of important study characteristics that should be considered if there is an aim for the consortium to participate in data harmonization projects with other consortia or studies.</p> </div> <hr/>',
+      'title' => 'Individual Studies',
+    ),
+    'obiba_mica_lists_harmonization_studies_page' => array(
+      'content' => '<div> <p>This page displays the list of the consortium\'s studies. Each study is described in a same standard way that can be easily customized to reflect consortium specificities. However, Mica suggests by default a list of important study characteristics that should be considered if there is an aim for the consortium to participate in data harmonization projects with other consortia or studies.</p> </div> <hr/>',
+      'title' => 'Harmonization Studies',
+    ),
+    'obiba_mica_lists_networks_page' => array(
+      'content' => '<div> <p>This page displays the list of networks. By clicking on the links below, users can learn about an specific network and its associated studies  .</p> </div> <hr/>',
+      'title' => 'Networks',
+    ),
+    'obiba_mica_lists_datasets_page' => array(
+      'content' => '<p>To harmonize data between studies participating in the consortium, study-specific datasets and Harmonized Datasets (i.e. variables targeted for harmonization) are used and made available to investigators. Variables collected by each study and those defined in the Harmonization Dataset are described using a standardized data dictionary which covers variable definitions and characteristics (e.g. type, unit, categories, and area of information covered). Once Collected Datasets and a Harmonized Dataset are defined and loaded in the system, variable-specific mapping algorithms are developed in order to derive the collected datasets into the common format defined in the Harmonization Dataset. In order to increase transparency of the harmonization process, these resources are made available to the research community.&nbsp;</p><hr/>',
+      'title' => 'Datasets',
+    ),
+    'obiba_mica_lists_harmonized_datasets_page' => array(
+      'content' => '<p>A Harmonized Dataset documents and annotates a set of core variables which provides a concise but effective list of information to be harmonized in a specific scientific context. Variables found in a Harmonization Dataset therefore represent the reference format into which study-specific data needs to be processed to arrive at harmonized data. When a study can generate a variable defined in a Harmonized Dataset, a processing algorithm is developed to map study-specific data to the variable format defined in the Harmonized Dataset.</p><hr/>',
+      'title' => 'Harmonized Datasets',
+    ),
+    'obiba_mica_lists_collected_datasets_page' => array(
+      'content' => '<p>A Collected Dataset holds and describes variables collected by studies participating in a consortium. Collected Datasets make use of standardized data dictionary which gives information on variable definitions and characteristics (e.g. type, unit, categories, and area of information covered). Using the variable search tool, researchers are able to query data collected across studies participating in the consortium.</p><hr/>',
+      'title' => 'Collected Datasets',
+    ),
+  );
 }

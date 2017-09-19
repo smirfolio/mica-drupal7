@@ -55,6 +55,9 @@ function obiba_mica_app_angular_menu_alter(&$items) {
       $external_items[$key_item]['page arguments']
         = array($external_item['module_caller']);
     }
+    if(!empty($external_item['node_page'])){
+      $external_items[$key_item]['page arguments'][] = $external_item['node_page'];
+    }
   }
   $items += $external_items;
 }
@@ -213,12 +216,13 @@ function obiba_mica_app_angular_load_template_app($module_caller = NULL, $node_p
  * @return string
  *   The template of the AngularJs app.
  */
-function obiba_mica_app_angular_main_page($module_caller = NULL) {
+function obiba_mica_app_angular_main_page($module_caller = NULL, $node_page = NULL) {
   $current_menu_item = menu_get_item(current_path());
   if (!empty($current_menu_item['title'])) {
     drupal_set_title($current_menu_item['title']);
   }
-  return obiba_mica_app_angular_load_template_app($module_caller, variable_get($module_caller.'_page'));
+  $page_node = !empty($node_page) ? $node_page : (!empty($module_caller) ? variable_get($module_caller . '_page') : NULL);
+  return obiba_mica_app_angular_load_template_app($module_caller, $page_node);
 }
 
 /**
