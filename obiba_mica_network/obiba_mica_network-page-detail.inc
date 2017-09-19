@@ -100,15 +100,15 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
       obiba_mica_persons_datatable_init($entities_id);
 
       $associated_people_button = theme('obiba_mica_persons-button');
-      $associated_people_modal = theme('obiba_mica_persons-modal',
-        array('persons_table' => theme('obiba_mica_persons-table')));
-      $contact_detail_modal = '';
-      foreach ($network_dto->memberships as $membership) {
-        $contact_detail_modal .= obiba_mica_persons_get_person_detail($membership->role,
-          $network_dto->id, !empty($membership->members) ? $membership->members : NULL);
-      }
     }
 
+    $associated_people_modal = theme('obiba_mica_persons-modal',
+      array('persons_table' => theme('obiba_mica_persons-table')));
+    $contact_detail_modal = '';
+    foreach ($network_dto->memberships as $membership) {
+      $contact_detail_modal .= obiba_mica_persons_get_person_detail($membership->role,
+        $network_dto->id, !empty($membership->members) ? $membership->members : NULL);
+    }
     if (module_exists('obiba_mica_files')) {
       drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
         '/js/obiba_mica_files_attachment_download.js');
