@@ -41,27 +41,7 @@ class MicaMetricsResource extends DrupalMicaClientResource
           '@code' => $e->getCode(),
           '@message' => $e->getMessage()
         ), WATCHDOG_WARNING);
-      $message_parameters['message'] = 'Connection to server fail,  Error serve code : @code, message: @message';
-      $message_parameters['placeholders'] = array(
-        '@code' => $e->getCode(),
-        '@message' => $e->getMessage()
-      );
-
-      $errorCode = $e->getCode();
-
-      // if user does not have the right privilege no need to alert, any other error should be reported
-      if ($errorCode != 403) {
-        $message_parameters['severity'] = 'error';
-        if ($errorCode == 500 || $errorCode == 503 || $errorCode == 0) {
-          DrupalMicaClientResource::DrupalMicaErrorHandler(TRUE, $message_parameters);
-        }
-
-        drupal_set_message(t($message_parameters['message'], $message_parameters['placeholders']), $message_parameters['severity']);
-
-        throw $e;
-      }
     }
-
     return FALSE;
   }
 }
