@@ -41,7 +41,7 @@ class MicaMetricsHelper {
       case 'DatasetVariable':
         return 'variables';
       case 'StudyWithVariable':
-        return 'studies-with-variables';
+        return 'dashboard-studies-with-variables';
     }
 
     return NULL;
