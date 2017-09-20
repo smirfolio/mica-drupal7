@@ -58,15 +58,18 @@ class MicaDrupalLocalization implements MicaLocalizationInterface {
 
   function getTranslation($vocabulary) {
     $sanitizedKey = $this->sanitizeStringKey($vocabulary);
-    try {
-      $locals = $this->jsonParser->find($sanitizedKey);
-      if (!empty($locals)) {
-        foreach ($locals as  $local)
-          if (!empty($local) && is_string($local)) {
-            return $local;
-          }
+    if(!empty($this->jsonParser)){
+      try {
+        $locals = $this->jsonParser->find($sanitizedKey);
+        if (!empty($locals)) {
+          foreach ($locals as  $local)
+            if (!empty($local) && is_string($local)) {
+              return $local;
+            }
+        }
+      } catch (\Exception $e) {
+        return false;
       }
-    } catch (\Exception $e) {
     }
     return $vocabulary;
   }
