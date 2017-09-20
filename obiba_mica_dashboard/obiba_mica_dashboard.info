@@ -1,5 +1,5 @@
-name = Obiba Mica Graphic
-description = Api to get Geo/Pies graphics via ajax call
+name = Obiba Mica Dashboard
+description = Dashbord Mica Metrics
 package = Obiba
 core = 7.x
 
