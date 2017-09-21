@@ -325,7 +325,7 @@ function obiba_mica_network_studies_datatable_init($study_summaries, $id_network
 function obiba_mica_network_study_table_rows($study_summaries, $id_network = NULL, $study_type = DrupalMicaStudyResource::INDIVIDUAL_STUDY) {
   $rows = NULL;
   $query = NULL;
-  $cached_studies_rows = obiba_mica_commons_get_cache('cached' . __FUNCTION__ . $id_network);
+  $cached_studies_rows = obiba_mica_commons_get_cache('cached' . __FUNCTION__ . $id_network . '_' . $study_type);
   if (!empty($cached_studies_rows)) {
     return $cached_studies_rows;
   }
@@ -359,7 +359,7 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
         }
       }
     }
-    obiba_mica_commons_set_cache('cached' . __FUNCTION__ . $id_network, $rows);
+    obiba_mica_commons_set_cache('cached' . __FUNCTION__ . $id_network . '_' . $study_type, $rows);
     return $rows;
   }
 }
