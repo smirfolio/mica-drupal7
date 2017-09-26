@@ -151,6 +151,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
       'study_url' => 'mica/' . DrupalMicaStudyResource::HARMONIZATION_STUDY . '/' . rawurlencode($study_id),
       'optionsStudyContent' => $options_study_content
     ), 'setting');
+    $study_tables = obiba_mica_dataset_study_tables($study_dto->{'obiba.mica.HarmonizationStudyDto.type'}, $study_dto->studyResourcePath ,$study_id);
     $study_theme_cache = obiba_mica_commons_get_cache('harmonization_study_theme_cache-' . $study_id);
     if (!empty($study_theme_cache)) {
       return $study_theme_cache;
@@ -177,7 +178,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
           'populations' => $populations,
           'opal' => $opal_output,
           'group_by' => !empty($parts['group-by']) ? $parts['group-by'] : NULL,
-          'study_tables' => obiba_mica_dataset_study_tables($study_dto->{'obiba.mica.HarmonizationStudyDto.type'})
+          'study_tables' => $study_tables,
         ));
       obiba_mica_commons_set_cache('harmonization_study_theme_cache-' . $study_id, $study_theme);
       return $study_theme;
