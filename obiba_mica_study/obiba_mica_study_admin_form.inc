@@ -33,6 +33,7 @@ _obiba_mica_study_settings_admin_harmonization_study_content($form);
 }
 
 function _obiba_mica_study_settings_admin_study_content(&$form){
+  $localize = obiba_mica_commons_mica_server_localisation();
   $form['content_display_settings']['study_form'] = array(
     '#weight' => -2,
     '#type' => 'fieldset',
@@ -130,7 +131,8 @@ function _obiba_mica_study_settings_admin_study_content(&$form){
     '#default_value' => variable_get_value('study_list_name_acronym_sort'),
     '#options' => array(
       'name' => t('Name'),
-      'acronym' => t('Acronym')
+      'acronym' => t('Acronym'),
+      'numberOfParticipants-participant-number' =>  $localize->getTranslation('study_taxonomy.vocabulary.numberOfParticipants-participant-number.title')
     ),
     '#description' => $info['description'],
   );
