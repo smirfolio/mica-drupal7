@@ -158,7 +158,7 @@
       <?php endif; ?>
 
         <div id="individual-studies-report" class="pull-right md-bottom-margin">
-            <a href="<?= url('mica/repository/studies/_report_by_network/' . $network_dto->id . '/' . $current_lang . '/ws'); ?>"
+            <a href="<?= url('mica/repository/studies/_report/network(in(Mica_network.id,' . $network_dto->id . ')),locale(' . $current_lang . '),study(limit(0,100000),sort(acronym))/ws'); ?>"
                class="btn btn-primary">
                 <i class="fa fa-download"></i>
                 <?= $localize->getTranslation('report-group.study.button-name') ?>
