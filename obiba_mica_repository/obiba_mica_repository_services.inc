@@ -138,3 +138,12 @@ function obiba_mica_repository_variable_coverage_download($query) {
   print $output;
   exit;
 }
+
+function obiba_mica_repository_get_document_suggestion($target) {
+  $search_resource = new ObibaSearchResources();
+  $request_parameters = drupal_get_query_parameters();
+  $query = $request_parameters['query'];
+  if (!empty($query)) {
+    drupal_json_output($search_resource->listSuggestionFilter($target, $query));
+  }
+}

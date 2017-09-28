@@ -76,6 +76,13 @@ function obiba_mica_repository_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/%/_suggest/ws'] = array(
+    'page callback' => 'obiba_mica_repository_get_document_suggestion',
+    'file' => 'obiba_mica_repository_services.inc',
+    'page arguments' => array(2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }
