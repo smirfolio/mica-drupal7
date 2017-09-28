@@ -103,6 +103,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('FileBrowserSearchResource', Drupal.settings.basePath + 'mica/files/search');
     ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', Drupal.settings.basePath + 'mica/file/download' + ((Drupal.settings.basePath.indexOf('?q=')!==-1)?'&':'?') + 'path=:path&inline=:inline&keyToken=:key');
     ngObibaMicaUrlProvider.setUrl('GraphicsSearchRootUrl', 'mica/repository#/search');
+    ngObibaMicaUrlProvider.setUrl('DocumentSuggestion', Drupal.settings.basePath + 'mica/repository/:documentType/_suggest/ws')
   }]);
 
 mica.provider('SessionProxy',
