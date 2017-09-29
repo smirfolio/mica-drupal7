@@ -303,11 +303,11 @@ function obiba_mica_lists_options($current_path) {
     'showAllFacetedTaxonomies' => FALSE
   );
   switch ($current_path) {
-    case ANGULAR_LIST_STUDIES:
     case ANGULAR_LIST_INDIVIDUAL_STUDIES:
+    $obiba_list_Search_options['studyTaxonomiesOrder'] = !empty(variable_get_value('obiba_mica_lists_display_study_facets')) ? array('Mica_study') : array();
     case ANGULAR_LIST_HARMONIZATION_STUDIES:
-    $list_options = obiba_mica_lists_studies_options($current_path);
-      $obiba_list_Search_options['studyTaxonomiesOrder'] = !empty(variable_get_value('obiba_mica_lists_display_study_facets')) ? array('Mica_study') : array();
+    case ANGULAR_LIST_STUDIES:
+      $list_options = obiba_mica_lists_studies_options($current_path);
       $obiba_list_Search_options['resultTabsOrder'] = array('study');
       $obiba_list_Search_options['targetTabsOrder'] = array('study');
       if (!empty($list_options['listSearchOptions']['study'])) {
