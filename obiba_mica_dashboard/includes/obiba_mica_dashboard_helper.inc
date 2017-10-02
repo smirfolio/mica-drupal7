@@ -20,6 +20,7 @@ class MicaMetricsHelper {
     foreach ($metrics->documents as &$document) {
       $key = self::getKeyFromType($document->type);
       if (!empty($key)) {
+        $document->publishedFormatted = obiba_mica_commons_format_number($document->published);
         $document->title = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type));
         $map[$document->type] = $document;
       }
