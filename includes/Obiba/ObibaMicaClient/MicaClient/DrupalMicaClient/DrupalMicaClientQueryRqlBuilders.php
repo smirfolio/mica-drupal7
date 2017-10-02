@@ -46,6 +46,17 @@ class RqlQueryBuilder {
     );
   }
 
+  public static function variable_queries($queries) {
+    if (!is_array($queries)) {
+      return self::variable_query($queries);
+    }
+    return sprintf("variable(%s)", join(',', $queries));
+  }
+
+  public static function variable_query($query) {
+    return sprintf("variable(%s)", $query);
+  }
+
   public static function study_queries($queries) {
     if (!is_array($queries)) {
       return self::study_query($queries);

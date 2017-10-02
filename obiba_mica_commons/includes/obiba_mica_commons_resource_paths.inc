@@ -402,6 +402,57 @@ class MicaClientAnchorHelper {
         ));
   }
 
+  public static function dashboardNetworks($text, $class) {
+    $query =
+      DrupalMicaClient\RqlQueryBuilder::network_query(
+        DrupalMicaClient\RqlQueryBuilder::exists_query('Mica_network', 'id')
+      );
+
+    return self::searchDocument($query, 'networks', $text, $class);
+  }
+
+  public static function dashboardStudies($text, $class) {
+    $query =
+      DrupalMicaClient\RqlQueryBuilder::study_query(
+        DrupalMicaClient\RqlQueryBuilder::exists_query('Mica_study', 'id')
+      );
+
+    return self::searchDocument($query, 'studies', $text, $class);
+  }
+
+  public static function dashboardStudiesWithVariable($text, $class) {
+    $query = array(
+      DrupalMicaClient\RqlQueryBuilder::study_query(
+        DrupalMicaClient\RqlQueryBuilder::className_query('Mica_study', 'Study')
+      ),
+      DrupalMicaClient\RqlQueryBuilder::variable_query(
+        DrupalMicaClient\RqlQueryBuilder::in_query('Mica_variable', 'variableType', 'Collected')
+      )
+    );
+
+    return self::searchDocument(join(',',$query), 'studies', $text, $class);
+  }
+
+  public static function dashboardVariables($text, $class) {
+    $query =
+      DrupalMicaClient\RqlQueryBuilder::variable_query(
+        DrupalMicaClient\RqlQueryBuilder::exists_query('Mica_variable', 'name')
+      );
+
+    return self::searchDocument($query, 'studies', $text, $class);
+  }
+
+  private static function searchDocument($query, $type, $text, $class) {
+    return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+      $text,
+      array('class' => empty($class) ? '' : (is_array($class) ? join(' ', $class) : $class)),
+      array(
+        'type' => $type,
+        'query' => $query,
+        'display' => 'list'
+      ));
+  }
+
   /**
    * The network coverage anchor link.
    *
