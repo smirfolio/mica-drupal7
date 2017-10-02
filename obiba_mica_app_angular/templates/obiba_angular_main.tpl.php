@@ -20,4 +20,4 @@
 <?php endif; ?>
   <obiba-alert id="MainController"></obiba-alert>
   <div ng-controller="NotificationController"></div>
-  <div ng-view=""></div>
+  <div ng-view="" class=" <?php print !empty($module_caller) ? $module_caller : NULL; ?> "></div>
