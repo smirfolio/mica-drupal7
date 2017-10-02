@@ -207,7 +207,11 @@ function obiba_mica_app_angular_load_template_app($module_caller = NULL, $node_p
     $node_rendered = obiba_mica_commons_get_translated_node($node_page_id);
     $node_rendered['#node']->title = '';
   }
-  return theme('obiba_angular_main', array('node_page' => $node_rendered,));
+  return theme('obiba_angular_main',
+    array(
+      'node_page' => $node_rendered,
+      'module_caller' => $module_caller ? $module_caller : NULL
+      ));
 }
 
 /**
