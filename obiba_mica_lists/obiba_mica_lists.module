@@ -37,9 +37,6 @@ function obiba_mica_lists_menu() {
 }
 
 function obiba_mica_lists_paths(){
-  $study_order = !empty(variable_get_value('study_list_default_order_sort') && variable_get_value('study_list_default_order_sort') == 'desc') ? '-' : '';
-  $study_sort = variable_get_value('study_list_name_acronym_sort');
-  $network_order = !empty(variable_get_value('network_list_default_order_sort') && variable_get_value('network_list_default_order_sort') == 'desc') ? '-' : '';
   $menu =  array(
     ANGULAR_LIST_STUDIES => array(
       'access callback' => 'obiba_mica_study_access_page',
@@ -48,7 +45,7 @@ function obiba_mica_lists_paths(){
       'node_page' => !empty(variable_get_value('obiba_mica_lists_studies_page')) ? variable_get_value('obiba_mica_lists_studies_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
-      'options' => array('fragment' => 'search?query=study(exists(Mica_study.id),sort(' . $study_order . variable_get_value('study_list_name_acronym_sort') . '))'),
+      'options' => array('fragment' => MicaListsHelper::studyFragment(ANGULAR_LIST_STUDIES)),
     ),
     ANGULAR_LIST_INDIVIDUAL_STUDIES => array(
       'access callback' => 'obiba_mica_study_access_page',
@@ -57,7 +54,7 @@ function obiba_mica_lists_paths(){
       'node_page' => !empty(variable_get_value('obiba_mica_lists_individual_studies_page')) ? variable_get_value('obiba_mica_lists_individual_studies_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
-      'options' => array('fragment' => 'search?query=study(in(Mica_study.className,Study),sort(' . $study_order . $study_sort . '))'),
+      'options' => array('fragment' =>  MicaListsHelper::studyFragment(ANGULAR_LIST_INDIVIDUAL_STUDIES)),
     ),
     ANGULAR_LIST_HARMONIZATION_STUDIES => array(
       'access callback' => 'obiba_mica_study_access_page',
@@ -66,7 +63,7 @@ function obiba_mica_lists_paths(){
       'node_page' => !empty(variable_get_value('obiba_mica_lists_harmonization_studies_page')) ? variable_get_value('obiba_mica_lists_harmonization_studies_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
-      'options' => array('fragment' => 'search?query=study(in(Mica_study.className,HarmonizationStudy),sort(' . $study_order . ($study_sort !== "numberOfParticipants-participant-number" ? $study_sort: "name") . '))'),
+      'options' => array('fragment' => MicaListsHelper::studyFragment(ANGULAR_LIST_HARMONIZATION_STUDIES)),
     ),
     ANGULAR_LIST_NETWORKS => array(
       'access callback' => 'obiba_mica_study_access_page',
@@ -75,7 +72,7 @@ function obiba_mica_lists_paths(){
       'node_page' => !empty(variable_get_value('obiba_mica_lists_networks_page')) ? variable_get_value('obiba_mica_lists_networks_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
-      'options' => array('fragment' => 'search?query=network(exists(Mica_network.id),sort(' . $network_order . variable_get_value('network_list_default_field_sort') . '))'),
+      'options' => array('fragment' => MicaListsHelper::networkFragment()),
     ),
     ANGULAR_LIST_DATSETS => array(
       'access callback' => 'obiba_mica_study_access_page',
@@ -84,7 +81,7 @@ function obiba_mica_lists_paths(){
       'node_page' => !empty(variable_get_value('obiba_mica_lists_datasets_page')) ? variable_get_value('obiba_mica_lists_datasets_page') : NULL,
       'menu_name' => 'main-menu',
       'weight' => 10,
-      'options' => array('fragment' => 'search?query=dataset(exists(Mica_dataset.id),sort(name))'),
+      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_DATSETS)),
     ),
     ANGULAR_LIST_COLLECTED_DATSETS => array(
       'access callback' => 'obiba_mica_study_access_page',
@@ -93,7 +90,7 @@ function obiba_mica_lists_paths(){
       'node_page' => !empty(variable_get_value('obiba_mica_lists_collected_datasets_page')) ? variable_get_value('obiba_mica_lists_collected_datasets_page') : variable_get_value('study_dataset_page'),
       'menu_name' => 'main-menu',
       'weight' => 10,
-      'options' => array('fragment' => 'search?query=dataset(in(Mica_dataset.className,StudyDataset),sort(name))'),
+      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_COLLECTED_DATSETS)),
     ),
     ANGULAR_LIST_HARMONIZED_DATSETS => array(
       'access callback' => 'obiba_mica_study_access_page',
@@ -102,7 +99,7 @@ function obiba_mica_lists_paths(){
       'node_page' => !empty(variable_get_value('obiba_mica_lists_harmonized_datasets_page')) ? variable_get_value('obiba_mica_lists_harmonized_datasets_page') : variable_get_value('harmo_dataset_page'),
       'menu_name' => 'main-menu',
       'weight' => 10,
-      'options' => array('fragment' => 'search?query=dataset(in(Mica_dataset.className,HarmonizationDataset),sort(name))'),
+      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_HARMONIZED_DATSETS)),
     ),
   );
   return $menu;
@@ -209,7 +206,7 @@ function obiba_mica_lists_studies_options($current_path){
         'studiesCountCaption' => variable_get_value('studies_list_show_studies_count_caption'),
         'studiesSearchForm' => variable_get_value('studies_list_show_search_form'),
         'studiesSupplInfoDetails' => variable_get_value('studies_list_show_study_sup_info'),
-        'studiesTrimedDescrition' => variable_get_value('studies_list_show_trimmed_description_study')
+        'studiesTrimedDescrition' => variable_get_value('studies_list_show_trimmed_description_study'),
       ),
       'sortField' => array(
         'options' => array(

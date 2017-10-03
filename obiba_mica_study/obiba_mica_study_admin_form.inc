@@ -33,7 +33,6 @@ _obiba_mica_study_settings_admin_harmonization_study_content($form);
 }
 
 function _obiba_mica_study_settings_admin_study_content(&$form){
-  $localize = obiba_mica_commons_mica_server_localisation();
   $form['content_display_settings']['study_form'] = array(
     '#weight' => -2,
     '#type' => 'fieldset',
@@ -85,69 +84,6 @@ function _obiba_mica_study_settings_admin_study_content(&$form){
     '#description' => $info['description'],
   );
 
-  $form['content_display_settings']['study_form']['studies_list'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Studies list page'),
-    '#collapsible' => FALSE,
-  );
-
-  $info = variable_get_info('studies_list_show_studies_count_caption');
-  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_studies_count_caption'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('studies_list_show_studies_count_caption'),
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('studies_list_show_search_form');
-  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_search_form'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('studies_list_show_search_form'),
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('studies_list_show_study_sup_info');
-  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_study_sup_info'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('studies_list_show_study_sup_info'),
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('studies_list_show_trimmed_description_study');
-  $form['content_display_settings']['study_form']['studies_list']['studies_list_show_trimmed_description_study'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('studies_list_show_trimmed_description_study'),
-    '#description' => $info['description'],
-  );
-
-
-  $info = variable_get_info('study_list_name_acronym_sort');
-  $form['content_display_settings']['study_form']['studies_list']['study_list_name_acronym_sort'] = array(
-    '#type' => 'radios',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('study_list_name_acronym_sort'),
-    '#options' => array(
-      'name' => t('Name'),
-      'acronym' => t('Acronym'),
-      'numberOfParticipants-participant-number' =>  $localize->getTranslation('study_taxonomy.vocabulary.numberOfParticipants-participant-number.title')
-    ),
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('study_list_default_order_sort');
-  $form['content_display_settings']['study_form']['studies_list']['study_list_default_order_sort'] = array(
-    '#type' => 'radios',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('study_list_default_order_sort'),
-    '#options' => array(
-      '' => t('Asc'),
-      'desc' => t('Desc'),
-    ),
-    '#description' => $info['description'],
-  );
 }
 
 function _obiba_mica_study_settings_admin_harmonization_study_content(&$form){
@@ -206,21 +142,5 @@ function _obiba_mica_study_settings_admin_harmonization_study_content(&$form){
     '#type' => 'fieldset',
     '#title' => t('HArmonization Studies list page'),
     '#collapsible' => FALSE,
-  );
-
-  $info = variable_get_info('harmo_studies_list_show_study_sup_info');
-  $form['content_display_settings']['harmo_study_form']['studies_list']['harmo_studies_list_show_study_sup_info'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('harmo_studies_list_show_study_sup_info'),
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('harmo_studies_list_show_trimmed_description_study');
-  $form['content_display_settings']['harmo_study_form']['studies_list']['harmo_studies_list_show_trimmed_description_study'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('harmo_studies_list_show_trimmed_description_study'),
-    '#description' => $info['description'],
   );
 }

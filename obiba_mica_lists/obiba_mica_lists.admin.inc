@@ -30,6 +30,7 @@ function obiba_mica_lists_admin_settings() {
 }
 
 function _obiba_mica_lists_studies_admin(&$form){
+  $localize = obiba_mica_commons_mica_server_localisation();
   $form['obiba_mica_lists']['obiba_mica_lists_studies'] = array(
     '#type' => 'fieldset',
     '#title' => t('Studies list Page'),
@@ -48,9 +49,90 @@ function _obiba_mica_lists_studies_admin(&$form){
     '#default_value' => variable_get_value('obiba_mica_lists_display_study_facets'),
     '#description' => $facets['description'],
   );
+  $info = variable_get_info('studies_list_show_studies_count_caption');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['studies_list_show_studies_count_caption'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_studies_count_caption'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_search_form');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['studies_list_show_search_form'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_search_form'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_study_sup_info');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['studies_list_show_study_sup_info'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_study_sup_info'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_trimmed_description_study');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['studies_list_show_trimmed_description_study'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_trimmed_description_study'),
+    '#description' => $info['description'],
+  );
+
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['harmonization_study'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('HArmonization specific options'),
+    '#collapsible' => FALSE,
+  );
+  $info = variable_get_info('harmo_studies_list_show_study_sup_info');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['harmonization_study']['harmo_studies_list_show_study_sup_info'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('harmo_studies_list_show_study_sup_info'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('harmo_studies_list_show_trimmed_description_study');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['harmonization_study']['harmo_studies_list_show_trimmed_description_study'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('harmo_studies_list_show_trimmed_description_study'),
+    '#description' => $info['description'],
+  );
+
+
+  $info = variable_get_info('study_list_name_acronym_sort');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['study_list_name_acronym_sort'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_list_name_acronym_sort'),
+    '#options' => array(
+      '_score' => $localize->getTranslation('relevance'),
+      'name' => t('Name'),
+      'acronym' => t('Acronym'),
+      'numberOfParticipants-participant-number' =>  $localize->getTranslation('study_taxonomy.vocabulary.numberOfParticipants-participant-number.title')
+    ),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('study_list_default_order_sort');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['study_list_default_order_sort'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('study_list_default_order_sort'),
+    '#options' => array(
+      '' => t('Asc'),
+      'desc' => t('Desc'),
+    ),
+    '#description' => $info['description'],
+  );
+
 }
 
 function _obiba_mica_lists_networks_admin(&$form){
+  $localize = obiba_mica_commons_mica_server_localisation();
   $form['obiba_mica_lists']['obiba_mica_lists_networks'] = array(
     '#type' => 'fieldset',
     '#title' => t('Networks list Page'),
@@ -68,6 +150,33 @@ function _obiba_mica_lists_networks_admin(&$form){
     '#default_value' => variable_get_value('obiba_mica_lists_display_network_facets'),
     '#description' => $facets['description'],
   );
+
+  $info = variable_get_info('network_list_default_field_sort');
+  $form['obiba_mica_lists']['obiba_mica_lists_networks']['obiba_mica_lists_networks_criteria']['network_list_default_field_sort'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('network_list_default_field_sort'),
+    '#options' => array(
+      '_score' => $localize->getTranslation('relevance') ,
+      'name' => t('Name'),
+      'acronym' => t('Acronym'),
+      'numberOfStudies' => $localize->getTranslation('studies')
+    ),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('network_list_default_order_sort');
+  $form['obiba_mica_lists']['obiba_mica_lists_networks']['obiba_mica_lists_networks_criteria']['network_list_default_order_sort'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('network_list_default_order_sort'),
+    '#options' => array(
+      '' => t('Asc'),
+      'desc' => t('Desc'),
+    ),
+    '#description' => $info['description'],
+  );
+
 }
 
 function _obiba_mica_lists_datasets_admin(&$form){

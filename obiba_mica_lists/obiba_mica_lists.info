@@ -3,4 +3,6 @@ description = "Mica Client -- Lists : This module is under development"
 package = Obiba
 core = 7.x
 
+files[] = includes/obiba_mica_lists_helpers.inc
+
 dependencies[] = obiba_mica_commons
