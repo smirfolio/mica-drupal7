@@ -33,19 +33,6 @@ function _obiba_mica_study_content(&$variable) {
     'type' => 'string',
     'default' => TRUE,
   );
-  $variable['study_list_name_acronym_sort'] = array(
-    'title' => t('Set the study result sort order'),
-    'description' => t('Select the sort type for the study list'),
-    'type' => 'string',
-    'default' => 'name'
-  );
-
-  $variable['study_list_default_order_sort'] = array(
-    'title' => t('Set the Study result order'),
-    'description' => t('Select the sorted order for the Study list'),
-    'type' => 'string',
-    'default' => ''
-  );
 
   $variable['study_show_networks'] = array(
     'title' => t('Show networks'),
@@ -65,40 +52,10 @@ function _obiba_mica_study_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
-  $variable['studies_list_show_search_form'] = array(
-    'title' => t('Show the rapid search/sort form in the study list page'),
-    'description' => t('If selected the rapid search/sort form will be displayed in the study list page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
-  $variable['studies_list_show_studies_count_caption'] = array(
-    'title' => t('Show the studies count caption in the study list page'),
-    'description' => t('If selected the studies count caption will be displayed in the study list page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
-  $variable['study_list_show_search_button'] = array(
-    'title' => t('Show the search studies button in the study list page'),
-    'description' => t('If selected the search studies button will be displayed in the study list page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
 
   $variable['study_detail_show_search_button'] = array(
     'title' => t('Show the search variables button in the study page'),
     'description' => t('If selected the search variables button will be displayed in the study page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
-  $variable['studies_list_show_study_sup_info'] = array(
-    'title' => t('Show supplementary details study in the study list page'),
-    'description' => t('If selected the supplementary details study badges will be displayed in the study list page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
-  $variable['studies_list_show_trimmed_description_study'] = array(
-    'title' => t("Show trimmed description details study, with 'Read more' link in the study list page"),
-    'description' => t("If selected the description details study will be displayed in the study list page with a 'Read more' link"),
     'type' => 'boolean',
     'default' => TRUE,
   );
@@ -142,18 +99,6 @@ function _obiba_mica_harmonization_study_content(&$variable) {
   $variable['harmo_study_detail_show_search_button'] = array(
     'title' => t('Show the search variables button in the study page'),
     'description' => t('If selected the search variables button will be displayed in the study page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
-  $variable['harmo_studies_list_show_study_sup_info'] = array(
-    'title' => t('Show supplementary details study in the study list page'),
-    'description' => t('If selected the supplementary details study badges will be displayed in the study list page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
-  $variable['harmo_studies_list_show_trimmed_description_study'] = array(
-    'title' => t("Show trimmed description details study, with 'Read more' link in the study list page"),
-    'description' => t("If selected the description details study will be displayed in the study list page with a 'Read more' link"),
     'type' => 'boolean',
     'default' => TRUE,
   );

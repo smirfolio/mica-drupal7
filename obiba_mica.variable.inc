@@ -495,32 +495,11 @@ function _obiba_mica_variable_search_studies(&$variable) {
  */
 function _obiba_mica_variable_network_content(&$variable) {
 
-  $variable['network_list_show_search_button'] = array(
-    'title' => t('Show the search networks button in the network list page'),
-    'description' => t('If selected the search networks button will be displayed in the network list page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
-
   $variable['network_detail_show_search_button'] = array(
     'title' => t('Show the search variables button in the network page'),
     'description' => t('If selected the search variables button will be displayed in the network page'),
     'type' => 'boolean',
     'default' => TRUE,
-  );
-
-  $variable['network_list_default_order_sort'] = array(
-    'title' => t('Set the Network result order'),
-    'description' => t('Select the sorted order for the Network list'),
-    'type' => 'string',
-    'default' => ''
-  );
-
-  $variable['network_list_default_field_sort'] = array(
-    'title' => t('Set the Network result sort order'),
-    'description' => t('Select the sort type for the network list'),
-    'type' => 'string',
-    'default' => 'name'
   );
 
 }

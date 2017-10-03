@@ -187,7 +187,6 @@ function obiba_mica_settings_data_access_content(&$form) {
  *   The admin setting form.
  */
 function obiba_mica_settings_network_content(&$form) {
-  $localize = obiba_mica_commons_mica_server_localisation();
   $form['content_display_settings']['network_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Network Content'),
@@ -200,28 +199,4 @@ function obiba_mica_settings_network_content(&$form) {
     '#collapsible' => FALSE,
   );
 
-  $info = variable_get_info('network_list_default_field_sort');
-  $form['content_display_settings']['network_form']['network_details']['network_list_default_field_sort'] = array(
-    '#type' => 'radios',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('network_list_default_field_sort'),
-    '#options' => array(
-      'name' => t('Name'),
-      'acronym' => t('Acronym'),
-      'numberOfStudies' => $localize->getTranslation('studies')
-    ),
-    '#description' => $info['description'],
-  );
-
-  $info = variable_get_info('network_list_default_order_sort');
-  $form['content_display_settings']['network_form']['network_details']['network_list_default_order_sort'] = array(
-    '#type' => 'radios',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('network_list_default_order_sort'),
-    '#options' => array(
-      '' => t('Asc'),
-      'desc' => t('Desc'),
-    ),
-    '#description' => $info['description'],
-  );
 }

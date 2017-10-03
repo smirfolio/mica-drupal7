@@ -43,12 +43,6 @@ function _obiba_mica_dataset_variable_content(&$variable) {
     'default' => TRUE,
   );
 
-  $variable['dataset_list_show_search_button'] = array(
-    'title' => t('Show the search datasets button in the dataset list page'),
-    'description' => t('If selected the search datasets button will be displayed in the dataset list page'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
   $variable['dataset_detail_show_search_button'] = array(
     'title' => t('Show the search variables button in the dataset page'),
     'description' => t('If selected the search variables button will be displayed in the dataset page'),
