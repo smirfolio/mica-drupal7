@@ -18,8 +18,9 @@
 
 class MicaListsHelper{
   static function studyFragment($type = NULL) {
-    $study_order = !empty(variable_get_value('study_list_default_order_sort') && variable_get_value('study_list_default_order_sort') == 'desc') ? '-' : '';
     $study_sort = variable_get_value('study_list_name_acronym_sort');
+    $study_order = (!empty(variable_get_value('study_list_default_order_sort') && variable_get_value('study_list_default_order_sort') == 'desc'))
+    || ($study_sort == '_score') ? '-' : '';
     switch ($type) {
       case ANGULAR_LIST_STUDIES :
         return 'search?query=study(exists(Mica_study.id),sort(' . $study_order . variable_get_value('study_list_name_acronym_sort') . '))';
@@ -31,8 +32,10 @@ class MicaListsHelper{
   }
 
   static function networkFragment(){
-    $network_order = !empty(variable_get_value('network_list_default_order_sort') && variable_get_value('network_list_default_order_sort') == 'desc') ? '-' : '';
-    return 'search?query=network(exists(Mica_network.id),sort(' . $network_order . variable_get_value('network_list_default_field_sort') . '))';
+    $network_sort = variable_get_value('network_list_default_field_sort');
+    $network_order = (!empty(variable_get_value('network_list_default_order_sort') && variable_get_value('network_list_default_order_sort') == 'desc'))
+      || $network_sort == '_score' ? '-' : '';
+    return 'search?query=network(exists(Mica_network.id),sort(' . $network_order . $network_sort . '))';
   }
 
   static function datasetFragment($type = NULL){
