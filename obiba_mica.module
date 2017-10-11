@@ -262,8 +262,74 @@ function obiba_mica_theme($existing, $type, $theme, $path) {
     'obiba_mica_table_widget_components' => array(
       'render element' => 'element'
     ),
+    'system_powered_mica' => array(
+      'variables' => array(),
+    ),
   );
   return $themes;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function obiba_mica_block_info(){
+    $blocks['powered-mica'] = array(
+      'info' => t('Powered Mica'),
+      'weight' => 0,
+      'status' => 1,
+      'region' => 'footer',
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function obiba_mica_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'powered-mica':
+      $block['content'] = theme('system_powered_mica');
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Returns HTML for the Powered by Mica text.
+ *
+ * @ingroup themeable
+ */
+function theme_system_powered_mica() {
+  $obiba_module_info = system_get_info('module', 'obiba_mica');
+  $obiba_version = array(
+    'version' => $obiba_module_info['version'] ? $obiba_module_info['version'] : 'master-SNAPSHOT',
+    'source' => $obiba_module_info['version'] ? 'https://www.drupal.org/project/obiba_mica/releases/' . $obiba_module_info['version'] : 'https://github.com/obiba/mica-drupal7',
+  );
+  return '<span>' .
+    t('Powered by <a href="@poweredby">OBiBa Mica</a> <br>Developed by <a href="@maelstrom">Maelstrom Research</a>',
+      array(
+        '@poweredby' => 'https://www.obiba.org',
+        '@maelstrom' => 'https:///www.maelstrom-research.org',
+      ))
+    . '</span>' .
+    '<span style="float: right"> ' .
+    t('<a href="@source">Mica Client @version</a>',
+      array(
+        '@source' => $obiba_version['source'],
+        '@target' => 'target="_blanck"',
+        '@version' => $obiba_version['version']
+      )
+    ) . ' </span>';
+}
+
+/**
+ * Implements hook_block_info_alter().
+ */
+function obiba_mica_block_info_alter(&$blocks, $theme, $code_blocks) {
+  if ($blocks['system']['powered-by']) {
+    $blocks['system']['powered-by']['status'] = 0;
+  }
 }
 
 function theme_obiba_mica_drag_components($vars) {
