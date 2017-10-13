@@ -169,7 +169,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('geoChartOptions',
                     array('graphics.country', 'graphics.nbr-studies'),
                     'graphics.geo-chart-title',
-                    array('colorAxis' => $colors_options))
+                    $colors_options)
                 ),
             ),
               'setting');
@@ -307,7 +307,7 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
   $charts_option = array_merge(
     obiba_mica_graphic_charts_options_settings('geoChartOptions',
       array('graphics.country', 'graphics.nbr-studies'),
-      'graphics.geo-chart-title', array('colorAxis' => $colors_options)),
+      'graphics.geo-chart-title', $colors_options),
     obiba_mica_graphic_charts_options_settings('studiesDesigns',
       array(
         'graphics.study-design',
