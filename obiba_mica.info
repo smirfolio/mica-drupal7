@@ -21,6 +21,7 @@ dependencies[] = obiba_mica_files
 dependencies[] = obiba_mica_persons
 dependencies[] = obiba_mica_app_angular
 dependencies[] = obiba_mica_dashboard
+dependencies[] = obiba_mica_lists
 
 scripts[] = js/obiba-mica-progressbar-controller.js
 scripts[] = js/print-friendly.js
