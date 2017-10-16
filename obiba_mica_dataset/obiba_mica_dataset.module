@@ -23,36 +23,6 @@ include_once('includes/obiba_mica_dataset_resource.inc');
 function obiba_mica_dataset_menu() {
   $items = array();
 
-  $items[DrupalMicaDatasetResource::DATASETS] = array(
-    'title' => 'Datasets',
-    'description' => 'Published datasets',
-    'page callback' => 'obiba_mica_dataset_get_datasets_list',
-    'file' => 'obiba_mica_dataset-page-list.inc',
-    'access callback' => TRUE,
-    'menu_name' => 'main-menu',
-    'type' => MENU_NORMAL_ITEM,
-    'expanded' => TRUE,
-    'weight' => 3,
-  );
-
-  $items[DrupalMicaDatasetResource::DATASETS . '/' .  DrupalMicaDatasetResource::HARMONIZED_DATASET] = array(
-    'title' => 'Harmonized Datasets',
-    'page callback' => 'obiba_mica_dataset_get_harmonization_datasets_list',
-    'file' => 'obiba_mica_dataset-page-list.inc',
-    'access callback' => TRUE,
-    'type' => MENU_NORMAL_ITEM,
-    'weight' => 3,
-  );
-
-  $items[DrupalMicaDatasetResource::DATASETS . '/' .  DrupalMicaDatasetResource::COLLECTED_DATASET] = array(
-    'title' => 'Collected Datasets',
-    'page callback' => 'obiba_mica_dataset_get_study_datasets_list',
-    'file' => 'obiba_mica_dataset-page-list.inc',
-    'access callback' => TRUE,
-    'type' => MENU_NORMAL_ITEM,
-    'weight' => 2,
-  );
-
   $items['variable-detail-statistics/%'] = array(
     'access callback' => TRUE,
     'page callback' => 'obiba_mica_dataset_variable_get_ajax_statistics',
@@ -187,26 +157,6 @@ function obiba_mica_dataset_menu() {
     'file' => 'obiba_mica_variable-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2),
-  );
-
-  $items['mica/refresh_list_datasets_datasets/%/%/%'] = array(
-    'page callback' => 'obiba_mica_dataset_retrieve_datasets',
-    'file' => 'obiba_mica_dataset-page-list.inc',
-    'access arguments' => array('access content'),
-    'page arguments' => array(2, 3, 4),
-  );
-
-  $items['mica/refresh_list_datasets_harmonization_datasets/%/%/%'] = array(
-    'page callback' => 'obiba_mica_dataset_retrieve_harmonizationDatasets',
-    'file' => 'obiba_mica_dataset-page-list.inc',
-    'access arguments' => array('access content'),
-    'page arguments' => array(2, 3, 4),
-  );
-  $items['mica/refresh_list_datasets_study_datasets/%/%/%'] = array(
-    'page callback' => 'obiba_mica_dataset_retrieve_studyDatasets',
-    'file' => 'obiba_mica_dataset-page-list.inc',
-    'access arguments' => array('access content'),
-    'page arguments' => array(2, 3, 4),
   );
 
   $items['mica/ng/coverage/dataset/%'] = array(

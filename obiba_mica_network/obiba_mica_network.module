@@ -19,16 +19,6 @@ include_once 'obiba_mica_network-page-list.inc';
 function obiba_mica_network_menu() {
   $items = array();
 
-  $items['mica/networks'] = array(
-    'title' => 'Networks',
-    'description' => 'Published networks',
-    'page callback' => 'obiba_mica_network_page_list',
-    'file' => 'obiba_mica_network-page-list.inc',
-    'access callback' => TRUE,
-    'menu_name' => 'main-menu',
-    'type' => MENU_NORMAL_ITEM
-  );
-
   $items['mica/network/%'] = array(
     'title' => 'Mica network detail',
     'page callback' => 'obiba_mica_network_page_detail',
@@ -43,14 +33,6 @@ function obiba_mica_network_menu() {
     'file' => 'obiba_mica_network-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2, 4),
-  );
-
-  $items['mica/refresh_list_networks/%/%/%'] = array(
-    //'title' => t('AutoComp Menu'),
-    'page callback' => 'obiba_mica_network_retrieve_networks',
-    'file' => 'obiba_mica_network-page-list.inc',
-    'access arguments' => array('access content'),
-    'page arguments' => array(2, 3, 4)
   );
 
   $items['mica/ng/coverage/network/%'] = array(
@@ -76,14 +58,6 @@ function obiba_mica_network_theme($existing, $type, $theme, $path) {
   return array(
     'obiba_mica_network-detail' => array(
       'template' => 'obiba_mica_network-detail',
-      'path' => $path_theme
-    ),
-    'obiba_mica_network-list' => array(
-      'template' => 'obiba_mica_network-list',
-      'path' => $path_theme
-    ),
-    'obiba_mica_network-list-page-block' => array(
-      'template' => 'obiba_mica_network-list-page-block',
       'path' => $path_theme
     ),
     'obiba_mica_network-charts' => array(

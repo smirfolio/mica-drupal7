@@ -13,68 +13,6 @@
  * @file code for list networks page
  */
 
-use Obiba\ObibaMicaClient\MicaLocalisation as MicaLocalisation;
-
-function obiba_mica_network_page_list() {
-  obiba_mica_commons_list_document_js('refresh_list_networks');
-  $node_rendered = obiba_mica_commons_get_translated_node(variable_get_value('networks_page'));
-
-  drupal_set_title($node_rendered['#node']->title);
-  $node_rendered['#node']->title = '';
-
-  $list_networks = '';
-
-  $page_number = !empty($_GET['page']) ? $_GET['page'] : NULL;
-  $query = !empty($_GET['search-query']) ? $_GET['search-query'] : NULL;
-  $sort = !empty($_GET['search-sort']) ? $_GET['search-sort'] : NULL;
-  $order = !empty($_GET['search-sort-order']) ? $_GET['search-sort-order'] : NULL;
-  $network_limits = !empty($_GET['search-nbr-result']) ? $_GET['search-nbr-result'] : NULL;
-
-  $resource_key = $page_number . $query . $sort . $order . $network_limits;
-  $cached_themed_list_network = obiba_mica_commons_get_cache('cached_' . __FUNCTION__ . $resource_key);
-  if (!empty($cached_themed_list_network)) {
-    return $cached_themed_list_network;
-  }
-  else {
-    $response = obiba_mica_network_get_networks(NULL, $query, $sort, $order, $network_limits);
-    $total_networks = empty($response) ? 0 : $response->getTotalHits();
-    $network_limits = !empty($network_limits) ? $network_limits : DrupalMicaClientResource::getResponsePageSizeSmall();
-    pager_default_initialize($total_networks, $network_limits);
-    $pager_output = theme('pager', array('quantity' => $network_limits));
-    $summaries = empty($response) ? array() : $response->getSummaries();
-    if (!empty($summaries)) {
-      foreach ($summaries as $network) {
-        if (!empty($network->logo->id)) {
-          $logo_url = obiba_mica_commons_safe_expose_server_url($network->id, $network->logo, 'network');
-        }
-        else {
-          $logo_url = NULL;
-        }
-
-        $list_networks .= theme('obiba_mica_network-list-page-block', array(
-          'network' => $network,
-          'logo_url' => $logo_url,
-          'digests' => $network
-        ));
-      }
-    }
-    else {
-      $list_networks = variable_get_value('networks_empty_label');
-    }
-    $themed_list_networks_page = theme('obiba_mica_network-list', array(
-      'form_search' => drupal_get_form('obiba_mica_network_create_form'),
-      'node_page' => $node_rendered,
-      'total_items' => $total_networks,
-      'list_networks' => $list_networks,
-      'pager_wrap' => $pager_output
-    ));
-    if ($total_networks !== 0) {
-      obiba_mica_commons_set_cache('cached_' . __FUNCTION__ . $resource_key, $themed_list_networks_page);
-    }
-    return $themed_list_networks_page;
-  }
-}
-
 function obiba_mica_network_get_networks($study_id, $query = NULL, $sort = NULL, $order = NULL, $network_limits = NULL) {
   $from = 0;
   $network_resource = new DrupalMicaNetworkResource();
@@ -119,20 +57,6 @@ function populate_session_with_network_count($networks, $type) {
   if (!empty($networks)) {
     $_SESSION[$type]['aggregations']['total_hits'] = $networks->getTotalHits();
   }
-}
-
-function obiba_mica_network_create_form() {
-  $localize = obiba_mica_commons_mica_server_localisation();
-  $context =
-    array(
-      'options' => array(
-        'numberOfStudies' => $localize->getTranslation('studies'),
-      ),
-      'default_sort' => variable_get_value('network_list_default_field_sort'),
-      'default_sort_order' => variable_get_value('network_list_default_order_sort')
-    );
-
-  return obiba_mica_commons_create_search_form($context);
 }
 
 function obiba_mica_network_networks_table($networks_result) {
@@ -185,24 +109,6 @@ function obiba_mica_network_networks_table_rows($networks) {
     }
   }
   return $rows;
-}
-
-function obiba_mica_network_retrieve_networks($query, $sort = NULL, $order = NULL) {
-  $list_networks = obiba_mica_network_get_networks(NULL, $query, $sort, $order);
-  $list_networks_rendered = '';
-  if (!empty($list_networks)) {
-    foreach ($list_networks->getSummaries() as $network) {
-      $list_networks_rendered .= theme('obiba_mica_network-list-page-block', array(
-        'network' => $network
-      ));
-    }
-    $data['list'] = $list_networks_rendered;
-    $data['total'] = $list_networks->total;
-    drupal_json_output($data);
-  }
-  else{
-    return FALSE;
-  }
 }
 
 function obiba_mica_network_networks_table_headers() {
