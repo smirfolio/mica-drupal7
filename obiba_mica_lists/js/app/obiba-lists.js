@@ -13,7 +13,8 @@ mica.ObibaLists = angular.module('mica.ObibaLists', [
   'obiba.mica.lists'
 ])
   .run()
-  .config(['ngObibaMicaSearchProvider', 'markedProvider', 'sortWidgetOptionsProvider', function (ngObibaMicaSearchProvider, markedProvider, sortWidgetOptionsProvider) {
+  .config(['ngObibaMicaSearchProvider', 'markedProvider', 'sortWidgetOptionsProvider', 'ngObibaMicaSearchTemplateUrlProvider',
+    function (ngObibaMicaSearchProvider, markedProvider, sortWidgetOptionsProvider, ngObibaMicaSearchTemplateUrlProvider) {
     if(Drupal.settings.obibaListOptions){
       sortWidgetOptionsProvider.setOptions(Drupal.settings.obibaListOptions);
     }
@@ -27,6 +28,11 @@ mica.ObibaLists = angular.module('mica.ObibaLists', [
       Drupal.settings.obibaListSearchOptions.studies.obibaListOptions = Drupal.settings.obibaListOptions.studyOptions;
     }
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.obibaListSearchOptions);
+    if(Drupal.settings.listOverrideThemes){
+      angular.forEach(Drupal.settings.listOverrideThemes, function (template, keyTemplate) {
+        ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl(keyTemplate, Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/' + template);
+      })
+    }
   }])
   .filter('getBaseUrl', function () {
     return function (param) {

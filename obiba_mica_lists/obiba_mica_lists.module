@@ -340,10 +340,11 @@ function obiba_mica_lists_options($current_path) {
       return FALSE;
   }
   $obiba_list_options = $list_options;
-
+  $list_override_themes = obiba_mica_lists_enabled_theme();
   drupal_add_js(array(
     'obibaListOptions' => $obiba_list_options['listOptions'],
     'obibaListSearchOptions' => $obiba_list_Search_options,
+    'listOverrideThemes' => !empty($list_override_themes) ? $list_override_themes : NULL,
   ),
     'setting');
   $module_path = drupal_get_path('module', 'obiba_mica_lists');
@@ -351,40 +352,17 @@ function obiba_mica_lists_options($current_path) {
   Return TRUE;
 }
 
-/**
- * Implements hook_theme().
- */
-function obiba_mica_lists_theme($existing, $type, $theme, $path) {
-  //$path_theme = $path . '/templates';
-  $path_views_theme = $path . '/js/app/views';
-  $path_component_theme = $path. '/js/app/component';
-  return array(
-    'list-sort-widget-template' => array(
-      'template' => 'list-sort-widget-template',
-      'path' => $path_component_theme . '/sort-widget'
-    ),
-    'list-search-widget-template' => array(
-      'template' => 'list-search-widget-template',
-      'path' => $path_component_theme . '/input-search-widget'
-    ),
-    'studies-search-result-table-template' => array(
-      'template' => 'studies-search-result-table-template',
-      'path' => $path_views_theme . '/list'
-    ),
-    'networks-search-result-table-template' => array(
-      'template' => 'networks-search-result-table-template',
-      'path' => $path_views_theme . '/list'
-    ),
-    'datasets-search-result-table-template' => array(
-      'template' => 'datasets-search-result-table-template',
-      'path' => $path_views_theme . '/list'
-    ),
-    'search-result-list-template' => array(
-      'template' => 'search-result-list-template',
-      'path' => $path_views_theme
-    )
+function obiba_mica_lists_enabled_theme(){
+  $template_overrides = array(
+    'searchStudiesResultTable' => 'studies-search-result-table-template',
+    'searchNetworksResultTable' => 'networks-search-result-table-template',
+    'searchDatasetsResultTable' => 'datasets-search-result-table-template',
   );
-
+  $hooks =  theme_get_registry(TRUE);
+  $templates = array_filter($template_overrides, function ($template) use($hooks){
+   return !empty($hooks[$template]);
+ } );
+ return $templates;
 }
 
 function obiba_mica_lists_content_to_create() {
