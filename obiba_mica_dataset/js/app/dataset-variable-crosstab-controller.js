@@ -462,7 +462,6 @@
             $scope.searchVariables = searchVariables;
             $scope.DocType = {CSV: 'csv', EXCEL: 'excel'};
             $scope.StatType = {CPERCENT: 1, RPERCENT: 2, CHI: 3};
-            $scope.datasetHarmo = $routeParams.type === 'harmonization-dataset';
             $scope.routeParams = $routeParams;
             $scope.options = {
               showDetailedStats: Drupal.settings.angularjsApp.show_detailed_stats,
@@ -479,6 +478,7 @@
               },
               function onSuccess(response) {
                 $scope.dataset = response;
+                $scope.datasetHarmo = $scope.dataset.hasOwnProperty('obiba.mica.HarmonizedDatasetDto.type');
               },
               onError
             );
