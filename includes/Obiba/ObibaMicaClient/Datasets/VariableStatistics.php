@@ -16,6 +16,9 @@ namespace Obiba\ObibaMicaClient\Datasets;
 
 use Obiba\ObibaMicaClient\MicaConfigurations as MicaConfig;
 
+$path_module_study = drupal_get_path('module', 'obiba_mica_study');
+include_once($path_module_study . '/includes/obiba_mica_study_resource.inc');
+
 /**
  * VariableStatistics class
  */
@@ -378,7 +381,7 @@ class VariableStatistics {
       $study_id = $aggregation->studyTable->studyId;
       $study_summary = _obiba_mica_variable_study_summary($this->variable, $study_id);
       $study_acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
-      $header = !empty($study_summary->published)?l($study_acronym, DrupalMicaStudyResource::INDIVIDUAL_STUDY . '/' . $study_id):$study_acronym;
+      $header = !empty($study_summary->published)?l($study_acronym, \DrupalMicaStudyResource::INDIVIDUAL_STUDY . '/' . $study_id):$study_acronym;
       if (!empty($aggregation->studyTable->name)) {
         $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
       }
