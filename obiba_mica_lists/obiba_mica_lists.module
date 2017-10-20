@@ -94,7 +94,7 @@ function obiba_mica_lists_paths(){
       'module_caller' => 'obiba_mica_lists',
       'node_page' => !empty(variable_get_value('obiba_mica_lists_collected_datasets_page')) ? variable_get_value('obiba_mica_lists_collected_datasets_page') : variable_get_value('study_dataset_page'),
       'type' => MENU_NORMAL_ITEM,
-      'weight' => 2,
+      'weight' => 1,
       'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_COLLECTED_DATSETS)),
     ),
     ANGULAR_LIST_HARMONIZED_DATSETS => array(
@@ -103,7 +103,7 @@ function obiba_mica_lists_paths(){
       'module_caller' => 'obiba_mica_lists',
       'node_page' => !empty(variable_get_value('obiba_mica_lists_harmonized_datasets_page')) ? variable_get_value('obiba_mica_lists_harmonized_datasets_page') : variable_get_value('harmo_dataset_page'),
       'type' => MENU_NORMAL_ITEM,
-      'weight' => 1,
+      'weight' => 2,
       'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_HARMONIZED_DATSETS)),
     ),
   );
