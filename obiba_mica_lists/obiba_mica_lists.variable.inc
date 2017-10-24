@@ -33,7 +33,7 @@ function _obiba_mica_lists_study_config(&$variable) {
     'title' => t('Display the study facets properties'),
     'description' => t('If selected the study facets properties will be displayed on the Studies list page'),
     'type' => 'boolean',
-    'default' => 0,
+    'default' => TRUE,
   );
   $variable['studies_list_show_studies_count_caption'] = array(
     'title' => t('Show the studies count caption in the study list page'),
