@@ -211,7 +211,7 @@ function obiba_mica_lists_studies_options($current_path){
         'studiesCountCaption' => variable_get_value('studies_list_show_studies_count_caption'),
         'studiesSearchForm' => variable_get_value('studies_list_show_search_form'),
         'studiesSupplInfoDetails' => variable_get_value('studies_list_show_study_sup_info'),
-        'studiesTrimedDescrition' => variable_get_value('studies_list_show_trimmed_description_study'),
+        'studiesTrimmedDescription' => variable_get_value('studies_list_show_trimmed_description_study'),
       ),
       'sortField' => array(
         'options' => array(
@@ -234,7 +234,7 @@ function obiba_mica_lists_studies_options($current_path){
       'studiesCountCaption' => variable_get_value('studies_list_show_studies_count_caption'),
       'studiesSearchForm' => variable_get_value('studies_list_show_search_form'),
       'studiesSupplInfoDetails' => variable_get_value('harmo_studies_list_show_study_sup_info'),
-      'studiesTrimedDescrition' => variable_get_value('harmo_studies_list_show_trimmed_description_study')
+      'studiesTrimmedDescription' => variable_get_value('harmo_studies_list_show_trimmed_description_study')
     );
   }
   return $studies_options;
