@@ -21,6 +21,17 @@ class MicaMetricsHelper {
       $key = self::getKeyFromType($document->type);
       if (!empty($key)) {
         $document->publishedFormatted = obiba_mica_commons_format_number($document->published);
+
+        if (!empty($document->totalWithVariable)) {
+          $document->totalWithVariableFormatted = obiba_mica_commons_format_number($document->totalWithVariable);
+          $document->withVariableTitle = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type. 'WithVariable') );
+        }
+
+        if (!empty($document->variables)) {
+          $document->variablesFormatted = obiba_mica_commons_format_number($document->variables);
+          $document->variablesTitle = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type. 'Variable') );
+        }
+
         $document->title = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type));
         $map[$document->type] = $document;
       }
@@ -35,14 +46,20 @@ class MicaMetricsHelper {
         return 'networks';
       case 'Study' :
         return 'studies';
+      case 'StudyWithVariable':
+        return 'studies-with-variables';
+      case 'StudyVariable':
+        return 'study-variables';
+      case 'HarmonizationStudy' :
+        return 'harmonization-studies';
+      case 'HarmonizationStudyVariable':
+        return 'harmonization-study-variables';
       case 'StudyDataset':
         return 'collection-datasets';
       case 'HarmonizationDataset':
         return 'harmonized-datasets';
       case 'DatasetVariable':
         return 'variables';
-      case 'StudyWithVariable':
-        return 'dashboard-studies-with-variables';
     }
 
     return NULL;
