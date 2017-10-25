@@ -412,34 +412,12 @@ function obiba_mica_dataset_variable_get_ajax_statistics($variable_id = NULL) {
  *
  * If not found, fetch the study summary directly.
  */
-function _obiba_mica_variable_study_summary($variable, $study_id) {
-  if(!empty($variable->studySummary)){
-    return $variable->studySummary;
+function _obiba_mica_variable_study_summary($variable_aggregation) {
+  if(!empty($variable_aggregation->studyTable) && !empty($variable_aggregation->studyTable->studySummary)){
+    return $variable_aggregation->studyTable->studySummary;
+  } else if(!empty($variable_aggregation->harmonizationStudyTable) && !empty($variable_aggregation->harmonizationStudyTable->studySummary)){
+    return $variable_aggregation->harmonizationStudyTable->studySummary;
   }
-  else{
-    foreach ($variable->studySummaries as $study) {
-      if ($study->id == $study_id) {
-        return $study;
-      }
-    }
-    // Not found in the dto, then fetch it. Not sure if it make even a sense
-    $study_resource = new DrupalMicaStudyResource();
-    return $study_resource->getStudy($study_id);
-  }
-}
 
-/**
- * Get the network summary found in the variable.
- *
- * If not found, fetch the network summary directly.
- */
-function _obiba_mica_variable_network_summary($variable, $network_table_id) {
-  foreach ($variable->networkSummaries as $network) {
-    if ($network->id == $network_table_id) {
-      return $network;
-    }
-  }
-  // Not found in the dto, then fetch it.
-  $network_resource = new DrupalMicaNetworkResource();
-  return $network_resource->getNetwork($network_table_id);
+  return new stdClass();
 }

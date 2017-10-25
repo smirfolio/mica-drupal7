@@ -215,10 +215,10 @@ class VariableStatistics {
    * If any in one string.
    */
   private function getStudyTableLabel($aggregation) {
-    $study_id = $aggregation->studyTable->studyId;
-    $header = obiba_mica_commons_get_localized_field(_obiba_mica_variable_study_summary($this->variable, $study_id), 'acronym');
-    if (!empty($aggregation->studyTable->name)) {
-      $header = $header . '(' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name') . ')';
+    $table = !empty($aggregation->studyTable) ? $aggregation->studyTable : $aggregation->harmonizationStudyTable;
+    $header = obiba_mica_commons_get_localized_field(_obiba_mica_variable_study_summary($aggregation), 'acronym');
+    if (!empty($table->name)) {
+      $header = $header . '(' . obiba_mica_commons_get_localized_field($table, 'name') . ')';
     }
     return $header;
   }
@@ -377,29 +377,23 @@ class VariableStatistics {
   }
 
   private function getTableHeader($aggregation) {
+    $table = !empty($aggregation->studyTable) ? $aggregation->studyTable : $aggregation->harmonizationStudyTable;
+    $study_id = $table->studyId;
+    $study_summary = _obiba_mica_variable_study_summary($aggregation);
+    $study_acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
+
     if (!empty($aggregation->studyTable)) {
-      $study_id = $aggregation->studyTable->studyId;
-      $study_summary = _obiba_mica_variable_study_summary($this->variable, $study_id);
-      $study_acronym = obiba_mica_commons_get_localized_field($study_summary, 'acronym');
       $header = !empty($study_summary->published)?l($study_acronym, 'mica/' . \DrupalMicaStudyResource::INDIVIDUAL_STUDY . '/' . $study_id):$study_acronym;
       if (!empty($aggregation->studyTable->name)) {
         $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->studyTable, 'name');
       }
-      return $header;
-    }
-    else {
-      if (!empty($aggregation->networkTable)) {
-        $network_id = $aggregation->networkTable->networkId;
-        $network_summary = _obiba_mica_variable_network_summary($this->variable, $network_id);
-        $network_acronym = obiba_mica_commons_get_localized_field($network_summary, 'acronym');
-        $header = !empty($network_summary->published)?l($network_acronym, 'mica/network/' . $network_id):$network_acronym;
-        if (!empty($aggregation->networkTable->name)) {
-          $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->networkTable, 'name');
-        }
-        return $header;
+    } else if (!empty($aggregation->harmonizationStudyTable)) {
+      $header = !empty($study_summary->published)?l($study_acronym, 'mica/' . \DrupalMicaStudyResource::HARMONIZATION_STUDY . '/' . $study_id):$study_acronym;
+      if (!empty($aggregation->harmonizationStudyTable->name)) {
+        $header = $header . ' ' . obiba_mica_commons_get_localized_field($aggregation->harmonizationStudyTable, 'name');
       }
     }
-    return '';
+    return !empty($header) ? $header : '';
   }
 
   /**
