@@ -36,11 +36,11 @@ mica.ObibaLists = angular.module('mica.ObibaLists', [
   }])
   .filter('getBaseUrl', function () {
     return function (param) {
-      return Drupal.settings.basePath + 'mica/' + param;
+      return Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/' + param;
     }
   }).filter('doSearchQuery', function () {
     return function (type, query) {
-      return Drupal.settings.basePath + 'mica/repository#/search?type=' + type + '&query=' + query + '&display=list'
+      return Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/repository#/search?type=' + type + '&query=' + query + '&display=list'
     }
   })
   .filter('getLabel', function () {
