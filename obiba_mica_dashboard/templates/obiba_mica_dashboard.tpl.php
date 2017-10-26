@@ -12,8 +12,8 @@
     </span>
   </h1>
   <h1>
-    <span class="label label-success"><?php print $metrics['StudyWithVariable']->title ?>
-      <span class="badge"><?php print $metrics['StudyWithVariable']->published ?></span>
+    <span class="label label-success"><?php print $metrics['HarmonizationStudy']->title ?>
+      <span class="badge"><?php print $metrics['HarmonizationStudy']->published ?></span>
     </span>
   </h1>
   <h1>
