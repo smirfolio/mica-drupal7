@@ -17,6 +17,12 @@
 
 
 class MicaListsHelper{
+
+  const TARGET_STUDY = 'study';
+  const TARGET_NETWORK = 'network';
+  const TARGET_DATASET = 'dataset';
+  const TARGET_VARIABLE = 'variable';
+
   static function studyFragment($type = NULL) {
     $study_sort = variable_get_value('study_list_name_acronym_sort');
     $study_order = (!empty(variable_get_value('study_list_default_order_sort') && variable_get_value('study_list_default_order_sort') == 'desc'))

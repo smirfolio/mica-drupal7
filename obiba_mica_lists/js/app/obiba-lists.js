@@ -27,6 +27,12 @@ mica.ObibaLists = angular.module('mica.ObibaLists', [
     if(Drupal.settings.obibaListOptions.studyOptions){
       Drupal.settings.obibaListSearchOptions.studies.obibaListOptions = Drupal.settings.obibaListOptions.studyOptions;
     }
+    if(Drupal.settings.obibaListOptions.networkOptions){
+      Drupal.settings.obibaListSearchOptions.networks.obibaListOptions = Drupal.settings.obibaListOptions.networkOptions;
+    }
+    if(Drupal.settings.obibaListOptions.datasetOptions){
+      Drupal.settings.obibaListSearchOptions.datasets.obibaListOptions = Drupal.settings.obibaListOptions.datasetOptions;
+    }
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.obibaListSearchOptions);
     if(Drupal.settings.listOverrideThemes){
       angular.forEach(Drupal.settings.listOverrideThemes, function (template, keyTemplate) {
