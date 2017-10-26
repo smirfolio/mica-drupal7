@@ -9,6 +9,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 class ObibaMicaDashBoardBlock {
   const ID = 'obiba_mica_dashboard';
@@ -71,5 +72,28 @@ function _obiba_mica_dashboard_get_metrics() {
   }
 
   return FALSE;
+}
+
+function _obiba_mica_dashboard_repository_link() {
+  global $base_url;
+  return $base_url . "/" . ObibaSearchResources::MICA_REPOSITORY . "#/search";
+}
+
+function obiba_mica_dashboard_repository_study_query_link($className, $type = "studies") {
+  return _obiba_mica_dashboard_repository_link() . "?query=" .
+    DrupalMicaClient\RqlQueryBuilder::study_query(DrupalMicaClient\RqlQueryBuilder::className_query("Mica_study", $className)) .
+    "&type=$type";
+}
+
+function obiba_mica_dashboard_repository_network_query_link() {
+  return _obiba_mica_dashboard_repository_link() . "?query=" .
+    DrupalMicaClient\RqlQueryBuilder::network_query(DrupalMicaClient\RqlQueryBuilder::exists_query("Mica_network", "id")) .
+    "&type=networks";
+}
+
+function obiba_mica_dashboard_repository_variable_query_link($variableType, $type = "variables") {
+  return _obiba_mica_dashboard_repository_link() . "?query=" .
+    DrupalMicaClient\RqlQueryBuilder::variable_query(DrupalMicaClient\RqlQueryBuilder::in_query("Mica_variable", "variableType", $variableType)) .
+    "&type=$type";
 }
 
