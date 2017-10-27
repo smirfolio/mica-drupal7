@@ -46,11 +46,11 @@ class MicaListsHelper{
 
   static function datasetFragment($type = NULL){
     switch ($type) {
-      case ANGULAR_LIST_DATSETS :
+      case ANGULAR_LIST_DATASETS :
         return 'search?query=dataset(exists(Mica_dataset.id),sort(name))';
-      case  ANGULAR_LIST_COLLECTED_DATSETS :
+      case  ANGULAR_LIST_COLLECTED_DATASETS :
         return 'search?query=dataset(in(Mica_dataset.className,StudyDataset),sort(name))';
-      case ANGULAR_LIST_HARMONIZED_DATSETS :
+      case ANGULAR_LIST_HARMONIZED_DATASETS :
         return 'search?query=dataset(in(Mica_dataset.className,HarmonizationDataset),sort(name))';
     }
 }

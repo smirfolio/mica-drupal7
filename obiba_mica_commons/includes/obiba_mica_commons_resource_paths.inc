@@ -47,7 +47,7 @@ class MicaClientPathHelpers {
 }
 
 class MicaClientPathProvider {
-  const NETWORKS = 'mica/networks';
+  const NETWORKS = 'mica/network';
   const NETWORK = 'mica/network/{id}';
   const SEARCH = 'mica/search';
   const COVERAGE = 'mica/ng/coverage';

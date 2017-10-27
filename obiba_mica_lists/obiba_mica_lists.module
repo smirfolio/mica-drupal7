@@ -18,9 +18,9 @@ define("ANGULAR_LIST_STUDIES", DrupalMicaStudyResource::STUDIES);
 define("ANGULAR_LIST_INDIVIDUAL_STUDIES", DrupalMicaStudyResource::STUDIES . '/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY);
 define("ANGULAR_LIST_HARMONIZATION_STUDIES", DrupalMicaStudyResource::STUDIES . '/' . DrupalMicaStudyResource::HARMONIZATION_STUDY);
 define("ANGULAR_LIST_NETWORKS", 'mica/network');
-define("ANGULAR_LIST_DATSETS", DrupalMicaDatasetResource::DATASETS);
-define("ANGULAR_LIST_COLLECTED_DATSETS", DrupalMicaDatasetResource::DATASETS . '/' .  DrupalMicaDatasetResource::HARMONIZED_DATASET);
-define("ANGULAR_LIST_HARMONIZED_DATSETS", DrupalMicaDatasetResource::DATASETS . '/' .  DrupalMicaDatasetResource::COLLECTED_DATASET);
+define("ANGULAR_LIST_DATASETS", DrupalMicaDatasetResource::DATASETS);
+define("ANGULAR_LIST_COLLECTED_DATASETS", DrupalMicaDatasetResource::DATASETS . '/' .  DrupalMicaDatasetResource::COLLECTED_DATASET);
+define("ANGULAR_LIST_HARMONIZED_DATASETS", DrupalMicaDatasetResource::DATASETS . '/' .  DrupalMicaDatasetResource::HARMONIZED_DATASET);
 
 function obiba_mica_lists_menu() {
   $items['admin/config/obiba-mica/obiba-mica-list-settings'] = array(
@@ -77,7 +77,7 @@ function obiba_mica_lists_paths(){
       'weight' => 2,
       'options' => array('fragment' => MicaListsHelper::networkFragment()),
     ),
-    ANGULAR_LIST_DATSETS => array(
+    ANGULAR_LIST_DATASETS => array(
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Datasets',
       'module_caller' => 'obiba_mica_lists',
@@ -86,25 +86,25 @@ function obiba_mica_lists_paths(){
       'type' => MENU_NORMAL_ITEM,
       'expanded' => TRUE,
       'weight' => 3,
-      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_DATSETS)),
+      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_DATASETS)),
     ),
-    ANGULAR_LIST_COLLECTED_DATSETS => array(
+    ANGULAR_LIST_COLLECTED_DATASETS => array(
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Collected Datasets',
       'module_caller' => 'obiba_mica_lists',
       'node_page' => !empty(variable_get_value('obiba_mica_lists_collected_datasets_page')) ? variable_get_value('obiba_mica_lists_collected_datasets_page') : variable_get_value('study_dataset_page'),
       'type' => MENU_NORMAL_ITEM,
       'weight' => 1,
-      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_COLLECTED_DATSETS)),
+      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_COLLECTED_DATASETS)),
     ),
-    ANGULAR_LIST_HARMONIZED_DATSETS => array(
+    ANGULAR_LIST_HARMONIZED_DATASETS => array(
       'access callback' => 'obiba_mica_study_access_page',
       'title' => 'Harmonized Datasets',
       'module_caller' => 'obiba_mica_lists',
       'node_page' => !empty(variable_get_value('obiba_mica_lists_harmonized_datasets_page')) ? variable_get_value('obiba_mica_lists_harmonized_datasets_page') : variable_get_value('harmo_dataset_page'),
       'type' => MENU_NORMAL_ITEM,
       'weight' => 2,
-      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_HARMONIZED_DATSETS)),
+      'options' => array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_HARMONIZED_DATASETS)),
     ),
   );
   return $menu;
@@ -135,9 +135,9 @@ function obiba_mica_lists_get_js($weight_js) {
     ANGULAR_LIST_INDIVIDUAL_STUDIES,
     ANGULAR_LIST_HARMONIZATION_STUDIES,
     ANGULAR_LIST_NETWORKS,
-    ANGULAR_LIST_DATSETS,
-    ANGULAR_LIST_COLLECTED_DATSETS,
-    ANGULAR_LIST_HARMONIZED_DATSETS
+    ANGULAR_LIST_DATASETS,
+    ANGULAR_LIST_COLLECTED_DATASETS,
+    ANGULAR_LIST_HARMONIZED_DATASETS
   ))) {
     $module_path = drupal_get_path('module', 'obiba_mica_lists');
     $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
@@ -310,7 +310,7 @@ function obiba_mica_lists_datasets_options($current_path){
     ),
   );
 
-  if($current_path === ANGULAR_LIST_HARMONIZED_DATSETS){
+  if($current_path === ANGULAR_LIST_HARMONIZED_DATASETS){
     unset($datasets_options['listOptions']['sortField']['options'][0]);
   }
   return $datasets_options;
@@ -355,9 +355,9 @@ function obiba_mica_lists_options($current_path) {
         $obiba_list_Search_options['networks'] = $list_options['listSearchOptions']['network'];
       }
       break;
-    case ANGULAR_LIST_DATSETS:
-    case ANGULAR_LIST_COLLECTED_DATSETS:
-    case ANGULAR_LIST_HARMONIZED_DATSETS:
+    case ANGULAR_LIST_DATASETS:
+    case ANGULAR_LIST_COLLECTED_DATASETS:
+    case ANGULAR_LIST_HARMONIZED_DATASETS:
     $list_options = obiba_mica_lists_datasets_options($current_path);
       $obiba_list_Search_options['datasetTaxonomiesOrder'] = !empty(variable_get_value('obiba_mica_lists_display_datset_facets')) ? array('Mica_dataset') : array();
       $obiba_list_Search_options['resultTabsOrder'] = array('dataset');

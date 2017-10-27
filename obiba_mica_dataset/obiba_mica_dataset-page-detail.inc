@@ -70,10 +70,17 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
   $page_title = (variable_get_value('dataset_title_acronym_setup') ? ($acronym . ' - ') : '') . $name;
   drupal_set_title($page_title);
 
+  $path_type = ANGULAR_LIST_HARMONIZED_DATASETS;
+  if($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET ){
+    $path_type = ANGULAR_LIST_COLLECTED_DATASETS;
+  }
   drupal_set_breadcrumb(array(
     l(t('Home'), '<front>'),
-    l($localize->getTranslation('datasets'), DrupalMicaDatasetResource::DATASETS),
-    l(($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET ? $localize->getTranslation('collected-datasets') : $localize->getTranslation('harmonized-datasets')), DrupalMicaDatasetResource::DATASETS . '/' .  $dataset_type ),
+    l($localize->getTranslation('datasets'), DrupalMicaDatasetResource::DATASETS, array('fragment' => MicaListsHelper::datasetFragment(ANGULAR_LIST_DATASETS))),
+    l(($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET ?
+      $localize->getTranslation('collected-datasets') : $localize->getTranslation('harmonized-datasets')),
+      DrupalMicaDatasetResource::DATASETS . '/' .  $dataset_type,
+      array('fragment' => MicaListsHelper::datasetFragment($path_type))),
   ));
   $study_tables = obiba_mica_dataset_study_tables($dataset_type_dto, $dataset_type, $dataset_id);
   $dataset_theme = obiba_mica_commons_get_cache(__FUNCTION__ . 'dataset_theme-' . $dataset_id);

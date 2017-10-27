@@ -79,7 +79,9 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
 
     drupal_set_breadcrumb(array(
       l(t('Home'), '<front>'),
-      l($localize->getTranslation('networks'), MicaClientPathProvider::NETWORKS),
+      l($localize->getTranslation('networks'), MicaClientPathProvider::NETWORKS, array(
+        'fragment' => MicaListsHelper::networkFragment()
+      )),
     ));
     $studies_network_ids = array();
     if (module_exists('obiba_mica_persons') && (!empty($network_dto->studyIds) || !empty($network_dto->networkIds))) {
