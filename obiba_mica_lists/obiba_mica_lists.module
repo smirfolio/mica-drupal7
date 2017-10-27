@@ -153,10 +153,22 @@ function obiba_mica_lists_get_js($weight_js) {
   return ++$weight_js;
 }
 
+function obiba_mica_lists_get_array_value_variable($variable){
+  return array_values(array_filter(array_map('trim', explode(',', variable_get_value($variable)))));
+}
+
+function obiba_mica_lists_item_to_show($tabs, $item){
+  if(in_array($item, $tabs)){
+    return TRUE;
+  }
+  return FALSE;
+}
+
 /*
  * Networks list options
  */
 function obiba_mica_lists_networks_options(){
+  $tabs_config = obiba_mica_lists_get_array_value_variable('mica_result_tabs_order');
   $acronym_name_sort = variable_get_value('network_list_default_field_sort');
   $networks_options = array(
     'listSearchOptions' => array(
@@ -171,6 +183,11 @@ function obiba_mica_lists_networks_options(){
       )
     ),
     'listOptions' => array(
+      'networkOptions' => array(
+        'showStudyBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_STUDY),
+        'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET),
+        'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE),
+      ),
       'sortField' => array(
         'options' => array(
           array(
@@ -193,6 +210,7 @@ function obiba_mica_lists_networks_options(){
  */
 function obiba_mica_lists_studies_options($current_path){
   $acronym_name_sort = variable_get_value('study_list_name_acronym_sort');
+  $tabs_config = obiba_mica_lists_get_array_value_variable('mica_result_tabs_order');
   $studies_options = array(
     'listSearchOptions' => array(
       'study' => array(
@@ -212,6 +230,9 @@ function obiba_mica_lists_studies_options($current_path){
         'studiesSearchForm' => variable_get_value('studies_list_show_search_form'),
         'studiesSupplInfoDetails' => variable_get_value('studies_list_show_study_sup_info'),
         'studiesTrimmedDescription' => variable_get_value('studies_list_show_trimmed_description_study'),
+        'showNetworkBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_NETWORK),
+        'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET),
+        'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE),
       ),
       'sortField' => array(
         'options' => array(
@@ -234,7 +255,10 @@ function obiba_mica_lists_studies_options($current_path){
       'studiesCountCaption' => variable_get_value('studies_list_show_studies_count_caption'),
       'studiesSearchForm' => variable_get_value('studies_list_show_search_form'),
       'studiesSupplInfoDetails' => variable_get_value('harmo_studies_list_show_study_sup_info'),
-      'studiesTrimmedDescription' => variable_get_value('harmo_studies_list_show_trimmed_description_study')
+      'studiesTrimmedDescription' => variable_get_value('harmo_studies_list_show_trimmed_description_study'),
+      'showNetworkBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_NETWORK),
+      'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET),
+      'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE)
     );
   }
   return $studies_options;
@@ -244,6 +268,7 @@ function obiba_mica_lists_studies_options($current_path){
  * Networks list options
  */
 function obiba_mica_lists_datasets_options($current_path){
+  $tabs_config = obiba_mica_lists_get_array_value_variable('mica_result_tabs_order');
   $datasets_options = array(
     'listSearchOptions' => array(
       'dataset' => array(
@@ -265,6 +290,11 @@ function obiba_mica_lists_datasets_options($current_path){
       ),
     ),
     'listOptions' => array(
+      'datasetOptions' => array(
+        'showNetworkBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_NETWORK),
+        'showStudyBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_STUDY),
+        'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE),
+      ),
       'sortField' => array(
         'options' => array(
           array(
