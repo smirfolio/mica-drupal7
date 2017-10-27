@@ -345,7 +345,7 @@
       <h2 id="timeline"><?php print $localize->getTranslation('study.timeline'); ?></h2>
 
       <p class="help-block">
-        <?php print t('Each colour in the timeline graph below represents a separate Study Population, while each segment in the graph represents a separate Data Collection Event. Clicking on a segment gives more detailed information on a Data Collection Event.') ?>
+        <?php print $localize->getTranslation('study.help-text-timeline'); ?>
       </p>
 
       <div class="scroll-content-tab">
