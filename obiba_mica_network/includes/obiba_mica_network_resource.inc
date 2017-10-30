@@ -99,7 +99,14 @@ class DrupalMicaNetworkResource extends DrupalMicaClientResource {
    */
   public function getNetworkDetails($networkIds) {
     $this->setLastResponse(NULL);
-    $resource_query = '/networks/_rql?query=' . DrupalMicaClient\RqlQueryBuilder::networks($networkIds);
+
+    $resource_query = '/networks/_rql?query=' . DrupalMicaClient\RqlQueryBuilder::network_queries(array(
+      DrupalMicaClient\RqlQueryBuilder::in_query("Mica_network", "id", $networkIds),
+      DrupalMicaClient\RqlQueryBuilder::sort_query("", "acronym"),
+      DrupalMicaClient\RqlQueryBuilder::fields_query(array("acronym.*", "name.*", "studyIds")),
+      DrupalMicaClient\RqlQueryBuilder::limit_query(0, 9999)
+    ));
+
     $cache_stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cache_stored_data)) {
       return $cache_stored_data;
