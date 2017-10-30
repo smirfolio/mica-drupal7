@@ -33,7 +33,7 @@
        target="_blank"
        href="<?php print MicaClientPathProvider::network_draft_url($network_dto->id) ?>"
        class="btn btn-default">
-      <i class="fa fa-pencil-square-o"></i> <?php $localize->getTranslation('edit') ?></a>
+      <i class="fa fa-pencil-square-o"></i> <?php print $localize->getTranslation('edit') ?></a>
   <?php endif; ?>
   <?php if (!empty($network_dto->studyIds)): ?>
       <?php if (variable_get_value('network_detail_show_search_button') && $draft_view === FALSE): ?>
