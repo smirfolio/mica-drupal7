@@ -35,7 +35,7 @@
     <?php if ($can_edit_draf_document): ?>
       <a title="<?php print $localize->getTranslation('edit') ?>"
          target="_blank"
-         href="<?php print MicaClientPathProvider::study_draft_url($study_dto->id) ?>"
+         href="<?php print DrupalMicaStudyResource::study_draft_url($study_dto->id) ?>"
          class="btn btn-default">
         <i class="fa fa-pencil-square-o"></i> <?php print $localize->getTranslation('edit')?></a>
     <?php endif; ?>
