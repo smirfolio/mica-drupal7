@@ -91,9 +91,10 @@ function obiba_mica_dashboard_repository_network_query_link() {
     "&type=networks";
 }
 
-function obiba_mica_dashboard_repository_variable_query_link($variableType, $type = "variables") {
+function obiba_mica_dashboard_repository_variable_query_link($variableType, $className, $type = "variables") {
   return _obiba_mica_dashboard_repository_link() . "?query=" .
     DrupalMicaClient\RqlQueryBuilder::variable_query(DrupalMicaClient\RqlQueryBuilder::in_query("Mica_variable", "variableType", $variableType)) .
+    DrupalMicaClient\RqlQueryBuilder::study_query(DrupalMicaClient\RqlQueryBuilder::className_query("Mica_study", $className)) .
     "&type=$type";
 }
 
