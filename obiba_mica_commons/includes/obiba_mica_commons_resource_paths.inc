@@ -160,24 +160,48 @@ class MicaClientAnchorHelper {
   }
 
   /**
+   * Get link to list of variables by dataset id.
+   *
+   * @param string $text
+   *   Text link.
+   * @param string $dataset_id
+   *   The dataset id.
+   * @param array $attributes
+   *   A set of link attributes.
+   * @param string $supplementary_query
+   *   A supplementary query.
+   *
+   * @return string
+   *   The anchor link.
+   */
+  public static function datasetVariables($text, $dataset_id, array $attributes = array(), $supplementary_query = NULL) {
+    $query = '';
+    if (!empty($supplementary_query)) {
+      $query .= ',' . $supplementary_query;
+    }
+    return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
+      empty($text) ? variable_get_value('variables_search_label') : $text,
+      $attributes,
+      array(
+        'type' => 'variables',
+        'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))' . $query,
+        'display' => 'list'
+      ));
+  }
+
+  /**
    * Study variable anchor link.
    *
    * @param string $text
    *   The text anchor.
    * @param string $study_id
    *   The study id.
-   * @param bool $is_button
-   *   As link or button rendering.
+   * @param array $attributes
    * @param string $supplementary_query
-   * @param string $css_class
-   *   the affected css class.
-   * @param null $test_ref
-   *   reference used by UI tester
-   *
    * @return string The anchor link.
    * The anchor link.
    */
-  public static function studyVariables($text, $study_id, $is_button = FALSE, $supplementary_query = NULL, $css_class = NULL, $test_ref = NULL) {
+  public static function studyVariables($text, $study_id, array $attributes = array(), $supplementary_query = NULL) {
       $query = 'study(in(Mica_study.id,' . $study_id . '))';
       if (!empty($supplementary_query)) {
         $query .= ',' . $supplementary_query;
@@ -185,9 +209,7 @@ class MicaClientAnchorHelper {
       return ObibaSearchResources::repositoryAnchor(
         MicaClientPathProvider::REPOSITORY_SEARCH,
         empty($text) ? variable_get_value('variables_search_label') : $text,
-        array(
-          'class' => $is_button ? ($css_class ? $css_class : self::DEFAULT_PRIMARY_BUTTON_CLASSES) : '',
-          'test-ref' => $test_ref),
+        $attributes,
         array(
           'type' => 'variables',
           'query' => $query,
@@ -362,11 +384,10 @@ class MicaClientAnchorHelper {
    * @param array $attributes
    *   A set of link attributes.
    * @param string $supplementary_query
-   * @param string $type
    * @return string The anchor link.
    * The anchor link.
    */
-  public static function networkVariables($text, $network_id, array $attributes = array(), $supplementary_query = NULL, $type = 'variables') {
+  public static function networkVariables($text, $network_id, array $attributes = array(), $supplementary_query = NULL) {
       $query = 'network(in(Mica_network.id,' . $network_id . '))';
       if (!empty($supplementary_query)) {
         $query .= ',' . $supplementary_query;
@@ -376,7 +397,7 @@ class MicaClientAnchorHelper {
         empty($text) ? variable_get_value('variables_search_label') : $text,
         $attributes,
         array(
-          'type' => $type,
+          'type' => 'variables',
           'query' => $query,
           'display' => 'list'
         ));

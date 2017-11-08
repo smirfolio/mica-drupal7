@@ -844,36 +844,6 @@ $get_tresource_by_type = function($resource){
   }
 
   /**
-   * Get link to list of variables by dataset id.
-   *
-   * @param string $text
-   *   Text link.
-   * @param string $dataset_id
-   *   The dataset id.
-   * @param array $attributes
-   *   A set of link attributes.
-   * @param string $supplementary_query
-   *   A supplementary query.
-   *
-   * @return string
-   *   The anchor link.
-   */
-  public static function datasetVariables($text, $dataset_id, array $attributes = array(), $supplementary_query = NULL) {
-    $query = '';
-    if (!empty($supplementary_query)) {
-      $query .= ',' . $supplementary_query;
-    }
-    return ObibaSearchResources::repositoryAnchor(MicaClientPathProvider::REPOSITORY_SEARCH,
-      empty($text) ? variable_get_value('variables_search_label') : $text,
-      $attributes,
-      array(
-        'type' => 'variables',
-        'query' => 'dataset(in(Mica_dataset.id,' . $dataset_id . '))' . $query,
-        'display' => 'list'
-      ));
-  }
-
-  /**
    * The harmonized variable detail url.
    *
    * @param object $variable

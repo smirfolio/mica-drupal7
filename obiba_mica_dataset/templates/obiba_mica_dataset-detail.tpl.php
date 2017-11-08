@@ -41,7 +41,11 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     <?php endif; ?>
 
     <?php if (variable_get_value('dataset_detail_show_search_button')  && $draft_view === FALSE): ?>
-      <?php print DrupalMicaDatasetResource::datasetVariables(NULL, $dataset_dto->id, array('class' => 'btn btn-primary')) ?>
+      <?php print theme('obiba_mica_search_bouton', array(
+        'method' => 'MicaClientAnchorHelper::datasetVariables',
+        'document_id' => $dataset_dto->id,
+        'anchor_attributes' => array('class' =>  MicaClientAnchorHelper::DEFAULT_PRIMARY_BUTTON_CLASSES),
+      )); ?>
     <?php endif; ?>
   </div>
 
@@ -97,7 +101,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               <th><?php print $localize->getTranslation('client.label.dataset.number-of-variables') ?></th>
               <td>
                 <p>
-                  <?php print DrupalMicaDatasetResource::datasetVariables(empty($variables_dataset->total) ? 0 :
+                  <?php print MicaClientAnchorHelper::datasetVariables(empty($variables_dataset->total) ? 0 :
                     obiba_mica_commons_format_number($variables_dataset->total), $dataset_dto->id); ?>
                 </p>
               </td>

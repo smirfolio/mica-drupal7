@@ -37,7 +37,11 @@
   <?php endif; ?>
   <?php if (!empty($network_dto->studyIds)): ?>
       <?php if (variable_get_value('network_detail_show_search_button') && $draft_view === FALSE): ?>
-        <?php  print MicaClientAnchorHelper::networkVariables(NULL, $network_dto->id, array('class' => 'btn btn-primary')); ?>
+        <?php print theme('obiba_mica_search_bouton', array(
+          'method' => 'MicaClientAnchorHelper::networkVariables',
+          'document_id' => $network_dto->id,
+          'anchor_attributes' => array('class' =>  MicaClientAnchorHelper::DEFAULT_PRIMARY_BUTTON_CLASSES),
+        )); ?>
       <?php endif; ?>
     </div>
   <?php endif; ?>
