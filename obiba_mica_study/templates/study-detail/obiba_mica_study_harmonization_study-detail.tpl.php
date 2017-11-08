@@ -41,7 +41,11 @@
     <?php endif; ?>
 
     <?php if (variable_get_value('study_detail_show_search_button') && $draft_view === FALSE): ?>
-        <?php print MicaClientAnchorHelper::studyVariables(NULL, $study_dto->id, TRUE) ?>
+      <?php print theme('obiba_mica_search_bouton', array(
+        'method' => 'MicaClientAnchorHelper::studyVariables',
+        'document_id' => $study_dto->id,
+        'anchor_attributes' => array('class' =>  MicaClientAnchorHelper::DEFAULT_PRIMARY_BUTTON_CLASSES),
+      )); ?>
     <?php endif; ?>
   </div>
 </div>

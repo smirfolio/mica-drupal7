@@ -355,7 +355,7 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
               (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
             isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
             empty($study_summary->variables)
-              ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, FALSE, $query)
+              ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, array(), $query)
           );
           $rows[] = obiba_mica_network_study_table_column($row, $study_type);
         }

@@ -33,4 +33,11 @@ class ObibaDatasetConstants {
       ' alert-black' : ' alert-danger';
     return !empty($impossible_icon) ? ($impossible_icon . $color_icon) : (ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON . $color_icon);
   }
+
+  /*
+   * Function to call correct Callback in the boutton template
+   * */
+  public static function bouttonAnchor($method, $text = NULL ,$id , $attributes){
+    return call_user_func($method, $text, $id, $attributes);;
+  }
 }
