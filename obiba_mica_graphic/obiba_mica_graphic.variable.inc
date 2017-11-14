@@ -89,31 +89,31 @@ function obiba_mica_graphic_variable_info($options) {
     'default' => array(
       'color1' => array(
         'value' => 'color1',
-        'value_name' => '#e5edfb',
+        'value_name' => '#92afe0',
         'weight' => '-10',
         'enable' => 1,
       ),
       'color2' => array(
         'value' => 'color2',
-        'value_name' => '#cfddf5',
+        'value_name' => '#809bc7',
         'weight' => '-9',
         'enable' => 1,
       ),
       'color3' => array(
         'value' => 'color3',
-        'value_name' => '#b8cbed',
+        'value_name' => '#758db5',
         'weight' => '-8',
         'enable' => 1,
       ),
       'color4' => array(
         'value' => 'color4',
-        'value_name' => '#a0b8e2',
+        'value_name' => '#5b6e8d',
         'weight' => '-7',
         'enable' => 1,
       ),
       'color5' => array(
         'value' => 'color5',
-        'value_name' => '#88a4d4',
+        'value_name' => '#414e64',
         'weight' => '-6',
         'enable' => 1,
       ),

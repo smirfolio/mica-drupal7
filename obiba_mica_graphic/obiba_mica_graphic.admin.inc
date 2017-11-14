@@ -103,6 +103,7 @@ function _obiba_mica_graphic_submit_draggable(&$form, &$form_state, $variable) {
  */
 function _obiba_mica_graphic_admin_get_draggable_colors_form($draggable_form, $draggable_items, $variable_key) {
   $default_value = variable_get_value($variable_key);
+  uasort($default_value, '_obiba_mica_graphic_colors_options_array_sort');
   $items = $default_value ? $default_value : $draggable_items;
   foreach ($items as $key_color => $color) {
     $draggable_form[$key_color] =
@@ -133,7 +134,6 @@ function _obiba_mica_graphic_admin_get_draggable_colors_form($draggable_form, $d
         )
       );
   }
-  uasort($draggable_form, '_obiba_mica_graphic_colors_options_array_sort');
   return $draggable_form;
 }
 
