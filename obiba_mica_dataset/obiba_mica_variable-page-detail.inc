@@ -65,7 +65,6 @@ function obiba_mica_variable_page_detail($variable_id) {
     'variable_harmonization' => obiba_mica_dataset_variable_get_harmonization($variable),
   ));
 
-
   $title = $variable->name;
   if ($variable->variableType == 'Harmonized') {
     if (!empty($url_query['title'])) {
@@ -369,6 +368,7 @@ function obiba_mica_dataset_variable_get_categories($categories = NULL) {
 }
 
 function obiba_mica_dataset_get_statistics($variable_id = NULL){
+  $variable_id = explode('?title', $variable_id)[0];
   $cached_variable_statistics = obiba_mica_commons_get_cache(__FUNCTION__ . 'variable-statistics-' . $variable_id);
   if (!empty($cached_variable_statistics)) {
     return $cached_variable_statistics;
