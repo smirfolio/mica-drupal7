@@ -387,11 +387,17 @@ function obiba_mica_lists_options($current_path) {
   Return TRUE;
 }
 
+/*
+ * Function to check if one of these templates are overridden by drupal
+ * */
 function obiba_mica_lists_enabled_theme(){
+  //ToDo: we have to think on a best way to deal with all overridable ng-* templates
   $template_overrides = array(
     'searchStudiesResultTable' => 'studies-search-result-table-template',
     'searchNetworksResultTable' => 'networks-search-result-table-template',
     'searchDatasetsResultTable' => 'datasets-search-result-table-template',
+    'searchResultList' => 'search-result-list-template',
+    'searchInputList' => 'input-search-widget-template',
   );
   $hooks =  theme_get_registry(TRUE);
   $templates = array_filter($template_overrides, function ($template) use($hooks){
