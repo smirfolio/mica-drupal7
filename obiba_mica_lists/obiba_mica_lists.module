@@ -252,6 +252,7 @@ function obiba_mica_lists_studies_options($current_path){
   );
   if($current_path === ANGULAR_LIST_HARMONIZATION_STUDIES){
     unset($studies_options['listOptions']['sortOrderField']['options'][0]);
+    unset($studies_options['listOptions']['sortOrderField']['options'][1]);
     $studies_options['listOptions']['sortOrderField']['defaultValue'] = $acronym_name_sort !== 'numberOfParticipants-participant-number' ? $acronym_name_sort : 'name';
     $studies_options['listOptions']['studyOptions'] = array(
       'studiesCountCaption' => variable_get_value('studies_list_show_studies_count_caption'),
@@ -301,7 +302,11 @@ function obiba_mica_lists_datasets_options($current_path){
         'options' => array(
           array(
             'value' => 'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym',
-            'label' => 'global.chronological'
+            'label' => 'datasets.custom-order'
+          ),
+          array(
+            'value' => '-studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym',
+            'label' => 'datasets.custom-order'
           )
         ),
         'default' => 'name',
@@ -311,6 +316,7 @@ function obiba_mica_lists_datasets_options($current_path){
 
   if($current_path === ANGULAR_LIST_HARMONIZED_DATASETS){
     unset($datasets_options['listOptions']['sortOrderField']['options'][0]);
+    unset($datasets_options['listOptions']['sortOrderField']['options'][1]);
   }
   return $datasets_options;
 }
