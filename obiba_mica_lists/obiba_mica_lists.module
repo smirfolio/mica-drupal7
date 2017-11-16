@@ -188,17 +188,18 @@ function obiba_mica_lists_networks_options(){
         'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET),
         'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE),
       ),
-      'sortField' => array(
+      'sortOrderField' => array(
         'options' => array(
           array(
             'value' => 'numberOfStudies',
-            'label' => 'studies'
+            'label' => 'network.number-of-studies'
           ),
+            array(
+                'value' => '-numberOfStudies',
+                'label' => 'network.number-of-studies'
+            )
         ),
-        'default' => $acronym_name_sort,
-      ),
-      'orderField' => array(
-        'default' => variable_get_value('network_list_default_order_sort')
+        'defaultValue' => $acronym_name_sort,
       )
     ),
   );
@@ -234,23 +235,25 @@ function obiba_mica_lists_studies_options($current_path){
         'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET),
         'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE),
       ),
-      'sortField' => array(
+      'sortOrderField' => array(
         'options' => array(
           array(
             'value' => 'numberOfParticipants-participant-number',
             'label' => 'study_taxonomy.vocabulary.numberOfParticipants-participant-number.title'
-          )
+          ),
+            array(
+                'value' => '-numberOfParticipants-participant-number',
+                'label' => 'study_taxonomy.vocabulary.numberOfParticipants-participant-number.title'
+            )
         ),
-        'default' => $acronym_name_sort,
-      ),
-      'orderField' => array(
-        'default' => variable_get_value('study_list_default_order_sort')
+        'defaultValue' => $acronym_name_sort,
       )
     ),
   );
   if($current_path === ANGULAR_LIST_HARMONIZATION_STUDIES){
-    unset($studies_options['listOptions']['sortField']['options'][0]);
-    $studies_options['listOptions']['sortField']['default'] = $acronym_name_sort !== 'numberOfParticipants-participant-number' ? $acronym_name_sort : 'name';
+    unset($studies_options['listOptions']['sortOrderField']['options'][0]);
+    unset($studies_options['listOptions']['sortOrderField']['options'][1]);
+    $studies_options['listOptions']['sortOrderField']['defaultValue'] = $acronym_name_sort !== 'numberOfParticipants-participant-number' ? $acronym_name_sort : 'name';
     $studies_options['listOptions']['studyOptions'] = array(
       'studiesCountCaption' => variable_get_value('studies_list_show_studies_count_caption'),
       'studiesSearchForm' => variable_get_value('studies_list_show_search_form'),
@@ -295,23 +298,25 @@ function obiba_mica_lists_datasets_options($current_path){
         'showStudyBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_STUDY),
         'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE),
       ),
-      'sortField' => array(
+      'sortOrderField' => array(
         'options' => array(
           array(
             'value' => 'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym',
-            'label' => 'global.chronological'
+            'label' => 'datasets.custom-order'
           ),
+          array(
+            'value' => '-studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym',
+            'label' => 'datasets.custom-order'
+          )
         ),
         'default' => 'name',
-      ),
-      'orderField' => array(
-        'default' => 'asc'
       )
     ),
   );
 
   if($current_path === ANGULAR_LIST_HARMONIZED_DATASETS){
-    unset($datasets_options['listOptions']['sortField']['options'][0]);
+    unset($datasets_options['listOptions']['sortOrderField']['options'][0]);
+    unset($datasets_options['listOptions']['sortOrderField']['options'][1]);
   }
   return $datasets_options;
 }
@@ -382,11 +387,17 @@ function obiba_mica_lists_options($current_path) {
   Return TRUE;
 }
 
+/*
+ * Function to check if one of these templates are overridden by drupal
+ * */
 function obiba_mica_lists_enabled_theme(){
+  //ToDo: we have to think on a best way to deal with all overridable ng-* templates
   $template_overrides = array(
     'searchStudiesResultTable' => 'studies-search-result-table-template',
     'searchNetworksResultTable' => 'networks-search-result-table-template',
     'searchDatasetsResultTable' => 'datasets-search-result-table-template',
+    'searchResultList' => 'search-result-list-template',
+    'searchInputList' => 'input-search-widget-template',
   );
   $hooks =  theme_get_registry(TRUE);
   $templates = array_filter($template_overrides, function ($template) use($hooks){
