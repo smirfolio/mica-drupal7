@@ -918,8 +918,8 @@ function _obiba_mica_commons_set_cache($key, $bin, $value) {
  */
 function _obiba_mica_commons_get_cache($key, $bin) {
   $cache_object = NULL;
-  $is_punlished = &drupal_static('obiba_mica_commons_is_published', TRUE);
-  if (!empty($is_punlished) && variable_get_value('cache') == 1 && !empty($key)) {
+  $is_published = &drupal_static('obiba_mica_commons_is_published', TRUE);
+  if (!empty($is_published) && variable_get_value('cache') == 1 && !empty($key)) {
     $cache_object = cache_get($key, $bin);
   }
   return empty($cache_object) ? FALSE : $cache_object->data;
