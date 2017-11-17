@@ -302,12 +302,12 @@ function obiba_mica_lists_datasets_options($current_path){
         'options' => array(
           array(
             'value' => 'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym',
-            'label' => 'datasets.custom-order'
+            'label' => 'dataset.custom-order'
           ),
           array(
             'value' => '-studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym',
-            'label' => 'datasets.custom-order'
-          )
+            'label' => 'dataset.custom-order'
+          ),
         ),
         'default' => 'name',
       )
