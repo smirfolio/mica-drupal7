@@ -285,7 +285,7 @@ function theme_system_powered_mica() {
     'source' => $obiba_module_info['version'] ? 'https://www.drupal.org/project/obiba_mica/releases/' . $obiba_module_info['version'] : 'https://github.com/obiba/mica-drupal7',
   );
   return '<span>' .
-    t('Powered by <a href="@poweredby" target="_blank">OBiBa Mica</a> <br>Developed by <a href="@maelstrom" target="_blank">Maelstrom Research</a>',
+    t('Powered by <a href="@poweredby" target="_blank">OBiBa Mica</a>, developed by <a href="@maelstrom" target="_blank">Maelstrom Research</a>',
       array(
         '@poweredby' => 'http://www.obiba.org',
         '@maelstrom' => 'https:///www.maelstrom-research.org',
