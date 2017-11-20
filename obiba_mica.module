@@ -292,10 +292,9 @@ function theme_system_powered_mica() {
       ))
     . '</span>' .
     '<span style="float: right"> ' .
-    t('<a href="@source">Mica Client @version</a>',
+    t('<a href="@source" target="_blank">Mica Client @version</a>',
       array(
         '@source' => $obiba_version['source'],
-        '@target' => 'target="_blanck"',
         '@version' => $obiba_version['version']
       )
     ) . ' </span>';
