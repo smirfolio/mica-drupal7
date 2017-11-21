@@ -89,6 +89,6 @@ function obiba_mica_update_7100() {
 /**
  * Hook update
  */
-function obiba_mica_update_7500() {
+function obiba_mica_update_7503() {
   variable_set('obiba-progressbar-lib', 'obiba-progressbar');
 }
