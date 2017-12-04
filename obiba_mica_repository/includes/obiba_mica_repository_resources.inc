@@ -146,8 +146,9 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     return $this->httpRequestGetBuilder($resource);
   }
 
-  public function listSuggestionFilter($target, $query) {
-    $resource = '/' . $target . '/_suggest?query=' . rawurlencode($query);
+  public function listSuggestionFilter($target, $query, $locale) {
+    $resource = '/' . $target . '/_suggest?query=' . rawurlencode($query)
+      . (!empty($locale) ? '&locale=' . $locale : '');
     return $this->httpRequestGetBuilder($resource);
   }
 

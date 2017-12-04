@@ -144,6 +144,7 @@ function obiba_mica_repository_get_document_suggestion($target) {
   $request_parameters = drupal_get_query_parameters();
   $query = $request_parameters['query'];
   if (!empty($query)) {
-    drupal_json_output($search_resource->listSuggestionFilter($target, $query));
+    $locale = $request_parameters['locale'];
+    drupal_json_output($search_resource->listSuggestionFilter($target, $query, $locale));
   }
 }
