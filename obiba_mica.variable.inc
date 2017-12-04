@@ -296,18 +296,6 @@ function _obiba_mica_variable_info_access(&$variable) {
     'type' => 'string',
     'default' => 'Download PDF',
   );
-  $variable['access_signup_button'] = array(
-    'title' => t('Sign up button'),
-    'description' => t('Data access sign up button caption.'),
-    'type' => 'string',
-    'default' => 'Sign Up',
-  );
-  $variable['access_signin_button'] = array(
-    'title' => t('Sign in button'),
-    'description' => t('Data access sign in button caption.'),
-    'type' => 'string',
-    'default' => 'Sign In',
-  );
   $variable['access_comments_enabled'] = array(
     'title' => t('Enable commenting'),
     'description' => t('If checked, data access request commenting is enabled.'),
