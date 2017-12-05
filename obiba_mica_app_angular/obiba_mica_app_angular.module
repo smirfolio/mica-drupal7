@@ -522,6 +522,7 @@ function obiba_mica_app_angular_get_search_config() {
     'resultTabsOrder' => $get_array_value('mica_result_tabs_order'),
     'variables' =>  array(
         'showSearchTab' => variable_get_value('search_variables'),
+        'listPageSize' => intval(variable_get_value('variables_list_page_size')),
         'variablesColumn' => array(
           'showVariablesTypeColumn' => variable_get_value('variables_column_type'),
           'showVariablesStudiesColumn' => variable_get_value('variables_column_study'),
@@ -533,6 +534,7 @@ function obiba_mica_app_angular_get_search_config() {
     'datasets' =>
       array(
         'showSearchTab' => variable_get_value('search_datasets'),
+        'listPageSize' => intval(variable_get_value('datasets_list_page_size')),
         'showDatasetsSearchFilter' => variable_get_value('search_datasets_autocomplete'),
         'datasetsColumn' => array(
           'showDatasetsAcronymColumn' => variable_get_value('datasets_column_acronym'),
@@ -545,6 +547,7 @@ function obiba_mica_app_angular_get_search_config() {
     'studies' =>
       array(
         'showSearchTab' => variable_get_value('search_studies'),
+        'listPageSize' => intval(variable_get_value('studies_list_page_size')),
         'showStudiesSearchFilter' => variable_get_value('studies_facet_search'),
         'studiesColumn' => array(
           'showStudiesDesignColumn' => variable_get_value('studies_column_design'),
@@ -564,6 +567,7 @@ function obiba_mica_app_angular_get_search_config() {
     'networks' =>
       array(
         'showSearchTab' => variable_get_value('search_networks'),
+        'listPageSize' => intval(variable_get_value('networks_list_page_size')),
         'networksColumn' => array(
           'showNetworksStudiesColumn' => variable_get_value('networks_column_studies'),
           'showNetworksStudyDatasetColumn' => variable_get_value('networks_column_study_datasets'),

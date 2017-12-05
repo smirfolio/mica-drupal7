@@ -320,6 +320,18 @@ function _obiba_mica_variable_search_networks(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['networks_list_page_size'] = array(
+    'title' => t('Default networks list page size'),
+    'description' => t('Number of results to be displayed on each list query.'),
+    'type' => 'select',
+    'options' => array(
+      10 => '10',
+      20 => '20',
+      50 => '50',
+      100 => '100',
+    ),
+    'default' => '20',
+  );
   $variable['networks_column_studies'] = array(
     'title' => t('Show studies'),
     'description' => t('Show studies column in the networks table.'),
@@ -379,6 +391,18 @@ function _obiba_mica_variable_search_studies(&$variable) {
     'description' => t('If selected, the studies tab will be displayed in the search page.'),
     'type' => 'boolean',
     'default' => TRUE,
+  );
+  $variable['studies_list_page_size'] = array(
+    'title' => t('Default studies list page size'),
+    'description' => t('Number of results to be displayed on each list query.'),
+    'type' => 'select',
+    'options' => array(
+      10 => '10',
+      20 => '20',
+      50 => '50',
+      100 => '100',
+    ),
+    'default' => '20',
   );
   $variable['studies_facet_search'] = array(
     'title' => t('Show studies search filter'),
@@ -504,6 +528,18 @@ function _obiba_mica_variable_search_datasets(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['datasets_list_page_size'] = array(
+    'title' => t('Default datasets list page size'),
+    'description' => t('Number of results to be displayed on each list query.'),
+    'type' => 'select',
+    'options' => array(
+      10 => '10',
+      20 => '20',
+      50 => '50',
+      100 => '100',
+    ),
+    'default' => '20',
+  );
   $variable['datasets_column_acronym'] = array(
       'title' => t('Show acronym'),
       'description' => t('Show acronym column in the datasets table.'),
@@ -563,6 +599,18 @@ function _obiba_mica_variable_search_variables(&$variable) {
     'description' => t('If selected, the variables tab will be displayed in the search page.'),
     'type' => 'boolean',
     'default' => TRUE,
+  );
+  $variable['variables_list_page_size'] = array(
+    'title' => t('Default variables list page size'),
+    'description' => t('Number of results to be displayed on each list query.'),
+    'type' => 'select',
+    'options' => array(
+      10 => '10',
+      20 => '20',
+      50 => '50',
+      100 => '100',
+    ),
+    'default' => '20',
   );
   $variable['variables_column_type'] = array(
     'title' => t('Show type'),
