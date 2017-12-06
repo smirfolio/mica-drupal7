@@ -89,11 +89,11 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('TaxonomiesResource', basePathAndPathPrefix + 'mica/repository/taxonomies/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('TaxonomyResource', basePathAndPathPrefix + 'mica/repository/taxonomy/:taxonomy/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('VocabularyResource', basePathAndPathPrefix + 'mica/repository/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
-    ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', basePathAndPathPrefix + 'mica/repository/:type/_rql/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', basePathAndPathPrefix + 'mica/repository/:type/_rql/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvResource', basePathAndPathPrefix + 'mica/repository/:type/_rql_csv/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvReportResource', basePathAndPathPrefix + 'mica/repository/:type/_report/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvReportByNetworkResource', basePathAndPathPrefix +  'mica/repository/:type/_report_by_network/:networkId/:locale/ws');
-    ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageResource', basePathAndPathPrefix + 'mica/repository/variables/_coverage/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageResource', basePathAndPathPrefix + 'mica/repository/variables/_coverage/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQueryCoverageDownloadResource',  basePathAndPathPrefix + 'mica/repository/variables/_coverage_download/:query/ws');
     ngObibaMicaUrlProvider.setUrl('VariablePage', basePathAndPathPrefix + 'mica/variable/:variable');
     ngObibaMicaUrlProvider.setUrl('NetworkPage', basePathAndPathPrefix + 'mica/network/:network');

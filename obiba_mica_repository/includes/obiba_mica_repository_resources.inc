@@ -22,13 +22,41 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     parent::__construct(NULL);
   }
 
-  private function httpRequestGetBuilder($resources, $header_accept = parent::HEADER_JSON) {
+  private function httpRequestPostBuilder($resource, $form_params, $header_accept = parent::HEADER_JSON) {
+    $content = NULL;
+    if (!empty($form_params)) {
+      $params = array();
+      foreach ($form_params as $key => $value) {
+        array_push($params, rawurlencode($key) . '=' . rawurlencode($value));
+      }
+      $content = implode('&', $params);
+    }
 
-    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
+    $full_resource = $resource . '?' . $content;
+    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $full_resource);
     if ($stored_data !== FALSE)
       return $stored_data;
 
-    $url = $this->micaUrl . $resources;
+    $url = $this->micaUrl . $resource;
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_POST,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array($header_accept),
+          'Content-Type' => array('application/x-www-form-urlencoded')
+        )
+      ),
+      'data' => $content
+    ));
+    return $this->do_request($full_resource, $request);
+  }
+
+  private function httpRequestGetBuilder($resource, $header_accept = parent::HEADER_JSON) {
+    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource);
+    if ($stored_data !== FALSE)
+      return $stored_data;
+
+    $url = $this->micaUrl . $resource;
 
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
@@ -38,6 +66,10 @@ class ObibaSearchResources extends DrupalMicaClientResource {
         )
       )
     ));
+    return $this->do_request($resource, $request);
+  }
+
+  private function do_request($resource, $request) {
     $client = $this->client();
 
     try {
@@ -47,7 +79,7 @@ class ObibaSearchResources extends DrupalMicaClientResource {
       if (!empty($response)) {
         $this->getLogo($response);
       }
-      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $response);
+      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource, $response);
       return $response;
     } catch (HttpClientException $e) {
 
@@ -95,8 +127,8 @@ class ObibaSearchResources extends DrupalMicaClientResource {
 }
 
   public function searchQuery($type, $query) {
-    $resource = '/' . $type . '/_rql?query=' . $query;
-    return $this->httpRequestGetBuilder($resource);
+    $resource = '/' . $type . '/_rql';
+    return $this->httpRequestPostBuilder($resource, array('query' => $query));
   }
 
   public function searchQueryAsCsv($type, $query) {
@@ -163,8 +195,8 @@ class ObibaSearchResources extends DrupalMicaClientResource {
   }
 
   public function variablesCoverage($query) {
-    $resource = '/variables/_coverage?query=' . $query;
-    return $this->httpRequestGetBuilder($resource);
+    $resource = '/variables/_coverage';
+    return $this->httpRequestPostBuilder($resource, array('query' => $query));
   }
 
   public function variablesCoverageDownload($query, $header_accept) {

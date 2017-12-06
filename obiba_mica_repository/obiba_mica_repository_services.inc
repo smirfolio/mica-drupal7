@@ -54,9 +54,13 @@ function obiba_mica_angular_search_taxonomy_filter($name) {
 /**
  * Get Vocabulary detail by $taxonomy
  */
-function obiba_mica_repository_query($type, $query) {
+function obiba_mica_repository_query($type, $query = NULL) {
   $search_resource = new ObibaSearchResources();
-  $search_result = $search_resource->searchQuery($type, $query);
+  $q = $query;
+  if (empty($q) && !empty($_POST['query'])) {
+    $q = $_POST['query'];
+  }
+  $search_result = $search_resource->searchQuery($type, $q);
   drupal_json_output($search_result);
 }
 
@@ -113,7 +117,11 @@ function obiba_mica_repository_query_as_csv_report_by_network($networkId, $local
  */
 function obiba_mica_repository_variable_coverage($query) {
   $search_resource = new ObibaSearchResources();
-  $search_result = $search_resource->variablesCoverage($query);
+  $q = $query;
+  if (empty($q) && !empty($_POST['query'])) {
+    $q = $_POST['query'];
+  }
+  $search_result = $search_resource->variablesCoverage($q);
   drupal_json_output($search_result);
 }
 
