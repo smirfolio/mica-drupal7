@@ -59,6 +59,19 @@ function obiba_mica_variable_info($options) {
     'placeholder' => 'e.g. variable, dataset, study, network',
   );
 
+  $variable['taxonomy_panel_fields_to_filter_description'] = array(
+    'title' => t('Filter by terms\' description'),
+    'description' => t('The terms will be filtered by description.'),
+    'type' => 'boolean',
+    'default' => FALSE,
+  );
+  $variable['taxonomy_panel_fields_to_filter_keywords'] = array(
+    'title' => t('Filter by terms\' keywords'),
+    'description' => t('The terms will be filtered by keywords'),
+    'type' => 'boolean',
+    'default' => FALSE,
+  );
+
   $variable['mica_variable_taxonomies_order'] = array(
       'title' => t('Variable taxonomy facets order'),
       'description' => t('List of taxonomies that will be displayed as facets in the search page. If none is enabled, no taxonomy facet will be displayed.'),

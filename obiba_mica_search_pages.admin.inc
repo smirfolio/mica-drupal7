@@ -159,10 +159,24 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
     );
   }
 
+  $form['search_display_settings']['page_settings']['facet_region_settings']['taxonomy_panel_fields_to_filter'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Fields used for filtering in the vocabularies and terms panel'),
+    '#description' => t('List of fields that will be used to filter terms in the vocabularies and terms panel. By default, the field used is the terms\' title. The following fields can be added.'),
+    '#collapsible' => FALSE,
+  );
+
+  $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings']['taxonomy_panel_fields_to_filter'],
+    'taxonomy_panel_fields_to_filter_description', NULL, 'checkbox');
+  $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings']['taxonomy_panel_fields_to_filter'],
+      'taxonomy_panel_fields_to_filter_keywords', NULL, 'checkbox');
+
   $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_dataset_taxonomy_facet', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_study_taxonomy_facet', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['facet_region_settings'], 'mica_network_taxonomy_facet', NULL, 'checkbox');
 
+  $form['search_display_settings']['page_settings']['facet_region_settings']['taxonomy_panel_fields_to_filter']['taxonomy_panel_fields_to_filter_title']['#default_value'] = TRUE;
+  $form['search_display_settings']['page_settings']['facet_region_settings']['taxonomy_panel_fields_to_filter']['taxonomy_panel_fields_to_filter_title']['#disabled'] = TRUE;
   $form['search_display_settings']['page_settings']['result_region_settings'] = array(
     '#type' => 'fieldset',
     '#title' => t('Results region'),

@@ -504,7 +504,11 @@ function obiba_mica_app_angular_get_search_config() {
   $coverage_group_by_options = array_map(function($coverage_option){
     return !empty($coverage_option)?TRUE:FALSE;
   }, variable_get_value('coverage_group_by'));
-
+  $fieldsToFilter = array_values(array_filter(array(
+    'title',
+    variable_get_value('taxonomy_panel_fields_to_filter_description') ? 'description' : FALSE,
+    variable_get_value('taxonomy_panel_fields_to_filter_keywords') ? 'keywords' : FALSE,
+  )));
   return array(
     'SearchHelpText' => variable_get_value('help_text_search_page'),
     'ClassificationHelpText' => variable_get_value('help_text_harmonization_potential_page'),
@@ -518,6 +522,7 @@ function obiba_mica_app_angular_get_search_config() {
     'datasetTaxonomiesOrder' => empty(variable_get_value('mica_dataset_taxonomy_facet')) ? array() : array('Mica_dataset'),
     'studyTaxonomiesOrder' => empty(variable_get_value('mica_study_taxonomy_facet')) ? array() : array('Mica_study'),
     'networkTaxonomiesOrder' => empty(variable_get_value('mica_network_taxonomy_facet')) ? array() : array('Mica_network'),
+    'taxonomyPanelOptions' => array('fieldsToFilter' => $fieldsToFilter),
     'searchTabsOrder' => $get_array_value('mica_search_tabs_order'),
     'resultTabsOrder' => $get_array_value('mica_result_tabs_order'),
     'variables' =>  array(

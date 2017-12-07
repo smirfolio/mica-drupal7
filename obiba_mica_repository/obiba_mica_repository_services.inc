@@ -32,8 +32,9 @@ function obiba_mica_repository_taxonomies_filter() {
   $taxonomies = array();
   $request_parameters = drupal_get_query_parameters();
   if (!empty($request_parameters['target'])) {
+    $taxonomy_query = !empty($request_parameters['query']) ? $request_parameters['query'] : NULL;
     $taxonomies_resource = new ObibaSearchResources();
-    $taxonomies = $taxonomies_resource->taxonomiesFilter($request_parameters['target'], $request_parameters['query']);
+    $taxonomies = $taxonomies_resource->taxonomiesFilter($request_parameters['target'], $taxonomy_query);
   }
   drupal_json_output($taxonomies);
 }
