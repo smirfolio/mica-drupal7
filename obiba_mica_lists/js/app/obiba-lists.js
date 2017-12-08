@@ -33,6 +33,7 @@ mica.ObibaLists = angular.module('mica.ObibaLists', [
     if(Drupal.settings.obibaListOptions.datasetOptions){
       Drupal.settings.obibaListSearchOptions.datasets.obibaListOptions = Drupal.settings.obibaListOptions.datasetOptions;
     }
+      Drupal.settings.obibaListSearchOptions.searchLayout = 'old';
     ngObibaMicaSearchProvider.setOptions(Drupal.settings.obibaListSearchOptions);
     if(Drupal.settings.listOverrideThemes){
       angular.forEach(Drupal.settings.listOverrideThemes, function (template, keyTemplate) {
