@@ -68,7 +68,7 @@ function obiba_mica_repository_query($type, $query = NULL) {
 /**
  * Get Vocabulary detail by $taxonomy as csv
  */
-function obiba_mica_repository_query_as_csv($type, $query) {
+function obiba_mica_repository_query_as_csv($type, $query = NULL) {
 
   $search_resource = new ObibaSearchResources();
   $response = $search_resource->searchQueryAsCsv($type, $query);
@@ -83,7 +83,7 @@ function obiba_mica_repository_query_as_csv($type, $query) {
   }
 }
 
-function obiba_mica_repository_query_as_csv_report($query) {
+function obiba_mica_repository_query_as_csv_report($query = NULL) {
 
     $search_resource = new ObibaSearchResources();
     $response = $search_resource->searchStudyQueryAsCsvReport($query);
@@ -116,7 +116,7 @@ function obiba_mica_repository_query_as_csv_report_by_network($networkId, $local
 /**
  * Get Vocabulary detail by $taxonomy
  */
-function obiba_mica_repository_variable_coverage($query) {
+function obiba_mica_repository_variable_coverage($query = NULL) {
   $search_resource = new ObibaSearchResources();
   $q = $query;
   if (empty($q) && !empty($_POST['query'])) {
@@ -129,7 +129,7 @@ function obiba_mica_repository_variable_coverage($query) {
 /**
  * Get Vocabulary detail by $taxonomy
  */
-function obiba_mica_repository_variable_coverage_download($query) {
+function obiba_mica_repository_variable_coverage_download($query = NULL) {
   $search_resource = new ObibaSearchResources();
   $search_resource->variablesCoverageDownload($query, DrupalMicaClientResource::HEADER_CSV);
   $response = !empty($search_resource->getLastResponse()->body) ? $search_resource->getLastResponse()->body : NULL;
