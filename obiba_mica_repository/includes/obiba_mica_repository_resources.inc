@@ -132,29 +132,40 @@ class ObibaSearchResources extends DrupalMicaClientResource {
   }
 
   public function searchQueryAsCsv($type, $query) {
-    $resource = $this->micaUrl . '/' . $type . '/_rql_csv?query=' . $query;
-    return $this->downloadCsvExport($resource);
+    $resource = $this->micaUrl . '/' . $type . '/_rql_csv';
+    return $this->downloadCsvExport($resource, array('query' => $query));
   }
 
   public function searchStudyQueryAsCsvReport($query) {
-    $resource = $this->micaUrl . '/studies/_report?query=' . $query;
-    return $this->downloadCsvExport($resource);
+    $resource = $this->micaUrl . '/studies/_report';
+    return $this->downloadCsvExport($resource, array('query' => $query));
   }
 
   public function searchStudyQueryAsCsvReportByNetwork($networkId, $locale) {
-    $resource = $this->micaUrl . '/studies/_report_by_network?networkId=' . $networkId.'&locale='.$locale;
-    return $this->downloadCsvExport($resource);
+    $resource = $this->micaUrl . '/studies/_report_by_network';
+    return $this->downloadCsvExport($resource, array('networkId' => $networkId, 'locale' => $locale));
   }
 
-  public function downloadCsvExport($resource) {
+  private function downloadCsvExport($url, $form_params) {
+    $content = NULL;
+    if (!empty($form_params)) {
+      $params = array();
+      foreach ($form_params as $key => $value) {
+        array_push($params, rawurlencode($key) . '=' . rawurlencode($value));
+      }
+      $content = implode('&', $params);
+    }
 
-    $request = new HttpClientRequest($resource, array(
-      'method' => HttpClientRequest::METHOD_GET,
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_POST,
       'headers' => $this->authorizationHeader(array(
-          'Accept' => array(parent::HEADER_CSV),
+          'Accept' => array(DrupalMicaClientResource::HEADER_CSV),
+          'Content-Type' => array('application/x-www-form-urlencoded')
         )
       ),
+      'data' => $content
     ));
+
     $client = $this->client();
     try {
       $client->execute($request);
@@ -200,7 +211,8 @@ class ObibaSearchResources extends DrupalMicaClientResource {
   }
 
   public function variablesCoverageDownload($query, $header_accept) {
-    return $this->httpRequestGetBuilder('/variables/_coverage_download?query=' . $query, $header_accept);
+    $resource = '/variables/_coverage_download';
+    return $this->httpRequestPostBuilder($resource, array('query' => $query), $header_accept);
   }
 
   static function repositoryAnchor($url, $text, array $attributes, array $query_params) {
