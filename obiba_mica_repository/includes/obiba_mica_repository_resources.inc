@@ -132,21 +132,18 @@ class ObibaSearchResources extends DrupalMicaClientResource {
   }
 
   public function searchQueryAsCsv($type, $query) {
-    $resource = $this->micaUrl . '/' . $type . '/_rql_csv';
-    return $this->downloadCsvExport($resource, array('query' => $query));
+    return $this->downloadCsvExport('/' . $type . '/_rql_csv', array('query' => $query));
   }
 
   public function searchStudyQueryAsCsvReport($query) {
-    $resource = $this->micaUrl . '/studies/_report';
-    return $this->downloadCsvExport($resource, array('query' => $query));
+    return $this->downloadCsvExport('/studies/_report', array('query' => $query));
   }
 
   public function searchStudyQueryAsCsvReportByNetwork($networkId, $locale) {
-    $resource = $this->micaUrl . '/studies/_report_by_network';
-    return $this->downloadCsvExport($resource, array('networkId' => $networkId, 'locale' => $locale));
+    return $this->downloadCsvExport('/studies/_report_by_network', array('networkId' => $networkId, 'locale' => $locale));
   }
 
-  private function downloadCsvExport($url, $form_params) {
+  private function downloadCsvExport($resource, $form_params) {
     $content = NULL;
     if (!empty($form_params)) {
       $params = array();
@@ -156,6 +153,7 @@ class ObibaSearchResources extends DrupalMicaClientResource {
       $content = implode('&', $params);
     }
 
+    $url = $this->micaUrl . $resource;
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_POST,
       'headers' => $this->authorizationHeader(array(
