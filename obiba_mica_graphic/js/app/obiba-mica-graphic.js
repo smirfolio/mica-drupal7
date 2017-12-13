@@ -30,5 +30,5 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
           message: response.statusText
         };
       }
-      return $resource(Drupal.settings.basePath + 'mica/ng/coverage/:type/:id', {}, {'get': {method: 'GET', interceptor : {responseError : resourceErrorHandler}}});
+      return $resource(Drupal.settings.basePath + Drupal.settings.pathPrefix + 'mica/ng/coverage/:type/:id', {}, {'get': {method: 'GET', interceptor : {responseError : resourceErrorHandler}}});
     }]);
