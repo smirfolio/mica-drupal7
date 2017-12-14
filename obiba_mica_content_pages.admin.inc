@@ -48,6 +48,20 @@ function obiba_mica_content_pages_admin_settings() {
     '#description' => $info['description'],
   );
 
+  $form['configs'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Global Configurations'),
+    '#collapsible' => FALSE,
+  );
+  $info = variable_get_info('obiba_mica_enable_scroll_up');
+  $form['configs']['obiba_mica_enable_scroll_up'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#required' => FALSE,
+    '#default_value' => variable_get_value('obiba_mica_enable_scroll_up'),
+    '#description' => $info['description'],
+  );
+
   return system_settings_form($form);
 }
 

@@ -249,7 +249,6 @@ function obiba_mica_study_get_attachment_url($study_id, $attachment) {
 function obiba_mica_study_load_libs() {
   $module_path_ = drupal_get_path('module', 'obiba_mica_commons');
   drupal_add_js($module_path_ . '/js/obiba-mica-commons-affix.js');
-  drupal_add_js($module_path_ . '/js/obiba-mica-commons-got-top.js');
 }
 
 /**
