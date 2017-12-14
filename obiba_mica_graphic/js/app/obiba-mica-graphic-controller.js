@@ -228,7 +228,19 @@
         return data;
       }
 
+      function getLabelMargin(data) {
+        return  d3.max(data, function(d) {
+            return Math.ceil(d.title.length / 2);
+        });
+      }
+
       function processConfig(config, type, data, colors) {
+        config.options.chart.margin = {
+          left: 200,
+          top:50,
+          right:50,
+          bottom:100
+        };
         if (type === 'variable') {
           config.withType('pieChart');
           config.options.chart.legendPosition = 'right';
@@ -252,6 +264,7 @@
         } else {
           if (data.length > 5) {
             config.options.chart.rotateLabels = -15;
+            config.options.chart.margin.left = 200 + getLabelMargin(data);
           } else {
             config.options.chart.staggerLabels = true;
           }
@@ -260,12 +273,7 @@
         config.options.chart.color = colors;
         config.options.chart.height = 500;
         config.options.chart.autoMargins = false;
-        config.options.chart.margin = {
-          left: 200,
-          top:50,
-          right:50,
-          bottom:100
-        };
+
       }
 
       // type and id
