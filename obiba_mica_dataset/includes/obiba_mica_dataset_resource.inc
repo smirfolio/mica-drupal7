@@ -519,13 +519,22 @@ $get_tresource_by_type = function($resource){
         $data = $client->execute($request);
         $this->setLastResponse($client->lastResponse);
         $result_variable = !empty($data) ? json_decode($data) : NULL;
-          $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_variable);
-          return $result_variable;
       } catch (HttpClientException $e) {
-        return array();
+        if($e->getCode() != 404){
+          watchdog('Obiba Mica', 'Request failed, @code: @message',
+            array(
+              '@code' => $e->getCode(),
+              '@message' => $e->getMessage(),
+            ), WATCHDOG_WARNING);
+          return array();
+        }
+        else{
+          $result_variable = array();
+        }
       }
+      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_variable);
+      return $result_variable;
     }
-    return array();
   }
 
   /**

@@ -377,13 +377,18 @@ function obiba_mica_dataset_get_statistics($variable_id = NULL){
     $variable_resource = new DrupalMicaDatasetResource();
     $variable = $variable_resource->getVariable($variable_id);
     $variable_stat = $variable_resource->getVariableAggregation($variable_id);
-    if (!empty($variable_stat)) {
+    try{
       //TODO have to Not instantiate VariableStatistics from here have to use an intermediate class that extend them
       $statistics = new Datasets\VariableStatistics($variable, $variable_stat, new MicaConfig\MicaDrupalConfig());
       $stat_tab['table'] = $statistics->asTable();
       $stat_tab['chart'] = $statistics->asChart();
       obiba_mica_commons_set_cache(__FUNCTION__ . 'variable-statistics-' . $variable_id, $stat_tab);
       return $stat_tab;
+    }catch (Exception $e){
+      watchdog('obiba_mica','Unable to retrieve statistics . Error code : @code, message: @message', array(
+        '@code' => $e->getCode(),
+        '@message' => $e->getMessage()
+      ));
     }
   }
 }
