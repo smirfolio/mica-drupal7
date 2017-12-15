@@ -51,6 +51,13 @@ function obiba_mica_variable_info($options) {
     'default' => '',
   );
 
+  $variable['obiba_mica_enable_scroll_up'] = array(
+    'title' => t('Enable the Scroll Up widget'),
+    'description' => t('Here you can enable/disable the scroll up widget, depending on if it is present in the enabled Drupal template'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
   $variable['mica_target_tabs_order'] = array(
     'title' => t('Taxonomy targets order'),
     'description' => t('List of taxonomy targets (case sensitive, comma separated) determining their order of appearance in the search and classification pages. Values should be: variable, dataset, study, network.'),

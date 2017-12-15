@@ -459,6 +459,10 @@ function obiba_mica_js_alter(&$javascript) {
       ), 'setting');
     }
   }
+  $scroll_up = variable_get_value('obiba_mica_enable_scroll_up');
+  if(!empty($scroll_up)){
+    drupal_add_js($current_module_path . '/js/obiba-mica-scroll-to-top.js');
+  }
   $current_clean_url = !empty($GLOBALS['conf']['clean_url']) ? '' : '?q=';
   drupal_add_js(array('basePath' => base_path() . $current_clean_url), 'setting');
 }
