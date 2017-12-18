@@ -238,9 +238,9 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
                 <tr>
                   <th><?php print $localize->getTranslation('numberOfParticipants.participants') ?></th>
                   <td>
-                    <?php print isset($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
-                      isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ?
-                        obiba_mica_commons_format_number($dataset_type_dto->studyTable->studySummary->targetNumber->number) : NULL; ?>
+                    <?php print !empty($dataset_type_dto->studyTable->studySummary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
+                      (isset($dataset_type_dto->studyTable->studySummary->targetNumber->number) ?
+                        obiba_mica_commons_format_number($dataset_type_dto->studyTable->studySummary->targetNumber->number) : NULL); ?>
                   </td>
                 </tr>
                 <?php if (!empty($dataset_type_dto->studyTable->studySummary->countries)) : ?>
