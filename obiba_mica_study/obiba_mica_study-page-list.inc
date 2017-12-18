@@ -59,8 +59,8 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
     DrupalMicaStudyResource::anchorStudy($study_summary),
     $name,
     isset($study_summary->design) ? obiba_mica_study_translate_study_design_summary($study_summary->design) : '',
-    isset($study_summary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
-      isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL,
+    !empty($study_summary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
+      (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
     isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
     isset($study_summary->variables) ?obiba_mica_commons_format_number($study_summary->variables) : NULL,
   );
