@@ -16,9 +16,21 @@ mica.ObibaSearch = angular.module('mica.ObibaSearch', [
     function (GraphicChartsConfig) {
       GraphicChartsConfig.setOptions(Drupal.settings.GraphicChartsOptions);
   }])
-  .config(['ngObibaMicaSearchTemplateUrlProvider','ngObibaMicaSearchProvider',
-    function (ngObibaMicaSearchTemplateUrlProvider, ngObibaMicaSearchProvider) {
-      ngObibaMicaSearchProvider.setOptions(Drupal.settings.angularjsApp.obibaSearchOptions);
+  .config(['ngObibaMicaSearchTemplateUrlProvider','ngObibaMicaSearchProvider', 'ObibaServerConfigResourceProvider',
+    function (ngObibaMicaSearchTemplateUrlProvider, ngObibaMicaSearchProvider, ObibaServerConfigResourceProvider) {
+
+
+      ngObibaMicaSearchProvider.initialize(Drupal.settings.angularjsApp.obibaSearchOptions);
+      ObibaServerConfigResourceProvider.setFactory(
+        ['$q', function($q) {
+          return {
+            get: function(callback) {
+              return $q.when(callback(Drupal.settings.angularjsApp.micaServerConfig));
+            }
+          }
+        }
+        ]);
+
       ngObibaMicaSearchTemplateUrlProvider.setHeaderUrl('search', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/obiba_mica_repository_search-view-header');
       ngObibaMicaSearchTemplateUrlProvider.setHeaderUrl('classifications', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/obiba_mica_repository_classifications-view-header');
     }]);

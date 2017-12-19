@@ -9,6 +9,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\MicaClientConfigResource as MicaClientConfigResource;
+
+
 /**
  * Implements hook_menu().
  */
@@ -177,6 +180,9 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
   if (module_exists('obiba_agate')) {
     $authenticated = ObibaAgateClient::hasTicket() || user_is_logged_in();
   }
+
+  $micaConfig = (new MicaClientConfigResource())->getAllConfig();
+
   $js_settings = array(
     'angularjsApp' => array(
       'modules' => obiba_mica_app_angular_load_ng_module($module_caller),
@@ -187,7 +193,8 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
       'locale' => $language->language,
       'show_detailed_stats' => variable_get_value('dataset_detailed_var_stats'),
       'data_access_config' => obiba_mica_app_angular_get_access_config(),
-      'obibaSearchOptions' => obiba_mica_app_angular_get_search_config()
+      'obibaSearchOptions' => obiba_mica_app_angular_get_search_config(),
+      'micaServerConfig' => empty($micaConfig) ? array() : $micaConfig
     ),
   );
 

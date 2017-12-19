@@ -47,6 +47,16 @@ class MicaClientConfigResource extends MicaClient {
    * @return object
    *   The Mica server public configuration.
    */
+  public function getAllConfig() {
+    return $this->config(self::ALL_CONFIG_WS_URL);
+  }
+
+  /**
+   * Get public configuration.
+   *
+   * @return object
+   *   The Mica server public configuration.
+   */
   public function getConfig() {
     return $this->config();
   }
