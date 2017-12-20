@@ -149,8 +149,8 @@ mica.factory('TranslationService', ['$resource',
     });
   }]);
 
-mica.config(['$routeProvider', '$translateProvider',
-  function ($routeProvider, $translateProvider) {
+mica.config(['$routeProvider', '$translateProvider', 'ObibaServerConfigResourceProvider',
+  function ($routeProvider, $translateProvider, ObibaServerConfigResourceProvider) {
     $routeProvider
       .when('/', {
         controller: 'MainController'
@@ -159,6 +159,16 @@ mica.config(['$routeProvider', '$translateProvider',
       .useLoader('DrupalTranslationLoader', {lang: Drupal.settings.angularjsApp.locale})
       .fallbackLanguage('en')
       .useSanitizeValueStrategy('escaped');
+
+    ObibaServerConfigResourceProvider.setFactory(
+        ['$q', function($q) {
+          return {
+            get: function(callback) {
+              return $q.when(callback(Drupal.settings.angularjsApp.micaServerConfig));
+            }
+          }
+        }
+        ]);
   }]);
 
 mica.factory('DrupalTranslationLoader',

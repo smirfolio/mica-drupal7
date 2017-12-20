@@ -14,41 +14,41 @@
       if (context != document) {
         return;
       }
+      
+      var theScrollUp = document.createElement('a');
+      theScrollUp.setAttribute('href', "#");
+      theScrollUp.setAttribute('id', "back-to-top");
+      theScrollUp.setAttribute('title', "Back to top");
+      theScrollUp.setAttribute('class', "btn btn-default btn-xs");
 
-  var theScrollUp = document.createElement('a');
-  theScrollUp.setAttribute('href', "#");
-  theScrollUp.setAttribute('id', "back-to-top");
-  theScrollUp.setAttribute('title', "Back to top");
-  theScrollUp.setAttribute('class', "btn btn-default btn-xs");
+      var icone = document.createElement('i');
+      icone.setAttribute('class', "glyphicon glyphicon-chevron-up");
 
-  var icone = document.createElement('i');
-  icone.setAttribute('class', "glyphicon glyphicon-chevron-up");
+      theScrollUp.appendChild(icone);
 
-  theScrollUp.appendChild(icone);
+      document.getElementsByClassName("region region-content")[0].appendChild(theScrollUp);
+      if ($('#back-to-top').length) {
 
- document.getElementsByClassName("region region-content")[0].appendChild(theScrollUp);
-  if ($('#back-to-top').length) {
-
-    var scrollTrigger = 100, // px
-      backToTop = function () {
-        var scrollTop = $(window).scrollTop();
-        if (scrollTop > scrollTrigger) {
-          $('#back-to-top').addClass('show');
-        } else {
-          $('#back-to-top').removeClass('show');
-        }
-      };
-    backToTop();
-    $(window).on('scroll', function () {
-      backToTop();
-    });
-    $('#back-to-top').on('click', function (e) {
-      e.preventDefault();
-      $('html,body').animate({
-        scrollTop: 0
-      }, 700);
-    });
-  }
+        var scrollTrigger = 100, // px
+            backToTop = function () {
+              var scrollTop = $(window).scrollTop();
+              if (scrollTop > scrollTrigger) {
+                $('#back-to-top').addClass('show');
+              } else {
+                $('#back-to-top').removeClass('show');
+              }
+            };
+        backToTop();
+        $(window).on('scroll', function () {
+          backToTop();
+        });
+        $('#back-to-top').on('click', function (e) {
+          e.preventDefault();
+          $('html,body').animate({
+            scrollTop: 0
+          }, 700);
+        });
+      }
 
     }
   }
