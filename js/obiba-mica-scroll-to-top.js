@@ -14,11 +14,11 @@
       if (context != document) {
         return;
       }
-      
+
       var theScrollUp = document.createElement('a');
       theScrollUp.setAttribute('href', "#");
       theScrollUp.setAttribute('id', "back-to-top");
-      theScrollUp.setAttribute('title', "Back to top");
+      theScrollUp.setAttribute('title', Drupal.t('Back to top'));
       theScrollUp.setAttribute('class', "btn btn-default btn-xs");
 
       var icone = document.createElement('i');
