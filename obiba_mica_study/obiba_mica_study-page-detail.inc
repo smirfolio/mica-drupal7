@@ -461,6 +461,7 @@ function obiba_mica_study_get_dce_detail($study_resource_path, $study_id, $popul
   $themed_dce_attachment = NULL;
   foreach ($data_collection_events as $dce) {
     if (module_exists('obiba_mica_files')) {
+      $file_browser=NULL;
 $has_filse = obiba_mica_files_get_flat_attachments("/$study_resource_path/$study_id/population/$population_id/data-collection-event/$dce->id", !empty($token_key)?$token_key:NULL);
       if (!empty($has_filse)) {
         $file_browser = theme('obiba_mica_files_browser', array(
