@@ -33,9 +33,6 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     }
 
     $full_resource = $resource . '?' . $content;
-    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $full_resource);
-    if ($stored_data !== FALSE)
-      return $stored_data;
 
     $url = $this->micaUrl . $resource;
 
@@ -52,10 +49,6 @@ class ObibaSearchResources extends DrupalMicaClientResource {
   }
 
   private function httpRequestGetBuilder($resource, $header_accept = parent::HEADER_JSON) {
-    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource);
-    if ($stored_data !== FALSE)
-      return $stored_data;
-
     $url = $this->micaUrl . $resource;
 
     $request = new HttpClientRequest($url, array(
@@ -71,6 +64,10 @@ class ObibaSearchResources extends DrupalMicaClientResource {
 
   private function do_request($resource, $request) {
     $client = $this->client();
+    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource);
+    if ($stored_data !== FALSE){
+      return $stored_data;
+    }
 
     try {
       $data = $client->execute($request);
