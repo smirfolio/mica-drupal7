@@ -516,6 +516,7 @@ function obiba_mica_app_angular_get_search_config() {
     return !empty($coverage_option)?TRUE:FALSE;
   }, variable_get_value('coverage_group_by'));
   $fieldsToFilter = array_values(array_filter(array(
+    'name',
     'title',
     variable_get_value('taxonomy_panel_fields_to_filter_description') ? 'description' : FALSE,
     variable_get_value('taxonomy_panel_fields_to_filter_keywords') ? 'keywords' : FALSE,
