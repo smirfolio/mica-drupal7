@@ -1126,3 +1126,17 @@ function obiba_mica_commons_list_document_js($list_url, $document_type = NULL) {
 function obiba_mica_commons_allowed_filter_xss_tags(){
   return explode(',',variable_get_value('mica_allowed_xss_filtered_tag'));
 }
+
+/**
+ * function to filter the theme registry and return an array theme/path of overrided angular theme
+ *
+ * @param array $angular_templates
+ *
+ * @return array of theme/path angular template
+ */
+function obiba_mica_commons_enabled_theme($angular_templates){
+  $hooks =  theme_get_registry(TRUE);
+  return array_filter($angular_templates, function ($template) use($hooks){
+    return !empty($hooks[$template]);
+  } );
+}

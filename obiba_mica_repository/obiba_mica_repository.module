@@ -119,6 +119,15 @@ function obiba_mica_repository_get_js($weight_js) {
       ));
     }
   }
+  $search_override_themes = obiba_mica_commons_enabled_theme(array(
+    'vocabularyFilterDetailHeading' => 'vocabulary-filter-detail-heading-component',
+  ));
+  if(!empty($search_override_themes)){
+    drupal_add_js(array(
+      'searchOverrideThemes' => $search_override_themes,
+    ),
+      'setting');
+  }
   return ++$weight_js;
 }
 
