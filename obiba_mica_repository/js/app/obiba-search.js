@@ -21,4 +21,9 @@ mica.ObibaSearch = angular.module('mica.ObibaSearch', [
       ngObibaMicaSearchProvider.initialize(Drupal.settings.angularjsApp.obibaSearchOptions);
       ngObibaMicaSearchTemplateUrlProvider.setHeaderUrl('search', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/obiba_mica_repository_search-view-header');
       ngObibaMicaSearchTemplateUrlProvider.setHeaderUrl('classifications', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/obiba_mica_repository_classifications-view-header');
+      if(Drupal.settings.searchOverrideThemes){
+        angular.forEach(Drupal.settings.searchOverrideThemes, function (template, keyTemplate) {
+          ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl(keyTemplate, Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/' + template);
+        })
+      }
     }]);

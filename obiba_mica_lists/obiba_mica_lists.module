@@ -375,7 +375,13 @@ function obiba_mica_lists_options($current_path) {
       return FALSE;
   }
   $obiba_list_options = $list_options;
-  $list_override_themes = obiba_mica_lists_enabled_theme();
+  $list_override_themes = obiba_mica_commons_enabled_theme(array(
+    'searchStudiesResultTable' => 'studies-search-result-table-template',
+    'searchNetworksResultTable' => 'networks-search-result-table-template',
+    'searchDatasetsResultTable' => 'datasets-search-result-table-template',
+    'searchResultList' => 'search-result-list-template',
+    'searchInputList' => 'input-search-widget-template',
+  ));
   drupal_add_js(array(
     'obibaListOptions' => $obiba_list_options['listOptions'],
     'obibaListSearchOptions' => $obiba_list_Search_options,
@@ -385,25 +391,6 @@ function obiba_mica_lists_options($current_path) {
   $module_path = drupal_get_path('module', 'obiba_mica_lists');
   drupal_add_css($module_path . '/js/app/views/css/input-search-widget.css');
   Return TRUE;
-}
-
-/*
- * Function to check if one of these templates are overridden by drupal
- * */
-function obiba_mica_lists_enabled_theme(){
-  //ToDo: we have to think on a best way to deal with all overridable ng-* templates
-  $template_overrides = array(
-    'searchStudiesResultTable' => 'studies-search-result-table-template',
-    'searchNetworksResultTable' => 'networks-search-result-table-template',
-    'searchDatasetsResultTable' => 'datasets-search-result-table-template',
-    'searchResultList' => 'search-result-list-template',
-    'searchInputList' => 'input-search-widget-template',
-  );
-  $hooks =  theme_get_registry(TRUE);
-  $templates = array_filter($template_overrides, function ($template) use($hooks){
-   return !empty($hooks[$template]);
- } );
- return $templates;
 }
 
 function obiba_mica_lists_content_to_create() {
