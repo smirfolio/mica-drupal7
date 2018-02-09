@@ -164,11 +164,10 @@ class RqlQueryBuilder {
       return '';
     }
     $taxonomies = array_map(function ($figure) {
-      return $figure['value'];
-    }, $figures);
-    foreach ($taxonomies as &$taxonomy) {
-      $taxonomy .= '*';
-    }
+      return $figure['value'].= '*';
+    }, array_filter($figures, function ($figure){
+        return !empty($figure['enable']);
+    }));
     return sprintf("re(%s)", implode(',', $taxonomies));
   }
 
