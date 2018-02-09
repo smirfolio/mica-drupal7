@@ -464,6 +464,11 @@ function obiba_mica_graphics_do_coverage_query($query) {
 }
 
 function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
+  $cached_chart = obiba_mica_commons_get_cache(__FUNCTION__ . $query);
+  if(!empty($cached_chart)){
+      $response = $cached_chart;
+  }
+  else{
   $response = new stdClass();
   $response->charts = array();
 
@@ -517,7 +522,9 @@ function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
       );
 
       array_push($response->charts, $chart);
+        }
     }
+    obiba_mica_commons_set_cache(__FUNCTION__ . $query, $response);
   }
 
   return drupal_json_output($response);
