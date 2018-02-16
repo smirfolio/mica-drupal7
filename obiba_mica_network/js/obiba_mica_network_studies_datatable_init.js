@@ -40,11 +40,11 @@
               },
               "fnDrawCallback": function (oSettings) {
                 if (oSettings._iDisplayLength > oSettings.aoData.length) {
-                  $('.dataTables_paginate').hide();
-                  $('.dataTables_length').hide();
+                   $(idTable + '_paginate').hide();
+                   $(idTable + '_length').hide();
                 } else {
-                  $('.dataTables_paginate').show();
-                  $('.dataTables_length').show();
+                  $(idTable + '_paginate').show();
+                  $(idTable + '_length').show();
                 }
               }
             }

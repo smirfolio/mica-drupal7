@@ -12,7 +12,6 @@
   Drupal.behaviors.mica_data_access_request_datatable_init = {
 
     attach: function (context, settings) {
-      console.log(settings.table_data);
       if (context === document) {
 
 
@@ -38,11 +37,11 @@
             },
             "fnDrawCallback": function (oSettings) {
               if (oSettings._iDisplayLength > oSettings.aoData.length) {
-                $('.dataTables_paginate').hide();
-                $('.dataTables_length').hide();
+                $('#table-users_paginate').hide();
+                $('#table-users_length').hide();
               } else {
-                $('.dataTables_paginate').show();
-                $('.dataTables_length').show();
+                $('#table-users_paginate').show();
+                $('#table-users_length').show();
               }
             }
           }
