@@ -4,3 +4,4 @@ target
 *.sublime-*
 .project
 drupal/modules/cas
+.vscode

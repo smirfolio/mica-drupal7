@@ -73,8 +73,11 @@ if (drupalModules) {
 }
 var mica = angular.module('mica', modules);
 
-mica.config(['$routeProvider', 'ObibaServerConfigResourceProvider',
-  function ($routeProvider, ObibaServerConfigResourceProvider) {
+mica.config(['$routeProvider', '$locationProvider', 'ObibaServerConfigResourceProvider',
+  function ($routeProvider, $locationProvider, ObibaServerConfigResourceProvider) {
+    
+    $locationProvider.hashPrefix('');
+
     $routeProvider
       .when('/', {
         controller: 'MainController'
