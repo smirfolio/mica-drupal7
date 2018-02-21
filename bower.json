@@ -2,26 +2,26 @@
   "name": "obiba_mica",
   "version": "2.0.1",
   "dependencies": {
-    "angular": "1.5.8",
-    "angular-animate": "1.5.8",
-    "angular-bootstrap": "2.3.0",
-    "angular-resource": "1.5.8",
-    "angular-cookies": "1.5.8",
-    "angular-route": "1.5.8",
-    "angular-sanitize": "1.5.8",
-    "angular-ui-select": "0.19.6",
+    "angular": "1.6.9",
+    "angular-animate": "1.6.9",
+    "angular-bootstrap": "2.5.0",
+    "angular-resource": "1.6.9",
+    "angular-cookies": "1.6.9",
+    "angular-route": "1.6.9",
+    "angular-sanitize": "1.6.9",
+    "angular-ui-select": "0.19.8",
     "angular-ui": "0.4.0",
-    "angular-translate-loader-url": "2.13.0",
-    "jquery-ui": "1.11.4",
+    "angular-translate-loader-url": "2.17.0",
+    "jquery-ui": "1.12.1",
     "ng-file-upload": "12.2.13",
     "ng-obiba": "https://github.com/obiba/ng-obiba.git#master",
     "ng-obiba-mica": "https://github.com/obiba/ng-obiba-mica.git#master",
-    "filesize": "3.3.0",
+    "filesize": "3.6.0",
     "angular-schema-form": "0.8.13",
     "angular-schema-form-bootstrap": "https://github.com/obiba/angular-schema-form-bootstrap.git#master",
     "angular-schema-form-datetimepicker": "https://github.com/obiba/angular-schema-form-datetimepicker.git#master",
     "angular-utils-pagination": "0.11.1",
-    "angular-recaptcha": "3.0.3",
+    "angular-recaptcha": "4.1.0",
     "sf-obiba-file-upload": "https://github.com/obiba/sf-obiba-file-upload.git#master",
     "sf-checkboxgroup": "https://github.com/obiba/sf-checkboxgroup.git#master",
     "mica-study-timeline": "https://github.com/obiba/mica-study-timeline.git#master",
@@ -32,7 +32,7 @@
     "obiba-shims": "https://github.com/obiba/obiba-shims.git#master"
   },
   "resolutions": {
-    "angular": "1.5.8",
-    "jquery": "2.2.4"
+    "angular": "1.6.9",
+    "jquery": "3.3.1"
   }
 }
