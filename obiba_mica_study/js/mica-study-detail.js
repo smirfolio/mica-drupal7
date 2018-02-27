@@ -19,7 +19,7 @@
           if (optionsStudyContent.showNetwork) {
             qNetworks = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + settings.study_url + '/networks')
               .done(function (data) {
-                if (! data) {
+                if (!data) {
                   $('#networks').remove();
                   return;
                 }
@@ -36,7 +36,7 @@
           if (optionsStudyContent.showDatasets) {
             qDatasets = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + settings.study_url + '/datasets')
               .done(function (data) {
-                if (! data) {
+                if (!data) {
                   $('#datasets').remove();
                   return;
                 }
@@ -72,15 +72,26 @@
           }
         });
 
-        var anchor = location.hash.substr(1)? location.hash.substr(1).replace(/^\//, '') :null;
-        if(anchor) {
+        function cleanHash(hash) {
+          return hash.substr(1) ? hash.substr(1).replace(/^\//, '') : null;
+        }
+
+        var anchor = cleanHash(location.hash);
+        if (anchor) {
           $('#tab-pane a[href="#' + anchor + '"]').tab('show');
-          var scrollSpot = $('#'+ anchor);
+          var scrollSpot = $('#' + anchor);
 
           if (scrollSpot.length) {
             $('html, body').animate({
               scrollTop: scrollSpot.offset().top
             }, 'slow');
+          }
+        }
+
+        window.onhashchange = function (event) {
+          var hash = cleanHash(event.currentTarget.location.hash);
+          if (hash) {
+            $('#tab-pane a[href="#' + hash + '"]').tab('show');
           }
         }
       }
