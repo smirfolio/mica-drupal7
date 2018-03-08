@@ -567,6 +567,7 @@ function obiba_mica_app_angular_get_search_config() {
         'listPageSize' => intval(variable_get_value('studies_list_page_size')),
         'showStudiesSearchFilter' => variable_get_value('studies_facet_search'),
         'studiesColumn' => array(
+          'showStudiesTypeColumn' => variable_get_value('studies_column_type'),
           'showStudiesDesignColumn' => variable_get_value('studies_column_design'),
           'showStudiesQuestionnaireColumn' => variable_get_value('studies_column_questionnaire'),
           'showStudiesPmColumn' => variable_get_value('studies_column_pm'),

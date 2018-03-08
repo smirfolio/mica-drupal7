@@ -464,6 +464,13 @@ function _obiba_mica_settings_search_studies_form(&$form) {
     '#title' => t('Study column display settings'),
     '#collapsible' => FALSE,
   );
+  $info = variable_get_info('studies_column_type');
+  $form['search_display_settings']['studies_form']['studies_column']['studies_column_type'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_column_type'),
+    '#description' => $info['description'],
+  );
   $info = variable_get_info('studies_column_design');
   $form['search_display_settings']['studies_form']['studies_column']['studies_column_design'] = array(
     '#type' => 'checkbox',
