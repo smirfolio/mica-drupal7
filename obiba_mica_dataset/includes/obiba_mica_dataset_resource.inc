@@ -538,6 +538,54 @@ $get_tresource_by_type = function($resource){
   }
 
   /**
+   * Get the variable summary by its ID.
+   *
+   * @param string $variable_id
+   *   The variable id.
+   *
+   * @return array
+   *   The server response.
+   */
+  public function getVariableSummary($variable_id) {
+    $resource_query = sprintf("/variable/%s/summary", rawurlencode($variable_id));
+    $this->setLastResponse(NULL);
+    $cached_summary = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
+    if (!empty($cached_summary)) {
+      return $cached_summary;
+    }
+    else {
+      $url = $this->micaUrl . $resource_query;
+      $request = new HttpClientRequest($url, array(
+        'method' => HttpClientRequest::METHOD_GET,
+        'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+      ));
+      $client = $this->client();
+      try {
+        $data = $client->execute($request);
+        $this->setLastResponse($client->lastResponse);
+        $result_summary = !empty($data) ? json_decode($data) : NULL;
+      } catch (HttpClientException $e) {
+        if($e->getCode() != 404){
+          watchdog('Obiba Mica', 'Request failed, @code: @message',
+            array(
+              '@code' => $e->getCode(),
+              '@message' => $e->getMessage(),
+            ), WATCHDOG_WARNING);
+          return array();
+        }
+        else{
+          $result_summary = array();
+        }
+      }
+      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resource_query, $result_summary);
+      return $result_summary;
+    }
+  }
+
+  /**
    * Get the aggregation (=summary from ES) of the variable.
    *
    * @param string $variable_id

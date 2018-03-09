@@ -97,6 +97,24 @@ function obiba_mica_variable_page_detail($variable_id) {
 }
 
 /**
+ * Variables information.
+ */
+function obiba_mica_dataset_get_variable_info($variable_id) {
+  $dataset_resource = new DrupalMicaDatasetResource();
+  $variable_dto = $dataset_resource->getVariable($variable_id);
+  drupal_json_output($variable_dto);
+}
+
+/**
+ * Variables summary.
+ */
+function obiba_mica_dataset_get_variable_summary($variable_id) {
+  $dataset_resource = new DrupalMicaDatasetResource();
+  $variable_summary_dto = $dataset_resource->getVariableSummary($variable_id);
+  drupal_json_output($variable_summary_dto);
+}
+
+/**
  * Ajax Callback to get variable algorithm.
  */
 function obiba_mica_dataset_get_variable_algorithm($variable_id, $sorted_variable_names) {

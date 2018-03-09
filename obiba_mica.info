@@ -15,6 +15,7 @@ dependencies[] = variable
 dependencies[] = jquery_update
 dependencies[] = obiba_mica_study
 dependencies[] = obiba_mica_repository
+dependencies[] = obiba_mica_analysis
 dependencies[] = obiba_mica_dataset
 dependencies[] = obiba_mica_network
 dependencies[] = obiba_mica_files

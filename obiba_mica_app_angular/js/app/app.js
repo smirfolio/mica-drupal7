@@ -118,6 +118,8 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('TaxonomiesResource', basePathAndPathPrefix + 'mica/repository/taxonomies/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('TaxonomyResource', basePathAndPathPrefix + 'mica/repository/taxonomy/:taxonomy/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('VocabularyResource', basePathAndPathPrefix + 'mica/repository/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
+    ngObibaMicaUrlProvider.setUrl('VariableResource', basePathAndPathPrefix + 'mica/variable/:id/ws');
+    ngObibaMicaUrlProvider.setUrl('VariableSummaryResource', basePathAndPathPrefix + 'mica/variable/:id/summary/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', basePathAndPathPrefix + 'mica/repository/:type/_rql/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvResource', basePathAndPathPrefix + 'mica/repository/:type/_rql_csv/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvReportResource', basePathAndPathPrefix + 'mica/repository/:type/_report/:query/ws');
@@ -134,7 +136,8 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('FileBrowserSearchResource', basePathAndPathPrefix + 'mica/files/search');
     ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', basePathAndPathPrefix + 'mica/file/download' + ((Drupal.settings.basePath.indexOf('?q=')!==-1)?'&':'?') + 'path=:path&inline=:inline&keyToken=:key');
     ngObibaMicaUrlProvider.setUrl('SearchBaseUrl', 'mica/repository#/search');
-    ngObibaMicaUrlProvider.setUrl('DocumentSuggestion', basePathAndPathPrefix + 'mica/repository/:documentType/_suggest/ws')
+    ngObibaMicaUrlProvider.setUrl('DocumentSuggestion', basePathAndPathPrefix + 'mica/repository/:documentType/_suggest/ws');
+    ngObibaMicaUrlProvider.setUrl('EntitiesCountResource', basePathAndPathPrefix + 'mica/analysis/entities_count/ws');
   }]);
 
 mica.provider('SessionProxy',
