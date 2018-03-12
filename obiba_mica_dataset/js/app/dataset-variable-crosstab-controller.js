@@ -20,6 +20,7 @@
           '$log',
           '$location',
           '$route',
+          '$translate',
           'DatasetResource',
           'DatasetCategoricalVariablesResource',
           'DatasetVariablesResource',
@@ -27,10 +28,10 @@
           'DatasetVariablesCrosstabResource',
           'ServerErrorAlertService',
           'ContingencyService',
-          'LocalizedStringService',
+          'LocalizedValues',
           'ChiSquaredCalculator',
 
-          function ($rootScope, $scope, $routeParams, $log, $location, $route,
+          function ($rootScope, $scope, $routeParams, $log, $location, $route, $translate,
                     DatasetResource,
                     DatasetCategoricalVariablesResource,
                     DatasetVariablesResource,
@@ -38,7 +39,7 @@
                     DatasetVariablesCrosstabResource,
                     ServerErrorAlertService,
                     ContingencyService,
-                    LocalizedStringService,
+                    LocalizedValues,
                     ChiSquaredCalculator) {
 
             startProgess();
@@ -396,10 +397,11 @@
                     : null;
               }
 
+              var currentLanguage = $translate.use();
               return {
-                summary: LocalizedStringService.getValue(summary.acronym),
-                population: pop ? LocalizedStringService.getValue(pop.name) : '',
-                dce: dce ? LocalizedStringService.getValue(dce[0].name) : '',
+                summary: LocalizedValues.forLocale(summary.acronym, currentLanguage),
+                population: pop ? LocalizedValues.forLocale(pop.name, currentLanguage) : '',
+                dce: dce ? LocalizedValues.forLocale(dce[0].name, currentLanguage) : '',
                 project: opalTable.project,
                 table: opalTable.table
               }
