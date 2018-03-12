@@ -52,8 +52,7 @@ function obiba_mica_analysis_load_menus() {
     'access callback' => TRUE,
     'title' => variable_get('entities_count_page_title', 'Entities Count'),
     'module_caller' => 'obiba_mica_analysis',
-    'menu_name' => 'main-menu',
-    'weight' => 10,
+    'type' => MENU_CALLBACK,
     'options' => array('fragment' => 'entities-count'),
   );
   return $items;
