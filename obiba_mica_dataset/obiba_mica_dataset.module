@@ -97,13 +97,6 @@ function obiba_mica_dataset_menu() {
     'page arguments' => array(1, 2, 5, 7),
   );
 
-  $items['mica/variable/%/ws'] = array(
-    'page callback' => 'obiba_mica_dataset_get_variable_info',
-    'file' => 'obiba_mica_dataset-page-detail.inc',
-    'access callback' => TRUE,
-    'page arguments' => array(2),
-  );
-
   $items['mica/dataset/%/%/ws'] = array(
     'page callback' => 'obiba_mica_dataset_info',
     'file' => 'obiba_mica_dataset-page-detail.inc',
@@ -154,6 +147,20 @@ function obiba_mica_dataset_menu() {
   $items['mica/variable/%'] = array(
     'title' => 'Variable',
     'page callback' => 'obiba_mica_variable_page_detail',
+    'file' => 'obiba_mica_variable-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  $items['mica/variable/%/ws'] = array(
+    'page callback' => 'obiba_mica_dataset_get_variable_info',
+    'file' => 'obiba_mica_variable-page-detail.inc',
+    'access callback' => TRUE,
+    'page arguments' => array(2),
+  );
+
+  $items['mica/variable/%/summary/ws'] = array(
+    'page callback' => 'obiba_mica_dataset_get_variable_summary',
     'file' => 'obiba_mica_variable-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2),

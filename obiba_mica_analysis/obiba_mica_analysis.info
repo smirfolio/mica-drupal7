@@ -1,0 +1,8 @@
+name = "Obiba Mica Analysis"
+description = "Mica Client -- Analysis"
+package = Obiba
+core = 7.x
+
+dependencies[] = obiba_mica_commons
+
+files[] = includes/obiba_mica_analysis_resources.inc

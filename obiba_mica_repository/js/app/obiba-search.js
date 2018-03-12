@@ -24,6 +24,6 @@ mica.ObibaSearch = angular.module('mica.ObibaSearch', [
       if(Drupal.settings.searchOverrideThemes){
         angular.forEach(Drupal.settings.searchOverrideThemes, function (template, keyTemplate) {
           ngObibaMicaSearchTemplateUrlProvider.setTemplateUrl(keyTemplate, Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/' + template);
-        })
+        });
       }
     }]);

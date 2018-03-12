@@ -65,6 +65,7 @@ class MicaClientPathProvider {
   const REPOSITORY_SEARCH = 'mica/repository';
   const PAGE_STUDIES_LIST = 'mica/study';
   const PAGE_NETWORKS_LIST = 'mica/networks/list';
+  const ANALYSIS = 'mica/analysis';
 
   /**
    * The project detail url or link if no text is present.
