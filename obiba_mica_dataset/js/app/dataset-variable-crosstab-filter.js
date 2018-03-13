@@ -49,15 +49,6 @@
             }
           }])
 
-        .filter('localizedValue', ['LocalizedStringService',
-          function (LocalizedStringService) {
-            return function (container) {
-              if (container) {
-                return LocalizedStringService.getValue(container);
-              }
-            }
-          }])
-
         .filter('roundNumber', ['$filter',
           function ($filter) {
             return function (value) {

@@ -26,7 +26,7 @@
   -->
 
 <div ng-cloak>
-  <h4>{{dataset.acronym | localizedValue}} {{'dataset.crosstab.title' | translate}}</h4>
+  <h4>{{dataset.acronym | localizedString}} {{'dataset.crosstab.title' | translate}}</h4>
 
   <obiba-alert id="DatasetVariableCrosstabController"></obiba-alert>
 
