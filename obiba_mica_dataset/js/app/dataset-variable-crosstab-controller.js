@@ -293,6 +293,10 @@
                       normalizeFrequencies(contingency, v2Cats);
                     }
                   }
+
+                  if (contingency.studyTable) {
+                    contingency.info = extractSummaryInfo(contingency.studyTable);
+                  }
                 });
               }
 
@@ -385,8 +389,7 @@
              * @returns {{summary: *, population: *, dce: *, project: *, table: *}}
              */
             var extractSummaryInfo = function (opalTable) {
-              var summary = opalTable.studySummary || opalTable.networkSummary;
-
+              var summary = opalTable.studySummary;
               if (opalTable.studySummary) {
                 var studySummary = opalTable.studySummary;
                 var pop = studySummary.populationSummaries ? studySummary.populationSummaries[0] : null;
@@ -399,11 +402,12 @@
 
               var currentLanguage = $translate.use();
               return {
-                summary: LocalizedValues.forLocale(summary.acronym, currentLanguage),
-                population: pop ? LocalizedValues.forLocale(pop.name, currentLanguage) : '',
-                dce: dce ? LocalizedValues.forLocale(dce[0].name, currentLanguage) : '',
+                summary: LocalizedValues.forLang(summary.acronym, currentLanguage),
+                population: pop ? LocalizedValues.forLang(pop.name, currentLanguage) : '',
+                dce: dce ? LocalizedValues.forLang(dce[0].name, currentLanguage) : '',
                 project: opalTable.project,
-                table: opalTable.table
+                table: opalTable.table,
+                tableName: LocalizedValues.forLang(opalTable.name, currentLanguage)
               }
             };
 

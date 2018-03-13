@@ -25,9 +25,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<span ng-init="info = extractSummaryInfo(contingency.studyTable)" title="{{info.population ? info.population + ':' + info.dce : ''}}">
+<span title="{{contingency.info.population ? contingency.info.population + ':' + contingency.info.dce : ''}}">
   <span ng-if="contingency.studyTable">
-    <a href="<?php print $base_path . 'mica/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY; ?>/{{contingency.studyTable.studyId}}">{{contingency.studyTable.studySummary.acronym | localizedString}}</a>
-    <span>{{contingency.studyTable.name | localizedString}}</span>
+    <a href="<?php print $base_path . 'mica/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY; ?>/{{contingency.studyTable.studyId}}">{{contingency.info.summary}}</a>
+    <span>{{contingency.info.tableName}}</span>
   </span>
 </span>
