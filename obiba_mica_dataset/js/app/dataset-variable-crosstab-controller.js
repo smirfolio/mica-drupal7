@@ -484,6 +484,7 @@
               },
               function onSuccess(response) {
                 $scope.dataset = response;
+                $scope.dataset.translatedAcronym = LocalizedValues.forLang($scope.dataset.acronym, $translate.use());
                 $scope.datasetHarmo = $scope.dataset.hasOwnProperty('obiba.mica.HarmonizedDatasetDto.type');
               },
               onError
