@@ -212,7 +212,9 @@ function obiba_mica_app_angular_load_template_app($module_caller = NULL, $node_p
   obiba_mica_app_angular_load_js_resources($module_caller);
   if(!empty($node_page_id)){
     $node_rendered = obiba_mica_commons_get_translated_node($node_page_id);
-    $node_rendered['#node']->title = '';
+    if (!empty($node_rendered)) {
+      $node_rendered['#node']->title = '';
+    }
   }
   return theme('obiba_angular_main',
     array(
@@ -414,6 +416,10 @@ function obiba_mica_app_angular_load_angular_library() {
         ),
         $lib_path
         . '/angular-recaptcha/release/angular-recaptcha.min.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
+        $lib_path . '/angular-local-storage/dist/angular-local-storage.min.js' => array(
           'type' => 'file',
           'scope' => 'footer',
         ),

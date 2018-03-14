@@ -120,6 +120,12 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('VocabularyResource', basePathAndPathPrefix + 'mica/repository/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('VariableResource', basePathAndPathPrefix + 'mica/variable/:id/ws');
     ngObibaMicaUrlProvider.setUrl('VariableSummaryResource', basePathAndPathPrefix + 'mica/variable/:id/summary/ws');
+    ngObibaMicaUrlProvider.setUrl('SetsResource', basePathAndPathPrefix + 'mica/sets/:type/sets/ws');
+    ngObibaMicaUrlProvider.setUrl('SetsImportResource', basePathAndPathPrefix + 'mica/sets/:type/sets/_import/ws');
+    ngObibaMicaUrlProvider.setUrl('SetResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/ws');
+    ngObibaMicaUrlProvider.setUrl('SetDocumentsResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/:from/:limit/ws');
+    ngObibaMicaUrlProvider.setUrl('SetClearResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/ws');
+    ngObibaMicaUrlProvider.setUrl('SetImportResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/_import/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', basePathAndPathPrefix + 'mica/repository/:type/_rql/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvResource', basePathAndPathPrefix + 'mica/repository/:type/_rql_csv/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvReportResource', basePathAndPathPrefix + 'mica/repository/:type/_report/:query/ws');
@@ -136,8 +142,10 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('FileBrowserSearchResource', basePathAndPathPrefix + 'mica/files/search');
     ngObibaMicaUrlProvider.setUrl('FileBrowserDownloadUrl', basePathAndPathPrefix + 'mica/file/download' + ((Drupal.settings.basePath.indexOf('?q=')!==-1)?'&':'?') + 'path=:path&inline=:inline&keyToken=:key');
     ngObibaMicaUrlProvider.setUrl('SearchBaseUrl', 'mica/repository#/search');
+    ngObibaMicaUrlProvider.setUrl('SearchPage', basePathAndPathPrefix + 'mica/repository#/search?query=:query');
     ngObibaMicaUrlProvider.setUrl('DocumentSuggestion', basePathAndPathPrefix + 'mica/repository/:documentType/_suggest/ws');
     ngObibaMicaUrlProvider.setUrl('EntitiesCountResource', basePathAndPathPrefix + 'mica/analysis/entities_count/ws');
+    ngObibaMicaUrlProvider.setUrl('EntitiesCountBaseUrl', 'mica/analysis#/entities-count');
   }]);
 
 mica.provider('SessionProxy',

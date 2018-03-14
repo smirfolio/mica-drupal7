@@ -16,6 +16,23 @@
 
 ?>
 
+<div>
+  <?php if ($variable_dto->variableType != 'Harmonized'): ?>
+  <div class="alert-growl-container">
+    <obiba-alert id="AddVariableToCartControllerGrowl"></obiba-alert>
+  </div>
+  <div class="pull-right md-bottom-margin">
+    <div ng-controller="AddVariableToCartController">
+      <a href class="btn btn-success" ng-click="onAdd('<?php print $variable_dto->id; ?>')">
+        <i class="fa fa-cart-plus"></i> <?php print $localize->getTranslation('sets.cart.add-to-cart') ?>
+      </a>
+    </div>
+  </div>
+  <?php endif; ?>
+</div>
+
+<div class="clearfix"></div>
+
 <article class="bordered-article">
   <section>
     <div class="row">

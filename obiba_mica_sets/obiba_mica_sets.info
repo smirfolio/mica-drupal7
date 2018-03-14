@@ -1,0 +1,8 @@
+name = "Obiba Mica Sets"
+description = "Mica Client -- Sets"
+package = Obiba
+core = 7.x
+
+dependencies[] = obiba_mica_commons
+
+files[] = includes/obiba_mica_sets_resources.inc
