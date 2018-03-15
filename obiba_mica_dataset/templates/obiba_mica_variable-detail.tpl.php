@@ -17,14 +17,17 @@
 ?>
 
 <div>
-  <?php if ($variable_dto->variableType != 'Harmonized'): ?>
+  <?php if (module_exists('obiba_mica_sets') && $variable_dto->variableType != 'Harmonized'): ?>
   <div class="alert-growl-container">
-    <obiba-alert id="AddVariableToCartControllerGrowl"></obiba-alert>
+    <obiba-alert id="VariableToCartControllerGrowl"></obiba-alert>
   </div>
   <div class="pull-right md-bottom-margin">
-    <div ng-controller="AddVariableToCartController">
-      <a href class="btn btn-success" ng-click="onAdd('<?php print $variable_dto->id; ?>')">
+    <div ng-controller="VariableToCartController" ng-init="onInit('<?php print $variable_dto->id; ?>')">
+      <a href class="btn btn-success" ng-show="canBeAdded" ng-click="onAdd('<?php print $variable_dto->id; ?>')">
         <i class="fa fa-cart-plus"></i> <?php print $localize->getTranslation('sets.cart.add-to-cart') ?>
+      </a>
+      <a href class="btn btn-danger" ng-show="canBeRemoved" ng-click="onRemove('<?php print $variable_dto->id; ?>')">
+        <i class="fa fa-shopping-cart"></i> <?php print $localize->getTranslation('sets.cart.remove-from-cart') ?>
       </a>
     </div>
   </div>

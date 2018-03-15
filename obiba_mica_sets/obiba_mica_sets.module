@@ -28,8 +28,22 @@ function obiba_mica_sets_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
+  $items[ObibaSetsResources::MICA_SETS . '/%/set/%/document/%/_exists/ws'] = array(
+    'page callback' => 'obiba_mica_sets_set_document_exists',
+    'file' => 'obiba_mica_sets_services.inc',
+    'page arguments' => array(2, 4, 6),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   $items[ObibaSetsResources::MICA_SETS . '/%/set/%/documents/_import/ws'] = array(
     'page callback' => 'obiba_mica_sets_set_documents_import',
+    'file' => 'obiba_mica_sets_services.inc',
+    'page arguments' => array(2, 4),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  $items[ObibaSetsResources::MICA_SETS . '/%/set/%/documents/_delete/ws'] = array(
+    'page callback' => 'obiba_mica_sets_set_documents_remove',
     'file' => 'obiba_mica_sets_services.inc',
     'page arguments' => array(2, 4),
     'access callback' => TRUE,

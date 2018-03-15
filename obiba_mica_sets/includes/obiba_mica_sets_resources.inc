@@ -108,8 +108,18 @@ class ObibaSetsResources extends DrupalMicaClientResource {
     return $this->httpRequestGetBuilder($resource);
   }
 
+  public function existsInSet($document_type, $set_id, $document_id) {
+    $resource = '/' . $document_type . '/set/' . $set_id . '/document/' . $document_id . '/_exists';
+    return $this->httpRequestGetBuilder($resource);
+  }
+  
   public function importSet($document_type, $set_id, $body = NULL) {
     $resource = '/' . $document_type . '/set/' . $set_id . '/documents/_import';
+    return $this->httpRequestPostBuilder($resource, $body);
+  }
+
+  public function removeFromSet($document_type, $set_id, $body = NULL) {
+    $resource = '/' . $document_type . '/set/' . $set_id . '/documents/_delete';
     return $this->httpRequestPostBuilder($resource, $body);
   }
 

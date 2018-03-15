@@ -125,7 +125,9 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('SetResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/ws');
     ngObibaMicaUrlProvider.setUrl('SetDocumentsResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/:from/:limit/ws');
     ngObibaMicaUrlProvider.setUrl('SetClearResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/ws');
+    ngObibaMicaUrlProvider.setUrl('SetExistsResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/document/:did/_exists/ws');
     ngObibaMicaUrlProvider.setUrl('SetImportResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/_import/ws');
+    ngObibaMicaUrlProvider.setUrl('SetRemoveResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/_delete/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchResource', basePathAndPathPrefix + 'mica/repository/:type/_rql/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvResource', basePathAndPathPrefix + 'mica/repository/:type/_rql_csv/:query/ws');
     ngObibaMicaUrlProvider.setUrl('JoinQuerySearchCsvReportResource', basePathAndPathPrefix + 'mica/repository/:type/_report/:query/ws');

@@ -30,12 +30,31 @@ function obiba_mica_sets_set($document_type = 'variables', $set_id) {
 }
 
 /**
+ * Check a identifiers is in a set.
+ */
+function obiba_mica_sets_set_document_exists($document_type = 'variables', $set_id, $document_id) {
+  $resource = new ObibaSetsResources();
+  $result = $resource->existsInSet($document_type, $set_id, $document_id);
+  drupal_json_output($result);
+}
+
+/**
  * Importing a list of identifiers in a set.
  */
 function obiba_mica_sets_set_documents_import($document_type = 'variables', $set_id) {
   $resource = new ObibaSetsResources();
   $body = file_get_contents('php://input');
   $result = $resource->importSet($document_type, $set_id, $body);
+  drupal_json_output($result);
+}
+
+/**
+ * Remove a list of identifiers from a set.
+ */
+function obiba_mica_sets_set_documents_remove($document_type = 'variables', $set_id) {
+  $resource = new ObibaSetsResources();
+  $body = file_get_contents('php://input');
+  $result = $resource->removeFromSet($document_type, $set_id, $body);
   drupal_json_output($result);
 }
 
