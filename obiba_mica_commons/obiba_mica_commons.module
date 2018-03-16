@@ -1021,40 +1021,6 @@ function obiba_mica_commons_setting_menu_title_from_callback(&$variables) {
   }
 }
 
-/**
- * $entity contain or not an coverage
- */
-function obiba_mica_commons_has_coverage($entity, $entity_id) {
-  $enabled_coverage = obiba_mica_commons_enabled_coverage();
-  if (!empty($enabled_coverage)) {
-    $query = NULL;
-    switch ($entity) {
-      case 'dataset':
-        $query = DrupalMicaClient\RqlQueryBuilder::dataset_query_charts($entity_id);
-        break;
-      case 'study':
-        $query = DrupalMicaClient\RqlQueryBuilder::study_query_charts($entity_id);
-        break;
-      case 'network':
-        $query = DrupalMicaClient\RqlQueryBuilder::network_query_charts($entity_id);
-        break;
-      default;
-    }
-    if (!empty($query)) {
-      $search_resources = new ObibaSearchResources();
-      $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage');
-
-      if ($coverages) {
-        $coverage['has_coverage'] = TRUE;
-        return $coverage;
-      }
-    }
-  }
-  else {
-    return FALSE;
-  }
-}
-
 function obiba_mica_commons_enabled_coverage() {
   $enabled_coverage = variable_get_value('mica_taxonomy_figures');
   if (!empty($enabled_coverage)) {

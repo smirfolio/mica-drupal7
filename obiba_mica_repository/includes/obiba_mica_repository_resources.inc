@@ -92,19 +92,18 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     return l($text, $url, $options);
   }
 
-  public function taxonomiesCoverageRql($query, $type, $aggregation_type) {
+  public function taxonomiesChartRql($query, $type, $aggregation_type) {
 
     $request_parameters = array(
-      'query' => $query,
-      'strict' => 'false'
+      'query' => $query
     );
-    $resources = $query . $type . $aggregation_type;
-    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resources);
+
+    $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $query);
     if ($stored_data !== FALSE) {
       return $stored_data;
     }
 
-    $url = "$this->micaUrl/variables/legacy/_coverage";
+    $url = "$this->micaUrl/variables/charts/_coverage";
     $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -120,7 +119,7 @@ class ObibaSearchResources extends DrupalMicaClientResource {
       $this->setLastResponse($client->lastResponse);
 
       $result_data = json_decode((!empty($data) ? $data : '{"charts":[]}'));
-      $this->drupalCache->MicaSetCache(__FUNCTION__ . $resources, $result_data);
+      $this->drupalCache->MicaSetCache(__FUNCTION__ . $query, $result_data);
       return $result_data;
 
     } catch (HttpClientException $e) {

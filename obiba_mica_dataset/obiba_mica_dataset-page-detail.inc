@@ -607,7 +607,12 @@ function obiba_mica_dataset_harmonizations_table_data($dataset_type_dto, $datase
 
 function obiba_mica_dataset_ng_coverage($dataset_id) {
   $query = DrupalMicaClient\RqlQueryBuilder::dataset_query_charts($dataset_id);
-  return obiba_mica_graphics_nvd3_query_charts($query, $dataset_id);
+  return obiba_mica_graphics_nvd3_query_charts(
+    $query,
+    DrupalMicaClient\RqlQueryBuilder::dataset_query_charts_variables_template(),
+    $dataset_id,
+    'Variables'
+  );
 }
 
 /**

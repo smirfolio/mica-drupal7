@@ -304,7 +304,7 @@
 
           if(res.charts){
             res.charts.forEach(function (chart) {
-              var chartData = (chart.data.length ? chart.data : chart.variableData);
+              var chartData = (chart.data && chart.data.length ? chart.data : chart.variableData);
 
               if (chartData && chartData.length) {
                 var data = doNormalizationByType(chartData, type);
