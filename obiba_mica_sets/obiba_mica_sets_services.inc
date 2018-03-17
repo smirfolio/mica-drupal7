@@ -49,6 +49,16 @@ function obiba_mica_sets_set_documents_import($document_type = 'variables', $set
 }
 
 /**
+ * Importing a identifiers matchng a query in a set.
+ */
+function obiba_mica_sets_set_documents_import_query($document_type = 'variables', $set_id) {
+  $resource = new ObibaSetsResources();
+  $query = $_POST['query'];
+  $result = $resource->importQuerySet($document_type, $set_id, $query);
+  drupal_json_output($result);
+}
+
+/**
  * Remove a list of identifiers from a set.
  */
 function obiba_mica_sets_set_documents_remove($document_type = 'variables', $set_id) {

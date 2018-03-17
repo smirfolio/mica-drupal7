@@ -35,6 +35,30 @@ class ObibaSetsResources extends DrupalMicaClientResource {
     return $this->do_request(NULL, $request);
   }
 
+  private function httpRequestFormPostBuilder($resource, $form_params, $header_accept = parent::HEADER_JSON) {
+    $content = NULL;
+    if (!empty($form_params)) {
+      $params = array();
+      foreach ($form_params as $key => $value) {
+        array_push($params, rawurlencode($key) . '=' . rawurlencode($value));
+      }
+      $content = implode('&', $params);
+    }
+
+    $url = $this->micaUrl . $resource;
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_POST,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array($header_accept),
+          'Content-Type' => array('application/x-www-form-urlencoded')
+        )
+      ),
+      'data' => $content
+    ));
+    return $this->do_request($resource, $request);
+  }
+
   private function httpRequestGetBuilder($resource, $header_accept = parent::HEADER_JSON) {
     $url = $this->micaUrl . $resource;
 
@@ -116,6 +140,11 @@ class ObibaSetsResources extends DrupalMicaClientResource {
   public function importSet($document_type, $set_id, $body = NULL) {
     $resource = '/' . $document_type . '/set/' . $set_id . '/documents/_import';
     return $this->httpRequestPostBuilder($resource, $body);
+  }
+
+  public function importQuerySet($document_type, $set_id, $query) {
+    $resource = '/' . $document_type . '/set/' . $set_id . '/documents/_rql';
+    return $this->httpRequestFormPostBuilder($resource, array('query' => $query));
   }
 
   public function removeFromSet($document_type, $set_id, $body = NULL) {
