@@ -153,7 +153,7 @@
                   <?php $variable_type = 'DataSchema'; ?>
                 <?php endif; ?>
                 <?php $variable_type = $localize->getTranslation('client.variable.type.'.$variable_type); ?>
-                <?php print t('@type Variable', array('@type' =>
+                <?php print t('@type', array('@type' =>
                   $variable_type)); ?>
                 <?php if ($variable_dto->variableType == 'Harmonized'): ?>
                   <?php print '(' . DrupalMicaDatasetResource::variableHarmonized($variable_dto) . ')'; ?>
