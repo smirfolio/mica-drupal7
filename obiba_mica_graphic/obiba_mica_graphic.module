@@ -459,73 +459,90 @@ function _obiba_mica_graphic_colors_options_array_sort($a, $b) {
 
 function obiba_mica_graphics_do_coverage_query($query) {
   $search_resources = new ObibaSearchResources();
-  $coverages = $search_resources->taxonomiesCoverageRql($query, 'variables', 'coverage');
+  $coverages = $search_resources->taxonomiesChartRql($query, 'variables', 'coverage');
   return $coverages;
 }
 
-function obiba_mica_graphics_nvd3_query_charts($query, $entity_id) {
+function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $entity_id, $empty_value_key) {
   $cached_chart = obiba_mica_commons_get_cache(__FUNCTION__ . $query);
   if(!empty($cached_chart)){
       $response = $cached_chart;
   }
   else{
-  $response = new stdClass();
-  $response->charts = array();
+    $response = new stdClass();
+    $response->charts = array();
+    $taxonomies_config = array_values(obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures'));
+    $coverages = obiba_mica_graphics_do_coverage_query($query);
+    $base_path = !empty($GLOBALS['conf']['clean_url']) ? base_path() : base_path().'?q=';
 
-  $coverages = obiba_mica_graphics_do_coverage_query($query);
-  $base_path = !empty($GLOBALS['conf']['clean_url']) ? base_path() : base_path().'?q=';
-  if (isset($coverages->taxonomies)) {
-    $taxonomises_config = obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures');
-    $shown = array();
+    $response = new stdClass();
+    $response->charts = array();
 
-    foreach($taxonomises_config as $taxonomy_config) {
-      foreach ($coverages->taxonomies as $covarage){
-        if($taxonomy_config === $covarage->taxonomy->name){
-          $shown[]= $covarage;
-        }
-      }
-    };
+    if (isset($coverages->charts)) {
 
-    $filtered = array_filter($shown, function ($coverage) { return isset($coverage->hits) && $coverage->hits > 0; });
+      // exclude taxonomies not found in config
+      array_filter($coverages->charts, function($chart)
+        use ($taxonomies_config,
+          $coverages,
+          $entity_id,
+          $base_path,
+          $search_query_template,
+          $response,
+          $empty_value_key) {
 
-    foreach ($filtered as $coverage) {
+        if (array_search($chart->taxonomy, $taxonomies_config) !== false) {
+          $chart_formatted = new stdClass();
+          $chart_formatted->title = $chart->title;
+          $chart_formatted->subtitle = $chart->subtitle;
+          $chart_formatted->taxonomy = $chart->taxonomy;
+          $chart_formatted->variableData = array();
+          $chart_formatted->color = obiba_mica_graphic_charts_colors_options_settings();
 
-      $data = array();
-      $variable_data = array();
-      foreach ($coverage->vocabularies as $vocabulary) {
+          $chart_formatted->data = array();
+          array_push($response->charts, $chart_formatted);
 
-        if (!empty($vocabulary->buckets)) {
-          foreach ($vocabulary->buckets as $bucket) {
-            $item = new stdClass();
-            $item->key = $bucket->value;
-            $item->value = $bucket->hits;
-            $item->title = obiba_mica_commons_get_localized_field($vocabulary->vocabulary, 'titles');
-            $item->link = $base_path . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders(NULL, $bucket, $coverage->taxonomy->name, $vocabulary->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabulary->terms), $entity_id);
-            array_push($data, $item);
+          if (isset($chart->data)) {
+            foreach ($chart->data as $data) {
+              if (isset($data->items)) {
+                foreach ($data->items as $item) {
+                  if (!empty($item->key) || !empty($empty_value_key)) {
+                    $query_entity = empty($item->key) ? $entity_id : $item->key;
+                    $item->link =
+                      $base_path .
+                      MicaClientPathProvider::REPOSITORY_SEARCH .
+                      '#/search?query=' .
+                      sprintf($search_query_template, $chart->taxonomy, $data->vocabulary, $query_entity) .
+                      '&display=list&type=variables';
+
+                    if (!empty($empty_value_key)) {
+                      $item->key = $empty_value_key;
+                      array_push($chart_formatted->variableData, $item);
+                    } else {
+                      array_push($chart_formatted->data, $item);
+                    }
+
+                  }
+                }
+              }
+            }
           }
-        } else {
-          $item = new stdClass();
-          $item->key = t('Variables');
-          $item->value = $vocabulary->count;
-          $item->title = obiba_mica_commons_get_localized_field($vocabulary->vocabulary, 'titles');
-          $item->link = $base_path . MicaClientPathProvider::REPOSITORY_SEARCH . '#/search?query=' . ObibaSearchResources::chartQueryBuilders($query, NULL, $coverage->taxonomy->name, $vocabulary->vocabulary->name, array_map(function ($terms) { return $terms->term->name; }, $vocabulary->terms), $entity_id);
-          array_push($variable_data, $item);
+          return true;
         }
-      }
 
-      $chart = array(
-        'title' => obiba_mica_commons_get_localized_field($coverage->taxonomy, 'titles'),
-        'subtitle' => obiba_mica_commons_get_localized_field($coverage->taxonomy, 'descriptions'),
-        'data' => $data,
-        'variableData' => $variable_data,
-        'color' => obiba_mica_graphic_charts_colors_options_settings(),
-      );
+        return false;
+      });
 
-      array_push($response->charts, $chart);
-        }
+      usort($response->charts, function($a, $b) use($taxonomies_config) {
+        $aIndex = array_search($a->taxonomy, $taxonomies_config);
+        $bIndex = array_search($b->taxonomy, $taxonomies_config);
+        return $aIndex - $bIndex;
+      });
+
     }
+    
     obiba_mica_commons_set_cache(__FUNCTION__ . $query, $response);
   }
 
   return drupal_json_output($response);
 }
+

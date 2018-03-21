@@ -29,7 +29,11 @@ function obiba_mica_study_ng_coverage($type_study, $study_id) {
   }
 
   $query = DrupalMicaClient\RqlQueryBuilder::study_query_charts($study_id);
-  return obiba_mica_graphics_nvd3_query_charts($query, $study_id);
+  return obiba_mica_graphics_nvd3_query_charts(
+    $query,
+    DrupalMicaClient\RqlQueryBuilder::study_query_charts_variables_template(),
+    $study_id,
+    NULL);
 }
 
 function obiba_mica_study_page_detail_networks($study_id) {
