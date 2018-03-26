@@ -552,7 +552,8 @@ function obiba_mica_app_angular_get_search_config() {
           'showVariablesDatasetsColumn' => variable_get_value('variables_column_dataset'),
           'showDatasetsStudiesColumn' => variable_get_value('datasets_column_studies'),
           'showDatasetsVariablesColumn' => variable_get_value('datasets_column_variables'),
-        )
+        ),
+        'showCart' => module_exists('obiba_mica_sets')
       ),
     'datasets' =>
       array(
