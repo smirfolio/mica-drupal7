@@ -185,16 +185,5 @@ function obiba_mica_settings_data_access_content(&$form) {
  *   The admin setting form.
  */
 function obiba_mica_settings_network_content(&$form) {
-  $form['content_display_settings']['network_form'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Network Content'),
-    '#collapsible' => FALSE,
-  );
-
-  $form['content_display_settings']['network_form']['network_details'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Network details page'),
-    '#collapsible' => FALSE,
-  );
-
+  // no settings
 }

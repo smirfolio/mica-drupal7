@@ -137,10 +137,4 @@ function _obiba_mica_study_settings_admin_harmonization_study_content(&$form){
     '#default_value' => variable_get_value('harmo_study_show_coverage_graphs'),
     '#description' => $info['description'],
   );
-
-  $form['content_display_settings']['harmo_study_form']['studies_list'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('HArmonization Studies list page'),
-    '#collapsible' => FALSE,
-  );
 }
