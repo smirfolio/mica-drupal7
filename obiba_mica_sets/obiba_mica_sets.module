@@ -129,8 +129,8 @@ function obiba_mica_sets_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_sets_main_app',
       'path' => $path_template,
     ),
-    'obiba_mica_sets_entities_count-view-header' => array(
-      'template' => 'obiba_mica_sets_entities_count-view-header',
+    'obiba_mica_sets_cart-view-header' => array(
+      'template' => 'obiba_mica_sets_cart-view-header',
       'path' => $path_views,
     ),
   );

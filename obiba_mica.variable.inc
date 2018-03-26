@@ -20,13 +20,11 @@
 function obiba_mica_variable_info($options) {
   _obiba_mica_variable_info_mica_server($variable);
   _obiba_mica_variable_info_access($variable);
-
   _obiba_mica_variable_search_page($variable);
   _obiba_mica_variable_search_networks($variable);
   _obiba_mica_variable_search_studies($variable);
   _obiba_mica_variable_search_datasets($variable);
   _obiba_mica_variable_search_variables($variable);
-
   _obiba_mica_variable_network_content($variable);
 
   $variable['mica_taxonomy_figures'] = array(
@@ -133,14 +131,14 @@ function _obiba_mica_variable_search_page(&$variable) {
     'title' => t('Search help text'),
     'description' => t('Help text to display on the search page.'),
     'type' => 'string',
-    'default' => '<i class="glyphicon glyphicon-info-sign"></i> The search page allows to browse cataloged information such as partner networks, studies, datasets and variables.',
+    'default' => '<i class="fa fa-info-circle"></i> The search page allows to browse cataloged information such as partner networks, studies, datasets and variables.',
   );
 
   $variable['help_text_harmonization_potential_page'] = array(
     'title' => t('Classification help text'),
     'description' => t('Help text to display on the variable classification page'),
     'type' => 'string',
-    'default' => '<i class="glyphicon glyphicon-info-sign"></i> The classifications page allows to browse the classification system applied to the partner networks, studies, datasets and variables.',
+    'default' => '<i class="fa fa-info-circle"></i> The classifications page allows to browse the classification system applied to the partner networks, studies, datasets and variables.',
   );
 
   $variable['help_link_label'] = array(
