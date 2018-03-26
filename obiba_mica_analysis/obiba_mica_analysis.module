@@ -14,6 +14,18 @@
  */
 function obiba_mica_analysis_menu() {
   $items = array();
+
+  $items['admin/config/obiba-mica/obiba-mica-analysis-settings'] = array(
+    'title' => 'Analysis settings',
+    'description' => 'Configure analysis pages.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('obiba_mica_analysis_admin_settings'),
+    'access arguments' => array('administer obiba mica'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'obiba_mica_analysis.admin.inc',
+    'weight' => 3,
+  );
+
   $items[ObibaAnalysisResources::MICA_ANALYSIS . '/entities_count/ws'] = array(
     'page callback' => 'obiba_mica_analysis_entities_count_query',
     'file' => 'obiba_mica_analysis_services.inc',
@@ -49,13 +61,26 @@ function obiba_mica_analysis_load_menus() {
   $items = array();
 
   $items[MicaClientPathProvider::ANALYSIS] = array(
-    'access callback' => TRUE,
+    'access callback' => 'obiba_mica_analysis_access_page',
     'title' => variable_get('entities_count_page_title', 'Entities Count'),
     'module_caller' => 'obiba_mica_analysis',
     'type' => MENU_CALLBACK,
     'options' => array('fragment' => 'entities-count'),
   );
   return $items;
+}
+
+/**
+ * Access entities count page callback
+ *
+ */
+function obiba_mica_analysis_access_page() {
+  if (!variable_get_value('analysis_anonymous')) {
+    global $user;
+    $anonymous = in_array('anonymous user', $user->roles, TRUE);
+    return !$anonymous;
+  }
+  return TRUE;
 }
 
 /**

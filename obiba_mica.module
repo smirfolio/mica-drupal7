@@ -101,7 +101,7 @@ function obiba_mica_menu() {
 
   $items['admin/config/obiba-mica/obiba-mica-settings'] = array(
     'title' => 'Settings',
-    'description' => 'Configure Mica services',
+    'description' => 'Configure services.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_admin_settings'),
     'access arguments' => array('administer obiba mica'),
@@ -111,8 +111,8 @@ function obiba_mica_menu() {
   );
 
   $items['admin/config/obiba-mica/obiba-search-pages-settings'] = array(
-    'title' => 'Search pages settings',
-    'description' => 'Configure search pages',
+    'title' => 'Search settings',
+    'description' => 'Configure search pages.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_search_pages_admin_settings'),
     'access arguments' => array('administer obiba mica'),
@@ -122,8 +122,8 @@ function obiba_mica_menu() {
   );
 
   $items['admin/config/obiba-mica/obiba-content-pages-settings'] = array(
-    'title' => 'Content pages settings',
-    'description' => 'Configure the catalogues content pages',
+    'title' => 'Content settings',
+    'description' => 'Configure the catalogues content pages.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_content_pages_admin_settings'),
     'access arguments' => array('administer obiba mica'),

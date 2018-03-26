@@ -21,8 +21,8 @@ function obiba_mica_persons_menu() {
   $items = array();
 
   $items['admin/config/obiba-mica/obiba-mica-persons-settings'] = array(
-    'title' => 'Persons module settings',
-    'description' => 'Configure Persons modules pages',
+    'title' => 'Persons settings',
+    'description' => 'Configure persons pages.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_persons_admin_settings'),
     'access arguments' => array('administer obiba mica'),

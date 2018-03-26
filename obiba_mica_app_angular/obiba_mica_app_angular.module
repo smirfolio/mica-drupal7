@@ -193,6 +193,7 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
       'locale' => $language->language,
       'show_detailed_stats' => variable_get_value('dataset_detailed_var_stats'),
       'data_access_config' => obiba_mica_app_angular_get_access_config(),
+      'analysis_config' => obiba_mica_app_angular_get_analysis_config(),
       'obibaSearchOptions' => obiba_mica_app_angular_get_search_config(),
       'micaServerConfig' => empty($micaConfig) ? array() : $micaConfig
     ),
@@ -508,6 +509,17 @@ function obiba_mica_app_angular_get_access_config() {
     'commentsEnabled' => variable_get_value('access_comments_enabled'),
     'userListPageTitle' => variable_get_value('user_list_page_title'),
     'newRequestButtonHelpText' => variable_get_value('access_new_request_button_info')
+  );
+}
+
+/**
+ * Analysis module settings.
+ */
+function obiba_mica_app_angular_get_analysis_config() {
+  global $user;
+  $anonymous = in_array('anonymous user', $user->roles, TRUE);
+  return array(
+    'showAnalysis' => module_exists('obiba_mica_analysis') && (!$anonymous || variable_get_value('analysis_anonymous')),
   );
 }
 

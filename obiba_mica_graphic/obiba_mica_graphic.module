@@ -21,8 +21,8 @@ function obiba_mica_graphic_menu() {
   $items = array();
 
   $items['admin/config/obiba-mica/obiba_mica_graphic'] = array(
-    'title' => 'Statistics Graphic',
-    'description' => 'Configure settings for Obiba Mica Graphic.',
+    'title' => 'Graphics settings',
+    'description' => 'Configure settings of graphics.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_graphic_settings_form'),
     'access arguments' => array('administer obiba mica graphic'),

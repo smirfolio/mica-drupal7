@@ -20,8 +20,8 @@
 function obiba_mica_files_menu() {
 
   $items['admin/config/obiba-mica/obiba-mica-files-settings'] = array(
-    'title' => 'Files module settings',
-    'description' => 'Configure Files modules pages',
+    'title' => 'Files settings',
+    'description' => 'Configure files pages.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_files_admin_settings'),
     'access arguments' => array('administer obiba mica'),

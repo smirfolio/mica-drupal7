@@ -24,8 +24,8 @@ define("ANGULAR_LIST_HARMONIZED_DATASETS", DrupalMicaDatasetResource::DATASETS .
 
 function obiba_mica_lists_menu() {
   $items['admin/config/obiba-mica/obiba-mica-list-settings'] = array(
-    'title' => 'Obiba Mica Lists Settings',
-    'description' => 'Configure Obiba Mica Lists',
+    'title' => 'Lists settings',
+    'description' => 'Configure documents lists settings.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('obiba_mica_lists_admin_settings'),
     'access arguments' => array('administer obiba mica'),

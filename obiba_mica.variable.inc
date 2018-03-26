@@ -19,7 +19,12 @@
  */
 function obiba_mica_variable_info($options) {
   _obiba_mica_variable_info_mica_server($variable);
-  _obiba_mica_variable_info_access($variable);
+  if (module_exists('obiba_mica_data_access_request')) {
+    _obiba_mica_variable_info_access($variable);
+  }
+  if (module_exists('obiba_mica_analysis')) {
+    _obiba_mica_variable_analysis($variable);
+  }
   _obiba_mica_variable_search_page($variable);
   _obiba_mica_variable_search_networks($variable);
   _obiba_mica_variable_search_studies($variable);
@@ -246,6 +251,24 @@ function _obiba_mica_variable_info_mica_server(&$variable) {
     'description' => t('Tags separated by comma \',\''),
     'type' => 'string',
     'default' => 'a,em,strong,cite,blockquote,code,ul,ol,li,dl,dt,dd,a,abbr,acronym,address,b,bdo,big,blockquote,br,caption,cite,code,col,colgroup,del,dfn,div,h1,h2,h3,h4,h5,h6,hr,i,ins,kbd,li,ol,p,pre,q,samp,small,span,strong,sub,sup,table,tbody,td,tfoot,th,thead,tr,tt,ul,var',
+  );
+}
+
+/**
+ * Analysis module variables.
+ */
+function _obiba_mica_variable_analysis(&$variable) {
+  $variable['analysis_anonymous'] = array(
+    'title' => t('Allow analysis to anonymous users'),
+    'description' => t('If selected the analysis will be accessible to not authenticated users.'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+  $variable['entities_count_page_title'] = array(
+    'title' => t('Entities count title'),
+    'description' => t('Entities count analysis title.'),
+    'type' => 'string',
+    'default' => 'Entities Count',
   );
 }
 
@@ -537,10 +560,7 @@ function _obiba_mica_variable_network_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
-
 }
-
-
 
 /**
  * Setting Variable search page datasets.
