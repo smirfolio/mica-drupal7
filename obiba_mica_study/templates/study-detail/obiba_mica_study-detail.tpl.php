@@ -9,13 +9,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 ?>
-<?php if (!empty($populations)): ?>
-  <?php foreach ($populations as $key => $population): ?>
-    <?php if (!empty($population['data']) && !empty($population['data']['dce-modal'])): ?>
-      <div><?php print $population['data']['dce-modal']; ?></div>
-    <?php endif; ?>
-  <?php endforeach ?>
-<?php endif; ?>
+
 <div>
   <div class="row md-bottom-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
@@ -373,26 +367,29 @@
           <div class="col-lg-2 col-xs-12  ">
             <ul class="nav nav-pills nav-stacked" id="tab-pane">
               <?php foreach ($populations as $key => $population): ?>
-                <li test-ref="population-tab" <?php if ($key == array_keys($populations)[0]) {
-                  print 'class="active"';
-                } ?>>
-                  <a href="#population-<?php print $key; ?>" data-toggle="pill">
-                    <?php print obiba_mica_commons_get_localized_field($population['data']['data'], 'name'); ?>
-                  </a>
-                </li>
-
+                <?php if ($key != 'dce-info'): ?>
+                      <li test-ref="population-tab" <?php if ($key == array_keys($populations)[0]) {
+                        print 'class="active"';
+                      } ?>>
+                          <a href="#population-<?php print $key; ?>" data-toggle="pill">
+                            <?php print obiba_mica_commons_get_localized_field($population['data']['data'], 'name'); ?>
+                          </a>
+                      </li>
+                <?php endif; ?>
               <?php endforeach ?>
             </ul>
           </div>
           <div class="col-lg-10 col-xs-12  ">
               <div class="tab-content indent" test-ref="population-tab-content">
                 <?php foreach ($populations as $key => $population): ?>
-                  <?php $active_population_tab = $key == array_keys($populations)[0]; ?>
-                    <div
-                            class="tab-pane  <?php print $active_population_tab ? 'active' : '' ?>"
-                            id="population-<?php print $key ?>">
-                      <?php print $population['html']; ?>
-                    </div>
+                <?php if ($key != 'dce-info'): ?>
+                    <?php $active_population_tab = $key == array_keys($populations)[0]; ?>
+                        <div
+                                class="tab-pane  <?php print $active_population_tab ? 'active' : '' ?>"
+                                id="population-<?php print $key ?>">
+                          <?php print $population['html']; ?>
+                        </div>
+                  <?php endif; ?>
                 <?php endforeach ?>
               </div>
           </div>
@@ -427,6 +424,7 @@
   <div><?php !empty($investigators_modal) ? print $investigators_modal : ''; ?></div>
   <div><?php !empty($contacts_modal) ? print $contacts_modal : ''; ?></div>
   <div><?php !empty($members_modal) ? print $members_modal : ''; ?></div>
+  <div><?php !empty($dce_fix_modal) ? print $dce_fix_modal : ''; ?></div>
 </article>
 <div class="back-to-top t_badge"><i class="glyphicon glyphicon-arrow-up"></i>
 </div>

@@ -86,6 +86,10 @@ function obiba_mica_files_theme($existing, $type, $theme, $path) {
  */
 function obiba_mica_files_get_js($weight_js) {
   $module_path = drupal_get_path('module', 'obiba_mica_files');
+  drupal_add_js($module_path . '/js/obiba_mica_files_attachment_download.js');
+  drupal_add_js(array(
+    'documentsTitle' => variable_get_value('files_documents_label')
+  ), 'setting');
   $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
   ksort($js);
   foreach ($js as $file_js) {

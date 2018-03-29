@@ -10,4 +10,6 @@
  */
 
 ?>
-<div file-browser doc-path="<?php print $doc_path; ?>" doc-id="<?php print $doc_id; ?>" token-key="<?php print !empty($token_key)?$token_key:''; ?>"></div>
+<div file-browser doc-path="<?php print $doc_path; ?>" doc-id="<?php print $doc_id; ?>"
+     token-key="<?php print !empty($token_key)?$token_key:''; ?>"
+     show-title="<?php print !empty($show_title)?$show_title:''; ?>"></div>

@@ -128,7 +128,6 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
       }
     }
     if (module_exists('obiba_mica_files')) {
-      drupal_add_js(drupal_get_path('module', 'obiba_mica_files') . '/js/obiba_mica_files_attachment_download.js');
       $has_files  = obiba_mica_files_get_flat_attachments('/' . $study_dto->studyResourcePath . '/' . $study_id, !empty($token_key)?$token_key:NULL);
       if(!empty($has_files)){
         $file_browser = theme('obiba_mica_files_browser', array(
@@ -144,7 +143,7 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
       $populations = $cached_populations;
     }
     else {
-      $populations = obiba_mica_study_get_populations_detail($study_dto, NULL, NULL, $token_key);
+      $populations = obiba_mica_study_get_populations_detail($study_dto, $token_key);
       obiba_mica_commons_set_cache('populations_detail_cache-' . $study_id, $populations);
     }
 
