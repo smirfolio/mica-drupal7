@@ -21,13 +21,20 @@
           new $.MicaTimeline(
             new $.StudyDtoParser(Drupal.settings.angularjsApp.locale),
             timelinePopupIdFormatter,
-            true
+            true,
+            Drupal.behaviors.dce_detail_modal.seedmodal
           ).create("#vis", JSON.parse(Drupal.settings.obiba_mica_study.study_json)).addLegend();
         }
       }
 
       function timelinePopupIdFormatter(study, pop, dce) {
-        return ('#dce-' + study.id + '-' + pop.id + '-' + dce.id).replace(/\+/g, '-').replace(/\./, '___');
+        var modal = {
+          id: '#dce-modal',
+          study: study,
+          pop: pop,
+          dceId: (study.id + ':' + pop.id + ':' + dce.id).replace(/\+/g, '-').replace(/\./, '___')
+        };
+        return modal;
       }
     }
   }

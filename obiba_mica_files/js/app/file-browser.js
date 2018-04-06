@@ -13,4 +13,5 @@ mica.fileBrowser = angular.module('mica.fileBrowser', [
   ]).config(['ngObibaMicaFileBrowserOptionsProvider',
   function(ngObibaMicaFileBrowserOptionsProvider){
     ngObibaMicaFileBrowserOptionsProvider.addExcludeFolder('data-collection-event');
+    ngObibaMicaFileBrowserOptionsProvider.setOptions({documentsTitle: Drupal.settings.documentsTitle});
   }]);

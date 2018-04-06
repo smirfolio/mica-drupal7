@@ -9,13 +9,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 ?>
-<?php if (!empty($populations)): ?>
-  <?php foreach ($populations as $key => $population): ?>
-    <?php if (!empty($population['data']) && !empty($population['data']['dce-modal'])): ?>
-      <div><?php print $population['data']['dce-modal']; ?></div>
-    <?php endif; ?>
-  <?php endforeach ?>
-<?php endif; ?>
+
 <div>
   <div class="row md-bottom-margin">
     <?php if (!empty($study_dto->logo->id)): ?>
@@ -134,6 +128,7 @@
           <div class="col-lg-2 col-xs-12  ">
             <ul class="nav nav-pills nav-stacked" id="tab-pane">
               <?php foreach ($populations as $key => $population): ?>
+              <?php if ($key != 'dce-info'): ?>
                 <li test-ref="population-tab" <?php if ($key == array_keys($populations)[0]) {
                   print 'class="active"';
                 } ?>>
@@ -141,19 +136,21 @@
                     <?php print obiba_mica_commons_get_localized_field($population['data']['data'], 'name'); ?>
                   </a>
                 </li>
-
+              <?php endif;?>
               <?php endforeach ?>
             </ul>
           </div>
           <div class="col-lg-10 col-xs-12  ">
               <div class="tab-content indent" test-ref="population-tab-content">
                 <?php foreach ($populations as $key => $population): ?>
+                  <?php if ($key != 'dce-info'): ?>
                   <?php $active_population_tab = $key == array_keys($populations)[0]; ?>
                     <div
                             class="tab-pane  <?php print $active_population_tab ? 'active' : '' ?>"
                             id="population-<?php print $key ?>">
                       <?php print $population['html']; ?>
                     </div>
+                  <?php endif;?>
                 <?php endforeach ?>
               </div>
           </div>

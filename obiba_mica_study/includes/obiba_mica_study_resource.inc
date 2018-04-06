@@ -303,7 +303,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    *  Study $id
    * @return string
    */
-  public static function study_draft_url($id, $type = self::INDIVIDUAL_STUDY) {
+  public static function studyDraftUrl($id, $type = self::INDIVIDUAL_STUDY) {
     return sprintf("%s/#/%s/%s", MicaClientPathProvider::get_mica_url(), $type, $id);
   }
 
@@ -333,7 +333,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    * @return mixed
    */
   public static function studyPopulationDceModalTarget($study_id, $population_id, $dce) {
-    return MicaClientPathHelpers::normalizeModalTarget('#dce-' . $study_id . '-' . $population_id . '-' .
+    return MicaClientPathHelpers::normalizeModalTarget($study_id . ':' . $population_id . ':' .
       (is_string($dce) ? $dce : $dce->id));
   }
 
@@ -355,7 +355,8 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
       'external' => TRUE,
       'attributes' => array(
         'data-toggle' => 'modal',
-        'data-target' => self::studyPopulationDceModalTarget($study_id, $population_id, $dce),
+        'data-dceId' => self::studyPopulationDceModalTarget($study_id, $population_id, $dce),
+        'data-target' => '#dce-modal'
       ),
     ));
   }

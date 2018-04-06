@@ -112,8 +112,6 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
         $network_dto->id, !empty($membership->members) ? $membership->members : NULL);
     }
     if (module_exists('obiba_mica_files')) {
-      drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
-        '/js/obiba_mica_files_attachment_download.js');
       $has_files = obiba_mica_files_get_flat_attachments('/network/' . $network_id, !empty($token_key) ? $token_key : NULL);
       if (!empty($has_files)) {
         $file_browser = theme('obiba_mica_files_browser', array(

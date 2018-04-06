@@ -16,6 +16,12 @@
 
 include_once 'includes/obiba_mica_dataset_resource.inc';
 
+
+if (module_exists('obiba_mica_study')) {
+  $path_module_dataset = drupal_get_path('module', 'obiba_mica_study');
+  include_once($path_module_dataset . '/obiba_mica_study_dce-detail-modal.inc');
+}
+
 use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 /**
@@ -95,14 +101,11 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
         $modals = obiba_mica_dataset_get_population_dce_modals(
           $study_id,
           obiba_mica_dataset_get_population_dce($dataset_type_dto),
-          $variables_dataset,
-          NULL
+          $token_key
         );
       }
 
       if (module_exists('obiba_mica_files')) {
-        drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
-          '/js/obiba_mica_files_attachment_download.js');
         $path_attachment = '/' . $dataset_type . '/' . $dataset_id;
         $has_files  = obiba_mica_files_get_flat_attachments($path_attachment, !empty($token_key)?$token_key:NULL);
           if(!empty($has_files)){
@@ -186,22 +189,19 @@ function obiba_mica_dataset_get_population_dce($dataset_type_dto = NULL) {
 /**
  * Get a dce population modal.
  */
-function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variables_dataset = NULL, $has_coverage = NULL) {
+function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $token_key = NULL) {
   $modals = array();
   $themed_population_attachment = NULL;
   $populations = $data['population'];
+  $localize = obiba_mica_commons_mica_server_localisation();
   if (!empty($populations)) {
     foreach ($populations as $population) {
       if (module_exists('obiba_mica_files')) {
-        drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
-          '/js/obiba_mica_files_attachment_download.js');
-        $path_population_attachment = "/study/$study_id/population/$population->id";
-        $has_files  = obiba_mica_files_get_flat_attachments($path_population_attachment);
-        if(!empty($has_files)){
+        $path_population_attachment = "/" . $data['study']->studyResourcePath .  "/$study_id/population";
             $file_browser = theme('obiba_mica_files_browser', array(
-              'doc_path' => "/study/$study_id/population",
-              'doc_id' => $population->id));
-          }
+              'doc_path' => $path_population_attachment,
+              'doc_id' => $population->id,
+              'show_title' => true));
         }
 
       foreach ($population->dataCollectionEvents as $dce) {
@@ -218,41 +218,21 @@ function obiba_mica_dataset_get_population_dce_modals($study_id, $data, $variabl
         )),
       ));
 
-      $dces = $data['dce'];
       $themed_attachment = NULL;
       $population_id = $population->id;
-      $dce_variables_nbr = array();
-      $modals['dce'] = '';
-      foreach ($dces as $dce) {
-        if (module_exists('obiba_mica_files')) {
-          drupal_add_js(drupal_get_path('module', 'obiba_mica_files') .
-            '/js/obiba_mica_files_attachment_download.js');
-          $path_dce_attachment = "/study/$study_id/population/$population_id/data-collection-event/$dce->id";
-          $has_files  = obiba_mica_files_get_flat_attachments($path_dce_attachment);
-          if(!empty($has_files)){
-            $file_browser = theme('obiba_mica_files_browser', array(
-              'doc_path' => "/study/$study_id/population/$population_id" . '/data-collection-event',
-              'doc_id' => $dce->id));
-          }
-        }
-        $dce_variables_nbr[obiba_mica_commons_get_localized_field($dce, 'name')] = (!empty($variables_dataset->total)) ? $variables_dataset->total : '-';
+      $dce_info[$population->id] = obiba_mica_study_get_dce_detail_info(
+        $data['study']->studyResourcePath,
+        $study_id,
+        $population_id,
+        $population->dataCollectionEvents,
+        $token_key,
+        $localize
+      );
 
-        $modals['dce'] .= theme('mica_dce_detail', array(
-          'has_coverage' => $has_coverage,
-          'dce_variables_nbr' => $dce_variables_nbr,
-          'study_id' => $study_id,
-          'population_id' => $population_id,
-          'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
-          'dce_id_target' => MicaClientPathHelpers::normalizeModalTarget($study_id . '-' . $population_id . '-' . $dce->id),
-          'dce' => $dce,
-          'file_browser' => !empty($file_browser) ? $file_browser : NULL,
-        ));
-      }
-      if (!empty($modals['dce'])) {
-        drupal_add_js(drupal_get_path('module', 'obiba_mica_dataset') . '/js/obiba_mica_dataset_details.js', 'file');
-      }
     }
   }
+
+  $modals['dce'] =  obiba_mica_study_get_dce_detail_modal($dce_info);
 
   return $modals;
 }
