@@ -149,6 +149,11 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('DocumentSuggestion', basePathAndPathPrefix + 'mica/repository/:documentType/_suggest/ws');
     ngObibaMicaUrlProvider.setUrl('EntitiesCountResource', basePathAndPathPrefix + 'mica/analysis/entities_count/ws');
     ngObibaMicaUrlProvider.setUrl('EntitiesCountBaseUrl', 'mica/analysis#/entities-count');
+    ngObibaMicaUrlProvider.setUrl('DatasetCategoricalVariablesResource', basePathAndPathPrefix + 'mica/:dsType/:dsId/variables/:query/categorical/ws');
+    ngObibaMicaUrlProvider.setUrl('DatasetVariablesResource', basePathAndPathPrefix + 'mica/:dsType/:dsId/variables/:query/ws');
+    ngObibaMicaUrlProvider.setUrl('DatasetVariableResource', basePathAndPathPrefix + 'mica/variable/:varId/ws');
+    ngObibaMicaUrlProvider.setUrl('DatasetVariablesCrosstabResource', basePathAndPathPrefix + 'mica/:dsType/:dsId/variables/cross/:v1/by/:v2/ws');
+    ngObibaMicaUrlProvider.setUrl('DatasetResource', basePathAndPathPrefix + 'mica/dataset/:dsType/:dsId/ws');
   }]);
 
 mica.provider('SessionProxy',
