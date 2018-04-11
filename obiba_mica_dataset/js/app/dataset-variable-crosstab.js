@@ -10,36 +10,13 @@
 
 'use strict';
 
-(function ($) {
-  Drupal.behaviors.obiba_mica_dataset_variable_crosstab = {
-    attach: function (context, settings) {
 
-      mica.DatasetVariableCrosstab = angular.module('mica.DatasetVariableCrosstab', [
-        'ui.bootstrap',
-        'obiba.notification',
-        'schemaForm',
-        'schemaForm-datepicker',
-        'pascalprecht.translate',
-        'angularMoment',
-        'ui.bootstrap',
-        'ui.select',
-        'ui'
-      ]);
-
-      mica.DatasetVariableCrosstab.directive('toggle', function () {
-        return {
-          restrict: 'A',
-          link: function (scope, element, attrs) {
-            if (attrs.toggle == "tooltip") {
-              $(element).tooltip();
-            }
-            if (attrs.toggle == "popover") {
-              $(element).popover();
-            }
-          }
-        };
-      })
-
+mica.DatasetVariableCrosstab = angular.module('mica.DatasetVariableCrosstab', [
+  'obiba.mica.DatasetVariableCrosstab'
+]).run(['AnalysisConfigService', function(AnalysisConfigService){
+  AnalysisConfigService.setOptions({
+    crosstab: {
+      showDetailedStats: Drupal.settings.angularjsApp.show_detailed_stats
     }
-  }
-}(jQuery));
+  })
+}]);
