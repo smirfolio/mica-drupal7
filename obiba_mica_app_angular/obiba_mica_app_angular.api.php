@@ -61,7 +61,7 @@ function hook_get_js($weight_js) {
  *   The module angular name.
  */
 function hook_get_ng_module_to_load() {
-  if (current_path() == DrupalMicaDatasetResource::CROSSTAB) {
+  if (module_exists("obiba_mica_analysis") && current_path() == DrupalMicaDatasetResource::CROSSTAB) {
     return 'mica.DatasetVariableCrosstab';
   }
   return FALSE;
