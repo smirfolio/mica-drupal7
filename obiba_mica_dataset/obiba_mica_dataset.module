@@ -607,6 +607,7 @@ function obiba_mica_dataset_load_menus() {
     'access callback' => TRUE,
     'title callback' => 'obiba_mica_dataset_crosstab_title',
     'module_caller' => 'obiba_mica_dataset',
+    'access callback' => 'obiba_mica_dataset_user_permission'
   );
   return $items;
 }
@@ -639,4 +640,24 @@ function obiba_mica_dataset_harmonization_csv_alter($csv) {
  */
 function obiba_mica_dataset_varibale_type($entity) {
   return $entity->variableType == DrupalMicaDatasetResource::COLLECTED_VARIABLE ? DrupalMicaDatasetResource::COLLECTED_DATASET : DrupalMicaDatasetResource::HARMONIZED_DATASET;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function obiba_mica_dataset_permission() {
+  return array(
+    'can see variable crosstab' => array(
+      'title' => t('View Variable Cross Tabulation'),
+      'description' => t('Only selected roles can view the variable cross tabulation.'),
+      'restrict access' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Function to deal with permitted action.
+ */
+function obiba_mica_dataset_user_permission() {
+  return user_access('can see variable crosstab');
 }
