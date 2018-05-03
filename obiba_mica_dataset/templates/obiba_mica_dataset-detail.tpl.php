@@ -36,7 +36,7 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
         <i class="fa fa-pencil-square-o"></i> <?php print $localize->getTranslation('edit')?></a>
     <?php endif; ?>
 
-    <?php if (module_exists('obiba_mica_analysis') && variable_get_value('dataset_detailed_crosstab') && $draft_view === FALSE) : ?>
+    <?php if (obiba_mica_dataset_user_permission() && module_exists('obiba_mica_analysis') && variable_get_value('dataset_detailed_crosstab') && $draft_view === FALSE) : ?>
       <?php print DrupalMicaDatasetResource::datasetCrosstab($dataset_dto, TRUE); ?>
     <?php endif; ?>
 
