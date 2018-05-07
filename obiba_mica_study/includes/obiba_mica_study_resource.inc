@@ -303,7 +303,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    *  Study $id
    * @return string
    */
-  public static function studyDraftUrl($id, $type = self::INDIVIDUAL_STUDY) {
+  public static function study_draft_url($id, $type = self::INDIVIDUAL_STUDY) {
     return sprintf("%s/#/%s/%s", MicaClientPathProvider::get_mica_url(), $type, $id);
   }
 
