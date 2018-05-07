@@ -56,6 +56,27 @@ class MicaDataAccessRequests extends DrupalMicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
+  /**
+   * Get data access requests list.
+   *
+   * @return array
+   *   The data server response.
+   */
+  public function getAmendmets($parent_id) {
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/'.$parent_id.'/amendments';
+
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+            'Accept' => array(parent::HEADER_JSON),
+          )
+        ),
+    ));
+
+    return $this->execute($request);
+  }
+
   public function downloadCsvExport($lang) {
 
     $url_data_access_request_csv_export = $this->micaUrl . '/data-access-requests/csv?lang=' . $lang;

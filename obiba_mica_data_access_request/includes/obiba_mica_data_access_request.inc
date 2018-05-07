@@ -45,8 +45,27 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *   Json definition of the form (Angular schema-Form).
    */
   public function getFormDefinition() {
-    $url_studies = $this->micaUrl . '/config/data-access-form';
-    $request = new HttpClientRequest($url_studies, array(
+    $url = $this->micaUrl . '/config/data-access-form';
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    return $this->execute($request);
+  }
+
+  /**
+   * Get the form definition of data access request from mica server.
+   *
+   * @return string
+   *   Json definition of the form (Angular schema-Form).
+   */
+  public function getAmendmentFormDefinition() {
+    $url = $this->micaUrl . '/config/data-access-amendment-form';
+    $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_JSON),
@@ -69,6 +88,29 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
   public function getRequest($id) {
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/data-access-request/' . $id;
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    return $this->execute($request);
+  }
+
+  /**
+   * Get a data access request from the server.
+   *
+   * @param string $id
+   *   The data access request id.
+   *
+   * @return string
+   *   Json form definition of the data access request (Angular schema-Form).
+   */
+  public function getAmendment($parent_id, $id) {
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/' . $parent_id . '/amendment/'. $id;
     $request = new HttpClientRequest($url_requests, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
