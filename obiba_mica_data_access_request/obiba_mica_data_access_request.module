@@ -99,6 +99,13 @@ function obiba_mica_data_access_request_menu() {
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
+  $items['mica/data_access/request/%/amendment/%/_status/%/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_amendment_update_request',
+    'access callback' => TRUE,
+    'page arguments' => array(3, 5, 7),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+
   $items['mica/data_access/request/upload-file'] = array(
     'page callback' => 'obiba_mica_data_access_request_upload_attachment',
     'access callback' => TRUE,
