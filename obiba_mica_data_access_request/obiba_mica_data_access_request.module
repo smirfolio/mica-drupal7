@@ -276,6 +276,10 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
       'template' => 'obiba_mica_data_access_amendment-form-header',
       'path' => $path_views_theme,
     ),
+    'obiba_mica_data_access_amendment-view-header' => array(
+      'template' => 'obiba_mica_data_access_amendment-view-header',
+      'path' => $path_views_theme,
+    ),
     'data-access-request-profile-user-modal' => array(
       'template' => 'data-access-request-profile-user-modal',
       'path' => $path_views_theme

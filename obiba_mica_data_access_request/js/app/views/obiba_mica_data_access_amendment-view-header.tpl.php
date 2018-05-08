@@ -28,13 +28,10 @@
 
 <div>
   <h3 class="page-header">
-    <a href="{{getDataAccessListPageUrl}}#/data-access-request/{{requestEntity['obiba.mica.DataAccessAmendmentDto.amendment'].parentId}}" title="<?php print obiba_mica_data_access_request_dar_title_callback(); ?>">
+    <a href="{{getDataAccessListPageUrl}}#/data-access-request/{{requestEntity['obiba.mica.DataAccessAmendmentDto.amendment'].parentId}}" title="<?php print variable_get_value('access_request_page_title'); ?>">
       <i class="glyphicon glyphicon-chevron-left"></i>
     </a>
-    <span ng-if="newRequest" translate>new-data-access-request</span>
-    <span ng-if="!newRequest">
-      <?php print t('Edit') . ' ' . variable_get_value('access_request_page_title'); ?>: {{requestId}}
-    </span>
+     <span translate>data-access-amendment.title</span> : {{requestEntity.id}}
   </h3>
 
 </div>

@@ -18,7 +18,6 @@ mica.DataAccessRequest = angular.module('mica.DataAccessRequest', [
     function (ngObibaMicaAccessTemplateUrlProvider) {
       ngObibaMicaAccessTemplateUrlProvider.setHeaderUrl('view',Drupal.settings.basePath + Drupal.settings.pathPrefix + 'obiba_mica_app_angular_view_template/obiba_mica_data_access_request-view-header');
       ngObibaMicaAccessTemplateUrlProvider.setHeaderUrl('form', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'obiba_mica_app_angular_view_template/obiba_mica_data_access_request-form-header');
-      ngObibaMicaAccessTemplateUrlProvider.setHeaderUrl('form', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'obiba_mica_app_angular_view_template/obiba_mica_data_access_request-form-header');
       ngObibaMicaAccessTemplateUrlProvider.setHeaderUrl('amendmentView', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'obiba_mica_app_angular_view_template/obiba_mica_data_access_amendment-view-header');
       ngObibaMicaAccessTemplateUrlProvider.setHeaderUrl('amendmentForm', Drupal.settings.basePath + Drupal.settings.pathPrefix + 'obiba_mica_app_angular_view_template/obiba_mica_data_access_amendment-form-header');
     }])

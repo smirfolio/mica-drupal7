@@ -72,6 +72,43 @@ class DrupalMicaDataAccessRequestResources extends DrupalMicaClientResource {
   }
 
   /**
+   * Save a  data access request.
+   *
+   * @param string $data
+   *   The data access request json data.
+   * @param string $resource
+   *   The server resource.
+   * @param string $id_data_access
+   *   The data access request id.
+   *
+   * @return array
+   *   The data server response.
+   */
+  public function dataAccessAmendmentSave($data, $resource) {
+    $constant_method = constant('HttpClientRequest::' . $this->method);
+    $url_data_access = $this->micaUrl . $resource;
+    $request = new HttpClientRequest($url_data_access, array(
+      'method' => $constant_method,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+          'Content-Type' => array(parent::HEADER_JSON),
+
+        )
+      ),
+      'data' => $data,
+    ));
+
+    $this->execute($request);
+    $headers = $this->getLastResponseHeaders();
+    if (!empty($headers) && !empty($headers['Location'])) {
+      drupal_add_http_header('Location', $headers['Location'][0]);
+    }
+
+    drupal_add_http_header('Status', $this->getLastResponseStatusCode());
+    return $this->getLastResponse();
+  }
+
+  /**
    * Update attachments of a data access request.
    *
    * @param string $data
