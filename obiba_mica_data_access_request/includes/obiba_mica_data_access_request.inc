@@ -45,8 +45,27 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
    *   Json definition of the form (Angular schema-Form).
    */
   public function getFormDefinition() {
-    $url_studies = $this->micaUrl . '/config/data-access-form';
-    $request = new HttpClientRequest($url_studies, array(
+    $url = $this->micaUrl . '/config/data-access-form';
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    return $this->execute($request);
+  }
+
+  /**
+   * Get the form definition of data access request from mica server.
+   *
+   * @return string
+   *   Json definition of the form (Angular schema-Form).
+   */
+  public function getAmendmentFormDefinition() {
+    $url = $this->micaUrl . '/config/data-access-amendment-form';
+    $request = new HttpClientRequest($url, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
           'Accept' => array(parent::HEADER_JSON),
@@ -69,6 +88,29 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
   public function getRequest($id) {
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/data-access-request/' . $id;
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    return $this->execute($request);
+  }
+
+  /**
+   * Get a data access request from the server.
+   *
+   * @param string $id
+   *   The data access request id.
+   *
+   * @return string
+   *   Json form definition of the data access request (Angular schema-Form).
+   */
+  public function getAmendment($parent_id, $id) {
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/' . $parent_id . '/amendment/'. $id;
     $request = new HttpClientRequest($url_requests, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
@@ -242,6 +284,35 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
     $constant_method = constant('HttpClientRequest::' . $this->method);
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/data-access-request/' . $id . '/_status?to=' . $status;
+
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => $constant_method,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    return $this->execute($request);
+  }
+
+  /**
+   * Update data access amendment status.
+   *
+   * @param $parent_id
+   *   Corresponding data access object.
+   * @param string $id
+   *   The data access request id.
+   * @param string $status
+   *   The status to update to.
+   *
+   * @return array
+   *   The data server response.
+   */
+  public function amendmentStatusUpdateRequest($parent_id, $id, $status) {
+    $constant_method = constant('HttpClientRequest::' . $this->method);
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/' . $parent_id . '/amendment/' . $id . '/_status?to=' . $status;
 
     $request = new HttpClientRequest($url_requests, array(
       'method' => $constant_method,

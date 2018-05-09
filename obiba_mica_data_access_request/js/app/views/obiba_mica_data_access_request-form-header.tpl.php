@@ -31,7 +31,7 @@
     <a href="{{getDataAccessListPageUrl}}#/data-access-requests" title="<?php print obiba_mica_data_access_request_dar_title_callback(); ?>">
       <i class="glyphicon glyphicon-chevron-left"></i>
     </a>
-    <span ng-if="newRequest" translate>new-data-access-request</span>
+   <span ng-if="newRequest" translate>new-data-access-request</span>
     <span ng-if="!newRequest">
       <?php print t('Edit') . ' ' . variable_get_value('access_request_page_title'); ?>: {{requestId}}
     </span>

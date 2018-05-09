@@ -20,19 +20,34 @@ function obiba_mica_data_access_request_form_get_config() {
 }
 
 /**
+ * Get the data access request form config.
+ */
+function obiba_mica_data_access_amendment_form_get_config() {
+  $mica_client = new MicaDataAccessRequest();
+  $config = $mica_client->getAmendmentFormDefinition();
+  drupal_json_output($config);
+}
+
+/**
  * Actions on data access requests.
  */
-function obiba_mica_data_access_requests_action() {
+function obiba_mica_data_access_requests_action($parent_id = NULL) {
 
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
       $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_GET');
-      $data_access_request = $mica_client->getRequests();
+      $data_access_request = empty($parent_id) ? $mica_client->getRequests($parent_id) : $mica_client->getAmendmets($parent_id);
       drupal_json_output($data_access_request);
       break;
     case 'POST':
       $mica_client = new MicaDataAccessRequests(NULL, 'METHOD_POST');
-      $data_access_request = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-requests');
+      if(strstr($_GET['q'],"amendments")){
+        $data_access_request = $mica_client->dataAccessAmendmentSave(file_get_contents('php://input'), '/data-access-request/' . $parent_id . '/amendments');
+      }
+      else{
+        $data_access_request = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-requests');
+      }
+
       drupal_json_output($data_access_request->body);
       break;
   }
@@ -130,11 +145,11 @@ function obiba_mica_data_access_request_download_pdf($id_data_request) {
 /**
  * Actions on data access request.
  */
-function obiba_mica_data_access_request_action($id_data_request) {
+function obiba_mica_data_access_request_action($entity_id, $amendment_id = null) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
       $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
-      $data_access_request = $mica_client->getRequest($id_data_request);
+      $data_access_request = empty($amendment_id) ? $mica_client->getRequest($entity_id) : $mica_client->getAmendment($entity_id, $amendment_id);
       if (empty($data_access_request)) {
         return FALSE;
       }
@@ -143,13 +158,18 @@ function obiba_mica_data_access_request_action($id_data_request) {
 
     case 'PUT':
       $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
-      $response = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-request', $id_data_request);
+      if(strstr($_GET['q'],"amendment")){
+        $response = $mica_client->dataAccessAmendmentSave(file_get_contents('php://input'), '/data-access-request/' . $entity_id . '/amendment/' . $amendment_id);
+      }
+      else{
+        $response = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-request', $entity_id);
+      }
 
       if (isset($response) && $response->responseCode != 204) drupal_json_output($response); #MK-966: apache proxy ignores body on 204
       break;
 
     case 'DELETE':
-      obiba_mica_data_access_request_delete_request_access($id_data_request);
+      obiba_mica_data_access_request_delete_request_access($entity_id);
       break;
   }
 }
@@ -192,6 +212,15 @@ function obiba_mica_data_access_request_redirect($operation, $id_request) {
 function obiba_mica_data_access_request_update_request($id_request, $status) {
   $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
   $data_access_request = $mica_client->statusUpdateRequest($id_request, $status);
+  drupal_json_output($data_access_request);
+}
+
+/**
+ * Update the data access request.
+ */
+function obiba_mica_data_access_amendment_update_request($parent_id, $id_request, $status) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
+  $data_access_request = $mica_client->amendmentStatusUpdateRequest($parent_id, $id_request, $status);
   drupal_json_output($data_access_request);
 }
 

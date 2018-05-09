@@ -44,6 +44,13 @@ function obiba_mica_data_access_request_menu() {
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
+  $items['mica/data_access/request/%/amendments/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_requests_action',
+    'access callback' => TRUE,
+    'file' => 'obiba_mica_data_access_request_service.inc',
+    'page arguments' => array(3),
+  );
+
   $items[MicaClientPathProvider::DATA_ACCESS . '/requests/csv/ws'] = array(
     'page callback' => 'obiba_mica_data_access_request_csv_download',
     'file' => 'obiba_mica_data_access_request.module',
@@ -92,6 +99,13 @@ function obiba_mica_data_access_request_menu() {
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
+  $items['mica/data_access/request/%/amendment/%/_status/%/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_amendment_update_request',
+    'access callback' => TRUE,
+    'page arguments' => array(3, 5, 7),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+
   $items['mica/data_access/request/upload-file'] = array(
     'page callback' => 'obiba_mica_data_access_request_upload_attachment',
     'access callback' => TRUE,
@@ -103,6 +117,13 @@ function obiba_mica_data_access_request_menu() {
     'page callback' => 'obiba_mica_data_access_request_action',
     'access callback' => TRUE,
     'page arguments' => array(3),
+    'file' => 'obiba_mica_data_access_request_service.inc',
+  );
+
+  $items['mica/data_access/request/%/amendment/%/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_request_action',
+    'access callback' => TRUE,
+    'page arguments' => array(3, 5),
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
@@ -122,6 +143,13 @@ function obiba_mica_data_access_request_menu() {
 
   $items['mica/data_access/data-access-form/ws'] = array(
     'page callback' => 'obiba_mica_data_access_request_form_get_config',
+    'access callback' => TRUE,
+    'file' => 'obiba_mica_data_access_request_service.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['mica/data_access/data-access-amendment-form/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_amendment_form_get_config',
     'access callback' => TRUE,
     'file' => 'obiba_mica_data_access_request_service.inc',
     'type' => MENU_CALLBACK,
@@ -249,6 +277,14 @@ function obiba_mica_data_access_request_theme($existing, $type, $theme, $path) {
     ),
     'obiba_mica_data_access_request-view-header' => array(
       'template' => 'obiba_mica_data_access_request-view-header',
+      'path' => $path_views_theme,
+    ),
+    'obiba_mica_data_access_amendment-form-header' => array(
+      'template' => 'obiba_mica_data_access_amendment-form-header',
+      'path' => $path_views_theme,
+    ),
+    'obiba_mica_data_access_amendment-view-header' => array(
+      'template' => 'obiba_mica_data_access_amendment-view-header',
       'path' => $path_views_theme,
     ),
     'data-access-request-profile-user-modal' => array(
