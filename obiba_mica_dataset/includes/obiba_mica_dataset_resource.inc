@@ -22,7 +22,6 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient\DrupalMicaClientResourcePa
  */
 class DrupalMicaDatasetResource extends DrupalMicaClientResource {
   const DEFAULT_PRIMARY_BUTTON_CLASSES = 'btn highlight btn btn-primary';
-  const CROSSTAB = 'mica/variables';
   const DATASETS = 'mica/dataset';
   const COLLECTED_VARIABLE = 'Collected';
   const COLLECTED_DATASET = 'collected-dataset';
@@ -852,7 +851,7 @@ $get_tresource_by_type = function($resource){
 
     $res = l(
       t('Crosstabs'),
-      self::CROSSTAB,
+      ObibaAnalysisResources::CROSSTAB,
       array(
         'attributes' => array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES),
         'fragment' => preg_replace('/mica\\//', '/crosstab/', $dataset) . '/variable/' . $variable->id,
@@ -890,7 +889,7 @@ $get_tresource_by_type = function($resource){
   public static function datasetCrosstab($dataset) {
     $res = l(
       t('Crosstabs'),
-      self::CROSSTAB,
+      ObibaAnalysisResources::CROSSTAB,
       array(
         'attributes' => array('class' => self::DEFAULT_PRIMARY_BUTTON_CLASSES),
         'fragment' => preg_replace('/mica\\//', '/crosstab/', DrupalMicaDatasetResource::dataset($dataset)),

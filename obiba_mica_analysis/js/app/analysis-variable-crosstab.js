@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 OBiBa. All rights reserved.
+ * Copyright (c) 2016 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -11,7 +11,7 @@
 'use strict';
 
 
-mica.DatasetVariableCrosstab = angular.module('mica.DatasetVariableCrosstab', [
+mica.AnalysisVariableCrosstab = angular.module('mica.AnalysisVariableCrosstab', [
   'obiba.mica.DatasetVariableCrosstab'
 ]).run(['AnalysisConfigService', function(AnalysisConfigService){
   AnalysisConfigService.setOptions({

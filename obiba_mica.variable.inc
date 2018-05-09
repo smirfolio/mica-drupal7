@@ -258,12 +258,6 @@ function _obiba_mica_variable_info_mica_server(&$variable) {
  * Analysis module variables.
  */
 function _obiba_mica_variable_analysis(&$variable) {
-  $variable['analysis_anonymous'] = array(
-    'title' => t('Allow analysis to anonymous users'),
-    'description' => t('If selected the analysis will be accessible to not authenticated users.'),
-    'type' => 'boolean',
-    'default' => TRUE,
-  );
   $variable['entities_count_page_title'] = array(
     'title' => t('Entities count title'),
     'description' => t('Entities count analysis title.'),

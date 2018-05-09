@@ -30,14 +30,6 @@ function obiba_mica_analysis_admin_settings() {
     '#collapsible' => FALSE,
   );
 
-  $info = variable_get_info('analysis_anonymous');
-  $form['obiba_mica_analysis']['analysis_display']['analysis_anonymous'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('analysis_anonymous'),
-    '#description' => $info['description'],
-  );
-
   $info = variable_get_info('entities_count_page_title');
   $form['obiba_mica_analysis']['analysis_display']['entities_count_page_title'] = array(
     '#type' => 'textfield',

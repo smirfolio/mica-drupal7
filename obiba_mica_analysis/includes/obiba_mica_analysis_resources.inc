@@ -16,6 +16,7 @@ use \Obiba\ObibaMicaClient\MicaCache as MicaCache;
   */
 class ObibaAnalysisResources extends DrupalMicaClientResource {
   const MICA_ANALYSIS = 'mica/analysis';
+  const CROSSTAB = 'mica/variables';
 
   function __construct() {
     parent::__construct(NULL);
