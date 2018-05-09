@@ -296,6 +296,35 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
+  /**
+   * Update data access amendment status.
+   *
+   * @param $parent_id
+   *   Corresponding data access object.
+   * @param string $id
+   *   The data access request id.
+   * @param string $status
+   *   The status to update to.
+   *
+   * @return array
+   *   The data server response.
+   */
+  public function amendmentStatusUpdateRequest($parent_id, $id, $status) {
+    $constant_method = constant('HttpClientRequest::' . $this->method);
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/' . $parent_id . '/amendment/' . $id . '/_status?to=' . $status;
+
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => $constant_method,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    return $this->execute($request);
+  }
+
   public function getUserProfile($user_id){
     $this->setLastResponse(NULL);
     $url_requests = $this->micaUrl . '/user/' . $user_id . '/application/drupal';

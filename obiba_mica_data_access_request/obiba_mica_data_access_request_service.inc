@@ -216,6 +216,15 @@ function obiba_mica_data_access_request_update_request($id_request, $status) {
 }
 
 /**
+ * Update the data access request.
+ */
+function obiba_mica_data_access_amendment_update_request($parent_id, $id_request, $status) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
+  $data_access_request = $mica_client->amendmentStatusUpdateRequest($parent_id, $id_request, $status);
+  drupal_json_output($data_access_request);
+}
+
+/**
  * Update the data access request attachments.
  */
 function obiba_mica_data_access_request_upload_attachment() {
