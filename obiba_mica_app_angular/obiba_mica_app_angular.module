@@ -449,6 +449,10 @@ function obiba_mica_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer'
         ),
+        $lib_path . '/sf-radio-group-collection/dist/sf-radio-group-collection.js' => array(
+          'type' => 'file',
+          'scope' => 'footer',
+        ),
         $lib_path . '/d3/d3.js' => array(
           'type' => 'file',
           'scope' => 'footer'
