@@ -36,7 +36,8 @@ var modules = [
   'obiba.comments',
   'angularUtils.directives.dirPagination',
   'pascalprecht.translate',
-  'ngObibaMica'
+  'ngObibaMica',
+  'sfRadioGroupCollection'
 ];
 var sanitizeModules = function (origArr) {
   if (!Array.isArray(origArr)) {
