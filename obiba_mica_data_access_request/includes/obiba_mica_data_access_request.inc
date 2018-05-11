@@ -99,6 +99,20 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
+  public function getRequestHistory($id) {
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/' . $id . '/_history';
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    return $this->execute($request);
+  }
+
   /**
    * Get a data access request from the server.
    *

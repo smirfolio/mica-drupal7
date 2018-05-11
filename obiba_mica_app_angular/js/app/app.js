@@ -76,7 +76,7 @@ var mica = angular.module('mica', modules);
 
 mica.config(['$routeProvider', '$locationProvider', 'ObibaServerConfigResourceProvider',
   function ($routeProvider, $locationProvider, ObibaServerConfigResourceProvider) {
-    
+
     $locationProvider.hashPrefix('');
 
     $routeProvider
@@ -108,6 +108,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestsResource', basePathAndPathPrefix + 'mica/data_access/requests/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessAmendmentsResource', Drupal.settings.basePath + 'mica/data_access/request/:parentId/amendments/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestResource', basePathAndPathPrefix + 'mica/data_access/request/:id/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestLogHistoryResource', basePathAndPathPrefix + 'mica/data_access/request/:id/_history/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessAmendmentResource', basePathAndPathPrefix + 'mica/data_access/request/:parentId/amendment/:id/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestAttachmentsUpdateResource', basePathAndPathPrefix + 'mica/data_access/request/:id/_attachments/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestAttachmentDownloadResource', basePathAndPathPrefix + 'mica/data_access/request/:id/attachments/:attachmentId/_download/ws');
