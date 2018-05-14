@@ -528,10 +528,8 @@ function obiba_mica_app_angular_get_access_config() {
  * Analysis module settings.
  */
 function obiba_mica_app_angular_get_analysis_config() {
-  global $user;
-  $anonymous = in_array('anonymous user', $user->roles, TRUE);
   return array(
-    'showAnalysis' => module_exists('obiba_mica_analysis') && (!$anonymous || variable_get_value('analysis_anonymous')),
+    'showAnalysis' => module_exists('obiba_mica_analysis') && obiba_mica_analysis_user_permission(),
   );
 }
 
