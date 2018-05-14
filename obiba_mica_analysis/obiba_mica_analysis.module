@@ -151,8 +151,8 @@ function obiba_mica_analysis_variable_page_search() {
 function obiba_mica_analysis_permission() {
   return array(
     'can access analysis' => array(
-      'title' => t('Access to Analysis capabilities'),
-      'description' => t('Only the selected roles can Access the Analysis capabilities'),
+      'title' => t('Can perform analysis'),
+      'description' => t('Only the selected roles can perform analysis (crosstab, entities count, etc.)'),
     )
   );
 }
