@@ -120,8 +120,8 @@ function obiba_mica_data_access_request_menu() {
     'file' => 'obiba_mica_data_access_request_service.inc',
   );
 
-  $items['mica/data_access/request/%/_history/ws'] = array(
-    'page callback' => 'obiba_mica_data_access_request_history',
+  $items['mica/data_access/request/%/amendments/_history/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_amendments_history',
     'access callback' => TRUE,
     'page arguments' => array(3),
     'file' => 'obiba_mica_data_access_request_service.inc',

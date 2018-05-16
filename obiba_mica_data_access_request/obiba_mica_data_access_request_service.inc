@@ -177,9 +177,9 @@ function obiba_mica_data_access_request_action($entity_id, $amendment_id = null)
 /**
  * Get history of combined DAR's and its amendments' history
  */
-function obiba_mica_data_access_request_history($id_data_request) {
+function obiba_mica_data_access_amendments_history($id_data_request) {
   $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_GET');
-  $history = $mica_client->getRequestHistory($id_data_request);
+  $history = $mica_client->getAmendmentsRequestHistory($id_data_request);
 
   drupal_json_output($history);
 }

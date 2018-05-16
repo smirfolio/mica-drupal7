@@ -99,9 +99,9 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
     return $this->execute($request);
   }
 
-  public function getRequestHistory($id) {
+  public function getAmendmentsRequestHistory($id) {
     $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . '/data-access-request/' . $id . '/_history';
+    $url_requests = $this->micaUrl . '/data-access-request/' . $id . '/amendments/_history';
     $request = new HttpClientRequest($url_requests, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(
