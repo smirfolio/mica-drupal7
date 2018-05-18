@@ -174,6 +174,13 @@ function obiba_mica_data_access_request_action($entity_id, $amendment_id = null)
   }
 }
 
+function obiba_mica_data_access_request_action_logs($id) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
+  $response = $mica_client->dataAccessActionLogsSave(file_get_contents('php://input'), $id);
+
+  if (isset($response) && $response->responseCode != 204) drupal_json_output($response);  #MK-966: apache proxy ignores body on 204
+}
+
 /**
  * Get history of combined DAR's and its amendments' history
  */
