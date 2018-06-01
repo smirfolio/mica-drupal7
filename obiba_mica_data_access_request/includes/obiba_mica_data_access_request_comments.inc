@@ -49,9 +49,9 @@ class MicaDataAccessRequestComments extends DrupalMicaDataAccessRequestResources
    * @return array
    *   The data server response.
    */
-  public function createComment($comment, $request_id, $resource) {
+  public function createComment($comment, $request_id, $resource, $admin) {
     $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . sprintf(self::RESOURCE_PATH, $resource, $request_id);
+    $url_requests = $this->micaUrl . sprintf(self::RESOURCE_PATH, $resource, $request_id)  . ($admin ? '?admin=' . $admin : '');
     $request = new HttpClientRequest($url_requests, array(
       'method' => HttpClientRequest::METHOD_POST,
       'headers' => $this->authorizationHeader(array(
@@ -72,13 +72,15 @@ class MicaDataAccessRequestComments extends DrupalMicaDataAccessRequestResources
    *   The data access request id.
    * @param string $resource
    *   The path server resource.
+   * @param boolean $admin
+   *   Is it a private comment query.
    *
    * @return array
    *   The data server response.
    */
-  public function getComments($request_id, $resource) {
+  public function getComments($request_id, $resource, $admin) {
     $this->setLastResponse(NULL);
-    $url_requests = $this->micaUrl . sprintf(self::RESOURCE_PATH, $resource, $request_id);
+    $url_requests = $this->micaUrl . sprintf(self::RESOURCE_PATH, $resource, $request_id) . ($admin ? '?admin=' . $admin : '');
     $request = new HttpClientRequest($url_requests, array(
       'method' => HttpClientRequest::METHOD_GET,
       'headers' => $this->authorizationHeader(array(

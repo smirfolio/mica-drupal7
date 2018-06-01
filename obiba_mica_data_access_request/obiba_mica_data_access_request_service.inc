@@ -61,13 +61,15 @@ function obiba_mica_data_access_request_comments_action($id_data_request) {
   switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
       $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_GET');
-      $data_access_request = $mica_client->getComments($id_data_request, '/data-access-request');
+      $query_param = drupal_get_query_parameters();
+      $data_access_request = $mica_client->getComments($id_data_request, '/data-access-request', $query_param['admin']);
       drupal_json_output($data_access_request);
       break;
 
     case 'POST':
       $mica_client = new MicaDataAccessRequestComments(NULL, 'METHOD_POST');
-      $data_access_request = $mica_client->createComment(file_get_contents('php://input'), $id_data_request, '/data-access-request');
+      $query_param = drupal_get_query_parameters();
+      $data_access_request = $mica_client->createComment(file_get_contents('php://input'), $id_data_request, '/data-access-request', $query_param['admin']);
       drupal_json_output($data_access_request);
       break;
   }
