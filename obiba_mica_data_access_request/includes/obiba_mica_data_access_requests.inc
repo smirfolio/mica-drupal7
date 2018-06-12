@@ -78,8 +78,16 @@ class MicaDataAccessRequests extends DrupalMicaDataAccessRequestResources {
   }
 
   public function downloadCsvExport($lang) {
+    return $this->downloadCsv('/data-access-requests/csv', $lang);
+  }
 
-    $url_data_access_request_csv_export = $this->micaUrl . '/data-access-requests/csv?lang=' . $lang;
+  public function downloadHistory($lang) {
+    return $this->downloadCsv('/data-access-requests/_history', $lang);
+  }
+
+  private function downloadCsv($resurce, $lang) {
+
+    $url_data_access_request_csv_export = $this->micaUrl . $resurce . '?lang=' . $lang;
 
     $request = new HttpClientRequest($url_data_access_request_csv_export, array(
       'method' => HttpClientRequest::METHOD_GET,

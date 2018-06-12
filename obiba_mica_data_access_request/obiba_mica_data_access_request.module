@@ -57,6 +57,12 @@ function obiba_mica_data_access_request_menu() {
     'access callback' => TRUE,
   );
 
+  $items[MicaClientPathProvider::DATA_ACCESS . '/requests/_history/ws'] = array(
+    'page callback' => 'obiba_mica_data_access_request_history_download',
+    'file' => 'obiba_mica_data_access_request.module',
+    'access callback' => TRUE,
+  );
+
   $items['mica/data_access/request/%/comments/ws'] = array(
     'page callback' => 'obiba_mica_data_access_request_comments_action',
     'access callback' => TRUE,
@@ -241,6 +247,23 @@ function obiba_mica_data_access_request_csv_download() {
 
   $data_access_requests_resources = new MicaDataAccessRequests();
   $response = $data_access_requests_resources->downloadCsvExport($lang);
+
+  if (!empty($response)) {
+    $headers = $data_access_requests_resources->getLastResponseHeaders();
+    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+    ob_clean();
+    $csv_response = $response->body;
+    print $csv_response;
+    exit;
+  }
+}
+
+function obiba_mica_data_access_request_history_download() {
+
+  $lang = drupal_get_query_parameters()['lang'];
+
+  $data_access_requests_resources = new MicaDataAccessRequests();
+  $response = $data_access_requests_resources->downloadHistory($lang);
 
   if (!empty($response)) {
     $headers = $data_access_requests_resources->getLastResponseHeaders();
