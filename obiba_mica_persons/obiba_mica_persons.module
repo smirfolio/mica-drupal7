@@ -101,8 +101,8 @@ function obiba_mica_persons_datatable_init($entities_id) {
 function obiba_mica_persons_table_headers() {
   $localize = obiba_mica_commons_mica_server_localisation();
   return array(
-    array("title" => $localize->getTranslation('contact.name'), 'data' => 'firstName'),
-    array("title" => $localize->getTranslation('contact.email'), 'data' => 'email'),
+    array("title" => $localize->getTranslation('contact.name'), 'data' => 'firstName', "width" => "20%"),
+    array("title" => $localize->getTranslation('contact.email'), 'data' => 'email', "width" => "30%"),
     array("title" => $localize->getTranslation('studies'), 'data' => 'studyMemberships'),
     array("title" => $localize->getTranslation('networks'), 'data' => 'networkMemberships'),
   );
