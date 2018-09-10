@@ -359,10 +359,6 @@ function obiba_mica_app_angular_load_angular_library() {
           'type' => 'file',
           'scope' => 'footer',
         ),
-        $lib_path . '/angular-ui/build/angular-ui.min.js' => array(
-          'type' => 'file',
-          'scope' => 'footer',
-        ),
         $lib_path . '/marked/lib/marked.js' => array(
           'type' => 'file',
           'scope' => 'footer',
