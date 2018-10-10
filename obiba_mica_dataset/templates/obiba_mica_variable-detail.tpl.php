@@ -237,7 +237,7 @@
         <?php print $localize->getTranslation('client.label.variable.statistics') ?>
         <?php if (strcasecmp($variable_dto->nature, 'CATEGORICAL') === 0 && $variable_dto->variableType !== 'Harmonized'): ?>
           <span class="pull-right">
-        <?php if (obiba_mica_analysis_user_permission() && module_exists('obiba_mica_analysis') && variable_get_value('mica_statistics')) :
+        <?php if (module_exists('obiba_mica_analysis') && obiba_mica_analysis_user_permission() && variable_get_value('mica_statistics')) :
           print DrupalMicaDatasetResource::variableCrosstab($variable_dto, TRUE);
         endif;
         ?>
