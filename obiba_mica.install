@@ -65,8 +65,8 @@ function obiba_mica_block_configuration() {
 function obiba_mica_theme_configuration() {
   variable_set('theme_default', 'obiba_bootstrap');
   variable_set('admin_theme', 'seven');
-  variable_set('jquery_update_jquery_version', '1.8');
-  variable_set('jquery_update_jquery_admin_version', '1.8');
+  variable_set('jquery_update_jquery_version', '1.10');
+  variable_set('jquery_update_jquery_admin_version', '1.10');
 
   variable_set('obiba-progressbar-lib-version', '1.0.1');
   variable_set('obiba-progressbar-lib', 'obiba-progressbar');
