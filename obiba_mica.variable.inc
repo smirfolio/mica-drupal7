@@ -61,6 +61,13 @@ function obiba_mica_variable_info($options) {
     'default' => TRUE,
   );
 
+  $variable['mica_search_show_copy_query'] = array(
+    'title' => t('Enable the Copy Query button'),
+    'description' => t('Here you can enable/disable the Copy Query button in the query builder'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
   $variable['mica_target_tabs_order'] = array(
     'title' => t('Taxonomy targets order'),
     'description' => t('List of taxonomy targets (case sensitive, comma separated) determining their order of appearance in the search and classification pages. Values should be: variable, dataset, study, network.'),
