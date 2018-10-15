@@ -128,6 +128,7 @@ function _obiba_mica_settings_search(&$form, &$form_state) {
   );
   $add_form_field($form['search_display_settings']['page_settings']['search_region_settings'], 'mica_show_search_box', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['search_region_settings'], 'mica_show_search_browser', NULL, 'checkbox');
+  $add_form_field($form['search_display_settings']['page_settings']['search_region_settings'], 'mica_search_show_copy_query', NULL, 'checkbox');
   $add_form_field($form['search_display_settings']['page_settings']['search_region_settings'], 'mica_target_tabs_order');
 
   $form['search_display_settings']['page_settings']['facet_region_settings'] = array(

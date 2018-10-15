@@ -531,6 +531,7 @@ function obiba_mica_app_angular_get_search_config() {
     'SearchHelpLinkUrl' => variable_get_value('help_link_url'),
     'showSearchBox' => variable_get_value('mica_show_search_box'),
     'showSearchBrowser' => variable_get_value('mica_show_search_browser'),
+    'showCopyQuery' => variable_get_value('mica_search_show_copy_query'),
     'targetTabsOrder' => $get_array_value('mica_target_tabs_order'),
     'showAllFacetedTaxonomies' => false,
     'variableTaxonomiesOrder' =>  array_keys(obiba_mica_commons_taxonomies_filter_array('mica_variable_taxonomies_order')),
