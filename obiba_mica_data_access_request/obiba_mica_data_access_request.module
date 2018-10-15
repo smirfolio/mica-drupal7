@@ -355,18 +355,6 @@ function obiba_mica_data_access_request_library() {
 }
 
 /**
- * Implements hook_library_alter().
- */
-function obiba_mica_data_access_request_library_alter(&$javascript, $module) {
-  if (($module == 'obiba_mica_data_access_request' || $module == 'system') &&
-    (current_path() == MicaClientPathProvider::DATA_ACCESS_REQUEST || current_path() == MicaClientPathProvider::DATA_ACCESS_LIST)) {
-    $path = drupal_get_path('module', 'jquery_update');
-    jquery_update_jquery_replace($javascript, NULL, $path, NULL, '1.10');
-  }
-
-}
-
-/**
  * Create/Update data access request node content page.
  */
 function obiba_mica_data_access_request() {
