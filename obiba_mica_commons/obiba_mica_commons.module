@@ -330,10 +330,7 @@ function obiba_mica_commons_get_country($iso) {
  */
 function obiba_mica_commons_iterate_field($fields, $callback = NULL, $parameters = NULL, $method = NULL) {
   $i = 0;
-  $total_item = 0;
-  if(is_array($fields)){
-    $total_item = count($fields);
-  }
+  $total_item = count($fields);
   if (!is_array($fields) && is_string($fields)) {
     $fields = array(0 => $fields);
   }

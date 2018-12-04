@@ -334,7 +334,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
    */
   public static function studyPopulationDceModalTarget($study_id, $population_id, $dce) {
     return MicaClientPathHelpers::normalizeModalTarget($study_id . ':' . $population_id . ':' .
-      (is_string($dce) ? $dce : $dce->id), TRUE);
+      (is_string($dce) ? $dce : $dce->id));
   }
 
   /**
