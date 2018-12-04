@@ -188,7 +188,7 @@
                     <?php print obiba_mica_commons_get_localized_field($term_attribute->vocabulary, 'titles'); ?>
                   </th>
                   <td>
-                    <?php if (count($term_attribute->terms) == 1): ?>
+                    <?php if (count($term_attribute->terms == 1)): ?>
                       <p data-toggle="tooltip"
                         title="<?php print obiba_mica_commons_get_localized_field($term_attribute->terms[0], 'descriptions'); ?>">
                         <?php print obiba_mica_commons_get_localized_field($term_attribute->terms[0], 'titles'); ?>

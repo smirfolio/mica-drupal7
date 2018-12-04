@@ -32,7 +32,7 @@
           id: '#dce-modal',
           study: study,
           pop: pop,
-          dceId: (study.id + ':' + pop.id + ':' + dce.id)
+          dceId: (study.id + ':' + pop.id + ':' + dce.id).replace(/\+/g, '-').replace(/\./, '___')
         };
         return modal;
       }

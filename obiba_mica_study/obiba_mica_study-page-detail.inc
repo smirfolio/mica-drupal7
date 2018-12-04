@@ -482,7 +482,7 @@ function obiba_mica_study_get_dce_detail($study_resource_path, $study_id, $popul
       'study_id' => $study_id,
       'population_id' => $population_id,
       'dce_uid' => $study_id . ':' . $population_id . ':' . $dce->id,
-      'dce_id_target' => MicaClientPathHelpers::normalizeModalTarget($study_id . '-' . $population_id . '-' . $dce->id, TRUE),
+      'dce_id_target' => MicaClientPathHelpers::normalizeModalTarget($study_id . '-' . $population_id . '-' . $dce->id),
       'dce' => $dce,
       'file_browser' => !empty($file_browser) ? $file_browser : NULL,
     ));
