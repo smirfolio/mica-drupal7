@@ -39,10 +39,12 @@ class MicaClientPathHelpers {
    * Normalized the modal target to make a jQuery-safe reference.
    *
    * @param $target
+   * @param $isDce
    * @return mixed
    */
-  public static function normalizeModalTarget($target) {
-    return self::replacePlusInUrl(str_replace(' ', '_', preg_replace('/\./', '___', $target)));
+  public static function normalizeModalTarget($target, $isDce = NULL) {
+    return self::replacePlusInUrl(str_replace(' ', '_',
+      $isDce ? $target : preg_replace('/\./', '___', $target)));
   }
 }
 
