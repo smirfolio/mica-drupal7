@@ -345,7 +345,8 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
                 'external' => TRUE,
                 'attributes' => array(
                   'data-toggle' => 'modal',
-                  'data-target' => DrupalMicaStudyResource::studyPopulationDceModalTarget($study_table->studyId, $study_table->populationId, $study_table->dataCollectionEventId),
+                  'data-dceid' => DrupalMicaStudyResource::studyPopulationDceModalTarget($study_table->studyId, $study_table->populationId, $study_table->dataCollectionEventId),
+                  'data-target' => '#dce-modal',
                 ),
               )) . '</li>';
             $dce_names[] = $dce_name;
@@ -366,7 +367,8 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
         'external' => TRUE,
         'attributes' => array(
           'data-toggle' => 'modal',
-          'data-target' => DrupalMicaStudyResource::studyPopulationDceModalTarget($study_table->studyId, $study_table->populationId, $study_table->dataCollectionEventId)
+          'data-dceid' => DrupalMicaStudyResource::studyPopulationDceModalTarget($study_table->studyId, $study_table->populationId, $study_table->dataCollectionEventId),
+          'data-target' => '#dce-modal',
         ),
       ));
       $have_dce = TRUE;
