@@ -30,12 +30,13 @@
 <?php if ($data_access_register_user) : ?>
   <p class="md-top-margin">
     <?php print t('You need to be authenticated to start an application') ?>
+    <?php if (variable_get_value('access_signup_button_enable')): ?>
     <?php print l(variable_get_value('access_signup_button'), MicaClientPathProvider::AGATE_REGISTER . '/',
       array(
         'attributes' => array('class' => 'btn btn-info'),
         'fragment' => 'join',
       )) ?>
-
+    <?php endif; ?>
     <?php print l(variable_get_value('access_signin_button'), 'user/login', array(
       'query' => array('destination' => MicaClientPathProvider::DATA_ACCESS_HOME),
       'attributes' => array(
