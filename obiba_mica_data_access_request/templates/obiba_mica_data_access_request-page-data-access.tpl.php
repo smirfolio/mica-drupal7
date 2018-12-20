@@ -30,7 +30,7 @@
 <?php if ($data_access_register_user) : ?>
   <p class="md-top-margin">
     <?php print t('You need to be authenticated to start an application') ?>
-    <?php if (variable_get_value('access_signup_button_enable')): ?>
+    <?php if (empty(variable_get_value('access_signup_button_disabled')) || !variable_get_value('access_signup_button_disabled')): ?>
     <?php print l(variable_get_value('access_signup_button'), MicaClientPathProvider::AGATE_REGISTER . '/',
       array(
         'attributes' => array('class' => 'btn btn-info'),
