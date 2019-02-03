@@ -28,6 +28,7 @@ class DrupalMicaStudyResource extends DrupalMicaClientResource {
   const ALL_STUDIES = 'studies';
   const INDIVIDUAL_STUDY = 'individual-study';
   const INDIVIDUAL_STUDY_LINK = 'mica/individual-study/{id}';
+  const DATA_TABLE_STUDY_DATASETS = 'data-table-study-datasets';
 
   public function __construct($mica_url = NULL) {
     parent::__construct($mica_url);

@@ -162,6 +162,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('DatasetVariableResource', basePathAndPathPrefix + 'mica/variable/:varId/ws');
     ngObibaMicaUrlProvider.setUrl('DatasetVariablesCrosstabResource', basePathAndPathPrefix + 'mica/:dsType/:dsId/variables/cross/:v1/by/:v2/ws');
     ngObibaMicaUrlProvider.setUrl('DatasetResource', basePathAndPathPrefix + 'mica/dataset/:dsType/:dsId/ws');
+    ngObibaMicaUrlProvider.setUrl('dataTableStudyDatasets', basePathAndPathPrefix + 'mica/data-table-study-datasets/:sId/datasets/ws');
   }]);
 
 mica.provider('SessionProxy',

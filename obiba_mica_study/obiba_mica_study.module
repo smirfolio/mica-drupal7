@@ -26,7 +26,7 @@ function obiba_mica_study_menu() {
     'page arguments' => array(2),
   );
 
-  $items['mica/' . DrupalMicaStudyResource::INDIVIDUAL_STUDY . '/%/datasets'] = array(
+  $items['mica/' . DrupalMicaStudyResource::DATA_TABLE_STUDY_DATASETS . '/%/datasets/ws'] = array(
     'page callback' => 'obiba_mica_study_page_detail_datasets',
     'file' => 'obiba_mica_study-page-detail.inc',
     'access callback' => TRUE,
@@ -73,13 +73,6 @@ function obiba_mica_study_menu() {
 
   $items['mica/' . DrupalMicaStudyResource::HARMONIZATION_STUDY . '/%/networks'] = array(
     'page callback' => 'obiba_mica_study_page_detail_networks',
-    'file' => 'obiba_mica_study-page-detail.inc',
-    'access callback' => TRUE,
-    'page arguments' => array(2),
-  );
-
-  $items['mica/' . DrupalMicaStudyResource::HARMONIZATION_STUDY . '/%/datasets'] = array(
-    'page callback' => 'obiba_mica_study_page_detail_datasets',
     'file' => 'obiba_mica_study-page-detail.inc',
     'access callback' => TRUE,
     'page arguments' => array(2),

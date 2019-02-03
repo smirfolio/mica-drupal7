@@ -19,7 +19,7 @@
       if (context === document) {
         if (Drupal.settings.obiba_mica_study.study_json) {
           new $.MicaTimeline(
-            new $.StudyDtoParser(Drupal.settings.angularjsApp.locale),
+            new $.StudyDtoParser(Drupal.settings.obiba_mica_study.currentLang),
             timelinePopupIdFormatter,
             true,
             Drupal.behaviors.dce_detail_modal.seedmodal

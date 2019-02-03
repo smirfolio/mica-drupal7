@@ -12,7 +12,7 @@
   Drupal.behaviors.obiba_mica_study_detail = {
     attach: function (context, settings) {
       if (context === document) {
-        var qCoverage, qNetworks, qDatasets;
+        var qCoverage, qNetworks;
         var optionsStudyContent = settings.optionsStudyContent;
 
         if (optionsStudyContent) {
@@ -33,34 +33,14 @@
           else {
             $('#networks').remove();
           }
-          if (optionsStudyContent.showDatasets) {
-            qDatasets = $.ajax(Drupal.settings.basePath + Drupal.settings.pathPrefix + settings.study_url + '/datasets')
-              .done(function (data) {
-                if (!data) {
-                  $('#datasets').remove();
-                  return;
-                }
-                $('#datasets').html(data).show();
-                var datasets = $('#datasetsDisplay').data();
-                $('.dce-actions').each(function () {
-                  if (datasets && ($(this).data().dceName in datasets.dceVariables)) {
-                    $(this).show();
-                  }
-                });
-              })
-              .fail(function () {
-                $('#datasets').remove();
-              });
-          }
-          else {
-            $('#datasets').remove();
+          if (!optionsStudyContent.showDatasets) {$('#datasets').remove();
           }
         } else {
           $('#networks').remove();
           $('#datasets').remove();
         }
 
-        $.when(qCoverage, qDatasets).then(function () {
+        $.when(qCoverage).then(function () {
           var datasets = $('#datasetsDisplay').data();
 
           if (datasets && datasets.totalVariables > 0) {

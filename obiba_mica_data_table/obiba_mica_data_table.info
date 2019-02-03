@@ -1,0 +1,9 @@
+name = Obiba Mica Data table compenent
+description = Api to get angular tables via ajax call
+package = Obiba
+core = 7.x
+
+dependencies[] = obiba_mica_commons
+dependencies[] = obiba_mica_app_angular
+dependencies[] = obiba_mica_repository
+

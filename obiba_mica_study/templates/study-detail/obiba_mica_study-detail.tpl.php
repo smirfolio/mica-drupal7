@@ -406,7 +406,7 @@
 
   <!-- DATASETS placeholder -->
   <section id="datasets">
-    <div><?php print $localize->getTranslation('loading') ?></div>
+      <obiba-data-table study-id="<?php print $study_dto->id; ?>"></obiba-data-table>
   </section>
 
   <!-- COVERAGE placeholder -->

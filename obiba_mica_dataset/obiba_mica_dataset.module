@@ -276,32 +276,6 @@ function obiba_mica_dataset_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Get datasets studies
- *
- * @param $study_id
- * @param null $resource
- * @return mixed|null
- */
-function obiba_mica_dataset_get_datasets_studies($study_id) {
-  $output = NULL;
-  $dataset_resource = new DrupalMicaDatasetResource();
-  $datasets = $dataset_resource->getDatasets(NULL,
-    $study_id,
-    NULL,
-    0,
-    50,
-    'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym',
-    NULL,
-    array('name.*', "studyTable.studyId", "studyTable.populationId", "studyTable.dataCollectionEventId", "studyTable.project", "studyTable.table"));
-
-  if (!empty($datasets)) {
-    $output = obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id);
-  }
-
-  return $output;
-}
-
-/**
  * Get DCE name from dataset.
  */
 function obiba_mica_dataset_get_dce_name_from_dataset($study_table, $study_summary = NULL) {
@@ -380,85 +354,6 @@ function obiba_mica_dataset_get_dce_from_dataset($dataset_summary, $study_id = N
     $dce['name'] = $dce_name_array[1];
   }
   return $dce;
-}
-
-/**
- * Get dataset lite table.
- */
-function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
-  if (empty($datasets)) {
-    return NULL;
-  }
-  $dce_name_array = NULL;
-  $localize = obiba_mica_commons_mica_server_localisation();
-  $dataset_rows = array();
-  $summaries = $datasets->getSummaries();
-  $dce_variables = array();
-  $total_nb_variables = NULL;
-  $header = array(
-    $localize->getTranslation('name'),
-    $localize->getTranslation('type'),
-    $localize->getTranslation('study.data-collection-events'),
-    $localize->getTranslation('variables'),
-  );
-  if (empty($summaries)) {
-    return NULL;
-  }
-  else {
-    foreach ($summaries as $key_dataset => $summary) {
-      $dataset_description = NULL;
-
-      if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
-        $variable_nbr_row = $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;
-        $nb_variables = MicaClientAnchorHelper::datasetVariables(
-          obiba_mica_commons_format_number($variable_nbr_row),
-          $summary->id,
-          array(),
-          'study(in(Mica_study.id,' . $study_id . '))'
-        );
-
-      }
-      $dce_name_array = obiba_mica_dataset_get_dce_from_dataset($summary, $study_id);
-      if (!empty($variable_nbr_row)) {
-        $total_nb_variables += $variable_nbr_row;
-        if(!empty($dce_name_array)){
-          $dce_variables[$dce_name_array['name']] = $variable_nbr_row;
-        }
-      }
-
-      $dataset_name = obiba_mica_commons_get_localized_field($summary, 'name');
-      $dataset_type = obiba_mica_dataset_varibale_type($summary);
-      $dataset_type_name = $summary->variableType == DrupalMicaDatasetResource::COLLECTED_VARIABLE ? $localize->getTranslation('collected-dataset') : $localize->getTranslation('harmonized-dataset');
-      $dataset_rows[$key_dataset] = array(
-        'data' => array(
-          'label' => l($dataset_name, 'mica/' . $dataset_type . '/' . $summary->id),
-          'type' => $dataset_type_name,
-          'dce' => !empty($dce_name_array) ? $dce_name_array['list'] : NULL,
-          'desc' => !empty($nb_variables) ? $nb_variables : '-',
-        ),
-      );
-    }
-    if(empty($dce_name_array)){
-      unset($header[2]);
-      array_walk($dataset_rows, function(&$dataset_row, $key){
-        unset($dataset_row['data']['dce']);
-      });
-    }
-  }
-  if (!empty($total_nb_variables)) {
-    $dataset['total_variable_nbr'] = $total_nb_variables;
-    $dataset['dce_variables'] = !empty($dce_name_array) ? $dce_variables : NULL;
-  }
-  $dataset['dataset-tab'] = theme(
-    'table',
-    array(
-      'header' => $header,
-      'rows' => $dataset_rows,
-      'empty' => variable_get_value('datasets_empty_label'),
-      'sticky' => FALSE,
-    )
-  );
-  return $dataset;
 }
 
 /**
