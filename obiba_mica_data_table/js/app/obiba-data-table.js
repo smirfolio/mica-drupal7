@@ -10,6 +10,15 @@
 
 mica.dataTable = angular.module('mica.obibaDataTable', [
   'obiba.mica.obibaDataTable'
-]).config([function(){
-  console.log('here im');
-}]);
+]).controller('DataTabaleController', ['$scope', function($scope){
+  $scope.datasetsDataTableConfig = {};
+  var drupalTableConfig = Drupal.settings.datasetsDataTableConfig;
+  switch (drupalTableConfig.type) {
+    case 'dataset':
+      $scope.datasetsDataTableConfig.showTable = drupalTableConfig.showTable;
+      $scope.datasetsDataTableConfig.resourceData = drupalTableConfig.resourceData; // "dataTableStudyDatasets"
+      $scope.datasetsDataTableConfig.parentEntityId = drupalTableConfig.parentEntityId; //"lbls"
+      console.log($scope.datasetsDataTableConfig);
+      break;
+  }
+  }]);

@@ -405,11 +405,13 @@
   </section>
 
   <!-- DATASETS placeholder -->
-  <section id="datasets">
-      <obiba-data-table study-id="<?php print $study_dto->id; ?>"></obiba-data-table>
+  <div ng-controller="DataTabaleController">
+  <section id="datasets" ng-if="datasetsDataTableConfig.showTable">
+      <h2><?php print $localize->getTranslation('datasets') ?></h2>
+      <obiba-data-table datatableconfig="datasetsDataTableConfig"></obiba-data-table>
   </section>
-
-  <!-- COVERAGE placeholder -->
+  </div>
+    <!-- COVERAGE placeholder -->
   <div ng-controller="VariableCoverageChartController">
     <section id="coverage" ng-if="d3Configs && d3Configs.length">
       <h2><?php print $localize->getTranslation('variable-classifications') ?></h2>

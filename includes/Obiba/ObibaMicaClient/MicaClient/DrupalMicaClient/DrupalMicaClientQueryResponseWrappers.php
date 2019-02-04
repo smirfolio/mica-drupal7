@@ -449,4 +449,18 @@ class DatasetJoinResponseWrapper extends AbstractResponseWrapper {
     return $this->hasSummaries() ? $this->documentDto->{self::DATASET_RESULT_EXTENSION_ID}->datasets : array();
   }
 
+  /**
+   * Get Statistics summaries.
+   *
+   * @return array
+   *   Statistics Summaries server response.
+   */
+  public function getStatSummaries() {
+    if($this->hasSummaries()){
+      return array(
+        'totalHits' => $this->documentDto->totalHits,
+        'totalCount' => $this->documentDto->totalCount,
+      );
+    }
+  }
 }
