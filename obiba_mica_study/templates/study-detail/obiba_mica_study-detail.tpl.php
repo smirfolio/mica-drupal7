@@ -406,12 +406,13 @@
 
   <!-- DATASETS placeholder -->
   <div ng-controller="DataTabaleController">
-  <section id="datasets" ng-if="datasetsDataTableConfig.showTable">
+  <section id="datasets" ng-if="obibaDataTableConfig.showTable">
       <h2><?php print $localize->getTranslation('datasets') ?></h2>
-      <obiba-data-table datatableconfig="datasetsDataTableConfig"></obiba-data-table>
+      <obiba-data-table datatableconfig="obibaDataTableConfig"></obiba-data-table>
   </section>
   </div>
-    <!-- COVERAGE placeholder -->
+
+  <!-- COVERAGE placeholder -->
   <div ng-controller="VariableCoverageChartController">
     <section id="coverage" ng-if="d3Configs && d3Configs.length">
       <h2><?php print $localize->getTranslation('variable-classifications') ?></h2>

@@ -138,6 +138,21 @@ function obiba_mica_study_harmonization_page_detail($study_id, $token_key = NULL
       }
       obiba_mica_app_angular_load_js_resources('obiba_mica_files');
     }
+
+    if (module_exists('obiba_mica_data_table')) {
+      if (variable_get_value('study_show_datasets') && module_exists('obiba_mica_dataset')) {
+        obiba_mica_app_angular_load_js_resources('obiba_mica_data_table');
+        drupal_add_js(array(
+          'obibaDataTableConfig' => array(
+            'type' => 'dataset',
+            'showTable' => variable_get_value('study_show_datasets'),
+            'resourceData' => 'dataTableStudyDatasets',
+            'parentEntityId' => $study_id
+          )
+        ), 'setting');
+      }
+    }
+
     $cached_populations = obiba_mica_commons_get_cache('populations_detail_cache-' . $study_id);
     if (!empty($cached_populations)) {
       $populations = $cached_populations;

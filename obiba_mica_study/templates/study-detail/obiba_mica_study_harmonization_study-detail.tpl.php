@@ -171,10 +171,13 @@
     <div><?php print $localize->getTranslation('loading') ?></div>
   </section>
 
-  <!-- DATASETS placeholder -->
-  <section id="datasets">
-    <div><?php print $localize->getTranslation('loading') ?></div>
-  </section>
+    <!-- DATASETS placeholder -->
+    <div ng-controller="DataTabaleController">
+        <section id="datasets" ng-if="obibaDataTableConfig.showTable">
+            <h2><?php print $localize->getTranslation('datasets') ?></h2>
+            <obiba-data-table datatableconfig="obibaDataTableConfig"></obiba-data-table>
+        </section>
+    </div>
 
   <!-- COVERAGE placeholder -->
   <div ng-controller="VariableCoverageChartController">

@@ -12,7 +12,7 @@
   Drupal.behaviors.obiba_mica_study_detail = {
     attach: function (context, settings) {
       if (context === document) {
-        var qCoverage, qNetworks;
+        var qNetworks;
         var optionsStudyContent = settings.optionsStudyContent;
 
         if (optionsStudyContent) {
@@ -33,24 +33,7 @@
           else {
             $('#networks').remove();
           }
-          if (!optionsStudyContent.showDatasets) {$('#datasets').remove();
-          }
-        } else {
-          $('#networks').remove();
-          $('#datasets').remove();
         }
-
-        $.when(qCoverage).then(function () {
-          var datasets = $('#datasetsDisplay').data();
-
-          if (datasets && datasets.totalVariables > 0) {
-            $('#study-actions').removeClass('hidden');
-          }
-
-          if ($('#coverage').is(':visible')) {
-            $('.show-coverage').removeClass('hidden');
-          }
-        });
 
         function cleanHash(hash) {
           return hash.substr(1) ? hash.substr(1).replace(/^\//, '') : null;
