@@ -97,8 +97,8 @@ function _obiba_mica_harmonization_study_content(&$variable) {
     'default' => t('Target Number of Participants')
   );
   $variable['harmo_study_detail_show_search_button'] = array(
-    'title' => t('Show the search variables button in the study page'),
-    'description' => t('If selected the search variables button will be displayed in the study page'),
+    'title' => t('Show the search variables button in the harmonization study page'),
+    'description' => t('If selected the search variables button will be displayed in the harmonization study page'),
     'type' => 'boolean',
     'default' => TRUE,
   );
