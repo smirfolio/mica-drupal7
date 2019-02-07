@@ -281,16 +281,22 @@
               </td>
             </tr>
             <?php $other_access = obiba_mica_commons_get_localized_field($study_dto->model, 'otherAccess'); ?>
-            <?php if (!empty($study_dto->model->access) && !empty($other_access)): ?>
               <tr>
                 <th><?php print $localize->getTranslation('study.access.other'); ?></th>
                 <td>
+                  <?php if (!empty($study_dto->model->access) && (!empty($other_access) || in_array('other', $study_dto->model->access)) ): ?>
                   <?php if (!empty($other_access)): ?>
                      <?php print $other_access; ?>
+                    <?php else: ?>
+                    <?php if (in_array('other', $study_dto->model->access)): ?>
+                          <span class="glyphicon glyphicon-ok"></span>
+                    <?php endif; ?>
+                  <?php endif; ?>
+                  <?php else: ?>
+                    <span class="glyphicon glyphicon-remove"></span>
                   <?php endif; ?>
                 </td>
               </tr>
-            <?php endif; ?>
             </tbody>
           </table>
         </div>
