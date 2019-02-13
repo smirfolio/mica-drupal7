@@ -48,11 +48,19 @@ function _obiba_mica_dataset_settings_dataset_content(&$form) {
     '#description' => $info['description'],
   );
 
-  $info = variable_get_info('dataset_show_studies');
-  $form['content_display_settings']['dataset_form']['dataset_details']['dataset_show_studies'] = array(
+  $info = variable_get_info('dataset_show_harmonization_studies');
+  $form['content_display_settings']['dataset_form']['dataset_details']['dataset_show_harmonization_studies'] = array(
     '#type' => 'checkbox',
     '#title' => $info['title'],
-    '#default_value' => variable_get_value('dataset_show_studies'),
+    '#default_value' => variable_get_value('dataset_show_harmonization_studies'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('dataset_show_collected_studies');
+  $form['content_display_settings']['dataset_form']['dataset_details']['dataset_show_collected_studies'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('dataset_show_collected_studies'),
     '#description' => $info['description'],
   );
 

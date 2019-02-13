@@ -36,9 +36,17 @@ function _obiba_mica_dataset_variable_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
-  $variable['dataset_show_studies'] = array(
-    'title' => t('Show studies'),
-    'description' => t('If selected the Studies section will be displayed'),
+
+  $variable['dataset_show_harmonization_studies'] = array(
+    'title' => t('Show harmonization studies'),
+    'description' => t('If selected the harmonization Studies section will be displayed'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['dataset_show_collected_studies'] = array(
+    'title' => t('Show Collected studies'),
+    'description' => t('If selected the Collected Studies section will be displayed'),
     'type' => 'boolean',
     'default' => TRUE,
   );
