@@ -127,57 +127,43 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
     </section>
   <?php endif; ?>
 
-  <?php if (!empty($dataset_type_dto->networkTables) || (!empty(variable_get_value('dataset_show_studies')) && (!empty($dataset_type_dto->harmonizationTable) || !empty($dataset_type_dto->studyTable)))): ?>
+   <?php if (((!empty($dataset_type_dto->harmonizationTable) || !empty($dataset_type_dto->harmonizationTables)) && !empty(variable_get_value('dataset_show_harmonization_studies'))) ||
+            ((!empty($dataset_type_dto->studyTable) || !empty($dataset_type_dto->studyTables))  && !empty(variable_get_value('dataset_show_collected_studies')))): ?>
   <section>
-    <!-- NETWORKS -->
-    <?php if (!empty($dataset_type_dto->networkTables)): ?>
-      <div>
-        <h2><?php print $localize->getTranslation('networks') ?></h2>
-
-        <div id="networks-table">
-          <div class="row">
-            <div class="col-lg-12 col-xs-12">
-              <table class="table table-striped" id="table-networks"></table>
-            </div>
-          </div>
-        </div>
-      </div>
-    <?php endif; ?>
 
     <!-- STUDIES -->
-      <!-- Harmo reference study table -->
-    <?php if (!empty($dataset_type_dto->harmonizationTable)): ?>
-      <h2><?php print $localize->getTranslation('global.harmonization-study') ?></h2>
-        <div class="row">
-            <div class="col-lg-6 col-xs-12">
-                <table class="table table-striped">
-                    <tbody>
-                    <tr>
-                        <th><?php print $localize->getTranslation('study.acronym') ?></th>
-                        <td>
-                            <p>
-                              <?php print DrupalMicaStudyResource::anchorStudy($dataset_type_dto->harmonizationTable->studySummary); ?>
-                            </p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><?php print $localize->getTranslation('study.name') ?></th>
-                        <td>
-                            <p>
-                              <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->harmonizationTable->studySummary, 'name'); ?>
-                            </p>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+   <!-- Harmo reference study table -->
+    <?php if (!empty($dataset_type_dto->harmonizationTable) && !empty(variable_get_value('dataset_show_harmonization_studies'))): ?>
+            <h2><?php print $localize->getTranslation('global.harmonization-study') ?></h2>
+            <div class="row">
+                <div class="col-lg-6 col-xs-12">
+                    <table class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <th><?php print $localize->getTranslation('study.acronym') ?></th>
+                            <td>
+                                <p>
+                                  <?php print DrupalMicaStudyResource::anchorStudy($dataset_type_dto->harmonizationTable->studySummary); ?>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><?php print $localize->getTranslation('study.name') ?></th>
+                            <td>
+                                <p>
+                                  <?php print obiba_mica_commons_get_localized_field($dataset_type_dto->harmonizationTable->studySummary, 'name'); ?>
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    <?php endif ?>
+    <?php endif; ?>
     <!-- ###Harmo reference study table## -->
 
-    <?php if (!empty(variable_get_value('dataset_show_studies'))): ?>
+    <?php if (!empty($dataset_type_dto->studyTable) && !empty(variable_get_value('dataset_show_collected_studies'))): ?>
       <?php if ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET): ?>
-        <?php if (!empty($dataset_type_dto->studyTable)): ?>
           <h2><?php print $localize->getTranslation('global.individual-study'); ?></h2>
           <div class="row">
             <div class="col-lg-6 col-xs-12">
@@ -255,11 +241,10 @@ $description = empty($dataset_dto->description) ? NULL : obiba_mica_commons_get_
               </table>
             </div>
           </div>
-        <?php endif ?>
       <?php endif; ?>
-      <?php if (!empty($study_tables)): ?>
-        <?php print render($study_tables); ?>
-      <?php endif; ?>
+    <?php endif; ?>
+    <?php if (!empty($study_tables)): ?>
+      <?php print render($study_tables); ?>
     <?php endif; ?>
 
   </section>
