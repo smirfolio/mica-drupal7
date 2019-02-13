@@ -621,11 +621,17 @@ function obiba_mica_dataset_studies_datatable_init($dataset_type_dto, $type_dto,
         array_push($harmo_study_tables, $harmo_study_table);
       }
     }
+    $get_header = function($type_enabled = FALSE, $study_type){
+      return !empty($type_enabled) ? obiba_mica_study_study_summaries_table_headers($study_type) : FALSE;
+    };
+    $get_rows = function($type_enabled = FALSE, $table, $study_type){
+      return !empty($type_enabled) ? obiba_mica_dataset_study_tables_rows($table, $study_type) : FALSE;
+    };
     $data = array(
-      'collection_studies_table_headers' => obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::INDIVIDUAL_STUDY),
-      'collection_studies_table_data' => obiba_mica_dataset_study_tables_rows($study_tables, DrupalMicaStudyResource::INDIVIDUAL_STUDY),
-      'harmonization_studies_table_headers' => obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::HARMONIZATION_STUDY),
-      'harmonization_studies_table_data' => obiba_mica_dataset_study_tables_rows($harmo_study_tables, DrupalMicaStudyResource::HARMONIZATION_STUDY),
+      'collection_studies_table_headers' => $get_header(variable_get_value('dataset_show_collected_studies'), DrupalMicaStudyResource::INDIVIDUAL_STUDY),
+      'collection_studies_table_data' => $get_rows(variable_get_value('dataset_show_collected_studies'), $study_tables, DrupalMicaStudyResource::INDIVIDUAL_STUDY),
+      'harmonization_studies_table_headers' => $get_header(variable_get_value('dataset_show_harmonization_studies'), DrupalMicaStudyResource::HARMONIZATION_STUDY),
+      'harmonization_studies_table_data' => $get_rows(variable_get_value('dataset_show_harmonization_studies'), $harmo_study_tables, DrupalMicaStudyResource::HARMONIZATION_STUDY),
     );
     obiba_mica_commons_set_cache(__FUNCTION__ . '_studies_tables_rows_data_' . $type_dto . '_' . $dto_id, $data);
   }
