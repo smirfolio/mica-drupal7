@@ -34,7 +34,7 @@
         <i class="fa fa-pencil-square-o"></i> <?php print $localize->getTranslation('edit')?></a>
     <?php endif; ?>
 
-    <?php if (variable_get_value('study_detail_show_search_button') && $draft_view === FALSE): ?>
+    <?php if (variable_get_value('harmo_study_detail_show_search_button') && $draft_view === FALSE): ?>
       <?php print theme('obiba_mica_search_bouton', array(
         'method' => 'MicaClientAnchorHelper::studyVariables',
         'document_id' => $study_dto->id,

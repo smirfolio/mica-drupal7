@@ -66,63 +66,33 @@
   Drupal.behaviors.dce_detail_modal.seedmodal = function (popup, dceId) {
     var dce = getDceFromId(dceId);
     var popup = $(popup[0]);
+
+    function seedSection(dataSection, contentSelector, section, contentType){
+      if(dataSection){
+        popup.find('.dce-' + section).show();
+        dataSection.title ? popup.find('.' + section + '-title').text(dataSection.title): null;
+        contentSelector ? popup.find(contentSelector).html(dataSection[contentType]): null;
+      }
+      else{
+        popup.find('.dce-' + section).hide();
+      }
+    }
+
     if (dce) {
       popup.find('.dce-modal-title').text(dce['dce'].name);
-
       if (dce['dce'].description) {
+        popup.find('.modal-dce-description').show();
         popup.find('.modal-dce-description').html(dce['dce'].description);
       }
       else {
-        popup.find('.modal-dce-description').empty();
+        popup.find('.modal-dce-description').hide();
       }
 
-      if (dce['dce'].startYear) {
-        popup.find('.start-year-title').text(dce['dce'].startYear.title);
-        popup.find('.start-year').html(dce['dce'].startYear.value);
-      }
-      else {
-        popup.find('.dce-start-year').empty();
-      }
-
-      if (dce['dce'].endYear) {
-        popup.find('.end-year-title').text(dce['dce'].endYear.title);
-        popup.find('.end-year').html(dce['dce'].endYear.value);
-      }
-      else {
-        popup.find('.dce-end-year').empty();
-      }
-
-      if (dce['dce'].dataSources) {
-        popup.find('.data-sources-title').text(dce['dce'].dataSources.title);
-        popup.find('.data-sources-list').html(dce['dce'].dataSources.list);
-      }
-      else {
-        popup.find('.dce-data-sources').empty();
-      }
-
-      if (dce['dce'].administrativeDatabases) {
-        popup.find('.admin-databases-title').text(dce['dce'].administrativeDatabases.title);
-        popup.find('.admin-databases-list').html(dce['dce'].administrativeDatabases.list);
-      }
-      else {
-        popup.find('.dce-admin-databases').empty();
-      }
-
-      if (dce['dce'].bioSamples) {
-        popup.find('.bio-samples-title').text(dce['dce'].bioSamples.title);
-        popup.find('.bio-samples-list').html(dce['dce'].bioSamples.list);
-      }
-      else {
-        popup.find('.dce-bio-samples').empty();
-      }
-
-      if (dce['dce'].bioSamples) {
-        popup.find('.bio-samples-title').text(dce['dce'].bioSamples.title);
-        popup.find('.bio-samples-list').html(dce['dce'].bioSamples.list);
-      }
-      else {
-        popup.find('.dce-bio-samples').empty();
-      }
+      seedSection(dce['dce'].startYear, '.start-year', 'start-year', 'value');
+      seedSection(dce['dce'].endYear, '.end-year', 'end-year', 'value');
+      seedSection(dce['dce'].dataSources, '.data-sources-list', 'data-sources', 'list');
+      seedSection(dce['dce'].administrativeDatabases, '.admin-databases-list', 'admin-databases', 'list');
+      seedSection(dce['dce'].bioSamples, '.bio-samples-list', 'bio-samples', 'list');
 
       if (dce.file_browser) {
         popup.find('.dce-file-browser').show();

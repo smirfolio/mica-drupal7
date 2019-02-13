@@ -199,6 +199,7 @@ function obiba_mica_app_angular_load_template_app($module_caller = NULL, $node_p
   if(!empty($node_page_id)){
     $node_rendered = obiba_mica_commons_get_translated_node($node_page_id);
     if (!empty($node_rendered)) {
+      drupal_set_title($node_rendered['#node']->title);
       $node_rendered['#node']->title = '';
     }
   }
