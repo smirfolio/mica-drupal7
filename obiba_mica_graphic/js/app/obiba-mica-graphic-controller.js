@@ -198,12 +198,14 @@
           var normalized = [];
           zeroValues.map(function (z) { return z; }).forEach(function (z) {
             var item = d.values.filter(function (value) { return value.title === z.title; }).pop();
-            normalized.push({
-              key: z.key,
-              value: item ? item.value : 0,
-              title: z.title,
-              link: item ? item.link : null
-            });
+            if(item && item.value > 0){
+              normalized.push({
+                key: z.key,
+                value: item ? item.value : 0,
+                title: z.title,
+                link: item ? item.link : null
+              });
+            }
           });
 
           d.values = normalized;
