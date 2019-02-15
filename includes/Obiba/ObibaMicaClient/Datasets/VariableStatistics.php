@@ -49,7 +49,6 @@ class VariableStatistics {
    * Table of descriptive statistics or frequencies.
    */
   public function asTable() {
-    if (!empty($this->datasetDetailedVarStats)) {
       if (!empty($this->variableStat->total)) {
         if (!empty($this->variableStat->statistics)) {
           return $this->asDescriptiveTable();
@@ -59,23 +58,18 @@ class VariableStatistics {
         }
       }
       return '<div class="alert alert-info">' . t('No statistics found for this variable.') . '</div>';
-    }
-    return FALSE;
   }
 
   /**
    * Chart of frequencies only.
    */
   public function asChart() {
-    if (!empty($this->datasetDetailedVarStats)) {
       if (!empty($this->variableStat->statistics)) {
         return FALSE;
         // May be need to review :
         // return $this->asStackedBarChart();
       }
       return $this->asPieChart();
-    }
-    return FALSE;
   }
 
   /**
