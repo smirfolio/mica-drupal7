@@ -123,7 +123,7 @@ class ObibaSetsResources extends DrupalMicaClientResource {
   }
 
   public function createSet($document_type, $body = NULL, $name = NULL) {
-    $resource = '/' . $document_type . '/sets/_import' . ($name == NULL ? '' : '?name=' . $name);
+    $resource = '/' . $document_type . '/sets/_import' . ($name == NULL ? '' : '?name=' . urlencode($name));
     return $this->httpRequestPostBuilder($resource, $body);
   }
 
