@@ -10,7 +10,7 @@
  */
 
  /**
-  * 
+  *
   */
 class ObibaSetsResources extends DrupalMicaClientResource {
   const MICA_SETS = 'mica/sets';
@@ -122,9 +122,14 @@ class ObibaSetsResources extends DrupalMicaClientResource {
     }
   }
 
-  public function createSet($document_type, $body = NULL) {
-    $resource = '/' . $document_type . '/sets/_import';
+  public function createSet($document_type, $body = NULL, $name = NULL) {
+    $resource = '/' . $document_type . '/sets/_import' . ($name == NULL ? '' : '?name=' . $name);
     return $this->httpRequestPostBuilder($resource, $body);
+  }
+
+  public function getSets($document_type) {
+    $resource = '/' . $document_type . '/sets';
+    return $this->httpRequestGetBuilder($resource);
   }
 
   public function getSet($document_type, $set_id) {
@@ -136,7 +141,7 @@ class ObibaSetsResources extends DrupalMicaClientResource {
     $resource = '/' . $document_type . '/set/' . $set_id . '/document/' . $document_id . '/_exists';
     return $this->httpRequestGetBuilder($resource);
   }
-  
+
   public function importSet($document_type, $set_id, $body = NULL) {
     $resource = '/' . $document_type . '/set/' . $set_id . '/documents/_import';
     return $this->httpRequestPostBuilder($resource, $body);
@@ -159,6 +164,11 @@ class ObibaSetsResources extends DrupalMicaClientResource {
 
   public function clearSet($document_type, $set_id) {
     $resource = '/' . $document_type . '/set/' . $set_id . '/documents';
+    return $this->httpRequestDeleteBuilder($resource);
+  }
+
+  public function deleteSet($document_type, $set_id) {
+    $resource = '/' . $document_type . '/set/' . $set_id;
     return $this->httpRequestDeleteBuilder($resource);
   }
 

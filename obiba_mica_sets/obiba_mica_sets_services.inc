@@ -9,6 +9,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+function obiba_mica_sets_list_sets($document_type = 'variables') {
+  $resource = new ObibaSetsResources();
+  $result = $resource->getSets($document_type);
+  drupal_json_output($result);
+}
 
 /**
  * Create a set by importing (possibly empty) a list of identifiers.
@@ -16,7 +21,7 @@
 function obiba_mica_sets_import($document_type = 'variables') {
   $resource = new ObibaSetsResources();
   $body = file_get_contents('php://input');
-  $result = $resource->createSet($document_type, $body);
+  $result = $resource->createSet($document_type, $body, drupal_get_query_parameters()['name']);
   drupal_json_output($result);
 }
 
@@ -25,7 +30,12 @@ function obiba_mica_sets_import($document_type = 'variables') {
  */
 function obiba_mica_sets_set($document_type = 'variables', $set_id) {
   $resource = new ObibaSetsResources();
-  $result = $resource->getSet($document_type, $set_id);
+  if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $result = $resource->getSet($document_type, $set_id);
+  } else {
+    $result = $resource->deleteSet($document_type, $set_id);
+  }
+
   drupal_json_output($result);
 }
 
