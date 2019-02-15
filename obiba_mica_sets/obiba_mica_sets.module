@@ -14,6 +14,14 @@
  */
 function obiba_mica_sets_menu() {
   $items = array();
+
+  $items[ObibaSetsResources::MICA_SETS . '/%/sets/ws'] = array(
+    'page callback' => 'obiba_mica_sets_list_sets',
+    'file' => 'obiba_mica_sets_services.inc',
+    'page arguments' => array(2),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
   $items[ObibaSetsResources::MICA_SETS . '/%/sets/_import/ws'] = array(
     'page callback' => 'obiba_mica_sets_import',
     'file' => 'obiba_mica_sets_services.inc',
