@@ -157,9 +157,11 @@ function obiba_mica_lists_get_array_value_variable($variable){
   return array_values(array_filter(array_map('trim', explode(',', variable_get_value($variable)))));
 }
 
-function obiba_mica_lists_item_to_show($tabs, $item){
-  if(in_array($item, $tabs)){
-    return TRUE;
+function obiba_mica_lists_item_to_show($tabs, $tab_item, $badge_item = TRUE){
+  if (TRUE == $badge_item) {
+    if (in_array($tab_item, $tabs)) {
+      return TRUE;
+    }
   }
   return FALSE;
 }
@@ -231,9 +233,9 @@ function obiba_mica_lists_studies_options($current_path){
         'studiesSearchForm' => variable_get_value('studies_list_show_search_form'),
         'studiesSupplInfoDetails' => variable_get_value('studies_list_show_study_sup_info'),
         'studiesTrimmedDescription' => variable_get_value('studies_list_show_trimmed_description_study'),
-        'showNetworkBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_NETWORK),
-        'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET),
-        'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE),
+        'showNetworkBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_NETWORK, variable_get_value('studies_list_show_networks_count_badge')),
+        'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET, variable_get_value('studies_list_show_datasets_count_badge')),
+        'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE, variable_get_value('studies_list_show_variables_count_badge')),
       ),
       'sortOrderField' => array(
         'options' => array(
@@ -259,9 +261,9 @@ function obiba_mica_lists_studies_options($current_path){
       'studiesSearchForm' => variable_get_value('studies_list_show_search_form'),
       'studiesSupplInfoDetails' => variable_get_value('harmo_studies_list_show_study_sup_info'),
       'studiesTrimmedDescription' => variable_get_value('harmo_studies_list_show_trimmed_description_study'),
-      'showNetworkBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_NETWORK),
-      'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET),
-      'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE)
+      'showNetworkBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_NETWORK, variable_get_value('harmo_studies_list_show_networks_count_badge')),
+      'showDatasetBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_DATASET, variable_get_value('harmo_studies_list_show_datasets_count_badge')),
+      'showVariableBadge' => obiba_mica_lists_item_to_show($tabs_config, MicaListsHelper::TARGET_VARIABLE, variable_get_value('harmo_studies_list_show_variables_count_badge')),
     );
   }
   return $studies_options;

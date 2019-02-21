@@ -81,9 +81,33 @@ function _obiba_mica_lists_studies_admin(&$form){
     '#description' => $info['description'],
   );
 
+  $info = variable_get_info('studies_list_show_variables_count_badge');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['studies_list_show_variables_count_badge'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_variables_count_badge'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_datasets_count_badge');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['studies_list_show_datasets_count_badge'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_datasets_count_badge'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('studies_list_show_networks_count_badge');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['studies_list_show_networks_count_badge'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('studies_list_show_networks_count_badge'),
+    '#description' => $info['description'],
+  );
+
   $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['harmonization_study'] = array(
     '#type' => 'fieldset',
-    '#title' => t('HArmonization specific options'),
+    '#title' => t('Harmonization specific options'),
     '#collapsible' => FALSE,
   );
   $info = variable_get_info('harmo_studies_list_show_study_sup_info');
@@ -99,6 +123,30 @@ function _obiba_mica_lists_studies_admin(&$form){
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('harmo_studies_list_show_trimmed_description_study'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('harmo_studies_list_show_variables_count_badge');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['harmonization_study']['harmo_studies_list_show_variables_count_badge'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('harmo_studies_list_show_variables_count_badge'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('harmo_studies_list_show_datasets_count_badge');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['harmonization_study']['harmo_studies_list_show_datasets_count_badge'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('harmo_studies_list_show_datasets_count_badge'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('harmo_studies_list_show_networks_count_badge');
+  $form['obiba_mica_lists']['obiba_mica_lists_studies']['obiba_mica_lists_studies_criteria']['harmonization_study']['harmo_studies_list_show_networks_count_badge'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('harmo_studies_list_show_networks_count_badge'),
     '#description' => $info['description'],
   );
 
