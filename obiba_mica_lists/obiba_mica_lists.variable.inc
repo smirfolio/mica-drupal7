@@ -59,6 +59,26 @@ function _obiba_mica_lists_study_config(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['studies_list_show_variables_count_badge'] = array(
+    'title' => t("Show variables count"),
+    'description' => t("Shows the count of related variables and if pressed, navigates to the search page."),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['studies_list_show_datasets_count_badge'] = array(
+    'title' => t("Show datasets count"),
+    'description' => t("Shows the count of related datasets and if pressed, navigates to the search page."),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['studies_list_show_networks_count_badge'] = array(
+    'title' => t("Show networks count"),
+    'description' => t("Shows the count of related networks and if pressed, navigates to the search page."),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
   $variable['study_list_show_search_button'] = array(
     'title' => t('Show the search studies button in the study list page'),
     'description' => t('If selected the search studies button will be displayed in the study list page'),
@@ -92,6 +112,27 @@ function _obiba_mica_lists_study_config(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+  $variable['harmo_studies_list_show_variables_count_badge'] = array(
+    'title' => t("Show variables count"),
+    'description' => t("Shows the count of related variables and if pressed, navigates to the search page."),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['harmo_studies_list_show_datasets_count_badge'] = array(
+    'title' => t("Show datasets count"),
+    'description' => t("Shows the count of related datasets and if pressed, navigates to the search page."),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['harmo_studies_list_show_networks_count_badge'] = array(
+    'title' => t("Show networks count"),
+    'description' => t("Shows the count of related networks and if pressed, navigates to the search page."),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
 
 
 }
