@@ -343,13 +343,6 @@ function _obiba_mica_settings_search_networks_form(&$form) {
   );
 
   // tab
-  $info = variable_get_info('search_networks');
-  $form['search_display_settings']['networks_form']['search_networks'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('search_networks'),
-    '#description' => $info['description'],
-  );
   $info = variable_get_info('networks_list_page_size');
   $form['search_display_settings']['networks_form']['networks_list_page_size'] = array(
     '#type' => 'select',
@@ -435,13 +428,6 @@ function _obiba_mica_settings_search_studies_form(&$form) {
   );
 
   // tab
-  $info = variable_get_info('search_studies');
-  $form['search_display_settings']['studies_form']['search_studies'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('search_studies'),
-    '#description' => $info['description'],
-  );
   $info = variable_get_info('studies_list_page_size');
   $form['search_display_settings']['studies_form']['studies_list_page_size'] = array(
     '#type' => 'select',
@@ -591,13 +577,6 @@ function _obiba_mica_settings_search_datasets_form(&$form) {
   );
 
   // tab
-  $info = variable_get_info('search_datasets');
-  $form['search_display_settings']['datasets_form']['search_datasets'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('search_datasets'),
-    '#description' => $info['description'],
-  );
   $info = variable_get_info('datasets_list_page_size');
   $form['search_display_settings']['datasets_form']['datasets_list_page_size'] = array(
     '#type' => 'select',
@@ -689,13 +668,6 @@ function _obiba_mica_settings_search_variables_form(&$form) {
   );
 
   // tab
-  $info = variable_get_info('search_variables');
-  $form['search_display_settings']['variables_form']['search_variables'] = array(
-    '#type' => 'checkbox',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('search_variables'),
-    '#description' => $info['description'],
-  );
   $info = variable_get_info('variables_list_page_size');
   $form['search_display_settings']['variables_form']['variables_list_page_size'] = array(
     '#type' => 'select',
