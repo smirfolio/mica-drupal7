@@ -360,13 +360,14 @@
 
   <!-- POPULATIONS -->
   <?php if (!empty($populations)): ?>
+    <?php $population_array = $populations; unset($population_array['dce-info']); $population_length = sizeof($population_array) ; ?>
     <section>
-      <h2 id="populations"><?php if (count($populations) > 1) {
+      <h2 id="populations"><?php if ($population_length > 1) {
           print $localize->getTranslation('study.populations');
         }
-        else print '<span id="population-' . $key . '">' . $localize->getTranslation('study.population') . '</span>' ?></h2>
-      <?php if (count($populations) == 1): ?>
-        <?php print array_pop($populations)['html']; ?>
+        else print '<span id="population-1">' . $localize->getTranslation('study.population') . '</span>' ?></h2>
+      <?php if ($population_length == 1): ?>
+        <?php print $populations[1]['html']; ?>
       <?php else: ?>
 
         <div class="row tabbable tabs-left">

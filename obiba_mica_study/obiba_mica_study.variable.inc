@@ -72,6 +72,12 @@ function _obiba_mica_harmonization_study_content(&$variable) {
     'type' => 'string',
     'default' => TRUE,
   );
+  $variable['harmo_study_show_individual_studies'] = array(
+    'title' => t('Show individual studies'),
+    'description' => t('If selected the individual studie section will be displayed'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
   $variable['harmo_study_show_networks'] = array(
     'title' => t('Show networks'),
     'description' => t('If selected the Networks section will be displayed'),
