@@ -25,7 +25,7 @@
     "angular-recaptcha": "4.1.0",
     "sf-obiba-file-upload": "https://github.com/obiba/sf-obiba-file-upload.git#1.1.3",
     "sf-checkboxgroup": "https://github.com/obiba/sf-checkboxgroup.git#1.0.1",
-    "mica-study-timeline": "https://github.com/obiba/mica-study-timeline.git#1.0.6",
+    "mica-study-timeline": "https://github.com/obiba/mica-study-timeline.git#1.0.7",
     "obiba-progressbar": "https://github.com/obiba/obiba-progressbar.git#1.0.1",
     "datatables": "http://datatables.net/releases/DataTables-1.10.4.zip",
     "datatables-plugins": "https://github.com/DataTables/Plugins.git#1.10.10",
