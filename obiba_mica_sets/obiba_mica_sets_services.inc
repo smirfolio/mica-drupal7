@@ -21,7 +21,7 @@ function obiba_mica_sets_list_sets($document_type = 'variables') {
 function obiba_mica_sets_import($document_type = 'variables') {
   $resource = new ObibaSetsResources();
   $body = file_get_contents('php://input');
-  $result = $resource->createSet($document_type, $body, drupal_get_query_parameters()['name']);
+  $result = $resource->createSet($document_type, $body, !empty(drupal_get_query_parameters()['name']) ? empty(drupal_get_query_parameters()['name']): NULL);
   drupal_json_output($result);
 }
 
