@@ -177,6 +177,7 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
       'modules' => obiba_mica_app_angular_load_ng_module($module_caller),
       'requests_url' => MicaClientPathProvider::DATA_ACCESS_LIST,
       'authenticated' => $authenticated,
+        'agate_user' => user_external_load(empty($user->name) ? "" : $user->name),
       /*  'restws_csrf_token' => drupal_get_token('restws'), */
       'user' => $user,
       'locale' => $language->language,

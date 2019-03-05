@@ -170,7 +170,7 @@ mica.provider('SessionProxy',
       var roles = Object.keys(user.roles).map(function (key) {
         return user.roles[key];
       });
-      var real = {login: user.name, roles: roles, profile: null};
+      var real = {login: user.name, roles: roles, profile: user.data || null};
 
       this.login = function () {
         return real.login;
