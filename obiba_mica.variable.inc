@@ -163,7 +163,7 @@ function _obiba_mica_variable_search_page(&$variable) {
     'title' => t('Search help text'),
     'description' => t('Help text to display on the search page.'),
     'type' => 'string',
-    'default' => '<i class="fa fa-info-circle"></i> The search page allows to browse cataloged information such as partner networks, studies, datasets and variables.',
+    'default' => '<p><i class="fa fa-info-circle"></i> The search page allows to browse catalogued information such as partner networks, studies, datasets and variables.</p><span class="anon-only"><p><i class="fa fa-shopping-cart fa-lg"></i> Discover the Custom Variables List feature by either <a href="user/login" class="redirection-place-holder">signing in</a> or <a href="agate/register#join" class="redirection-place-holder">registering</a></p></span>',
   );
 
   $variable['help_text_harmonization_potential_page'] = array(
