@@ -353,6 +353,11 @@ mica.service('AttributeService',
 
         var positionDestination = href.indexOf('?destination=');
         var basePath = href.substring(0, positionDestination !== -1 ? positionDestination : href.length);
+
+        if (!basePath.startsWith('/')) { // check if href is relative and fix it
+          basePath = Drupal.settings.basePath + basePath;
+        }
+
         element.attr('href', basePath + '?destination=' + urlDestination);
       }
     };
