@@ -31,6 +31,7 @@ function obiba_mica_variable_info($options) {
   _obiba_mica_variable_search_datasets($variable);
   _obiba_mica_variable_search_variables($variable);
   _obiba_mica_variable_network_content($variable);
+  _obiba_mica_variable_sets_sets_page($variable);
 
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures filter'),
@@ -133,6 +134,25 @@ function obiba_mica_variable_info($options) {
   );
 
   return $variable;
+}
+
+/**
+ * Setting Variable Sets page
+ */
+function _obiba_mica_variable_sets_sets_page(&$variable) {
+  $variable['help_text_cart_page'] = array(
+    'title' => t('Cart help text'),
+    'description' => t('Help text to display on the cart page.'),
+    'type' => 'string',
+    'default' => '',
+  );
+
+  $variable['help_text_sets_page'] = array(
+    'title' => t('List help text'),
+    'description' => t('Help text to display on the list page.'),
+    'type' => 'string',
+    'default' => '',
+  );
 }
 
 /**

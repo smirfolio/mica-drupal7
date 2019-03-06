@@ -308,4 +308,66 @@ mica.service('AttributeService',
     this.getClientConfig = function () {
       return Drupal.settings.GraphicChartsOptions;
     };
-  }]);
+  }])
+
+  // as per https://stackoverflow.com/a/17426614
+  // useful to 'compile' angular expressions in binded html
+  .directive('compile', ['$compile', function ($compile) {
+    return {
+      restrict: 'A',
+      link: function(scope, element, attrs) {
+        scope.$watch(
+          function(scope) {
+              // watch the 'compile' expression for changes
+              return scope.$eval(attrs.compile);
+          },
+          function(value) {
+              // when the 'compile' expression changes
+              // assign it into the current DOM
+              element.html(value);
+
+              // compile the new DOM and link it to the current
+              // scope.
+              // NOTE: we only compile .childNodes so that
+              // we don't get into infinite loop compiling ourselves
+              $compile(element.contents())(scope);
+          }
+        );
+      }
+    };
+  }])
+
+  .directive('redirectionPlaceHolder', function() {
+    return {
+      restrict: 'C',
+      link: function (scope, element, attrs) {
+        var pathName = Drupal.settings.currentPath;
+        var currentLocation = location.href;
+        var urlDestination = currentLocation.split('?destination=')[1];
+
+        if (!urlDestination) {
+          urlDestination = pathName + '#' + currentLocation.split('#')[1];
+        }
+
+        var href = element.attr('href');
+
+        var positionDestination = href.indexOf('?destination=');
+        var basePath = href.substring(0, positionDestination !== -1 ? positionDestination : href.length);
+        element.attr('href', basePath + '?destination=' + urlDestination);
+      }
+    };
+  })
+
+  .directive('anonOnly', function() {
+    return {
+      restrict: 'AC',
+      link: function(scope, element, attrs) {
+        var isMicaUser = Drupal.settings.angularjsApp.authenticated && Drupal.settings.angularjsApp.agate_user;
+        if (isMicaUser) {
+          element.hide();
+        } else {
+          element.show();
+        }
+      }
+    };
+  });
