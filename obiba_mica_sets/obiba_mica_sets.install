@@ -18,7 +18,9 @@ function obiba_mica_sets_install() {
 }
 
 function obiba_mica_sets_create_node() {
-  $my_body_content = '';
-  $node_page = obiba_mica_commons_add_page(st('Sets'), st($my_body_content));
-  variable_set('obiba_mica_sets_page', $node_page->nid);
+  $content_to_create = obiba_mica_sets_content_to_create();
+  foreach ($content_to_create as $varibale_node => $node_content) {
+    $page = obiba_mica_commons_add_page($node_content['title'], $node_content['content']);
+    variable_set($varibale_node, $page->nid);
+  }
 }

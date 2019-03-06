@@ -79,11 +79,6 @@ mica.config(['$routeProvider', '$locationProvider', 'ObibaServerConfigResourcePr
 
     $locationProvider.hashPrefix('');
 
-    $routeProvider
-      .when('/', {
-        controller: 'MainController'
-      });
-
     ObibaServerConfigResourceProvider.setFactory(
       ['$q', function($q) {
         return {
@@ -128,6 +123,8 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('VocabularyResource', basePathAndPathPrefix + 'mica/repository/taxonomy/:taxonomy/vocabulary/:vocabulary/_filter/ws');
     ngObibaMicaUrlProvider.setUrl('VariableResource', basePathAndPathPrefix + 'mica/variable/:id/ws');
     ngObibaMicaUrlProvider.setUrl('VariableSummaryResource', basePathAndPathPrefix + 'mica/variable/:id/summary/ws');
+    ngObibaMicaUrlProvider.setUrl('CartPage', basePathAndPathPrefix + 'mica/cart#/cart');
+    ngObibaMicaUrlProvider.setUrl('SetsPage', basePathAndPathPrefix + 'mica/sets#/sets');
     ngObibaMicaUrlProvider.setUrl('SetsResource', basePathAndPathPrefix + 'mica/sets/:type/sets/ws');
     ngObibaMicaUrlProvider.setUrl('SetsImportResource', basePathAndPathPrefix + 'mica/sets/:type/sets/_import/ws');
     ngObibaMicaUrlProvider.setUrl('SetResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/ws');

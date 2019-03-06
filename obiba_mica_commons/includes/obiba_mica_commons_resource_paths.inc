@@ -69,6 +69,7 @@ class MicaClientPathProvider {
   const PAGE_NETWORKS_LIST = 'mica/networks/list';
   const ANALYSIS = 'mica/analysis';
   const SETS = 'mica/sets';
+  const CART = 'mica/cart';
 
   /**
    * The project detail url or link if no text is present.

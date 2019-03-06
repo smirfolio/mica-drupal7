@@ -106,14 +106,29 @@ function obiba_mica_sets_get_js($weight_js) {
 function obiba_mica_sets_load_menus() {
   $items = array();
 
-  $items[MicaClientPathProvider::SETS] = array(
+  $items[MicaClientPathProvider::CART] = array(
     'access callback' => TRUE,
     'title' => variable_get('cart_page_title', 'Cart'),
     'module_caller' => 'obiba_mica_sets',
-    'type' => MENU_CALLBACK,
-    'options' => array('fragment' => 'cart'),
+      'type' => MENU_CALLBACK,
+      'options' => array('fragment' => 'cart'),
   );
+
+  $items[MicaClientPathProvider::SETS] = array(
+    'access callback' => 'obiba_mica_sets_permission_check',
+    'title' => 'Lists',
+    'node_page' => !empty(variable_get_value('obiba_mica_sets_cart_page')) ? variable_get_value('obiba_mica_sets_lists_page') : NULL,
+    'menu_name' => 'main-menu',
+    'type' => MENU_NORMAL_ITEM,
+    'options' => array('fragment' => 'sets'),
+    'weight' => 11,
+  );
+
   return $items;
+}
+
+function obiba_mica_sets_permission_check() {
+  return ObibaAgateClient::hasTicket() || user_is_logged_in();
 }
 
 /**
@@ -150,4 +165,18 @@ function obiba_mica_sets_theme($existing, $type, $theme, $path) {
  */
 function obiba_mica_sets_variable_page_search() {
   return theme('obiba_mica_sets_main_app', array());
+}
+
+
+function obiba_mica_sets_content_to_create() {
+  return array(
+    'obiba_mica_sets_cart_page' => array(
+      'content' => '<div> <p>Cart.</p> </div> <hr/>',
+      'title' => 'Cart',
+    ),
+    'obiba_mica_sets_lists_page' => array(
+      'content' => '<div> <p>Sets.</p> </div> <hr/>',
+      'title' => 'Lists',
+    ),
+  );
 }

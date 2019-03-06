@@ -19,5 +19,8 @@
 <?php print render($node_page) ?>
 <?php endif; ?>
   <obiba-alert id="MainController"></obiba-alert>
+  <div class="alert-growl-container">
+      <obiba-alert id="MainControllerGrowl"></obiba-alert>
+  </div>
   <div ng-controller="NotificationController"></div>
   <div ng-view="" class=" <?php print !empty($module_caller) ? $module_caller : NULL; ?> "></div>

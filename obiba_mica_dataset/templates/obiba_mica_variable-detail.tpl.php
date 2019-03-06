@@ -19,7 +19,7 @@
 <div>
   <?php if (module_exists('obiba_mica_sets') && $variable_dto->variableType != 'Harmonized'): ?>
   <div class="alert-growl-container">
-    <obiba-alert id="VariableToCartControllerGrowl"></obiba-alert>
+    <obiba-alert id="MainControllerGrowl"></obiba-alert>
   </div>
   <div class="pull-right md-bottom-margin">
     <div ng-controller="VariableToCartController" ng-init="onInit('<?php print $variable_dto->id; ?>')">
