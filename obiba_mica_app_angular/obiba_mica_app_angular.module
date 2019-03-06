@@ -540,6 +540,8 @@ function obiba_mica_app_angular_get_search_config() {
   )));
   return array(
     'SearchHelpText' => variable_get_value('help_text_search_page'),
+    'CartHelpText' => variable_get_value('help_text_cart_page'),
+    'SetsHelpText' => variable_get_value('help_text_sets_page'),
     'ClassificationHelpText' => variable_get_value('help_text_harmonization_potential_page'),
     'SearchHelpLinkLabel' => variable_get_value('help_link_label'),
     'SearchHelpLinkUrl' => variable_get_value('help_link_url'),
@@ -609,7 +611,7 @@ function obiba_mica_app_angular_get_search_config() {
           'showNetworksStudiesColumn' => variable_get_value('networks_column_studies'),
           'showNetworksStudyDatasetColumn' => variable_get_value('networks_column_study_datasets'),
           'showNetworksHarmonizationDatasetColumn' => variable_get_value('networks_column_harmonization_datasets'),
-          'showNetworksVariablesColumn' => variable_get_value('networks_column_variables'), 
+          'showNetworksVariablesColumn' => variable_get_value('networks_column_variables'),
           'showNetworksStudyVariablesColumn' => variable_get_value('networks_column_study_variables'),
           'showNetworksDataschemaVariablesColumn' => variable_get_value('networks_column_dataschema_variables'),
         )
