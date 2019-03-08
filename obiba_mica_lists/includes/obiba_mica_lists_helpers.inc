@@ -12,7 +12,7 @@
 
 /**
  * @file
- * MicaSListsHelper class
+ * MicaListsHelper class
  */
 
 

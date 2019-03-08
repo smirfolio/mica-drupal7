@@ -99,10 +99,8 @@ class ObibaSetsResources extends DrupalMicaClientResource {
 
       if ($e->getCode() == 403) {
         $error_level = WATCHDOG_WARNING;
-        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Please set correct credentials access to mica-server', 'warning');
       } else {
         $error_level = WATCHDOG_ERROR;
-        drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Error contacting Mica, please try again later.', 'error');
       }
 
       watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
@@ -112,13 +110,7 @@ class ObibaSetsResources extends DrupalMicaClientResource {
         ), $error_level);
 
       $this->MicaClientAddHttpHeader('Status', $e->getCode());
-      throw $e;
-
-    } catch (Exception $e) {
-
-      drupal_set_message('<i class="glyphicon glyphicon-info-sign"></i> Error contacting Mica, please try again later.', 'error');
-      watchdog('Mica Client', 'Unexpected error, exception @exception', array('@exception' => $e), WATCHDOG_ERROR);
-      throw $e;
+      return empty($client->lastResponse->body) ? FALSE : json_decode($client->lastResponse->body);
     }
   }
 

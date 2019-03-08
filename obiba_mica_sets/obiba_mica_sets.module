@@ -115,7 +115,7 @@ function obiba_mica_sets_load_menus() {
   );
 
   $items[MicaClientPathProvider::SETS] = array(
-    'access callback' => 'obiba_mica_sets_permission_check',
+    'access callback' => 'obiba_mica_sets_user_permission',
     'title' => 'Lists',
     'node_page' => !empty(variable_get_value('obiba_mica_sets_cart_page')) ? variable_get_value('obiba_mica_sets_lists_page') : NULL,
     'menu_name' => 'main-menu',
@@ -125,6 +125,14 @@ function obiba_mica_sets_load_menus() {
   );
 
   return $items;
+}
+
+/**
+ * Access entities count page callback
+ *
+ */
+function obiba_mica_sets_user_permission() {
+  return user_access('can access sets');
 }
 
 function obiba_mica_sets_permission_check() {
@@ -178,5 +186,18 @@ function obiba_mica_sets_content_to_create() {
       'content' => '<div> <p>Sets.</p> </div> <hr/>',
       'title' => 'Lists',
     ),
+  );
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function obiba_mica_sets_permission() {
+  return array(
+    'can access sets' => array(
+      'title' => t('Can create and manage lists'),
+      'description' => t('Only the selected roles can create and manage lists.'),
+    )
   );
 }

@@ -15,6 +15,7 @@
  * */
 function obiba_mica_sets_install() {
   obiba_mica_sets_create_node();
+  obiba_mica_sets_default_users_access();
 }
 
 function obiba_mica_sets_create_node() {
@@ -23,4 +24,19 @@ function obiba_mica_sets_create_node() {
     $page = obiba_mica_commons_add_page($node_content['title'], $node_content['content']);
     variable_set($varibale_node, $page->nid);
   }
+}
+
+
+/**
+ * Affect a default permissions.
+ */
+function obiba_mica_sets_default_users_access() {
+  $role = user_role_load_by_name('mica-user');
+  $role_dao = user_role_load_by_name('mica-data-access-officer');
+  $permissions = array('can access sets');
+
+  watchdog('Mica Client', 'Permission For   : @sets set to ', array( '@sets' => $permissions ), WATCHDOG_WARNING);
+
+  user_role_grant_permissions($role->rid, $permissions);
+  user_role_grant_permissions($role_dao->rid, $permissions);
 }
