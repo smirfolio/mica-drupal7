@@ -31,7 +31,8 @@
     "datatables-plugins": "https://github.com/DataTables/Plugins.git#1.10.10",
     "obiba-country-codes": "https://github.com/obiba/obiba-country-codes.git#1.0.1",
     "sf-radio-group-collection": "https://github.com/obiba/sf-radio-group-collection.git#master",
-    "obiba-shims": "https://github.com/obiba/obiba-shims.git#1.0.0"
+    "obiba-shims": "https://github.com/obiba/obiba-shims.git#1.0.0",
+    "mail-images": "https://github.com/obiba/mail-images.git#master"
   },
   "resolutions": {
     "angular": "1.6.9",

@@ -121,6 +121,16 @@ function _obiba_mica_settings_server(&$form) {
     '#default_value' => variable_get_value('mica_allowed_xss_filtered_tag'),
     '#description' => $info['description'],
     );
+
+  $info = variable_get_info('obiba_mica_emails_selectors');
+  $form['server']['obiba_mica_emails_selectors'] = array(
+      '#type' => 'textfield',
+      '#title' => $info['title'],
+      '#required' => FALSE,
+      '#default_value' => variable_get_value('obiba_mica_emails_selectors'),
+      '#maxlength' => 255,
+      '#description' => $info['description'],
+  );
 }
 
 /**

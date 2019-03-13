@@ -463,6 +463,21 @@ function obiba_mica_js_alter(&$javascript) {
   if(!empty($scroll_up)){
     drupal_add_js($current_module_path . '/js/obiba-mica-scroll-to-top.js');
   }
+
+    $email_image_js_files = obiba_mica_get_email_image('.js');
+    if (!empty($email_image_js_files)) {
+        $javascript[$email_image_js_files] = drupal_js_defaults($email_image_js_files);
+        $hide_emails_selectors = variable_get_value('obiba_mica_emails_selectors');
+        if(!empty($hide_emails_selectors)){
+            drupal_add_js($current_module_path . '/js/obiba-mail-images.js');
+            drupal_add_js(array(
+                'obiba_mica_mails_selector' => $hide_emails_selectors,
+            ), 'setting');
+        }
+    }
+
+
+
   $current_clean_url = !empty($GLOBALS['conf']['clean_url']) ? '' : '?q=';
   drupal_add_js(array('basePath' => base_path() . $current_clean_url), 'setting');
 }
@@ -516,6 +531,24 @@ function obiba_mica_get_country_path($extension = NULL, $custom = NULL) {
     $obiba_country_code_lib . '/dist/' . $custom . $extension;
 }
 
+/**
+ * Helper assembling the resource files.
+ *
+ * @param string $extension
+ *   The extension of the file to get
+ *
+ * @param string $custom
+ *   custom file name.
+ *
+ * @return null|string
+ *   The path.
+ */
+function obiba_mica_get_email_image($extension = NULL) {
+    $obiba_email_image_lib = libraries_get_path('mail-images');
+    return empty($extension)
+    || empty($obiba_email_image_lib) ? NULL :
+        $obiba_email_image_lib . '/mail-images' .$extension;
+}
 
 /**
  * Implements hook_form_FORM_ID_alter().

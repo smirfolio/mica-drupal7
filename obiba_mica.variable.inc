@@ -279,6 +279,13 @@ function _obiba_mica_variable_info_mica_server(&$variable) {
     'type' => 'string',
     'default' => 'a,em,strong,cite,blockquote,code,ul,ol,li,dl,dt,dd,a,abbr,acronym,address,b,bdo,big,blockquote,br,caption,cite,code,col,colgroup,del,dfn,div,h1,h2,h3,h4,h5,h6,hr,i,ins,kbd,li,ol,p,pre,q,samp,small,span,strong,sub,sup,table,tbody,td,tfoot,th,thead,tr,tt,ul,var',
   );
+  $variable['obiba_mica_emails_selectors'] = array(
+      'title' => t('Email js selectors'),
+      'description' => t('Here you can enter the Email js selectors, to render string emails as images to prevent crawling emails and using them in phishing attacks, separated by comma \',\' e.g.: a[href*=\'mailto\'], p, div#mail-id'),
+      'type' => 'string',
+      'default' => 'a[href*=\'mailto\']',
+      'placeholder' => 'e.g.: a[href*=\'mailto\'], p, div#mail-id',
+  );
 }
 
 /**

@@ -25,3 +25,4 @@ dependencies[] = obiba_mica_lists
 
 scripts[] = js/obiba-mica-progressbar-controller.js
 scripts[] = js/print-friendly.js
+scripts[] = js/obiba-mail-images.js
