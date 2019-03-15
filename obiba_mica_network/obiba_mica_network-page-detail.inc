@@ -356,8 +356,6 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
             !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? $localize->getTranslation('numberOfParticipants.no-limit') :
               (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
             isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
-            empty($study_summary->variables)
-              ? '-' : MicaClientAnchorHelper::studyVariables(obiba_mica_commons_format_number($study_summary->variables), $study_summary->id, array(), $query)
           );
           $rows[] = obiba_mica_network_study_table_column($row, $study_type);
         }
@@ -388,7 +386,6 @@ function obiba_mica_network_study_table_headers($study_type = DrupalMicaStudyRes
       "title" => $localize->getTranslation('address.country'),
       'width' => '10%'
     ),
-    array("title" => $localize->getTranslation('variables'), 'width' => '5%')
   );
   return obiba_mica_network_study_table_column($header, $study_type);
 }

@@ -37,7 +37,6 @@ function obiba_mica_study_study_summaries_table_headers($study_type = DrupalMica
     array("title" => $localize->getTranslation('study.design')),
     array("title" => $localize->getTranslation('client.label.dataset.participants')),
     array("title" => $localize->getTranslation('client.label.countries')),
-    array("title" => $localize->getTranslation('variables')),
   );
   return obiba_mica_study_study_table_column($header, $study_type);
 }
@@ -62,6 +61,5 @@ function obiba_mica_study_study_summaries_table_row($study_summary) {
     !empty($study_summary->targetNumber->noLimit) ? $localize->getTranslation('numberOfParticipants.no-limit') :
       (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
     isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
-    isset($study_summary->variables) ?obiba_mica_commons_format_number($study_summary->variables) : NULL,
   );
 }
