@@ -117,6 +117,7 @@ function obiba_mica_sets_load_menus() {
   $items[MicaClientPathProvider::SETS] = array(
     'access callback' => 'obiba_mica_sets_user_permission',
     'title' => 'Lists',
+    'module_caller' => 'obiba_mica_sets',
     'node_page' => !empty(variable_get_value('obiba_mica_sets_cart_page')) ? variable_get_value('obiba_mica_sets_lists_page') : NULL,
     'menu_name' => 'main-menu',
     'type' => MENU_NORMAL_ITEM,
