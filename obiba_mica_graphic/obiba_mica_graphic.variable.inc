@@ -82,9 +82,16 @@ function obiba_mica_graphic_variable_info($options) {
     'default' => TRUE,
   );
 
+  $variable['graphics_piechart_legend'] = array(
+    'title' => t('Show Pie Chart legend '),
+    'description' => t('Enable the legends for Pie Chart graphics'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
   $variable['mica_graphic_colors'] = array(
     'title' => t('Used colors on the graphics'),
-    'description' => t('Pleas select your desired colors'),
+    'description' => t('Select your desired colors'),
     'type' => 'string',
     'default' => array(
       'color1' => array(

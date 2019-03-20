@@ -236,7 +236,7 @@
         });
       }
 
-      function processConfig(config, type, data, colors) {
+      function processConfig(config, type, data, colors, showLegend) {
         config.options.chart.margin = {
           left: 200,
           top:50,
@@ -244,6 +244,10 @@
           bottom:100
         };
         if (type === 'variable') {
+          if (!showLegend) {
+            config.options.chart.margin = {top: 0, right:0, bottom: 0, left: 0}
+          }
+
           config.withType('pieChart');
           config.options.chart.legendPosition = 'right';
           config.options.chart.legend = {
@@ -257,6 +261,7 @@
           config.options.chart.multibar = false;
           config.options.chart.groupSpacing = false;
           config.options.chart.stacked = false;
+          config.options.chart.showLegend = showLegend;
           config.options.chart.showLabels = true;
           config.options.chart.labelThreshold = 0.1;
           config.options.chart.labelType =  function (d) {
@@ -311,7 +316,7 @@
               if (chartData && chartData.length) {
                 var data = doNormalizationByType(chartData, type);
                 var config = new D3ChartConfig().withData(data, true).withTitle(chart.title).withSubtitle(chart.subtitle);
-                processConfig(config, type, chartData, chart.color.colors);
+                processConfig(config, type, chartData, chart.color.colors, chart.showLegend);
                 $scope.d3Configs.push(config);
               }
             });
