@@ -163,7 +163,8 @@ class VariableStatistics {
         array_push($response->charts, array(
           'title' => t('Valid values frequencies'),
           'data' => $data,
-          'color' => obiba_mica_graphic_charts_colors_options_settings()
+          'color' => obiba_mica_graphic_charts_colors_options_settings(),
+          'showLegend' => variable_get_value('graphics_piechart_legend')
         ));
       }
       return $response;

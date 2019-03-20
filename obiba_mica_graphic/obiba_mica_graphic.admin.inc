@@ -54,6 +54,7 @@ function obiba_mica_graphic_settings_form($form, &$form_state) {
   obiba_mica_graphic_settings_form_general_display($form);
   obiba_mica_graphic_settings_form_display_block($form);
   obiba_mica_graphic_settings_form_display_content($form);
+  obiba_mica_graphic_settings_form_piechart($form);
 
   return system_settings_form($form);
 }
@@ -229,6 +230,24 @@ function obiba_mica_graphic_settings_form_display_content(&$form) {
     '#type' => 'checkbox',
     '#title' => $info['title'],
     '#default_value' => variable_get_value('graphics_content'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+}
+
+function obiba_mica_graphic_settings_form_piechart(&$form) {
+
+  $form['obiba_mica_graphic']['graphic_display']['piechart'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Pie Chart settings'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('graphics_piechart_legend');
+  $form['obiba_mica_graphic']['graphic_display']['piechart']['graphics_piechart_legend'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_piechart_legend'),
     '#maxlength' => 255,
     '#description' => $info['description'],
   );
