@@ -171,7 +171,12 @@ function obiba_mica_data_access_request_action($entity_id, $amendment_id = null)
       break;
 
     case 'DELETE':
-      obiba_mica_data_access_request_delete_request_access($entity_id);
+      if (empty($amendment_id)) {
+        obiba_mica_data_access_request_delete_request_access($entity_id);
+      } else {
+        obiba_mica_data_access_request_delete_request_amendment($entity_id, $amendment_id);
+      }
+
       break;
   }
 }
@@ -211,8 +216,17 @@ function obiba_mica_data_access_request_attachments_update($id_data_request) {
  */
 function obiba_mica_data_access_request_delete_request_access($id_request) {
   $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_DELETE');
-  $data_access_request = $mica_client->deleteRequest($id_request);
-  drupal_json_output($data_access_request);
+  $result = $mica_client->deleteRequest($id_request);
+  drupal_json_output($result);
+}
+
+/**
+ * Delete the data access request.
+ */
+function obiba_mica_data_access_request_delete_request_amendment($parent_id_, $id) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_DELETE');
+  $result = $mica_client->deleteAmendment($parent_id_, $id);
+  drupal_json_output($result);
 }
 
 /**

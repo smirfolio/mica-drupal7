@@ -284,6 +284,34 @@ class MicaDataAccessRequest extends DrupalMicaDataAccessRequestResources {
   }
 
   /**
+   * Delete an data access amendment.
+   *
+   * @param string $parent_id
+   *   The data access request id.
+   *
+   * @param string $id
+   *   The data access request id.
+   *
+   * @return array
+   *   The data server response.
+   */
+  public function deleteAmendment($parent_id, $id) {
+    $constant_method = constant('HttpClientRequest::' . $this->method);
+    $this->setLastResponse(NULL);
+    $url_requests = $this->micaUrl . '/data-access-request/' . $parent_id . '/amendment/' . $id;
+
+    $request = new HttpClientRequest($url_requests, array(
+      'method' => $constant_method,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    return $this->execute($request);
+  }
+
+  /**
    * Update data access request status.
    *
    * @param string $id
