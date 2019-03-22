@@ -11,8 +11,9 @@
 mica.ObibaSets = angular.module('mica.ObibaSets', [
     'obiba.mica.sets'
   ])
-  .config(['ngObibaMicaSetsTemplateUrlProvider',
-    function (ngObibaMicaSetsTemplateUrlProvider) {
+  .config(['ngObibaMicaSetsTemplateUrlProvider', 'ngObibaMicaSearchProvider',
+    function (ngObibaMicaSetsTemplateUrlProvider, ngObibaMicaSearchProvider) {
+      ngObibaMicaSearchProvider.initialize(Drupal.settings.angularjsApp.obibaSearchOptions);
       ngObibaMicaSetsTemplateUrlProvider.setHeaderUrl('cart', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/obiba_mica_sets_cart-view-header');
       ngObibaMicaSetsTemplateUrlProvider.setHeaderUrl('sets', Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/obiba_mica_sets_sets-view-header');
     }])
