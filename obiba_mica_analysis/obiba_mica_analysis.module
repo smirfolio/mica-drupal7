@@ -84,6 +84,7 @@ function obiba_mica_analysis_load_menus() {
     'access callback' => 'obiba_mica_analysis_user_permission',
     'title' => variable_get('entities_count_page_title', 'Entities Count'),
     'module_caller' => 'obiba_mica_analysis',
+    'node_page' => !empty(variable_get_value('obiba_mica_analysis_page')) ? variable_get_value('obiba_mica_analysis_page') : NULL,
     'type' => MENU_CALLBACK,
     'options' => array('fragment' => 'entities-count'),
   );
