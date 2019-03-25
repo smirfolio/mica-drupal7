@@ -222,6 +222,9 @@ function obiba_mica_data_access_request_menu() {
  * Implements hook_preprocess_menu_link().
  */
 function obiba_mica_data_access_request_preprocess_menu_link(&$variables) {
+  if (isset($variables['element']['#localized_options']['attributes']['title'])){
+    $variables['element']['#localized_options']['attributes']['title'] = '';
+  }
   if(strstr($variables['element']['#href'], 'mica/data_access'))
   {
     obiba_mica_commons_setting_menu_title_from_callback($variables);
