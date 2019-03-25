@@ -25,6 +25,7 @@ angular.module('ObibaTranslation', ['pascalprecht.translate'])
     }]
   );
 var modules = [
+  'http-auth-interceptor',
   'ObibaTranslation',
   'ngObiba',
   'ngRoute',

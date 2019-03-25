@@ -48,7 +48,7 @@ function obiba_mica_data_access_requests_action($parent_id = NULL) {
         $data_access_request = $mica_client->dataAccessSave(file_get_contents('php://input'), '/data-access-requests');
       }
 
-      drupal_json_output($data_access_request->body);
+      drupal_json_output(isset($data_access_request->body) ? $data_access_request->body: array());
       break;
   }
 
