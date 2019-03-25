@@ -160,6 +160,7 @@ function obiba_mica_app_angular_load_js_by_folder_app($folder = 'app', $weight_j
 function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
   obiba_mica_app_angular_load_libraries_resources('obiba_mica_app_angular');
   $weight_js = obiba_mica_app_angular_load_js_by_folder_app('app');
+  $weight_js = obiba_mica_app_angular_load_js_by_folder_app('http-auth-interceptor');
   $weight_js = obiba_mica_app_angular_load_js_by_folder_app('attachment', $weight_js);
   $weight_js = obiba_mica_app_angular_load_js_by_folder_app('file', $weight_js);
   obiba_mica_app_angular_load_external_app_js($module_caller, $weight_js);

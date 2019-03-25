@@ -133,11 +133,7 @@ function obiba_mica_sets_load_menus() {
  *
  */
 function obiba_mica_sets_user_permission() {
-  return user_access('can access sets');
-}
-
-function obiba_mica_sets_permission_check() {
-  return ObibaAgateClient::hasTicket() || user_is_logged_in();
+  return user_access('can access sets') && obiba_mica_commons_is_authorized_agate_user();
 }
 
 /**
