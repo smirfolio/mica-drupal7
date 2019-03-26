@@ -263,7 +263,7 @@
           config.options.chart.stacked = false;
           config.options.chart.showLegend = showLegend;
           config.options.chart.showLabels = true;
-          config.options.chart.labelThreshold = 0.1;
+          config.options.chart.labelThreshold = 0.05;
           config.options.chart.labelType =  function (d) {
             var percent = (d.endAngle - d.startAngle) / (2 * Math.PI);
             return d3.format('.2%')(percent);
@@ -300,7 +300,7 @@
 
         // resource query
         var result = CoverageResource.get({type: type, id: id});
-       
+
         $scope.d3Configs = [];
         result.$promise.then(function (res) {
           if(res.code && res.code !== 200){
