@@ -159,13 +159,13 @@ function obiba_mica_commons_get_localized_field($std, $field = NULL, $lang = NUL
 function obiba_mica_commons_datatables_multi_Lang() {
   drupal_json_output(array(
     "sEmptyTable" => t("No data available in table"),
-    "sInfo" => t("Showing @start to @end of @total entries", array(
+    "sInfo" => t("@start - @end of @total", array(
       "@start" => "_START_",
       "@end" => "_END_",
       "@total" => "_TOTAL_",
     )),
-    "sInfoEmpty" => t("Showing 0 to 0 of 0 entries"),
-    "sInfoFiltered" => t("(filtered from @max total entries)", array("@max" => "_MAX_")),
+    "sInfoEmpty" => '',
+    "sInfoFiltered" => '',
     "sInfoPostFix" => '',
     "sInfoThousands" => t(","),
     "sLengthMenu" => t("Show @menu entries", array("@menu" => "_MENU_")),
