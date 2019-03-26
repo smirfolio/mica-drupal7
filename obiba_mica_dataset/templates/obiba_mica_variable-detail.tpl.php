@@ -247,7 +247,7 @@
       <?php
       $column_for_detail_statistics = 6;
       if (!variable_get_value('dataset_detailed_var_stats') && $variable_dto->variableType == 'Dataschema') : ?>
-        <p><?php print t('Cumulative Summary of all Studies:') ?></p>
+        <p><?php print $localize->getTranslation('client.label.variable.cummulative-summary') ?></p>
       <?php endif; ?>
       <?php if ($variable_dto->variableType == 'Dataschema' && variable_get_value('dataset_detailed_var_stats')): ?>
         <div class="scroll-content-tab">
