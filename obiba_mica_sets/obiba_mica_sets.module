@@ -85,7 +85,8 @@ function obiba_mica_sets_menu() {
  * Implements hook_get_js().
  */
 function obiba_mica_sets_get_js($weight_js) {
-  if (current_path() == MicaClientPathProvider::SETS) {
+  $current_path = current_path();
+  if ($current_path == MicaClientPathProvider::SETS || $current_path == MicaClientPathProvider::CART) {
     $module_path = drupal_get_path('module', 'obiba_mica_sets');
     $js = file_scan_directory($module_path . '/js/app', '/.*\.js$/', array('key' => 'name'));
     ksort($js);
@@ -140,7 +141,8 @@ function obiba_mica_sets_user_permission() {
  * Implements hook_get_ng_module_to_load().
  */
 function obiba_mica_sets_get_ng_module_to_load() {
-  if (current_path() == MicaClientPathProvider::SETS) {
+  $current_path = current_path();
+  if ($current_path == MicaClientPathProvider::SETS || $current_path == MicaClientPathProvider::CART) {
     return 'mica.ObibaSets';
   }
   return FALSE;
@@ -159,6 +161,10 @@ function obiba_mica_sets_theme($existing, $type, $theme, $path) {
     ),
     'obiba_mica_sets_cart-view-header' => array(
       'template' => 'obiba_mica_sets_cart-view-header',
+      'path' => $path_views,
+    ),
+    'obiba_mica_sets_sets-view-header' => array(
+      'template' => 'obiba_mica_sets_sets-view-header',
       'path' => $path_views,
     ),
   );
