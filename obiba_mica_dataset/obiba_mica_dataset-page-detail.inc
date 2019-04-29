@@ -89,6 +89,12 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
       array('fragment' => MicaListsHelper::datasetFragment($path_type))),
   ));
   $study_tables = obiba_mica_dataset_study_tables($dataset_type_dto, $dataset_type, $dataset_id);
+  $study_id = !empty($dataset_type_dto) ? $dataset_type_dto->studyTable->studyId : NULL;
+  $dce_modals = obiba_mica_dataset_get_population_dce_modals(
+    $study_id,
+    obiba_mica_dataset_get_population_dce($dataset_type_dto),
+    $token_key
+  );
   $dataset_theme = obiba_mica_commons_get_cache(__FUNCTION__ . 'dataset_theme-' . $dataset_id);
   if (!empty($dataset_theme)) {
     return $dataset_theme;
@@ -97,12 +103,7 @@ function obiba_mica_dataset_page_detail($dataset_id, $token_key = NULL) {
     if (!empty($dataset_dto)) {
       $variables_dataset = $dataset_resource->getVariables($dataset_type, $dataset_id, 0, 1);
       if ($dataset_type == DrupalMicaDatasetResource::COLLECTED_DATASET && !empty($dataset_type_dto->studyTable->studySummary->published)) {
-        $study_id = !empty($dataset_type_dto) ? $dataset_type_dto->studyTable->studyId : NULL;
-        $modals = obiba_mica_dataset_get_population_dce_modals(
-          $study_id,
-          obiba_mica_dataset_get_population_dce($dataset_type_dto),
-          $token_key
-        );
+        $modals = $dce_modals;
       }
 
       if (module_exists('obiba_mica_files')) {
