@@ -772,7 +772,7 @@ function obiba_mica_commons_format_number($number, $nbr_decimals = 0) {
         return number_format($number, $nbr_decimals, '.', ',');
       }
       else {
-        return number_format($number, 2, ',', ' ');
+        return number_format($number, 2, '.', ',');
       }
   }
 }
