@@ -29,10 +29,17 @@
           var modal = $(this);
           destroyModal(modal);
         });
+        var urlHash = window.location.hash;
+        if(urlHash.indexOf('dce-id-')>0){
+          var UpPop = $("#dce-modal");
+          seedModal(UpPop.modal(), urlHash.split('dce-id-')[1]);
+        }
       }
 
       function seedModal(popup, dceId) {
+        if(dceId){
         return Drupal.behaviors.dce_detail_modal.seedmodal(popup, dceId);
+        }
       }
 
       function destroyModal(modal) {
@@ -100,7 +107,9 @@
         fileBrowser[0].firstElementChild.classList.add('show');
         fileBrowser[0].firstElementChild.setAttribute('doc-path', dce.file_browser.marckup['doc_path']);
         fileBrowser[0].firstElementChild.setAttribute('doc-id', dce.file_browser.marckup['doc_id']);
+        if(dce.file_browser.marckup['token_key']){
         fileBrowser[0].firstElementChild.setAttribute('token-key', dce.file_browser.marckup['token_key']);
+        }
         fileBrowser[0].firstElementChild.setAttribute('refresh', true);
         fileBrowser[0].firstElementChild.setAttribute('show-title', true);
       }
@@ -108,6 +117,6 @@
         popup.find('.dce-file-browser').hide();
       }
     }
-  }
+  };
 
 })(jQuery);

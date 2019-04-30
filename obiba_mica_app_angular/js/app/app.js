@@ -145,6 +145,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('NetworkPage', basePathAndPathPrefix + 'mica/network/:network');
     ngObibaMicaUrlProvider.setUrl('StudyPage', basePathAndPathPrefix + 'mica/:type/:study');
     ngObibaMicaUrlProvider.setUrl('StudyPopulationsPage', basePathAndPathPrefix + 'mica/:type/:study/#population-:population');
+    ngObibaMicaUrlProvider.setUrl('StudyDcePage', basePathAndPathPrefix + 'mica/:type/:study/#dce-id-:dce');
     ngObibaMicaUrlProvider.setUrl('DatasetPage', basePathAndPathPrefix + 'mica/:type/:dataset');
     ngObibaMicaUrlProvider.setUrl('BaseUrl', basePathAndPathPrefix);
     ngObibaMicaUrlProvider.setUrl('FileBrowserFileResource', basePathAndPathPrefix + 'mica/file');
