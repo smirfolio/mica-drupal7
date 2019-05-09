@@ -163,7 +163,15 @@ function obiba_mica_study_theme($existing, $type, $theme, $path) {
     ),
     'obiba_mica_study_dce_detail_modal' => array('template' => 'obiba_mica_study_dce-detail-modal', 'path' => $path_theme),
     'obiba_mica_study_opal' => array('template' => 'obiba_mica_study_opal', 'path' => $path_theme),
-    'obiba_mica_study_fixed_sidebar' => array('template' => 'obiba_mica_study_fixed_sidebar', 'path' => $path_theme)
+    'obiba_mica_study_fixed_sidebar' => array('template' => 'obiba_mica_study_fixed_sidebar', 'path' => $path_theme),
+    'obiba_mica_study-detail-access' => array(
+      'template' => 'obiba_mica_study-detail-access',
+      'path' => $path_theme . '/study-detail'
+    ),
+    'obiba_mica_access_representative_modal' => array(
+      'template' => 'obiba_mica_access_representative_modal',
+      'path' => $path_theme . '/study-detail'
+    ),
   );
 }
 
