@@ -236,72 +236,20 @@
 
   </section>
 
-  <section>
+  <?php if (!empty($study_dto->model->access) || !empty($study_dto->model->markerPaper) || !empty($study_dto->model->pubmedId)): ?>
+      <section>
 
     <div class="row">
-      <div class="col-lg-6 col-xs-12">
+          <?php if (!empty($study_dto->model->access)): ?>
+      <div class="col-lg-7 col-xs-12">
         <!-- ACCESS -->
-        <h2 id="access"><?php print $localize->getTranslation('study.access.label') ?></h2>
 
-        <?php if (!empty($study_dto->model->access) && (in_array('data', $study_dto->model->access) ||
-            in_array('bio_samples', $study_dto->model->access) ||
-            in_array('other', $study_dto->model->access))
-        ): ?>
+          <?php print theme('obiba_mica_study-detail-access', array(
+            'study_dto' => $study_dto)); ?>
 
-          <p><?php print $localize->getTranslation('study.access.for'); ?></p>
-        <?php else : ?>
-          <p><?php print $localize->getTranslation('study.access.none'); ?></p>
-        <?php endif; ?>
-        <div class="table-responsive">
-          <table class="table table-striped valign-table-column">
-            <tbody>
-            <tr>
-              <th><?php print $localize->getTranslation('study.access.data'); ?></th>
-              <td>
-                <p>
-                  <?php if (!empty($study_dto->model->access) && in_array('data', $study_dto->model->access)): ?>
-                    <span class="glyphicon glyphicon-ok"></span>
-                  <?php else : ?>
-                    <span class="glyphicon glyphicon-remove"></span>
-                  <?php endif; ?>
-                </p>
-              </td>
-            </tr>
-
-            <tr>
-              <th><?php print $localize->getTranslation('study.access.biosamples'); ?></th>
-              <td>
-                <p>
-                  <?php if (!empty($study_dto->model->access) && in_array('bio_samples', $study_dto->model->access)): ?>
-                    <span class="glyphicon glyphicon-ok"></span>
-                  <?php else : ?>
-                    <span class="glyphicon glyphicon-remove"></span>
-                  <?php endif; ?>
-                </p>
-              </td>
-            </tr>
-            <?php $other_access = obiba_mica_commons_get_localized_field($study_dto->model, 'otherAccess'); ?>
-              <tr>
-                <th><?php print $localize->getTranslation('study.access.other'); ?></th>
-                <td>
-                  <?php if (!empty($study_dto->model->access) && (!empty($other_access) || in_array('other', $study_dto->model->access)) ): ?>
-                  <?php if (!empty($other_access)): ?>
-                     <?php print $other_access; ?>
-                    <?php else: ?>
-                    <?php if (in_array('other', $study_dto->model->access)): ?>
-                          <span class="glyphicon glyphicon-ok"></span>
-                    <?php endif; ?>
-                  <?php endif; ?>
-                  <?php else: ?>
-                    <span class="glyphicon glyphicon-remove"></span>
-                  <?php endif; ?>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
       </div>
-      <div class="col-lg-6 col-xs-12">
+           <?php endif; ?>
+      <div class="col-lg-5 col-xs-12">
         <!-- MARKER PAPER -->
         <?php if (!empty($study_dto->model->markerPaper) || !empty($study_dto->model->pubmedId)): ?>
           <h2 id="marker"><?php print $localize->getTranslation('study.marker-paper') ?></h2>
@@ -322,6 +270,7 @@
     </div>
 
   </section>
+  <?php endif; ?>
 
   <!-- SUPPLEMENTARY INFORMATION -->
   <?php $sup_info = obiba_mica_commons_get_localized_field($study_dto->model, 'info'); ?>
