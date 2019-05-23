@@ -32,6 +32,22 @@ $icon = function($value){
 ?>
 <h2 id="access"><?php print $localize->getTranslation('study.access.label') ?></h2>
 
+<div class="row legend lg-bottom-margin">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-3"><i class="glyphicon glyphicon-ok"></i>
+                <?php print $localize->getTranslation('global.yes'); ?> </br>
+                <i class="glyphicon glyphicon-remove"></i>
+                <?php print $localize->getTranslation('global.no'); ?>
+            </div>
+            <div class="col-md-9"><i class="glyphicon glyphicon-minus"></i>
+                <?php print $localize->getTranslation('study.access.access_data_sharing_cost.na'); ?> </br>
+                <i class="fa fa-question"></i>
+                <?php print $localize->getTranslation('global.don-know'); ?>
+            </div>
+        </div>
+    </div>
+</div>
 
 <ul class="nav nav-tabs">
   <li role="presentation" class="active">
@@ -39,14 +55,14 @@ $icon = function($value){
       <?php print $localize->getTranslation('study.general-info') ?>
     </a>
   </li>
-  <?php if ($study_dto->model->access_restrictions): ?>
+  <?php if (!empty($study_dto->model->access_restrictions)): ?>
     <li role="presentation">
       <a href="#restriction" id="restriction-tab" role="tab" data-toggle="tab">
         <?php print $localize->getTranslation('study.access.access_restrictions.title') ?>
       </a>
     </li>
   <?php endif; ?>
-  <?php if ($study_dto->model->access_fees): ?>
+  <?php if (!empty($study_dto->model->access_fees)): ?>
     <li role="presentation">
       <a href="#fees" id="fees-tab" role="tab" data-toggle="tab">
         <?php print $localize->getTranslation('study.access.access_fees.title') ?>
@@ -64,39 +80,39 @@ $icon = function($value){
 
 <div style="min-height: 270px" class="tab-content" id="myTabContent">
 <!--    General information-->
-  <div class="tab-pane active" role="tabpanel" aria-labelledby="general-tab" id="general">
+  <div class="tab-pane active lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="general-tab" id="general">
       <label><?php print $localize->getTranslation('study.access.access_external_researchers_permitted_foreseen.title') ?></label>
     <div class="table-responsive">
       <table class="table table-striped valign-table-column">
         <tbody>
         <tr>
-          <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title'); ?></th>
+          <td><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title'); ?></td>
           <td>
             <p>
-                <span class="<?php print !empty($study_dto->model->access->data) ?
-                  $icon($study_dto->model->access->data): '' ?>"></span>
+                <span class="<?php print !empty($study_dto->model->access->access_data) ?
+                  $icon($study_dto->model->access->access_data): '' ?>"></span>
             </p>
           </td>
         </tr>
 
         <tr>
-          <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_bio_samples.title'); ?></th>
+          <td><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_bio_samples.title'); ?></td>
           <td>
             <p>
-              <span class="<?php print !empty($study_dto->model->access->bio_samples) ?
-                $icon($study_dto->model->access->bio_samples): ''; ?>"></span>
+              <span class="<?php print !empty($study_dto->model->access->access_bio_samples) ?
+                $icon($study_dto->model->access->access_bio_samples): ''; ?>"></span>
             </p>
           </td>
         </tr>
         <?php $other_access = obiba_mica_commons_get_localized_field($study_dto->model, 'otherAccess'); ?>
         <tr>
-          <th><?php print $localize->getTranslation('study.access.other'); ?></th>
+          <td><?php print $localize->getTranslation('study.access.other'); ?></td>
           <td>
               <?php if (!empty($other_access)): ?>
                 <?php print $other_access; ?>
               <?php else: ?>
-                <span class="<?php print !empty($study_dto->model->access->other) ?
-                  $icon($study_dto->model->access->other): ''; ?>"></span>
+                <span class="<?php print !empty($study_dto->model->access->access_other) ?
+                  $icon($study_dto->model->access->access_other): ''; ?>"></span>
             <?php endif; ?>
           </td>
         </tr>
@@ -125,26 +141,8 @@ $icon = function($value){
 
   </div>
 <!--    Restriction-->
-  <?php if ($study_dto->model->access_restrictions): ?>
-    <div class="tab-pane" role="tabpanel" aria-labelledby="restriction-tab" id="restriction" >
-      <div class="row">
-        <div class="col-md-6">
-          <table class="table table-responsive table-striped">
-            <tr>
-              <td width="10"><i class="glyphicon glyphicon-ok"></i></td>
-              <td>Yes</td>
-              <td width="10"><i class="glyphicon glyphicon-minus"></td>
-              <td>Not applicable</td>
-            </tr>
-            <tr>
-              <td width="10"><i class="glyphicon glyphicon-remove"></i></td>
-              <td>No</td>
-              <td width="10"><i class="fa fa-question"></i></td>
-              <td>Don't Know</td>
-            </tr>
-          </table>
-        </div>
-      </div>
+  <?php if (!empty($study_dto->model->access_restrictions)): ?>
+    <div class="tab-pane lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="restriction-tab" id="restriction" >
       <label ><?php print $localize->getTranslation('study.access.access_restrictions.sector-of-research.title') ?></label>
       <table class="table table-responsive table-striped">
         <tr>
@@ -221,8 +219,8 @@ $icon = function($value){
     </div>
   <?php endif; ?>
 <!--    fees-->
-  <?php if ($study_dto->model->access_fees): ?>
-    <div class="tab-pane" role="tabpanel" aria-labelledby="fees-tab"  id="fees" >
+  <?php if (!empty($study_dto->model->access_fees)): ?>
+    <div class="tab-pane lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="fees-tab"  id="fees" >
         <label ><?php print $localize->getTranslation('study.access.access_data_sharing_cost.cost-title') ?></label>
         <p>
           <?php if (!empty($study_dto->model->access_data_sharing_cost->data)): ?>
@@ -240,7 +238,7 @@ $icon = function($value){
             <table class="table table-striped valign-table-column">
                 <tbody>
                 <tr>
-                    <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title'); ?></th>
+                    <td><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title'); ?></td>
                     <td>
                         <p>
                 <span class="<?php print !empty($study_dto->model->access_cost_reduction_consideration->data) ?
@@ -250,7 +248,7 @@ $icon = function($value){
                 </tr>
 
                 <tr>
-                    <th><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_bio_samples.title'); ?></th>
+                    <td><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_bio_samples.title'); ?></td>
                     <td>
                         <p>
               <span class="<?php print !empty($study_dto->model->access_cost_reduction_consideration->bio_samples) ?
@@ -278,7 +276,7 @@ $icon = function($value){
 <!--    Supp Info-->
   <?php if (!empty($study_dto->model->access_supplementary_info)): ?>
 
-      <div class="tab-pane" role="tabpanel" aria-labelledby="supplementary-tab" id="supplementary" >
+      <div class="tab-pane lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="supplementary-tab" id="supplementary" >
           <p>
             <?php print  $study_dto->model->access_supplementary_info ?>
           </p>

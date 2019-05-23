@@ -14,16 +14,6 @@
           <div>
             <table class="table table-striped">
               <tbody>
-              <?php if (!empty($person->institution)): ?>
-                <tr>
-                  <th><?php print $localize->getTranslation('contact.institution') ?></th>
-                  <td test-ref="institutionIdentifier">
-                    <p>
-                      <?php print $person->institution; ?>
-                    </p>
-                  </td>
-                </tr>
-              <?php endif; ?>
               <?php if (!empty($person->email)): ?>
                 <tr>
                   <th><?php print $localize->getTranslation('contact.email') ?></th>
@@ -36,6 +26,16 @@
                   <th><?php print $localize->getTranslation('contact.phone') ?></th>
                   <td test-ref="phone"><p><?php print $person->telephone; ?></p></td>
                 </tr>
+              <?php endif; ?>
+              <?php if (!empty($person->institution)): ?>
+                  <tr>
+                      <th><?php print $localize->getTranslation('contact.institution') ?></th>
+                      <td test-ref="institutionIdentifier">
+                          <p>
+                            <?php print $person->institution; ?>
+                          </p>
+                      </td>
+                  </tr>
               <?php endif; ?>
               </tbody>
             </table>

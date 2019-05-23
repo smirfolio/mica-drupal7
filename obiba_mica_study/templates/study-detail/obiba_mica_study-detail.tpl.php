@@ -236,9 +236,11 @@
 
   </section>
 
-  <section>
+  <?php if (!empty($study_dto->model->access) || !empty($study_dto->model->markerPaper) || !empty($study_dto->model->pubmedId)): ?>
+      <section>
 
     <div class="row">
+          <?php if (!empty($study_dto->model->access)): ?>
       <div class="col-lg-7 col-xs-12">
         <!-- ACCESS -->
 
@@ -246,6 +248,7 @@
             'study_dto' => $study_dto)); ?>
 
       </div>
+           <?php endif; ?>
       <div class="col-lg-5 col-xs-12">
         <!-- MARKER PAPER -->
         <?php if (!empty($study_dto->model->markerPaper) || !empty($study_dto->model->pubmedId)): ?>
@@ -267,6 +270,7 @@
     </div>
 
   </section>
+  <?php endif; ?>
 
   <!-- SUPPLEMENTARY INFORMATION -->
   <?php $sup_info = obiba_mica_commons_get_localized_field($study_dto->model, 'info'); ?>
