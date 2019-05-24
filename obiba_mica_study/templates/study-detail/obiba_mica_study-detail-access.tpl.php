@@ -181,7 +181,7 @@ $icon = function($value){
       <?php if (!empty($study_dto->model->access_permission_additional_info)): ?>
         <label ><?php print $localize->getTranslation('study.access.access_permission_additional_info.label') ?></label>
         <p>
-          <?php print $study_dto->model->access_permission_additional_info; ?>
+          <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'access_permission_additional_info'); ?>
         </p>
       <?php endif; ?>
         <label ><?php print $localize->getTranslation('study.access.access_restrictions.transfer.title') ?></label>
@@ -213,7 +213,7 @@ $icon = function($value){
       <?php if (!empty($study_dto->model->access_special_conditions_to_leave)): ?>
           <label ><?php print $localize->getTranslation('study.access.access_special_conditions_to_leave.label') ?></label>
           <p>
-            <?php print  $study_dto->model->access_special_conditions_to_leave; ?>
+            <?php print  obiba_mica_commons_get_localized_field($study_dto->model, 'access_special_conditions_to_leave'); ?>
           </p>
       <?php endif; ?>
     </div>
@@ -262,12 +262,12 @@ $icon = function($value){
       <?php if (!empty($study_dto->model->access_cost_reduction_consideration_specification)): ?>
           <label ><?php print $localize->getTranslation('study.access.access_cost_reduction_consideration_specification.title') ?></label>
         <p>
-          <?php print $study_dto->model->access_cost_reduction_consideration_specification ?>
+          <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'access_cost_reduction_consideration_specification') ?>
         </p>
         <?php if (!empty($study_dto->model->access_cost_additional_information)): ?>
               <label ><?php print $localize->getTranslation('study.access.access_cost_additional_information.title') ?></label>
         <p>
-          <?php print $study_dto->model->access_cost_additional_information ?>
+          <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'access_cost_additional_information') ?>
         </p>
         <?php endif; ?>
       <?php endif; ?>
@@ -278,7 +278,7 @@ $icon = function($value){
 
       <div class="tab-pane lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="supplementary-tab" id="supplementary" >
           <p>
-            <?php print  $study_dto->model->access_supplementary_info ?>
+            <?php print  obiba_mica_commons_get_localized_field($study_dto->model, 'access_supplementary_info') ?>
           </p>
 
       </div>
