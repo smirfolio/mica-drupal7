@@ -33,20 +33,11 @@ $icon = function($value){
 <h2 id="access"><?php print $localize->getTranslation('study.access.label') ?></h2>
 
 <div class="row legend lg-bottom-margin">
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-3"><i class="glyphicon glyphicon-ok"></i>
-                <?php print $localize->getTranslation('global.yes'); ?> </br>
-                <i class="glyphicon glyphicon-remove"></i>
-                <?php print $localize->getTranslation('global.no'); ?>
-            </div>
-            <div class="col-md-9"><i class="glyphicon glyphicon-minus"></i>
-                <?php print $localize->getTranslation('study.access.access_data_sharing_cost.na'); ?> </br>
-                <i class="fa fa-question"></i>
-                <?php print $localize->getTranslation('global.don-know'); ?>
-            </div>
-        </div>
-    </div>
+
+            <div class="col-md-3"><i class="glyphicon glyphicon-ok"></i> <?php print $localize->getTranslation('global.yes'); ?></div>
+            <div class="col-md-3"><i class="glyphicon glyphicon-remove"></i> <?php print $localize->getTranslation('global.no'); ?></div>
+            <div class="col-md-3"><i class="glyphicon glyphicon-minus"></i> <?php print $localize->getTranslation('study.access.access_data_sharing_cost.na'); ?></div>
+            <div class="col-md-3"><i class="fa fa-question"></i> <?php print $localize->getTranslation('global.don-know'); ?></div>
 </div>
 
 <ul class="nav nav-tabs">
@@ -82,7 +73,7 @@ $icon = function($value){
 <!--    General information-->
   <div class="tab-pane active lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="general-tab" id="general">
       <label><?php print $localize->getTranslation('study.access.access_external_researchers_permitted_foreseen.title') ?></label>
-    <div class="table-responsive">
+    <div class="table-responsive lg-bottom-margin">
       <table class="table table-striped valign-table-column">
         <tbody>
         <tr>
@@ -144,7 +135,7 @@ $icon = function($value){
   <?php if (!empty($study_dto->model->access_restrictions)): ?>
     <div class="tab-pane lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="restriction-tab" id="restriction" >
       <label ><?php print $localize->getTranslation('study.access.access_restrictions.sector-of-research.title') ?></label>
-      <table class="table table-responsive table-striped">
+      <table class="table table-responsive table-striped lg-bottom-margin">
         <tr>
           <td></td>
           <td><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title') ?></td>
@@ -180,12 +171,12 @@ $icon = function($value){
       </table>
       <?php if (!empty($study_dto->model->access_permission_additional_info)): ?>
         <label ><?php print $localize->getTranslation('study.access.access_permission_additional_info.label') ?></label>
-        <p>
+        <p class="lg-bottom-margin">
           <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'access_permission_additional_info'); ?>
         </p>
       <?php endif; ?>
         <label ><?php print $localize->getTranslation('study.access.access_restrictions.transfer.title') ?></label>
-        <table class="table table-responsive table-striped">
+        <table class="table table-responsive table-striped lg-bottom-margin">
             <tr>
                 <td></td>
                 <td><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title') ?></td>
@@ -227,14 +218,14 @@ $icon = function($value){
             <?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title') ?>: <?php print $localize->getTranslation('study.access.access_data_sharing_cost.'.$study_dto->model->access_data_sharing_cost->data) ?>
           <?php endif; ?>
         </p>
-        <p>
+        <p class="lg-bottom-margin">
       <?php if (!empty($study_dto->model->access_data_sharing_cost->biological_samples)): ?>
         <?php print $localize->getTranslation('study_taxonomy.vocabulary.access_bio_samples.title') ?>: <?php print $localize->getTranslation('study.access.access_data_sharing_cost.'.$study_dto->model->access_data_sharing_cost->biological_samples) ?>
       <?php endif; ?>
         </p>
 
         <label ><?php print $localize->getTranslation('study.access.access_data_sharing_cost.cost-reduction-title') ?></label>
-        <div class="table-responsive">
+        <div class="table-responsive lg-bottom-margin">
             <table class="table table-striped valign-table-column">
                 <tbody>
                 <tr>
@@ -261,7 +252,7 @@ $icon = function($value){
         </div>
       <?php if (!empty($study_dto->model->access_cost_reduction_consideration_specification)): ?>
           <label ><?php print $localize->getTranslation('study.access.access_cost_reduction_consideration_specification.title') ?></label>
-        <p>
+        <p class="lg-bottom-margin">
           <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'access_cost_reduction_consideration_specification') ?>
         </p>
         <?php if (!empty($study_dto->model->access_cost_additional_information)): ?>
