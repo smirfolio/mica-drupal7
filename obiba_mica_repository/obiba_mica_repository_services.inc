@@ -117,9 +117,12 @@ function obiba_mica_repository_query_as_csv_report_by_network($networkId, $local
 /**
  * Get Vocabulary detail by $taxonomy
  */
-function obiba_mica_repository_variable_coverage() {
+function obiba_mica_repository_variable_coverage($query = NULL) {
   $search_resource = new ObibaSearchResources();
-  $q = extract_parameter();
+  $q = $query;
+  if (empty($q) && !empty($_POST['query'])) {
+    $q = $_POST['query'];
+  }
   $search_result = $search_resource->variablesCoverage($q);
   drupal_json_output($search_result);
 }
