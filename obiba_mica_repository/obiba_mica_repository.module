@@ -34,17 +34,17 @@ function obiba_mica_repository_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
-  $items[ObibaSearchResources::MICA_REPOSITORY . '/%/_rql_csv/%/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/%/_rql_csv/ws'] = array(
     'page callback' => 'obiba_mica_repository_query_as_csv',
     'file' => 'obiba_mica_repository_services.inc',
-    'page arguments' => array(2, 4),
+    'page arguments' => array(2),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
-  $items[ObibaSearchResources::MICA_REPOSITORY . '/studies/_report/%/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/studies/_report/ws'] = array(
     'page callback' => 'obiba_mica_repository_query_as_csv_report',
       'file' => 'obiba_mica_repository_services.inc',
-      'page arguments' => array(4, 4),
+      'page arguments' => array(),
       'access callback' => TRUE,
       'type' => MENU_CALLBACK,
   );
@@ -62,10 +62,10 @@ function obiba_mica_repository_menu() {
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );
-  $items[ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage_download/%/ws'] = array(
+  $items[ObibaSearchResources::MICA_REPOSITORY . '/variables/_coverage_download/ws'] = array(
     'page callback' => 'obiba_mica_repository_variable_coverage_download',
     'file' => 'obiba_mica_repository_services.inc',
-    'page arguments' => array(4),
+    'page arguments' => array(),
     'access callback' => TRUE,
     'type' => MENU_CALLBACK,
   );

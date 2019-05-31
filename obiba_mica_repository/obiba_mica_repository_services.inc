@@ -68,10 +68,11 @@ function obiba_mica_repository_query($type, $query = NULL) {
 /**
  * Get Vocabulary detail by $taxonomy as csv
  */
-function obiba_mica_repository_query_as_csv($type, $query = NULL) {
+function obiba_mica_repository_query_as_csv($type) {
+  $q = extract_parameter();
 
   $search_resource = new ObibaSearchResources();
-  $response = $search_resource->searchQueryAsCsv($type, $query);
+  $response = $search_resource->searchQueryAsCsv($type, $q);
 
   if (!empty($response)) {
     $headers = $search_resource->getLastResponseHeaders();
@@ -83,34 +84,34 @@ function obiba_mica_repository_query_as_csv($type, $query = NULL) {
   }
 }
 
-function obiba_mica_repository_query_as_csv_report($query = NULL) {
+function obiba_mica_repository_query_as_csv_report() {
+  $q = extract_parameter();
 
-    $search_resource = new ObibaSearchResources();
-    $response = $search_resource->searchStudyQueryAsCsvReport($query);
+  $search_resource = new ObibaSearchResources();
+  $response = $search_resource->searchStudyQueryAsCsvReport($q);
 
-    if (!empty($response)) {
-        $headers = $search_resource->getLastResponseHeaders();
-        drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
-        ob_clean();
-        $csv_response = $response->body;
-        print $csv_response;
-        exit;
-    }
+  if (!empty($response)) {
+    $headers = $search_resource->getLastResponseHeaders();
+    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+    ob_clean();
+    $csv_response = $response->body;
+    print $csv_response;
+    exit;
+  }
 }
 
 function obiba_mica_repository_query_as_csv_report_by_network($networkId, $locale) {
+  $search_resource = new ObibaSearchResources();
+  $response = $search_resource->searchStudyQueryAsCsvReportByNetwork($networkId, $locale);
 
-    $search_resource = new ObibaSearchResources();
-    $response = $search_resource->searchStudyQueryAsCsvReportByNetwork($networkId, $locale);
-
-    if (!empty($response)) {
-        $headers = $search_resource->getLastResponseHeaders();
-        drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
-        ob_clean();
-        $csv_response = $response->body;
-        print $csv_response;
-        exit;
-    }
+  if (!empty($response)) {
+    $headers = $search_resource->getLastResponseHeaders();
+    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+    ob_clean();
+    $csv_response = $response->body;
+    print $csv_response;
+    exit;
+  }
 }
 
 /**
@@ -129,9 +130,11 @@ function obiba_mica_repository_variable_coverage($query = NULL) {
 /**
  * Get Vocabulary detail by $taxonomy
  */
-function obiba_mica_repository_variable_coverage_download($query = NULL) {
+function obiba_mica_repository_variable_coverage_download() {
+  $q = extract_parameter();
+
   $search_resource = new ObibaSearchResources();
-  $search_resource->variablesCoverageDownload($query, DrupalMicaClientResource::HEADER_CSV);
+  $search_resource->variablesCoverageDownload($q, DrupalMicaClientResource::HEADER_CSV);
   $response = !empty($search_resource->getLastResponse()->body) ? $search_resource->getLastResponse()->body : NULL;
   if (!empty($response)) {
     $headers = $search_resource->getLastResponseHeaders();
@@ -156,4 +159,21 @@ function obiba_mica_repository_get_document_suggestion($target) {
     $locale = $request_parameters['locale'];
     drupal_json_output($search_resource->listSuggestionFilter($target, $query, $locale));
   }
+}
+
+/**
+ * Extract the specified parameter's value from a request
+ */
+function extract_parameter($parameter_name='query') {
+  $q = NULL;
+
+  if (!empty($_POST[$parameter_name])) {
+    $q = $_POST[$parameter_name];
+  }
+
+  if (empty($q) && !empty($_GET[$parameter_name])) {
+    $q = $_GET[$parameter_name];
+  }
+
+  return rawurldecode($q);
 }
