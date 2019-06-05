@@ -810,8 +810,10 @@ function obiba_mica_commons_get_translated_node($nid) {
  */
 function obiba_mica_commons_is_authorized_agate_user() {
   global $user;
-
-  if (!empty($user->session) && strstr($user->session, 'obibaid')) {
+  $path_array = array();
+  $path_array = explode('/', current_path());
+  //Make sure that access is authorized for administrator account in admin configuration UI only
+  if ((!empty($user->session) && strstr($user->session, 'obibaid')) || (user_access('access administration pages') && $path_array[0] == "admin")) {
     return TRUE;
   }
   return FALSE;

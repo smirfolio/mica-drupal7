@@ -73,7 +73,7 @@ $icon = function($value){
 <!--    General information-->
   <div class="tab-pane active lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="general-tab" id="general">
       <label><?php print $localize->getTranslation('study.access.access_external_researchers_permitted_foreseen.title') ?></label>
-    <div class="table-responsive lg-bottom-margin">
+    <div class="table-responsive">
       <table class="table table-striped valign-table-column">
         <tbody>
         <tr>
@@ -212,20 +212,28 @@ $icon = function($value){
 <!--    fees-->
   <?php if (!empty($study_dto->model->access_fees)): ?>
     <div class="tab-pane lg-top-padding lg-right-indent" role="tabpanel" aria-labelledby="fees-tab"  id="fees" >
+      <?php if (!empty($study_dto->model->access_data_sharing_cost->data) || !empty($study_dto->model->access_data_sharing_cost->biological_samples)): ?>
         <label ><?php print $localize->getTranslation('study.access.access_data_sharing_cost.cost-title') ?></label>
-        <p>
-          <?php if (!empty($study_dto->model->access_data_sharing_cost->data)): ?>
-            <?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title') ?>: <?php print $localize->getTranslation('study.access.access_data_sharing_cost.'.$study_dto->model->access_data_sharing_cost->data) ?>
-          <?php endif; ?>
-        </p>
-        <p class="lg-bottom-margin">
-      <?php if (!empty($study_dto->model->access_data_sharing_cost->biological_samples)): ?>
-        <?php print $localize->getTranslation('study_taxonomy.vocabulary.access_bio_samples.title') ?>: <?php print $localize->getTranslation('study.access.access_data_sharing_cost.'.$study_dto->model->access_data_sharing_cost->biological_samples) ?>
+        <table class="table table-striped valign-table-column">
+            <tbody>
+            <?php if (!empty($study_dto->model->access_data_sharing_cost->data)): ?>
+            <tr>
+                <td> <?php print $localize->getTranslation('study_taxonomy.vocabulary.access_data.title') ?></td>
+                <td><?php print $localize->getTranslation('study.access.access_data_sharing_cost.'.$study_dto->model->access_data_sharing_cost->data) ?></td>
+            </tr>
+            <?php endif; ?>
+            <?php if (!empty($study_dto->model->access_data_sharing_cost->biological_samples)): ?>
+            <tr>
+                <td><?php print $localize->getTranslation('study_taxonomy.vocabulary.access_bio_samples.title') ?></td>
+                <td><?php print $localize->getTranslation('study.access.access_data_sharing_cost.'.$study_dto->model->access_data_sharing_cost->biological_samples) ?></td>
+            </tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
       <?php endif; ?>
-        </p>
-
+      <?php if (!empty($study_dto->model->access_cost_reduction_consideration->data) || !empty($study_dto->model->access_cost_reduction_consideration->bio_samples)): ?>
         <label ><?php print $localize->getTranslation('study.access.access_data_sharing_cost.cost-reduction-title') ?></label>
-        <div class="table-responsive lg-bottom-margin">
+        <div class="table-responsive">
             <table class="table table-striped valign-table-column">
                 <tbody>
                 <tr>
@@ -250,6 +258,7 @@ $icon = function($value){
                 </tbody>
             </table>
         </div>
+      <?php endif; ?>
       <?php if (!empty($study_dto->model->access_cost_reduction_consideration_specification)): ?>
           <label ><?php print $localize->getTranslation('study.access.access_cost_reduction_consideration_specification.title') ?></label>
         <p class="lg-bottom-margin">

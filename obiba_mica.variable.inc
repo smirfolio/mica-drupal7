@@ -31,7 +31,6 @@ function obiba_mica_variable_info($options) {
   _obiba_mica_variable_search_datasets($variable);
   _obiba_mica_variable_search_variables($variable);
   _obiba_mica_variable_network_content($variable);
-  _obiba_mica_variable_sets_sets_page($variable);
 
   $variable['mica_taxonomy_figures'] = array(
     'title' => t('Taxonomy in figures filter'),
@@ -137,25 +136,6 @@ function obiba_mica_variable_info($options) {
 }
 
 /**
- * Setting Variable Sets page
- */
-function _obiba_mica_variable_sets_sets_page(&$variable) {
-  $variable['help_text_cart_page'] = array(
-    'title' => t('Cart help text'),
-    'description' => t('Help text to display on the cart page.'),
-    'type' => 'string',
-    'default' => '',
-  );
-
-  $variable['help_text_sets_page'] = array(
-    'title' => t('List help text'),
-    'description' => t('Help text to display on the list page.'),
-    'type' => 'string',
-    'default' => '',
-  );
-}
-
-/**
  * Setting Variable search page.
  */
 function _obiba_mica_variable_search_page(&$variable) {
@@ -163,7 +143,17 @@ function _obiba_mica_variable_search_page(&$variable) {
     'title' => t('Search help text'),
     'description' => t('Help text to display on the search page.'),
     'type' => 'string',
-    'default' => '<p><i class="fa fa-info-circle"></i> The search page allows to browse catalogued information such as partner networks, studies, datasets and variables.</p><span class="anon-only"><p><i class="fa fa-shopping-cart fa-lg"></i> Discover the Custom Variables List feature by either <a href="user/login" class="redirection-place-holder">signing in</a> or <a href="agate/register#join" class="redirection-place-holder">registering</a></p></span>',
+    'default' => '<p><i class="fa fa-info-circle"></i> The search page allows to browse catalogued information such as partner networks, studies, datasets and variables.</p>
+                    <span class="anon-only">
+                    <p>
+                    <i class="fa fa-shopping-cart fa-lg"></i> 
+                    To save your variable search results, please <a href="/user/login" class="redirection-place-holder btn btn-success btn-xs">log in</a> 
+                    or <a href="/agate/register#join" class="redirection-place-holder btn btn-success btn-xs">register</a>
+                    <span>. Note that this feature is only available in the variable list.</span>
+                    </p></span>
+                    <span class="logged-in"><p><i class="fa fa-shopping-cart fa-lg"></i> 
+                    You are logged in and can save your variable search results. Note that this feature is only available in the variable list.</p></span>
+                    ',
   );
 
   $variable['help_text_harmonization_potential_page'] = array(
