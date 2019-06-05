@@ -15,6 +15,17 @@
 function obiba_mica_sets_menu() {
   $items = array();
 
+  $items['admin/config/obiba-mica/obiba-mica-sets-settings'] = array(
+    'title' => 'Sets settings',
+    'description' => 'Configure Sets pages.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('obiba_mica_sets_admin_settings'),
+    'access arguments' => array('administer obiba mica'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'obiba_mica_sets.admin.inc',
+    'weight' => 3,
+  );
+
   $items[ObibaSetsResources::MICA_SETS . '/%/sets/ws'] = array(
     'page callback' => 'obiba_mica_sets_list_sets',
     'file' => 'obiba_mica_sets_services.inc',
@@ -111,8 +122,8 @@ function obiba_mica_sets_load_menus() {
     'access callback' => TRUE,
     'title' => variable_get('cart_page_title', 'Cart'),
     'module_caller' => 'obiba_mica_sets',
-      'type' => MENU_CALLBACK,
-      'options' => array('fragment' => 'cart'),
+    'type' => MENU_CALLBACK,
+    'options' => array('fragment' => 'cart'),
   );
 
   $items[MicaClientPathProvider::SETS] = array(

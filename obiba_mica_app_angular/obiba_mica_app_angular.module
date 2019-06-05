@@ -185,6 +185,7 @@ function obiba_mica_app_angular_load_js_resources($module_caller = NULL) {
       'show_detailed_stats' => variable_get_value('dataset_detailed_var_stats'),
       'data_access_config' => obiba_mica_app_angular_get_access_config(),
       'analysis_config' => obiba_mica_app_angular_get_analysis_config(),
+      'sets_config' => obiba_mica_app_angular_get_sets_config(),
       'obibaSearchOptions' => obiba_mica_app_angular_get_search_config(),
       'micaServerConfig' => empty($micaConfig) ? array() : $micaConfig
     ),
@@ -516,6 +517,16 @@ function obiba_mica_app_angular_get_analysis_config() {
 }
 
 /**
+ * Sets module settings.
+ */
+function obiba_mica_app_angular_get_sets_config() {
+  return array(
+    'CartHelpText' => variable_get_value('help_text_cart_page'),
+    'SetsHelpText' => variable_get_value('help_text_sets_page'),
+  );
+}
+
+/**
  * Search Module settings
  */
 function obiba_mica_app_angular_get_search_config() {
@@ -541,8 +552,6 @@ function obiba_mica_app_angular_get_search_config() {
   )));
   return array(
     'SearchHelpText' => variable_get_value('help_text_search_page'),
-    'CartHelpText' => variable_get_value('help_text_cart_page'),
-    'SetsHelpText' => variable_get_value('help_text_sets_page'),
     'ClassificationHelpText' => variable_get_value('help_text_harmonization_potential_page'),
     'SearchHelpLinkLabel' => variable_get_value('help_link_label'),
     'SearchHelpLinkUrl' => variable_get_value('help_link_url'),

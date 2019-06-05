@@ -377,4 +377,17 @@ mica.service('AttributeService',
         }
       }
     };
+  })
+  .directive('loggedIn', function() {
+    return {
+      restrict: 'AC',
+      link: function(scope, element, attrs) {
+        var isMicaUser = Drupal.settings.angularjsApp.authenticated && Drupal.settings.angularjsApp.agate_user;
+        if (!isMicaUser) {
+          element.hide();
+        } else {
+          element.show();
+        }
+      }
+    };
   });
