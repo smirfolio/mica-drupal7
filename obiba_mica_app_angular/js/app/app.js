@@ -383,6 +383,7 @@ mica.service('AttributeService',
       restrict: 'AC',
       link: function(scope, element, attrs) {
         var isMicaUser = Drupal.settings.angularjsApp.authenticated && Drupal.settings.angularjsApp.agate_user;
+        scope.basePath = Drupal.settings.basePath;
         if (!isMicaUser) {
           element.hide();
         } else {
