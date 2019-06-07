@@ -147,8 +147,8 @@ function _obiba_mica_variable_search_page(&$variable) {
                     <span class="anon-only">
                     <p>
                     <i class="fa fa-shopping-cart fa-lg"></i> 
-                    To save your variable search results, please <a href="/user/login" class="redirection-place-holder btn btn-success btn-xs">log in</a> 
-                    or <a href="/agate/register#join" class="redirection-place-holder btn btn-success btn-xs">register</a>
+                    To save your variable search results, please <a href="{{basePath}}user/login" class="redirection-place-holder btn btn-success btn-xs">log in</a> 
+                    or <a href="{{basePath}}agate/register#join" class="redirection-place-holder btn btn-success btn-xs">register</a>
                     <span>. Note that this feature is only available in the variable list.</span>
                     </p></span>
                     <span class="logged-in"><p><i class="fa fa-shopping-cart fa-lg"></i> 
