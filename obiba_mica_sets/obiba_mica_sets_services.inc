@@ -58,6 +58,20 @@ function obiba_mica_sets_set_documents_import($document_type = 'variables', $set
   drupal_json_output($result);
 }
 
+function obiba_mica_sets_opal_views_download($document_type = 'variables', $set_id) {
+  $resource = new ObibaSetsResources();
+  $response = $resource->getOpalViews($document_type, $set_id);
+
+  if (!empty($response)) {
+    $headers = $resource->getLastResponseHeaders();
+    drupal_add_http_header('Content-Disposition', $headers['Content-Disposition'][0]);
+    ob_clean();
+    $zip_response = $response->body;
+    print $zip_response;
+    exit;
+  }
+}
+
 /**
  * Importing a identifiers matchng a query in a set.
  */
