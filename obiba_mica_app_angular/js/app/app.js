@@ -129,6 +129,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('SetsResource', basePathAndPathPrefix + 'mica/sets/:type/sets/ws');
     ngObibaMicaUrlProvider.setUrl('SetsImportResource', basePathAndPathPrefix + 'mica/sets/:type/sets/_import/ws');
     ngObibaMicaUrlProvider.setUrl('SetResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/ws');
+    ngObibaMicaUrlProvider.setUrl('SetOpalExportResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/_opal/ws');
     ngObibaMicaUrlProvider.setUrl('SetDocumentsResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/:from/:limit/ws');
     ngObibaMicaUrlProvider.setUrl('SetClearResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/documents/ws');
     ngObibaMicaUrlProvider.setUrl('SetExistsResource', basePathAndPathPrefix + 'mica/sets/:type/set/:id/document/:did/_exists/ws');

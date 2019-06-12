@@ -134,6 +134,34 @@ class ObibaSetsResources extends DrupalMicaClientResource {
     return $this->httpRequestGetBuilder($resource);
   }
 
+  public function getOpalViews($document_type, $set_id) {
+    $resource = '/' . $document_type . '/set/' . $set_id . '/documents/_opal';
+    $url = $this->micaUrl . $resource;
+
+    $request = new HttpClientRequest($url, array(
+      'method' => HttpClientRequest::METHOD_GET,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array('application/octet-stream')
+        )
+      )
+    ));
+
+    $client = $this->client();
+    try {
+      $client->execute($request);
+      $this->setLastResponse($client->lastResponse);
+      return $client->lastResponse;
+    }
+    catch (HttpClientException $e) {
+      watchdog('Mica Client', 'Connection to server fail,  Error serve code : @code, message: @message',
+        array(
+          '@code' => $e->getCode(),
+          '@message' => $e->getMessage()
+        ), WATCHDOG_WARNING);
+      return array();
+    }
+  }
+
   public function importSet($document_type, $set_id, $body = NULL) {
     $resource = '/' . $document_type . '/set/' . $set_id . '/documents/_import';
     return $this->httpRequestPostBuilder($resource, $body);
