@@ -204,6 +204,22 @@ mica.factory('TranslationService', ['$resource',
     });
   }]);
 
+mica.factory('urlEncode', [
+  function () {
+     return function (input) {
+       function encodeSpecialChar(string){
+         if(string.match(/%2F|%24|%26|%5C/gm)){
+           string = string.replace('%2F', '%252F'); //'/'
+           string = string.replace('%24', '%2524'); //'$'
+           string = string.replace('%26', '%2526'); //'&'
+           string = string.replace('%5C', '%255C'); //'\'
+         }
+         return string;
+       }
+       return encodeSpecialChar(window.encodeURIComponent(input));
+     };
+  }]);
+
 mica.factory('ErrorTemplate', function () {
   return {
     getServerError: function (response) {

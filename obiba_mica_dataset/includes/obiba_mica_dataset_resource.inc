@@ -498,7 +498,7 @@ $get_tresource_by_type = function($resource){
    */
   public function getVariable($variable_id) {
     global $language;
-    $resource_query = sprintf("/variable/%s?locale=%s", rawurlencode($variable_id), $language->language);
+    $resource_query = sprintf("/variable/%s?locale=%s", rawurlencode(urldecode($variable_id)), $language->language);
     $this->setLastResponse(NULL);
     $cached_variable = $this->drupalCache->MicaGetCache(__FUNCTION__ . $resource_query);
     if (!empty($cached_variable)) {
