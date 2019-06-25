@@ -1111,3 +1111,33 @@ function obiba_mica_commons_enabled_theme($angular_templates){
     return !empty($hooks[$template]);
   } );
 }
+
+
+/**
+ * Function to add role to Drupal
+ *
+ * @param $role_name
+ *
+ */
+function obiba_mica_commons_add_role($role_name){
+  // Verify role does not already exists.
+  $role = user_role_load_by_name($role_name);
+  if (!empty($role)) {
+    return;
+  }
+
+  $role = new stdClass();
+  $role->name = $role_name;
+  user_role_save($role);
+}
+
+/**
+ * Function to apply a default list of actions to a given role
+ * @param $role_name
+ * @param $list_actions
+ *
+ */
+function  obiba_mica_commons_apply_default_permissions($role_name, $list_actions) {
+  $role = user_role_load_by_name($role_name);
+  user_role_grant_permissions($role->rid, $list_actions);
+}

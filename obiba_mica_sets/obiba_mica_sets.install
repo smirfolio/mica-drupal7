@@ -14,8 +14,14 @@
  * Code to perform installation operations
  * */
 function obiba_mica_sets_install() {
+  obiba_mica_sets_permissions(array(
+    'mica-user' => array('can access sets'),
+    'mica-administrator' => array('can access sets'),
+    'mica-data-access-officer' => array('can access sets'),
+    'mica-editor' => array('can access sets'),
+    'mica-reviewer' => array('can access sets'),
+  ));
   obiba_mica_sets_create_node();
-  obiba_mica_sets_default_users_access();
 }
 
 function obiba_mica_sets_create_node() {
@@ -26,17 +32,14 @@ function obiba_mica_sets_create_node() {
   }
 }
 
-
 /**
- * Affect a default permissions.
+ * Function permission implementation
+ * @param $roles_actions array
  */
-function obiba_mica_sets_default_users_access() {
-  $role = user_role_load_by_name('mica-user');
-  $role_dao = user_role_load_by_name('mica-data-access-officer');
-  $permissions = array('can access sets');
-
-  watchdog('Mica Client', 'Permission For   : @sets set to ', array( '@sets' => $permissions ), WATCHDOG_WARNING);
-
-  user_role_grant_permissions($role->rid, $permissions);
-  user_role_grant_permissions($role_dao->rid, $permissions);
+function obiba_mica_sets_permissions($roles_actions) {
+  foreach ($roles_actions as $role => $actions){
+    watchdog('Mica Client', 'Sets permissions For : @role added', array('@role' => $role), WATCHDOG_WARNING);
+    obiba_mica_commons_add_role($role);
+    obiba_mica_commons_apply_default_permissions($role, $actions);
+  }
 }
