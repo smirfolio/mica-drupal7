@@ -13,9 +13,15 @@
  * Implements hook_install().
  */
 function obiba_mica_data_access_request_install() {
-  obiba_mica_data_access_request_add_role('mica-data-access-officer');
-  obiba_mica_data_access_request_add_role('mica-user');
-  obiba_mica_data_access_request_apply_default_permissions();
+  obiba_mica_data_access_request_permissions(array(
+    'mica-data-access-officer' => array(
+      'can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS,
+      'can_see_' . MicaDataAccessRequest::LIST_USERS_DATA_ACCESS
+    ),
+    'mica-user' => array(
+      'can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS,
+      'can_see_' . MicaDataAccessRequest::NEW_DATA_ACCESS,
+    )));
   obiba_mica_data_access_request_create_node();
 }
 
@@ -29,33 +35,13 @@ function obiba_mica_data_access_request_create_node() {
 }
 
 /**
- * Add a specific role.
- *
- * @param string $role_name
- *   The role de add.
+ * Function permission implementation
+ * @param $roles_actions array
  */
-function obiba_mica_data_access_request_add_role($role_name) {
-  // Verify role does not already exists.
-  $role = user_role_load_by_name($role_name);
-  if (!empty($role)) {
-    return;
+function obiba_mica_data_access_request_permissions($roles_actions) {
+  foreach ($roles_actions as $role => $actions){
+    watchdog('Mica Client', 'Data access permissions For : @role added', array('@role' => $role), WATCHDOG_WARNING);
+    obiba_mica_commons_add_role($role);
+    obiba_mica_commons_apply_default_permissions($role, $actions);
   }
-
-  $role = new stdClass();
-  $role->name = $role_name;
-  user_role_save($role);
-}
-
-/**
- * Affect a default permissions.
- */
-function obiba_mica_data_access_request_apply_default_permissions() {
-  $role = user_role_load_by_name('mica-user');
-  user_role_grant_permissions($role->rid, array(
-    'can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS,
-    'can_see_' . MicaDataAccessRequest::NEW_DATA_ACCESS,
-  ));
-  $role_dao = user_role_load_by_name('mica-data-access-officer');
-  user_role_grant_permissions($role_dao->rid, array('can_see_' . MicaDataAccessRequest::LIST_DATA_ACCESS));
-  user_role_grant_permissions($role_dao->rid, array('can_see_' . MicaDataAccessRequest::LIST_USERS_DATA_ACCESS));
 }
