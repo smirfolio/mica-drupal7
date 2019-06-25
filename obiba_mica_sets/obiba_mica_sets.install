@@ -33,10 +33,14 @@ function obiba_mica_sets_create_node() {
 function obiba_mica_sets_default_users_access() {
   $role = user_role_load_by_name('mica-user');
   $role_dao = user_role_load_by_name('mica-data-access-officer');
+  $role_editor = user_role_load_by_name('mica-editor');
+  $role_reviewer = user_role_load_by_name('mica-reviewer');
   $permissions = array('can access sets');
 
   watchdog('Mica Client', 'Permission For   : @sets set to ', array( '@sets' => $permissions ), WATCHDOG_WARNING);
 
   user_role_grant_permissions($role->rid, $permissions);
   user_role_grant_permissions($role_dao->rid, $permissions);
+  user_role_grant_permissions($role_editor->rid, $permissions);
+  user_role_grant_permissions($role_reviewer->rid, $permissions);
 }
