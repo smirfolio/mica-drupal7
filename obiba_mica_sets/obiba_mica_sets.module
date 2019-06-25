@@ -200,11 +200,11 @@ function obiba_mica_sets_variable_page_search() {
 function obiba_mica_sets_content_to_create() {
   return array(
     'obiba_mica_sets_cart_page' => array(
-      'content' => '<div> <p>Cart.</p> </div> <hr/>',
+      'content' => '',
       'title' => 'Cart',
     ),
     'obiba_mica_sets_lists_page' => array(
-      'content' => '<div> <p>Sets.</p> </div> <hr/>',
+      'content' => '',
       'title' => 'Lists',
     ),
   );
