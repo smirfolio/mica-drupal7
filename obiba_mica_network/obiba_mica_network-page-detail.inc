@@ -346,6 +346,7 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
         return $reource[$study_type];
       };
       foreach ($study_summaries as $study_summary) {
+        $content = json_decode($study_summary->content);
         //TODO The studyResourcePath it may be 'harmonization-study' if harmonized study
         if ($study_summary->studyResourcePath === $get_resource_path($study_type)) {
           $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
@@ -354,7 +355,7 @@ function obiba_mica_network_study_table_rows($study_summaries, $id_network = NUL
             $name,
             isset($study_summary->design) ? obiba_mica_study_translate_study_design_summary($study_summary->design) : '',
             !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? $localize->getTranslation('numberOfParticipants.no-limit') :
-              (isset($study_summary->targetNumber->number) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
+              ((isset($study_summary->targetNumber->number) && isset($content->numberOfParticipants->participant->number)) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
             isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
           );
           $rows[] = obiba_mica_network_study_table_column($row, $study_type);
