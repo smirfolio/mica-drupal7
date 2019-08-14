@@ -841,14 +841,16 @@ function obiba_mica_commons_taxonomies_filter_array($key_variables) {
  */
 function obiba_mica_commons_Key_cache_generation($resource) {
   global $user, $language;
-  $key_lang = md5($resource . '-' . $language->language);
-  if (in_array('anonymous user', $user->roles, TRUE)) {
-    $key = $key_lang . '-' . 'anonymous_user';
+  if(!empty($user->sid)){
+    $key_lang = md5($resource . '-' . $language->language);
+    if (in_array('anonymous user', $user->roles, TRUE)) {
+      $key = $key_lang . '-' . 'anonymous_user';
+    }
+    else {
+      $key = $key_lang . '-' . $user->sid;
+    }
+    return $key;
   }
-  else {
-    $key = $key_lang . '-' . $user->sid;
-  }
-  return $key;
 }
 
 /**
@@ -856,7 +858,7 @@ function obiba_mica_commons_Key_cache_generation($resource) {
  */
 function obiba_mica_commons_set_cache($resource, $value) {
   $hashed_key = obiba_mica_commons_Key_cache_generation($resource);
-  _obiba_mica_commons_set_cache($hashed_key, 'cache', $value);
+  !empty($hashed_key) ? _obiba_mica_commons_set_cache($hashed_key, 'cache', $value): FALSE;
 }
 
 /**
@@ -864,7 +866,7 @@ function obiba_mica_commons_set_cache($resource, $value) {
  */
 function obiba_mica_commons_get_cache($resource) {
   $hashed_key = obiba_mica_commons_Key_cache_generation($resource);
-  return _obiba_mica_commons_get_cache($hashed_key, 'cache');
+  return !empty($hashed_key) ?_obiba_mica_commons_get_cache($hashed_key, 'cache') : FALSE;
 }
 
 /**
