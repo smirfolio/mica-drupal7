@@ -46,8 +46,10 @@ function obiba_mica_files_search_files() {
 function  obiba_mica_file_download() {
   $query_parameters = drupal_get_query_parameters();
 
-  $file_path = dirname($query_parameters['path']);
-  $file_name = basename($query_parameters['path']);
+  $full_path = $query_parameters['path'];
+
+  $file_path = dirname($full_path);
+  $file_name = str_replace('/', '', str_replace($file_path, '', $full_path));
   _obiba_mica_files_download_attachment(NULL, NULL, $file_path, $file_name,
    empty($query_parameters['inline']) ? 'false' : $query_parameters['inline'],
    !empty($query_parameters['keyToken']) ? $query_parameters['keyToken']: NULL);
