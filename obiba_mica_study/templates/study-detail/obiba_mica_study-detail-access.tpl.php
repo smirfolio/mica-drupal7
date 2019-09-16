@@ -118,14 +118,19 @@ $icon = function($value){
         <p>
           <?php print $localize->getTranslation('study.access.external_researchers_obtaining_study_data_bio_info.access_info_location.study_website') ?>:
           <a href="<?php print t($study_dto->model->website) ?>" target="_blank">
-            <?php print t($study_dto->model->website) ?>
+            <?php print obiba_mica_commons_get_localized_field($study_dto->model, 'website'); ?>
           </a>
         </p>
       <?php endif; ?>
       <?php if (in_array('study_representative', $study_dto->model->access_info_location)): ?>
+        <?php $representative_study = $study_dto->model->access_info_representative; ?>
         <p>
           <?php print $localize->getTranslation('study.access.external_researchers_obtaining_study_data_bio_info.access_info_location.study_representative') ?>:
-          <a href="#" data-toggle="modal" test-ref="membership" data-target="#representative"><?php print $study_dto->model->access_info_representative->name; ?></a>
+          <a href="#" data-toggle="modal" test-ref="membership" data-target="#representative">
+            <?php print !empty($representative_study->title) ? obiba_mica_commons_get_localized_field($representative_study, 'title') . ' ': ' ';
+                  print !empty($representative_study->name) ? obiba_mica_commons_get_localized_field($representative_study, 'name') . ' ': ' ';
+                  print !empty($representative_study->institution) ? '(' . obiba_mica_commons_get_localized_field($representative_study, 'institution') . ')': ''; ?>
+          </a>
         </p>
       <?php endif; ?>
     <?php endif; ?>
