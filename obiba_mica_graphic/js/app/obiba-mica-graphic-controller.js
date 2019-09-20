@@ -186,26 +186,36 @@
     }])
     .controller('VariableCoverageChartController', ['$scope', '$location', 'CoverageResource', 'D3ChartConfig', '$translate', function ($scope, $location, CoverageResource, D3ChartConfig, $translate) {
       function normalizeData(data) {
+        data.sort(function(prev, curr) {
+          return prev.values.length - curr.values.length;
+        }).sort(function(prev, curr) {
+          if (prev.key > curr.key) {
+            return 1;
+          }
+          if (prev.key < curr.key) {
+            return -1;
+          }
+          return 0;
+        });
         // template with zero value
         var zeroValues = data.reduce(function (prev, curr) {
           return prev.values.length > curr.values.length ? prev : curr;
         }).values.map(function (v) {
-          return { key: v.key, title: v.title, value: 0 };
+          return { key: v.key, title: v.title, notEllipsedTitle: v.notEllipsedTitle, value: 0 };
         });
 
         // values normalization
         data.forEach(function (d) {
           var normalized = [];
-          zeroValues.map(function (z) { return z; }).forEach(function (z) {
+          zeroValues.forEach(function (z) {
             var item = d.values.filter(function (value) { return value.title === z.title; }).pop();
-            if(item && item.value > 0){
               normalized.push({
                 key: z.key,
                 value: item ? item.value : 0,
                 title: z.title,
+                notEllipsedTitle: z.notEllipsedTitle,
                 link: item ? item.link : null
               });
-            }
           });
 
           d.values = normalized;
@@ -232,11 +242,12 @@
 
       function getLabelMargin(data) {
         return  d3.max(data, function(d) {
-            return Math.ceil(d.title.length / 2);
+            return Math.ceil(d.title.length);
         });
       }
 
-      function processConfig(config, type, data, colors, showLegend) {
+      function processConfig(config, type, data, colors, showLegend, renderOptions) {
+        var labelMargin = getLabelMargin(data);
         config.options.chart.margin = {
           left: 200,
           top:50,
@@ -269,9 +280,29 @@
             return d3.format('.2%')(percent);
           };
         } else {
-          if (data.length > 5) {
-            config.options.chart.rotateLabels = -15;
-            config.options.chart.margin.left = 200 + getLabelMargin(data);
+          config.options.chart.wrapLabels = false;
+          // re-generate the tooltips bar chart
+          config.options.chart.tooltip.contentGenerator = function (o) {
+              var series = o.series[0];
+              if (series === null) { return; }
+
+              var s = '',
+                bottom = '<span>' + series.key + ': <strong>' + series.value + '</strong></span>';
+              if (o.value) {
+                s = '<strong>' + o.data.notEllipsedTitle + '</strong><br/>';
+              }
+
+              return '<div class="chart-tooltip">' + s + bottom + '</div>';
+            };
+          // Configure when the x- labels have to be wrap
+          if (renderOptions.nbrStack > 3 && renderOptions.nbrStack <= renderOptions.numberBars) {
+            config.options.chart.wrapLabels = true;
+          }
+          // configure when the x-labels have to be rotated withe margin in graphics
+          if (renderOptions.nbrStack > renderOptions.numberBars) {
+            config.options.chart.rotateLabels = renderOptions.rotateLabels;
+            config.options.chart.margin.left = renderOptions.graphicMargins.left +labelMargin;
+            config.options.chart.margin.bottom = renderOptions.graphicMargins.bottom + labelMargin;
           } else {
             config.options.chart.staggerLabels = true;
           }
@@ -316,7 +347,7 @@
               if (chartData && chartData.length) {
                 var data = doNormalizationByType(chartData, type);
                 var config = new D3ChartConfig().withData(data, true).withTitle(chart.title).withSubtitle(chart.subtitle);
-                processConfig(config, type, chartData, chart.color.colors, chart.showLegend);
+                processConfig(config, type, chartData, chart.color.colors, chart.showLegend, chart.renderOptions);
                 $scope.d3Configs.push(config);
               }
             });

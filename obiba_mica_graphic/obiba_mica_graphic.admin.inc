@@ -14,6 +14,7 @@
  * Obiba Mica Graphic file
  */
 
+include_once ("includes/obiba_mica_graphic_base64_image.php");
 /**
  * Form builder.
  */
@@ -55,6 +56,7 @@ function obiba_mica_graphic_settings_form($form, &$form_state) {
   obiba_mica_graphic_settings_form_display_block($form);
   obiba_mica_graphic_settings_form_display_content($form);
   obiba_mica_graphic_settings_form_piechart($form);
+  obiba_mica_graphic_settings_form_barchart($form);
 
   return system_settings_form($form);
 }
@@ -252,6 +254,87 @@ function obiba_mica_graphic_settings_form_piechart(&$form) {
     '#description' => $info['description'],
   );
 }
+
+function obiba_mica_graphic_settings_form_barchart(&$form) {
+
+  $form['obiba_mica_graphic']['graphic_display']['barchart'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Coverage Bar Chart settings'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('graphics_barChart_numberBars');
+  $form['obiba_mica_graphic']['graphic_display']['barchart']['graphics_barChart_numberBars'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_barChart_numberBars'),
+    '#description' => $info['description'],
+  );
+
+
+  $form['obiba_mica_graphic']['graphic_display']['barchart']['custom_settings'] = array(
+    '#type' => 'fieldset',
+    '#prefix' => ' <table id="my-table"><tr><td width="50%">',
+    '#title' => t('custom Settings'),
+    '#collapsible' => FALSE,
+    '#suffix' => '</td><td width="50%"><img src="data:image/jpg;base64,' . get_graphic_image() . '" alt="Test Image"/></td></tr></table>',
+  );
+
+  $info = variable_get_info('graphics_barChart_graphicMargins_left');
+  $form['obiba_mica_graphic']['graphic_display']['barchart']['custom_settings']['graphics_barChart_graphicMargins_left'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_barChart_graphicMargins_left'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('graphics_barChart_graphicMargins_top');
+  $form['obiba_mica_graphic']['graphic_display']['barchart']['custom_settings']['graphics_barChart_graphicMargins_top'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_barChart_graphicMargins_top'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('graphics_barChart_graphicMargins_right');
+  $form['obiba_mica_graphic']['graphic_display']['barchart']['custom_settings']['graphics_barChart_graphicMargins_right'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_barChart_graphicMargins_right'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('graphics_barChart_graphicMargins_bottom');
+  $form['obiba_mica_graphic']['graphic_display']['barchart']['custom_settings']['graphics_barChart_graphicMargins_bottom'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_barChart_graphicMargins_bottom'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('graphics_barChart_rotateLabels');
+  $form['obiba_mica_graphic']['graphic_display']['barchart']['custom_settings']['graphics_barChart_rotateLabels'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_barChart_rotateLabels'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('graphics_barChart_enableEllipses');
+  $form['obiba_mica_graphic']['graphic_display']['barchart']['custom_settings']['graphics_barChart_enableEllipses'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_barChart_enableEllipses'),
+    '#description' => $info['description'],
+  );
+
+}
+
 
 function obiba_mica_graphic_get_networks_id() {
   $resource = new DrupalMicaNetworkResource();
