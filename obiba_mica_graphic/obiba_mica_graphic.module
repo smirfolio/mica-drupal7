@@ -469,6 +469,17 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
       $response = $cached_chart;
   }
   else{
+    // Get some configuration settings
+    $colors_graphics_configuration = obiba_mica_graphic_charts_colors_options_settings();
+    $number_bars = intval(variable_get_value('graphics_barChart_numberBars'));
+    $graphic_margins = array(
+      'left' => intval(variable_get_value('graphics_barChart_graphicMargins_left')),
+      'top' => intval(variable_get_value('graphics_barChart_graphicMargins_top')),
+      'right' => intval(variable_get_value('graphics_barChart_graphicMargins_right')),
+      'bottom' => intval(variable_get_value('graphics_barChart_graphicMargins_bottom')),
+    );
+    $rotate_labels = intval(variable_get_value('graphics_barChart_rotateLabels'));
+    $enable_ellipses = variable_get_value('graphics_barChart_enableEllipses');
     $response = new stdClass();
     $response->charts = array();
     $taxonomies_config = array_values(obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures'));
@@ -488,7 +499,12 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
           $base_path,
           $search_query_template,
           $response,
-          $empty_value_key) {
+          $empty_value_key,
+          $colors_graphics_configuration,
+          $graphic_margins,
+          $rotate_labels,
+          $enable_ellipses,
+          $number_bars) {
 
         if (array_search($chart->taxonomy, $taxonomies_config) !== false) {
           $chart_formatted = new stdClass();
@@ -496,13 +512,30 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
           $chart_formatted->subtitle = $chart->subtitle;
           $chart_formatted->taxonomy = $chart->taxonomy;
           $chart_formatted->variableData = array();
-          $chart_formatted->color = obiba_mica_graphic_charts_colors_options_settings();
+          $chart_formatted->color = $colors_graphics_configuration;
 
           $chart_formatted->data = array();
+          $chart_formatted->renderOptions = new stdClass();
+          $chart_formatted->renderOptions->numberBars = $number_bars;
+          $chart_formatted->renderOptions->graphicMargins = $graphic_margins;
+          $chart_formatted->renderOptions->rotateLabels = $rotate_labels;
+          $chart_formatted->renderOptions->enableEllipses = $enable_ellipses;
           array_push($response->charts, $chart_formatted);
 
           if (isset($chart->data)) {
-            foreach ($chart->data as $data) {
+            $zero_sum_key_data = NULL;
+            $filtered_zero_chart_data = array_filter($chart->data, function($data){
+              $values_sum = 0;
+              foreach ($data->items as $item){
+                $values_sum += $item->value;
+              }
+              if($values_sum !==0 ){
+                return $data;
+              }
+            });
+            $bar_chart_number  = sizeof($filtered_zero_chart_data);
+            $chart_formatted->renderOptions->nbrStack = $bar_chart_number;
+            foreach ($filtered_zero_chart_data as $key => $data) {
               if (isset($data->items)) {
                 foreach ($data->items as $item) {
                   if (!empty($item->key) || !empty($empty_value_key)) {
@@ -513,12 +546,17 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
                       '#/search?query=' .
                       sprintf($search_query_template, $chart->taxonomy, $data->vocabulary, $query_entity) .
                       '&display=list&type=variables';
-
-                    if (!empty($empty_value_key)) {
-                      $item->key = $empty_value_key;
-                      array_push($chart_formatted->variableData, $item);
-                    } else {
-                      array_push($chart_formatted->data, $item);
+                     $item->notEllipsedTitle = $item->title;
+                     if($enable_ellipses && $bar_chart_number > $number_bars){
+                       $item->title = truncate_utf8($item->title, 35, FALSE, TRUE);
+                     }
+                    if($item->value !== 0){
+                      if (!empty($empty_value_key)) {
+                        $item->key = $empty_value_key;
+                        array_push($chart_formatted->variableData, $item);
+                      } else {
+                        array_push($chart_formatted->data, $item);
+                      }
                     }
 
                   }

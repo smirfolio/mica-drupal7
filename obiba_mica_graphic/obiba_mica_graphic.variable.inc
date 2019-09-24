@@ -157,5 +157,60 @@ function obiba_mica_graphic_variable_info($options) {
     ),
   );
 
+  $variable['graphics_barChart_rotateLabels'] = array(
+    'title' => t('Coverage graphics x axis labels rotation'),
+    'description' => t('Set the Coverage graphics x axis labels rotation'),
+    'type' => 'string',
+    'default' => '-15',
+  );
+
+  $variable['graphics_barChart_numberBars'] = array(
+    'title' => t('Coverage graphics Number of chart bars when apply  customs setting'),
+    'description' => t('Set the Number of chart bars to apply  customs setting Coverage to ensure maximum of graphics visibilities'),
+    'type' => 'string',
+    'default' => '5',
+  );
+
+  $variable['graphics_barChart_graphicMargins_left'] = array(
+    'title' => t('Coverage graphics margin left'),
+    'description' => t('Set the Coverage graphics margin left'),
+    'type' => 'string',
+    'default' => '150',
+  );
+
+  $variable['graphics_barChart_graphicMargins_top'] = array(
+    'title' => t('Coverage graphics margin top'),
+    'description' => t('Set the Coverage graphics margin top'),
+    'type' => 'string',
+    'default' => '0',
+  );
+  $variable['graphics_barChart_graphicMargins_right'] = array(
+    'title' => t('Coverage graphics margin right'),
+    'description' => t('Set the Coverage graphics margin right'),
+    'type' => 'string',
+    'default' => '0',
+  );
+  $variable['graphics_barChart_graphicMargins_bottom'] = array(
+    'title' => t('Coverage graphics margin bottom'),
+    'description' => t('Set the Coverage graphics margin bottom'),
+    'type' => 'string',
+    'default' => '50',
+  );
+
+  $variable['graphics_barChart_rotateLabels'] = array(
+    'title' => t('Coverage graphics x axis labels rotation'),
+    'description' => t('Set the Coverage graphics x axis labels rotation'),
+    'type' => 'string',
+    'default' => '-15',
+  );
+
+  $variable['graphics_barChart_enableEllipses'] = array(
+    'title' => t('Coverage graphics x axis labels enable Ellipses'),
+    'description' => t('Enable Ellipses the Coverage graphics x axis labels'),
+    'type' => 'boolean',
+    'default' => FALSE,
+  );
+
+
   return $variable;
 }
