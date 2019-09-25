@@ -120,10 +120,14 @@ function obiba_mica_repository_query_as_csv_report_by_network($networkId, $local
 function obiba_mica_repository_variable_coverage($query = NULL) {
   $search_resource = new ObibaSearchResources();
   $q = $query;
+  $withZerosParam = empty($_POST['withZeros']) ? true : $_POST['withZeros'] === 'true';
+  $withZeros = $withZerosParam ? 'true' : 'false'; // must be in string so urlencode does not convert 'true' to 1
+
   if (empty($q) && !empty($_POST['query'])) {
     $q = $_POST['query'];
   }
-  $search_result = $search_resource->variablesCoverage($q);
+
+  $search_result = $search_resource->variablesCoverage($q, $withZeros);
   drupal_json_output($search_result);
 }
 

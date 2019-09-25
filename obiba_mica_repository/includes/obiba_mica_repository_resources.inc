@@ -62,9 +62,9 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     return $this->httpRequestGetBuilder($resource);
   }
 
-  public function variablesCoverage($query) {
+  public function variablesCoverage($query, $withZeros) {
     $resource = '/variables/_coverage';
-    return $this->httpRequestPostBuilder($resource, array('query' => $query), !$this->hasQuerySetsField($query));
+    return $this->httpRequestPostBuilder($resource, array('query' => $query, 'withZeros' => $withZeros), !$this->hasQuerySetsField($query));
   }
 
   public function variablesCoverageDownload($query, $header_accept) {
