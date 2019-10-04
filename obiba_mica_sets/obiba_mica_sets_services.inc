@@ -64,7 +64,9 @@ function obiba_mica_sets_set_documents_import($document_type = 'variables', $set
 
 function obiba_mica_sets_opal_views_download($document_type = 'variables', $set_id) {
   $resource = new ObibaSetsResources();
-  $response = $resource->getOpalViews($document_type, $set_id);
+  $ids = $_POST['ids'];
+
+  $response = $resource->getOpalViews($document_type, $set_id, $ids);
 
   if (!empty($response)) {
     $headers = $resource->getLastResponseHeaders();

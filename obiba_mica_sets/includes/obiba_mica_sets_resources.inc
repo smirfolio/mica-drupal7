@@ -134,16 +134,17 @@ class ObibaSetsResources extends DrupalMicaClientResource {
     return $this->httpRequestGetBuilder($resource);
   }
 
-  public function getOpalViews($document_type, $set_id) {
+  public function getOpalViews($document_type, $set_id, $ids) {
     $resource = '/' . $document_type . '/set/' . $set_id . '/documents/_opal';
     $url = $this->micaUrl . $resource;
 
     $request = new HttpClientRequest($url, array(
-      'method' => HttpClientRequest::METHOD_GET,
+      'method' => HttpClientRequest::METHOD_POST,
       'headers' => $this->authorizationHeader(array(
           'Accept' => array('application/octet-stream')
         )
-      )
+      ),
+      'parameters' => ['ids' => $ids]
     ));
 
     $client = $this->client();
