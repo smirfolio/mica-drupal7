@@ -21,6 +21,10 @@ function obiba_mica_sets_list_sets($document_type = 'variables') {
 function obiba_mica_sets_import($document_type = 'variables') {
   $resource = new ObibaSetsResources();
   $body = file_get_contents('php://input');
+  // Fix set name in query builder Bug if cache enabled #1680
+  if(variable_get_value('cache') == 1){
+    obiba_mica_commons_set_cache('do_request/taxonomies/_filter?target=variable', NULL);
+  }
   $result = $resource->createSet($document_type, $body, !empty(drupal_get_query_parameters()['name']) ? drupal_get_query_parameters()['name']: NULL);
   drupal_json_output($result);
 }
