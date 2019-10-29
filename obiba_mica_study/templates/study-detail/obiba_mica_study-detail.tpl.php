@@ -316,7 +316,7 @@
         }
         else print '<span id="population-1">' . $localize->getTranslation('study.population') . '</span>' ?></h2>
       <?php if ($population_length == 1): ?>
-        <?php print $populations[1]['html']; ?>
+        <?php print reset($populations)['html']; ?>
       <?php else: ?>
 
         <div class="row tabbable tabs-left">
