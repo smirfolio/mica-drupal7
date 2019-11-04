@@ -11,6 +11,7 @@
          chart-options="chart.options"
          chart-header="chart.header"
          chart-title-graph="chart.title"
+         chart-subtitle-graph="chart.subtitle"
          chart-select-graphic="true"></div>
   </div>
 

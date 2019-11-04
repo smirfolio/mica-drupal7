@@ -30,10 +30,11 @@
           var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
           switch (type) {
             case ChartType.GEO_CHARTS:
-              $scope.directive = {title:charOptions.geoChartOptions.title};
+              $scope.directive = {title:charOptions.geoChartOptions.title, subtitle: charOptions.geoChartOptions.subtitle};
               $scope.chart = {
                 type: 'GeoChart',
                 title: charOptions.geoChartOptions.title,
+                subtitle: charOptions.geoChartOptions.subtitle,
                 options: charOptions.geoChartOptions.options,
                 header: charOptions.geoChartOptions.header,
                 fieldTransformer: 'country',
@@ -42,7 +43,8 @@
                 entityDto: 'studyResultDto',
                 active: true,
                 ordered:true,
-                notOrdered: false
+                notOrdered: false,
+                sortedby:['title', 'value']
               };
               break;
             case ChartType.STUDY_DESIGN:
@@ -58,7 +60,8 @@
                 entityDto: 'studyResultDto',
                 active: true,
                 ordered:true,
-                notOrdered: false
+                notOrdered: false,
+                sortedby:[]
               };
               break;
             case ChartType.NUMBER_PARTICIPANTS:
@@ -74,7 +77,8 @@
                 entityDto: 'studyResultDto',
                 active: true,
                 ordered:false,
-                notOrdered: true
+                notOrdered: true,
+                sortedby: []
               };
               break;
             case ChartType.BIO_SAMPLES:
@@ -90,7 +94,8 @@
                 entityDto: 'studyResultDto',
                 active: true,
                 ordered:true,
-                notOrdered: false
+                notOrdered: false,
+                sortedby: []
               };
               break;
 
@@ -119,10 +124,11 @@
         switch (type){
           case 'geoChartOptions':
             $scope.canShowTitle = true;
-            $scope.directive = {title:charOptions.geoChartOptions.title};
+            $scope.directive = {title:charOptions.geoChartOptions.title, subtitle: charOptions.geoChartOptions.subtitle};
             $scope.chart = {
               type: 'GeoChart',
               title: charOptions.geoChartOptions.title,
+              subtitle: charOptions.geoChartOptions.subtitle,
               options: charOptions.geoChartOptions.options,
               header: charOptions.geoChartOptions.header,
               fieldTransformer: 'country',
@@ -131,7 +137,8 @@
               entityDto: 'studyResultDto',
               active: true,
               ordered:true,
-              notOrdered: false
+              notOrdered: false,
+              sortedby:charOptions.geoChartOptions.sortedby
             };
             break;
           case 'studiesDesigns':
@@ -147,7 +154,8 @@
               entityDto: 'studyResultDto',
               active: true,
               ordered:true,
-              notOrdered: false
+              notOrdered: false,
+              sortedby: []
             };
           break;
           case 'numberParticipants' :
@@ -163,7 +171,8 @@
             entityDto: 'studyResultDto',
             active: true,
             ordered:false,
-            notOrdered: true
+            notOrdered: true,
+            sortedby: []
           };
             break;
           case 'biologicalSamples' :
@@ -179,7 +188,8 @@
             entityDto: 'studyResultDto',
             active: true,
             ordered:true,
-            notOrdered: false
+            notOrdered: false,
+            sortedby: []
           };
         }
 
