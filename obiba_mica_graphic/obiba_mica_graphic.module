@@ -169,7 +169,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('geoChartOptions',
                     array('graphics.country', 'graphics.nbr-studies'),
                     'graphics.geo-chart-title',
-                    $colors_options)
+                    $colors_options, 'graphics.geo-chart-subtitle')
                 ),
             ),
               'setting');
@@ -274,7 +274,7 @@ function obiba_mica_graphic_get_ng_module_to_load() {
 /**
  * Set Pie charts graphics options
  */
-function obiba_mica_graphic_charts_options_settings($aggregation_option, $headers_label, $title_chart, $custom_options = NULL) {
+function obiba_mica_graphic_charts_options_settings($aggregation_option, $headers_label, $title_chart, $custom_options = NULL, $subtitle = '') {
   $default_options = array(
     'options' => array(),
   );
@@ -287,6 +287,9 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $header
   if (!empty($custom_options)) {
     $options_result = array_merge_recursive($default_options['options'], $custom_options);
     $options[$aggregation_option]['options'] = $options_result;
+  }
+  if(!empty($subtitle)){
+    $options[$aggregation_option]['subtitle'] = $subtitle;
   }
   return $options;
 }
@@ -307,7 +310,7 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
   $charts_option = array_merge(
     obiba_mica_graphic_charts_options_settings('geoChartOptions',
       array('graphics.country', 'graphics.nbr-studies'),
-      'graphics.geo-chart-title', $colors_options),
+      'graphics.geo-chart-title', $colors_options, 'graphics.geo-chart-subtitle'),
     obiba_mica_graphic_charts_options_settings('studiesDesigns',
       array(
         'graphics.study-design',

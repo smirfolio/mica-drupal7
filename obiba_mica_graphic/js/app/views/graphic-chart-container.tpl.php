@@ -9,6 +9,7 @@
          chart-options="chart.options"
          chart-header="chart.header"
          chart-title-graph="chart.title"
+         chart-subtitle-graph="chart.subtitle"
          chart-select-graphic="true"></div>
   </div>
   <div class="col-md-6"
@@ -20,5 +21,7 @@
        chart-header="chart.header"
        chart-select-graphic="true"
        chart-ordered="chart.ordered"
-       chart-not-ordered="chart.notOrdered"></div>
+       chart-not-ordered="chart.notOrdered"
+       chart-sortedby="chart.sortedby">
+  </div>
 </div>
