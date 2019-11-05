@@ -265,10 +265,10 @@ function obiba_mica_network_links_table_rows($network_summaries, $network_detail
         $extra = $get_participants_countries($network);
         $study_variables = empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyVariables) ? '-' :
           MicaClientAnchorHelper::networkVariables(obiba_mica_commons_format_number($network->{'obiba.mica.CountStatsDto.networkCountStats'}->studyVariables),
-            $network->id, array(), 'dataset(in(Mica_dataset.className,StudyDataset))');
+            $network->id, array(), 'study(in(Mica_study.className,Study))');
         $dataschema_variables = empty($network->{'obiba.mica.CountStatsDto.networkCountStats'}->dataschemaVariables) ? '-' :
           MicaClientAnchorHelper::networkVariables(obiba_mica_commons_format_number($network->{'obiba.mica.CountStatsDto.networkCountStats'}->dataschemaVariables),
-            $network->id, array(), 'dataset(in(Mica_dataset.className,HarmonizedDataset))');
+            $network->id, array(), 'study(in(Mica_study.className,HarmonizationStudy))');
         $rows[] = array(
           MicaClientAnchorHelper::network($network),
           obiba_mica_commons_get_localized_field($network, 'name'),
@@ -315,95 +315,20 @@ function obiba_mica_network_studies_datatable_init($study_summaries, $id_network
   else {
     obiba_mica_commons_datatables_external_source();
   }
-
+  $query = 'network(in(Mica_network.id,' . $id_network . '))';
   drupal_add_js(drupal_get_path('module', 'obiba_mica_network') . '/js/obiba_mica_network_studies_datatable_init.js', 'file');
   drupal_add_js(array(
-    'individual_study_table_headers' => obiba_mica_network_study_table_headers(DrupalMicaStudyResource::INDIVIDUAL_STUDY),
-    'harmonization_study_table_headers' => obiba_mica_network_study_table_headers(DrupalMicaStudyResource::HARMONIZATION_STUDY),
-    'individual_study_table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network, DrupalMicaStudyResource::INDIVIDUAL_STUDY),
-    'harmonization_study_table_data' => obiba_mica_network_study_table_rows($study_summaries, $id_network, DrupalMicaStudyResource::HARMONIZATION_STUDY)
+    'individual_study_table_headers' =>
+      obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::INDIVIDUAL_STUDY, 'obiba_mica_network_studies_table_show_variable'),
+    'harmonization_study_table_headers' =>
+      obiba_mica_study_study_summaries_table_headers(DrupalMicaStudyResource::HARMONIZATION_STUDY, 'obiba_mica_network_studies_table_show_variable'),
+    'individual_study_table_data' =>
+      obiba_mica_study_study_summaries_table_row($study_summaries, $id_network,
+        DrupalMicaStudyResource::INDIVIDUAL_STUDY, $query, 'obiba_mica_network_studies_table_show_variable'),
+    'harmonization_study_table_data' =>
+      obiba_mica_study_study_summaries_table_row($study_summaries, $id_network,
+        DrupalMicaStudyResource::HARMONIZATION_STUDY, $query, 'obiba_mica_network_studies_table_show_variable')
   ), 'setting');
-}
-
-function obiba_mica_network_study_table_rows($study_summaries, $id_network = NULL, $study_type = DrupalMicaStudyResource::INDIVIDUAL_STUDY) {
-  $rows = NULL;
-  $query = NULL;
-  $cached_studies_rows = obiba_mica_commons_get_cache('cached' . __FUNCTION__ . $id_network . '_' . $study_type);
-  if (!empty($cached_studies_rows)) {
-    return $cached_studies_rows;
-  }
-  else {
-    if (!empty($study_summaries)) {
-      $localize = obiba_mica_commons_mica_server_localisation();
-      if (!empty($id_network)) {
-        $query = 'network(in(Mica_network.id,' . $id_network . '))';
-      }
-      $get_resource_path = function($study_type){
-        $reource = array(
-          DrupalMicaStudyResource::HARMONIZATION_STUDY => DrupalMicaStudyResource::HARMONIZATION_STUDY,
-          DrupalMicaStudyResource::INDIVIDUAL_STUDY => DrupalMicaStudyResource::INDIVIDUAL_STUDY
-        );
-        return $reource[$study_type];
-      };
-      foreach ($study_summaries as $study_summary) {
-        $content = json_decode($study_summary->content);
-        //TODO The studyResourcePath it may be 'harmonization-study' if harmonized study
-        if ($study_summary->studyResourcePath === $get_resource_path($study_type)) {
-          $name = obiba_mica_commons_get_localized_field($study_summary, 'name');
-          $row = array(
-            DrupalMicaStudyResource::anchorStudy($study_summary),
-            $name,
-            isset($study_summary->design) ? obiba_mica_study_translate_study_design_summary($study_summary->design) : '',
-            !empty($study_summary->targetNumber->noLimit) && $study_summary->targetNumber->noLimit === TRUE ? $localize->getTranslation('numberOfParticipants.no-limit') :
-              ((isset($study_summary->targetNumber->number) && isset($content->numberOfParticipants->participant->number)) ? obiba_mica_commons_format_number($study_summary->targetNumber->number) : NULL),
-            isset($study_summary->countries) ? obiba_mica_commons_countries($study_summary->countries) : NULL,
-          );
-          $rows[] = obiba_mica_network_study_table_column($row, $study_type);
-        }
-      }
-    }
-    obiba_mica_commons_set_cache('cached' . __FUNCTION__ . $id_network . '_' . $study_type, $rows);
-    return $rows;
-  }
-}
-
-function obiba_mica_network_study_table_headers($study_type = DrupalMicaStudyResource::INDIVIDUAL_STUDY) {
-  $localize = obiba_mica_commons_mica_server_localisation();
-  $header = array(
-    array(
-      "title" => $localize->getTranslation('study.acronym'),
-      'width' => '15%'
-    ),
-    array("title" => $localize->getTranslation('study.name'), 'width' => '40%'),
-    array(
-      "title" => $localize->getTranslation('search.study.design'),
-      'width' => '10%'
-    ),
-    array(
-      "title" => $localize->getTranslation('search.study.participants'),
-      'width' => '10%'
-    ),
-    array(
-      "title" => $localize->getTranslation('address.country'),
-      'width' => '10%'
-    ),
-  );
-  return obiba_mica_network_study_table_column($header, $study_type);
-}
-
-/**
- * Format column study table depending in studies type
- */
-function obiba_mica_network_study_table_column($row, $type) {
-  switch ($type) {
-    case DrupalMicaStudyResource::HARMONIZATION_STUDY:
-      array_splice($row, 2, -1);
-      return $row;
-      break;
-    default:
-      return $row;
-  }
-
 }
 
 function obiba_mica_network_network_table_headers() {

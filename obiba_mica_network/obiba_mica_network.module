@@ -14,6 +14,7 @@
  * Mica networks file
  */
 
+include_once('obiba_mica_network_admin_form.inc');
 include_once 'obiba_mica_network-page-list.inc';
 
 function obiba_mica_network_menu() {
@@ -77,4 +78,11 @@ function obiba_mica_network_networks_list($study_id = NULL) {
     obiba_mica_commons_set_cache('cached_' . __FUNCTION__ . $study_id, $networks_table);
     return $networks_table;
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function obiba_mica_network_form_obiba_mica_content_pages_admin_settings_alter(&$form, &$form_state, $form_id) {
+  obiba_mica_network_settings_admin_content($form);
 }
