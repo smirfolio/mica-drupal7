@@ -278,6 +278,9 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $custom
     $options_result = array_merge_recursive($default_options['options'], $custom_options);
     $options[$aggregation_option]['options'] = $options_result;
   }
+  if(!empty($subtitle)){
+    $options[$aggregation_option]['subtitle'] = $subtitle;
+  }
   return $options;
 }
 
