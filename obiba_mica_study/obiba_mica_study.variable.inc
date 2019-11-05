@@ -109,4 +109,10 @@ function _obiba_mica_harmonization_study_content(&$variable) {
     'default' => TRUE,
   );
 
+  $variable['obiba_mica_harmo_study_studies_table_show_variable'] = array(
+    'title' => t('Show the variables column in the studies table'),
+    'description' => t('If selected the variables column will be shown in the studies table'),
+    'type' => 'string',
+    'default' => false,
+  );
 }

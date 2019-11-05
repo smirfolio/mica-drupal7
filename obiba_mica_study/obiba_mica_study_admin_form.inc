@@ -130,6 +130,14 @@ function _obiba_mica_study_settings_admin_harmonization_study_content(&$form){
     '#description' => $info['description'],
   );
 
+  $info = variable_get_info('obiba_mica_harmo_study_studies_table_show_variable');
+  $form['content_display_settings']['harmo_study_form']['study_details']['obiba_mica_harmo_study_studies_table_show_variable'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('obiba_mica_harmo_study_studies_table_show_variable'),
+    '#description' => $info['description'],
+  );
+
   $info = variable_get_info('harmo_study_show_datasets');
   $form['content_display_settings']['harmo_study_form']['study_details']['harmo_study_show_datasets'] = array(
     '#type' => 'checkbox',
