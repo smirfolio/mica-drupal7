@@ -108,6 +108,12 @@ function _obiba_mica_dataset_variable_content(&$variable) {
     'default' => t('the study assessment item(s) (e.g. survey question, physical measure, biochemical measure) allow construction of the variable as defined in the dataset.'),
   );
 
+  $variable['obiba_mica_dataset_studies_table_show_variable'] = array(
+    'title' => t('Show the variables column in the studies table'),
+    'description' => t('If selected the variables column will be shown in the studies table'),
+    'type' => 'string',
+    'default' => false,
+  );
 }
 /**
  * Setting Variable content page.
