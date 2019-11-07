@@ -190,7 +190,8 @@ function obiba_mica_graphic_block_view($delta = '') {
                     array(
                       'graphics.study-design',
                       'graphics.nbr-studies',
-                      'graphics.number-participants'
+                      'graphics.number-participants',
+                      'graphics.percentage.studies'
                     ),
                     'graphics.study-design-chart-title', $study_design_options),
                 ),
@@ -212,7 +213,8 @@ function obiba_mica_graphic_block_view($delta = '') {
                   'ChartsOptions' => obiba_mica_graphic_charts_options_settings('numberParticipants',
                     array(
                       'graphics.number-participants',
-                      'graphics.nbr-studies'
+                      'graphics.nbr-studies',
+                      'graphics.percentage.studies',
                     ),
                     'graphics.number-participants-chart-title', $number_participants_options),
                 ),
@@ -315,7 +317,8 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
       array(
         'graphics.study-design',
         'graphics.nbr-studies',
-        'graphics.number-participants'
+        'graphics.number-participants',
+        'graphics.percentage.studies',
       ),
       'graphics.study-design-chart-title', $study_design_options),
     obiba_mica_graphic_charts_options_settings('biologicalSamples',
@@ -325,7 +328,8 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
     obiba_mica_graphic_charts_options_settings('numberParticipants',
       array(
         'graphics.number-participants',
-        'graphics.nbr-studies'
+        'graphics.nbr-studies',
+        'graphics.percentage.studies'
       ),
       'graphics.number-participants-chart-title', $number_participants_options)
   );
