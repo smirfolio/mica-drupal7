@@ -470,7 +470,7 @@ function obiba_mica_graphics_do_coverage_query($query) {
   return $coverages;
 }
 
-function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $entity_id, $empty_value_key) {
+function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $entity_id, $empty_value_key = NULL, $entity_graph = NULL) {
   $cached_chart = obiba_mica_commons_get_cache(__FUNCTION__ . $query);
   if(!empty($cached_chart)){
       $response = $cached_chart;
@@ -511,7 +511,8 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
           $graphic_margins,
           $rotate_labels,
           $enable_ellipses,
-          $number_bars) {
+          $number_bars,
+          $entity_graph) {
 
         if (array_search($chart->taxonomy, $taxonomies_config) !== false) {
           $chart_formatted = new stdClass();
@@ -542,33 +543,24 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
             });
             $bar_chart_number  = sizeof($filtered_zero_chart_data);
             $chart_formatted->renderOptions->nbrStack = $bar_chart_number;
-            foreach ($filtered_zero_chart_data as $key => $data) {
-              if (isset($data->items)) {
-                foreach ($data->items as $item) {
-                  if (!empty($item->key) || !empty($empty_value_key)) {
-                    $query_entity = empty($item->key) ? $entity_id : $item->key;
-                    $item->link =
-                      $base_path .
-                      MicaClientPathProvider::REPOSITORY_SEARCH .
-                      '#/search?query=' .
-                      sprintf($search_query_template, $chart->taxonomy, $data->vocabulary, $query_entity) .
-                      '&display=list&type=variables';
-                     $item->notEllipsedTitle = $item->title;
-                     if($enable_ellipses && $bar_chart_number > $number_bars){
-                       $item->title = truncate_utf8($item->title, 35, FALSE, TRUE);
-                     }
-                    if($item->value !== 0){
-                      if (!empty($empty_value_key)) {
-                        $item->key = $empty_value_key;
-                        array_push($chart_formatted->variableData, $item);
-                      } else {
-                        array_push($chart_formatted->data, $item);
-                      }
-                    }
-
-                  }
-                }
-              }
+            if($entity_graph == 'network'){
+              obiba_mica_graphics_nvd3_build_network_bucket($chart_formatted,
+                $filtered_zero_chart_data,
+                $search_query_template,
+                $base_path,
+                $chart,
+                $empty_value_key);
+            }
+            else{
+              obiba_mica_graphics_nvd3_build_bucket($chart_formatted, $filtered_zero_chart_data,
+                $search_query_template,
+                $enable_ellipses,
+                $bar_chart_number,
+                $entity_id,
+                $base_path,
+                $chart,
+                $number_bars,
+                $empty_value_key);
             }
           }
           return true;
@@ -589,5 +581,81 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
   }
 
   return drupal_json_output($response);
+}
+
+function obiba_mica_graphics_nvd3_build_network_bucket(&$chart_formatted,
+                                               $filtered_zero_chart_data,
+                                               $search_query_template,
+                                               $base_path,
+                                               $chart,
+                                               $empty_value_key){
+  $to_pushItem = new stdClass();
+  $to_pushItem->values = array();
+  foreach ($filtered_zero_chart_data as $key => $data) {
+            if (isset($data->items)) {
+              $study_item = new stdClass();
+              $study_item->value =  sizeOf($data->items);
+              $studies_id = [];
+              foreach ($data->items as $item){
+                $studies_id[] = $item->key;
+              }
+              $study_item->link =
+                $base_path .
+                MicaClientPathProvider::REPOSITORY_SEARCH .
+                '#/search?query=' .
+                sprintf($search_query_template, $chart->taxonomy, $data->vocabulary, implode(',', $studies_id)) .
+                '&display=list&type=studies';
+              $study_item->key = $data->vocabulary;
+              $study_item->notEllipsedTitle = $data->items[0]->title;
+              $study_item->title = truncate_utf8($data->items[0]->title, 35, FALSE, TRUE);
+              $to_pushItem->key = $study_item->key;
+              $to_pushItem->values[] = $study_item;
+            if($study_item->value !== 0){
+                if (!empty($empty_value_key)) {
+                  $study_item->key = $empty_value_key;
+                  array_push($chart_formatted->variableData, $study_item);
+                } else {
+                  array_push($chart_formatted->data, $to_pushItem);
+                }
+            }
+          }
+  }
+}
+
+function obiba_mica_graphics_nvd3_build_bucket(&$chart_formatted, $filtered_zero_chart_data,
+                                               $search_query_template,
+                                               $enable_ellipses,
+                                               $bar_chart_number,
+                                               $entity_id,
+                                               $base_path,
+                                               $chart,
+                                               $number_bars, $empty_value_key){
+  foreach ($filtered_zero_chart_data as $key => $data) {
+    if (isset($data->items)) {
+      foreach ($data->items as $item) {
+        if (!empty($item->key) || !empty($empty_value_key)) {
+          $query_entity = empty($item->key) ? $entity_id : $item->key;
+          $item->link =
+            $base_path .
+            MicaClientPathProvider::REPOSITORY_SEARCH .
+            '#/search?query=' .
+            sprintf($search_query_template, $chart->taxonomy, $data->vocabulary, urlencode(urlencode($query_entity))) .
+            '&display=list&type=variables';
+          $item->notEllipsedTitle = $item->title;
+          if($enable_ellipses && $bar_chart_number > $number_bars){
+            $item->title = truncate_utf8($item->title, 35, FALSE, TRUE);
+          }
+          if($item->value !== 0){
+            if (!empty($empty_value_key)) {
+              $item->key = $empty_value_key;
+              array_push($chart_formatted->variableData, $item);
+            } else {
+              array_push($chart_formatted->data, $item);
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
