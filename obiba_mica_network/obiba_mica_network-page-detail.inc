@@ -182,6 +182,7 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
 }
 
 function obiba_mica_network_ng_coverage($network_id) {
+  $localize = obiba_mica_commons_mica_server_localisation();
   $network_resource = new DrupalMicaNetworkResource();
   $network_dto = $network_resource->getNetwork($network_id);
   if (!empty($network_dto) && !empty($network_dto->studyIds)) {
@@ -190,7 +191,8 @@ function obiba_mica_network_ng_coverage($network_id) {
     return obiba_mica_graphics_nvd3_query_charts($query,
       DrupalMicaClient\RqlQueryBuilder::network_query_charts_variables_template(),
       $study_ids,
-      NULL);
+      $localize->getTranslation('studies'),
+      'network');
   }
 }
 
