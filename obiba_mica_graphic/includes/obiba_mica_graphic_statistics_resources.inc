@@ -21,6 +21,7 @@ class NetworkStatistics extends ObibaSearchResources {
   const METHODS_DESIGNS = 'methods-designs';
   const NUMBER_PARTICIPANTS = 'number-participants';
   const BIO_SAMPLES = 'populationDceBioSamples';
+  const START_YEAR = 'start-year';
   public $id_networks;
 
   function __construct($id_networks) {
@@ -35,6 +36,7 @@ class NetworkStatistics extends ObibaSearchResources {
       NetworkStatistics::METHODS_DESIGNS => 'methods-designs',
       NetworkStatistics::NUMBER_PARTICIPANTS => 'numberOfParticipants-participant-number-range',
       NetworkStatistics::BIO_SAMPLES => 'populations-dataCollectionEvents-bioSamples',
+      NetworkStatistics::START_YEAR => 'start-range',
       );
   }
 

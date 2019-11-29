@@ -324,9 +324,6 @@ mica.service('AttributeService',
     this.setClientConfig = function () {
       GraphicChartsConfig.setOptions(Drupal.settings.GraphicChartsOptions);
     };
-    this.getClientConfig = function () {
-      return Drupal.settings.GraphicChartsOptions;
-    };
   }])
 
   // as per https://stackoverflow.com/a/17426614

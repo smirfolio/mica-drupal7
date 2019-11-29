@@ -11,92 +11,41 @@
   'use strict';
 
   mica.ObibaGraphicCharts
-    .controller('ChartController', ['$rootScope','$scope', 'GraphicChartsConfig', 'ChartType',
-      function ($rootScope, $scope, GraphicChartsConfig, ChartType) {
+    .controller('ChartController', ['$rootScope','$scope', 'GraphicChartsUtils', 'ChartType',
+      function ($rootScope, $scope, GraphicChartsUtils, ChartType) {
         /**
          * Helper to test whether to show the chart title or not
          *
          * @returns {boolean}
          */
         var canShowTitle = function() {
-          return $scope.type >= 0 && [ChartType.NUMBER_PARTICIPANTS, ChartType.BIO_SAMPLES, ChartType.STUDY_DESIGN].indexOf($scope.type) === -1;
+          return $scope.type >= 0 && [ChartType.NUMBER_PARTICIPANTS, ChartType.BIO_SAMPLES, ChartType.STUDY_DESIGN, ChartType.START_YEAR].indexOf($scope.type) === -1;
         };
+
+        $scope.chart = {};
         /**
          * Depending on the type of the chart, returns the corresponding options
          *
          * @param type
          */
+        var graphs = GraphicChartsUtils.getGraphConfig();
+
         function getChartOptions(type) {
-          var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
           switch (type) {
             case ChartType.GEO_CHARTS:
-              $scope.directive = {title:charOptions.geoChartOptions.title, subtitle: charOptions.geoChartOptions.subtitle};
-              $scope.chart = {
-                type: 'GeoChart',
-                title: charOptions.geoChartOptions.title,
-                subtitle: charOptions.geoChartOptions.subtitle,
-                options: charOptions.geoChartOptions.options,
-                header: charOptions.geoChartOptions.header,
-                fieldTransformer: 'country',
-                aggregationName: 'populations-model-selectionCriteria-countriesIso',
-                optionsName: 'geoChartOptions',
-                entityDto: 'studyResultDto',
-                active: true,
-                ordered:true,
-                notOrdered: false,
-                sortedby:['title', 'value']
-              };
+              $scope.chart = graphs['populations-model-selectionCriteria-countriesIso'];
               break;
             case ChartType.STUDY_DESIGN:
-              $scope.directive = {title:charOptions.studiesDesigns.title};
-              $scope.chart = {
-                type: 'BarChart',
-                title: charOptions.studiesDesigns.title,
-                options: charOptions.studiesDesigns.options,
-                header: charOptions.studiesDesigns.header,
-                fieldTransformer: null,
-                aggregationName: 'model-methods-design',
-                optionsName: 'studiesDesigns',
-                entityDto: 'studyResultDto',
-                active: true,
-                ordered:true,
-                notOrdered: false,
-                sortedby:[]
-              };
+              $scope.chart =  graphs['model-methods-design'];
               break;
             case ChartType.NUMBER_PARTICIPANTS:
-              $scope.directive = null;
-              $scope.chart = {
-                type: 'PieChart',
-                title: charOptions.numberParticipants.title,
-                options: charOptions.numberParticipants.options,
-                header: charOptions.numberParticipants.header,
-                fieldTransformer: null,
-                aggregationName: 'model-numberOfParticipants-participant-number-range',
-                optionsName: 'numberParticipants',
-                entityDto: 'studyResultDto',
-                active: true,
-                ordered:false,
-                notOrdered: true,
-                sortedby: []
-              };
+              $scope.chart =graphs['model-numberOfParticipants-participant-number-range'];
               break;
             case ChartType.BIO_SAMPLES:
-              $scope.directive = null;
-              $scope.chart = {
-                type: 'BarChart',
-                title: charOptions.biologicalSamples.title,
-                options: charOptions.biologicalSamples.options,
-                header: charOptions.biologicalSamples.header,
-                fieldTransformer: null,
-                aggregationName: 'populations-dataCollectionEvents-model-bioSamples',
-                optionsName: 'biologicalSamples',
-                entityDto: 'studyResultDto',
-                active: true,
-                ordered:true,
-                notOrdered: false,
-                sortedby: []
-              };
+              $scope.chart = graphs['populations-dataCollectionEvents-model-bioSamples'];
+              break;
+            case ChartType.START_YEAR:
+              $scope.chart = graphs['model-startYear-range'];
               break;
 
             default:
@@ -110,89 +59,37 @@
           getChartOptions(type);
         });
 
-    }]).controller('ChartBlockController', ['$rootScope','$scope', 'GraphicChartsConfig', 'ChartType',
-      function ($rootScope, $scope, GraphicChartsConfig) {
-
+    }])
+    .controller('ChartBlockController', ['$rootScope','$scope', 'GraphicChartsUtils', '$timeout',
+      function ($rootScope, $scope, GraphicChartsUtils, $timeout) {
         /**
          * Depending on the type of the chart, returns the corresponding options
-         *
-         * @param type
          */
+        $timeout(function(){
+          var graphs = GraphicChartsUtils.getGraphConfig();
 
-          var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
           var type = $scope.type;
         switch (type){
-          case 'geoChartOptions':
-            $scope.canShowTitle = true;
-            $scope.directive = {title:charOptions.geoChartOptions.title, subtitle: charOptions.geoChartOptions.subtitle};
-            $scope.chart = {
-              type: 'GeoChart',
-              title: charOptions.geoChartOptions.title,
-              subtitle: charOptions.geoChartOptions.subtitle,
-              options: charOptions.geoChartOptions.options,
-              header: charOptions.geoChartOptions.header,
-              fieldTransformer: 'country',
-              aggregationName: 'populations-model-selectionCriteria-countriesIso',
-              optionsName: 'geoChartOptions',
-              entityDto: 'studyResultDto',
-              active: true,
-              ordered:true,
-              notOrdered: false,
-              sortedby:charOptions.geoChartOptions.sortedby
-            };
-            break;
+          case 'geoChart':
+            $scope.graphConfig = graphs['populations-model-selectionCriteria-countriesIso'];
+          break;
           case 'studiesDesigns':
-            $scope.directive = {title:charOptions.studiesDesigns.title};
-            $scope.chart = {
-              type: 'BarChart',
-              title: charOptions.studiesDesigns.title,
-              options: charOptions.studiesDesigns.options,
-              header: charOptions.studiesDesigns.header,
-              fieldTransformer: null,
-              aggregationName: 'model-methods-design',
-              optionsName: 'studiesDesigns',
-              entityDto: 'studyResultDto',
-              active: true,
-              ordered:true,
-              notOrdered: false,
-              sortedby: []
-            };
+            $scope.graphConfig =  graphs['model-methods-design'];
           break;
           case 'numberParticipants' :
-          $scope.directive = null;
-          $scope.chart = {
-            type: 'PieChart',
-            title: charOptions.numberParticipants.title,
-            options: charOptions.numberParticipants.options,
-            header: charOptions.numberParticipants.header,
-            fieldTransformer: null,
-            aggregationName: 'model-numberOfParticipants-participant-number-range',
-            optionsName: 'numberParticipants',
-            entityDto: 'studyResultDto',
-            active: true,
-            ordered:false,
-            notOrdered: true,
-            sortedby: []
-          };
-            break;
+            $scope.graphConfig =graphs['model-numberOfParticipants-participant-number-range'];
+          break;
           case 'biologicalSamples' :
-          $scope.directive = null;
-          $scope.chart = {
-            type: 'BarChart',
-            title: charOptions.biologicalSamples.title,
-            options: charOptions.biologicalSamples.options,
-            header: charOptions.biologicalSamples.header,
-            fieldTransformer: null,
-            aggregationName: 'populations-dataCollectionEvents-model-bioSamples',
-            optionsName: 'biologicalSamples',
-            entityDto: 'studyResultDto',
-            active: true,
-            ordered:true,
-            notOrdered: false,
-            sortedby: []
-          };
-        }
+            $scope.graphConfig = graphs['populations-dataCollectionEvents-model-bioSamples'];
+          break;
+          case 'startYear':
+            $scope.graphConfig = graphs['model-startYear-range'];
+          break;
 
+            default:
+              throw new Error('Invalid type: ' + type);
+          }
+        });
     }])
     .controller('VariableCoverageChartController', ['$scope', '$location', 'CoverageResource', 'D3ChartConfig', '$translate', function ($scope, $location, CoverageResource, D3ChartConfig, $translate) {
       function normalizeData(data) {
