@@ -14,6 +14,8 @@
     </uib-tab>
     <uib-tab heading="{{'graphics.study-start-year' | translate}}" ng-show="getVocabulary('start-range')">
     </uib-tab>
+    <uib-tab heading="{{'graphics.study-start-year' | translate}}">
+    </uib-tab>
     
   </uib-tabset>
   <!-- Content -->
