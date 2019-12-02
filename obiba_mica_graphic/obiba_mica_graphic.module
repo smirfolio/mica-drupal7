@@ -153,9 +153,6 @@ function obiba_mica_graphic_block_view($delta = '') {
     }
     $graphics_bocks = variable_get_value('graphics_blocks');
     $colors_options = obiba_mica_graphic_charts_colors_options_settings();
-    $study_design_options = obiba_mica_graphic_study_design_options($colors_options);
-    $number_participants_options = obiba_mica_graphic_number_participants_options($colors_options);
-    $bio_samples_options = obiba_mica_graphic_bio_samples_options($colors_options);
     switch ($delta) {
       case NetworkStatistics::GEO_NBR_STAT:
         if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::GEO_NBR_STAT]['enable'] !== 0) {
@@ -166,10 +163,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                 array(
                   'entityType' => 'network',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
-                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('geoChartOptions',
-                    array('graphics.country', 'graphics.nbr-studies'),
-                    'graphics.geo-chart-title',
-                    $colors_options, 'graphics.geo-chart-subtitle')
+                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('geoChart', $colors_options)
                 ),
             ),
               'setting');
@@ -186,14 +180,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                 array(
                   'entityType' => 'network',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
-                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('studiesDesigns',
-                    array(
-                      'graphics.study-design',
-                      'graphics.nbr-studies',
-                      'graphics.number-participants',
-                      'graphics.percentage.studies'
-                    ),
-                    'graphics.study-design-chart-title', $study_design_options),
+                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('studiesDesigns', $colors_options),
                 ),
             ),
               'setting');
@@ -210,13 +197,7 @@ function obiba_mica_graphic_block_view($delta = '') {
                 array(
                   'entityType' => 'network',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
-                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('numberParticipants',
-                    array(
-                      'graphics.number-participants',
-                      'graphics.nbr-studies',
-                      'graphics.percentage.studies',
-                    ),
-                    'graphics.number-participants-chart-title', $number_participants_options),
+                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('numberParticipants', $colors_options),
                 ),
             ),
               'setting');
@@ -233,10 +214,23 @@ function obiba_mica_graphic_block_view($delta = '') {
                 array(
                   'entityType' => 'network',
                   'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
-                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('biologicalSamples',
-                    array('graphics.bio-samples', 'graphics.nbr-studies'),
-                    'graphics.bio-samples-chart-title',
-                    $bio_samples_options),
+                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('biologicalSamples', $colors_options),
+                ),
+            ),
+              'setting');
+          }
+        }
+        break;
+      case NetworkStatistics::START_YEAR:
+        if (!empty($aggregations_to_show) && $aggregations_to_show[NetworkStatistics::START_YEAR]['enable'] !== 0) {
+          if (!empty($graphics_bocks)) {
+            $block['content'] = theme('obiba_mica_angular_app_charts_' . NetworkStatistics::START_YEAR);
+            drupal_add_js(array(
+              'GraphicChartsOptions' =>
+                array(
+                  'entityType' => 'network',
+                  'entityIds' => implode(',', variable_get_value('graphics_blocks_networks')),
+                  'ChartsOptions' => obiba_mica_graphic_charts_options_settings('startYear', $colors_options),
                 ),
             ),
               'setting');
@@ -276,22 +270,13 @@ function obiba_mica_graphic_get_ng_module_to_load() {
 /**
  * Set Pie charts graphics options
  */
-function obiba_mica_graphic_charts_options_settings($aggregation_option, $headers_label, $title_chart, $custom_options = NULL, $subtitle = '') {
+function obiba_mica_graphic_charts_options_settings($aggregation_option, $custom_options = NULL) {
   $default_options = array(
     'options' => array(),
-  );
-  $options = array(
-    $aggregation_option => array(
-      'header' => $headers_label,
-      'title' => $title_chart,
-    ),
   );
   if (!empty($custom_options)) {
     $options_result = array_merge_recursive($default_options['options'], $custom_options);
     $options[$aggregation_option]['options'] = $options_result;
-  }
-  if(!empty($subtitle)){
-    $options[$aggregation_option]['subtitle'] = $subtitle;
   }
   return $options;
 }
@@ -306,32 +291,12 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $header
  */
 function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
   $colors_options = obiba_mica_graphic_charts_colors_options_settings();
-  $study_design_options = obiba_mica_graphic_study_design_options($colors_options);
-  $number_participants_options = obiba_mica_graphic_number_participants_options($colors_options);
-  $bio_samples_options = obiba_mica_graphic_bio_samples_options($colors_options);
   $charts_option = array_merge(
-    obiba_mica_graphic_charts_options_settings('geoChartOptions',
-      array('graphics.country', 'graphics.nbr-studies'),
-      'graphics.geo-chart-title', $colors_options, 'graphics.geo-chart-subtitle'),
-    obiba_mica_graphic_charts_options_settings('studiesDesigns',
-      array(
-        'graphics.study-design',
-        'graphics.nbr-studies',
-        'graphics.number-participants',
-        'graphics.percentage.studies',
-      ),
-      'graphics.study-design-chart-title', $study_design_options),
-    obiba_mica_graphic_charts_options_settings('biologicalSamples',
-      array('graphics.bio-samples', 'graphics.nbr-studies'),
-      'graphics.bio-samples-chart-title',
-      $bio_samples_options),
-    obiba_mica_graphic_charts_options_settings('numberParticipants',
-      array(
-        'graphics.number-participants',
-        'graphics.nbr-studies',
-        'graphics.percentage.studies'
-      ),
-      'graphics.number-participants-chart-title', $number_participants_options)
+    obiba_mica_graphic_charts_options_settings('geoChart',$colors_options),
+    obiba_mica_graphic_charts_options_settings('studiesDesigns', $colors_options),
+    obiba_mica_graphic_charts_options_settings('biologicalSamples', $colors_options),
+    obiba_mica_graphic_charts_options_settings('numberParticipants', $colors_options),
+    obiba_mica_graphic_charts_options_settings('startYear', $colors_options)
   );
 
   if (!empty($graphics_options)) {
@@ -349,82 +314,6 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
   ),
     'setting');
 
-}
-
-/**
- * Get Study designs Option.
- * @param $colors_options.
- *
- * @return array $options.
- */
-function obiba_mica_graphic_study_design_options($colors_options = NULL) {
-  return !empty($colors_options) ?
-    array_merge(array(
-      'bars' => 'horizontal',
-      'series' => array(
-        0 => array('axis' => 'nbrStudies'),
-        1 => array('axis' => 'nbrParticipants'),
-      ),
-      'axes' => array(
-        'x' => array(
-          'nbrStudies' => array(
-            'side' => 'top',
-            'label' => t('Number of Studies')
-          ),
-          'nbrParticipants' => array('label' => t('Number of Participants'))
-        )
-      ),
-      'legend' => array('position' => 'none')
-    ), $colors_options) :
-    array(
-      'bars' => 'horizontal',
-      'series' => array(
-        0 => array('axis' => 'nbrStudies'),
-        1 => array('axis' => 'nbrParticipants'),
-      ),
-      'axes' => array(
-        'x' => array(
-          'nbrStudies' => array(
-            'side' => 'bottom',
-            'label' => t('Number of Studies')
-          ),
-          'nbrParticipants' => array('label' => t('Number of Participants'))
-        )
-      ),
-      'legend' => array('position' => 'none')
-    );
-}
-
-/**
- * Get Number Of participant options.
- * @param $colors_options.
- *
- * @return array $options.
- */
-function obiba_mica_graphic_number_participants_options($colors_options = NULL) {
-  return !empty($colors_options) ?
-    array_merge(array(
-      'legendPosition' => 'right'
-    ), $colors_options) :
-    array(
-    );
-}
-
-/**
- * Get bui samples options.
- * @param $colors_options.
- *
- * @return array $options.
- */
-function obiba_mica_graphic_bio_samples_options($colors_options = NULL) {
-  return !empty($colors_options) ?
-    array_merge(array(
-      'legend' => array('position' => 'none')
-    ), $colors_options) :
-    array(
-      'legend' => array('position' => 'none'),
-      'xAxis' => array('ticks' => 0)
-    );
 }
 
 /**

@@ -17,7 +17,8 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
     GEO_CHARTS: 0,
     STUDY_DESIGN: 1,
     NUMBER_PARTICIPANTS: 2,
-    BIO_SAMPLES: 3
+    BIO_SAMPLES: 3,
+    START_YEAR: 4
   })
   .controller('GraphicNetworkMainController', ['$scope', 'ChartType',
     function ($scope, ChartType) {

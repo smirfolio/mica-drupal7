@@ -12,6 +12,8 @@
     
     <uib-tab heading="{{'graphics.bio-samples' | translate}}">
     </uib-tab>
+    <uib-tab heading="{{'graphics.study-start-year' | translate}}">
+    </uib-tab>
     
   </uib-tabset>
   <!-- Content -->
