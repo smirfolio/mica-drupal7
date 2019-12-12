@@ -20,8 +20,24 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
     BIO_SAMPLES: 3,
     START_YEAR: 4
   })
-  .controller('GraphicNetworkMainController', ['$scope', 'ChartType',
-    function ($scope, ChartType) {
+  .controller('GraphicNetworkMainController', ['$scope', 'ChartType', 'TaxonomyResource',
+    function ($scope, ChartType, TaxonomyResource) {
+      var studyTaxonomy = {};
+      if(!studyTaxonomy.vocabularies){
+        TaxonomyResource.get({
+          target: 'study',
+          taxonomy: 'Mica_study'
+        }).$promise.then(function(taxonomy){
+          studyTaxonomy.vocabularies = angular.copy(taxonomy.vocabularies);
+        });
+      }
+      $scope.getVocabulary =  function(vocabularyName){
+        if(studyTaxonomy.vocabularies){
+          return studyTaxonomy.vocabularies.find(function(vocabulary){
+            return vocabulary.name === vocabularyName;
+          });
+        }
+      };
       $scope.activeTab = ChartType.GEO_CHARTS;
     }])
     .factory('CoverageResource', ['$resource', function ($resource) {
