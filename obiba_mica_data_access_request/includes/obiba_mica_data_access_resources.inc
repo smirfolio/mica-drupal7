@@ -71,6 +71,27 @@ class DrupalMicaDataAccessRequestResources extends DrupalMicaClientResource {
     return $this->getLastResponse();
   }
 
+  public function dataAccessStartDateSave($id_data_access, $date) {
+    $constant_method = constant('HttpClientRequest::' . $this->method);
+    $url_data_access = $this->micaUrl . '/data-access-request/' . $id_data_access . '/_start-date?date=' . $date;
+    $request = new HttpClientRequest($url_data_access, array(
+      'method' => $constant_method,
+      'headers' => $this->authorizationHeader(array(
+          'Accept' => array(parent::HEADER_JSON),
+        )
+      ),
+    ));
+
+    $this->execute($request);
+    $headers = $this->getLastResponseHeaders();
+    if (!empty($headers) && !empty($headers['Location'])) {
+      drupal_add_http_header('Location', $headers['Location'][0]);
+    }
+
+    drupal_add_http_header('Status', $this->getLastResponseStatusCode());
+    return $this->getLastResponse();
+  }
+
   public function dataAccessActionLogsSave($data, $id_data_access) {
     $constant_method = constant('HttpClientRequest::' . $this->method);
     $url_data_access = $this->micaUrl . '/data-access-request/' . $id_data_access . '/_log-actions';

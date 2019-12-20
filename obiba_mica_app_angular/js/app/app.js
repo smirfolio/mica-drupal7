@@ -105,6 +105,7 @@ mica.config(['ngObibaMicaSearchProvider', 'ngObibaMicaUrlProvider',
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestsResource', basePathAndPathPrefix + 'mica/data_access/requests/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessAmendmentsResource', Drupal.settings.basePath + 'mica/data_access/request/:parentId/amendments/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestResource', basePathAndPathPrefix + 'mica/data_access/request/:id/ws');
+    ngObibaMicaUrlProvider.setUrl('DataAccessRequestStartDateResource', basePathAndPathPrefix + 'mica/data_access/request/:id/_start-date/ws?date=:date');
     ngObibaMicaUrlProvider.setUrl('DataAccessRequestActionLogsResource', basePathAndPathPrefix + 'mica/data_access/request/:id/_log-actions/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessAmendmentsLogHistoryResource', basePathAndPathPrefix + 'mica/data_access/request/:id/amendments/_history/ws');
     ngObibaMicaUrlProvider.setUrl('DataAccessAmendmentResource', basePathAndPathPrefix + 'mica/data_access/request/:parentId/amendment/:id/ws');
