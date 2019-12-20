@@ -181,6 +181,13 @@ function obiba_mica_data_access_request_action($entity_id, $amendment_id = null)
   }
 }
 
+function obiba_mica_data_access_request_start_date($id) {
+  $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
+  $query_param = drupal_get_query_parameters();
+  $data_access_request = $mica_client->dataAccessStartDateSave($id, $query_param['date']);
+  drupal_json_output($data_access_request);
+}
+
 function obiba_mica_data_access_request_action_logs($id) {
   $mica_client = new MicaDataAccessRequest(NULL, 'METHOD_PUT');
   $response = $mica_client->dataAccessActionLogsSave(file_get_contents('php://input'), $id);
