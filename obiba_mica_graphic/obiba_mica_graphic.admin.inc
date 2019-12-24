@@ -57,6 +57,7 @@ function obiba_mica_graphic_settings_form($form, &$form_state) {
   obiba_mica_graphic_settings_form_display_content($form);
   obiba_mica_graphic_settings_form_piechart($form);
   obiba_mica_graphic_settings_form_barchart($form);
+  obiba_mica_graphic_settings_form_horizontal_barchart($form);
 
   return system_settings_form($form);
 }
@@ -335,6 +336,31 @@ function obiba_mica_graphic_settings_form_barchart(&$form) {
 
 }
 
+function obiba_mica_graphic_settings_form_horizontal_barchart(&$form){
+  $form['obiba_mica_graphic']['graphic_display']['horizontal_barchart'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Coverage Horizontal Bar Chart settings'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('graphics_horizontal_barChart_graphic_margins_left');
+  $form['obiba_mica_graphic']['graphic_display']['horizontal_barchart']['custom_settings']['graphics_horizontal_barChart_graphic_margins_left'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_horizontal_barChart_graphic_margins_left'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('graphics_horizontal_barChart_truncated');
+  $form['obiba_mica_graphic']['graphic_display']['horizontal_barchart']['custom_settings']['graphics_horizontal_barChart_truncated'] = array(
+    '#type' => 'textfield',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('graphics_horizontal_barChart_truncated'),
+    '#maxlength' => 255,
+    '#description' => $info['description'],
+  );
+}
 
 function obiba_mica_graphic_get_networks_id() {
   $resource = new DrupalMicaNetworkResource();

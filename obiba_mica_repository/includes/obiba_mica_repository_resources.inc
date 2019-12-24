@@ -92,10 +92,11 @@ class ObibaSearchResources extends DrupalMicaClientResource {
     return l($text, $url, $options);
   }
 
-  public function taxonomiesChartRql($query, $type, $aggregation_type) {
+  public function taxonomiesChartRql($query, $type, $aggregation_type, $includeTerms) {
 
     $request_parameters = array(
-      'query' => $query
+      'query' => $query,
+      'includeTerms' => $includeTerms ? 'true' : 'false'
     );
 
     $stored_data = $this->drupalCache->MicaGetCache(__FUNCTION__ . $query);

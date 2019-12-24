@@ -29,8 +29,22 @@ function _obiba_mica_network_content(&$variable) {
   $variable['obiba_mica_network_studies_table_show_variable'] = array(
     'title' => t('Show the variables column in the studies table'),
     'description' => t('If selected the variables column will be shown in the studies table'),
+    'type' => 'boolean',
+    'default' => FALSE,
+  );
+
+  $variable['obiba_mica_network_show_classifications'] = array(
+    'title' => t('Show the classification graphics'),
+    'description' => t('If selected the variable classification graphics will be displayed'),
+    'type' => 'boolean',
+    'default' => TRUE,
+  );
+
+  $variable['obiba_mica_network_studies_variable_classifications'] = array(
+    'title' => t('Show the studies/variables classification graphics'),
+    'description' => t('Select the studies/variables classification graphics that will be displayed'),
     'type' => 'string',
-    'default' => false,
+    'default' => "0",
   );
 
 }
