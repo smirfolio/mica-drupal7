@@ -182,6 +182,8 @@ function obiba_mica_network_page_detail($network_id, $token_key = NULL) {
 }
 
 function obiba_mica_network_ng_coverage($network_id) {
+  $includeTerms = (variable_get_value('obiba_mica_network_studies_variable_classifications') === "0") ?
+    FALSE : TRUE;
   $localize = obiba_mica_commons_mica_server_localisation();
   $network_resource = new DrupalMicaNetworkResource();
   $network_dto = $network_resource->getNetwork($network_id);
@@ -192,7 +194,7 @@ function obiba_mica_network_ng_coverage($network_id) {
       DrupalMicaClient\RqlQueryBuilder::network_query_charts_variables_template(),
       $study_ids,
       $localize->getTranslation('studies'),
-      'network');
+      'network', $includeTerms);
   }
 }
 

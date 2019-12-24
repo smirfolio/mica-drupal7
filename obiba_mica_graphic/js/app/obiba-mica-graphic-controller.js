@@ -116,6 +116,19 @@
           var normalized = [];
           zeroValues.forEach(function (z) {
             var item = d.values.filter(function (value) { return value.title === z.title; }).pop();
+            if(item && (item.itemTerm && item.itemTerm.length > 0)){
+              item.itemTerm.forEach(function(itemTerm){
+                normalized.push({
+                  key: z.key,
+                  value: itemTerm ? itemTerm.value : 0,
+                  title: itemTerm.term,
+                  notEllipsedTitle: z.notEllipsedTitle,
+                  notEllipsedTermTitle: itemTerm.notEllipsedTitle,
+                  link: itemTerm ? itemTerm.link : null
+                });
+              });
+            }
+            else{
               normalized.push({
                 key: z.key,
                 value: item ? item.value : 0,
@@ -123,6 +136,7 @@
                 notEllipsedTitle: z.notEllipsedTitle,
                 link: item ? item.link : null
               });
+            }
           });
 
           d.values = normalized;
@@ -147,14 +161,39 @@
         return data;
       }
 
-      function getLabelMargin(data) {
-        return  d3.max(data, function(d) {
+      function getLabelMargin(data, horizontalBarChar) {
+        if(horizontalBarChar){
+          var maxVal = 0;
+          var text = document.createElement("span");
+          // Technique to get Text with in svg pattern
+          document.body.appendChild(text);
+          text.style.font = "arial";
+          text.style.fontSize = 12 + "px";
+          text.style.height = 'auto';
+          text.style.width = 'auto';
+          text.style.position = 'absolute';
+          text.style.whiteSpace = 'no-wrap';
+
+          data.forEach(function(dataEntry){
+            var currentValMax;
+            currentValMax =  d3.max(dataEntry.itemTerm, function(d) {
+              text.textContent = d.term;
+              return Math.ceil(text.clientWidth);
+            });
+            maxVal = currentValMax > maxVal ? currentValMax : maxVal;
+          });
+          return maxVal;
+        }
+        else{
+          return  d3.max(data, function(d) {
             return Math.ceil(d.title.length);
-        });
+          });
+        }
       }
 
       function processConfig(config, type, data, colors, showLegend, renderOptions) {
-        var labelMargin = getLabelMargin(data);
+        var horizontalBarChar = (renderOptions.graphicChartType === "multiBarHorizontalChart") ? true : false;
+        var labelMargin = getLabelMargin(data, horizontalBarChar);
         config.options.chart.margin = {
           left: 200,
           top:50,
@@ -194,12 +233,16 @@
               if (series === null) { return; }
 
               var s = '',
+                notEllipsedTermTitle = '',
                 bottom = '<span>' + series.key + ': <strong>' + series.value + '</strong></span>';
+            if(o.data.notEllipsedTermTitle){
+              notEllipsedTermTitle = '<strong>' + o.data.notEllipsedTermTitle + '</strong><br/>';
+            }
               if (o.value) {
                 s = '<strong>' + o.data.notEllipsedTitle + '</strong><br/>';
               }
 
-              return '<div class="chart-tooltip">' + s + bottom + '</div>';
+              return '<div class="chart-tooltip">' + s + notEllipsedTermTitle + bottom + '</div>';
             };
           // Configure when the x- labels have to be wrap
           if (renderOptions.nbrStack > 3 && renderOptions.nbrStack <= renderOptions.numberBars) {
@@ -208,15 +251,28 @@
           // configure when the x-labels have to be rotated withe margin in graphics
           if (renderOptions.nbrStack > renderOptions.numberBars) {
             config.options.chart.rotateLabels = renderOptions.rotateLabels;
-            config.options.chart.margin.left = renderOptions.graphicMargins.left +labelMargin;
+            config.options.chart.margin.left = renderOptions.graphicMargins.left + labelMargin;
             config.options.chart.margin.bottom = renderOptions.graphicMargins.bottom + labelMargin;
           } else {
             config.options.chart.staggerLabels = true;
           }
           config.options.chart.showLegend = false;
+
+          config.options.chart.margin.left = renderOptions.horizontalBarCharMarginLeft ?
+            renderOptions.horizontalBarCharMarginLeft + labelMargin :
+            config.options.chart.margin.left;
         }
         config.options.chart.color = colors;
         config.options.chart.height = 500;
+        if(renderOptions.graphicHeight){
+          config.options.chart.height = renderOptions.graphicHeight;
+        }
+        if(renderOptions.graphicChartType){
+          config.options.chart.type = renderOptions.graphicChartType;
+        }
+        if(renderOptions.graphicMargin){
+          config.options.chart.margin = renderOptions.graphicMargin;
+        }
         config.options.chart.autoMargins = false;
 
       }

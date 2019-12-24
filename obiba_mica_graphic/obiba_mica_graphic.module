@@ -353,13 +353,13 @@ function _obiba_mica_graphic_colors_options_array_sort($a, $b) {
   return 0;
 }
 
-function obiba_mica_graphics_do_coverage_query($query) {
+function obiba_mica_graphics_do_coverage_query($query, $includeTerms = FALSE) {
   $search_resources = new ObibaSearchResources();
-  $coverages = $search_resources->taxonomiesChartRql($query, 'variables', 'coverage');
+  $coverages = $search_resources->taxonomiesChartRql($query, 'variables', 'coverage', $includeTerms);
   return $coverages;
 }
 
-function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $entity_id, $empty_value_key = NULL, $entity_graph = NULL) {
+function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $entity_id, $empty_value_key = NULL, $entity_graph = NULL, $includeTerms = FALSE) {
   $cached_chart = obiba_mica_commons_get_cache(__FUNCTION__ . $query);
   if(!empty($cached_chart)){
       $response = $cached_chart;
@@ -376,10 +376,12 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
     );
     $rotate_labels = intval(variable_get_value('graphics_barChart_rotateLabels'));
     $enable_ellipses = variable_get_value('graphics_barChart_enableEllipses');
+    $horizontal_barChar_margin_left = intval(variable_get_value('graphics_horizontal_barChart_graphic_margins_left'));
+    $horizontal_barChar_truncated = intval(variable_get_value('graphics_horizontal_barChart_truncated'));
     $response = new stdClass();
     $response->charts = array();
     $taxonomies_config = array_values(obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures'));
-    $coverages = obiba_mica_graphics_do_coverage_query($query);
+    $coverages = obiba_mica_graphics_do_coverage_query($query, $includeTerms);
     $base_path = !empty($GLOBALS['conf']['clean_url']) ? base_path() : base_path().'?q=';
 
     $response = new stdClass();
@@ -401,7 +403,10 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
           $rotate_labels,
           $enable_ellipses,
           $number_bars,
-          $entity_graph) {
+          $entity_graph,
+          $includeTerms,
+          $horizontal_barChar_margin_left,
+          $horizontal_barChar_truncated) {
 
         if (array_search($chart->taxonomy, $taxonomies_config) !== false) {
           $chart_formatted = new stdClass();
@@ -417,6 +422,8 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
           $chart_formatted->renderOptions->graphicMargins = $graphic_margins;
           $chart_formatted->renderOptions->rotateLabels = $rotate_labels;
           $chart_formatted->renderOptions->enableEllipses = $enable_ellipses;
+          $chart_formatted->renderOptions->horizontalBarCharMarginLeft = $horizontal_barChar_margin_left;
+          $chart_formatted->renderOptions->horizontalBarCharTruncated = $horizontal_barChar_truncated;
           array_push($response->charts, $chart_formatted);
 
           if (isset($chart->data)) {
@@ -432,15 +439,20 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
             });
             $bar_chart_number  = sizeof($filtered_zero_chart_data);
             $chart_formatted->renderOptions->nbrStack = $bar_chart_number;
-            if($entity_graph == 'network'){
+            if($entity_graph == 'network' && !empty($includeTerms)){
+                $chart_formatted->renderOptions->graphicHeight = 1500;
+                $chart_formatted->renderOptions->graphicChartType = 'multiBarHorizontalChart';
               obiba_mica_graphics_nvd3_build_network_bucket($chart_formatted,
                 $filtered_zero_chart_data,
                 $search_query_template,
                 $base_path,
                 $chart,
-                $empty_value_key);
+                $empty_value_key,
+                $includeTerms,
+                $horizontal_barChar_truncated);
             }
             else{
+              $empty_value_key = ($entity_graph == 'network') ? NULL : $empty_value_key;
               obiba_mica_graphics_nvd3_build_bucket($chart_formatted, $filtered_zero_chart_data,
                 $search_query_template,
                 $enable_ellipses,
@@ -477,13 +489,29 @@ function obiba_mica_graphics_nvd3_build_network_bucket(&$chart_formatted,
                                                $search_query_template,
                                                $base_path,
                                                $chart,
-                                               $empty_value_key){
+                                               $empty_value_key,
+                                               $includeTerms = FALSE,
+                                               $horizontal_barChar_truncated = 0){
   $to_pushItem = new stdClass();
   $to_pushItem->values = array();
   foreach ($filtered_zero_chart_data as $key => $data) {
             if (isset($data->items)) {
               $study_item = new stdClass();
-              $study_item->value =  sizeOf($data->items);
+              $study_item->value =  $data->items;
+              $termItems = [];
+              if(!empty($data->termItems) && !empty($includeTerms)){
+                $study_item->value =  sizeOf($data->items);
+                foreach ($data->termItems as $itemTerm){
+                  $termItems[] = array(
+                    'term' => ($horizontal_barChar_truncated !== 0) ?
+                      truncate_utf8($itemTerm->items[0]->title, $horizontal_barChar_truncated, FALSE, TRUE) :
+                      $itemTerm->items[0]->title,
+                    'notEllipsedTitle' => $itemTerm->items[0]->title,
+                    'value' => sizeof($itemTerm->items)
+                  );
+                }
+                $study_item->itemTerm = $termItems;
+              }
               $studies_id = [];
               foreach ($data->items as $item){
                 $studies_id[] = $item->key;
