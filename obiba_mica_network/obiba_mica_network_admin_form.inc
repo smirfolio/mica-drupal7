@@ -55,4 +55,30 @@ function _obiba_mica_network_settings_admin_network_content(&$form){
     '#description' => $info['description'],
   );
 
+  $form['content_display_settings']['network_form']['network_coverage'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Network graphics coverage settings'),
+    '#collapsible' => FALSE,
+  );
+
+  $info = variable_get_info('obiba_mica_network_show_classifications');
+  $form['content_display_settings']['network_form']['network_coverage']['obiba_mica_network_show_classifications'] = array(
+    '#type' => 'checkbox',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('obiba_mica_network_show_classifications'),
+    '#description' => $info['description'],
+  );
+
+  $info = variable_get_info('obiba_mica_network_studies_variable_classifications');
+  $form['content_display_settings']['network_form']['network_coverage']['obiba_mica_network_studies_variable_classifications'] = array(
+    '#type' => 'radios',
+    '#title' => $info['title'],
+    '#default_value' => variable_get_value('obiba_mica_network_studies_variable_classifications'),
+    '#options' => array(
+      "0" => t('Variables classification graphics'),
+      "1" => t('Studies classification graphics'),
+    ),
+    '#description' => $info['description'],
+  );
+
 }

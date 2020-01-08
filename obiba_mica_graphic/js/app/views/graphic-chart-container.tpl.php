@@ -1,24 +1,14 @@
 <div class="row">
   <div class="col-md-6">
     <div obiba-chart
-         field-transformer="chart.fieldTransformer"
-         chart-type="chart.type"
-         chart-aggregation-name="chart.aggregationName"
-         chart-entity-dto="chart.entityDto"
-         chart-options-name="chart.optionsName"
-         chart-options="chart.options"
-         chart-header="chart.header"
-         chart-title-graph="chart.title"
-         chart-select-graphic="true"></div>
+         chart-config = "chart"
+         chart-type="chart.chartType"
+         chart-aggregation-name="chart.chartAggregationName"></div>
   </div>
   <div class="col-md-6"
        obiba-table
-       chart-type="{{'Table-' + chart.type}}"
-       chart-aggregation-name="chart.aggregationName"
-       chart-entity-dto="chart.entityDto"
-       chart-options-name="chart.optionsName"
-       chart-header="chart.header"
-       chart-select-graphic="true"
-       chart-ordered="chart.ordered"
-       chart-not-ordered="chart.notOrdered"></div>
+       chart-config = "chart"
+       chart-type="{{'Table-' + chart.chartType}}"
+       chart-aggregation-name="chart.chartAggregationName">
+  </div>
 </div>

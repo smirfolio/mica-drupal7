@@ -11,5 +11,5 @@
 
 ?>
 
-<graphic-chart-bock-container-countries-iso type="geoChartOptions">
+<graphic-chart-bock-container-countries-iso type="geoChart">
 </graphic-chart-bock-container-countries-iso>

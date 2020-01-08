@@ -211,6 +211,19 @@ function obiba_mica_graphic_variable_info($options) {
     'default' => FALSE,
   );
 
+  $variable['graphics_horizontal_barChart_graphic_margins_left'] = array(
+    'title' => t('Coverage graphics margin left'),
+    'description' => t('Set the Coverage graphics margin left'),
+    'type' => 'string',
+    'default' => '500',
+  );
+
+  $variable['graphics_horizontal_barChart_truncated'] = array(
+    'title' => t('Number of characters to truncate'),
+    'description' => t('Set the number of characters to truncate term title'),
+    'type' => 'string',
+    'default' => '0',
+  );
 
   return $variable;
 }

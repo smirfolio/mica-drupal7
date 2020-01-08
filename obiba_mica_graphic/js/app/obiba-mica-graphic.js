@@ -17,10 +17,27 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
     GEO_CHARTS: 0,
     STUDY_DESIGN: 1,
     NUMBER_PARTICIPANTS: 2,
-    BIO_SAMPLES: 3
+    BIO_SAMPLES: 3,
+    START_YEAR: 4
   })
-  .controller('GraphicNetworkMainController', ['$scope', 'ChartType',
-    function ($scope, ChartType) {
+  .controller('GraphicNetworkMainController', ['$scope', 'ChartType', 'TaxonomyResource',
+    function ($scope, ChartType, TaxonomyResource) {
+      var studyTaxonomy = {};
+      if(!studyTaxonomy.vocabularies){
+        TaxonomyResource.get({
+          target: 'study',
+          taxonomy: 'Mica_study'
+        }).$promise.then(function(taxonomy){
+          studyTaxonomy.vocabularies = angular.copy(taxonomy.vocabularies);
+        });
+      }
+      $scope.getVocabulary =  function(vocabularyName){
+        if(studyTaxonomy.vocabularies){
+          return studyTaxonomy.vocabularies.find(function(vocabulary){
+            return vocabulary.name === vocabularyName;
+          });
+        }
+      };
       $scope.activeTab = ChartType.GEO_CHARTS;
     }])
     .factory('CoverageResource', ['$resource', function ($resource) {

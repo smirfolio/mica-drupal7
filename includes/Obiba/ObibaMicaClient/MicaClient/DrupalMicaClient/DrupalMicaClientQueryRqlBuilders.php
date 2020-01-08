@@ -33,11 +33,11 @@ class RqlQueryBuilder {
   }
 
   public static function study_query_charts_variables_template() {
-    return "variable(and(exists(%s.%s),in(Mica_variable.dceId,%s)))";
+    return "variable(and(exists(%s.%s),in(Mica_variable.dceId,(%s))))";
   }
 
   public static function network_query_charts_variables_template() {
-    return "variable(and(exists(%s.%s),in(Mica_variable.studyId,%s)))";
+    return "variable(and(exists(%s.%s),in(Mica_variable.studyId,(%s))))";
   }
 
   public static function dataset_query_charts_variables_template() {

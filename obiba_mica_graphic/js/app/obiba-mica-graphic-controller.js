@@ -11,87 +11,41 @@
   'use strict';
 
   mica.ObibaGraphicCharts
-    .controller('ChartController', ['$rootScope','$scope', 'GraphicChartsConfig', 'ChartType',
-      function ($rootScope, $scope, GraphicChartsConfig, ChartType) {
+    .controller('ChartController', ['$rootScope','$scope', 'GraphicChartsUtils', 'ChartType',
+      function ($rootScope, $scope, GraphicChartsUtils, ChartType) {
         /**
          * Helper to test whether to show the chart title or not
          *
          * @returns {boolean}
          */
         var canShowTitle = function() {
-          return $scope.type >= 0 && [ChartType.NUMBER_PARTICIPANTS, ChartType.BIO_SAMPLES, ChartType.STUDY_DESIGN].indexOf($scope.type) === -1;
+          return $scope.type >= 0 && [ChartType.NUMBER_PARTICIPANTS, ChartType.BIO_SAMPLES, ChartType.STUDY_DESIGN, ChartType.START_YEAR].indexOf($scope.type) === -1;
         };
+
+        $scope.chart = {};
         /**
          * Depending on the type of the chart, returns the corresponding options
          *
          * @param type
          */
+        var graphs = GraphicChartsUtils.getGraphConfig();
+
         function getChartOptions(type) {
-          var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
           switch (type) {
             case ChartType.GEO_CHARTS:
-              $scope.directive = {title:charOptions.geoChartOptions.title};
-              $scope.chart = {
-                type: 'GeoChart',
-                title: charOptions.geoChartOptions.title,
-                options: charOptions.geoChartOptions.options,
-                header: charOptions.geoChartOptions.header,
-                fieldTransformer: 'country',
-                aggregationName: 'populations-model-selectionCriteria-countriesIso',
-                optionsName: 'geoChartOptions',
-                entityDto: 'studyResultDto',
-                active: true,
-                ordered:true,
-                notOrdered: false
-              };
+              $scope.chart = graphs['populations-model-selectionCriteria-countriesIso'];
               break;
             case ChartType.STUDY_DESIGN:
-              $scope.directive = {title:charOptions.studiesDesigns.title};
-              $scope.chart = {
-                type: 'BarChart',
-                title: charOptions.studiesDesigns.title,
-                options: charOptions.studiesDesigns.options,
-                header: charOptions.studiesDesigns.header,
-                fieldTransformer: null,
-                aggregationName: 'model-methods-design',
-                optionsName: 'studiesDesigns',
-                entityDto: 'studyResultDto',
-                active: true,
-                ordered:true,
-                notOrdered: false
-              };
+              $scope.chart =  graphs['model-methods-design'];
               break;
             case ChartType.NUMBER_PARTICIPANTS:
-              $scope.directive = null;
-              $scope.chart = {
-                type: 'PieChart',
-                title: charOptions.numberParticipants.title,
-                options: charOptions.numberParticipants.options,
-                header: charOptions.numberParticipants.header,
-                fieldTransformer: null,
-                aggregationName: 'model-numberOfParticipants-participant-number-range',
-                optionsName: 'numberParticipants',
-                entityDto: 'studyResultDto',
-                active: true,
-                ordered:false,
-                notOrdered: true
-              };
+              $scope.chart =graphs['model-numberOfParticipants-participant-number-range'];
               break;
             case ChartType.BIO_SAMPLES:
-              $scope.directive = null;
-              $scope.chart = {
-                type: 'BarChart',
-                title: charOptions.biologicalSamples.title,
-                options: charOptions.biologicalSamples.options,
-                header: charOptions.biologicalSamples.header,
-                fieldTransformer: null,
-                aggregationName: 'populations-dataCollectionEvents-model-bioSamples',
-                optionsName: 'biologicalSamples',
-                entityDto: 'studyResultDto',
-                active: true,
-                ordered:true,
-                notOrdered: false
-              };
+              $scope.chart = graphs['populations-dataCollectionEvents-model-bioSamples'];
+              break;
+            case ChartType.START_YEAR:
+              $scope.chart = graphs['model-startYear-range'];
               break;
 
             default:
@@ -105,84 +59,37 @@
           getChartOptions(type);
         });
 
-    }]).controller('ChartBlockController', ['$rootScope','$scope', 'GraphicChartsConfig', 'ChartType',
-      function ($rootScope, $scope, GraphicChartsConfig) {
-
+    }])
+    .controller('ChartBlockController', ['$rootScope','$scope', 'GraphicChartsUtils', '$timeout',
+      function ($rootScope, $scope, GraphicChartsUtils, $timeout) {
         /**
          * Depending on the type of the chart, returns the corresponding options
-         *
-         * @param type
          */
+        $timeout(function(){
+          var graphs = GraphicChartsUtils.getGraphConfig();
 
-          var charOptions = GraphicChartsConfig.getOptions().ChartsOptions;
           var type = $scope.type;
         switch (type){
-          case 'geoChartOptions':
-            $scope.canShowTitle = true;
-            $scope.directive = {title:charOptions.geoChartOptions.title};
-            $scope.chart = {
-              type: 'GeoChart',
-              title: charOptions.geoChartOptions.title,
-              options: charOptions.geoChartOptions.options,
-              header: charOptions.geoChartOptions.header,
-              fieldTransformer: 'country',
-              aggregationName: 'populations-model-selectionCriteria-countriesIso',
-              optionsName: 'geoChartOptions',
-              entityDto: 'studyResultDto',
-              active: true,
-              ordered:true,
-              notOrdered: false
-            };
-            break;
+          case 'geoChart':
+            $scope.graphConfig = graphs['populations-model-selectionCriteria-countriesIso'];
+          break;
           case 'studiesDesigns':
-            $scope.directive = {title:charOptions.studiesDesigns.title};
-            $scope.chart = {
-              type: 'BarChart',
-              title: charOptions.studiesDesigns.title,
-              options: charOptions.studiesDesigns.options,
-              header: charOptions.studiesDesigns.header,
-              fieldTransformer: null,
-              aggregationName: 'model-methods-design',
-              optionsName: 'studiesDesigns',
-              entityDto: 'studyResultDto',
-              active: true,
-              ordered:true,
-              notOrdered: false
-            };
+            $scope.graphConfig =  graphs['model-methods-design'];
           break;
           case 'numberParticipants' :
-          $scope.directive = null;
-          $scope.chart = {
-            type: 'PieChart',
-            title: charOptions.numberParticipants.title,
-            options: charOptions.numberParticipants.options,
-            header: charOptions.numberParticipants.header,
-            fieldTransformer: null,
-            aggregationName: 'model-numberOfParticipants-participant-number-range',
-            optionsName: 'numberParticipants',
-            entityDto: 'studyResultDto',
-            active: true,
-            ordered:false,
-            notOrdered: true
-          };
-            break;
+            $scope.graphConfig =graphs['model-numberOfParticipants-participant-number-range'];
+          break;
           case 'biologicalSamples' :
-          $scope.directive = null;
-          $scope.chart = {
-            type: 'BarChart',
-            title: charOptions.biologicalSamples.title,
-            options: charOptions.biologicalSamples.options,
-            header: charOptions.biologicalSamples.header,
-            fieldTransformer: null,
-            aggregationName: 'populations-dataCollectionEvents-model-bioSamples',
-            optionsName: 'biologicalSamples',
-            entityDto: 'studyResultDto',
-            active: true,
-            ordered:true,
-            notOrdered: false
-          };
-        }
+            $scope.graphConfig = graphs['populations-dataCollectionEvents-model-bioSamples'];
+          break;
+          case 'startYear':
+            $scope.graphConfig = graphs['model-startYear-range'];
+          break;
 
+            default:
+              throw new Error('Invalid type: ' + type);
+          }
+        });
     }])
     .controller('VariableCoverageChartController', ['$scope', '$location', 'CoverageResource', 'D3ChartConfig', '$translate', function ($scope, $location, CoverageResource, D3ChartConfig, $translate) {
       function normalizeData(data) {
@@ -209,6 +116,19 @@
           var normalized = [];
           zeroValues.forEach(function (z) {
             var item = d.values.filter(function (value) { return value.title === z.title; }).pop();
+            if(item && (item.itemTerm && item.itemTerm.length > 0)){
+              item.itemTerm.forEach(function(itemTerm){
+                normalized.push({
+                  key: z.key,
+                  value: itemTerm ? itemTerm.value : 0,
+                  title: itemTerm.term,
+                  notEllipsedTitle: z.notEllipsedTitle,
+                  notEllipsedTermTitle: itemTerm.notEllipsedTitle,
+                  link: itemTerm ? itemTerm.link : null
+                });
+              });
+            }
+            else{
               normalized.push({
                 key: z.key,
                 value: item ? item.value : 0,
@@ -216,6 +136,7 @@
                 notEllipsedTitle: z.notEllipsedTitle,
                 link: item ? item.link : null
               });
+            }
           });
 
           d.values = normalized;
@@ -240,14 +161,39 @@
         return data;
       }
 
-      function getLabelMargin(data) {
-        return  d3.max(data, function(d) {
+      function getLabelMargin(data, horizontalBarChar) {
+        if(horizontalBarChar){
+          var maxVal = 0;
+          var text = document.createElement("span");
+          // Technique to get Text with in svg pattern
+          document.body.appendChild(text);
+          text.style.font = "arial";
+          text.style.fontSize = 12 + "px";
+          text.style.height = 'auto';
+          text.style.width = 'auto';
+          text.style.position = 'absolute';
+          text.style.whiteSpace = 'no-wrap';
+
+          data.forEach(function(dataEntry){
+            var currentValMax;
+            currentValMax =  d3.max(dataEntry.itemTerm, function(d) {
+              text.textContent = d.term;
+              return Math.ceil(text.clientWidth);
+            });
+            maxVal = currentValMax > maxVal ? currentValMax : maxVal;
+          });
+          return maxVal;
+        }
+        else{
+          return  d3.max(data, function(d) {
             return Math.ceil(d.title.length);
-        });
+          });
+        }
       }
 
       function processConfig(config, type, data, colors, showLegend, renderOptions) {
-        var labelMargin = getLabelMargin(data);
+        var horizontalBarChar = (renderOptions.graphicChartType === "multiBarHorizontalChart") ? true : false;
+        var labelMargin = getLabelMargin(data, horizontalBarChar);
         config.options.chart.margin = {
           left: 200,
           top:50,
@@ -287,12 +233,16 @@
               if (series === null) { return; }
 
               var s = '',
+                notEllipsedTermTitle = '',
                 bottom = '<span>' + series.key + ': <strong>' + series.value + '</strong></span>';
+            if(o.data.notEllipsedTermTitle){
+              notEllipsedTermTitle = '<strong>' + o.data.notEllipsedTermTitle + '</strong><br/>';
+            }
               if (o.value) {
                 s = '<strong>' + o.data.notEllipsedTitle + '</strong><br/>';
               }
 
-              return '<div class="chart-tooltip">' + s + bottom + '</div>';
+              return '<div class="chart-tooltip">' + s + notEllipsedTermTitle + bottom + '</div>';
             };
           // Configure when the x- labels have to be wrap
           if (renderOptions.nbrStack > 3 && renderOptions.nbrStack <= renderOptions.numberBars) {
@@ -301,15 +251,28 @@
           // configure when the x-labels have to be rotated withe margin in graphics
           if (renderOptions.nbrStack > renderOptions.numberBars) {
             config.options.chart.rotateLabels = renderOptions.rotateLabels;
-            config.options.chart.margin.left = renderOptions.graphicMargins.left +labelMargin;
+            config.options.chart.margin.left = renderOptions.graphicMargins.left + labelMargin;
             config.options.chart.margin.bottom = renderOptions.graphicMargins.bottom + labelMargin;
           } else {
             config.options.chart.staggerLabels = true;
           }
           config.options.chart.showLegend = false;
+
+          config.options.chart.margin.left = renderOptions.horizontalBarCharMarginLeft ?
+            renderOptions.horizontalBarCharMarginLeft + labelMargin :
+            config.options.chart.margin.left;
         }
         config.options.chart.color = colors;
         config.options.chart.height = 500;
+        if(renderOptions.graphicHeight){
+          config.options.chart.height = renderOptions.graphicHeight;
+        }
+        if(renderOptions.graphicChartType){
+          config.options.chart.type = renderOptions.graphicChartType;
+        }
+        if(renderOptions.graphicMargin){
+          config.options.chart.margin = renderOptions.graphicMargin;
+        }
         config.options.chart.autoMargins = false;
 
       }
