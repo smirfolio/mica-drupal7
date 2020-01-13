@@ -196,9 +196,9 @@
         var labelMargin = getLabelMargin(data, horizontalBarChar);
         config.options.chart.margin = {
           left: 200,
-          top:50,
+          top:20,
           right:50,
-          bottom:100
+          bottom:50
         };
         if (type === 'variable') {
           if (!showLegend) {
@@ -249,7 +249,7 @@
             config.options.chart.wrapLabels = true;
           }
           // configure when the x-labels have to be rotated withe margin in graphics
-          if (renderOptions.nbrStack > renderOptions.numberBars) {
+          if ((renderOptions.nbrStack > renderOptions.numberBars) && (renderOptions.graphicChartType!=='multiBarHorizontalChart')) {
             config.options.chart.rotateLabels = renderOptions.rotateLabels;
             config.options.chart.margin.left = renderOptions.graphicMargins.left + labelMargin;
             config.options.chart.margin.bottom = renderOptions.graphicMargins.bottom + labelMargin;
@@ -265,7 +265,7 @@
         config.options.chart.color = colors;
         config.options.chart.height = 500;
         if(renderOptions.graphicHeight){
-          config.options.chart.height = renderOptions.graphicHeight;
+          config.options.chart.height = renderOptions.graphicHeight + config.options.chart.margin.bottom + config.options.chart.margin.top;
         }
         if(renderOptions.graphicChartType){
           config.options.chart.type = renderOptions.graphicChartType;

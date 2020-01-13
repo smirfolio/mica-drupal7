@@ -40,6 +40,10 @@ class RqlQueryBuilder {
     return "variable(and(exists(%s.%s),in(Mica_variable.studyId,(%s))))";
   }
 
+  public static function network_query_charts_studies_template($network_id) {
+    return "variable(in(%s,%s)),network(in(Mica_network.id,$network_id))";
+  }
+
   public static function dataset_query_charts_variables_template() {
     return "variable(and(exists(%s.%s),in(Mica_variable.datasetId,%s)))";
   }
