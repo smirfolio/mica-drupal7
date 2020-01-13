@@ -440,7 +440,11 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
             $bar_chart_number  = sizeof($filtered_zero_chart_data);
             $chart_formatted->renderOptions->nbrStack = $bar_chart_number;
             if($entity_graph == 'network' && !empty($includeTerms)){
-                $chart_formatted->renderOptions->graphicHeight = 1500;
+              $countBar = array_reduce($chart->data, function($total, $data){
+                $total += sizeof($data->termItems);
+                return $total;
+              });
+                $chart_formatted->renderOptions->graphicHeight = $countBar * 20;
                 $chart_formatted->renderOptions->graphicChartType = 'multiBarHorizontalChart';
               obiba_mica_graphics_nvd3_build_network_bucket($chart_formatted,
                 $filtered_zero_chart_data,
@@ -507,7 +511,13 @@ function obiba_mica_graphics_nvd3_build_network_bucket(&$chart_formatted,
                       truncate_utf8($itemTerm->items[0]->title, $horizontal_barChar_truncated, FALSE, TRUE) :
                       $itemTerm->items[0]->title,
                     'notEllipsedTitle' => $itemTerm->items[0]->title,
-                    'value' => sizeof($itemTerm->items)
+                    'value' => sizeof($itemTerm->items),
+                    'link' =>
+                      $base_path .
+                      MicaClientPathProvider::REPOSITORY_SEARCH .
+                      '#/search?query=' .
+                      sprintf($search_query_template, $chart->taxonomy . '.' . $data->vocabulary, $itemTerm->term) .
+                      '&display=list&type=studies'
                   );
                 }
                 $study_item->itemTerm = $termItems;
