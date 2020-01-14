@@ -201,7 +201,7 @@
     <section id="coverage" ng-if="d3Configs && d3Configs.length">
       <h2><?php print $localize->getTranslation('variable-classifications') ?></h2>
 
-      <div ng-repeat="d3Config in d3Configs">
+      <div ng-repeat="d3Config in d3Configs" style="margin-top: 50px">
         <obiba-nv-chart chart-config="d3Config"></obiba-nv-chart>
       </div>
     </section>

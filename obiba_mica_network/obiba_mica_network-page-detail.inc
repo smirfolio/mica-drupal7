@@ -190,8 +190,9 @@ function obiba_mica_network_ng_coverage($network_id) {
   if (!empty($network_dto) && !empty($network_dto->studyIds)) {
     $study_ids = $network_dto->studyIds;
     $query = DrupalMicaClient\RqlQueryBuilder::network_query_charts($study_ids);
+    $query_template = $includeTerms ? DrupalMicaClient\RqlQueryBuilder::network_query_charts_studies_template($network_id) : DrupalMicaClient\RqlQueryBuilder::network_query_charts_variables_template();
     return obiba_mica_graphics_nvd3_query_charts($query,
-      DrupalMicaClient\RqlQueryBuilder::network_query_charts_variables_template(),
+      $query_template,
       $study_ids,
       $localize->getTranslation('studies'),
       'network', $includeTerms);
