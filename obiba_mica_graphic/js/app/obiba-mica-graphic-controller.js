@@ -210,9 +210,9 @@
           config.options.chart.legend = {
             margin : {
               top: 0,
-              right:0,
+              right:15,
               bottom: 0,
-              left: 0
+              left: 15
             }
           };
           config.options.chart.multibar = false;
