@@ -444,7 +444,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
                 $total += sizeof($data->termItems);
                 return $total;
               });
-                $chart_formatted->renderOptions->graphicHeight = $countBar * 20;
+                $chart_formatted->renderOptions->graphicHeight = $countBar * 25;
                 $chart_formatted->renderOptions->graphicChartType = 'multiBarHorizontalChart';
               obiba_mica_graphics_nvd3_build_network_bucket($chart_formatted,
                 $filtered_zero_chart_data,
