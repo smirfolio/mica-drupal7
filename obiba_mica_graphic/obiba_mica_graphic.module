@@ -380,7 +380,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
     $horizontal_barChar_truncated = intval(variable_get_value('graphics_horizontal_barChart_truncated'));
     $response = new stdClass();
     $response->charts = array();
-    $taxonomies_config = array_values(obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures'));
+    $taxonomies_config = obiba_mica_commons_taxonomies_filter_array('mica_taxonomy_figures');
     $coverages = obiba_mica_graphics_do_coverage_query($query, $includeTerms);
     $base_path = !empty($GLOBALS['conf']['clean_url']) ? base_path() : base_path().'?q=';
 
@@ -408,7 +408,7 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
           $horizontal_barChar_margin_left,
           $horizontal_barChar_truncated) {
 
-        if (array_search($chart->taxonomy, $taxonomies_config) !== false) {
+        if ($chart->taxonomy === $taxonomies_config['taxonomy']) {
           $chart_formatted = new stdClass();
           $chart_formatted->title = $chart->title;
           $chart_formatted->subtitle = $chart->subtitle;
@@ -441,11 +441,14 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
             $chart_formatted->renderOptions->nbrStack = $bar_chart_number;
             if($entity_graph == 'network' && !empty($includeTerms)){
               $countBar = array_reduce($chart->data, function($total, $data){
-                $total += sizeof($data->termItems);
+                if(!empty($data->termItems)){
+                  $total += sizeof($data->termItems);
+                }
                 return $total;
               });
                 $chart_formatted->renderOptions->graphicHeight = $countBar * 25;
                 $chart_formatted->renderOptions->graphicChartType = 'multiBarHorizontalChart';
+              $chart_formatted->subtitle = $taxonomies_config['graphic_title'];
               obiba_mica_graphics_nvd3_build_network_bucket($chart_formatted,
                 $filtered_zero_chart_data,
                 $search_query_template,
@@ -475,8 +478,8 @@ function obiba_mica_graphics_nvd3_query_charts($query, $search_query_template, $
       });
 
       usort($response->charts, function($a, $b) use($taxonomies_config) {
-        $aIndex = array_search($a->taxonomy, $taxonomies_config);
-        $bIndex = array_search($b->taxonomy, $taxonomies_config);
+        $aIndex = $a->taxonomy === $taxonomies_config['taxonomy'];
+        $bIndex = $b->taxonomy === $taxonomies_config['taxonomy'];
         return $aIndex - $bIndex;
       });
 

@@ -315,6 +315,11 @@ function _obiba_mica_settings_search_save_figures_order(&$form, &$form_state) {
  */
 function _obiba_mica_settings_search_submit_draggable(&$form, &$form_state, $variable) {
   $taxonomy_form = $form_state['values'][$variable];
+  foreach ($taxonomy_form as $area => $field){
+    if(!empty($form_state['input'][$variable][$area]['graphic_title'])){
+      $taxonomy_form[$area]['graphic_title'] = $form_state['input'][$variable][$area]['graphic_title'];
+    }
+  }
   uasort($taxonomy_form, '_obiba_mica_array_sort_variable');
   variable_set($variable, $taxonomy_form);
 }
@@ -764,31 +769,66 @@ function _obiba_mica_admin_get_draggable_form($draggable_form, $draggable_items,
   $i = 0;
   $default_value = variable_get_value($variable_key);
   foreach ($draggable_items as $key_taxonomy => $summary) {
-    $draggable_form[$summary->name] =
-      array(
-        'value' => array(
-          '#type' => 'hidden',
-          '#title_display' => 'invisible',
-          '#default_value' => $summary->name,
-        ),
-        'value_name' => array(
-          '#markup' => $summary->name,
-        ),
-        'description' => array(
-          '#markup' => check_plain(obiba_mica_commons_get_localized_field($summary, 'title')),
-        ),
-        'weight' => array(
-          '#type' => 'weight',
-          '#default_value' => !empty($default_value[$summary->name]) ? $default_value[$summary->name]['weight'] : 0,
-          '#title_display' => 'invisible',
-          '#attributes' => array('class' => array('taxonomies-item-weight')),
-        ),
-        'enable' => array(
-          '#type' => 'checkbox',
-          '#default_value' => !empty($default_value[$summary->name]) ? $default_value[$summary->name]['enable'] : 0,
-          '#title_display' => 'invisible',
-        )
-      );
+    if($variable_key == 'mica_taxonomy_figures'){
+      $draggable_form[$summary->name] =
+        array(
+          'value' => array(
+            '#type' => 'hidden',
+            '#title_display' => 'invisible',
+            '#default_value' => $summary->name,
+          ),
+          'value_name' => array(
+            '#markup' => $summary->name,
+          ),
+          'description' => array(
+            '#markup' => check_plain(obiba_mica_commons_get_localized_field($summary, 'title')),
+          ),
+          'graphic_title' => array(
+            '#type' => 'textfield',
+            '#value' => !empty($default_value[$summary->name]['graphic_title']) ? $default_value[$summary->name]['graphic_title'] : check_plain(obiba_mica_commons_get_localized_field($summary, 'description')),
+            '#markup' => check_plain(obiba_mica_commons_get_localized_field($summary, 'description')),
+            '#title_display' => 'invisible',
+          ),
+          'weight' => array(
+            '#type' => 'weight',
+            '#default_value' => !empty($default_value[$summary->name]) ? $default_value[$summary->name]['weight'] : 0,
+            '#title_display' => 'invisible',
+            '#attributes' => array('class' => array('taxonomies-item-weight')),
+          ),
+          'enable' => array(
+            '#type' => 'checkbox',
+            '#default_value' => !empty($default_value[$summary->name]) ? $default_value[$summary->name]['enable'] : 0,
+            '#title_display' => 'invisible',
+          )
+        );
+    }
+    else{
+      $draggable_form[$summary->name] =
+        array(
+          'value' => array(
+            '#type' => 'hidden',
+            '#title_display' => 'invisible',
+            '#default_value' => $summary->name,
+          ),
+          'value_name' => array(
+            '#markup' => $summary->name,
+          ),
+          'description' => array(
+            '#markup' => check_plain(obiba_mica_commons_get_localized_field($summary, 'title')),
+          ),
+          'weight' => array(
+            '#type' => 'weight',
+            '#default_value' => !empty($default_value[$summary->name]) ? $default_value[$summary->name]['weight'] : 0,
+            '#title_display' => 'invisible',
+            '#attributes' => array('class' => array('taxonomies-item-weight')),
+          ),
+          'enable' => array(
+            '#type' => 'checkbox',
+            '#default_value' => !empty($default_value[$summary->name]) ? $default_value[$summary->name]['enable'] : 0,
+            '#title_display' => 'invisible',
+          )
+        );
+    }
     $i++;
   }
   uasort($draggable_form, '_obiba_mica_array_sort');

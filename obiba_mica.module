@@ -315,21 +315,34 @@ function theme_obiba_mica_drag_components($vars) {
     '',
     t('Value'),
     t('Description'),
+    t('Graphic Title'),
     t('Weight'),
     t('Enable/Disable'),
   );
+
+    if($element['#id'] !== 'edit-mica-taxonomy-figures'){
+      unset($header[3]);
+    }
+
   $rows = array();
   foreach (element_children($element) as $field) {
-    $rows[] = array(
+    $row = array(
       'data' => array(
         '',
         drupal_render($element[$field]['value_name']),
         drupal_render($element[$field]['description']),
+        drupal_render($element[$field]['graphic_title']),
         drupal_render($element[$field]['weight']),
         drupal_render($element[$field]['enable']),
       ),
       'class' => array('draggable'),
     );
+
+    if($element['#id'] !== 'edit-mica-taxonomy-figures'){
+      unset($row['data'][3]);
+    }
+
+    $rows[] = $row;
   }
 
   $table_id = $element['#id'];
