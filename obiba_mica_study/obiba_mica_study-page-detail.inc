@@ -26,8 +26,15 @@ use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
 
 function obiba_mica_study_ng_coverage($type_study, $study_id) {
   $coverages = json_encode(new stdClass());
-  if (!variable_get_value('study_show_coverage_graphs')) {
-    return $coverages;
+  if($type_study === 'individual-study'){
+    if (!variable_get_value('study_show_coverage_graphs')) {
+      return $coverages;
+    }
+  }
+  else{
+    if (!variable_get_value('harmo_study_show_coverage_graphs')) {
+      return $coverages;
+    }
   }
 
   $query = DrupalMicaClient\RqlQueryBuilder::study_query_charts($study_id);
