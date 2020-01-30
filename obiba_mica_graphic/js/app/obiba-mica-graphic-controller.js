@@ -168,7 +168,7 @@
           // Technique to get Text with in svg pattern
           document.body.appendChild(text);
           text.style.font = "arial";
-          text.style.fontSize = 12 + "px";
+          text.style.fontSize = 14 + "px";
           text.style.height = 'auto';
           text.style.width = 'auto';
           text.style.position = 'absolute';
@@ -249,18 +249,22 @@
             config.options.chart.wrapLabels = true;
           }
           // configure when the x-labels have to be rotated withe margin in graphics
+          if(renderOptions.graphicMargins){
+            config.options.chart.margin = renderOptions.graphicMargins;
+          }
           if ((renderOptions.nbrStack > renderOptions.numberBars) && (renderOptions.graphicChartType!=='multiBarHorizontalChart')) {
             config.options.chart.rotateLabels = renderOptions.rotateLabels;
             config.options.chart.margin.left = renderOptions.graphicMargins.left + labelMargin;
             config.options.chart.margin.bottom = renderOptions.graphicMargins.bottom + labelMargin;
           } else {
-            config.options.chart.staggerLabels = true;
+            config.options.chart.margin.left = renderOptions.horizontalBarCharMarginLeft + labelMargin;
+            if(data.reduce((max, b) => Math.max(max, b.value), data[0].value) < 5){
+              config.options.chart.yAxis.ticks = data[0].value;
+            }
           }
+          config.options.chart.staggerLabels = true;
           config.options.chart.showLegend = false;
 
-          config.options.chart.margin.left = renderOptions.horizontalBarCharMarginLeft ?
-            renderOptions.horizontalBarCharMarginLeft + labelMargin :
-            config.options.chart.margin.left;
         }
         config.options.chart.color = colors;
         config.options.chart.height = 500;
@@ -270,9 +274,7 @@
         if(renderOptions.graphicChartType){
           config.options.chart.type = renderOptions.graphicChartType;
         }
-        if(renderOptions.graphicMargin){
-          config.options.chart.margin = renderOptions.graphicMargin;
-        }
+
         config.options.chart.autoMargins = false;
 
       }
