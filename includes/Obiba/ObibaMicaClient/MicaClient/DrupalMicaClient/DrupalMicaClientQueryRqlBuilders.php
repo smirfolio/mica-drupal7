@@ -20,7 +20,7 @@ class RqlQueryBuilder {
 
   public static function network_query_charts($studyIds) {
     return self::createChartsQuery(
-      "variable(in(studyId,(%s)),sort(name),aggregate(%s,bucket(studyId))),locale(%s)",
+      "variable(in(studyId,(%s)),sort(name),aggregate(%s,bucket(studyId))),study(in(Mica_study.className,Study)),locale(%s)",
       $studyIds
     );
   }
@@ -41,7 +41,7 @@ class RqlQueryBuilder {
   }
 
   public static function network_query_charts_studies_template($network_id) {
-    return "variable(in(%s,%s)),network(in(Mica_network.id,$network_id))";
+    return "variable(in(%s,%s)),network(in(Mica_network.id,$network_id)),study(in(Mica_study.className,Study))";
   }
 
   public static function dataset_query_charts_variables_template() {
