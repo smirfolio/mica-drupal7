@@ -290,6 +290,12 @@ function obiba_mica_graphic_charts_options_settings($aggregation_option, $custom
  * @return array.
  */
 function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
+  $graphic_override_themes = obiba_mica_commons_enabled_theme(
+      array(
+      'graphicTableDirectiveTemplate' => 'graphic-table-directive-template',
+    )
+  );
+
   $colors_options = obiba_mica_graphic_charts_colors_options_settings();
   $charts_option = array_merge(
     obiba_mica_graphic_charts_options_settings('geoChart',$colors_options),
@@ -306,8 +312,11 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
   }
   else {
     $Graphic_charts_options = array(
-      'ChartsOptions' => !empty($charts_option) ? $charts_option : NULL
+      'ChartsOptions' => !empty($charts_option) ? $charts_option : NULL,
     );
+  }
+  if(!empty($graphic_override_themes)){
+    $Graphic_charts_options['overrideTheme'] = $graphic_override_themes;
   }
   drupal_add_js(array(
     'GraphicChartsOptions' => $Graphic_charts_options
