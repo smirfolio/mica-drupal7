@@ -19,7 +19,13 @@ mica.ObibaGraphicCharts = angular.module('mica.ObibaGraphicCharts', [
     NUMBER_PARTICIPANTS: 2,
     BIO_SAMPLES: 3,
     START_YEAR: 4
-  })
+  }).config(['ngObibaMicaGraphicTemplateUrlProvider', function (ngObibaMicaGraphicTemplateUrlProvider) {
+    if(Drupal.settings.GraphicChartsOptions && Drupal.settings.GraphicChartsOptions.overrideTheme){
+      angular.forEach(Drupal.settings.GraphicChartsOptions.overrideTheme, function (template, keyTemplate) {
+        ngObibaMicaGraphicTemplateUrlProvider.setTemplateUrl(keyTemplate, Drupal.settings.basePath + 'obiba_mica_app_angular_view_template/' + template);
+      })
+    }
+  }])
   .controller('GraphicNetworkMainController', ['$scope', 'ChartType', 'TaxonomyResource',
     function ($scope, ChartType, TaxonomyResource) {
       var studyTaxonomy = {};
