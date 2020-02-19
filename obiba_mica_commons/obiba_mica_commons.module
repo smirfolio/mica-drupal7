@@ -830,9 +830,9 @@ function obiba_mica_commons_taxonomies_filter_array($key_variables) {
   $mica_taxonomies = array();
   foreach ($mica_taxonomy_figures as $taxonomy) {
     if ($taxonomy['enable'] === 1) {
-      $mica_taxonomies['taxonomy'] = $taxonomy['value'];
+      $mica_taxonomies[$taxonomy['value']]['taxonomy'] = $taxonomy['value'];
       if(!empty($taxonomy['graphic_title'])){
-        $mica_taxonomies['graphic_title'] = $taxonomy['graphic_title'];
+        $mica_taxonomies[$taxonomy['value']]['graphic_title'] = $taxonomy['graphic_title'];
       }
     }
   }

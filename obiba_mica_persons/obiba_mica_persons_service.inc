@@ -23,12 +23,12 @@
 function obiba_mica_persons_list($entities_id) {
   $entities_id = str_replace('+', '%2B', $entities_id);
   $entities_id = json_decode($entities_id);
-  $query_person = empty($entities_id->studiesId) ? '' : "studyMemberships.parentId:(" . implode('+', $entities_id->studiesId) . ")";
+  $query_person = empty($entities_id->studiesId) ? '' : "studyMemberships.parentId:(" . implode('+OR+', $entities_id->studiesId) . ")";
   if (!empty($entities_id->networksId)) {
     if (!empty($query_person)) {
       $query_person .= '+OR+';
     }
-    $query_person .= "networkMemberships.parentId:(" . implode('+', $entities_id->networksId) . ")";
+    $query_person .= "networkMemberships.parentId:(" . implode('+OR+', $entities_id->networksId) . ")";
   }
   $persons_resources = new DrupalMicaPersonsResource();
   $persons = $persons_resources->search($query_person);
@@ -60,12 +60,12 @@ function obiba_mica_persons_list($entities_id) {
 function obiba_mica_persons_list_csv_download($entities_id) {
   $entities_id = str_replace('+', '%2B', $entities_id);
   $entities_id = json_decode($entities_id);
-  $query_person = empty($entities_id->studiesId) ? '' : "studyMemberships.parentId:(" . implode('+', $entities_id->studiesId) . ")";
+  $query_person = empty($entities_id->studiesId) ? '' : "studyMemberships.parentId:(" . implode('+OR+', $entities_id->studiesId) . ")";
   if (!empty($entities_id->networksId)) {
     if (!empty($query_person)) {
       $query_person .= '+OR+';
     }
-    $query_person .= "networkMemberships.parentId:(" . implode('+', $entities_id->networksId) . ")";
+    $query_person .= "networkMemberships.parentId:(" . implode('+OR+', $entities_id->networksId) . ")";
   }
   $persons_resources = new DrupalMicaPersonsResource();
   $response = $persons_resources->download($query_person);
