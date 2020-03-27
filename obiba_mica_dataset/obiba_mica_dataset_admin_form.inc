@@ -10,6 +10,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Obiba\ObibaMicaClient\MicaClient\DrupalMicaClient as DrupalMicaClient;
+
 function obiba_mica_dataset_admin_settings(&$form){
   _obiba_mica_dataset_settings_dataset_content($form);
   _obiba_mica_dataset_settings_variable_content($form);
@@ -22,7 +24,6 @@ function obiba_mica_dataset_admin_settings(&$form){
  *   The admin setting form.
  */
 function _obiba_mica_dataset_settings_dataset_content(&$form) {
-  $bootstrap_theme_path = base_path() . drupal_get_path('theme', 'obiba_bootstrap');
   $form['content_display_settings']['dataset_form'] = array(
     '#type' => 'fieldset',
     '#title' => t('Dataset Content'),
@@ -79,60 +80,168 @@ function _obiba_mica_dataset_settings_dataset_content(&$form) {
     '#default_value' => variable_get_value('obiba_mica_dataset_studies_table_show_variable'),
     '#description' => $info['description'],
   );
+    _obiba_mica_dataset_settings_harmonization_status($form);
+}
 
-  $form['content_display_settings']['dataset_form']['harmonization_status'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Harmonization status display'),
-    '#collapsible' => FALSE,
-  );
+/**
+ * Harmonisation status table
+ */
+function _obiba_mica_dataset_settings_harmonization_status(&$form){
+    $form['content_display_settings']['dataset_form']['harmonization_status_settings']['obiba_mica_dataset_harmonization_status'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Harmonizations status table settings'),
+        '#description' => t('Manage different variable harmonization status'),
+        '#collapsible' => FALSE,
+    );
 
-  $info = variable_get_info('dataset_harmonization_impossible_icon');
-  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_impossible_icon'] = array(
-    '#type' => 'radios',
-    '#title' => $info['title'],
-    '#default_value' => variable_get_value('dataset_harmonization_impossible_icon'),
-    '#options' => array(
-      ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON => '<img src="' . $bootstrap_theme_path . '/glyphicon-remove.png" > Remove',
-      ObibaDatasetConstants::INCOMPLETE_HARMO_ICON => '<img src="' . $bootstrap_theme_path . '/glyphicon-minus.png" > Minus',
-    ),
-    '#description' => $info['description'],
-  );
 
-  $info = variable_get_info('dataset_harmonization_impossible_label');
-  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_impossible_label'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#maxlength' => 255,
-    '#default_value' => variable_get_value('dataset_harmonization_impossible_label'),
-    '#description' => $info['description'],
-  );
+    $harmonization_status_terms = _obiba_mica_dataset_get_harmonization_status('');
+    if (!empty($harmonization_status_terms)) {
+        // Draggable form widget
+        $info = variable_get_info('obiba_mica_dataset_harmonization_status');
+        $form_mica_harmonization_status_order = array(
+            '#prefix' => _obiba_mica_dataset_harmonization_status_title_description_draggable_field($info['title'], $info['description']),
+            '#tree' => TRUE,
+            '#theme' => 'obiba_mica_dataset_harmonization_status_drag_components',
+            '#title' => $info['title'],
+            '#required' => FALSE,
+            '#description' => $info['description'],
+        );
+        $wrapped_harmonization_status_draggable_form = _obiba_mica_dataset_get_harmonization_status_draggable_form($form_mica_harmonization_status_order, $harmonization_status_terms, 'obiba_mica_dataset_harmonization_status');
+        $form['content_display_settings']['dataset_form']['harmonization_status_settings']['obiba_mica_dataset_harmonization_status'] = array_merge($form_mica_harmonization_status_order, $wrapped_harmonization_status_draggable_form);
+        $form['content_display_settings']['dataset_form']['harmonization_status_settings']['harmonization_status_settings_action_submit'] = array(
+            '#type' => 'submit',
+            '#value' => t('Save Harmonization Status settings'),
+            '#current_value' => 'obiba_mica_dataset_harmonization_status',
+            '#submit' => array('_obiba_mica_dataset_settings_save_harmonization_status_order'),
+        );
+    }
+}
 
-  $info = variable_get_info('dataset_harmonization_complete_description');
-  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_complete_description'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#maxlength' => 255,
-    '#default_value' => variable_get_value('dataset_harmonization_complete_description'),
-    '#description' => $info['description'],
-  );
+/**
+ * Draggable widget form implementation.
+ *
+ * @param $draggable_form
+ * @param $draggable_items
+ * @param $variable_key
+ * @return mixed
+ */
+function _obiba_mica_dataset_get_harmonization_status_draggable_form($draggable_form, $draggable_items, $variable_key) {
+    $default_value = variable_get_value($variable_key);
+    foreach ($draggable_items as $key_harmonization_status => $harmonization_status) {
+            $draggable_form[$harmonization_status->name] =
+                array(
+                    'value' => array(
+                        '#type' => 'hidden',
+                        '#title_display' => 'invisible',
+                        '#default_value' => $harmonization_status->name,
+                    ),
+                    'title' => array(
+                        '#type' => 'textfield',
+                        '#value' => !empty($default_value[$harmonization_status->name]['title']) ? $default_value[$harmonization_status->name]['title'] : check_plain(obiba_mica_commons_get_localized_field($harmonization_status, 'title')),
+                        '#markup' => check_plain(obiba_mica_commons_get_localized_field($harmonization_status, 'title')),
+                        '#title_display' => 'invisible',
+                    ),
+                    'description' => array(
+                        '#type' => 'textfield',
+                        '#value' => !empty($default_value[$harmonization_status->name]['description']) ? filter_xss($default_value[$harmonization_status->name]['description'], obiba_mica_commons_allowed_filter_xss_tags()) : check_plain(obiba_mica_commons_get_localized_field($harmonization_status, 'description')),
+                        '#title_display' => 'invisible',
+                        '#maxlength' => 1024,
+                    ),
+                    'icon' => array(
+                        '#type' => 'textfield',
+                        '#value' => !empty($default_value[$harmonization_status->name]['icon']) ? filter_xss($default_value[$harmonization_status->name]['icon'], obiba_mica_commons_allowed_filter_xss_tags()) : '',
+                        '#title_display' => 'invisible',
+                    ),
+                    'weight' => array(
+                        '#type' => 'weight',
+                        '#default_value' => !empty($default_value[$harmonization_status->name]) ? $default_value[$harmonization_status->name]['weight'] : 0,
+                        '#title_display' => 'invisible',
+                        '#attributes' => array('class' => array('dataset-harmonization-status-weight')),
+                    ),
+                );
+        }
+    uasort($draggable_form, '_obiba_mica_dataset_array_sort');
+    return $draggable_form;
+}
 
-  $info = variable_get_info('dataset_harmonization_impossible_description');
-  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_impossible_description'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#maxlength' => 255,
-    '#default_value' => variable_get_value('dataset_harmonization_impossible_description'),
-    '#description' => $info['description'],
-  );
+/**
+ * Construct the title and description of a draggable table field
+ *
+ * @param $title
+ * @param $description
+ * @return string
+ */
+function _obiba_mica_dataset_harmonization_status_title_description_draggable_field($title, $description) {
+    return <<<EOT
+    <label class="control-label">$title</label>
+    <div class="help-block">$description</div>
+EOT;
+}
 
-  $info = variable_get_info('dataset_harmonization_undetermined_description');
-  $form['content_display_settings']['dataset_form']['harmonization_status']['dataset_harmonization_undetermined_description'] = array(
-    '#type' => 'textfield',
-    '#title' => $info['title'],
-    '#maxlength' => 255,
-    '#default_value' => variable_get_value('dataset_harmonization_undetermined_description'),
-    '#description' => $info['description'],
-  );
+
+/**
+ * Resource to get the taxonomies from mica server.
+ * @return object
+ */
+function _obiba_mica_dataset_get_harmonization_status($resource) {
+    $service = new DrupalMicaClient\DrupalMicaClientTaxonomyResource();
+    $taxonomies = $service->getTaxonomySummaries($resource);
+    if (!empty($taxonomies->summaries)) {
+        return $taxonomies->summaries;
+    }
+    /*
+    Get status from taxonomies
+    */
+    return $taxonomies[2]->vocabularies[0]->terms;
+}
+
+function _obiba_mica_dataset_settings_save_harmonization_status_order(&$form, &$form_state) {
+    _obiba_mica_dataset_settings_submit_harmonization_status_draggable($form, $form_state, 'obiba_mica_dataset_harmonization_status');
+}
+
+/**
+ * Action when saving the enabled taxonomies order the default save of the
+ * form can't save the status of this widget.
+ *
+ * @param $form
+ * @param $form_state
+ */
+function _obiba_mica_dataset_settings_submit_harmonization_status_draggable(&$form, &$form_state, $variable) {
+    $harmonization_status_form = $form_state['input'][$variable];
+    uasort($harmonization_status_form, '_obiba_mica_dataset_sort_variable');
+    variable_set($variable, $harmonization_status_form);
+}
+
+/**
+ * Custom array sort function by weight to save the mica_taxonomy_figures array
+ * items in correct order.
+ *
+ * taxonomies in the admin form.
+ * @param $a
+ * @param $b
+ * @return int
+ */
+function _obiba_mica_dataset_sort_variable($a, $b) {
+    if (isset($a['weight']) && isset($b['weight'])) {
+        return $a['weight'] < $b['weight'] ? -1 : 1;
+    }
+    return 0;
+}
+
+/**
+ * Custom array sort function by weight to display the taxonomies widget items
+ * in correct order.
+ *
+ * @param $a
+ * @param $b
+ * @return int
+ */
+function _obiba_mica_dataset_array_sort($a, $b) {
+    if (isset($a['weight']['#default_value']) && isset($b['weight']['#default_value'])) {
+        return $a['weight']['#default_value'] < $b['weight']['#default_value'] ? -1 : 1;
+    }
+    return 0;
 }
 
 /**

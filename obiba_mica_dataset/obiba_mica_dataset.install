@@ -43,3 +43,16 @@ function obiba_mica_dataset_update_7500(){
   obiba_mica_commons_update_page_title( variable_get('harmo_dataset_page'), 'Harmonized Datasets');
   obiba_mica_commons_update_page_title( variable_get('study_dataset_page'), 'Collected Datasets');
 }
+
+/**
+* Delete unused variables
+**/
+function obiba_mica_dataset_update_7501(){
+variable_del('dataset_harmonization_impossible_icon');
+variable_del('dataset_harmonization_impossible_label');
+variable_del('dataset_harmonization_undetermined_icon');
+variable_del('dataset_harmonization_undetermined_label');
+variable_del('dataset_harmonization_undetermined_description');
+variable_del('dataset_harmonization_impossible_description');
+variable_del('dataset_harmonization_complete_description');
+}

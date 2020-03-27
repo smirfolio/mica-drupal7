@@ -45,7 +45,7 @@ class DrupalMicaClientTaxonomyResource extends MicaClient {
    */
   public function getTaxonomySummaries($resource) {
     $this->setLastResponse(NULL);
-    $url_studies = $this->micaUrl . '/taxonomies/'.$resource;
+    $url_studies = $this->micaUrl . '/taxonomies/'. $resource;
     $request = $this->getMicaHttpClientRequest($url_studies, array(
       'method' => $this->getMicaHttpClientStaticMethod('METHOD_GET'),
       'headers' => $this->authorizationHeader(array(
