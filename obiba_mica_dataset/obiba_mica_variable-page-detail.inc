@@ -233,7 +233,7 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
   $variable_resource = new DrupalMicaDatasetResource();
 
   $variable_harmonizations = $variable_resource->getVariableHarmonizations($variable->id);
-
+    $harmonization_status_configurations = variable_get_value('obiba_mica_dataset_harmonization_status');
   if (!empty($variable_harmonizations->datasetVariableSummaries)) {
     foreach ($variable_harmonizations->datasetVariableSummaries as $variable_harmonization) {
       $variable_resolver = $variable_harmonization->resolver;
@@ -261,26 +261,11 @@ function obiba_mica_dataset_variable_get_harmonization_table_rows($variable, $ha
         $variable_title_key .= ' (' . obiba_mica_commons_get_localized_field($opal_table, 'name') . ')';
       }
 
-      $status = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status', array(
+      $harmonization_status = trim(strtolower(obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status', array(
         'maelstrom',
         'Mlstr_harmo',
       ))));
-
-      if (empty($status)) {
-        $status = '<span class="glyphicon glyphicon-question-sign alert-warning"></span>';
-      }
-      elseif ($status == 'complete') {
-        $status = '<span class="glyphicon glyphicon-ok alert-success"></span>';
-      }
-      elseif ($status == 'impossible') {
-        $status = '<span class="glyphicon ' . ObibaDatasetConstants::getIcon() . '"></span>';
-      }
-      elseif ($status == 'undetermined') {
-        $status = '<span class="glyphicon glyphicon-question-sign alert-warning"></span>';
-      }
-      else {
-        $status = '<span class="glyphicon glyphicon-question-sign alert-warningr"></span>';
-      }
+        $status = '<span data-toggle="tooltip" class="' . $harmonization_status_configurations[$harmonization_status]['icon'] . '" title="' . $harmonization_status_configurations[$harmonization_status]['title'] . '"></span>';
 
       $status_detail = obiba_mica_dataset_variable_attributes_detail($variable_harmonization, 'status_detail', array(
         'maelstrom',

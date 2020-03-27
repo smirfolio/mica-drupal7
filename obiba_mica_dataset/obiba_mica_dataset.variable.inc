@@ -64,50 +64,13 @@ function _obiba_mica_dataset_variable_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
-  $variable['dataset_harmonization_impossible_icon'] = array(
-    'title' => t("Icon to show for the 'Impossible' status"),
-    'description' => t("Select,the Icon to show for 'Impossible' harmonization status"),
-    'type' => 'string',
-    'default' => ObibaDatasetConstants::IMPOSSIBLE_HARMO_ICON,
-  );
-  $variable['dataset_harmonization_impossible_label'] = array(
-    'title' => t("Label to show for the 'Impossible' status"),
-    'description' => t("Text to display, for the label to show for 'Impossible' harmonization status"),
-    'type' => 'string',
-    'default' => t('Impossible'),
-  );
-  $variable['dataset_harmonization_undetermined_icon'] = array(
-    'title' => t("Icon to show for the 'Undetermined' status"),
-    'description' => t("Select,the Icon to show for 'Undetermined' harmonization status"),
-    'type' => 'string',
-    'default' => ObibaDatasetConstants::UNDETERMINED_HARMO_ICON,
-  );
-  $variable['dataset_harmonization_undetermined_label'] = array(
-    'title' => t("Label to show for the 'Undetermined' status"),
-    'description' => t("Text to display, for the label to show for 'Undetermined' harmonization status"),
-    'type' => 'string',
-    'default' => t('Undetermined'),
-  );
-
-  $variable['dataset_harmonization_undetermined_description'] = array(
-    'title' => t("Description to show for the 'Undetermined' status"),
-    'description' => t("Text to display, for the description to show for 'Undetermined' harmonization status"),
-    'type' => 'string',
-    'default' => t('the harmonization potential of this variable has not yet been evaluated.'),
-  );
-  $variable['dataset_harmonization_impossible_description'] = array(
-    'title' => t("Description to show for the 'Impossible' status"),
-    'description' => t("Text to display, for the description to show for 'Impossible' harmonization status"),
-    'type' => 'string',
-    'default' => t('there is no information or insufficient information collected by this study to allow the construction of the variable as defined in the dataset.'),
-  );
-  $variable['dataset_harmonization_complete_description'] = array(
-    'title' => t("Description to show for the 'Complete' status"),
-    'description' => t("Text to display, for the description to show for 'Complete' harmonization status"),
-    'type' => 'string',
-    'default' => t('the study assessment item(s) (e.g. survey question, physical measure, biochemical measure) allow construction of the variable as defined in the dataset.'),
-  );
-
+    $variable['obiba_mica_dataset_harmonization_status'] = array(
+        'title' => t('Harmonization Status configuration '),
+        'description' => t('Harmonization table configuration '),
+        'type' => 'string',
+        'default' => '',
+        'placeholder' => 'e.g. Mlstr_harmo',
+    );
   $variable['obiba_mica_dataset_studies_table_show_variable'] = array(
     'title' => t('Show the variables column in the studies table'),
     'description' => t('If selected the variables column will be shown in the studies table'),

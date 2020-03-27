@@ -23,19 +23,14 @@
       :
     </p>
   <?php endif ?>
+      <?php
+      $harmonization_status = variable_get_value('obiba_mica_dataset_harmonization_status')
+      ?>
+      <?php foreach ($harmonization_status as $status_key => $status): ?>
   <div>
-    <i class="glyphicon glyphicon-ok alert-success"></i>
-    <h6><?php print $localize->getTranslation('client.label.dataset.complete') ?></h6>
-    <?php print ' - ' . variable_get_value('dataset_harmonization_complete_description') ?>
-  </div>
-  <div>
-    <i class="glyphicon <?php print ObibaDatasetConstants::getIcon(); ?> "></i>
-    <h6><?php print variable_get_value('dataset_harmonization_impossible_label'); ?></h6>
-    <?php print ' - ' . variable_get_value('dataset_harmonization_impossible_description') ?>
-  </div>
-  <div>
-    <i class="glyphicon glyphicon-question-sign alert-warning"></i>
-    <h6><?php print $localize->getTranslation('client.label.dataset.undetermined') ?></h6>
-    <?php print ' - ' . variable_get_value('dataset_harmonization_undetermined_description') ?>
-  </div>
+          <i class="<?php print filter_xss($status['icon'], obiba_mica_commons_allowed_filter_xss_tags()) ?>"></i>
+          <h6><?php print $status['title'] ?></h6>
+          <?php print ' - ' . filter_xss($status['description'], obiba_mica_commons_allowed_filter_xss_tags()) ?>
+    </div>
+      <?php endforeach ?>
 </div>

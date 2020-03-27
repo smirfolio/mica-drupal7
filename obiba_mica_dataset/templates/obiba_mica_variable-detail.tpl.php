@@ -14,6 +14,7 @@
  * Code for the obiba_mica_dataset modules.
  */
 
+$harmonization_status_configurations = variable_get_value('obiba_mica_dataset_harmonization_status');
 ?>
 
 <div>
@@ -341,20 +342,8 @@
               <tr>
                 <th><?php print $localize->getTranslation('status'); ?></th>
                 <td>
-                  <?php if (empty($variable_harmonization['status'])): ?>
-                    <span
-                      class="glyphicon glyphicon-question-sign alert-warning" ></span>
-                  <?php elseif ($variable_harmonization['status'] == 'complete'): ?>
-                    <span class="glyphicon glyphicon-ok alert-success"></span>
-                    <?php
-                  elseif ($variable_harmonization['status'] == 'impossible'): ?>
-                    <span
-                      class="glyphicon <?php print ObibaDatasetConstants::getIcon(); ?>" ></span>
-                    <?php
-                  elseif ($variable_harmonization['status'] == 'undetermined'): ?>
-                    <span
-                      class="glyphicon glyphicon-question-sign alert-warning"></span>
-                  <?php endif ?>
+                    <span data-toggle="tooltip" class="<?php print $harmonization_status_configurations[$variable_harmonization['status']]['icon'] ?>"
+                          title="<?php print $harmonization_status_configurations[$variable_harmonization['status']]['title']  ?>"></span>
                 </td>
               </tr>
               <?php if (!empty($variable_harmonization['status_detail'])): ?>
