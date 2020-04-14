@@ -68,8 +68,7 @@ function _obiba_mica_dataset_variable_content(&$variable) {
         'title' => t('Harmonization Status configuration '),
         'description' => t('Harmonization table configuration '),
         'type' => 'string',
-        'default' => '',
-        'placeholder' => 'e.g. Mlstr_harmo',
+        'default' => obiba_dataset_harmonization_default_settings(),
     );
   $variable['obiba_mica_dataset_studies_table_show_variable'] = array(
     'title' => t('Show the variables column in the studies table'),

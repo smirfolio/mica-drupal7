@@ -631,3 +631,28 @@ function theme_obiba_mica_dataset_harmonization_status_drag_components($vars) {
     drupal_add_tabledrag($table_id, 'order', 'sibling', 'dataset-harmonization-status-weight');
     return $output;
 }
+
+function obiba_dataset_harmonization_default_settings(){
+    $new_harmo_variable['complete'] = array(
+        'title' => 'Complete',
+        'description' => 'The study assessment item(s) (e.g. survey question, physical measure, biochemical measure) allow construction of the variable as defined in the dataset.',
+        'icon' => 'glyphicon glyphicon-ok alert-success',
+        'weight' => 0,
+        'value' => 'complete',
+    );
+    $new_harmo_variable['impossible'] = array(
+        'title' => 'Impossible',
+        'description' => 'There is no information or insufficient information collected by this study to allow the construction of the variable as defined in the dataset.',
+        'icon' => 'glyphicon glyphicon-remove alert-danger',
+        'weight' => 1,
+        'value' => 'impossible',
+    );
+    $new_harmo_variable['undetermined'] = array(
+        'title' => 'Undetermined',
+        'description' => 'The harmonization potential of this variable has not yet been evaluated.',
+        'icon' => 'glyphicon glyphicon-question-sign alert-warning',
+        'weight' => 2,
+        'value' => 'undetermined',
+    );
+    return  $new_harmo_variable;
+}

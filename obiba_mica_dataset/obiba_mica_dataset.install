@@ -19,6 +19,7 @@
  */
 function obiba_mica_dataset_install() {
   obiba_mica_dataset_create_node();
+  variable_set('obiba_mica_dataset_harmonization_status', obiba_dataset_harmonization_default_settings());
 }
 
 /**
@@ -48,6 +49,14 @@ function obiba_mica_dataset_update_7500(){
 * Delete unused variables
 **/
 function obiba_mica_dataset_update_7501(){
+$default_harmonization = obiba_dataset_harmonization_default_settings();
+$impossible_icone = variable_get('dataset_harmonization_impossible_icon');
+$default_harmonization['impossible']['icon'] = 'glyphicon ' . ($impossible_icone == 'glyphicon-remove' ? 'glyphicon-remove alert-danger' : 'glyphicon-minus alert-black');
+$default_harmonization['impossible']['title'] = variable_get('dataset_harmonization_impossible_label');
+$default_harmonization['impossible']['description'] = variable_get('dataset_harmonization_impossible_description');
+$default_harmonization['undetermined']['description'] = variable_get('dataset_harmonization_undetermined_description');
+$default_harmonization['complete']['description'] = variable_get('dataset_harmonization_complete_description');
+variable_set('obiba_mica_dataset_harmonization_status', $default_harmonization);
 variable_del('dataset_harmonization_impossible_icon');
 variable_del('dataset_harmonization_impossible_label');
 variable_del('dataset_harmonization_undetermined_icon');
