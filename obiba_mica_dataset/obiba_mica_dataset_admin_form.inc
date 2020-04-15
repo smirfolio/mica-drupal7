@@ -185,6 +185,19 @@ EOT;
  * @return object
  */
 function _obiba_mica_dataset_get_harmonization_status($resource) {
+    $get_vocabulary = function($taxonomies, $taxonomy, $vocabulary) {
+        $harmo_taxo =  array_filter($taxonomies, function($taxo) use($taxonomy, $vocabulary){
+            if ($taxo->name == $taxonomy ) {
+                return array_filter($taxo->vocabularies, function($vocab) use ($vocabulary) {
+                    return ($vocab->name == $vocabulary) ? $vocab->terms : FALSE;
+                } );
+            }
+            return FALSE;
+        });
+        return array_filter(current($harmo_taxo)->vocabularies, function($vocab) use ($vocabulary){
+            return ($vocab->name == $vocabulary) ? $vocab->terms : FALSE;
+        });
+    };
     $service = new DrupalMicaClient\DrupalMicaClientTaxonomyResource();
     $taxonomies = $service->getTaxonomySummaries($resource);
     if (!empty($taxonomies->summaries)) {
@@ -193,7 +206,7 @@ function _obiba_mica_dataset_get_harmonization_status($resource) {
     /*
     Get status from taxonomies
     */
-    return $taxonomies[2]->vocabularies[0]->terms;
+    return current($get_vocabulary($taxonomies, 'Mlstr_harmo', 'status'))->terms;
 }
 
 function _obiba_mica_dataset_settings_save_harmonization_status_order(&$form, &$form_state) {
