@@ -304,7 +304,10 @@ function obiba_mica_graphic_local_graphics_options($graphics_options = NULL) {
     obiba_mica_graphic_charts_options_settings('numberParticipants', $colors_options),
     obiba_mica_graphic_charts_options_settings('startYear', $colors_options)
   );
-
+    $graphics_options['headerAlignment'] = variable_get_value('graphics_table_headerAlignment');
+    $graphics_options['valuesAlignment'] = variable_get_value('graphics_table_valuesAlignment');
+    $graphics_options['useMonoFont'] = variable_get_value('graphics_table_useMonoFont');
+    $graphics_options['fixWidth'] = variable_get_value('graphics_table_fixWidth');
   if (!empty($graphics_options)) {
     $Graphic_charts_options = array_merge($graphics_options, array(
       'ChartsOptions' => !empty($charts_option) ? $charts_option : NULL
