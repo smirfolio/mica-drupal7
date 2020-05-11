@@ -48,7 +48,7 @@ function obiba_mica_graphic_settings_form($form, &$form_state) {
 
   $form['obiba_mica_graphic']['graphic_display'] = array(
     '#type' => 'fieldset',
-    '#title' => t('display'),
+    '#title' => t('Display'),
     '#collapsible' => FALSE,
   );
 
@@ -59,7 +59,66 @@ function obiba_mica_graphic_settings_form($form, &$form_state) {
   obiba_mica_graphic_settings_form_barchart($form);
   obiba_mica_graphic_settings_form_horizontal_barchart($form);
 
+    $form['obiba_mica_graphic']['table_display'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Table Display'),
+        '#collapsible' => FALSE,
+    );
+    obiba_mica_graphic_settings_form_table($form);
+
   return system_settings_form($form);
+}
+
+function obiba_mica_graphic_settings_form_table(&$form) {
+
+    $form['obiba_mica_graphic']['table_display']['alignment'] = array(
+        '#type' => 'fieldset',
+        '#title' => t('Table number alignment'),
+        '#collapsible' => FALSE,
+    );
+
+    $info = variable_get_info('graphics_table_headerAlignment');
+    $form['obiba_mica_graphic']['table_display']['alignment']['graphics_table_headerAlignment'] = array(
+        '#type' => 'select',
+        '#title' => $info['title'],
+        '#default_value' => variable_get_value('graphics_table_headerAlignment'),
+        '#maxlength' => 255,
+        '#description' => $info['description'],
+        '#options' => array(
+            'text-left' => t('Left'),
+            'text-center' => t('Center'),
+            'text-right' => t('Right'),
+        ),
+    );
+
+    $info = variable_get_info('graphics_table_valuesAlignment');
+    $form['obiba_mica_graphic']['table_display']['alignment']['graphics_table_valuesAlignment'] = array(
+        '#type' => 'select',
+        '#title' => $info['title'],
+        '#default_value' => variable_get_value('graphics_table_valuesAlignment'),
+        '#maxlength' => 255,
+        '#description' => $info['description'],
+        '#options' => array(
+            'text-left' => t('Left'),
+            'text-center' => t('Center'),
+            'text-right' => t('Right'),
+        ),
+    );
+
+    $info = variable_get_info('graphics_table_useMonoFont');
+    $form['obiba_mica_graphic']['table_display']['alignment']['graphics_table_useMonoFont'] = array(
+        '#type' => 'checkbox',
+        '#title' => $info['title'],
+        '#default_value' => variable_get_value('graphics_table_useMonoFont'),
+        '#description' => $info['description'],
+    );
+    $info = variable_get_info('graphics_table_fixWidth');
+    $form['obiba_mica_graphic']['table_display']['alignment']['graphics_table_fixWidth'] = array(
+        '#type' => 'checkbox',
+        '#title' => $info['title'],
+        '#default_value' => variable_get_value('graphics_table_fixWidth'),
+        '#description' => $info['description'],
+    );
 }
 
 function obiba_mica_graphic_settings_form_general_display(&$form) {
