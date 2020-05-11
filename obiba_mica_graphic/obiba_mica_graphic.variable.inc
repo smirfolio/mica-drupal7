@@ -225,5 +225,30 @@ function obiba_mica_graphic_variable_info($options) {
     'default' => '0',
   );
 
+    $variable['graphics_table_headerAlignment'] = array(
+        'title' => t('Header title alignment'),
+        'description' => t('Select the alignment of the header title (left, center, right)'),
+        'type' => 'string',
+        'default' => 'text-left',
+    );
+    $variable['graphics_table_valuesAlignment'] = array(
+        'title' => t('Values alignment'),
+        'description' => t('Select the alignment of the values of the table (left, center, right)'),
+        'type' => 'string',
+        'default' => 'text-left',
+    );
+    $variable['graphics_table_useMonoFont'] = array(
+        'title' => t('Use the Monospace Class font '),
+        'description' => t('Select a (mono-font) class will be applied to value table'),
+        'type' => 'boolean',
+        'default' => NULL,
+    );
+    $variable['graphics_table_fixWidth'] = array(
+        'title' => t('Fix the numbers width'),
+        'description' => t('If enabled the width of numbers in the table will have same width (longest character string number)'),
+        'type' => 'boolean',
+        'default' => NULL,
+    );
+
   return $variable;
 }
