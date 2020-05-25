@@ -36,18 +36,18 @@
                 </td>
               </tr>
 
-              <tr class="dce-admin-databases">
-                <th class="admin-databases-title">@admin-databases-title</th>
-                <td  class="admin-databases-list">
-                  @admin-databases-list
-                </td>
-              </tr>
-
               <tr class="dce-bio-samples">
                 <th class="bio-samples-title">@bio-samples-title</th>
                 <td class="bio-samples-list">
                   @bio-samples-list
                 </td>
+              </tr>
+
+              <tr class="dce-admin-databases">
+                  <th class="admin-databases-title">@admin-databases-title</th>
+                  <td  class="admin-databases-list">
+                      @admin-databases-list
+                  </td>
               </tr>
 
             </tbody>
