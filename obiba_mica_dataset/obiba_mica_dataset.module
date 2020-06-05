@@ -411,7 +411,8 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
     foreach ($summaries as $key_dataset => $summary) {
       $dataset_description = NULL;
 
-      if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
+      if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables) &&
+          $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables > theme_get_setting('obiba_mica_min_var_dataset')) {
         $variable_nbr_row = $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;
         $nb_variables = MicaClientAnchorHelper::datasetVariables(
           obiba_mica_commons_format_number($variable_nbr_row),
@@ -419,7 +420,9 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
           array(),
           'study(in(Mica_study.id,' . $study_id . '))'
         );
-
+      }
+      else {
+        $nb_variables = '-';
       }
       $dce_name_array = obiba_mica_dataset_get_dce_from_dataset($summary, $study_id);
       if (!empty($variable_nbr_row)) {
