@@ -19,6 +19,7 @@
  */
 function obiba_mica_dataset_install() {
   obiba_mica_dataset_create_node();
+  variable_set('dataset_studies_datasets_table_sort', 'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym');
 }
 
 /**
