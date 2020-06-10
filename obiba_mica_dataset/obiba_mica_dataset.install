@@ -20,6 +20,7 @@
 function obiba_mica_dataset_install() {
   obiba_mica_dataset_create_node();
   variable_set('obiba_mica_dataset_harmonization_status', obiba_dataset_harmonization_default_settings());
+    variable_set('dataset_studies_datasets_table_sort', 'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym');
 }
 
 /**

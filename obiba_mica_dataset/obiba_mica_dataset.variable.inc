@@ -64,6 +64,17 @@ function _obiba_mica_dataset_variable_content(&$variable) {
     'type' => 'boolean',
     'default' => TRUE,
   );
+
+    /*
+  * Dataset tables on the studies pages
+  * */
+    $variable['dataset_studies_datasets_table_sort'] = array(
+        'title' => t('Dataset Sort Criteria'),
+        'description' => t('The sort criteria of Datasets list in the study detail page (exp: studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym)'),
+        'type' => 'string',
+        'default' => 'studyTable.studyId,studyTable.populationWeight,studyTable.dataCollectionEventWeight,acronym',
+    );
+
     $variable['obiba_mica_dataset_harmonization_status'] = array(
         'title' => t('Harmonization Status configuration '),
         'description' => t('Harmonization table configuration '),
