@@ -80,6 +80,20 @@ function _obiba_mica_dataset_settings_dataset_content(&$form) {
     '#default_value' => variable_get_value('obiba_mica_dataset_studies_table_show_variable'),
     '#description' => $info['description'],
   );
+
+    $form['content_display_settings']['dataset_form']['dataset_studies_details']  = array(
+        '#type' => 'fieldset',
+        '#title' => t('Studies detail page'),
+        '#collapsible' => FALSE,
+    );
+    $info = variable_get_info('dataset_studies_datasets_table_sort');
+    $form['content_display_settings']['dataset_form']['dataset_studies_details']['dataset_studies_datasets_table_sort'] = array(
+        '#type' => 'textfield',
+        '#title' => $info['title'],
+        '#default_value' => variable_get_value('dataset_studies_datasets_table_sort'),
+        '#description' => $info['description'],
+    );
+
     _obiba_mica_dataset_settings_harmonization_status($form);
 }
 
