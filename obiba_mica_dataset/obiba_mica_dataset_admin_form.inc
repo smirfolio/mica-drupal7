@@ -72,6 +72,19 @@ function _obiba_mica_dataset_settings_dataset_content(&$form) {
     '#description' => $info['description'],
   );
 
+    $form['content_display_settings']['dataset_form']['dataset_studies_details']  = array(
+        '#type' => 'fieldset',
+        '#title' => t('Studies detail page'),
+        '#collapsible' => FALSE,
+    );
+    $info = variable_get_info('dataset_studies_datasets_table_sort');
+    $form['content_display_settings']['dataset_form']['dataset_studies_details']['dataset_studies_datasets_table_sort'] = array(
+        '#type' => 'textfield',
+        '#title' => $info['title'],
+        '#default_value' => variable_get_value('dataset_studies_datasets_table_sort'),
+        '#description' => $info['description'],
+    );
+
   $form['content_display_settings']['dataset_form']['harmonization_status'] = array(
     '#type' => 'fieldset',
     '#title' => t('Harmonization status display'),
