@@ -18,21 +18,29 @@ class MicaMetricsHelper {
     if (empty($metrics->documents)) throw new Exception("No document Metrics was found");
     $map = array();
     foreach ($metrics->documents as &$document) {
-      $key = self::getKeyFromType($document->type);
+      $type =$document->type;
+      $key = self::getKeyFromType($type);
       if (!empty($key)) {
-        $document->publishedFormatted = obiba_mica_commons_format_number($document->published);
+        $propertiesMap = new stdClass();
 
-        if (!empty($document->totalWithVariable)) {
-          $document->totalWithVariableFormatted = obiba_mica_commons_format_number($document->totalWithVariable);
-          $document->withVariableTitle = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type. 'WithVariable') );
+        array_map(function ($property) use ($propertiesMap) {
+          $propertiesMap->{$property->name} = $property->value;
+        }, $document->properties);
+        $document->properties = $propertiesMap;
+
+        $document->publishedFormatted = obiba_mica_commons_format_number($propertiesMap->published);
+
+        if (!empty($propertiesMap->totalWithVariable)) {
+          $document->totalWithVariableFormatted = obiba_mica_commons_format_number($propertiesMap->totalWithVariable);
+          $document->withVariableTitle = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($type . 'WithVariable') );
         }
 
-        if (!empty($document->variables)) {
-          $document->variablesFormatted = obiba_mica_commons_format_number($document->variables);
-          $document->variablesTitle = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type. 'Variable') );
+        if (!empty($propertiesMap->variables)) {
+          $document->variablesFormatted = obiba_mica_commons_format_number($propertiesMap->variables);
+          $document->variablesTitle = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($type. 'Variable') );
         }
 
-        $document->title = $localize->getTranslation('metrics.mica.' . self::getKeyFromType($document->type));
+        $document->title = $localize->getTranslation('metrics.mica.' . $key);
         $map[$document->type] = $document;
       }
     }
