@@ -293,7 +293,7 @@ function obiba_mica_dataset_get_datasets_studies($study_id) {
     NULL,
     0,
     50,
-      variable_get_value('dataset_studies_datasets_table_sort'),
+    variable_get_value('dataset_studies_datasets_table_sort'),
     NULL,
     array('name.*', "studyTable.studyId", "studyTable.populationId", "studyTable.dataCollectionEventId", "studyTable.project", "studyTable.table"));
 
@@ -411,8 +411,7 @@ function obiba_mica_dataset_get_datasets_list_tab($datasets, $study_id) {
     foreach ($summaries as $key_dataset => $summary) {
       $dataset_description = NULL;
 
-      if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables) &&
-          $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables > theme_get_setting('obiba_mica_min_var_dataset')) {
+      if (!empty($summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables)) {
         $variable_nbr_row = $summary->{'obiba.mica.CountStatsDto.datasetCountStats'}->variables;
         $nb_variables = MicaClientAnchorHelper::datasetVariables(
           obiba_mica_commons_format_number($variable_nbr_row),
