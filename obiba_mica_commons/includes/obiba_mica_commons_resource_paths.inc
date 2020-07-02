@@ -70,6 +70,7 @@ class MicaClientPathProvider {
   const ANALYSIS = 'mica/analysis';
   const SETS = 'mica/sets';
   const CART = 'mica/cart';
+  const EDIT_ENTITIES_PATTERN = '%s/admin#/%s/%s';
 
   /**
    * The project detail url or link if no text is present.
@@ -118,7 +119,7 @@ class MicaClientPathProvider {
    * @return string
    */
   public static function network_draft_url($id) {
-    return sprintf("%s/#/network/%s", MicaClientPathProvider::get_mica_url(), $id);
+    return sprintf(MicaClientPathProvider::EDIT_ENTITIES_PATTERN, MicaClientPathProvider::get_mica_url(), 'network',$id);
   }
 
   /**
