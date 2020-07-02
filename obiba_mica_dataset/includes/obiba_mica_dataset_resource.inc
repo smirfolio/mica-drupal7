@@ -692,7 +692,7 @@ $get_tresource_by_type = function($resource){
    * @return string
    */
   public static function dataset_draft_url($dataset) {
-    return sprintf("%s/#/%s/%s",
+    return sprintf(MicaClientPathProvider::EDIT_ENTITIES_PATTERN,
       MicaClientPathProvider::get_mica_url(),
       $dataset->variableType == self::COLLECTED_VARIABLE ? self::COLLECTED_DATASET : self::HARMONIZED_DATASET,
       $dataset->id);
