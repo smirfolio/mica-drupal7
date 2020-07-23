@@ -281,7 +281,7 @@ function obiba_mica_block_view($delta = '') {
 function theme_system_powered_mica() {
   $obiba_module_info = system_get_info('module', 'obiba_mica');
   $obiba_version = array(
-    'version' => $obiba_module_info['version'] ? $obiba_module_info['version'] : 'master-SNAPSHOT',
+    'version' => $obiba_module_info['version'] ? $obiba_module_info['version'] : '7.x-39.x',
     'source' => $obiba_module_info['version'] ? 'https://www.drupal.org/project/obiba_mica/releases/' . $obiba_module_info['version'] : 'https://github.com/obiba/mica-drupal7',
   );
   return '<span>' .
