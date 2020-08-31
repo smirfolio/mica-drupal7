@@ -312,7 +312,7 @@
               if (chartData && chartData.length) {
                 var data = doNormalizationByType(chartData, type);
                 var config = new D3ChartConfig().withData(data, true).withTitle(chart.title).withSubtitle(chart.subtitle);
-                processConfig(config, type, chartData, chart.color.colors, chart.showLegend, chart.renderOptions);
+                processConfig(config, type, chartData, chart.color.colors, chart.showLegend, chart.renderOptions || {});
                 $scope.d3Configs.push(config);
               }
             });
